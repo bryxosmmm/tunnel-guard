@@ -78,6 +78,9 @@ def main():
     config = load_config(config_path)
     if experiment["seed"] != config["seed"]:
         raise ValueError("Experiment and detector seed disagree")
+    for entry in experiment["bags"]:
+        if not (Path(entry["path"]) / "metadata.yaml").is_file():
+            raise FileNotFoundError(f"ROS bag metadata missing: {entry['path']}/metadata.yaml")
     output = Path(experiment["output"])
     output.mkdir(parents=True, exist_ok=False)
     write_json(output / "experiment.json", experiment)
@@ -100,8 +103,15 @@ def main():
         detector = Detector(config)
         rows = []
         start = time.perf_counter()
-        iterator = iter_bag(bag, config, every=experiment["every"], max_frames=experiment["max_frames"], topic=entry.get("topic"))
-        with (output / f"{bag.name}.jsonl").open("x") as stream:
+        ingestion = {}
+        iterator = iter_bag(bag, config, every=experiment["every"], max_frames=experiment["max_frames"],
+                            topic=entry.get("topic"), diagnostics=ingestion)
+        from contextlib import nullcontext
+        from .visualization import ResultBag
+        visual = (ResultBag(output / f"{bag.name}_rviz", config,
+                            experiment.get("display_max_points", 100000))
+                  if experiment.get("visualization", False) else nullcontext())
+        with (output / f"{bag.name}.jsonl").open("x") as stream, visual as display:
             while True:
                 frame_start = time.perf_counter()
                 try:
@@ -112,7 +122,15 @@ def main():
                 row.update(frame=scan.index, bag=bag.name, raw_points=scan.raw_points,
                            invalid_points=scan.invalid_points, sensor_frame=scan.frame_id,
                            topic=scan.topic, scan_duration_s=scan.scan_duration_s,
+                           measurement_timestamp_ns=scan.measurement_timestamp_ns,
+                           record_timestamp_ns=scan.record_timestamp_ns,
+                           source_scan_id=f"{scan.topic}:{scan.frame_id}:{scan.measurement_timestamp_ns}",
+                           skipped_duplicate_scans=scan.skipped_duplicate_scans,
                            read_and_process_s=time.perf_counter() - frame_start)
+                if display is not None:
+                    display_started = time.perf_counter()
+                    display.write(row, detector.display_points, scan.measurement_timestamp_ns, detector.display_support)
+                    row["visualization_s"] = time.perf_counter() - display_started
                 stream.write(json.dumps(row, allow_nan=False) + "\n")
                 rows.append(row)
                 if len(rows) % 50 == 0:
@@ -120,7 +138,9 @@ def main():
                     print(f"{bag.name}: {len(rows)} frames, {row['status']}, nearest={row['nearest_obstacle_m']}", flush=True)
         if not rows:
             raise ValueError(f"No scans processed from {bag}")
-        summary = summarize(rows) | {"bag": bag.name, "split": entry["split"], "wall_s": time.perf_counter() - start}
+        summary = summarize(rows) | {"bag": bag.name, "split": entry["split"], "wall_s": time.perf_counter() - start,
+                                    "ingestion": ingestion,
+                                    "visualization_total_s": sum(r.get("visualization_s", 0) for r in rows)}
         summaries.append(summary)
         write_json(output / "summary.json", summaries)
         print(json.dumps({k: summary[k] for k in ("bag", "frames", "status_frames", "processing_ms", "wall_s")}), flush=True)

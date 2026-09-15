@@ -1,5 +1,6 @@
 # Local datasets, recordings, and generated experiment artifacts
 /data/
+/archive/
 /materials/
 /build/
 /dist/

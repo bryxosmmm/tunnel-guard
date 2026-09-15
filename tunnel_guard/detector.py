@@ -41,6 +41,8 @@ def load_config(path: str | Path) -> dict:
             raise ValueError(f"{name} must be positive and finite")
     if not 0 <= config["min_range_m"] < config["max_range_m"]:
         raise ValueError("Invalid sensor range bounds")
+    if not isinstance(config.get("deskew_enabled", False), bool):
+        raise ValueError("deskew_enabled must be boolean")
     return config
 
 
@@ -97,13 +99,15 @@ class Detector:
         self.tracks: dict[int, dict] = {}
         self.next_id = 1
         self.frame_number = 0
+        self.display_points = np.empty((0, 3))
+        self.display_support = {}
         self.motion_translation_covariance = np.eye(3) * config["tracking_pose_sigma_m"]**2
 
     def _new_odometry(self):
         cfg = KISSConfig()
         cfg.data.min_range = self.config["min_range_m"]
         cfg.data.max_range = self.config["max_range_m"]
-        cfg.data.deskew = True
+        cfg.data.deskew = self.config.get("deskew_enabled", False)
         cfg.mapping.voxel_size = self.config["odometry_voxel_m"]
         cfg.registration.max_num_iterations = self.config["odometry_max_iterations"]
         cfg.registration.max_num_threads = self.config["odometry_threads"]
@@ -112,7 +116,8 @@ class Detector:
     def _motion(self, points: np.ndarray, point_times: np.ndarray):
         frame, source = self.odometry.register_frame(points, point_times)
         pose = self.odometry.last_pose.copy()
-        quality = {"valid": False, "reason": "first_frame", "deskew_timestamps": bool(len(point_times)),
+        quality = {"valid": False, "reason": "first_frame",
+                   "deskew_timestamps": bool(len(point_times)) and self.config.get("deskew_enabled", False),
                    "overlap": None, "median_residual_m": None}
         self.motion_translation_covariance = np.eye(3) * self.config["tracking_pose_sigma_m"]**2
         if len(source) >= 12:
@@ -203,6 +208,7 @@ class Detector:
                 covariance = factor @ covariance @ factor.T + gain @ measurement_cov @ gain.T
             track = self.tracks[key]
             support = obj.pop("_support_points")
+            self.display_support[key] = support
             support_world = support @ pose[:3, :3].T + pose[:3, 3]
             # Track-local spatial evidence compensates estimated object translation.
             # Bounds remain from this frame; past points never fabricate present shape.
@@ -216,6 +222,9 @@ class Detector:
             confirmed = obj["immediate"] or (hits >= cfg["confirmation_hits"] and len(evidence) >= cfg["evidence_min_points"])
             track.update(state=state, covariance=covariance, stamp=stamp, extent=np.asarray(obj["extent_m"]))
             obj.update(track_id=key, hits=hits, confirmed=bool(confirmed), accumulated_support_voxels=len(evidence),
+                       last_observed_s=stamp,
+                       evidence_timestamps_s=[e[0] for e in track["evidence"]],
+                       covariance_kind="heuristic_not_calibrated",
                        velocity_world_mps=state[3:].tolist(), position_covariance_m2=covariance[:3, :3].tolist(),
                        confirmation="immediate_geometry" if obj["immediate"] else ("temporal_evidence" if confirmed else "pending"),
                        track_age_s=stamp - track["first_stamp"])
@@ -229,6 +238,11 @@ class Detector:
             raise ValueError("Scan timestamps must be strictly increasing; reset detector between bags")
         dt = None if self.last_timestamp is None else timestamp_s - self.last_timestamp
         reset = dt is not None and dt > self.config["frame_max_gap_s"]
+        point_times = np.empty(0) if point_times is None else np.asarray(point_times, dtype=float)
+        if point_times.ndim != 1 or len(point_times) not in (0, len(points)):
+            raise ValueError("point_times must be empty or match the number of points")
+        if len(point_times) and (not np.isfinite(point_times).all() or point_times.min() < 0 or point_times.max() > 1):
+            raise ValueError("point_times must be finite and normalized to [0, 1]")
         if reset:
             self.odometry = self._new_odometry()
             self.previous_source = None
@@ -236,19 +250,23 @@ class Detector:
             self.tracks.clear()
         self.last_timestamp = timestamp_s
         self.frame_number += 1
-        point_times = np.empty(0) if point_times is None else np.asarray(point_times, dtype=float)
-        if len(point_times) not in (0, len(points)):
-            raise ValueError("point_times must be empty or match the number of points")
-        if len(point_times) and (not np.isfinite(point_times).all() or point_times.min() < 0 or point_times.max() > 1):
-            raise ValueError("point_times must be finite and normalized to [0, 1]")
+        self.display_support = {}
         finite = np.isfinite(points).all(axis=1)
         radii = np.linalg.norm(points, axis=1)
         keep = finite & (radii >= self.config["min_range_m"]) & (radii <= self.config["max_range_m"])
         points = points[keep]
+        self.display_points = points
         if len(point_times):
             point_times = point_times[keep]
+            if len(point_times) and np.ptp(point_times) == 0:
+                point_times = np.empty(0)
         result = {"timestamp_s": timestamp_s, "status": "unknown", "objects": [], "nearest_obstacle_m": None,
                   "input_valid_points": len(points), "gap_reset": reset,
+                  "coordinate_frame": "tunnel_guard_local",
+                  "distance_method": "minimum_forward_x_of_current_observed_cluster",
+                  "distance_origin": "configured_processing_frame_origin",
+                  "distance_along_path_m": None,
+                  "health": "unavailable", "health_reasons": ["insufficient_returns"],
                   "envelope_calibration": self.config["envelope_calibration"]}
         if len(points) < self.config["ground_min_support"]:
             self.tracks.clear()
@@ -257,6 +275,7 @@ class Detector:
             return result | {"reason": "insufficient_returns", "processing_s": time.perf_counter() - started}
         motion_started = time.perf_counter()
         frame, pose, motion = self._motion(points, point_times)
+        self.display_points = frame
         motion_s = time.perf_counter() - motion_started
         crop = ((frame[:, 0] >= self.config["min_forward_m"])
                 & (np.abs(frame[:, 1]) < self.config["context_half_width_m"]))
@@ -273,9 +292,26 @@ class Detector:
         _, _, _, observed, _ = geometry.classify(reduced, remove_background=False)
         for lo, hi in zip(self.config["range_bins_m"][:-1], self.config["range_bins_m"][1:]):
             mask = (reduced[:, 0] >= lo) & (reduced[:, 0] < hi)
+            raw_mask = (frame[:, 0] >= lo) & (frame[:, 0] < hi) & crop
             bins.append({"range_m": [lo, hi], "returns": int(mask.sum()),
+                         "returns_before_geometry_voxel": int(raw_mask.sum()),
                          "geometry_supported_returns": int(np.count_nonzero(mask & observed))})
+        health_reasons = []
+        if not geometry.valid:
+            health_reasons.append(geometry.reason)
+        if not motion["valid"]:
+            health_reasons.append(motion["reason"])
+        if motion.get("weak_translation_axes", 3):
+            health_reasons.append("weak_or_unmeasured_translation_observability")
+        if not self.config.get("sensor_profile_verified", False):
+            health_reasons.append("unverified_sensor_profile_and_extrinsics")
+        if not self.config.get("deskew_enabled", False):
+            health_reasons.append("deskew_disabled_unverified_timing")
+        elif not len(point_times):
+            health_reasons.append("deskew_timestamps_unavailable")
         return result | {"status": status, "reason": geometry.reason, "objects": objects,
+                         "health": "unavailable" if not geometry.valid else ("degraded" if health_reasons else "normal"),
+                         "health_reasons": health_reasons,
                          "nearest_obstacle_m": min((o["distance_m"] for o in confirmed), default=None),
                          "geometry": geometry.describe(), "motion": motion, "pose": pose.tolist(),
                          "range_observability": bins, "geometry_points": len(reduced),

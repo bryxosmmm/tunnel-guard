@@ -216,5 +216,7 @@
     "normal_alignment_cos": 0.8,
     "protrusion_depth_m": 0.06,
     "protection_radius_m": 0.35
-  }
+  },
+  "deskew_enabled": false,
+  "deskew_policy": "Disabled until acquisition span versus scan period and prior deskew provenance are verified. KISS-ICP normalizes the supplied point-time range to one full previous motion increment."
 }

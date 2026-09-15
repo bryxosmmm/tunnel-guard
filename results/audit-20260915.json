@@ -1,0 +1,751 @@
+{
+  "base_revision": "5572d6e52ba39575290929737796304a28d77dfa",
+  "scope": "first 30 frames of each of two real bags; not full recordings",
+  "runs": {
+    "audit-baseline-real": {
+      "summary": [
+        {
+          "frames": 30,
+          "recording_duration_s": 2.886791229248047,
+          "status_frames": {
+            "obstacle": 30
+          },
+          "geometry_valid_frames": 30,
+          "motion_valid_frames": 29,
+          "processing_ms": {
+            "p50": 749.187333509326,
+            "p95": 817.4216044979402,
+            "p99": 827.4767786031589
+          },
+          "read_and_process_ms": {
+            "p50": 790.7638124888763,
+            "p95": 873.0751838738797,
+            "p99": 906.7512408108452
+          },
+          "alarm_episodes_unlabelled": [
+            {
+              "start_frame": 0,
+              "start_s": 1788354623.1100404,
+              "end_s": 1788354625.9968317,
+              "frames": 30
+            }
+          ],
+          "accuracy": null,
+          "accuracy_validity": "No ground truth implied by bag name or alarm count",
+          "bag": "doubleT_obstacle",
+          "split": "development",
+          "wall_s": 24.159481832990423
+        },
+        {
+          "frames": 30,
+          "recording_duration_s": 2.8991048336029053,
+          "status_frames": {
+            "obstacle": 28,
+            "unresolved_obstacle": 2
+          },
+          "geometry_valid_frames": 30,
+          "motion_valid_frames": 23,
+          "processing_ms": {
+            "p50": 526.1146039701998,
+            "p95": 630.661576933926,
+            "p99": 651.8959126260597
+          },
+          "read_and_process_ms": {
+            "p50": 542.6797500113025,
+            "p95": 648.0196461896411,
+            "p99": 669.4322416704381
+          },
+          "alarm_episodes_unlabelled": [
+            {
+              "start_frame": 0,
+              "start_s": 1788359712.599451,
+              "end_s": 1788359715.498556,
+              "frames": 30
+            }
+          ],
+          "accuracy": null,
+          "accuracy_validity": "No ground truth implied by bag name or alarm count",
+          "bag": "doubleT_platform",
+          "split": "development",
+          "wall_s": 16.53835470805643
+        }
+      ],
+      "manifest": {
+        "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+        "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "cpu_count": 8,
+        "packages": {
+          "numpy": "2.5.3",
+          "scipy": "1.18.1",
+          "rosbags": "0.11.5",
+          "kiss-icp": "1.3.0",
+          "travel-seg": null,
+          "hdbscan": null,
+          "pypatchworkpp": null
+        },
+        "source_sha256": {
+          "/Users/mors1337/Code/DL/tunnel-guard/build/audit-baseline/source/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+          "/Users/mors1337/Code/DL/tunnel-guard/build/audit-baseline/source/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+          "/Users/mors1337/Code/DL/tunnel-guard/build/audit-baseline/source/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+          "/Users/mors1337/Code/DL/tunnel-guard/build/audit-baseline/source/tunnel_guard/detector.py": "278562b802b84069068347ac75d187c5d546df6125639eda68457fccd59706ca",
+          "/Users/mors1337/Code/DL/tunnel-guard/build/audit-baseline/source/tunnel_guard/evaluate.py": "88ae992a7dfd4152bef2fa0aa4f2887930faf8c886c88176c80a9e348ada9bde",
+          "/Users/mors1337/Code/DL/tunnel-guard/build/audit-baseline/source/tunnel_guard/geometry.py": "88a87b03b2b16717d3c04407056cc0d7a93b2b6072d7f9806b8d08baf96df1b9",
+          "/Users/mors1337/Code/DL/tunnel-guard/build/audit-baseline/source/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+          "/Users/mors1337/Code/DL/tunnel-guard/build/audit-baseline/source/tunnel_guard/io.py": "a8c6e86148d30cabbe1387aa46a06926c3b75b520cfd3f4ad77ca08ff9df9ef2",
+          "/Users/mors1337/Code/DL/tunnel-guard/build/audit-baseline/source/tunnel_guard/osdar.py": "3af192dd391793dde9ef733c34235cd9ccaac332a07f71670081ceab40f54734",
+          "/Users/mors1337/Code/DL/tunnel-guard/build/audit-baseline/source/tunnel_guard/run.py": "dab5e27b87d6359a5c7e5eea0ed6b686b994305b3cec10096b127b0e945351cb",
+          "/Users/mors1337/Code/DL/tunnel-guard/build/audit-baseline/source/tunnel_guard/segmentation.py": "d2d989cdc8abb1308b545d8dd25ca60219954c58de4e2bb64d1934cbe45c393d",
+          "/Users/mors1337/Code/DL/tunnel-guard/build/audit-baseline/source/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f"
+        },
+        "command": [
+          "/Users/mors1337/Code/DL/tunnel-guard/build/audit-baseline/source/tunnel_guard/run.py",
+          "--experiment",
+          "configs/evaluation-audit-baseline.json"
+        ],
+        "config_sha256": "748f39e6ae67c7b23c3bfb1f7223ec6cd5efcf2719f4c0584bef57c52e758cad",
+        "started_unix_s": 1789499729.799437,
+        "bags": [
+          {
+            "path": "/Users/mors1337/Code/DL/tunnel-guard/data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+            "split": "development",
+            "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+            "files": [
+              {
+                "name": "doubleT_obstacle_0.db3",
+                "bytes": 4821250048,
+                "mtime_ns": 1788354643000000000
+              }
+            ]
+          },
+          {
+            "path": "/Users/mors1337/Code/DL/tunnel-guard/data/sourcecraft_subset/for_hackathon/doubleT_platform",
+            "split": "development",
+            "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+            "files": [
+              {
+                "name": "doubleT_platform_0.db3",
+                "bytes": 2758447104,
+                "mtime_ns": 1788359747000000000
+              }
+            ]
+          }
+        ],
+        "finished_unix_s": 1789499770.5158
+      }
+    },
+    "audit-clock-only": {
+      "summary": [
+        {
+          "frames": 30,
+          "recording_duration_s": 2.900183916091919,
+          "status_frames": {
+            "obstacle": 30
+          },
+          "geometry_valid_frames": 30,
+          "motion_valid_frames": 29,
+          "processing_ms": {
+            "p50": 714.5337709807791,
+            "p95": 778.0997161346022,
+            "p99": 796.0738745587879
+          },
+          "read_and_process_ms": {
+            "p50": 754.7551460156683,
+            "p95": 821.3496187498093,
+            "p99": 838.9289173443103
+          },
+          "alarm_episodes_unlabelled": [
+            {
+              "start_frame": 0,
+              "start_s": 946687297.1999332,
+              "end_s": 946687300.1001171,
+              "frames": 30
+            }
+          ],
+          "accuracy": null,
+          "accuracy_validity": "No ground truth implied by bag name or alarm count",
+          "bag": "doubleT_obstacle",
+          "split": "development",
+          "wall_s": 23.048298334004357,
+          "ingestion": {
+            "source_messages": 30,
+            "duplicate_measurements": 0,
+            "subsampled_measurements": 0,
+            "emitted_scans": 30
+          },
+          "visualization_total_s": 0
+        },
+        {
+          "frames": 30,
+          "recording_duration_s": 2.900018095970154,
+          "status_frames": {
+            "obstacle": 28,
+            "unresolved_obstacle": 2
+          },
+          "geometry_valid_frames": 30,
+          "motion_valid_frames": 23,
+          "processing_ms": {
+            "p50": 497.948666481534,
+            "p95": 586.1559522192692,
+            "p99": 602.0122481929138
+          },
+          "read_and_process_ms": {
+            "p50": 513.5552085121162,
+            "p95": 602.2840253077447,
+            "p99": 617.148653929471
+          },
+          "alarm_episodes_unlabelled": [
+            {
+              "start_frame": 0,
+              "start_s": 946693350.33343,
+              "end_s": 946693353.2334481,
+              "frames": 30
+            }
+          ],
+          "accuracy": null,
+          "accuracy_validity": "No ground truth implied by bag name or alarm count",
+          "bag": "doubleT_platform",
+          "split": "development",
+          "wall_s": 15.763286083005369,
+          "ingestion": {
+            "source_messages": 30,
+            "duplicate_measurements": 0,
+            "subsampled_measurements": 0,
+            "emitted_scans": 30
+          },
+          "visualization_total_s": 0
+        }
+      ],
+      "manifest": {
+        "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+        "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "cpu_count": 8,
+        "packages": {
+          "numpy": "2.5.3",
+          "scipy": "1.18.1",
+          "rosbags": "0.11.5",
+          "kiss-icp": "1.3.0",
+          "travel-seg": null,
+          "hdbscan": null,
+          "pypatchworkpp": null
+        },
+        "source_sha256": {
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/detector.py": "83085745e266d60a7218f74c8aed5b896eceda97932d7b27a054af45fd4a642a",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/evaluate.py": "88ae992a7dfd4152bef2fa0aa4f2887930faf8c886c88176c80a9e348ada9bde",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/geometry.py": "88a87b03b2b16717d3c04407056cc0d7a93b2b6072d7f9806b8d08baf96df1b9",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/inspect_bag.py": "ccb30abe90954ab9e7862bcc914b9803ff538c5e4dd4695c97f189d04b766374",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/io.py": "f1634ee30f4fac7b82bbe811eb3dc5320493eae32cbc63e6b0520ddd4bba6651",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/osdar.py": "3af192dd391793dde9ef733c34235cd9ccaac332a07f71670081ceab40f54734",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/run.py": "a31b9649468b2823f2c46978e542c305c5e17d61f346ec02f80d896cad083259",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/segmentation.py": "d2d989cdc8abb1308b545d8dd25ca60219954c58de4e2bb64d1934cbe45c393d",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/visualization.py": "7ef241a61af9ada6ace76ae842aa4500b6d423e4f49843e1dae6a33318b2cc80"
+        },
+        "command": [
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/run.py",
+          "--experiment",
+          "build/audit-clock-only.json"
+        ],
+        "config_sha256": "54cc1bd25037f327329fe19ce678f661ca554d09e7036931a1478133b4dd072a",
+        "started_unix_s": 1789500419.826219,
+        "bags": [
+          {
+            "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+            "split": "development",
+            "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+            "files": [
+              {
+                "name": "doubleT_obstacle_0.db3",
+                "bytes": 4821250048,
+                "mtime_ns": 1788354643000000000
+              }
+            ]
+          },
+          {
+            "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+            "split": "development",
+            "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+            "files": [
+              {
+                "name": "doubleT_platform_0.db3",
+                "bytes": 2758447104,
+                "mtime_ns": 1788359747000000000
+              }
+            ]
+          }
+        ],
+        "finished_unix_s": 1789500458.6532538
+      }
+    },
+    "audit-current-headless": {
+      "summary": [
+        {
+          "frames": 30,
+          "recording_duration_s": 2.900183916091919,
+          "status_frames": {
+            "obstacle": 30
+          },
+          "geometry_valid_frames": 30,
+          "motion_valid_frames": 29,
+          "processing_ms": {
+            "p50": 752.8192290046718,
+            "p95": 904.1274853138018,
+            "p99": 998.7126736139181
+          },
+          "read_and_process_ms": {
+            "p50": 793.41256301268,
+            "p95": 1022.7316767559385,
+            "p99": 1067.6678379951045
+          },
+          "alarm_episodes_unlabelled": [
+            {
+              "start_frame": 0,
+              "start_s": 946687297.1999332,
+              "end_s": 946687300.1001171,
+              "frames": 30
+            }
+          ],
+          "accuracy": null,
+          "accuracy_validity": "No ground truth implied by bag name or alarm count",
+          "bag": "doubleT_obstacle",
+          "split": "development",
+          "wall_s": 24.510050709010102
+        },
+        {
+          "frames": 30,
+          "recording_duration_s": 2.900018095970154,
+          "status_frames": {
+            "obstacle": 29,
+            "unresolved_obstacle": 1
+          },
+          "geometry_valid_frames": 30,
+          "motion_valid_frames": 23,
+          "processing_ms": {
+            "p50": 527.9374579840805,
+            "p95": 647.6925895520252,
+            "p99": 665.973415322369
+          },
+          "read_and_process_ms": {
+            "p50": 546.6185000259429,
+            "p95": 666.4387248863931,
+            "p99": 684.3589162861463
+          },
+          "alarm_episodes_unlabelled": [
+            {
+              "start_frame": 0,
+              "start_s": 946693350.33343,
+              "end_s": 946693353.2334481,
+              "frames": 30
+            }
+          ],
+          "accuracy": null,
+          "accuracy_validity": "No ground truth implied by bag name or alarm count",
+          "bag": "doubleT_platform",
+          "split": "development",
+          "wall_s": 16.904499500000384
+        }
+      ],
+      "manifest": {
+        "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+        "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "cpu_count": 8,
+        "packages": {
+          "numpy": "2.5.3",
+          "scipy": "1.18.1",
+          "rosbags": "0.11.5",
+          "kiss-icp": "1.3.0",
+          "travel-seg": null,
+          "hdbscan": null,
+          "pypatchworkpp": null
+        },
+        "source_sha256": {
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/detector.py": "d5292081a2c06f0c40c108c4fd77b1e4853ce7785391a5773a4261253566c95b",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/evaluate.py": "88ae992a7dfd4152bef2fa0aa4f2887930faf8c886c88176c80a9e348ada9bde",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/geometry.py": "88a87b03b2b16717d3c04407056cc0d7a93b2b6072d7f9806b8d08baf96df1b9",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/inspect_bag.py": "ccb30abe90954ab9e7862bcc914b9803ff538c5e4dd4695c97f189d04b766374",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/io.py": "b23a8d716200a504aa0a2643277433b03169b23428aee341ed1568015e7d2ba3",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/osdar.py": "3af192dd391793dde9ef733c34235cd9ccaac332a07f71670081ceab40f54734",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/run.py": "22759cbea3fd6d982c535c7f43995bc5f746ba0f8ff79b71163b1e19a5941bcd",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/segmentation.py": "d2d989cdc8abb1308b545d8dd25ca60219954c58de4e2bb64d1934cbe45c393d",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/visualization.py": "7ef241a61af9ada6ace76ae842aa4500b6d423e4f49843e1dae6a33318b2cc80"
+        },
+        "command": [
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/run.py",
+          "--experiment",
+          "build/audit-headless.json"
+        ],
+        "config_sha256": "587bc3aec5dc4426920667c7ccd7a7a07e4fb342f3e56a29d051ab11e4923ffc",
+        "started_unix_s": 1789500171.321326,
+        "bags": [
+          {
+            "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+            "split": "development",
+            "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+            "files": [
+              {
+                "name": "doubleT_obstacle_0.db3",
+                "bytes": 4821250048,
+                "mtime_ns": 1788354643000000000
+              }
+            ]
+          },
+          {
+            "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+            "split": "development",
+            "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+            "files": [
+              {
+                "name": "doubleT_platform_0.db3",
+                "bytes": 2758447104,
+                "mtime_ns": 1788359747000000000
+              }
+            ]
+          }
+        ],
+        "finished_unix_s": 1789500212.757215
+      }
+    },
+    "audit-reviewed": {
+      "summary": [
+        {
+          "frames": 30,
+          "recording_duration_s": 2.900183916091919,
+          "status_frames": {
+            "obstacle": 30
+          },
+          "geometry_valid_frames": 30,
+          "motion_valid_frames": 29,
+          "processing_ms": {
+            "p50": 703.0097290116828,
+            "p95": 784.2945623560807,
+            "p99": 844.8221058765195
+          },
+          "read_and_process_ms": {
+            "p50": 742.0653129811399,
+            "p95": 855.493157840101,
+            "p99": 890.6905892142095
+          },
+          "alarm_episodes_unlabelled": [
+            {
+              "start_frame": 0,
+              "start_s": 946687297.1999332,
+              "end_s": 946687300.1001171,
+              "frames": 30
+            }
+          ],
+          "accuracy": null,
+          "accuracy_validity": "No ground truth implied by bag name or alarm count",
+          "bag": "doubleT_obstacle",
+          "split": "development",
+          "wall_s": 25.55190295900684,
+          "ingestion": {
+            "source_messages": 30,
+            "duplicate_measurements": 0,
+            "subsampled_measurements": 0,
+            "emitted_scans": 30
+          },
+          "visualization_total_s": 2.86213029618375
+        },
+        {
+          "frames": 30,
+          "recording_duration_s": 2.900018095970154,
+          "status_frames": {
+            "obstacle": 29,
+            "unresolved_obstacle": 1
+          },
+          "geometry_valid_frames": 30,
+          "motion_valid_frames": 23,
+          "processing_ms": {
+            "p50": 492.1232500055339,
+            "p95": 588.704503790359,
+            "p99": 607.2822181292577
+          },
+          "read_and_process_ms": {
+            "p50": 508.35366648971103,
+            "p95": 605.3153899469179,
+            "p99": 624.2960366769694
+          },
+          "alarm_episodes_unlabelled": [
+            {
+              "start_frame": 0,
+              "start_s": 946693350.33343,
+              "end_s": 946693353.2334481,
+              "frames": 30
+            }
+          ],
+          "accuracy": null,
+          "accuracy_validity": "No ground truth implied by bag name or alarm count",
+          "bag": "doubleT_platform",
+          "split": "development",
+          "wall_s": 18.121913000009954,
+          "ingestion": {
+            "source_messages": 30,
+            "duplicate_measurements": 0,
+            "subsampled_measurements": 0,
+            "emitted_scans": 30
+          },
+          "visualization_total_s": 2.254455585964024
+        }
+      ],
+      "manifest": {
+        "python": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+        "platform": "macOS-26.5-arm64-arm-64bit-Mach-O",
+        "machine": "arm64",
+        "cpu_count": 8,
+        "packages": {
+          "numpy": "2.5.3",
+          "scipy": "1.18.1",
+          "rosbags": "0.11.5",
+          "kiss-icp": "1.3.0",
+          "travel-seg": null,
+          "hdbscan": null,
+          "pypatchworkpp": null
+        },
+        "source_sha256": {
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/detector.py": "83085745e266d60a7218f74c8aed5b896eceda97932d7b27a054af45fd4a642a",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/evaluate.py": "88ae992a7dfd4152bef2fa0aa4f2887930faf8c886c88176c80a9e348ada9bde",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/geometry.py": "88a87b03b2b16717d3c04407056cc0d7a93b2b6072d7f9806b8d08baf96df1b9",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/inspect_bag.py": "ccb30abe90954ab9e7862bcc914b9803ff538c5e4dd4695c97f189d04b766374",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/io.py": "f1634ee30f4fac7b82bbe811eb3dc5320493eae32cbc63e6b0520ddd4bba6651",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/osdar.py": "3af192dd391793dde9ef733c34235cd9ccaac332a07f71670081ceab40f54734",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/run.py": "a31b9649468b2823f2c46978e542c305c5e17d61f346ec02f80d896cad083259",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/segmentation.py": "d2d989cdc8abb1308b545d8dd25ca60219954c58de4e2bb64d1934cbe45c393d",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/visualization.py": "7ef241a61af9ada6ace76ae842aa4500b6d423e4f49843e1dae6a33318b2cc80"
+        },
+        "command": [
+          "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/run.py",
+          "--experiment",
+          "configs/evaluation-audit.json"
+        ],
+        "config_sha256": "587bc3aec5dc4426920667c7ccd7a7a07e4fb342f3e56a29d051ab11e4923ffc",
+        "started_unix_s": 1789500375.09658,
+        "bags": [
+          {
+            "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+            "split": "development",
+            "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+            "files": [
+              {
+                "name": "doubleT_obstacle_0.db3",
+                "bytes": 4821250048,
+                "mtime_ns": 1788354643000000000
+              }
+            ]
+          },
+          {
+            "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+            "split": "development",
+            "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+            "files": [
+              {
+                "name": "doubleT_platform_0.db3",
+                "bytes": 2758447104,
+                "mtime_ns": 1788359747000000000
+              }
+            ]
+          }
+        ],
+        "finished_unix_s": 1789500418.783693
+      }
+    }
+  },
+  "rviz_readback": [
+    {
+      "bag": "build/audit-reviewed/doubleT_obstacle_rviz",
+      "messages": {
+        "/perception/points_display": 30,
+        "/perception/debug_markers": 30,
+        "/perception/status": 30
+      },
+      "delete_all_messages": 30,
+      "replay_quality_labels": 30,
+      "timestamp_mismatches": 0,
+      "nonfinite_cloud_messages": 0
+    },
+    {
+      "bag": "build/audit-reviewed/doubleT_platform_rviz",
+      "messages": {
+        "/perception/points_display": 30,
+        "/perception/debug_markers": 30,
+        "/perception/status": 30
+      },
+      "delete_all_messages": 30,
+      "replay_quality_labels": 30,
+      "timestamp_mismatches": 0,
+      "nonfinite_cloud_messages": 0
+    }
+  ],
+  "manual_repeat": {
+    "source": "first two actual doubleT_obstacle scans; repeated first measurement supplied manually",
+    "duplicate": {
+      "error": "Scan timestamps must be strictly increasing; reset detector between bags",
+      "frame_count_before": 1,
+      "frame_count_after": 1
+    },
+    "second_scan_frame_count": 2,
+    "max_hits_first": 1,
+    "max_hits_second": 2,
+    "measurement_ns": [
+      946687297199933052,
+      946687297299934030
+    ]
+  },
+  "display_comparison": [
+    {
+      "bag": "doubleT_obstacle",
+      "frames": 30,
+      "decision_box_distance_differences": [],
+      "max_pose_element_difference": 3.672409598642901e-15
+    },
+    {
+      "bag": "doubleT_platform",
+      "frames": 30,
+      "decision_box_distance_differences": [],
+      "max_pose_element_difference": 2.831068712794149e-15
+    }
+  ],
+  "point_clocks": [
+    {
+      "bag": "doubleT_obstacle",
+      "rings": 128,
+      "unique_point_times": 3600,
+      "all_slot_point_time_span_s": 0.09997296333312988,
+      "header_minus_point_min_s": 0.0,
+      "header_minus_point_max_s": -0.09997296333312988,
+      "point_time_min": 946687297.199933,
+      "point_time_max": 946687297.299906
+    },
+    {
+      "bag": "doubleT_platform",
+      "rings": 128,
+      "unique_point_times": 1200,
+      "all_slot_point_time_span_s": 0.033306002616882324,
+      "header_minus_point_min_s": 0.0,
+      "header_minus_point_max_s": -0.033306002616882324,
+      "point_time_min": 946693350.33343,
+      "point_time_max": 946693350.366736
+    }
+  ],
+  "localization_baseline": {
+    "label_status": "provisional_geometry",
+    "prediction_scope": "near_track_objects",
+    "minimum_3d_iou": 0.25,
+    "evaluated_frames": 1,
+    "missing_frames": [],
+    "exhaustive_frames": 0,
+    "tp": 1,
+    "fn": 0,
+    "fp_exhaustive_only": 0,
+    "annotated_object_recall": 1.0,
+    "precision_exhaustive_only": null,
+    "recall_exhaustive_only": null,
+    "f1_exhaustive_only": null,
+    "event_recall": 1.0,
+    "distance_mae_m": 0.19903793334960795,
+    "matched_mean_3d_iou": 0.28052561717458974,
+    "validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric"
+    ],
+    "events": {
+      "doubleT_obstacle:upright_structure_17m": {
+        "annotated_frames": 1,
+        "matched_frames": 1,
+        "first_detection_distance_m": 16.6
+      }
+    },
+    "frames": [
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 0,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            1,
+            0,
+            0.28052561717458974
+          ]
+        ]
+      }
+    ],
+    "annotations_sha256": "4e3058542b7965ba3a86fc9db4e68c214b12af9d359d8c4ca0d77c166af719b0",
+    "run": "build/audit-baseline-real"
+  },
+  "localization_reviewed": {
+    "label_status": "provisional_geometry",
+    "prediction_scope": "near_track_objects",
+    "minimum_3d_iou": 0.25,
+    "evaluated_frames": 1,
+    "missing_frames": [],
+    "exhaustive_frames": 0,
+    "tp": 1,
+    "fn": 0,
+    "fp_exhaustive_only": 0,
+    "annotated_object_recall": 1.0,
+    "precision_exhaustive_only": null,
+    "recall_exhaustive_only": null,
+    "f1_exhaustive_only": null,
+    "event_recall": 1.0,
+    "distance_mae_m": 0.19903793334960795,
+    "matched_mean_3d_iou": 0.28052561717458974,
+    "validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric"
+    ],
+    "events": {
+      "doubleT_obstacle:upright_structure_17m": {
+        "annotated_frames": 1,
+        "matched_frames": 1,
+        "first_detection_distance_m": 16.6
+      }
+    },
+    "frames": [
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 0,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            1,
+            0,
+            0.28052561717458974
+          ]
+        ]
+      }
+    ],
+    "annotations_sha256": "4e3058542b7965ba3a86fc9db4e68c214b12af9d359d8c4ca0d77c166af719b0",
+    "run": "build/audit-reviewed"
+  },
+  "final_vs_headless_decisions": [
+    {
+      "bag": "doubleT_obstacle",
+      "different_frames": []
+    },
+    {
+      "bag": "doubleT_platform",
+      "different_frames": []
+    }
+  ]
+}

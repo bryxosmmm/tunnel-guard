@@ -2,20 +2,22 @@
 
 Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 PointCloud2 bags directly; no ROS installation, Docker, or pretrained weights required for the default pipeline.
 
-**Research baseline, not a validated collision-warning system.** Recall, infrastructure alarms, generalization, and runtime remain unresolved. `CASE.md` contains the original requirements; deployment and demo requirements are not implemented.
+**Research baseline, not a validated collision-warning system.** Recall, infrastructure alarms, generalization, and runtime remain unresolved. `CASE.md` contains the original requirements. Recorded RViz2 result export is implemented; target Ubuntu/Humble deployment and the RViz GUI remain unverified.
+
+The current review, real-data comparison and limitations are in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). The latest iteration processed two real 30-frame prefixes. Historical results below are separate evidence.
 
 ## Quick start
 
-Python 3.11+; Python 3.12 was used for the recorded results. Install [uv](https://docs.astral.sh/uv/), then:
+Python 3.11+; Python 3.13.5 was used for the latest audit (older results used 3.12). Install [uv](https://docs.astral.sh/uv/), then:
 
 ```sh
 uv sync --locked
-uv run python -m tunnel_guard.stress --experiment configs/stress-quality.json
+uv run python -m tunnel_guard.run --experiment configs/evaluation-audit.json
 ```
 Agent policy lives in `AGENTS.md`: no subagents or automated tests. Verify changes through actual detector runs and configured evaluations; the repository intentionally has no test suite.
 
 
-The synthetic run needs no external data. It exercises 110 scenarios / 330 frames, and writes predictions, annotations, metrics, exact configuration, and a source snapshot to `build/tunnel-guard-stress-quality-final/`.
+The audit recipe requires the two real bags described below. It processes the first 30 consecutive frames of each and writes JSONL, configuration, source snapshots and RViz result bags to `build/audit-reviewed/`. Set `visualization` to `false` in a copied experiment JSON for headless processing; detector decisions do not depend on the display consumer. No model download is needed at runtime.
 
 **Output directories must not already exist.** To repeat a run, copy its experiment JSON and change `output`; do not delete evidence merely to rerun. Nix users can optionally use `nix develop`; everyone else can ignore `flake.nix`, `flake.lock`, and `.envrc`.
 
@@ -34,6 +36,19 @@ data/sourcecraft_subset/for_hackathon/
 ```
 
 Each directory must contain its `metadata.yaml` and SQLite `.db3` files. Recordings and dataset archives are deliberately not included in Git.
+
+For the organizer archive supplied as `archive/for_hackathon.zst`, the two audit bags can be extracted without unpacking the whole dataset:
+
+```sh
+mkdir -p data/sourcecraft_subset
+tar --zstd -xf archive/for_hackathon.zst -C data/sourcecraft_subset \
+  for_hackathon/doubleT_obstacle for_hackathon/doubleT_platform
+uv run python -m tunnel_guard.inspect_bag \
+  data/sourcecraft_subset/for_hackathon/doubleT_obstacle \
+  --max-frames 30 --output build/input-inspection.json
+```
+
+The original full evaluation below requires all six bags:
 
 ```sh
 uv run python -m tunnel_guard.run --experiment configs/evaluation-quality.json
@@ -55,13 +70,17 @@ The five supplied annotation boxes describe **one provisional upright structure*
 | `tunnel_guard/background.py` | Open3D-supported tunnel surfaces and protrusion protection |
 | `tunnel_guard/detector.py` | KISS-ICP motion, candidates, tracking and temporal evidence |
 | `tunnel_guard/run.py` | Reproducible bag runner |
+| `tunnel_guard/inspect_bag.py` | Bounded layout, acquisition-clock and density inspection |
+| `tunnel_guard/visualization.py` | Actual PointCloud2 / MarkerArray / status export for RViz2 replay |
 | `tunnel_guard/evaluate.py` | One-to-one IoU matching and annotation validity |
 | `tunnel_guard/stress.py` | Occlusion-aware synthetic ray-cast evaluation |
 | `tunnel_guard/annotate.py` | Extract raw frames for annotation review |
 | `configs/detector.json` | Default detector recipe; no bag-specific branches |
 | `results/` | Small recorded result summaries; full artifacts remain local |
 
-Pipeline: validated points → KISS-ICP deskew/pose → local bed and rails → supported tunnel-surface rejection → density-core segmentation → rail-relative clearance classification → temporal state and spatial evidence.
+Pipeline: validated points → KISS-ICP pose (optional deskew) → local bed and rails → supported tunnel-surface rejection → density-core segmentation → rail-relative clearance classification → temporal state and spatial evidence.
+
+**Deskew is disabled in the current recipes.** The observed point-time span differs from the frame period, especially in cropped clouds; KISS-ICP normalizes that span to a full previous motion increment. `deskew_enabled=true` restores the experimental mode, but needs verified timing and prior-deskew provenance. Turning it off leaves motion distortion unresolved. This change is not a claim of higher detection accuracy.
 
 Segmentation preserves object portions outside the clearance gate. Dense instances cannot merge through a thin chain of border points. Temporal matching uses velocity, heuristic covariance, shape, and distinct-frame evidence. Missing path support must not turn rail removal into an infinite-width exclusion zone.
 
@@ -77,7 +96,37 @@ Focused verification: the original tilted empty-tunnel wall alert disappears; na
 - `no_obstacle_observed`: no hazard reported; **does not mean the route is clear**.
 - `unknown`: insufficient geometry or returns.
 
-Boxes describe observed support, not inferred full object volume. Distance is forward sensor-frame distance, not bumper distance or curve-integrated track distance. Uncertainty is heuristic, not a calibrated safety probability.
+Boxes describe observed support, not inferred full object volume. Distance is the minimum forward x of the current cluster in the configured processing frame, including its out-of-envelope support; a noisy extreme may dominate it. It is not bumper distance or curve-integrated track distance. Uncertainty is heuristic, not a calibrated safety probability.
+
+- `health` (`normal` / `degraded` / `unavailable`) and `health_reasons` are independent of detection status. The current unverified calibration keeps results degraded.
+- `timestamp_s` uses acquisition header time. `measurement_timestamp_ns` and `record_timestamp_ns` preserve both exact clocks; do not interpret their difference as latency.
+- `source_scan_id`, `last_observed_s`, `hits`, and `evidence_timestamps_s` expose the source and temporal evidence. Duplicate acquisition timestamps are skipped by the reader; backwards time or a changed sensor frame stops the run explicitly. A new bag creates a new detector.
+- `coordinate_frame=tunnel_guard_local` identifies the transformed current-scan coordinates. `sensor_frame` is source metadata. No global TF or verified vehicle extrinsics are implied.
+- `processing_s`, `read_and_process_s` and optional `visualization_s` use monotonic timing; summary includes ingestion/drop counts and visualization time. `range_observability` reports support, not free-space coverage.
+
+## View actual results in RViz2
+
+The audit recipe records `build/audit-reviewed/doubleT_obstacle_rviz/` and `doubleT_platform_rviz/`. Export and CDR readback were run on macOS; the commands below require a machine with **ROS 2 Humble and RViz2** and have not been executed on that runtime here.
+
+Run from the repository root in two terminals after sourcing ROS:
+
+```sh
+source /opt/ros/humble/setup.bash
+rviz2 -d "$PWD/rviz/tunnel_guard.rviz" --ros-args -p use_sim_time:=true
+```
+
+```sh
+source /opt/ros/humble/setup.bash
+ros2 bag play "$PWD/build/audit-reviewed/doubleT_obstacle_rviz" --clock
+```
+
+The result bag is **recorded inference replay**, not live inference. Play it by itself: it supplies the measurement timeline through `/clock`; do not run a second clock publisher or mix it with the original bag's different record-time epoch. Restart playback and reset RViz when switching recordings or seeking backwards. Replay never continues a detector with future state.
+
+Displays: grey measured scene, cyan supported reference contour, yellow tentative candidates, red confirmed nominal intersections, grey adjacent objects, and explicit health/nearest text. `candidate_measurements` markers show the actual voxel representatives even when the background display copy is sampled. Each frame starts with DELETEALL; markers expire after 0.3 simulation seconds. Pausing replay pauses simulation time too; the scene is explicitly labelled replay.
+
+Fixed Frame is `tunnel_guard_local`: all messages already share this local frame, so no invented `map` or identity TF is needed. Do not accumulate clouds across frames. For a top view choose RViz's top-down view; for candidate inspection set the Orbit focal point to the object's reported `center` and reduce view distance. This changes camera framing, not physical coordinates. Marker namespaces can be toggled to inspect points without boxes.
+
+`display_max_points` limits only the background visual copy; candidate representatives remain separate. GUI-off/headless comparison preserved status, boxes, distances, IDs and confirmations on all 60 inspected frames. Full bitwise pose equality is not claimed. A static real-frame overview is saved locally as `build/audit-preview.png`; it is not RViz GUI validation.
 
 The envelope follows the [GOST 23961-80 M reference contour](https://engenegr.ru/gost-23961-80), with a conservatively filled lower contour above 50 mm. Actual vehicle dynamics, curves, mirror/current-collector extensions and organizer-certified extrinsics remain unverified. Anisotropic clustering helps unequal beam spacing but can merge vertically adjacent structures; temporal confirmation delays weak detections. These are explicit tradeoffs, not solved guarantees.
 
