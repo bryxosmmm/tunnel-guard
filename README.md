@@ -10,9 +10,10 @@ Python 3.11+; Python 3.12 was used for the recorded results. Install [uv](https:
 
 ```sh
 uv sync --locked
-uv run python -m unittest discover -s tests -v
 uv run python -m tunnel_guard.stress --experiment configs/stress-quality.json
 ```
+Agent policy lives in `AGENTS.md`: no subagents or automated tests. Verify changes through actual detector runs and configured evaluations; the repository intentionally has no test suite.
+
 
 The synthetic run needs no external data. It exercises 110 scenarios / 330 frames, and writes predictions, annotations, metrics, exact configuration, and a source snapshot to `build/tunnel-guard-stress-quality-final/`.
 
@@ -57,7 +58,6 @@ The five supplied annotation boxes describe **one provisional upright structure*
 | `tunnel_guard/stress.py` | Occlusion-aware synthetic ray-cast evaluation |
 | `tunnel_guard/annotate.py` | Extract raw frames for annotation review |
 | `configs/detector.json` | Default detector recipe; no bag-specific branches |
-| `tests/` | Seven failure-oriented regression tests |
 | `results/` | Small recorded result summaries; full artifacts remain local |
 
 Pipeline: validated points → KISS-ICP deskew/pose → local bed and rails → density-core segmentation → rail-relative clearance classification → temporal state and spatial evidence.
