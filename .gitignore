@@ -6,8 +6,6 @@
 /.local-research/
 
 # Machine-specific tools and agent state
-/.omp/
-/.codex/
 /.third_party/
 /.direnv/
 /.uv-cache/
