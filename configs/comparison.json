@@ -1,0 +1,22 @@
+{
+  "seed": 20260915,
+  "hypothesis": "Density-core segmentation before clearance clipping improves fixed real-object localization versus the previous connected-components result and published TRAVEL/HDBSCAN segmenters; uncertainty-aware temporal evidence improves sparse-target recall without increasing negative episodes.",
+  "success_criterion": {
+    "real_localization_recall_min": 0.8,
+    "synthetic_event_recall_min": 0.95,
+    "negative_episode_rate_max": 0.05
+  },
+  "detector_config": "configs/detector.json",
+  "stress_config": "configs/stress-quality.json",
+  "annotations": "annotations/sourcecraft-provisional.json",
+  "bag_root": "data/sourcecraft_subset/for_hackathon",
+  "output": "build/tunnel-guard-quality-comparison-final",
+  "methods": [
+    "density",
+    "travel",
+    "hdbscan"
+  ],
+  "real_every": 1,
+  "real_max_frames": 201,
+  "note": "Shared geometry/tracking isolate segmentation differences. TRAVEL here uses its original AOS implementation on shared non-ground context; a separate ground audit exercises original TGS+ AOS. This is not a comparison to a neural SOTA detector. Existing real annotations and IoU thresholds are unchanged; real precision remains unavailable."
+}

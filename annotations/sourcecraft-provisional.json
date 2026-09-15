@@ -1,0 +1,118 @@
+{
+  "label_status": "provisional_geometry",
+  "prediction_scope": "near_track_objects",
+  "minimum_iou": 0.25,
+  "provenance": "Independent raw-cloud inspection of the upright structure at approximately forward 17m, lateral 1.2\u20131.9m. A human/object identity and actual train-envelope intersection are not established. No detector predictions used to choose box bounds. Non-exhaustive frames: unmatched predictions are deliberately unscored.",
+  "frames": [
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 0,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "upright_structure_17m",
+          "bbox_min": [
+            16.6,
+            1.1,
+            -1.85
+          ],
+          "bbox_max": [
+            17.7,
+            2.1,
+            0.65
+          ],
+          "class": "unclassified_upright_structure",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 50,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "upright_structure_17m",
+          "bbox_min": [
+            16.6,
+            1.1,
+            -1.85
+          ],
+          "bbox_max": [
+            17.7,
+            2.1,
+            0.65
+          ],
+          "class": "unclassified_upright_structure",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 100,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "upright_structure_17m",
+          "bbox_min": [
+            16.6,
+            1.1,
+            -1.85
+          ],
+          "bbox_max": [
+            17.7,
+            2.1,
+            0.65
+          ],
+          "class": "unclassified_upright_structure",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 150,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "upright_structure_17m",
+          "bbox_min": [
+            16.6,
+            1.1,
+            -1.85
+          ],
+          "bbox_max": [
+            17.7,
+            2.1,
+            0.65
+          ],
+          "class": "unclassified_upright_structure",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 200,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "upright_structure_17m",
+          "bbox_min": [
+            16.6,
+            1.1,
+            -1.85
+          ],
+          "bbox_max": [
+            17.7,
+            2.1,
+            0.65
+          ],
+          "class": "unclassified_upright_structure",
+          "path_intersection": "unverified"
+        }
+      ]
+    }
+  ]
+}

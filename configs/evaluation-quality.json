@@ -1,0 +1,35 @@
+{
+  "hypothesis": "Density-core segmentation before rail-relative clearance gating separates connected infrastructure; state and point evidence maintain sparse detections while uncertainty remains explicit.",
+  "success_criterion": "Report real object localization on independently reviewed frames, and false alarm episodes only where annotations are exhaustive. Synthetic ray-cast results are a separate stress test. Unannotated bags cannot produce accuracy, precision, or recall.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/tunnel-guard-real-quality",
+  "every": 1,
+  "max_frames": null,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "previously_inspected_scenario_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "previously_inspected_scenario_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+      "split": "previously_inspected_scenario_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+      "split": "previously_inspected_scenario_not_blind"
+    }
+  ]
+}

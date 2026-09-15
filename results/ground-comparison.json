@@ -1,0 +1,44 @@
+[
+  {
+    "method": "local_geometry",
+    "synthetic_scenes": 9,
+    "ground_f1": 0.9857343907420547,
+    "worst_scene_f1": 0.9816517261110052,
+    "runtime_median_s": 0.001555167000333313
+  },
+  {
+    "method": "patchwork_raw",
+    "synthetic_scenes": 9,
+    "ground_f1": 0.9528593478354154,
+    "worst_scene_f1": 0.902702493417996,
+    "runtime_median_s": 0.04390191600032267
+  },
+  {
+    "method": "patchwork_leveled",
+    "synthetic_scenes": 9,
+    "ground_f1": 0.967449424699139,
+    "worst_scene_f1": 0.9536384541206142,
+    "runtime_median_s": 0.04211966599905281
+  },
+  {
+    "method": "patchwork_leveled_corridor",
+    "synthetic_scenes": 9,
+    "ground_f1": 0.9675151931823721,
+    "worst_scene_f1": 0.9534538986065817,
+    "runtime_median_s": 0.012830833002226427
+  },
+  {
+    "method": "travel_raw",
+    "synthetic_scenes": 9,
+    "ground_f1": 0.953616100274747,
+    "worst_scene_f1": 0.8991265916026518,
+    "runtime_median_s": 0.2205218330018397
+  },
+  {
+    "method": "travel_leveled",
+    "synthetic_scenes": 9,
+    "ground_f1": 0.933372707724174,
+    "worst_scene_f1": 0.8985391150367856,
+    "runtime_median_s": 0.18176604100153781
+  }
+]

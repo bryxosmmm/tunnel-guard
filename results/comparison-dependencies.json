@@ -1,0 +1,25 @@
+{
+  "packages": {
+    "travel-seg": {
+      "version": "1.1.0",
+      "license": "GPL-3.0-or-later",
+      "license_expression": null
+    },
+    "hdbscan": {
+      "version": "0.8.44",
+      "license": "BSD",
+      "license_expression": null
+    },
+    "pypatchworkpp": {
+      "version": "1.1.0",
+      "license": null,
+      "license_expression": null
+    },
+    "kiss-icp": {
+      "version": "1.3.0",
+      "license": null,
+      "license_expression": null
+    }
+  },
+  "note": "Packages remained installed at these versions throughout comparison/ground audit. Supplement to earlier manifests that listed only base dependencies. Default runtime does not import optional segmentation packages."
+}

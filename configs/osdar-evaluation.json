@@ -1,0 +1,17 @@
+{
+  "seed": 20260919,
+  "archive": "data/real/osdar23/1_calibration_1.1.zip",
+  "output": "build/tunnel-guard-osdar23",
+  "detector_config": "configs/detector.json",
+  "source": "https://data.fid-move.de/dataset/osdar23",
+  "sequence": "1_calibration_1.1",
+  "classes": ["person", "bicycle", "road_vehicle", "animal", "obstacle"],
+  "evaluation_forward_range_m": [2, 220],
+  "evaluation_half_width_m": 8,
+  "minimum_iou": 0.25,
+  "virtual_sensor_height_m": 1.7,
+  "rail_gauge_m": 1.435,
+  "hypothesis": "Frozen metro geometric detector transfers to independently annotated railway objects without per-object tuning.",
+  "success_criterion": "Report every eligible independently authored cuboid, including invisible and unsupported targets. No precision claim because class-agnostic infrastructure predictions and image-only objects make labels nonexhaustive for this detector.",
+  "note": "Outdoor German standard-gauge railway, not target metro domain. LiDAR coordinates are already forward/left/up with railhead z=0. Apply a fixed -1.7m vertical translation to points and labels for the detector's sensor-height convention. Only gauge and coordinate adapter change; detector segmentation ROI remains frozen. No threshold or object selection based on predictions. Fused six-lidar points are not treated as a single-scanner deskew model."
+}

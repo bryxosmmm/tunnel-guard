@@ -1,0 +1,50 @@
+[
+  {
+    "method": "density",
+    "real_localization_recall": 1.0,
+    "real_mean_iou_matched": 0.3330298530883569,
+    "real_precision": null,
+    "synthetic_event_recall": 0.8611111111111112,
+    "synthetic_precision": 0.7948717948717948,
+    "synthetic_recall": 0.7175925925925926,
+    "synthetic_f1": 0.754257907542579,
+    "synthetic_negative_episode_rate": 0.0,
+    "real_validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric"
+    ],
+    "pass": false
+  },
+  {
+    "method": "travel",
+    "real_localization_recall": 0.0,
+    "real_mean_iou_matched": null,
+    "real_precision": null,
+    "synthetic_event_recall": 0.7361111111111112,
+    "synthetic_precision": 0.9548872180451128,
+    "synthetic_recall": 0.5879629629629629,
+    "synthetic_f1": 0.7277936962750716,
+    "synthetic_negative_episode_rate": 0.0,
+    "real_validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric"
+    ],
+    "pass": false
+  },
+  {
+    "method": "hdbscan",
+    "real_localization_recall": 0.0,
+    "real_mean_iou_matched": null,
+    "real_precision": null,
+    "synthetic_event_recall": 0.625,
+    "synthetic_precision": 0.5404040404040404,
+    "synthetic_recall": 0.49537037037037035,
+    "synthetic_f1": 0.5169082125603864,
+    "synthetic_negative_episode_rate": 0.0,
+    "real_validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric"
+    ],
+    "pass": false
+  }
+]
