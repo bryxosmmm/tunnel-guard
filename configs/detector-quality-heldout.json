@@ -186,5 +186,33 @@
     ]
   ],
   "density_vertical_scale": 0.5,
-  "rail_vertical_margin_m": 0.04
+  "rail_vertical_margin_m": 0.04,
+  "background": {
+    "enabled": true,
+    "voxel_m": 0.1,
+    "window_m": 30.0,
+    "planes_per_window": 3,
+    "min_support": 40,
+    "fit_distance_m": 0.025,
+    "remove_distance_m": 0.025,
+    "ransac_iterations": 120,
+    "ransac_probability": 0.999,
+    "max_longitudinal_normal": 0.2,
+    "min_cross_normal": 0.75,
+    "min_longitudinal_span_m": 8.0,
+    "min_transverse_span_m": 1.0,
+    "strip_m": 10.0,
+    "min_strip_support": 3,
+    "min_strip_span_m": 0.5,
+    "support_margin_m": 0.3,
+    "min_seed_height_m": 0.3,
+    "normal_radius_m": 0.2,
+    "normal_max_neighbors": 30,
+    "normal_min_neighbors": 6,
+    "normal_min_variance_m2": 0.0001,
+    "normal_planarity_ratio": 0.2,
+    "normal_alignment_cos": 0.8,
+    "protrusion_depth_m": 0.06,
+    "protection_radius_m": 0.35
+  }
 }

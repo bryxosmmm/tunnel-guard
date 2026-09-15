@@ -52,6 +52,7 @@ The five supplied annotation boxes describe **one provisional upright structure*
 | `tunnel_guard/io.py` | PointCloud2 decoding, invalid returns, acquisition timestamps |
 | `tunnel_guard/geometry.py` | Track bed, paired rails, reference clearance envelope |
 | `tunnel_guard/segmentation.py` | Density-core clustering; optional published backends |
+| `tunnel_guard/background.py` | Open3D-supported tunnel surfaces and protrusion protection |
 | `tunnel_guard/detector.py` | KISS-ICP motion, candidates, tracking and temporal evidence |
 | `tunnel_guard/run.py` | Reproducible bag runner |
 | `tunnel_guard/evaluate.py` | One-to-one IoU matching and annotation validity |
@@ -60,9 +61,13 @@ The five supplied annotation boxes describe **one provisional upright structure*
 | `configs/detector.json` | Default detector recipe; no bag-specific branches |
 | `results/` | Small recorded result summaries; full artifacts remain local |
 
-Pipeline: validated points → KISS-ICP deskew/pose → local bed and rails → density-core segmentation → rail-relative clearance classification → temporal state and spatial evidence.
+Pipeline: validated points → KISS-ICP deskew/pose → local bed and rails → supported tunnel-surface rejection → density-core segmentation → rail-relative clearance classification → temporal state and spatial evidence.
 
 Segmentation preserves object portions outside the clearance gate. Dense instances cannot merge through a thin chain of border points. Temporal matching uses velocity, heuristic covariance, shape, and distinct-frame evidence. Missing path support must not turn rail removal into an infinite-width exclusion zone.
+
+Tunnel-background rejection uses Open3D plane fitting and local normals. Only observed longitudinal surface strips are removed; cross-track panels, supported clearance intersections, protruding faces and their attachment edges are protected. No generic sparse-outlier deletion is applied. It is a local planar approximation, not a complete curved-tunnel model.
+
+Focused verification: the original tilted empty-tunnel wall alert disappears; narrow-tunnel wall retention drops from 96.2% to about 1.6%, ceiling retention from 100% to about 8%. Edge protection intentionally leaves some lining near surface intersections. The 30-frame obstacle-preservation panel retained 100% of target points entering the original ROI, with no confirmed-localization regressions. The intermediate real sequence retained 5/5 provisional matches, but median processing increased to 741 ms; the later removal of redundant queries has not had a full-sequence timing run. These checks do not establish general safety or solve all infrastructure alerts. The broader stress rerun was stopped at user request.
 
 ## Output semantics
 
@@ -118,6 +123,7 @@ The fixed adapter uses standard gauge and translates the railhead-origin coordin
 ## Dependencies and data licenses
 
 - [KISS-ICP](https://github.com/PRBonn/kiss-icp), MIT: used directly for motion/deskew.
+- [Open3D](https://www.open3d.org/), MIT, pinned to 0.19.0: plane segmentation, voxel sampling, normal and covariance estimation for background rejection. Its standard distribution adds substantial transitive dependencies.
 - [TRAVEL](https://github.com/url-kaist/TRAVEL), **GPL-3.0-or-later**: optional comparison dependency only. Review license obligations before distributing an integrated derivative.
 - [HDBSCAN](https://github.com/scikit-learn-contrib/hdbscan), BSD; [Patchwork++](https://github.com/url-kaist/patchwork-plusplus), BSD-2-Clause: optional published comparisons.
 - OSDaR23 annotations: CC0-1.0; sensor data: CC BY-SA 3.0 de. Neither the raw dataset nor its archive is committed.

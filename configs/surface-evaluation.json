@@ -1,0 +1,91 @@
+{
+  "seed": 20260921,
+  "detector_config": "configs/detector.json",
+  "scene_config": "configs/stress-measured-pattern-final.json",
+  "output": "build/surface-preservation-supported",
+  "frames": 3,
+  "half_width_m": 2.5,
+  "ceiling_above_rail_m": 4.0,
+  "tilts_deg": [
+    [
+      0,
+      0
+    ],
+    [
+      8,
+      3
+    ]
+  ],
+  "objects": [
+    {
+      "name": "central_box",
+      "minimum": [
+        20,
+        -0.4,
+        -1.5
+      ],
+      "maximum": [
+        20.8,
+        0.4,
+        -0.5
+      ]
+    },
+    {
+      "name": "wall_touching_box",
+      "minimum": [
+        20,
+        1.1,
+        -1.5
+      ],
+      "maximum": [
+        20.8,
+        2.5,
+        -0.5
+      ]
+    },
+    {
+      "name": "wall_protrusion",
+      "minimum": [
+        20,
+        2.2,
+        -0.5
+      ],
+      "maximum": [
+        20.8,
+        2.5,
+        0.5
+      ]
+    },
+    {
+      "name": "fallen_panel",
+      "minimum": [
+        20,
+        -1.4,
+        -1.5
+      ],
+      "maximum": [
+        20.08,
+        1.4,
+        0.3
+      ]
+    },
+    {
+      "name": "distant_person",
+      "minimum": [
+        100,
+        -0.3,
+        -1.5
+      ],
+      "maximum": [
+        100.6,
+        0.3,
+        0.2
+      ]
+    }
+  ],
+  "criterion": "Preserve >=95% of visible target points that entered pre-background clustering ROI, in each scene; do not lose any confirmed target localization versus disabled filter at unchanged IoU0.1. Empty tilted-tunnel alerts must disappear in the separate original reproduction. Report tradeoffs and failures, never retune labels.",
+  "minimum_iou": 0.1,
+  "min_retained_fraction": 0.95,
+  "noise_sigma_m": 0.015,
+  "drop_probability": 0.05
+}

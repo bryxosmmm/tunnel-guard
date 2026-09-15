@@ -30,7 +30,7 @@ def write_json(path: Path, data):
 
 def environment() -> dict:
     packages = {}
-    for name in ("numpy", "scipy", "rosbags", "kiss-icp", "travel-seg", "hdbscan", "pypatchworkpp"):
+    for name in ("numpy", "scipy", "rosbags", "kiss-icp", "open3d", "travel-seg", "hdbscan", "pypatchworkpp"):
         try:
             packages[name] = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError:

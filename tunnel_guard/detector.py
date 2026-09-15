@@ -49,7 +49,7 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     cloud = voxel_representatives(points[context], config["cluster_voxel_m"])
     if not len(cloud):
         return []
-    core, _, heights, observed, nominal_overlap = geometry.classify(cloud)
+    core, _, heights, observed, nominal_overlap = geometry.classify(cloud, remove_background=False)
     method = config["segmentation_method"]
     if method == "density":
         labels, density_core = density_labels(cloud, config)
@@ -270,7 +270,7 @@ class Detector:
         status = ("obstacle" if certain else ("unresolved_obstacle" if confirmed else
                   ("candidate" if hazards else ("no_obstacle_observed" if geometry.valid else "unknown"))))
         bins = []
-        _, _, _, observed, _ = geometry.classify(reduced)
+        _, _, _, observed, _ = geometry.classify(reduced, remove_background=False)
         for lo, hi in zip(self.config["range_bins_m"][:-1], self.config["range_bins_m"][1:]):
             mask = (reduced[:, 0] >= lo) & (reduced[:, 0] < hi)
             bins.append({"range_m": [lo, hi], "returns": int(mask.sum()),

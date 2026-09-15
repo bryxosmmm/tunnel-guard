@@ -1,0 +1,45 @@
+{
+  "scope": "Focused background-filter correction; no broad stress rerun completed",
+  "empty_tunnel_statuses": {
+    "wide": [
+      "no_obstacle_observed",
+      "no_obstacle_observed",
+      "no_obstacle_observed"
+    ],
+    "narrow": [
+      "no_obstacle_observed",
+      "no_obstacle_observed",
+      "no_obstacle_observed"
+    ],
+    "sloped_narrow": [
+      "no_obstacle_observed",
+      "no_obstacle_observed",
+      "no_obstacle_observed"
+    ]
+  },
+  "preservation": {
+    "frames": 30,
+    "minimum_target_retention": 1.0,
+    "localization_regressions": 0,
+    "median_processing_s_before": 0.614465624501463,
+    "median_processing_s_after": 0.2958954790010466,
+    "pass": true
+  },
+  "real_localization": {
+    "matched_boxes": 5,
+    "total_boxes": 5,
+    "artifact": "build/surface-real-sequence/localization.json",
+    "stage": "Before final 25mm band and removal of redundant background queries"
+  },
+  "remaining_risks": [
+    "Some wall/ceiling edge returns intentionally retained",
+    "Local planar approximation does not certify all curved lining",
+    "Real-sequence processing overhead remains significant; intermediate median741ms",
+    "No claim of general false-positive elimination"
+  ],
+  "artifacts": [
+    "build/filter-audit-open3d",
+    "build/surface-preservation-supported",
+    "build/surface-real-sequence"
+  ]
+}

@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import numpy as np
 from scipy.signal import find_peaks
+from .background import TunnelBackground
 
 
 def voxel_representatives(points: np.ndarray, size: float) -> np.ndarray:
@@ -66,6 +67,7 @@ def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, d
 class TrackGeometry:
     def __init__(self, points: np.ndarray, config: dict):
         self.config = config
+        self.background = None
         self.plane, self.ground_quality = robust_plane(points, config)
         self.ground_anchors = np.empty((0, 3))
         self.rail_anchors = np.empty((0, 4))
@@ -79,6 +81,8 @@ class TrackGeometry:
             self.reason = "insufficient_paired_rail_support"
         else:
             self.reason = "supported_geometry"
+        if self.valid and config["background"]["enabled"]:
+            self.background = TunnelBackground(points, self, config)
 
     @property
     def valid(self) -> bool:
@@ -198,7 +202,7 @@ class TrackGeometry:
         uncertainty[nearest > self.config["path_max_extrapolation_m"]] = np.inf
         return center, np.interp(x, a[:, 0], a[:, 2]), uncertainty
 
-    def classify(self, points: np.ndarray):
+    def classify(self, points: np.ndarray, *, remove_background: bool = True):
         cfg = self.config
         z, ground_uncertainty = self.ground(points)
         center, gauge, path_uncertainty = self.path(points[:, 0])
@@ -230,10 +234,14 @@ class TrackGeometry:
         context = segmentation_height & ~on_rail & (np.abs(lateral) <= cfg["segmentation_context_half_width_m"])
         nominal_overlap = ((running_height >= envelope[0, 0]) & (running_height <= envelope[-1, 1])
                            & ~on_rail & (np.abs(lateral) <= width))
+        if remove_background and self.background is not None:
+            background = self.background.mask(points, observed & nominal_overlap)
+            context &= ~background
         return core, context, height, observed, nominal_overlap
 
     def describe(self) -> dict:
         return {"valid": self.valid, "reason": self.reason, "ground_quality": self.ground_quality,
                 "ground_plane": None if self.plane is None else self.plane.tolist(),
                 "rail_head_height_m": self.rail_head_height_m,
-                "ground_anchors": self.ground_anchors.tolist(), "rail_anchors": self.rail_anchors.tolist()}
+                "ground_anchors": self.ground_anchors.tolist(), "rail_anchors": self.rail_anchors.tolist(),
+                "background": None if self.background is None else self.background.describe()}
