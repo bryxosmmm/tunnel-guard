@@ -1,0 +1,42 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+  "frames": 10,
+  "output": "build/ray-insertion-obstacle-background-grouped-returns",
+  "membership_tolerance_m": 1e-06,
+  "cases": [
+    {
+      "name": "recorded_control"
+    },
+    {
+      "name": "upright_60m",
+      "bbox_min": [
+        60,
+        -0.3,
+        -1.1
+      ],
+      "bbox_max": [
+        60.6,
+        0.3,
+        0.5999999999999999
+      ]
+    },
+    {
+      "name": "upright_100m",
+      "bbox_min": [
+        100,
+        -0.3,
+        -1.1
+      ],
+      "bbox_max": [
+        100.6,
+        0.3,
+        0.5999999999999999
+      ]
+    }
+  ],
+  "hypothesis": "Follow-up after zero modeled 100m returns in the platform prefix: retain identical box geometry and examine whether valid-ray coverage differs in the obstacle recording. This is an adaptive follow-up, not an independent holdout.",
+  "limitations": "HYBRID SYNTHETIC experiment, not real obstacle accuracy. Opaque boxes fixed in current sensor processing frame, not world-fixed trajectories. Explicit box base z=-1.1m is not surveyed ground. Only directions of valid recorded returns are available; missing beams cannot be reconstructed. Return multiplicity is preserved, not independent evidence. No material response, multipath, sensor firing model, calibrated range or physical vehicle envelope. Background already contains unknown objects. Dropout removes hidden background too. Deskew disabled; source timing/pose assumptions remain. Same-time return slots are grouped by direction components quantized to 1e-6 before opaque occlusion. This is a declared beam-identity proxy, not verified sensor firing calibration.",
+  "return_direction_quantum": 1e-06
+}

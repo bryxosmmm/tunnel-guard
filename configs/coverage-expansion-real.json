@@ -1,0 +1,25 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/coverage-expansion-real",
+  "every": 1,
+  "max_frames": null,
+  "visualization": false,
+  "diagnostic_frames": [
+    0,
+    100,
+    200
+  ],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_full_recording_extension"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "previously_inspected_scenario_not_blind"
+    }
+  ],
+  "hypothesis": "The current frozen detector must expose its geometry availability and alarm behavior over complete platform and round-to-double tunnel recordings.",
+  "criterion": "Complete all recorded scans or report explicit failure; preserve identities, configurations, source and health/status counts. Unlabelled recordings yield no precision/recall."
+}
