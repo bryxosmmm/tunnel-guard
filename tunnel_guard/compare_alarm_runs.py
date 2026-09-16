@@ -13,13 +13,28 @@ from .run import digest, write_json
 
 
 def describe(rows):
+    interior_records = [(r, o) for r in rows for o in r['objects']
+                        if 'intersection_evidence_timestamps_s' in o]
     return {
         'frames': len(rows),
         'status_frames': dict(Counter(r['status'] for r in rows)),
         'confirmed_observations_by_relation': dict(Counter(
             o['path_relation'] for r in rows for o in r['objects'] if o['confirmed'])),
         'candidate_observations': sum(len(r['objects']) for r in rows),
+        'confirmed_intersection_observations': sum(
+            o.get('intersection_confirmed', o['confirmed'] and o['path_relation'] == 'intersecting')
+            for r in rows for o in r['objects']),
         'support_voxel_observations': sum(o['support_voxels'] for r in rows for o in r['objects']),
+        'intersection_evidence': {
+            'recorded_observations': len(interior_records),
+            'confirmation_methods': dict(Counter(o['intersection_confirmation'] for _, o in interior_records)),
+            'observations_with_future_timestamps': sum(
+                any(t > r['timestamp_s'] for t in o['intersection_evidence_timestamps_s'])
+                for r, o in interior_records),
+            'observations_with_duplicate_timestamps': sum(
+                len(o['intersection_evidence_timestamps_s']) != len(set(o['intersection_evidence_timestamps_s']))
+                for _, o in interior_records),
+        } if interior_records else None,
         'processing_ms': {name: float(np.quantile([r['processing_s'] for r in rows], q) * 1000)
                           for name, q in [('p50', .5), ('p95', .95)]},
     }
@@ -33,7 +48,7 @@ def main():
     args = parser.parse_args()
     report = {'before': str(args.before), 'after': str(args.after), 'bags': {},
               'warning': 'Counts are algorithm outputs, not accuracy or false-alarm rates. '
-                         'Timing includes concurrent local work and different visualization settings.',
+                         'Check export settings and concurrent local workloads before interpreting timing.',
               'diagnostic_support': []}
     for before_file in sorted(args.before.glob('*.jsonl')):
         after_file = args.after / before_file.name
@@ -49,6 +64,12 @@ def main():
             'measurement_timestamp_mismatches': sum(old[f]['measurement_timestamp_ns'] !=
                                                      new[f]['measurement_timestamp_ns'] for f in common),
             'status_transitions': dict(Counter(old[f]['status'] + ' -> ' + new[f]['status'] for f in common)),
+            'changed_status_frames': [f for f in common if old[f]['status'] != new[f]['status']],
+            'candidate_geometry_or_identity_changed_frames': [f for f in common if
+                [[o[k] for k in ('track_id', 'bbox_min', 'bbox_max', 'support_voxels', 'in_envelope_voxels', 'path_relation', 'confirmed')]
+                 for o in old[f]['objects']] !=
+                [[o[k] for k in ('track_id', 'bbox_min', 'bbox_max', 'support_voxels', 'in_envelope_voxels', 'path_relation', 'confirmed')]
+                 for o in new[f]['objects']]],
             'before_sha256': digest(before_file), 'after_sha256': digest(after_file),
         }
     for before_file in sorted((args.before / 'diagnostics').glob('*.npz')):

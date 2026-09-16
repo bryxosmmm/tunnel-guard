@@ -105,6 +105,10 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
             continue
         instant = (dense_count >= config["immediate_min_voxels"]
                    and extent[2] >= config["immediate_min_height_m"])
+        interior_dense_count = int(np.count_nonzero(density_core[inside]))
+        interior_height = float(np.ptp(cloud[inside, 2])) if len(inside) else 0.
+        intersection_immediate = (interior_dense_count >= config["immediate_min_voxels"]
+                                  and interior_height >= config["immediate_min_height_m"])
         distance_points = q
         distance_method = "cluster_min_x"
         if config.get("obstacle_distance_mode", "cluster_min_x") == "envelope_support_min_x":
@@ -131,7 +135,10 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                             ("lateral_boundary_uncertainty" if unresolved and np.any(boundary[indices]) else
                              ("unsupported_nominal_envelope" if unresolved else "outside_envelope_evidence"))),
                         "height_above_bed_m": [float(heights[indices].min()), float(heights[indices].max())],
-                        "immediate": bool(instant)})
+                        "immediate": bool(instant),
+                        "interior_density_core_voxels": interior_dense_count,
+                        "interior_height_span_m": interior_height,
+                        "intersection_immediate": bool(intersection_immediate)})
         if arrays is not None:
             components.append({"component_id": int(label), "reason": "accepted", "points": len(indices)})
     if diagnostics is not None:
@@ -251,6 +258,7 @@ class Detector:
                 state = np.concatenate((world[index], np.zeros(3)))
                 covariance = np.diag([cfg["tracking_position_sigma_m"]**2] * 3 + [1.] * 3)
                 self.tracks[key] = {"history": deque(maxlen=cfg["confirmation_window"]), "first_stamp": stamp,
+                                    "intersection_history": deque(maxlen=cfg["confirmation_window"]),
                                     "evidence": deque(), "state": state, "covariance": covariance}
             else:
                 state, covariance = predicted[key]
@@ -274,8 +282,22 @@ class Detector:
                 track["history"].append(self.frame_number)
             hits = sum(f > self.frame_number - cfg["confirmation_window"] for f in track["history"])
             confirmed = obj["immediate"] or (hits >= cfg["confirmation_hits"] and len(evidence) >= cfg["evidence_min_points"])
+            # Object persistence cannot confirm a new path intrusion. Count only
+            # current-scan interior evidence, once per strictly increasing scan.
+            interior_history = track["intersection_history"]
+            if obj["path_relation"] == "intersecting" and (not interior_history or interior_history[-1][0] != self.frame_number):
+                interior_history.append((self.frame_number, stamp))
+            recent_interior = [(f, s) for f, s in interior_history
+                               if f > self.frame_number - cfg["confirmation_window"]]
+            intersection_confirmed = (confirmed and obj["path_relation"] == "intersecting"
+                                      and (obj["intersection_immediate"] or len(recent_interior) >= cfg["confirmation_hits"]))
             track.update(state=state, covariance=covariance, stamp=stamp, extent=np.asarray(obj["extent_m"]))
             obj.update(track_id=key, hits=hits, confirmed=bool(confirmed), accumulated_support_voxels=len(evidence),
+                       intersection_confirmed=bool(intersection_confirmed),
+                       intersection_hits=len(recent_interior),
+                       intersection_evidence_timestamps_s=[s for _, s in recent_interior],
+                       intersection_confirmation=("immediate_interior_geometry" if intersection_confirmed and obj["intersection_immediate"]
+                                                  else "temporal_interior_evidence" if intersection_confirmed else "pending"),
                        last_observed_s=stamp,
                        evidence_timestamps_s=[e[0] for e in track["evidence"]],
                        covariance_kind="heuristic_not_calibrated",
@@ -357,7 +379,7 @@ class Detector:
                                    "history_cleared_for_motion": not motion["valid"]}
         hazards = [o for o in objects if o["path_relation"] in ("intersecting", "unresolved")]
         confirmed = [o for o in hazards if o["confirmed"]]
-        certain = [o for o in confirmed if o["path_relation"] == "intersecting"]
+        certain = [o for o in confirmed if o["intersection_confirmed"]]
         status = ("obstacle" if certain else ("unresolved_obstacle" if confirmed else
                   ("candidate" if hazards else ("no_obstacle_observed" if geometry.valid else "unknown"))))
         bins = []

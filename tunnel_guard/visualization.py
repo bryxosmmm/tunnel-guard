@@ -114,14 +114,17 @@ class ResultBag:
             markers.append(self.marker(header, "reference_envelope", 0, 5, corridor))
         for obj in row["objects"]:
             hazard = obj["path_relation"] in ("intersecting", "unresolved")
-            color = ((1., .55, .05, 1.) if obj["confirmed"] and obj["path_relation"] == "unresolved" else
-                     (1., .15, .1, 1.) if obj["confirmed"] and hazard else
+            intersection_confirmed = obj.get("intersection_confirmed", obj["confirmed"] and obj["path_relation"] == "intersecting")
+            color = ((1., .15, .1, 1.) if intersection_confirmed else
+                     (1., .55, .05, 1.) if obj["confirmed"] and hazard else
                      ((1., .8, .1, 1.) if hazard else (.5, .5, .5, 1.)))
             markers.append(self.marker(header, "observed_support", obj["track_id"], 5, box_edges(obj), color))
             if support is not None and obj["track_id"] in support:
                 markers.append(self.marker(header, "candidate_measurements", obj["track_id"], 8,
                                            support[obj["track_id"]], color))
             label = f"#{obj['track_id']} {obj['distance_m']:.2f} m | {obj['path_relation']} | {obj['confirmation']} | hits={obj['hits']}"
+            if "intersection_confirmation" in obj:
+                label += f" | intrusion={obj['intersection_confirmation']} | inside_hits={obj['intersection_hits']}"
             if obj.get("boundary_uncertain_voxels", 0):
                 label += f" | boundary={obj['boundary_uncertain_voxels']}"
             if hazard and "distance_support_point" in obj:

@@ -166,8 +166,8 @@ Focused verification: the original tilted empty-tunnel wall alert disappears; na
 
 ## Output semantics
 
-- `obstacle`: confirmed structure intersects the configured reference envelope.
-- `unresolved_obstacle`: confirmed nominal intersection with insufficient geometry support; not a proven collision.
+- `obstacle`: intersection with the configured reference envelope has its own confirmation evidence; not a validated collision claim.
+- `unresolved_obstacle`: a confirmed potential hazard has uncertain geometry or insufficient repeated interior evidence.
 - `candidate`: insufficient confirmation evidence.
 - `no_obstacle_observed`: no hazard reported; **does not mean the route is clear**.
 - `unknown`: insufficient geometry or returns.
@@ -177,6 +177,7 @@ Boxes describe observed support, not inferred full object volume. Distance is th
 - `health` (`normal` / `degraded` / `unavailable`) and `health_reasons` are independent of detection status. The current unverified calibration keeps results degraded.
 - `timestamp_s` uses acquisition header time. `measurement_timestamp_ns` and `record_timestamp_ns` preserve both exact clocks; do not interpret their difference as latency.
 - `source_scan_id`, `last_observed_s`, `hits`, and `evidence_timestamps_s` expose the source and temporal evidence. Duplicate acquisition timestamps are skipped by the reader; backwards time or a changed sensor frame stops the run explicitly. A new bag creates a new detector.
+- `confirmed` describes the object; `intersection_confirmed` separately describes its current envelope intrusion. Immediate confirmation uses interior support; weak intrusion requires distinct recent interior observations. See [intersection evidence](docs/INTERSECTION_EVIDENCE.md) for real-data diagnosis, fields and tradeoffs. RViz uses red for confirmed intrusion and orange for confirmed objects with unresolved/pending intrusion.
 - `coordinate_frame=tunnel_guard_local` identifies the transformed current-scan coordinates. `sensor_frame` is source metadata. No global TF or verified vehicle extrinsics are implied.
 - `processing_s`, `read_and_process_s` and optional `visualization_s` use monotonic timing; summary includes ingestion/drop counts and visualization time. `range_observability` reports support, not free-space coverage.
 
