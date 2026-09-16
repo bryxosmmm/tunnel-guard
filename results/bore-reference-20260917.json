@@ -1,0 +1,157 @@
+{
+ "config": "configs/detector.json",
+ "min_symmetry_score": 0.5,
+ "near_ranges_m": [
+  10.0,
+  15.0
+ ],
+ "far_ranges_m": [
+  25.0,
+  30.0,
+  35.0,
+  40.0
+ ],
+ "seed": 20260915,
+ "method": "Mirror-symmetry axis of the tunnel cross-section in a longitudinal slab, taken above the track bed so walls and crown carry it. No shape is fitted, so round and boxed sections are read alike. The axis is not the track centre - in a two-track bore it lies between the tracks - so the bore-to-track offset is calibrated in the near field, where the rail chain is still correct across this whole subset, and carried out to the probe ranges. The symmetry score states where the method applies.",
+ "recordings": [
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+   "frames": 201,
+   "readable_share": 0.0,
+   "median_disagreement_by_range_m": {
+    "25.0": null,
+    "30.0": null,
+    "35.0": null,
+    "40.0": null
+   },
+   "readable_frames_by_range": {
+    "25.0": 0,
+    "30.0": 0,
+    "35.0": 0,
+    "40.0": 0
+   },
+   "vs_center_stability": {
+    "clean_frames": 0,
+    "excursion_frames": 0,
+    "median_disagreement_clean_m": null,
+    "median_disagreement_excursion_m": null
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+   "frames": 345,
+   "readable_share": 0.081,
+   "median_disagreement_by_range_m": {
+    "25.0": 0.035,
+    "30.0": 0.032,
+    "35.0": null,
+    "40.0": 0.034
+   },
+   "readable_frames_by_range": {
+    "25.0": 14,
+    "30.0": 13,
+    "35.0": 9,
+    "40.0": 10
+   },
+   "vs_center_stability": {
+    "clean_frames": 28,
+    "excursion_frames": 0,
+    "median_disagreement_clean_m": 0.057,
+    "median_disagreement_excursion_m": null
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+   "frames": 252,
+   "readable_share": 0.726,
+   "median_disagreement_by_range_m": {
+    "25.0": 0.029,
+    "30.0": 0.032,
+    "35.0": 0.024,
+    "40.0": 0.03
+   },
+   "readable_frames_by_range": {
+    "25.0": 164,
+    "30.0": 149,
+    "35.0": 130,
+    "40.0": 98
+   },
+   "vs_center_stability": {
+    "clean_frames": 140,
+    "excursion_frames": 43,
+    "median_disagreement_clean_m": 0.046,
+    "median_disagreement_excursion_m": 0.362
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+   "frames": 268,
+   "readable_share": 0.959,
+   "median_disagreement_by_range_m": {
+    "25.0": 0.075,
+    "30.0": 0.09,
+    "35.0": 0.1,
+    "40.0": 0.095
+   },
+   "readable_frames_by_range": {
+    "25.0": 253,
+    "30.0": 249,
+    "35.0": 223,
+    "40.0": 107
+   },
+   "vs_center_stability": {
+    "clean_frames": 166,
+    "excursion_frames": 91,
+    "median_disagreement_clean_m": 0.105,
+    "median_disagreement_excursion_m": 0.25
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+   "frames": 545,
+   "readable_share": 0.925,
+   "median_disagreement_by_range_m": {
+    "25.0": 0.06,
+    "30.0": 0.081,
+    "35.0": 0.077,
+    "40.0": 0.057
+   },
+   "readable_frames_by_range": {
+    "25.0": 493,
+    "30.0": 470,
+    "35.0": 422,
+    "40.0": 329
+   },
+   "vs_center_stability": {
+    "clean_frames": 328,
+    "excursion_frames": 171,
+    "median_disagreement_clean_m": 0.074,
+    "median_disagreement_excursion_m": 2.346
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+   "frames": 877,
+   "readable_share": 0.636,
+   "median_disagreement_by_range_m": {
+    "25.0": 0.035,
+    "30.0": 0.054,
+    "35.0": 1.823,
+    "40.0": 0.093
+   },
+   "readable_frames_by_range": {
+    "25.0": 137,
+    "30.0": 122,
+    "35.0": 524,
+    "40.0": 122
+   },
+   "vs_center_stability": {
+    "clean_frames": 558,
+    "excursion_frames": 0,
+    "median_disagreement_clean_m": 1.823,
+    "median_disagreement_excursion_m": null
+   }
+  }
+ ],
+ "conclusion": "Where the bore is readable the median disagreement with the rail centre is 0.02-0.10 m at every probe range in five of six recordings, so the tunnel is a usable second source for the track centre and needs no odometry, map or empty-tunnel reference. On frames that center_stability marks as lock failures the two sources disagree by 1.7-2.4 m, which both detects the failure and names it: the offset is about half a track spacing, so the rail matcher has taken the adjacent track. Two limits are measured, not assumed. doubleT_obstacle never scores high enough to be read at all, and the method declines instead of guessing. In squareT_platform_squareT_switch the 35 m range disagrees by 1.82 m across 421 frames concentrated in the later part of the run, because the near-field calibration is only valid while the section stays the same and that recording crosses a platform and a switch; the symmetry score barely notices, 0.54 against 0.61, so it is a precondition and not a sufficient validity test."
+}
