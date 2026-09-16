@@ -27,7 +27,7 @@ def load_config(path: str | Path) -> dict:
     if translation.shape != (3,) or not np.isfinite(translation).all():
         raise ValueError("sensor_translation must contain three finite metres")
     envelope = np.asarray(config["envelope_segments_m"])
-    if (envelope.ndim != 2 or envelope.shape[1] != 4 or len(envelope) < 2
+    if (envelope.ndim != 2 or envelope.shape[1] != 4 or len(envelope) < 1
             or not np.isfinite(envelope).all() or np.any(envelope[:, 2:] <= 0)
             or np.any(envelope[:, 1] <= envelope[:, 0])
             or not np.allclose(envelope[1:, 0], envelope[:-1, 1])):
@@ -43,6 +43,9 @@ def load_config(path: str | Path) -> dict:
         raise ValueError("Invalid sensor range bounds")
     if not isinstance(config.get("deskew_enabled", False), bool):
         raise ValueError("deskew_enabled must be boolean")
+    ransac_threads = config.get("background", {}).get("ransac_threads", 1)
+    if type(ransac_threads) is not int or ransac_threads < 1:
+        raise ValueError("background.ransac_threads must be a positive integer")
     if config.get("obstacle_distance_mode", "cluster_min_x") not in ("cluster_min_x", "envelope_support_min_x"):
         raise ValueError("Unknown obstacle_distance_mode")
     return config

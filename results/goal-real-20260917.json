@@ -1,0 +1,536 @@
+{
+  "panel": "configs/goal-final-comparison.json",
+  "panel_sha256": "14c0c83b5e52ce9e19f118f4d8632130f1d714653d07bd95db99186fa0d50af1",
+  "accuracy": null,
+  "limitations": [
+    "Alarm counts on nonexhaustively labelled development recordings are not precision, recall or false-alarm rate.",
+    "Repeated frames and candidates are not independent object events.",
+    "Timing is descriptive; concurrent workloads and visualization settings differ.",
+    "Float comparison uses absolute and relative tolerance 1e-10; discrete decisions and IDs are exact."
+  ],
+  "bags": [
+    {
+      "bag": "doubleT_obstacle",
+      "before": "build/intersection-evidence-after/doubleT_obstacle.jsonl",
+      "after": "build/goal-final-real/doubleT_obstacle.jsonl",
+      "before_sha256": "65bd2c35d78dbaaf1e562106f1c342519526c70353b51642682d3a657b63d090",
+      "after_sha256": "182532eb715d3deea0425f4df5addd88a10cc4036b0c63436a64b0509ba70239",
+      "before_statistics": {
+        "frames": 201,
+        "status_frames": {
+          "unresolved_obstacle": 60,
+          "obstacle": 141
+        },
+        "health_frames": {
+          "degraded": 201
+        },
+        "geometry_valid_frames": 201,
+        "motion_valid_frames": 200,
+        "candidate_observations": 44515,
+        "support_voxel_observations": 3855603,
+        "confirmed_intersection_observations": 241,
+        "candidate_observations_at_least_60m": 10656,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 912.4600419891067,
+          "p95": 1140.4737920383923,
+          "p99": 1405.6841249694116
+        }
+      },
+      "after_statistics": {
+        "frames": 201,
+        "status_frames": {
+          "unresolved_obstacle": 60,
+          "obstacle": 141
+        },
+        "health_frames": {
+          "degraded": 201
+        },
+        "geometry_valid_frames": 201,
+        "motion_valid_frames": 200,
+        "candidate_observations": 44515,
+        "support_voxel_observations": 3855603,
+        "confirmed_intersection_observations": 241,
+        "candidate_observations_at_least_60m": 10656,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 641.0256669623777,
+          "p95": 918.6593330232427,
+          "p99": 1186.174749978818
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {},
+      "first_changed_frames": {},
+      "largest_compared_float_difference": 4.457198499174808e-14
+    },
+    {
+      "bag": "doubleT_platform",
+      "before": "build/coverage-expansion-real/doubleT_platform.jsonl",
+      "after": "build/goal-final-real/doubleT_platform.jsonl",
+      "before_sha256": "22dfb97bb75ef2250e87295573ac31003053e362ee5b54305e0ace64bcf3812a",
+      "after_sha256": "b9a824ff0a5d3070bc5e4462438d64e3cddad9019aba535956d7c56caaf03790",
+      "before_statistics": {
+        "frames": 345,
+        "status_frames": {
+          "unresolved_obstacle": 258,
+          "obstacle": 87
+        },
+        "health_frames": {
+          "degraded": 345
+        },
+        "geometry_valid_frames": 345,
+        "motion_valid_frames": 240,
+        "candidate_observations": 68133,
+        "support_voxel_observations": 4236118,
+        "confirmed_intersection_observations": 266,
+        "candidate_observations_at_least_60m": 22168,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 1072.8304999647662,
+          "p95": 1823.5681993770418,
+          "p99": 2510.6879664235753
+        }
+      },
+      "after_statistics": {
+        "frames": 345,
+        "status_frames": {
+          "unresolved_obstacle": 258,
+          "obstacle": 87
+        },
+        "health_frames": {
+          "degraded": 345
+        },
+        "geometry_valid_frames": 345,
+        "motion_valid_frames": 240,
+        "candidate_observations": 68133,
+        "support_voxel_observations": 4236118,
+        "confirmed_intersection_observations": 266,
+        "candidate_observations_at_least_60m": 22168,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 623.529500036966,
+          "p95": 968.3537086122672,
+          "p99": 1383.1902329996228
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {},
+      "first_changed_frames": {},
+      "largest_compared_float_difference": 6.661338147750939e-14
+    },
+    {
+      "bag": "roundT_doubleT",
+      "before": "build/coverage-expansion-real/roundT_doubleT.jsonl",
+      "after": "build/goal-final-real/roundT_doubleT.jsonl",
+      "before_sha256": "a6721c0c6da45170cb495efb6352a4b2401749ca2518e259a3738f33ede3f1a9",
+      "after_sha256": "d51f5ffe4260644b4abf4f82da91c77d2f5b855370e75148ce87f8b631e62474",
+      "before_statistics": {
+        "frames": 252,
+        "status_frames": {
+          "candidate": 1,
+          "unresolved_obstacle": 182,
+          "obstacle": 69
+        },
+        "health_frames": {
+          "degraded": 252
+        },
+        "geometry_valid_frames": 252,
+        "motion_valid_frames": 251,
+        "candidate_observations": 48774,
+        "support_voxel_observations": 4039071,
+        "confirmed_intersection_observations": 211,
+        "candidate_observations_at_least_60m": 11420,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 1578.0978745024186,
+          "p95": 2562.500293608172,
+          "p99": 3194.9700348300403
+        }
+      },
+      "after_statistics": {
+        "frames": 252,
+        "status_frames": {
+          "candidate": 1,
+          "unresolved_obstacle": 182,
+          "obstacle": 69
+        },
+        "health_frames": {
+          "degraded": 252
+        },
+        "geometry_valid_frames": 252,
+        "motion_valid_frames": 251,
+        "candidate_observations": 48776,
+        "support_voxel_observations": 4039076,
+        "confirmed_intersection_observations": 211,
+        "candidate_observations_at_least_60m": 11422,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 604.5736250234768,
+          "p95": 924.4597687647907,
+          "p99": 1105.6936561741175
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {
+        "objects": 188,
+        "geometry": 2
+      },
+      "first_changed_frames": {
+        "objects": [
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83,
+          84,
+          85,
+          86,
+          87,
+          88,
+          89,
+          90,
+          91,
+          92,
+          93
+        ],
+        "geometry": [
+          64,
+          76
+        ]
+      },
+      "largest_compared_float_difference": 2.8421709430404007e-13
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "before": "build/goal-baseline-gates/roundT_pressureGate_roundT.jsonl",
+      "after": "build/goal-final-real/roundT_pressureGate_roundT.jsonl",
+      "before_sha256": "526ca5e85bffc1a784c189020d4986774dda1155df0be9016889efe4d40358b9",
+      "after_sha256": "5ad5ca65e8a00120f32583a4881072d04ccdf6d1114caa78366be87bb248367b",
+      "before_statistics": {
+        "frames": 268,
+        "status_frames": {
+          "unresolved_obstacle": 193,
+          "obstacle": 75
+        },
+        "health_frames": {
+          "degraded": 268
+        },
+        "geometry_valid_frames": 268,
+        "motion_valid_frames": 266,
+        "candidate_observations": 68864,
+        "support_voxel_observations": 5073140,
+        "confirmed_intersection_observations": 310,
+        "candidate_observations_at_least_60m": 18744,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 3209.3023335037287,
+          "p95": 6812.484928942284,
+          "p99": 9868.286198874117
+        }
+      },
+      "after_statistics": {
+        "frames": 268,
+        "status_frames": {
+          "unresolved_obstacle": 193,
+          "obstacle": 75
+        },
+        "health_frames": {
+          "degraded": 268
+        },
+        "geometry_valid_frames": 268,
+        "motion_valid_frames": 266,
+        "candidate_observations": 68864,
+        "support_voxel_observations": 5073140,
+        "confirmed_intersection_observations": 310,
+        "candidate_observations_at_least_60m": 18744,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 776.6019370174035,
+          "p95": 1166.6761249827687,
+          "p99": 1530.9382524428634
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {},
+      "first_changed_frames": {},
+      "largest_compared_float_difference": 5.129230373768223e-14
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "before": "build/goal-baseline-gates/roundT_squareT_pressureGate_squareT.jsonl",
+      "after": "build/goal-final-real/roundT_squareT_pressureGate_squareT.jsonl",
+      "before_sha256": "6055303dcb0a6b61cd94c76776d2fabe7484eea53e9a59a7731f31ea1872c8c3",
+      "after_sha256": "c8b03458d1ecf2e7a2314fbd964eeb01d73e23da5c4f53193f1bbf139195414d",
+      "before_statistics": {
+        "frames": 545,
+        "status_frames": {
+          "candidate": 3,
+          "unresolved_obstacle": 379,
+          "obstacle": 162,
+          "unknown": 1
+        },
+        "health_frames": {
+          "degraded": 544,
+          "unavailable": 1
+        },
+        "geometry_valid_frames": 544,
+        "motion_valid_frames": 516,
+        "candidate_observations": 116324,
+        "support_voxel_observations": 8728721,
+        "confirmed_intersection_observations": 1094,
+        "candidate_observations_at_least_60m": 23840,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 657.0428750128485,
+          "p95": 1502.745533024426,
+          "p99": 2046.3769320026013
+        }
+      },
+      "after_statistics": {
+        "frames": 545,
+        "status_frames": {
+          "candidate": 3,
+          "unresolved_obstacle": 378,
+          "obstacle": 163,
+          "unknown": 1
+        },
+        "health_frames": {
+          "degraded": 544,
+          "unavailable": 1
+        },
+        "geometry_valid_frames": 544,
+        "motion_valid_frames": 516,
+        "candidate_observations": 116318,
+        "support_voxel_observations": 8728748,
+        "confirmed_intersection_observations": 1094,
+        "candidate_observations_at_least_60m": 23834,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 593.6879999935627,
+          "p95": 808.3423580159432,
+          "p99": 993.9560465514659
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {
+        "objects": 419,
+        "geometry": 5,
+        "status": 1
+      },
+      "first_changed_frames": {
+        "status": [
+          503
+        ],
+        "objects": [
+          124,
+          125,
+          126,
+          127,
+          128,
+          129,
+          130,
+          131,
+          132,
+          133,
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          140,
+          141,
+          142,
+          143,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149,
+          150,
+          151,
+          152,
+          153
+        ],
+        "geometry": [
+          167,
+          171,
+          183,
+          194,
+          499
+        ]
+      },
+      "largest_compared_float_difference": 1.4733200073242188
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "before": "build/goal-baseline-switch/squareT_platform_squareT_switch.jsonl",
+      "after": "build/goal-final-real/squareT_platform_squareT_switch.jsonl",
+      "before_sha256": "15cdf79a3641ad62ebecc61c1671ad007331275164e7e1fc9f14feecd14491f6",
+      "after_sha256": "bb6ccabcd0337d11b9fd9e5334a913f8aac1e3912c381ddb42ebc52196073ea6",
+      "before_statistics": {
+        "frames": 877,
+        "status_frames": {
+          "unresolved_obstacle": 873,
+          "obstacle": 2,
+          "candidate": 2
+        },
+        "health_frames": {
+          "degraded": 877
+        },
+        "geometry_valid_frames": 877,
+        "motion_valid_frames": 804,
+        "candidate_observations": 175716,
+        "support_voxel_observations": 11962888,
+        "confirmed_intersection_observations": 7,
+        "candidate_observations_at_least_60m": 43388,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 710.8223750256002,
+          "p95": 1065.5331493820995,
+          "p99": 1259.2664000787772
+        }
+      },
+      "after_statistics": {
+        "frames": 877,
+        "status_frames": {
+          "unresolved_obstacle": 873,
+          "obstacle": 2,
+          "candidate": 2
+        },
+        "health_frames": {
+          "degraded": 877
+        },
+        "geometry_valid_frames": 877,
+        "motion_valid_frames": 804,
+        "candidate_observations": 175740,
+        "support_voxel_observations": 11959563,
+        "confirmed_intersection_observations": 7,
+        "candidate_observations_at_least_60m": 43413,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 533.7087080115452,
+          "p95": 806.5332419937474,
+          "p99": 995.9759881440553
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {
+        "objects": 823,
+        "geometry": 108,
+        "nearest_obstacle_m": 1
+      },
+      "first_changed_frames": {
+        "nearest_obstacle_m": [
+          194
+        ],
+        "objects": [
+          54,
+          55,
+          56,
+          57,
+          58,
+          59,
+          60,
+          61,
+          62,
+          63,
+          64,
+          65,
+          66,
+          67,
+          68,
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75,
+          76,
+          77,
+          78,
+          79,
+          80,
+          81,
+          82,
+          83
+        ],
+        "geometry": [
+          54,
+          55,
+          98,
+          124,
+          128,
+          167,
+          175,
+          177,
+          194,
+          196,
+          211,
+          232,
+          273,
+          289,
+          310,
+          328,
+          332,
+          333,
+          336,
+          343,
+          346,
+          348,
+          349,
+          350,
+          355,
+          361,
+          365,
+          366,
+          369,
+          371
+        ]
+      },
+      "largest_compared_float_difference": 0.0018908977508544922
+    }
+  ]
+}

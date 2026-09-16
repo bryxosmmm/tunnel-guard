@@ -23,11 +23,24 @@ from .io import iter_bag
 
 def digest(path: Path) -> str:
     with path.open("rb") as stream:
-        return hashlib.file_digest(stream, "sha256").hexdigest()
+        checksum = hashlib.sha256()
+        for chunk in iter(lambda: stream.read(1024 * 1024), b""):
+            checksum.update(chunk)
+        return checksum.hexdigest()
 
 
 def write_json(path: Path, data):
     path.write_text(json.dumps(data, indent=2, allow_nan=False) + "\n")
+
+
+def git_revision() -> str | None:
+    """Installed wheels/containers need not contain a Git checkout."""
+    try:
+        return subprocess.check_output(
+            ["git", "rev-parse", "HEAD"], cwd=Path(__file__).parent,
+            text=True, stderr=subprocess.DEVNULL).strip()
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        return None
 
 
 def environment() -> dict:
@@ -91,11 +104,16 @@ def main():
     source_dir.mkdir(parents=True)
     for source in Path(__file__).parent.glob("*.py"):
         shutil.copyfile(source, source_dir / source.name)
+    revision = git_revision()
+    source_root = Path(__file__).parent.parent
     manifest = environment() | {"command": sys.argv, "config_sha256": digest(config_path),
                                 "started_unix_s": time.time(), "bags": [],
-                                "git_revision": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
-                                "git_status": subprocess.check_output(["git", "status", "--porcelain=v1"], text=True)}
-    (output / "working-tree.patch").write_bytes(subprocess.check_output(["git", "diff", "HEAD", "--", "tunnel_guard", "configs"]))
+                                "git_revision": revision,
+                                "git_status": (subprocess.check_output(["git", "status", "--porcelain=v1"],
+                                    cwd=source_root, text=True) if revision is not None else None)}
+    if revision is not None:
+        (output / "working-tree.patch").write_bytes(subprocess.check_output(
+            ["git", "diff", "HEAD", "--", "tunnel_guard", "configs"], cwd=source_root))
     write_json(output / "manifest.json", manifest)
     summaries = []
     for entry in experiment["bags"]:
@@ -147,7 +165,15 @@ def main():
                     display.write(row, detector.display_points, scan.measurement_timestamp_ns, detector.display_support)
                     row["visualization_s"] = time.perf_counter() - display_started
                 stream.write(json.dumps(row, allow_nan=False) + "\n")
-                rows.append(row)
+                # Full object/support records are already durable in JSONL.
+                # Keep only fields used by summarize(), not every track history
+                # and covariance from the entire recording.
+                rows.append({key: row[key] for key in (
+                    "frame", "timestamp_s", "status", "processing_s", "read_and_process_s")}
+                    | {"geometry": {"valid": row.get("geometry", {}).get("valid", False)},
+                       "motion": {"valid": row.get("motion", {}).get("valid", False)},
+                       "diagnostic_write_s": row.get("diagnostic_write_s", 0),
+                       "visualization_s": row.get("visualization_s", 0)})
                 if len(rows) % 50 == 0:
                     stream.flush()
                     print(f"{bag.name}: {len(rows)} frames, {row['status']}, nearest={row['nearest_obstacle_m']}", flush=True)

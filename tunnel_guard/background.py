@@ -3,9 +3,13 @@ from __future__ import annotations
 
 import numpy as np
 import open3d as o3d
+from threadpoolctl import ThreadpoolController
 
 from scipy.spatial import cKDTree
 from .segmentation import level_rotation
+
+
+_THREAD_POOLS = ThreadpoolController()
 
 
 class TunnelBackground:
@@ -48,7 +52,11 @@ class TunnelBackground:
                 if len(remainder) < cfg["min_support"]:
                     break
                 cloud = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(remainder))
-                plane, indices = cloud.segment_plane(cfg["fit_distance_m"], 3, cfg["ransac_iterations"], probability=cfg["ransac_probability"])
+                # Open3D's parallel adaptive stopping depends on scheduling,
+                # even with a fixed seed. Serialize proposals, not all geometry.
+                with _THREAD_POOLS.limit(limits=cfg.get("ransac_threads", 1), user_api="openmp"):
+                    plane, indices = cloud.segment_plane(cfg["fit_distance_m"], 3,
+                        cfg["ransac_iterations"], probability=cfg["ransac_probability"])
                 indices = np.asarray(indices, dtype=int)
                 if len(indices) < cfg["min_support"]:
                     break

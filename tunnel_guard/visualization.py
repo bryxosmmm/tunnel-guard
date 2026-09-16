@@ -12,6 +12,20 @@ from rosbags.typesys import Stores, get_typestore
 from .geometry import TrackGeometry
 
 
+def distance_summary(row: dict) -> dict:
+    """Do not present an uncertain nearby object as a confirmed intrusion."""
+    hazards = [obj for obj in row["objects"] if obj["path_relation"] in ("intersecting", "unresolved")]
+    return {
+        "confirmed_intersection_m": min((obj["distance_m"] for obj in hazards
+            if obj.get("intersection_confirmed", False)), default=None),
+        "unresolved_confirmed_m": min((obj["distance_m"] for obj in hazards
+            if obj["confirmed"] and not obj.get("intersection_confirmed", False)), default=None),
+        "tentative_m": min((obj["distance_m"] for obj in hazards if not obj["confirmed"]), default=None),
+        "method": row.get("distance_method", "unavailable"),
+        "origin": row.get("distance_origin", "configured_processing_frame_origin"),
+    }
+
+
 def corridor_edges(description: dict, config: dict) -> np.ndarray:
     """Draw the classifier's reference contour only where geometry is supported."""
     if not description.get("valid"):
@@ -59,27 +73,15 @@ def box_edges(obj: dict) -> np.ndarray:
                        if i < (i ^ bit) for j in (i, i ^ bit)])
 
 
-class ResultBag:
-    """Bounded display copy; no feedback into detection or temporal state."""
+class ResultMessages:
+    """Shared display messages for recorded replay and the live ROS adapter."""
 
-    def __init__(self, path: Path, config: dict, max_points: int = 100000):
+    def __init__(self, config: dict, max_points: int = 100000, *, presentation="recorded_result_replay"):
         if not isinstance(max_points, int) or max_points < 1:
             raise ValueError("display_max_points must be a positive integer")
         self.config, self.max_points = config, max_points
+        self.presentation = presentation
         self.store = get_typestore(Stores.ROS2_HUMBLE)
-        self.writer = Writer(path, version=8)
-        self.connections = {}
-
-    def __enter__(self):
-        self.writer.open()
-        for topic, kind in (("points_display", "sensor_msgs/msg/PointCloud2"),
-                            ("debug_markers", "visualization_msgs/msg/MarkerArray"),
-                            ("status", "std_msgs/msg/String")):
-            self.connections[topic] = self.writer.add_connection("/perception/" + topic, kind, typestore=self.store)
-        return self
-
-    def __exit__(self, *args):
-        self.writer.close()
 
     def message(self, kind, *args, **kwargs):
         return self.store.types[kind](*args, **kwargs)
@@ -98,7 +100,7 @@ class ResultBag:
                  uv_coordinates=[], text=text, mesh_resource="",
                  mesh_file=m("visualization_msgs/msg/MeshFile", "", empty), mesh_use_embedded_materials=False)
 
-    def write(self, row: dict, points: np.ndarray, timestamp_ns: int, support: dict | None = None):
+    def build(self, row: dict, points: np.ndarray, timestamp_ns: int, support: dict | None = None):
         m = self.message
         header = m("std_msgs/msg/Header", m("builtin_interfaces/msg/Time", *divmod(timestamp_ns, 1000000000)),
                    row["coordinate_frame"])
@@ -133,14 +135,40 @@ class ResultBag:
                 label += f" | {obj['distance_method']}"
             markers.append(self.marker(header, "object_labels", obj["track_id"], 9, color=color,
                                        text=label, position=obj["bbox_max"]))
-        text = (f"RECORDED RESULT REPLAY | {row['status']} | nearest={row['nearest_obstacle_m']} m\n"
+        distances = distance_summary(row)
+        text = (f"{self.presentation.upper()} | {row['status']}\n"
+                f"Intrusion={distances['confirmed_intersection_m']} m | uncertain={distances['unresolved_confirmed_m']} m\n"
                 f"{row['health']}: {', '.join(row['health_reasons'])}\n"
                 "Reference envelope; observed support only; route clearance unknown")
         markers.append(self.marker(header, "quality", 0, 9, color=(1., 1., 1., 1.), text=text, position=(4., 0., 2.)))
         payloads = {"points_display": point_message,
                     "debug_markers": m("visualization_msgs/msg/MarkerArray", markers),
-                    "status": m("std_msgs/msg/String", json.dumps(row | {"presentation": "recorded_result_replay",
-                        "display_points": len(cloud)}, allow_nan=False))}
+                    "status": m("std_msgs/msg/String", json.dumps(row | {"presentation": self.presentation,
+                        "display_points": len(cloud), "distance_summary": distances}, allow_nan=False))}
+        return payloads
+
+
+class ResultBag(ResultMessages):
+    """Write the same display messages to a ROS bag without a ROS runtime."""
+
+    def __init__(self, path: Path, config: dict, max_points: int = 100000):
+        super().__init__(config, max_points)
+        self.writer = Writer(path, version=8)
+        self.connections = {}
+
+    def __enter__(self):
+        self.writer.open()
+        for topic, kind in (("points_display", "sensor_msgs/msg/PointCloud2"),
+                            ("debug_markers", "visualization_msgs/msg/MarkerArray"),
+                            ("status", "std_msgs/msg/String")):
+            self.connections[topic] = self.writer.add_connection("/perception/" + topic, kind, typestore=self.store)
+        return self
+
+    def __exit__(self, *args):
+        self.writer.close()
+
+    def write(self, row: dict, points: np.ndarray, timestamp_ns: int, support: dict | None = None):
+        payloads = self.build(row, points, timestamp_ns, support)
         for topic, message in payloads.items():
             connection = self.connections[topic]
             self.writer.write(connection, timestamp_ns, self.store.serialize_cdr(message, connection.msgtype))

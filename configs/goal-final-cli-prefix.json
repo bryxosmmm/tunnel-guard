@@ -1,0 +1,24 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/goal-final-cli-prefix",
+  "every": 1,
+  "max_frames": 10,
+  "visualization": true,
+  "diagnostic_frames": [
+    0,
+    25,
+    100,
+    181,
+    200
+  ],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Final CLI provenance works in a Git checkout and preserves detector/display output after the installed-image fix.",
+  "criterion": "Complete the requested ten-scan prefix with Git provenance; match final full-run decisions and serialize recorded visualization.",
+  "display_max_points": 10000
+}

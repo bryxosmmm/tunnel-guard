@@ -66,7 +66,7 @@
   "path_max_uncertainty_m": 0.4,
   "path_initial_center_bound_m": 0.75,
   "envelope_margin_m": 0.0,
-  "envelope_calibration": "GOST_23961_80_M_reference_not_vehicle_swept_validation",
+  "envelope_calibration": "QA_draft_2p1_by_3m_provisional_vertical_origin",
   "cluster_voxel_m": 0.05,
   "cluster_max_radius_m": 0.75,
   "cluster_min_extent_m": 0.08,
@@ -108,7 +108,7 @@
   "tracking_pose_sigma_m": 0.1,
   "min_running_height_m": 0.015,
   "segmentation_context_half_width_m": 3.0,
-  "envelope_source": "GOST 23961-80 figures 6 and 7, https://engenegr.ru/gost-23961-80. Upper contour exact piecewise segments; lower contour horizontally filled conservatively, omitting wheel recesses. Mirrors and contact-collector extensions excluded. No actual vehicle/curve dynamic validation.",
+  "envelope_source": "2026-09-16 supplied draft supplement, SHA256 da22e083a14e35bd4eeeca361ca78fc738afc1776a67acf8db8e42dab41e0fac. Total width 2.1m, height 3m. ASSUMPTION: bottom at existing 0.05m above estimated railhead; vertical placement NOT provided by organizers. Static rectangular sensitivity profile, not calibrated swept volume.",
   "odometry_min_normal_eigenvalue": 0.01,
   "sensor_profile_verified": false,
   "travel_objects": {
@@ -138,51 +138,9 @@
   "envelope_segments_m": [
     [
       0.05,
-      0.085,
-      1.15,
-      1.15
-    ],
-    [
-      0.085,
-      0.44,
-      1.32,
-      1.32
-    ],
-    [
-      0.44,
-      0.74,
-      1.45,
-      1.45
-    ],
-    [
-      0.74,
-      1.15,
-      1.435,
-      1.435
-    ],
-    [
-      1.15,
-      3.26,
-      1.46,
-      1.535
-    ],
-    [
-      3.26,
-      3.6,
-      1.535,
-      1.235
-    ],
-    [
-      3.6,
-      3.675,
-      1.235,
-      1.01
-    ],
-    [
-      3.675,
-      3.7,
-      1.01,
-      0.7
+      3.05,
+      1.05,
+      1.05
     ]
   ],
   "density_vertical_scale": 0.5,

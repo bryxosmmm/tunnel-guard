@@ -25,7 +25,14 @@ def density_labels(points: np.ndarray, config: dict) -> tuple[np.ndarray, np.nda
                      config["density_radius_m"], config["cluster_max_radius_m"])
     metric_points = points * np.array([1., 1., config["density_vertical_scale"]])
     tree = cKDTree(metric_points)
-    pairs = tree.query_pairs(float(radius.max()), output_type="ndarray")
+    # Query each point's actual radius, then retain the same mutual-radius
+    # undirected edges. A distant point must not enlarge every near-point query.
+    neighbors = tree.query_ball_point(metric_points, radius, return_sorted=False)
+    counts = np.fromiter((len(ids) for ids in neighbors), dtype=np.int64, count=n)
+    row = np.repeat(np.arange(n), counts)
+    column = np.concatenate(neighbors).astype(np.int64, copy=False)
+    forward = row < column
+    pairs = np.column_stack((row[forward], column[forward]))
     if len(pairs):
         delta = metric_points[pairs[:, 0]] - metric_points[pairs[:, 1]]
         pairs = pairs[np.einsum("ij,ij->i", delta, delta) <= np.minimum(radius[pairs[:, 0]], radius[pairs[:, 1]])**2]

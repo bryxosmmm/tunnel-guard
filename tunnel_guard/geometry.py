@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import numpy as np
 from scipy.signal import find_peaks
-from .background import TunnelBackground
 
 
 def voxel_representatives(points: np.ndarray, size: float) -> np.ndarray:
@@ -82,6 +81,7 @@ class TrackGeometry:
         else:
             self.reason = "supported_geometry"
         if self.valid and config["background"]["enabled"]:
+            from .background import TunnelBackground
             self.background = TunnelBackground(points, self, config)
 
     @property
