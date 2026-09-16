@@ -1,0 +1,105 @@
+{
+  "selection": "Fixed from baseline before variant: largest captured distance gap, startup provisional observation, final ambiguous observation. Coordinates are camera limits only.",
+  "cases": [
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 25,
+      "component_id": 29,
+      "title": "Distance includes support outside the envelope",
+      "overview_xy": [
+        0,
+        40,
+        -4,
+        4
+      ],
+      "zoom_xy": [
+        11.5,
+        15.5,
+        -2.4693801403045654,
+        -1.190731167793274
+      ],
+      "zoom_xz": [
+        11.5,
+        15.5,
+        -1.8349108934402465,
+        -0.8332009077072143
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 0,
+      "title": "Provisional structure: adjacent; identity/clearance unverified",
+      "overview_xy": [
+        0,
+        40,
+        -4,
+        4
+      ],
+      "zoom_xy": [
+        15.5,
+        18.5,
+        0.5,
+        2.6
+      ],
+      "zoom_xz": [
+        15.5,
+        18.5,
+        -2.2,
+        2.8
+      ],
+      "annotation_box": {
+        "event_id": "upright_structure_17m",
+        "bbox_min": [
+          16.6,
+          1.1,
+          -1.85
+        ],
+        "bbox_max": [
+          17.7,
+          2.1,
+          0.65
+        ],
+        "class": "unclassified_upright_structure",
+        "path_intersection": "unverified"
+      }
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 200,
+      "title": "Provisional structure: adjacent; identity/clearance unverified",
+      "overview_xy": [
+        0,
+        40,
+        -4,
+        4
+      ],
+      "zoom_xy": [
+        15.5,
+        18.5,
+        0.5,
+        2.6
+      ],
+      "zoom_xz": [
+        15.5,
+        18.5,
+        -2.2,
+        2.8
+      ],
+      "annotation_box": {
+        "event_id": "upright_structure_17m",
+        "bbox_min": [
+          16.6,
+          1.1,
+          -1.85
+        ],
+        "bbox_max": [
+          17.7,
+          2.1,
+          0.65
+        ],
+        "class": "unclassified_upright_structure",
+        "path_intersection": "unverified"
+      }
+    }
+  ]
+}

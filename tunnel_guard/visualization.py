@@ -121,6 +121,10 @@ class ResultBag:
                 markers.append(self.marker(header, "candidate_measurements", obj["track_id"], 8,
                                            support[obj["track_id"]], color))
             label = f"#{obj['track_id']} {obj['distance_m']:.2f} m | {obj['path_relation']} | {obj['confirmation']} | hits={obj['hits']}"
+            if hazard and "distance_support_point" in obj:
+                markers.append(self.marker(header, "distance_witness", obj["track_id"], 8,
+                                           [obj["distance_support_point"]], (0., 1., 1., 1.)))
+                label += f" | {obj['distance_method']}"
             markers.append(self.marker(header, "object_labels", obj["track_id"], 9, color=color,
                                        text=label, position=obj["bbox_max"]))
         text = (f"RECORDED RESULT REPLAY | {row['status']} | nearest={row['nearest_obstacle_m']} m\n"
@@ -134,3 +138,97 @@ class ResultBag:
         for topic, message in payloads.items():
             connection = self.connections[topic]
             self.writer.write(connection, timestamp_ns, self.store.serialize_cdr(message, connection.msgtype))
+
+
+def replay_frame(run: Path, bag: str, frame: int):
+    """Read actual saved messages for a static review; does not run inference."""
+    from rosbags.rosbag2 import Reader
+    with (run / f"{bag}.jsonl").open() as stream:
+        row = next(json.loads(line) for line in stream if json.loads(line)["frame"] == frame)
+    store = get_typestore(Stores.ROS2_HUMBLE)
+    cloud, markers = None, None
+    stamp = row["measurement_timestamp_ns"]
+    with Reader(run / f"{bag}_rviz") as reader:
+        for connection, _, raw in reader.messages(start=stamp, stop=stamp + 1):
+            if connection.topic.endswith("points_display"):
+                message = store.deserialize_cdr(raw, connection.msgtype)
+                cloud = np.frombuffer(message.data, dtype="<f4").reshape(-1, 3).copy()
+            elif connection.topic.endswith("debug_markers"):
+                markers = store.deserialize_cdr(raw, connection.msgtype).markers
+    if cloud is None or markers is None:
+        raise ValueError(f"Missing recorded visualization for {bag}:{frame}")
+    return row, cloud, markers
+
+
+def render_comparison(before: Path, after: Path, cases: dict, output: Path):
+    """Same-frame, same-scale PNGs from the existing ResultBag path."""
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    from matplotlib.collections import LineCollection
+    output.mkdir(parents=True, exist_ok=False)
+    for index, case in enumerate(cases["cases"]):
+        fig, axes = plt.subplots(3, 2, figsize=(16, 11), layout="constrained")
+        fig.suptitle(f"{case['bag']} / frame {case['frame']} — {case['title']}\nRecorded real measurements; provisional annotation is not verified hazard ground truth", fontsize=13)
+        for column, (name, run) in enumerate((("BEFORE", before), ("AFTER", after))):
+            row, cloud, markers = replay_frame(run, case["bag"], case["frame"])
+            for level, dimension in enumerate((1, 1, 2)):
+                ax = axes[level, column]
+                limits = case["overview_xy"] if level == 0 else case["zoom_xy"] if level == 1 else case["zoom_xz"]
+                x0, x1, y0, y1 = limits
+                visible = ((cloud[:, 0] >= x0) & (cloud[:, 0] <= x1)
+                           & (cloud[:, dimension] >= y0) & (cloud[:, dimension] <= y1))
+                q = cloud[visible]
+                ax.scatter(q[:, 0], q[:, dimension], s=.5, c="#a6abb0", rasterized=True)
+                for marker in markers:
+                    xyz = np.array([[p.x, p.y, p.z] for p in marker.points]).reshape(-1, 3)
+                    color = (marker.color.r, marker.color.g, marker.color.b)
+                    if marker.type == 5 and len(xyz) and marker.ns in ("reference_envelope", "observed_support"):
+                        edges = xyz[:, [0, dimension]].reshape(-1, 2, 2)
+                        ax.add_collection(LineCollection(edges, colors=[color], linewidths=.6, alpha=.7))
+                    elif marker.type == 8 and len(xyz) and marker.ns == "candidate_measurements" and level > 0:
+                        ax.scatter(xyz[:, 0], xyz[:, dimension], s=3, c=[color], rasterized=True)
+                target = next((o for o in row["objects"] if o["component_id"] == case.get("component_id")), None)
+                if target is not None and level > 0:
+                    old = target["cluster_nearest_x_m"]
+                    supported = target["supported_envelope_nearest_x_m"]
+                    ax.axvline(old, c="#ad4bbc", linestyle=":", linewidth=1.3, label=f"cluster min x: {old:.3f} m")
+                    if supported is not None:
+                        ax.axvline(supported, c="#007e95", linestyle="--", linewidth=1.3,
+                                   label=f"supported min x: {supported:.3f} m")
+                    ax.legend(loc="upper right", fontsize=8)
+                if "annotation_box" in case and level > 0:
+                    box = case["annotation_box"]
+                    lo, hi = box["bbox_min"], box["bbox_max"]
+                    ax.plot([lo[0], hi[0], hi[0], lo[0], lo[0]],
+                            [lo[dimension], lo[dimension], hi[dimension], hi[dimension], lo[dimension]],
+                            c="#ad4bbc", linestyle="--", linewidth=1, label="provisional box")
+                ax.set(xlim=(x0, x1), ylim=(y0, y1), xlabel="forward x [m]",
+                       ylabel="lateral y [m]" if dimension == 1 else "processing-frame z [m]")
+                ax.set_aspect("equal", adjustable="box")
+                ax.grid(alpha=.2)
+                if level == 0:
+                    ax.set_title(f"{name} — {row['status']}; nearest={row['nearest_obstacle_m']:.3f} m\nhealth={row['health']}; confirmed denotes algorithmic evidence", fontsize=10)
+                elif level == 1:
+                    detail = (f"component {target['component_id']}: reported={target['distance_m']:.3f} m; {target['path_relation']}"
+                              if target is not None else "Provisional structure region; observed support only")
+                    ax.set_title(detail, fontsize=10)
+        fig.savefig(output / f"case_{index:02d}_frame_{case['frame']:06d}.png", dpi=140)
+        plt.close(fig)
+    (output / "cases.json").write_text(json.dumps(cases, indent=2) + "\n")
+
+
+def main():
+    import argparse
+    p = argparse.ArgumentParser(description="Render matched PNG comparisons from actual ResultBag exports")
+    p.add_argument("--before", type=Path, required=True)
+    p.add_argument("--after", type=Path, required=True)
+    p.add_argument("--cases", type=Path, required=True)
+    p.add_argument("--output", type=Path, required=True)
+    a = p.parse_args()
+    render_comparison(a.before, a.after, json.loads(a.cases.read_text()), a.output)
+    print(f"Recorded-result comparisons: {a.output}")
+
+
+if __name__ == "__main__":
+    main()

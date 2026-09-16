@@ -9,7 +9,9 @@ import json
 import os
 from pathlib import Path
 import platform
+import resource
 import shutil
+import subprocess
 import sys
 import time
 
@@ -90,7 +92,10 @@ def main():
     for source in Path(__file__).parent.glob("*.py"):
         shutil.copyfile(source, source_dir / source.name)
     manifest = environment() | {"command": sys.argv, "config_sha256": digest(config_path),
-                                "started_unix_s": time.time(), "bags": []}
+                                "started_unix_s": time.time(), "bags": [],
+                                "git_revision": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
+                                "git_status": subprocess.check_output(["git", "status", "--porcelain=v1"], text=True)}
+    (output / "working-tree.patch").write_bytes(subprocess.check_output(["git", "diff", "HEAD", "--", "tunnel_guard", "configs"]))
     write_json(output / "manifest.json", manifest)
     summaries = []
     for entry in experiment["bags"]:
@@ -104,6 +109,7 @@ def main():
         rows = []
         start = time.perf_counter()
         ingestion = {}
+        diagnostic_frames = set(experiment.get("diagnostic_frames", []))
         iterator = iter_bag(bag, config, every=experiment["every"], max_frames=experiment["max_frames"],
                             topic=entry.get("topic"), diagnostics=ingestion)
         from contextlib import nullcontext
@@ -118,7 +124,8 @@ def main():
                     scan = next(iterator)
                 except StopIteration:
                     break
-                row = detector.process(scan.points, scan.timestamp_s, scan.point_times)
+                row = detector.process(scan.points, scan.timestamp_s, scan.point_times,
+                                       capture_diagnostics=scan.index in diagnostic_frames)
                 row.update(frame=scan.index, bag=bag.name, raw_points=scan.raw_points,
                            invalid_points=scan.invalid_points, sensor_frame=scan.frame_id,
                            topic=scan.topic, scan_duration_s=scan.scan_duration_s,
@@ -127,6 +134,14 @@ def main():
                            source_scan_id=f"{scan.topic}:{scan.frame_id}:{scan.measurement_timestamp_ns}",
                            skipped_duplicate_scans=scan.skipped_duplicate_scans,
                            read_and_process_s=time.perf_counter() - frame_start)
+                if scan.index in diagnostic_frames:
+                    diagnostic_start = time.perf_counter()
+                    folder = output / "diagnostics"
+                    folder.mkdir(exist_ok=True)
+                    filename = f"{bag.name}_{scan.index:06d}.npz"
+                    np.savez_compressed(folder / filename, **detector.diagnostic_arrays)
+                    row["diagnostic_points"] = f"diagnostics/{filename}"
+                    row["diagnostic_write_s"] = time.perf_counter() - diagnostic_start
                 if display is not None:
                     display_started = time.perf_counter()
                     display.write(row, detector.display_points, scan.measurement_timestamp_ns, detector.display_support)
@@ -140,6 +155,8 @@ def main():
             raise ValueError(f"No scans processed from {bag}")
         summary = summarize(rows) | {"bag": bag.name, "split": entry["split"], "wall_s": time.perf_counter() - start,
                                     "ingestion": ingestion,
+                                    "process_peak_rss_bytes": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * (1 if sys.platform == "darwin" else 1024),
+                                    "diagnostic_write_total_s": sum(r.get("diagnostic_write_s", 0) for r in rows),
                                     "visualization_total_s": sum(r.get("visualization_s", 0) for r in rows)}
         summaries.append(summary)
         write_json(output / "summary.json", summaries)
