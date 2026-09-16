@@ -60,6 +60,46 @@ uv run python -m tunnel_guard.evaluate \
 
 The five supplied annotation boxes describe **one provisional upright structure**, not independent verified hazards. They are nonexhaustive: real precision cannot be computed from them.
 
+## Label the recordings in SUSTechPOINTS
+
+Human labels do not exist yet for the six recordings, and no score can be computed without them. The upstream [SUSTechPOINTS](https://github.com/naurril/SUSTechPOINTS) annotation tool is used for that work; it is not part of this repository. `build/sustech-import.py` converts every bag to per-frame `.pcd` scenes under `SUSTechPOINTS/data/<bag>/`, keeping `tunnel_guard_local` coordinates and full density. Frame `00000N.pcd` is bag message index `N`, the same index the run JSONL uses. Start the tool with `python main.py` inside `SUSTechPOINTS` and open <http://127.0.0.1:8081>.
+
+Boxes are authored by hand: the detector's candidates are not good enough to seed a panel, and labels a detector supplies for its own scoring cannot measure that detector. After a labelling pass, convert the tool's label files into the schema the evaluator validates:
+
+```sh
+uv run python -m tunnel_guard.sustech --config configs/annotation-export.json
+```
+
+`configs/annotation-export.json` requires the reviewer to declare which frames are exhaustively labelled, including frames with no object: those become the scored negative frames, and `tunnel_guard.evaluate` counts nothing else as a false alarm. Rotated boxes are exported as their axis-aligned envelope, which is what the IoU matcher consumes.
+
+### What is labelled so far
+
+`annotations/doubleT-obstacle-person.json` holds the one object we have: `doubleT_obstacle` frames 165–200, one person-sized box, `event_id 7`, `class Person`. The box was authored by hand at frame 181 and propagated over the other 35 frames by a constant-velocity fit of the detector's own track of that object — it recedes at 0.31 m/frame along +x while the tunnel itself stays fixed in the sensor frame (a tracked ceiling fixture moves 0.001 m/frame), so the motion is the object's, not the train's. Every frame is `exhaustive: false`: this records where one object is, not that the frames contain nothing else, and "person" is the reviewer's judgement. The same boxes are visible in the tool as `doubleT_obstacle` frames 165–200.
+
+### Objects inside the clearance envelope
+
+`tunnel_guard/on_track.py` finds intrusions the way the detector should: only returns that actually fall inside the GOST contour are clustered, and a cluster is dropped when it is a face of a large surface, or when its lateral/vertical profile runs continuously or repeats along the tunnel — cable runs, linings, trays and posts. Over the six recordings that is **11,115 in-envelope clusters → 381 events → 15 candidates**, against 335–347 boxes per frame from the detector.
+
+```sh
+uv run python -m tunnel_guard.on_track \
+  --bag data/sourcecraft_subset/for_hackathon/doubleT_obstacle \
+  --config configs/on-track-probe.json --output build/on-track-events.json
+```
+
+Thresholds are in `configs/on-track-probe.json`. The strongest candidate is `doubleT_obstacle` around x ≈ 55.7 m, y ≈ −0.5 m: a compact 0.45 × 1.02 × 1.35 m mass standing on the bed, isolated from any surface, present in frames 2–75 and then gone. Two limits matter. Geometry cannot separate a permanent fixture that pokes into the contour from a foreign object — the ~34 m hit in the same recording is a post running through the whole recording. And on the `roundT_*`/`squareT_*` curves the track-centre estimate drifts laterally, putting 139 of 169 events in one recording at |y| = 1.6–3.2 m while the GOST half-width never exceeds 1.535 m; `report.max_lateral_m` drops those, which is why the count is 15 and not 381. That same drift is a large part of the detector's alarm load.
+
+The surviving candidates are also written into the tool as separate scenes (`<bag>_candidates`, with `lidar` symlinked to the real clouds) so they can be stepped through without touching the human labels.
+
+The tool's own auto-annotation is not usable for this data: `GET /auto_annotate` returns HTTP 500 because `annotate_file` is defined inside an `if False:` block and its clustering binary and discrimination model are absent, and `/predict_rotation` feeds uncentered coordinates to a model trained on centred object crops, so its angle barely depends on the selected object.
+
+### Classes
+
+`public/js/obj_cfg.js` carries a metro taxonomy in place of the upstream driving classes: `Person`, `ForeignObject`, `Equipment` (things that must not be on the track), then `PlatformEdge`, `PressureGate`, `TrackSwitch`, `TrackFixture`, `Cable`, `WallLining` (content the recordings actually contain), then `Unknown` and `DontCare`. The same names are repeated in `tools/check_labels.py` (server-side `/checkscene`) and `tools/visualize-camera.py`; keep the three in sync. `Unknown` is the fallback of `get_obj_cfg_by_type`, so it must exist.
+
+The organizers do not require a class and the detector is class-agnostic, so this field is not a supervised target. It exists so a reviewer can attribute alerts: the measured failure mode is nuisance alarms on tunnel infrastructure, and without a label for "this was the platform edge" those alarms cannot be explained. Labels written with the removed driving names still load and render through the `Unknown` configuration, but `/checkscene` reports them as unrecognisable.
+
+Nothing except scene directories may live under `SUSTechPOINTS/data/`: `scene_reader` treats every entry as a scene and fails on any other file.
+
 ## Code map
 
 | Path | Purpose |
@@ -75,6 +115,8 @@ The five supplied annotation boxes describe **one provisional upright structure*
 | `tunnel_guard/evaluate.py` | One-to-one IoU matching and annotation validity |
 | `tunnel_guard/stress.py` | Occlusion-aware synthetic ray-cast evaluation |
 | `tunnel_guard/annotate.py` | Extract raw frames for annotation review |
+| `tunnel_guard/sustech.py` | SUSTechPOINTS human labels into the `annotations/*.json` schema |
+| `tunnel_guard/on_track.py` | Objects with real point support inside the clearance envelope |
 | `configs/detector.json` | Default detector recipe; no bag-specific branches |
 | `results/` | Small recorded result summaries; full artifacts remain local |
 

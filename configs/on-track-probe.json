@@ -1,0 +1,25 @@
+{
+  "detector_config": "configs/detector.json",
+  "thresholds": {
+    "cluster_eps_m": 0.30,
+    "cluster_voxel_m": 0.10,
+    "min_inside_voxels": 3,
+    "min_height_extent_m": 0.10,
+    "max_object_height_m": 3.0,
+    "max_component_voxels": 1500,
+    "max_compact_length_m": 2.0,
+    "profile_tolerance_m": 0.40,
+    "max_continuous_coverage_m": 4.0,
+    "min_periodic_spacing_m": 5.0,
+    "event_max_frame_gap": 3,
+    "event_lateral_tolerance_m": 0.8,
+    "event_vertical_tolerance_m": 0.8
+  },
+  "report": {
+    "min_inside_voxels": 20,
+    "min_frames": 3,
+    "min_extent_m": 0.25,
+    "max_lateral_m": 1.6
+  },
+  "note": "max_component_voxels rejects a cluster that is a face of a large surface; max_continuous_coverage_m and min_periodic_spacing_m reject structure that runs or repeats along the tunnel; max_lateral_m drops candidates further from the sensor axis than any GOST half-width (1.15-1.535 m), which is where the track-centre estimate drifts on curved recordings."
+}

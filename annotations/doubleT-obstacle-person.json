@@ -1,0 +1,800 @@
+{
+  "label_status": "provisional_geometry",
+  "prediction_scope": "near_track_objects",
+  "minimum_iou": 0.25,
+  "provenance": "One person-sized object in doubleT_obstacle. The box was authored by hand at frame 181 and propagated over frames 165-200 by a constant-velocity fit of the detector's own track of that object (0.31 m per frame along +x, fit residual median 0.10 m, max 0.20 m); the tunnel is stationary in this recording, so the motion is the object's (a tracked ceiling fixture moves 0.001 m per frame). No frame is exhaustive: this records where one object is, not that the frames hold nothing else, and object identity as a person is the reviewer's judgement, not a measurement.",
+  "frames": [
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 165,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            4.600920324384247,
+            1.4877335378807397,
+            -2.117341476519653
+          ],
+          "bbox_max": [
+            5.99407543104284,
+            3.032818472662166,
+            -0.3307368336516112
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 166,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            4.914416498810343,
+            1.4915451177465757,
+            -2.1218278164414217
+          ],
+          "bbox_max": [
+            6.307571605468937,
+            3.036630052528002,
+            -0.3352231735733795
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 167,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            5.22791267323644,
+            1.4953566976124122,
+            -2.1263141563631898
+          ],
+          "bbox_max": [
+            6.621067779895033,
+            3.040441632393838,
+            -0.3397095134951478
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 168,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            5.541408847662536,
+            1.4991682774782487,
+            -2.130800496284958
+          ],
+          "bbox_max": [
+            6.9345639543211295,
+            3.044253212259675,
+            -0.34419585341691583
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 169,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            5.854905022088634,
+            1.5029798573440847,
+            -2.135286836206726
+          ],
+          "bbox_max": [
+            7.248060128747227,
+            3.048064792125511,
+            -0.3486821933386841
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 170,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            6.16840119651473,
+            1.5067914372099211,
+            -2.1397731761284944
+          ],
+          "bbox_max": [
+            7.561556303173323,
+            3.051876371991347,
+            -0.3531685332604524
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 171,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            6.4818973709408265,
+            1.5106030170757576,
+            -2.1442595160502624
+          ],
+          "bbox_max": [
+            7.87505247759942,
+            3.055687951857184,
+            -0.35765487318222045
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 172,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            6.795393545366923,
+            1.5144145969415936,
+            -2.1487458559720305
+          ],
+          "bbox_max": [
+            8.188548652025517,
+            3.05949953172302,
+            -0.3621412131039885
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 173,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            7.108889719793019,
+            1.51822617680743,
+            -2.153232195893799
+          ],
+          "bbox_max": [
+            8.502044826451613,
+            3.063311111588856,
+            -0.366627553025757
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 174,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            7.422385894219117,
+            1.5220377566732666,
+            -2.157718535815567
+          ],
+          "bbox_max": [
+            8.81554100087771,
+            3.067122691454693,
+            -0.37111389294752506
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 175,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            7.735882068645212,
+            1.5258493365391026,
+            -2.162204875737335
+          ],
+          "bbox_max": [
+            9.129037175303806,
+            3.070934271320529,
+            -0.37560023286929334
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 176,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            8.04937824307131,
+            1.5296609164049386,
+            -2.166691215659103
+          ],
+          "bbox_max": [
+            9.442533349729903,
+            3.074745851186365,
+            -0.3800865727910614
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 177,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            8.362874417497405,
+            1.5334724962707755,
+            -2.1711775555808717
+          ],
+          "bbox_max": [
+            9.756029524155998,
+            3.078557431052202,
+            -0.3845729127128297
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 178,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            8.676370591923503,
+            1.5372840761366116,
+            -2.1756638955026397
+          ],
+          "bbox_max": [
+            10.069525698582096,
+            3.082369010918038,
+            -0.38905925263459773
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 179,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            8.989866766349598,
+            1.5410956560024476,
+            -2.1801502354244082
+          ],
+          "bbox_max": [
+            10.383021873008191,
+            3.086180590783874,
+            -0.393545592556366
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 180,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            9.303362940775695,
+            1.544907235868284,
+            -2.1846365753461763
+          ],
+          "bbox_max": [
+            10.696518047434289,
+            3.08999217064971,
+            -0.3980319324781343
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 181,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            9.616859115201791,
+            1.5487188157341205,
+            -2.1891229152679443
+          ],
+          "bbox_max": [
+            11.010014221860384,
+            3.093803750515547,
+            -0.40251827239990234
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 182,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            9.930355289627888,
+            1.5525303955999565,
+            -2.1936092551897124
+          ],
+          "bbox_max": [
+            11.323510396286482,
+            3.097615330381383,
+            -0.4070046123216706
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 183,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            10.243851464053984,
+            1.556341975465793,
+            -2.1980955951114804
+          ],
+          "bbox_max": [
+            11.637006570712577,
+            3.101426910247219,
+            -0.4114909522434387
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 184,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            10.557347638480081,
+            1.5601535553316295,
+            -2.202581935033249
+          ],
+          "bbox_max": [
+            11.950502745138674,
+            3.105238490113056,
+            -0.41597729216520696
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 185,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            10.870843812906177,
+            1.5639651351974655,
+            -2.2070682749550175
+          ],
+          "bbox_max": [
+            12.26399891956477,
+            3.109050069978892,
+            -0.42046363208697524
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 186,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            11.184339987332274,
+            1.567776715063302,
+            -2.2115546148767855
+          ],
+          "bbox_max": [
+            12.577495093990867,
+            3.112861649844728,
+            -0.4249499720087433
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 187,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            11.49783616175837,
+            1.5715882949291384,
+            -2.2160409547985536
+          ],
+          "bbox_max": [
+            12.890991268416963,
+            3.116673229710565,
+            -0.42943631193051157
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 188,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            11.811332336184467,
+            1.5753998747949745,
+            -2.2205272947203216
+          ],
+          "bbox_max": [
+            13.20448744284306,
+            3.120484809576401,
+            -0.43392265185227985
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 189,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            12.124828510610563,
+            1.579211454660811,
+            -2.2250136346420897
+          ],
+          "bbox_max": [
+            13.517983617269156,
+            3.124296389442237,
+            -0.4384089917740479
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 190,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            12.43832468503666,
+            1.5830230345266474,
+            -2.229499974563858
+          ],
+          "bbox_max": [
+            13.831479791695253,
+            3.1281079693080738,
+            -0.4428953316958162
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 191,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            12.751820859462756,
+            1.5868346143924834,
+            -2.2339863144856262
+          ],
+          "bbox_max": [
+            14.144975966121349,
+            3.13191954917391,
+            -0.44738167161758424
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 192,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            13.065317033888853,
+            1.5906461942583199,
+            -2.2384726544073947
+          ],
+          "bbox_max": [
+            14.458472140547446,
+            3.135731129039746,
+            -0.4518680115393525
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 193,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            13.37881320831495,
+            1.594457774124156,
+            -2.242958994329163
+          ],
+          "bbox_max": [
+            14.771968314973543,
+            3.139542708905582,
+            -0.4563543514611208
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 194,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            13.692309382741046,
+            1.5982693539899924,
+            -2.247445334250931
+          ],
+          "bbox_max": [
+            15.085464489399639,
+            3.1433542887714188,
+            -0.46084069138288886
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 195,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            14.005805557167143,
+            1.6020809338558288,
+            -2.251931674172699
+          ],
+          "bbox_max": [
+            15.398960663825736,
+            3.147165868637255,
+            -0.46532703130465713
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 196,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            14.319301731593239,
+            1.6058925137216649,
+            -2.256418014094467
+          ],
+          "bbox_max": [
+            15.712456838251832,
+            3.150977448503091,
+            -0.4698133712264252
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 197,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            14.632797906019336,
+            1.6097040935875013,
+            -2.2609043540162355
+          ],
+          "bbox_max": [
+            16.02595301267793,
+            3.1547890283689277,
+            -0.47429971114819347
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 198,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            14.946294080445432,
+            1.6135156734533378,
+            -2.265390693938004
+          ],
+          "bbox_max": [
+            16.339449187104027,
+            3.1586006082347637,
+            -0.47878605106996175
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 199,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            15.259790254871529,
+            1.6173272533191738,
+            -2.269877033859772
+          ],
+          "bbox_max": [
+            16.652945361530122,
+            3.1624121881005998,
+            -0.4832723909917298
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 200,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "7",
+          "bbox_min": [
+            15.573286429297626,
+            1.6211388331850103,
+            -2.27436337378154
+          ],
+          "bbox_max": [
+            16.96644153595622,
+            3.1662237679664367,
+            -0.4877587309134981
+          ],
+          "class": "Person",
+          "path_intersection": "unverified"
+        }
+      ]
+    }
+  ]
+}

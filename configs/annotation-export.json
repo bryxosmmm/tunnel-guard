@@ -1,0 +1,35 @@
+{
+  "label_status": "provisional_geometry",
+  "prediction_scope": "near_track_objects",
+  "minimum_iou": 0.25,
+  "path_intersection": "unverified",
+  "provenance": "One person-sized object in doubleT_obstacle. The box was authored by hand at frame 181 and propagated over frames 165-200 by a constant-velocity fit of the detector's own track of that object (0.31 m per frame along +x, fit residual median 0.10 m, max 0.20 m); the tunnel is stationary in this recording, so the motion is the object's (a tracked ceiling fixture moves 0.001 m per frame). No frame is exhaustive: this records where one object is, not that the frames hold nothing else, and object identity as a person is the reviewer's judgement, not a measurement.",
+  "scene_root": "SUSTechPOINTS/data",
+  "scenes": {
+    "doubleT_obstacle": {
+      "label_directory": "label",
+      "exhaustive_frames": []
+    },
+    "doubleT_platform": {
+      "label_directory": "label",
+      "exhaustive_frames": []
+    },
+    "roundT_doubleT": {
+      "label_directory": "label",
+      "exhaustive_frames": []
+    },
+    "roundT_pressureGate_roundT": {
+      "label_directory": "label",
+      "exhaustive_frames": []
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "label_directory": "label",
+      "exhaustive_frames": []
+    },
+    "squareT_platform_squareT_switch": {
+      "label_directory": "label",
+      "exhaustive_frames": []
+    }
+  },
+  "output": "annotations/doubleT-obstacle-person.json"
+}
