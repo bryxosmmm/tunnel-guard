@@ -1,0 +1,932 @@
+{
+ "config": "configs/detector.json",
+ "config_sha256": "5eab9164d191e19b4b92f93f29f47077b0dfe60a1b9dfd97948f0ee912195038",
+ "note": "Measured from these bags only. No manufacturer datasheet was used and no verified flag is implied. Detection range, calibration provenance and prior deskew cannot be established from a recording alone.",
+ "protocol": "Layout, ring table, azimuth grid and return multiplicity are measured from sampled scans with invalid slots kept, because an unreturned slot still occupies its emission. Azimuth coverage is 360 deg minus the largest gap on the closed circle, measured inside one ring. Clocks are measured over every message of each recording, not a prefix. Mounting is estimated through the detector ground plane and rail anchors, so it describes the frame the detector works in, including the configured sensor_rotation. No manufacturer datasheet was consulted and no verified flag is implied.",
+ "recordings": [
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+   "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+   "layout": {
+    "topic": "/sensing/lidar/hesai128/pointcloud",
+    "frame_id": "lidar_livox",
+    "height": 1,
+    "width": 921600,
+    "point_step": 26,
+    "row_step": 23961600,
+    "is_bigendian": false,
+    "is_dense": false,
+    "fields": [
+     {
+      "name": "x",
+      "offset": 0,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "y",
+      "offset": 4,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "z",
+      "offset": 8,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "intensity",
+      "offset": 12,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "ring",
+      "offset": 16,
+      "datatype": 4,
+      "count": 1
+     },
+     {
+      "name": "timestamp",
+      "offset": 18,
+      "datatype": 8,
+      "count": 1
+     }
+    ]
+   },
+   "structure": {
+    "slots": 921600,
+    "valid_slots": 346808,
+    "invalid_slots": 574792,
+    "rings_present": 128,
+    "slots_per_ring": 7200,
+    "max_ring_elevation_spread_deg": 4e-06,
+    "elevation_span_deg": [
+     -25.12,
+     14.402
+    ],
+    "azimuth_reference_ring": 25,
+    "azimuth_coverage_deg": 237.2,
+    "largest_azimuth_gap_deg": 122.8,
+    "median_azimuth_step_deg": 0.1,
+    "point_time_span_s": 0.099972963,
+    "unique_point_times": 3600,
+    "slots_per_emission": {
+     "2": 460800
+    },
+    "emissions": 460800
+   },
+   "structure_scans_sampled": 5,
+   "ring_table_matches_shared": true,
+   "clocks": {
+    "pointcloud_topics": [
+     "/sensing/lidar/hesai128/pointcloud"
+    ],
+    "other_topics": [],
+    "messages": 201,
+    "duplicate_header_stamps": 0,
+    "header_monotonic": true,
+    "header_period_s": {
+     "p50": 0.1,
+     "p95": 0.100019,
+     "min": 0.099977,
+     "max": 0.399947
+    },
+    "gaps_over_1_5_period": 2,
+    "record_minus_header_s": {
+     "p50": 841667325.897,
+     "min": 841667325.89,
+     "max": 841667325.934
+    },
+    "point_time_span_s": {
+     "p50": 0.099972,
+     "min": 0.09995,
+     "max": 0.100002
+    },
+    "acquisition_span_over_header_period": 1.0,
+    "header_minus_first_point_s": 0.0,
+    "header_minus_last_point_s": -0.099972
+   },
+   "mounting": {
+    "frames_used": 21,
+    "bed_pitch_deg": {
+     "p50": -0.882,
+     "p10": -0.901,
+     "p90": -0.852,
+     "frames": 21
+    },
+    "bed_roll_deg": {
+     "p50": -2.945,
+     "p10": -3.079,
+     "p90": -2.905,
+     "frames": 21
+    },
+    "sensor_height_above_bed_m": {
+     "p50": 1.726,
+     "p10": 1.722,
+     "p90": 1.729,
+     "frames": 21
+    },
+    "track_heading_deg": {
+     "p50": -1.422,
+     "p10": -1.872,
+     "p90": -0.911,
+     "frames": 21
+    }
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+   "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+   "layout": {
+    "topic": "/lidar_points",
+    "frame_id": "hesai_lidar",
+    "height": 1,
+    "width": 307200,
+    "point_step": 26,
+    "row_step": 7987200,
+    "is_bigendian": false,
+    "is_dense": false,
+    "fields": [
+     {
+      "name": "x",
+      "offset": 0,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "y",
+      "offset": 4,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "z",
+      "offset": 8,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "intensity",
+      "offset": 12,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "ring",
+      "offset": 16,
+      "datatype": 4,
+      "count": 1
+     },
+     {
+      "name": "timestamp",
+      "offset": 18,
+      "datatype": 8,
+      "count": 1
+     }
+    ]
+   },
+   "structure": {
+    "slots": 307200,
+    "valid_slots": 185638,
+    "invalid_slots": 121562,
+    "rings_present": 128,
+    "slots_per_ring": 2400,
+    "max_ring_elevation_spread_deg": 3e-06,
+    "elevation_span_deg": [
+     -25.12,
+     14.402
+    ],
+    "azimuth_reference_ring": 74,
+    "azimuth_coverage_deg": 99.9,
+    "largest_azimuth_gap_deg": 260.1,
+    "median_azimuth_step_deg": 0.1,
+    "point_time_span_s": 0.033306003,
+    "unique_point_times": 1200,
+    "slots_per_emission": {
+     "2": 153600
+    },
+    "emissions": 153600
+   },
+   "structure_scans_sampled": 6,
+   "ring_table_matches_shared": true,
+   "clocks": {
+    "pointcloud_topics": [
+     "/lidar_points"
+    ],
+    "other_topics": [],
+    "messages": 345,
+    "duplicate_header_stamps": 0,
+    "header_monotonic": true,
+    "header_period_s": {
+     "p50": 0.099999,
+     "p95": 0.100011,
+     "min": 0.09998,
+     "max": 0.100024
+    },
+    "gaps_over_1_5_period": 0,
+    "record_minus_header_s": {
+     "p50": 841666362.261,
+     "min": 841666362.254,
+     "max": 841666362.286
+    },
+    "point_time_span_s": {
+     "p50": 0.033306,
+     "min": 0.0333,
+     "max": 0.033315
+    },
+    "acquisition_span_over_header_period": 0.333,
+    "header_minus_first_point_s": 0.0,
+    "header_minus_last_point_s": -0.033306
+   },
+   "mounting": {
+    "frames_used": 25,
+    "bed_pitch_deg": {
+     "p50": -0.182,
+     "p10": -0.319,
+     "p90": -0.062,
+     "frames": 25
+    },
+    "bed_roll_deg": {
+     "p50": 0.408,
+     "p10": 0.179,
+     "p90": 1.351,
+     "frames": 25
+    },
+    "sensor_height_above_bed_m": {
+     "p50": 1.313,
+     "p10": 1.296,
+     "p90": 1.331,
+     "frames": 25
+    },
+    "track_heading_deg": {
+     "p50": -0.258,
+     "p10": -0.321,
+     "p90": -0.097,
+     "frames": 25
+    }
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+   "metadata_sha256": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d",
+   "layout": {
+    "topic": "/lidar_points",
+    "frame_id": "hesai_lidar",
+    "height": 1,
+    "width": 307200,
+    "point_step": 26,
+    "row_step": 7987200,
+    "is_bigendian": false,
+    "is_dense": false,
+    "fields": [
+     {
+      "name": "x",
+      "offset": 0,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "y",
+      "offset": 4,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "z",
+      "offset": 8,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "intensity",
+      "offset": 12,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "ring",
+      "offset": 16,
+      "datatype": 4,
+      "count": 1
+     },
+     {
+      "name": "timestamp",
+      "offset": 18,
+      "datatype": 8,
+      "count": 1
+     }
+    ]
+   },
+   "structure": {
+    "slots": 307200,
+    "valid_slots": 189502,
+    "invalid_slots": 117698,
+    "rings_present": 128,
+    "slots_per_ring": 2400,
+    "max_ring_elevation_spread_deg": 3e-06,
+    "elevation_span_deg": [
+     -25.12,
+     14.402
+    ],
+    "azimuth_reference_ring": 52,
+    "azimuth_coverage_deg": 99.9,
+    "largest_azimuth_gap_deg": 260.1,
+    "median_azimuth_step_deg": 0.1,
+    "point_time_span_s": 0.033312082,
+    "unique_point_times": 1200,
+    "slots_per_emission": {
+     "2": 153600
+    },
+    "emissions": 153600
+   },
+   "structure_scans_sampled": 6,
+   "ring_table_matches_shared": true,
+   "clocks": {
+    "pointcloud_topics": [
+     "/lidar_points"
+    ],
+    "other_topics": [],
+    "messages": 252,
+    "duplicate_header_stamps": 0,
+    "header_monotonic": true,
+    "header_period_s": {
+     "p50": 0.099999,
+     "p95": 0.100011,
+     "min": 0.099985,
+     "max": 0.100018
+    },
+    "gaps_over_1_5_period": 0,
+    "record_minus_header_s": {
+     "p50": 841666127.539,
+     "min": 841666127.532,
+     "max": 841666127.571
+    },
+    "point_time_span_s": {
+     "p50": 0.033306,
+     "min": 0.033301,
+     "max": 0.033313
+    },
+    "acquisition_span_over_header_period": 0.333,
+    "header_minus_first_point_s": 0.0,
+    "header_minus_last_point_s": -0.033306
+   },
+   "mounting": {
+    "frames_used": 25,
+    "bed_pitch_deg": {
+     "p50": -0.14,
+     "p10": -0.462,
+     "p90": 0.063,
+     "frames": 25
+    },
+    "bed_roll_deg": {
+     "p50": 0.36,
+     "p10": -1.632,
+     "p90": 1.468,
+     "frames": 25
+    },
+    "sensor_height_above_bed_m": {
+     "p50": 1.32,
+     "p10": 1.308,
+     "p90": 1.332,
+     "frames": 25
+    },
+    "track_heading_deg": {
+     "p50": -0.716,
+     "p10": -4.768,
+     "p90": -0.105,
+     "frames": 24
+    }
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+   "metadata_sha256": "bec21b5aa0581936678824b5cb43043dfe99c7b1eb468c3dddf8e25554b703c1",
+   "layout": {
+    "topic": "/lidar_points",
+    "frame_id": "hesai_lidar",
+    "height": 1,
+    "width": 307200,
+    "point_step": 26,
+    "row_step": 7987200,
+    "is_bigendian": false,
+    "is_dense": false,
+    "fields": [
+     {
+      "name": "x",
+      "offset": 0,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "y",
+      "offset": 4,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "z",
+      "offset": 8,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "intensity",
+      "offset": 12,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "ring",
+      "offset": 16,
+      "datatype": 4,
+      "count": 1
+     },
+     {
+      "name": "timestamp",
+      "offset": 18,
+      "datatype": 8,
+      "count": 1
+     }
+    ]
+   },
+   "structure": {
+    "slots": 307200,
+    "valid_slots": 189864,
+    "invalid_slots": 117336,
+    "rings_present": 128,
+    "slots_per_ring": 2400,
+    "max_ring_elevation_spread_deg": 3e-06,
+    "elevation_span_deg": [
+     -25.12,
+     14.402
+    ],
+    "azimuth_reference_ring": 62,
+    "azimuth_coverage_deg": 99.9,
+    "largest_azimuth_gap_deg": 260.1,
+    "median_azimuth_step_deg": 0.1,
+    "point_time_span_s": 0.033308029,
+    "unique_point_times": 1200,
+    "slots_per_emission": {
+     "2": 153600
+    },
+    "emissions": 153600
+   },
+   "structure_scans_sampled": 6,
+   "ring_table_matches_shared": true,
+   "clocks": {
+    "pointcloud_topics": [
+     "/lidar_points"
+    ],
+    "other_topics": [],
+    "messages": 268,
+    "duplicate_header_stamps": 0,
+    "header_monotonic": true,
+    "header_period_s": {
+     "p50": 0.099999,
+     "p95": 0.100015,
+     "min": 0.099979,
+     "max": 0.100027
+    },
+    "gaps_over_1_5_period": 0,
+    "record_minus_header_s": {
+     "p50": 841665935.618,
+     "min": 841665935.606,
+     "max": 841665935.657
+    },
+    "point_time_span_s": {
+     "p50": 0.033306,
+     "min": 0.033299,
+     "max": 0.033315
+    },
+    "acquisition_span_over_header_period": 0.333,
+    "header_minus_first_point_s": 0.0,
+    "header_minus_last_point_s": -0.033306
+   },
+   "mounting": {
+    "frames_used": 25,
+    "bed_pitch_deg": {
+     "p50": -0.349,
+     "p10": -0.493,
+     "p90": -0.229,
+     "frames": 25
+    },
+    "bed_roll_deg": {
+     "p50": 0.1,
+     "p10": -1.32,
+     "p90": 1.065,
+     "frames": 25
+    },
+    "sensor_height_above_bed_m": {
+     "p50": 1.32,
+     "p10": 1.313,
+     "p90": 1.327,
+     "frames": 25
+    },
+    "track_heading_deg": {
+     "p50": -0.315,
+     "p10": -3.486,
+     "p90": 0.856,
+     "frames": 25
+    }
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+   "metadata_sha256": "9e9cedccc7a02337cd1f1020efebe22a4684c3598b2f7b5562b5fd044eafa616",
+   "layout": {
+    "topic": "/lidar_points",
+    "frame_id": "hesai_lidar",
+    "height": 1,
+    "width": 307200,
+    "point_step": 26,
+    "row_step": 7987200,
+    "is_bigendian": false,
+    "is_dense": false,
+    "fields": [
+     {
+      "name": "x",
+      "offset": 0,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "y",
+      "offset": 4,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "z",
+      "offset": 8,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "intensity",
+      "offset": 12,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "ring",
+      "offset": 16,
+      "datatype": 4,
+      "count": 1
+     },
+     {
+      "name": "timestamp",
+      "offset": 18,
+      "datatype": 8,
+      "count": 1
+     }
+    ]
+   },
+   "structure": {
+    "slots": 307200,
+    "valid_slots": 185070,
+    "invalid_slots": 122130,
+    "rings_present": 128,
+    "slots_per_ring": 2400,
+    "max_ring_elevation_spread_deg": 3e-06,
+    "elevation_span_deg": [
+     -25.12,
+     14.402
+    ],
+    "azimuth_reference_ring": 64,
+    "azimuth_coverage_deg": 97.8,
+    "largest_azimuth_gap_deg": 262.2,
+    "median_azimuth_step_deg": 0.1,
+    "point_time_span_s": 0.033309937,
+    "unique_point_times": 1200,
+    "slots_per_emission": {
+     "2": 153600
+    },
+    "emissions": 153600
+   },
+   "structure_scans_sampled": 6,
+   "ring_table_matches_shared": true,
+   "clocks": {
+    "pointcloud_topics": [
+     "/lidar_points"
+    ],
+    "other_topics": [],
+    "messages": 545,
+    "duplicate_header_stamps": 0,
+    "header_monotonic": true,
+    "header_period_s": {
+     "p50": 0.1,
+     "p95": 0.100015,
+     "min": 0.099977,
+     "max": 1.099941
+    },
+    "gaps_over_1_5_period": 1,
+    "record_minus_header_s": {
+     "p50": 841664253.234,
+     "min": 841664253.223,
+     "max": 841664253.271
+    },
+    "point_time_span_s": {
+     "p50": 0.033306,
+     "min": 0.033298,
+     "max": 0.033314
+    },
+    "acquisition_span_over_header_period": 0.333,
+    "header_minus_first_point_s": 0.0,
+    "header_minus_last_point_s": -0.033306
+   },
+   "mounting": {
+    "frames_used": 25,
+    "bed_pitch_deg": {
+     "p50": -0.269,
+     "p10": -0.501,
+     "p90": 0.138,
+     "frames": 25
+    },
+    "bed_roll_deg": {
+     "p50": 0.625,
+     "p10": 0.314,
+     "p90": 0.952,
+     "frames": 25
+    },
+    "sensor_height_above_bed_m": {
+     "p50": 1.326,
+     "p10": 1.317,
+     "p90": 1.336,
+     "frames": 25
+    },
+    "track_heading_deg": {
+     "p50": -0.275,
+     "p10": -0.303,
+     "p90": -0.198,
+     "frames": 25
+    }
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+   "metadata_sha256": "46b6f276a63bca7642a091e11d78416951bc952e7889d940c0b43309b7060553",
+   "layout": {
+    "topic": "/lidar_points",
+    "frame_id": "hesai_lidar",
+    "height": 1,
+    "width": 307200,
+    "point_step": 26,
+    "row_step": 7987200,
+    "is_bigendian": false,
+    "is_dense": false,
+    "fields": [
+     {
+      "name": "x",
+      "offset": 0,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "y",
+      "offset": 4,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "z",
+      "offset": 8,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "intensity",
+      "offset": 12,
+      "datatype": 7,
+      "count": 1
+     },
+     {
+      "name": "ring",
+      "offset": 16,
+      "datatype": 4,
+      "count": 1
+     },
+     {
+      "name": "timestamp",
+      "offset": 18,
+      "datatype": 8,
+      "count": 1
+     }
+    ]
+   },
+   "structure": {
+    "slots": 307200,
+    "valid_slots": 181792,
+    "invalid_slots": 125408,
+    "rings_present": 128,
+    "slots_per_ring": 2400,
+    "max_ring_elevation_spread_deg": 3e-06,
+    "elevation_span_deg": [
+     -25.12,
+     14.402
+    ],
+    "azimuth_reference_ring": 81,
+    "azimuth_coverage_deg": 99.8,
+    "largest_azimuth_gap_deg": 260.2,
+    "median_azimuth_step_deg": 0.1,
+    "point_time_span_s": 0.033306003,
+    "unique_point_times": 1200,
+    "slots_per_emission": {
+     "2": 153600
+    },
+    "emissions": 153600
+   },
+   "structure_scans_sampled": 6,
+   "ring_table_matches_shared": true,
+   "clocks": {
+    "pointcloud_topics": [
+     "/lidar_points"
+    ],
+    "other_topics": [],
+    "messages": 877,
+    "duplicate_header_stamps": 0,
+    "header_monotonic": true,
+    "header_period_s": {
+     "p50": 0.099999,
+     "p95": 0.100014,
+     "min": 0.099952,
+     "max": 0.700093
+    },
+    "gaps_over_1_5_period": 1,
+    "record_minus_header_s": {
+     "p50": 841665671.61,
+     "min": 841665671.601,
+     "max": 841665671.646
+    },
+    "point_time_span_s": {
+     "p50": 0.033306,
+     "min": 0.03329,
+     "max": 0.033318
+    },
+    "acquisition_span_over_header_period": 0.333,
+    "header_minus_first_point_s": 0.0,
+    "header_minus_last_point_s": -0.033306
+   },
+   "mounting": {
+    "frames_used": 25,
+    "bed_pitch_deg": {
+     "p50": -0.251,
+     "p10": -0.317,
+     "p90": -0.155,
+     "frames": 25
+    },
+    "bed_roll_deg": {
+     "p50": -0.132,
+     "p10": -0.24,
+     "p90": 0.4,
+     "frames": 25
+    },
+    "sensor_height_above_bed_m": {
+     "p50": 1.307,
+     "p10": 1.298,
+     "p90": 1.339,
+     "frames": 25
+    },
+    "track_heading_deg": {
+     "p50": -0.256,
+     "p10": -0.291,
+     "p90": -0.204,
+     "frames": 25
+    }
+   }
+  }
+ ],
+ "shared_ring_elevation_deg": [
+  14.402,
+  13.509,
+  13.025,
+  12.588,
+  12.12,
+  11.67,
+  11.188,
+  10.749,
+  10.259,
+  9.808,
+  9.318,
+  8.846,
+  8.339,
+  7.892,
+  7.376,
+  6.904,
+  6.415,
+  5.928,
+  5.441,
+  4.948,
+  4.46,
+  3.964,
+  3.466,
+  2.972,
+  2.45,
+  1.969,
+  1.841,
+  1.715,
+  1.595,
+  1.456,
+  1.325,
+  1.211,
+  1.057,
+  0.952,
+  0.821,
+  0.702,
+  0.591,
+  0.437,
+  0.323,
+  0.203,
+  0.04,
+  -0.046,
+  -0.191,
+  -0.303,
+  -0.425,
+  -0.57,
+  -0.69,
+  -0.805,
+  -0.971,
+  -1.062,
+  -1.207,
+  -1.322,
+  -1.431,
+  -1.583,
+  -1.71,
+  -1.822,
+  -1.982,
+  -2.079,
+  -2.225,
+  -2.337,
+  -2.45,
+  -2.596,
+  -2.739,
+  -2.848,
+  -3.016,
+  -3.106,
+  -3.252,
+  -3.374,
+  -3.479,
+  -3.633,
+  -3.758,
+  -3.868,
+  -4.019,
+  -4.117,
+  -4.274,
+  -4.391,
+  -4.501,
+  -4.652,
+  -4.769,
+  -4.891,
+  -5.046,
+  -5.144,
+  -5.293,
+  -5.406,
+  -5.521,
+  -5.673,
+  -5.784,
+  -5.909,
+  -6.067,
+  -6.158,
+  -6.686,
+  -7.182,
+  -7.707,
+  -8.206,
+  -8.747,
+  -9.216,
+  -9.75,
+  -10.231,
+  -10.759,
+  -11.243,
+  -11.757,
+  -12.245,
+  -12.772,
+  -13.243,
+  -13.77,
+  -14.24,
+  -14.762,
+  -15.247,
+  -15.748,
+  -16.221,
+  -16.736,
+  -17.207,
+  -17.705,
+  -18.171,
+  -18.662,
+  -19.143,
+  -19.613,
+  -20.099,
+  -20.562,
+  -21.036,
+  -21.493,
+  -21.971,
+  -22.424,
+  -22.873,
+  -23.328,
+  -23.797,
+  -24.237,
+  -25.12
+ ],
+ "shared_ring_elevation_note": "Identical to 1e-6 deg across all six recordings and equal to configs/sourcecraft-sensor-profile.json within rounding. Within one scan a ring varies by 3e-6 deg, so the driver applies a fixed elevation table rather than per-point angles. Whether that table is this unit factory calibration or a generic model table cannot be told from a bag.",
+ "conclusion": "Six recordings are two capture configurations of the same sensor model and the same angular table: one 360 deg emission grid on /sensing/lidar/hesai128/pointcloud with frame_id lidar_livox, and five 120 deg sector recordings on /lidar_points with frame_id hesai_lidar. Mounting differs between them by about 0.41 m in height and 3.3 deg in roll, while configs/detector.json applies a single sensor_rotation and a zero translation to all six. Deskew must stay disabled: the sector recordings acquire over a third of the frame period, which the [0,1] normalisation would stretch into a full inter-frame motion increment."
+}

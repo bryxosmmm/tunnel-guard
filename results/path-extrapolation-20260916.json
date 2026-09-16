@@ -1,0 +1,2299 @@
+{
+ "config": "configs/detector.json",
+ "every": 1,
+ "max_frames": null,
+ "arc_window_m": 20.0,
+ "slope_window_m": 20.0,
+ "seed": 20260915,
+ "protocol": "Within one scan the rail anchors past a cut are hidden, TrackGeometry.path is called on the retained anchors, and its prediction is scored against the hidden anchors. Two alternatives are scored on the same hidden anchors: a local quadratic arc, and a straight line whose slope is least-squares fitted over a 20 m window instead of the last two anchors. No odometry, annotations or cross-frame registration are involved. Hidden anchors are the rail-pair detector output, whose per-step search is bounded to rail_max_heading around the previous anchor, so reported errors are lower bounds. Anchor centres are quantised to rail_bin_m/2 = 0.015 m.",
+ "recordings": [
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+   "frames_with_geometry": 201,
+   "frames_without_geometry": 0,
+   "median_last_anchor_m": 35.0,
+   "p10_last_anchor_m": 25.0,
+   "max_last_anchor_m": 45.0,
+   "observed_center_profile": [
+    {
+     "anchor_x_m": 15.0,
+     "anchors": 118,
+     "median_center_m": -0.465,
+     "median_abs_center_m": 0.465,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 20.0,
+     "anchors": 311,
+     "median_center_m": -0.495,
+     "median_abs_center_m": 0.495,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 25.0,
+     "anchors": 512,
+     "median_center_m": -0.615,
+     "median_abs_center_m": 0.615,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 30.0,
+     "anchors": 575,
+     "median_center_m": -0.84,
+     "median_abs_center_m": 0.84,
+     "share_abs_center_over_1m": 0.042
+    },
+    {
+     "anchor_x_m": 35.0,
+     "anchors": 595,
+     "median_center_m": -1.02,
+     "median_abs_center_m": 1.02,
+     "share_abs_center_over_1m": 0.519
+    },
+    {
+     "anchor_x_m": 40.0,
+     "anchors": 446,
+     "median_center_m": -1.17,
+     "median_abs_center_m": 1.17,
+     "share_abs_center_over_1m": 0.987
+    },
+    {
+     "anchor_x_m": 45.0,
+     "anchors": 141,
+     "median_center_m": -1.305,
+     "median_abs_center_m": 1.305,
+     "share_abs_center_over_1m": 1.0
+    }
+   ],
+   "summary": {
+    "samples": 2698,
+    "samples_with_curvature": 1770,
+    "median_abs_line_error_m": 0.225,
+    "line_error_vs_distance": {
+     "coefficient_1_per_m": 0.00110506,
+     "implied_radius_m": 452.5
+    },
+    "median_radius_m": 418.0,
+    "sharpest_radius_m": 93.5,
+    "curvature_strata": [
+     {
+      "stratum": "straight_R_over_2000m",
+      "samples": 167,
+      "median_radius_m": 3341.4,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00146915,
+       "implied_radius_m": 340.3
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00097802,
+       "implied_radius_m": 511.2
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 104,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.09,
+        "max_abs_line_error_m": 0.195,
+        "predicted_abs_error_m": 0.004,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.029,
+        "median_abs_arc_error_m": 0.063
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 43,
+        "median_abs_line_error_m": 0.135,
+        "p90_abs_line_error_m": 0.252,
+        "max_abs_line_error_m": 0.315,
+        "predicted_abs_error_m": 0.015,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.349,
+        "median_abs_arc_error_m": 0.133
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 18,
+        "median_abs_line_error_m": 0.405,
+        "p90_abs_line_error_m": 0.474,
+        "max_abs_line_error_m": 0.555,
+        "predicted_abs_error_m": 0.034,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.944,
+        "median_abs_arc_error_m": 0.162
+       }
+      ]
+     },
+     {
+      "stratum": "gentle_R_800_2000m",
+      "samples": 321,
+      "median_radius_m": 1080.6,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.0013483,
+       "implied_radius_m": 370.8
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00121699,
+       "implied_radius_m": 410.8
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 150,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.091,
+        "max_abs_line_error_m": 0.21,
+        "predicted_abs_error_m": 0.011,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.067,
+        "median_abs_arc_error_m": 0.09
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 106,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.367,
+        "max_abs_line_error_m": 0.465,
+        "predicted_abs_error_m": 0.046,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.226,
+        "median_abs_arc_error_m": 0.201
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 46,
+        "median_abs_line_error_m": 0.21,
+        "p90_abs_line_error_m": 0.645,
+        "max_abs_line_error_m": 1.86,
+        "predicted_abs_error_m": 0.101,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.391,
+        "median_abs_arc_error_m": 0.227
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 14,
+        "median_abs_line_error_m": 0.57,
+        "p90_abs_line_error_m": 1.46,
+        "max_abs_line_error_m": 1.77,
+        "predicted_abs_error_m": 0.24,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.643,
+        "median_abs_arc_error_m": 0.336
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 5,
+        "median_abs_line_error_m": 0.645,
+        "p90_abs_line_error_m": 0.678,
+        "max_abs_line_error_m": 0.69,
+        "predicted_abs_error_m": 0.375,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.8,
+        "median_abs_arc_error_m": 0.24
+       }
+      ]
+     },
+     {
+      "stratum": "moderate_R_400_800m",
+      "samples": 451,
+      "median_radius_m": 469.5,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00086182,
+       "implied_radius_m": 580.2
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00126802,
+       "implied_radius_m": 394.3
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 193,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.18,
+        "max_abs_line_error_m": 0.24,
+        "predicted_abs_error_m": 0.025,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.285,
+        "median_abs_arc_error_m": 0.096
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 126,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.39,
+        "max_abs_line_error_m": 0.69,
+        "predicted_abs_error_m": 0.101,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.27,
+        "median_abs_arc_error_m": 0.213
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 89,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.528,
+        "max_abs_line_error_m": 0.645,
+        "predicted_abs_error_m": 0.269,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.191,
+        "median_abs_arc_error_m": 0.405
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 34,
+        "median_abs_line_error_m": 0.33,
+        "p90_abs_line_error_m": 0.66,
+        "max_abs_line_error_m": 1.68,
+        "predicted_abs_error_m": 0.459,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.5,
+        "median_abs_arc_error_m": 0.506
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 8,
+        "median_abs_line_error_m": 0.517,
+        "p90_abs_line_error_m": 0.619,
+        "max_abs_line_error_m": 0.63,
+        "predicted_abs_error_m": 0.656,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.75,
+        "median_abs_arc_error_m": 0.345
+       }
+      ]
+     },
+     {
+      "stratum": "sharp_R_under_400m",
+      "samples": 831,
+      "median_radius_m": 257.1,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00081536,
+       "implied_radius_m": 613.2
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00413041,
+       "implied_radius_m": 121.1
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 247,
+        "median_abs_line_error_m": 0.06,
+        "p90_abs_line_error_m": 0.225,
+        "max_abs_line_error_m": 0.255,
+        "predicted_abs_error_m": 0.05,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.348,
+        "median_abs_arc_error_m": 0.116
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 239,
+        "median_abs_line_error_m": 0.165,
+        "p90_abs_line_error_m": 0.495,
+        "max_abs_line_error_m": 0.555,
+        "predicted_abs_error_m": 0.209,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.481,
+        "median_abs_arc_error_m": 0.351
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 173,
+        "median_abs_line_error_m": 0.225,
+        "p90_abs_line_error_m": 0.615,
+        "max_abs_line_error_m": 0.75,
+        "predicted_abs_error_m": 0.422,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.416,
+        "median_abs_arc_error_m": 0.675
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 130,
+        "median_abs_line_error_m": 0.225,
+        "p90_abs_line_error_m": 0.585,
+        "max_abs_line_error_m": 0.72,
+        "predicted_abs_error_m": 0.718,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.315,
+        "median_abs_arc_error_m": 0.958
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 38,
+        "median_abs_line_error_m": 0.199,
+        "p90_abs_line_error_m": 0.593,
+        "max_abs_line_error_m": 0.72,
+        "predicted_abs_error_m": 1.122,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.158,
+        "median_abs_arc_error_m": 1.47
+       }
+      ]
+     }
+    ]
+   },
+   "center_profile_shape": {
+    "yaw_deg": -1.75,
+    "rms_linear_m": 0.0462,
+    "rms_quadratic_m": 0.0395,
+    "radius_from_quadratic_m": 1795.0
+   },
+   "operating_range_10_to_25m": {
+    "samples": 1071,
+    "median_abs_error_m": {
+     "endpoint_tangent": 0.18,
+     "fitted_slope_20m": 0.182,
+     "arc": 0.405
+    },
+    "p90_abs_error_m": {
+     "endpoint_tangent": 0.555,
+     "fitted_slope_20m": 0.384,
+     "arc": 1.801
+    },
+    "share_fitted_slope_better": 0.442,
+    "share_arc_better": 0.16,
+    "share_tangent_error_above_stated_uncertainty": 0.37
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+   "frames_with_geometry": 345,
+   "frames_without_geometry": 0,
+   "median_last_anchor_m": 40.0,
+   "p10_last_anchor_m": 35.0,
+   "max_last_anchor_m": 45.0,
+   "observed_center_profile": [
+    {
+     "anchor_x_m": 15.0,
+     "anchors": 345,
+     "median_center_m": -0.075,
+     "median_abs_center_m": 0.075,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 20.0,
+     "anchors": 690,
+     "median_center_m": -0.105,
+     "median_abs_center_m": 0.105,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 25.0,
+     "anchors": 1035,
+     "median_center_m": -0.12,
+     "median_abs_center_m": 0.12,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 30.0,
+     "anchors": 1380,
+     "median_center_m": -0.15,
+     "median_abs_center_m": 0.15,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 35.0,
+     "anchors": 1715,
+     "median_center_m": -0.165,
+     "median_abs_center_m": 0.165,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 40.0,
+     "anchors": 1230,
+     "median_center_m": -0.18,
+     "median_abs_center_m": 0.18,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 45.0,
+     "anchors": 167,
+     "median_center_m": -0.225,
+     "median_abs_center_m": 0.225,
+     "share_abs_center_over_1m": 0.0
+    }
+   ],
+   "summary": {
+    "samples": 6562,
+    "samples_with_curvature": 4610,
+    "median_abs_line_error_m": 0.03,
+    "line_error_vs_distance": {
+     "coefficient_1_per_m": 0.00015616,
+     "implied_radius_m": 3201.8
+    },
+    "median_radius_m": 2916.7,
+    "sharpest_radius_m": 416.8,
+    "curvature_strata": [
+     {
+      "stratum": "straight_R_over_2000m",
+      "samples": 2528,
+      "median_radius_m": 5833.4,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00023444,
+       "implied_radius_m": 2132.8
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00030162,
+       "implied_radius_m": 1657.7
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 1025,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.03,
+        "max_abs_line_error_m": 0.075,
+        "predicted_abs_error_m": 0.002,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.015
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 783,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.09,
+        "max_abs_line_error_m": 0.18,
+        "predicted_abs_error_m": 0.009,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.004,
+        "median_abs_arc_error_m": 0.042
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 476,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.135,
+        "max_abs_line_error_m": 0.33,
+        "predicted_abs_error_m": 0.019,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.011,
+        "median_abs_arc_error_m": 0.07
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 198,
+        "median_abs_line_error_m": 0.06,
+        "p90_abs_line_error_m": 0.165,
+        "max_abs_line_error_m": 0.465,
+        "predicted_abs_error_m": 0.0,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.015,
+        "median_abs_arc_error_m": 0.103
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 40,
+        "median_abs_line_error_m": 0.075,
+        "p90_abs_line_error_m": 0.227,
+        "max_abs_line_error_m": 0.39,
+        "predicted_abs_error_m": 0.0,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.105
+       },
+       {
+        "extrapolation_m": 30.0,
+        "samples": 6,
+        "median_abs_line_error_m": 0.105,
+        "p90_abs_line_error_m": 0.262,
+        "max_abs_line_error_m": 0.36,
+        "predicted_abs_error_m": 0.0,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 0.105
+       }
+      ]
+     },
+     {
+      "stratum": "gentle_R_800_2000m",
+      "samples": 2033,
+      "median_radius_m": 1666.7,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00014711,
+       "implied_radius_m": 3398.8
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00054536,
+       "implied_radius_m": 916.8
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 565,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.03,
+        "max_abs_line_error_m": 0.09,
+        "predicted_abs_error_m": 0.007,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.015
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 469,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.06,
+        "max_abs_line_error_m": 0.195,
+        "predicted_abs_error_m": 0.03,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.002,
+        "median_abs_arc_error_m": 0.06
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 433,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.105,
+        "max_abs_line_error_m": 0.27,
+        "predicted_abs_error_m": 0.067,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.002,
+        "median_abs_arc_error_m": 0.12
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 366,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.15,
+        "max_abs_line_error_m": 0.435,
+        "predicted_abs_error_m": 0.12,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.003,
+        "median_abs_arc_error_m": 0.195
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 183,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.165,
+        "max_abs_line_error_m": 0.465,
+        "predicted_abs_error_m": 0.187,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.005,
+        "median_abs_arc_error_m": 0.27
+       },
+       {
+        "extrapolation_m": 30.0,
+        "samples": 17,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.324,
+        "max_abs_line_error_m": 0.465,
+        "predicted_abs_error_m": 0.27,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 0.33
+       }
+      ]
+     },
+     {
+      "stratum": "moderate_R_400_800m",
+      "samples": 49,
+      "median_radius_m": 416.9,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.0003441,
+       "implied_radius_m": 1453.1
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00173965,
+       "implied_radius_m": 287.4
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 16,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.045,
+        "max_abs_line_error_m": 0.075,
+        "predicted_abs_error_m": 0.023,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.048
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 10,
+        "median_abs_line_error_m": 0.075,
+        "p90_abs_line_error_m": 0.094,
+        "max_abs_line_error_m": 0.135,
+        "predicted_abs_error_m": 0.12,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.233
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 8,
+        "median_abs_line_error_m": 0.128,
+        "p90_abs_line_error_m": 0.14,
+        "max_abs_line_error_m": 0.15,
+        "predicted_abs_error_m": 0.27,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.488
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 8,
+        "median_abs_line_error_m": 0.15,
+        "p90_abs_line_error_m": 0.193,
+        "max_abs_line_error_m": 0.225,
+        "predicted_abs_error_m": 0.48,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.75
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 6,
+        "median_abs_line_error_m": 0.18,
+        "p90_abs_line_error_m": 0.27,
+        "max_abs_line_error_m": 0.3,
+        "predicted_abs_error_m": 0.75,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 1.073
+       }
+      ]
+     }
+    ]
+   },
+   "center_profile_shape": {
+    "yaw_deg": -0.26,
+    "rms_linear_m": 0.0067,
+    "rms_quadratic_m": 0.0064,
+    "radius_from_quadratic_m": 23333.0
+   },
+   "operating_range_10_to_25m": {
+    "samples": 2980,
+    "median_abs_error_m": {
+     "endpoint_tangent": 0.045,
+     "fitted_slope_20m": 0.033,
+     "arc": 0.088
+    },
+    "p90_abs_error_m": {
+     "endpoint_tangent": 0.12,
+     "fitted_slope_20m": 0.112,
+     "arc": 0.266
+    },
+    "share_fitted_slope_better": 0.463,
+    "share_arc_better": 0.207,
+    "share_tangent_error_above_stated_uncertainty": 0.005
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+   "frames_with_geometry": 252,
+   "frames_without_geometry": 0,
+   "median_last_anchor_m": 40.0,
+   "p10_last_anchor_m": 30.0,
+   "max_last_anchor_m": 45.0,
+   "observed_center_profile": [
+    {
+     "anchor_x_m": 15.0,
+     "anchors": 214,
+     "median_center_m": -0.09,
+     "median_abs_center_m": 0.105,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 20.0,
+     "anchors": 450,
+     "median_center_m": -0.12,
+     "median_abs_center_m": 0.18,
+     "share_abs_center_over_1m": 0.189
+    },
+    {
+     "anchor_x_m": 25.0,
+     "anchors": 644,
+     "median_center_m": -0.15,
+     "median_abs_center_m": 0.18,
+     "share_abs_center_over_1m": 0.267
+    },
+    {
+     "anchor_x_m": 30.0,
+     "anchors": 881,
+     "median_center_m": -0.195,
+     "median_abs_center_m": 0.285,
+     "share_abs_center_over_1m": 0.327
+    },
+    {
+     "anchor_x_m": 35.0,
+     "anchors": 1024,
+     "median_center_m": -0.21,
+     "median_abs_center_m": 0.255,
+     "share_abs_center_over_1m": 0.314
+    },
+    {
+     "anchor_x_m": 40.0,
+     "anchors": 810,
+     "median_center_m": -0.21,
+     "median_abs_center_m": 0.225,
+     "share_abs_center_over_1m": 0.173
+    },
+    {
+     "anchor_x_m": 45.0,
+     "anchors": 166,
+     "median_center_m": -0.232,
+     "median_abs_center_m": 0.247,
+     "share_abs_center_over_1m": 0.078
+    }
+   ],
+   "summary": {
+    "samples": 4189,
+    "samples_with_curvature": 2894,
+    "median_abs_line_error_m": 0.045,
+    "line_error_vs_distance": {
+     "coefficient_1_per_m": 0.00061065,
+     "implied_radius_m": 818.8
+    },
+    "median_radius_m": 1666.8,
+    "sharpest_radius_m": 49.2,
+    "curvature_strata": [
+     {
+      "stratum": "straight_R_over_2000m",
+      "samples": 1116,
+      "median_radius_m": 3889.3,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00020582,
+       "implied_radius_m": 2429.3
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00030227,
+       "implied_radius_m": 1654.1
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 446,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.03,
+        "max_abs_line_error_m": 0.18,
+        "predicted_abs_error_m": 0.002,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.009,
+        "median_abs_arc_error_m": 0.018
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 329,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.075,
+        "max_abs_line_error_m": 0.615,
+        "predicted_abs_error_m": 0.011,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.015,
+        "median_abs_arc_error_m": 0.043
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 207,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.12,
+        "max_abs_line_error_m": 0.33,
+        "predicted_abs_error_m": 0.029,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.005,
+        "median_abs_arc_error_m": 0.068
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 103,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.18,
+        "max_abs_line_error_m": 0.33,
+        "predicted_abs_error_m": 0.06,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.103
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 29,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.288,
+        "max_abs_line_error_m": 0.39,
+        "predicted_abs_error_m": 0.0,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.128
+       }
+      ]
+     },
+     {
+      "stratum": "gentle_R_800_2000m",
+      "samples": 916,
+      "median_radius_m": 1666.8,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00013206,
+       "implied_radius_m": 3786.0
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00049865,
+       "implied_radius_m": 1002.7
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 254,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.045,
+        "max_abs_line_error_m": 0.225,
+        "predicted_abs_error_m": 0.007,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.02,
+        "median_abs_arc_error_m": 0.015
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 211,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.075,
+        "max_abs_line_error_m": 0.33,
+        "predicted_abs_error_m": 0.03,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.019,
+        "median_abs_arc_error_m": 0.06
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 185,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.12,
+        "max_abs_line_error_m": 0.435,
+        "predicted_abs_error_m": 0.067,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.032,
+        "median_abs_arc_error_m": 0.12
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 151,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.12,
+        "max_abs_line_error_m": 0.48,
+        "predicted_abs_error_m": 0.12,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.033,
+        "median_abs_arc_error_m": 0.18
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 97,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.123,
+        "max_abs_line_error_m": 0.585,
+        "predicted_abs_error_m": 0.187,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.021,
+        "median_abs_arc_error_m": 0.255
+       },
+       {
+        "extrapolation_m": 30.0,
+        "samples": 18,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.105,
+        "max_abs_line_error_m": 0.225,
+        "predicted_abs_error_m": 0.27,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 0.338
+       }
+      ]
+     },
+     {
+      "stratum": "moderate_R_400_800m",
+      "samples": 157,
+      "median_radius_m": 555.6,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00026768,
+       "implied_radius_m": 1867.9
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00141709,
+       "implied_radius_m": 352.8
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 70,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.105,
+        "max_abs_line_error_m": 0.27,
+        "predicted_abs_error_m": 0.022,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.086,
+        "median_abs_arc_error_m": 0.06
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 40,
+        "median_abs_line_error_m": 0.053,
+        "p90_abs_line_error_m": 0.271,
+        "max_abs_line_error_m": 0.72,
+        "predicted_abs_error_m": 0.09,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.175,
+        "median_abs_arc_error_m": 0.193
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 21,
+        "median_abs_line_error_m": 0.075,
+        "p90_abs_line_error_m": 0.165,
+        "max_abs_line_error_m": 0.24,
+        "predicted_abs_error_m": 0.217,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.345
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 17,
+        "median_abs_line_error_m": 0.105,
+        "p90_abs_line_error_m": 0.234,
+        "max_abs_line_error_m": 0.3,
+        "predicted_abs_error_m": 0.419,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.58
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 7,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.255,
+        "max_abs_line_error_m": 0.39,
+        "predicted_abs_error_m": 0.624,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.945
+       }
+      ]
+     },
+     {
+      "stratum": "sharp_R_under_400m",
+      "samples": 705,
+      "median_radius_m": 153.3,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00114677,
+       "implied_radius_m": 436.0
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00490333,
+       "implied_radius_m": 102.0
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 240,
+        "median_abs_line_error_m": 0.06,
+        "p90_abs_line_error_m": 0.227,
+        "max_abs_line_error_m": 0.458,
+        "predicted_abs_error_m": 0.075,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.283,
+        "median_abs_arc_error_m": 0.15
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 204,
+        "median_abs_line_error_m": 0.12,
+        "p90_abs_line_error_m": 0.401,
+        "max_abs_line_error_m": 1.11,
+        "predicted_abs_error_m": 0.323,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.382,
+        "median_abs_arc_error_m": 0.521
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 160,
+        "median_abs_line_error_m": 0.24,
+        "p90_abs_line_error_m": 0.616,
+        "max_abs_line_error_m": 1.485,
+        "predicted_abs_error_m": 0.799,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.487,
+        "median_abs_arc_error_m": 1.072
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 78,
+        "median_abs_line_error_m": 0.382,
+        "p90_abs_line_error_m": 0.84,
+        "max_abs_line_error_m": 1.62,
+        "predicted_abs_error_m": 1.667,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.551,
+        "median_abs_arc_error_m": 2.014
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 22,
+        "median_abs_line_error_m": 0.435,
+        "p90_abs_line_error_m": 0.803,
+        "max_abs_line_error_m": 1.155,
+        "predicted_abs_error_m": 2.965,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.455,
+        "median_abs_arc_error_m": 3.405
+       }
+      ]
+     }
+    ]
+   },
+   "center_profile_shape": {
+    "yaw_deg": -0.27,
+    "rms_linear_m": 0.0124,
+    "rms_quadratic_m": 0.007,
+    "radius_from_quadratic_m": 4242.0
+   },
+   "operating_range_10_to_25m": {
+    "samples": 1861,
+    "median_abs_error_m": {
+     "endpoint_tangent": 0.045,
+     "fitted_slope_20m": 0.045,
+     "arc": 0.133
+    },
+    "p90_abs_error_m": {
+     "endpoint_tangent": 0.3,
+     "fitted_slope_20m": 0.567,
+     "arc": 1.005
+    },
+    "share_fitted_slope_better": 0.404,
+    "share_arc_better": 0.181,
+    "share_tangent_error_above_stated_uncertainty": 0.128
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+   "frames_with_geometry": 268,
+   "frames_without_geometry": 0,
+   "median_last_anchor_m": 35.0,
+   "p10_last_anchor_m": 30.0,
+   "max_last_anchor_m": 45.0,
+   "observed_center_profile": [
+    {
+     "anchor_x_m": 15.0,
+     "anchors": 231,
+     "median_center_m": -0.09,
+     "median_abs_center_m": 0.105,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 20.0,
+     "anchors": 486,
+     "median_center_m": -0.12,
+     "median_abs_center_m": 0.15,
+     "share_abs_center_over_1m": 0.027
+    },
+    {
+     "anchor_x_m": 25.0,
+     "anchors": 712,
+     "median_center_m": -0.15,
+     "median_abs_center_m": 0.165,
+     "share_abs_center_over_1m": 0.16
+    },
+    {
+     "anchor_x_m": 30.0,
+     "anchors": 972,
+     "median_center_m": -0.165,
+     "median_abs_center_m": 0.27,
+     "share_abs_center_over_1m": 0.285
+    },
+    {
+     "anchor_x_m": 35.0,
+     "anchors": 1111,
+     "median_center_m": -0.195,
+     "median_abs_center_m": 0.24,
+     "share_abs_center_over_1m": 0.282
+    },
+    {
+     "anchor_x_m": 40.0,
+     "anchors": 709,
+     "median_center_m": -0.21,
+     "median_abs_center_m": 0.225,
+     "share_abs_center_over_1m": 0.148
+    },
+    {
+     "anchor_x_m": 45.0,
+     "anchors": 209,
+     "median_center_m": -0.21,
+     "median_abs_center_m": 0.225,
+     "share_abs_center_over_1m": 0.096
+    }
+   ],
+   "summary": {
+    "samples": 4430,
+    "samples_with_curvature": 3053,
+    "median_abs_line_error_m": 0.045,
+    "line_error_vs_distance": {
+     "coefficient_1_per_m": 0.00055531,
+     "implied_radius_m": 900.4
+    },
+    "median_radius_m": 1666.7,
+    "sharpest_radius_m": 44.7,
+    "curvature_strata": [
+     {
+      "stratum": "straight_R_over_2000m",
+      "samples": 1059,
+      "median_radius_m": 5833.6,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00021307,
+       "implied_radius_m": 2346.6
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00029321,
+       "implied_radius_m": 1705.3
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 426,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.03,
+        "max_abs_line_error_m": 0.135,
+        "predicted_abs_error_m": 0.002,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.005,
+        "median_abs_arc_error_m": 0.015
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 311,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.075,
+        "max_abs_line_error_m": 0.24,
+        "predicted_abs_error_m": 0.009,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.01,
+        "median_abs_arc_error_m": 0.036
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 198,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.12,
+        "max_abs_line_error_m": 0.405,
+        "predicted_abs_error_m": 0.029,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.025,
+        "median_abs_arc_error_m": 0.066
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 92,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.149,
+        "max_abs_line_error_m": 0.525,
+        "predicted_abs_error_m": 0.051,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.033,
+        "median_abs_arc_error_m": 0.105
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 28,
+        "median_abs_line_error_m": 0.075,
+        "p90_abs_line_error_m": 0.216,
+        "max_abs_line_error_m": 0.66,
+        "predicted_abs_error_m": 0.0,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.071,
+        "median_abs_arc_error_m": 0.105
+       }
+      ]
+     },
+     {
+      "stratum": "gentle_R_800_2000m",
+      "samples": 1137,
+      "median_radius_m": 1666.7,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00018053,
+       "implied_radius_m": 2769.7
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00055292,
+       "implied_radius_m": 904.3
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 331,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.045,
+        "max_abs_line_error_m": 0.165,
+        "predicted_abs_error_m": 0.007,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.015,
+        "median_abs_arc_error_m": 0.024
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 272,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.104,
+        "max_abs_line_error_m": 0.3,
+        "predicted_abs_error_m": 0.03,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.044,
+        "median_abs_arc_error_m": 0.074
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 229,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.18,
+        "max_abs_line_error_m": 0.525,
+        "predicted_abs_error_m": 0.067,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.048,
+        "median_abs_arc_error_m": 0.135
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 185,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.249,
+        "max_abs_line_error_m": 0.78,
+        "predicted_abs_error_m": 0.12,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.07,
+        "median_abs_arc_error_m": 0.21
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 98,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.124,
+        "max_abs_line_error_m": 0.795,
+        "predicted_abs_error_m": 0.187,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.061,
+        "median_abs_arc_error_m": 0.285
+       },
+       {
+        "extrapolation_m": 30.0,
+        "samples": 22,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.075,
+        "max_abs_line_error_m": 0.09,
+        "predicted_abs_error_m": 0.27,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 0.36
+       }
+      ]
+     },
+     {
+      "stratum": "moderate_R_400_800m",
+      "samples": 203,
+      "median_radius_m": 555.7,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00071167,
+       "implied_radius_m": 702.6
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00099422,
+       "implied_radius_m": 502.9
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 95,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.105,
+        "max_abs_line_error_m": 0.255,
+        "predicted_abs_error_m": 0.022,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.053,
+        "median_abs_arc_error_m": 0.055
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 55,
+        "median_abs_line_error_m": 0.12,
+        "p90_abs_line_error_m": 0.285,
+        "max_abs_line_error_m": 0.66,
+        "predicted_abs_error_m": 0.1,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.345,
+        "median_abs_arc_error_m": 0.124
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 30,
+        "median_abs_line_error_m": 0.195,
+        "p90_abs_line_error_m": 0.456,
+        "max_abs_line_error_m": 0.795,
+        "predicted_abs_error_m": 0.202,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.367,
+        "median_abs_arc_error_m": 0.203
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 15,
+        "median_abs_line_error_m": 0.27,
+        "p90_abs_line_error_m": 0.618,
+        "max_abs_line_error_m": 0.81,
+        "predicted_abs_error_m": 0.36,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.333,
+        "median_abs_arc_error_m": 0.27
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 7,
+        "median_abs_line_error_m": 0.165,
+        "p90_abs_line_error_m": 0.687,
+        "max_abs_line_error_m": 0.885,
+        "predicted_abs_error_m": 0.75,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.286,
+        "median_abs_arc_error_m": 0.75
+       }
+      ]
+     },
+     {
+      "stratum": "sharp_R_under_400m",
+      "samples": 654,
+      "median_radius_m": 168.3,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00106429,
+       "implied_radius_m": 469.8
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00433071,
+       "implied_radius_m": 115.5
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 236,
+        "median_abs_line_error_m": 0.06,
+        "p90_abs_line_error_m": 0.199,
+        "max_abs_line_error_m": 0.495,
+        "predicted_abs_error_m": 0.066,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.258,
+        "median_abs_arc_error_m": 0.12
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 191,
+        "median_abs_line_error_m": 0.105,
+        "p90_abs_line_error_m": 0.36,
+        "max_abs_line_error_m": 0.93,
+        "predicted_abs_error_m": 0.268,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.351,
+        "median_abs_arc_error_m": 0.42
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 136,
+        "median_abs_line_error_m": 0.21,
+        "p90_abs_line_error_m": 0.42,
+        "max_abs_line_error_m": 0.72,
+        "predicted_abs_error_m": 0.753,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.434,
+        "median_abs_arc_error_m": 0.939
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 72,
+        "median_abs_line_error_m": 0.42,
+        "p90_abs_line_error_m": 0.718,
+        "max_abs_line_error_m": 0.975,
+        "predicted_abs_error_m": 1.55,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.639,
+        "median_abs_arc_error_m": 1.628
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 15,
+        "median_abs_line_error_m": 0.63,
+        "p90_abs_line_error_m": 0.879,
+        "max_abs_line_error_m": 1.035,
+        "predicted_abs_error_m": 2.937,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.667,
+        "median_abs_arc_error_m": 3.135
+       }
+      ]
+     }
+    ]
+   },
+   "center_profile_shape": {
+    "yaw_deg": -0.24,
+    "rms_linear_m": 0.009,
+    "rms_quadratic_m": 0.0041,
+    "radius_from_quadratic_m": 5385.0
+   },
+   "operating_range_10_to_25m": {
+    "samples": 1934,
+    "median_abs_error_m": {
+     "endpoint_tangent": 0.056,
+     "fitted_slope_20m": 0.051,
+     "arc": 0.12
+    },
+    "p90_abs_error_m": {
+     "endpoint_tangent": 0.285,
+     "fitted_slope_20m": 0.496,
+     "arc": 0.72
+    },
+    "share_fitted_slope_better": 0.385,
+    "share_arc_better": 0.229,
+    "share_tangent_error_above_stated_uncertainty": 0.142
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+   "frames_with_geometry": 544,
+   "frames_without_geometry": 1,
+   "median_last_anchor_m": 40.0,
+   "p10_last_anchor_m": 35.0,
+   "max_last_anchor_m": 60.0,
+   "observed_center_profile": [
+    {
+     "anchor_x_m": 15.0,
+     "anchors": 506,
+     "median_center_m": -0.075,
+     "median_abs_center_m": 0.09,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 20.0,
+     "anchors": 1041,
+     "median_center_m": -0.09,
+     "median_abs_center_m": 0.12,
+     "share_abs_center_over_1m": 0.112
+    },
+    {
+     "anchor_x_m": 25.0,
+     "anchors": 1488,
+     "median_center_m": -0.12,
+     "median_abs_center_m": 0.15,
+     "share_abs_center_over_1m": 0.245
+    },
+    {
+     "anchor_x_m": 30.0,
+     "anchors": 2049,
+     "median_center_m": -0.15,
+     "median_abs_center_m": 0.165,
+     "share_abs_center_over_1m": 0.286
+    },
+    {
+     "anchor_x_m": 35.0,
+     "anchors": 2220,
+     "median_center_m": -0.165,
+     "median_abs_center_m": 0.195,
+     "share_abs_center_over_1m": 0.195
+    },
+    {
+     "anchor_x_m": 40.0,
+     "anchors": 2020,
+     "median_center_m": -0.195,
+     "median_abs_center_m": 0.195,
+     "share_abs_center_over_1m": 0.052
+    },
+    {
+     "anchor_x_m": 45.0,
+     "anchors": 997,
+     "median_center_m": -0.21,
+     "median_abs_center_m": 0.24,
+     "share_abs_center_over_1m": 0.203
+    },
+    {
+     "anchor_x_m": 50.0,
+     "anchors": 196,
+     "median_center_m": 2.235,
+     "median_abs_center_m": 2.235,
+     "share_abs_center_over_1m": 0.724
+    },
+    {
+     "anchor_x_m": 55.0,
+     "anchors": 65,
+     "median_center_m": 1.125,
+     "median_abs_center_m": 1.53,
+     "share_abs_center_over_1m": 0.785
+    },
+    {
+     "anchor_x_m": 60.0,
+     "anchors": 16,
+     "median_center_m": 1.875,
+     "median_abs_center_m": 1.875,
+     "share_abs_center_over_1m": 1.0
+    }
+   ],
+   "summary": {
+    "samples": 10598,
+    "samples_with_curvature": 7522,
+    "median_abs_line_error_m": 0.03,
+    "line_error_vs_distance": {
+     "coefficient_1_per_m": 0.00052438,
+     "implied_radius_m": 953.5
+    },
+    "median_radius_m": 1666.9,
+    "sharpest_radius_m": 37.7,
+    "curvature_strata": [
+     {
+      "stratum": "straight_R_over_2000m",
+      "samples": 3493,
+      "median_radius_m": 5833.5,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00022479,
+       "implied_radius_m": 2224.3
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00031677,
+       "implied_radius_m": 1578.5
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 1298,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.03,
+        "max_abs_line_error_m": 0.12,
+        "predicted_abs_error_m": 0.002,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.001,
+        "median_abs_arc_error_m": 0.015
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 991,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.06,
+        "max_abs_line_error_m": 1.35,
+        "predicted_abs_error_m": 0.009,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.004,
+        "median_abs_arc_error_m": 0.039
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 687,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.105,
+        "max_abs_line_error_m": 1.5,
+        "predicted_abs_error_m": 0.019,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.038,
+        "median_abs_arc_error_m": 0.07
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 359,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.105,
+        "max_abs_line_error_m": 1.5,
+        "predicted_abs_error_m": 0.051,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.011,
+        "median_abs_arc_error_m": 0.093
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 133,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.117,
+        "max_abs_line_error_m": 1.425,
+        "predicted_abs_error_m": 0.0,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.03,
+        "median_abs_arc_error_m": 0.105
+       },
+       {
+        "extrapolation_m": 30.0,
+        "samples": 24,
+        "median_abs_line_error_m": 0.06,
+        "p90_abs_line_error_m": 0.48,
+        "max_abs_line_error_m": 1.425,
+        "predicted_abs_error_m": 0.0,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 0.075
+       }
+      ]
+     },
+     {
+      "stratum": "gentle_R_800_2000m",
+      "samples": 2452,
+      "median_radius_m": 1666.8,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00017284,
+       "implied_radius_m": 2892.9
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00053187,
+       "implied_radius_m": 940.1
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 575,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.03,
+        "max_abs_line_error_m": 0.21,
+        "predicted_abs_error_m": 0.007,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.002,
+        "median_abs_arc_error_m": 0.015
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 515,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.075,
+        "max_abs_line_error_m": 1.35,
+        "predicted_abs_error_m": 0.03,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.025,
+        "median_abs_arc_error_m": 0.06
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 496,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.105,
+        "max_abs_line_error_m": 1.455,
+        "predicted_abs_error_m": 0.067,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.058,
+        "median_abs_arc_error_m": 0.12
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 439,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.105,
+        "max_abs_line_error_m": 1.56,
+        "predicted_abs_error_m": 0.12,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.036,
+        "median_abs_arc_error_m": 0.195
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 306,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.09,
+        "max_abs_line_error_m": 1.005,
+        "predicted_abs_error_m": 0.187,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.023,
+        "median_abs_arc_error_m": 0.27
+       },
+       {
+        "extrapolation_m": 30.0,
+        "samples": 100,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.09,
+        "max_abs_line_error_m": 1.17,
+        "predicted_abs_error_m": 0.27,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 0.36
+       },
+       {
+        "extrapolation_m": 35.0,
+        "samples": 13,
+        "median_abs_line_error_m": 0.075,
+        "p90_abs_line_error_m": 0.852,
+        "max_abs_line_error_m": 1.425,
+        "predicted_abs_error_m": 0.367,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 0.48
+       },
+       {
+        "extrapolation_m": 40.0,
+        "samples": 7,
+        "median_abs_line_error_m": 0.72,
+        "p90_abs_line_error_m": 1.173,
+        "max_abs_line_error_m": 1.425,
+        "predicted_abs_error_m": 0.72,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 0.345
+       }
+      ]
+     },
+     {
+      "stratum": "moderate_R_400_800m",
+      "samples": 174,
+      "median_radius_m": 555.6,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.0013068,
+       "implied_radius_m": 382.6
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00208522,
+       "implied_radius_m": 239.8
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 70,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.113,
+        "max_abs_line_error_m": 0.165,
+        "predicted_abs_error_m": 0.024,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.114,
+        "median_abs_arc_error_m": 0.095
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 25,
+        "median_abs_line_error_m": 0.18,
+        "p90_abs_line_error_m": 0.453,
+        "max_abs_line_error_m": 1.335,
+        "predicted_abs_error_m": 0.09,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.52,
+        "median_abs_arc_error_m": 0.18
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 39,
+        "median_abs_line_error_m": 1.32,
+        "p90_abs_line_error_m": 1.482,
+        "max_abs_line_error_m": 1.62,
+        "predicted_abs_error_m": 0.202,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.821,
+        "median_abs_arc_error_m": 1.589
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 22,
+        "median_abs_line_error_m": 1.2,
+        "p90_abs_line_error_m": 1.455,
+        "max_abs_line_error_m": 1.59,
+        "predicted_abs_error_m": 0.416,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.727,
+        "median_abs_arc_error_m": 1.473
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 10,
+        "median_abs_line_error_m": 0.15,
+        "p90_abs_line_error_m": 1.438,
+        "max_abs_line_error_m": 1.56,
+        "predicted_abs_error_m": 0.562,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.4,
+        "median_abs_arc_error_m": 0.788
+       },
+       {
+        "extrapolation_m": 30.0,
+        "samples": 6,
+        "median_abs_line_error_m": 0.135,
+        "p90_abs_line_error_m": 0.383,
+        "max_abs_line_error_m": 0.465,
+        "predicted_abs_error_m": 0.867,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 1.118
+       }
+      ]
+     },
+     {
+      "stratum": "sharp_R_under_400m",
+      "samples": 1403,
+      "median_radius_m": 135.4,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00131262,
+       "implied_radius_m": 380.9
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00548171,
+       "implied_radius_m": 91.2
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 463,
+        "median_abs_line_error_m": 0.06,
+        "p90_abs_line_error_m": 0.21,
+        "max_abs_line_error_m": 0.735,
+        "predicted_abs_error_m": 0.085,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.35,
+        "median_abs_arc_error_m": 0.18
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 365,
+        "median_abs_line_error_m": 0.12,
+        "p90_abs_line_error_m": 0.435,
+        "max_abs_line_error_m": 1.335,
+        "predicted_abs_error_m": 0.369,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.392,
+        "median_abs_arc_error_m": 0.565
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 265,
+        "median_abs_line_error_m": 0.33,
+        "p90_abs_line_error_m": 1.042,
+        "max_abs_line_error_m": 1.95,
+        "predicted_abs_error_m": 0.96,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.6,
+        "median_abs_arc_error_m": 1.2
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 145,
+        "median_abs_line_error_m": 0.87,
+        "p90_abs_line_error_m": 1.518,
+        "max_abs_line_error_m": 2.04,
+        "predicted_abs_error_m": 1.484,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.91,
+        "median_abs_arc_error_m": 2.252
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 78,
+        "median_abs_line_error_m": 1.357,
+        "p90_abs_line_error_m": 1.744,
+        "max_abs_line_error_m": 2.01,
+        "predicted_abs_error_m": 2.159,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.949,
+        "median_abs_arc_error_m": 3.932
+       },
+       {
+        "extrapolation_m": 30.0,
+        "samples": 63,
+        "median_abs_line_error_m": 0.87,
+        "p90_abs_line_error_m": 1.437,
+        "max_abs_line_error_m": 1.725,
+        "predicted_abs_error_m": 3.851,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 5.55
+       },
+       {
+        "extrapolation_m": 35.0,
+        "samples": 21,
+        "median_abs_line_error_m": 0.18,
+        "p90_abs_line_error_m": 1.132,
+        "max_abs_line_error_m": 1.23,
+        "predicted_abs_error_m": 5.827,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 6.645
+       }
+      ]
+     }
+    ]
+   },
+   "center_profile_shape": {
+    "yaw_deg": -0.27,
+    "rms_linear_m": 0.0043,
+    "rms_quadratic_m": 0.0041,
+    "radius_from_quadratic_m": 35000.0
+   },
+   "operating_range_10_to_25m": {
+    "samples": 4875,
+    "median_abs_error_m": {
+     "endpoint_tangent": 0.045,
+     "fitted_slope_20m": 0.031,
+     "arc": 0.105
+    },
+    "p90_abs_error_m": {
+     "endpoint_tangent": 0.405,
+     "fitted_slope_20m": 0.668,
+     "arc": 0.99
+    },
+    "share_fitted_slope_better": 0.501,
+    "share_arc_better": 0.176,
+    "share_tangent_error_above_stated_uncertainty": 0.139
+   }
+  },
+  {
+   "bag": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+   "frames_with_geometry": 877,
+   "frames_without_geometry": 0,
+   "median_last_anchor_m": 40.0,
+   "p10_last_anchor_m": 40.0,
+   "max_last_anchor_m": 55.0,
+   "observed_center_profile": [
+    {
+     "anchor_x_m": 15.0,
+     "anchors": 877,
+     "median_center_m": -0.075,
+     "median_abs_center_m": 0.075,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 20.0,
+     "anchors": 1754,
+     "median_center_m": -0.09,
+     "median_abs_center_m": 0.09,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 25.0,
+     "anchors": 2631,
+     "median_center_m": -0.12,
+     "median_abs_center_m": 0.12,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 30.0,
+     "anchors": 3508,
+     "median_center_m": -0.15,
+     "median_abs_center_m": 0.15,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 35.0,
+     "anchors": 4385,
+     "median_center_m": -0.18,
+     "median_abs_center_m": 0.18,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 40.0,
+     "anchors": 4998,
+     "median_center_m": -0.195,
+     "median_abs_center_m": 0.195,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 45.0,
+     "anchors": 1435,
+     "median_center_m": -0.195,
+     "median_abs_center_m": 0.195,
+     "share_abs_center_over_1m": 0.0
+    },
+    {
+     "anchor_x_m": 50.0,
+     "anchors": 102,
+     "median_center_m": -0.15,
+     "median_abs_center_m": 0.15,
+     "share_abs_center_over_1m": 0.059
+    },
+    {
+     "anchor_x_m": 55.0,
+     "anchors": 7,
+     "median_center_m": -1.77,
+     "median_abs_center_m": 1.77,
+     "share_abs_center_over_1m": 1.0
+    }
+   ],
+   "summary": {
+    "samples": 19697,
+    "samples_with_curvature": 14260,
+    "median_abs_line_error_m": 0.03,
+    "line_error_vs_distance": {
+     "coefficient_1_per_m": 0.00013169,
+     "implied_radius_m": 3796.8
+    },
+    "median_radius_m": 2333.6,
+    "sharpest_radius_m": 416.8,
+    "curvature_strata": [
+     {
+      "stratum": "straight_R_over_2000m",
+      "samples": 7400,
+      "median_radius_m": 5833.5,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00016701,
+       "implied_radius_m": 2993.8
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00028989,
+       "implied_radius_m": 1724.8
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 3009,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.03,
+        "max_abs_line_error_m": 0.165,
+        "predicted_abs_error_m": 0.002,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.002,
+        "median_abs_arc_error_m": 0.015
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 2201,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.075,
+        "max_abs_line_error_m": 0.21,
+        "predicted_abs_error_m": 0.009,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.001,
+        "median_abs_arc_error_m": 0.044
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 1399,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.075,
+        "max_abs_line_error_m": 1.515,
+        "predicted_abs_error_m": 0.034,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.002,
+        "median_abs_arc_error_m": 0.082
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 600,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.092,
+        "max_abs_line_error_m": 1.53,
+        "predicted_abs_error_m": 0.06,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.003,
+        "median_abs_arc_error_m": 0.104
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 165,
+        "median_abs_line_error_m": 0.06,
+        "p90_abs_line_error_m": 0.135,
+        "max_abs_line_error_m": 1.605,
+        "predicted_abs_error_m": 0.0,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.012,
+        "median_abs_arc_error_m": 0.105
+       },
+       {
+        "extrapolation_m": 30.0,
+        "samples": 25,
+        "median_abs_line_error_m": 0.09,
+        "p90_abs_line_error_m": 0.15,
+        "max_abs_line_error_m": 1.545,
+        "predicted_abs_error_m": 0.0,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 0.09
+       }
+      ]
+     },
+     {
+      "stratum": "gentle_R_800_2000m",
+      "samples": 6744,
+      "median_radius_m": 1666.7,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 9.6e-05,
+       "implied_radius_m": 5208.5
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00044287,
+       "implied_radius_m": 1129.0
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 1526,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.015,
+        "max_abs_line_error_m": 0.12,
+        "predicted_abs_error_m": 0.007,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.001,
+        "median_abs_arc_error_m": 0.015
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 1457,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.045,
+        "max_abs_line_error_m": 0.285,
+        "predicted_abs_error_m": 0.03,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.002,
+        "median_abs_arc_error_m": 0.045
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 1384,
+        "median_abs_line_error_m": 0.03,
+        "p90_abs_line_error_m": 0.06,
+        "max_abs_line_error_m": 0.24,
+        "predicted_abs_error_m": 0.067,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.09
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 1306,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.075,
+        "max_abs_line_error_m": 0.255,
+        "predicted_abs_error_m": 0.12,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.165
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 866,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.075,
+        "max_abs_line_error_m": 0.21,
+        "predicted_abs_error_m": 0.187,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.24
+       },
+       {
+        "extrapolation_m": 30.0,
+        "samples": 191,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.09,
+        "max_abs_line_error_m": 1.515,
+        "predicted_abs_error_m": 0.27,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 0.315
+       },
+       {
+        "extrapolation_m": 35.0,
+        "samples": 13,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.114,
+        "max_abs_line_error_m": 1.515,
+        "predicted_abs_error_m": 0.367,
+        "median_stated_uncertainty_m": null,
+        "share_line_error_above_stated": null,
+        "median_abs_arc_error_m": 0.435
+       }
+      ]
+     },
+     {
+      "stratum": "moderate_R_400_800m",
+      "samples": 116,
+      "median_radius_m": 555.7,
+      "line_error_vs_distance": {
+       "coefficient_1_per_m": 0.00022287,
+       "implied_radius_m": 2243.4
+      },
+      "arc_error_vs_distance": {
+       "coefficient_1_per_m": 0.00142545,
+       "implied_radius_m": 350.8
+      },
+      "by_distance": [
+       {
+        "extrapolation_m": 5.0,
+        "samples": 23,
+        "median_abs_line_error_m": 0.015,
+        "p90_abs_line_error_m": 0.03,
+        "max_abs_line_error_m": 0.03,
+        "predicted_abs_error_m": 0.022,
+        "median_stated_uncertainty_m": 0.108,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.075
+       },
+       {
+        "extrapolation_m": 10.0,
+        "samples": 23,
+        "median_abs_line_error_m": 0.045,
+        "p90_abs_line_error_m": 0.072,
+        "max_abs_line_error_m": 0.09,
+        "predicted_abs_error_m": 0.09,
+        "median_stated_uncertainty_m": 0.17,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.18
+       },
+       {
+        "extrapolation_m": 15.0,
+        "samples": 23,
+        "median_abs_line_error_m": 0.075,
+        "p90_abs_line_error_m": 0.105,
+        "max_abs_line_error_m": 0.15,
+        "predicted_abs_error_m": 0.202,
+        "median_stated_uncertainty_m": 0.247,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.345
+       },
+       {
+        "extrapolation_m": 20.0,
+        "samples": 23,
+        "median_abs_line_error_m": 0.09,
+        "p90_abs_line_error_m": 0.162,
+        "max_abs_line_error_m": 0.18,
+        "predicted_abs_error_m": 0.36,
+        "median_stated_uncertainty_m": 0.34,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.555
+       },
+       {
+        "extrapolation_m": 25.0,
+        "samples": 21,
+        "median_abs_line_error_m": 0.12,
+        "p90_abs_line_error_m": 0.195,
+        "max_abs_line_error_m": 0.195,
+        "predicted_abs_error_m": 0.562,
+        "median_stated_uncertainty_m": 0.448,
+        "share_line_error_above_stated": 0.0,
+        "median_abs_arc_error_m": 0.795
+       }
+      ]
+     }
+    ]
+   },
+   "center_profile_shape": {
+    "yaw_deg": -0.26,
+    "rms_linear_m": 0.0093,
+    "rms_quadratic_m": 0.007,
+    "radius_from_quadratic_m": 7000.0
+   },
+   "operating_range_10_to_25m": {
+    "samples": 9468,
+    "median_abs_error_m": {
+     "endpoint_tangent": 0.03,
+     "fitted_slope_20m": 0.03,
+     "arc": 0.085
+    },
+    "p90_abs_error_m": {
+     "endpoint_tangent": 0.075,
+     "fitted_slope_20m": 0.078,
+     "arc": 0.225
+    },
+    "share_fitted_slope_better": 0.446,
+    "share_arc_better": 0.163,
+    "share_tangent_error_above_stated_uncertainty": 0.001
+   }
+  }
+ ],
+ "pooled_operating_range_10_to_25m": {
+  "samples": 22189,
+  "median_abs_error_m": {
+   "endpoint_tangent": 0.03,
+   "fitted_slope_20m": 0.036,
+   "arc": 0.096
+  },
+  "p90_abs_error_m": {
+   "endpoint_tangent": 0.165,
+   "fitted_slope_20m": 0.234,
+   "arc": 0.465
+  },
+  "share_fitted_slope_better": 0.451,
+  "share_arc_better": 0.179,
+  "share_tangent_error_above_stated_uncertainty": 0.073
+ },
+ "conclusion": "No recording in this subset carries measurable curvature: the observed track centre grows linearly with range in all six (rms of a straight fit 0.004-0.046 m, a quadratic term adds nothing), which is a sensor-to-track yaw offset, not a curve. The endpoint tangent already predicts the held-out anchors better than either alternative, so replacing it with an arc is refuted on this data and was not implemented."
+}

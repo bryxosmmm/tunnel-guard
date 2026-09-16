@@ -1,0 +1,350 @@
+{
+ "baseline_revision": "57945f4",
+ "repaired_revision": "592814e (geometry repair 4deb085)",
+ "note": "Same three measurements re-run unchanged against the repaired geometry. path_extrapolation now also truncates rail_sigma alongside rail_anchors, because the repaired path() derives its uncertainty from anchor evidence and falls back to a flat floor when the two lengths disagree.",
+ "recordings": [
+  {
+   "bag": "doubleT_obstacle",
+   "on_track": {
+    "before": {
+     "clusters": 989,
+     "events": 43,
+     "candidates": 6
+    },
+    "after": {
+     "clusters": 882,
+     "events": 51,
+     "candidates": 4
+    }
+   },
+   "extrapolation": {
+    "before": {
+     "samples": 1071,
+     "median_abs_tangent_error_m": 0.18,
+     "p90_abs_tangent_error_m": 0.555,
+     "share_arc_better": 0.16,
+     "share_error_above_stated": 0.37
+    },
+    "after": {
+     "samples": 1517,
+     "median_abs_tangent_error_m": 0.165,
+     "p90_abs_tangent_error_m": 0.519,
+     "share_arc_better": 0.175,
+     "share_error_above_stated": 0.249
+    }
+   },
+   "center_30m": {
+    "before": {
+     "median_abs_center_m": 0.84,
+     "p90_abs_center_m": 0.975,
+     "max_abs_center_m": 1.235,
+     "share_beyond_1m": 0.053,
+     "episodes": 8
+    },
+    "after": {
+     "median_abs_center_m": 0.822,
+     "p90_abs_center_m": 0.901,
+     "max_abs_center_m": 1.235,
+     "share_beyond_1m": 0.047,
+     "episodes": 7
+    }
+   },
+   "alarm_load_after": {
+    "excursion_frames": 9,
+    "clean_frames": 192,
+    "clusters_per_excursion_frame": 16.22,
+    "clusters_per_clean_frame": 3.83,
+    "share_of_clusters": 0.166
+   }
+  },
+  {
+   "bag": "doubleT_platform",
+   "on_track": {
+    "before": {
+     "clusters": 1689,
+     "events": 33,
+     "candidates": 0
+    },
+    "after": {
+     "clusters": 1174,
+     "events": 16,
+     "candidates": 1
+    }
+   },
+   "extrapolation": {
+    "before": {
+     "samples": 2980,
+     "median_abs_tangent_error_m": 0.045,
+     "p90_abs_tangent_error_m": 0.12,
+     "share_arc_better": 0.207,
+     "share_error_above_stated": 0.005
+    },
+    "after": {
+     "samples": 2979,
+     "median_abs_tangent_error_m": 0.02,
+     "p90_abs_tangent_error_m": 0.073,
+     "share_arc_better": 0.276,
+     "share_error_above_stated": 0.0
+    }
+   },
+   "center_30m": {
+    "before": {
+     "median_abs_center_m": 0.15,
+     "p90_abs_center_m": 0.18,
+     "max_abs_center_m": 0.225,
+     "share_beyond_1m": 0.0,
+     "episodes": 0
+    },
+    "after": {
+     "median_abs_center_m": 0.148,
+     "p90_abs_center_m": 0.172,
+     "max_abs_center_m": 0.198,
+     "share_beyond_1m": 0.0,
+     "episodes": 0
+    }
+   },
+   "alarm_load_after": {
+    "excursion_frames": 0,
+    "clean_frames": 345,
+    "clusters_per_excursion_frame": 0.0,
+    "clusters_per_clean_frame": 3.4,
+    "share_of_clusters": 0.0
+   }
+  },
+  {
+   "bag": "roundT_doubleT",
+   "on_track": {
+    "before": {
+     "clusters": 613,
+     "events": 44,
+     "candidates": 4
+    },
+    "after": {
+     "clusters": 393,
+     "events": 25,
+     "candidates": 2
+    }
+   },
+   "extrapolation": {
+    "before": {
+     "samples": 1861,
+     "median_abs_tangent_error_m": 0.045,
+     "p90_abs_tangent_error_m": 0.3,
+     "share_arc_better": 0.181,
+     "share_error_above_stated": 0.128
+    },
+    "after": {
+     "samples": 2118,
+     "median_abs_tangent_error_m": 0.032,
+     "p90_abs_tangent_error_m": 0.356,
+     "share_arc_better": 0.203,
+     "share_error_above_stated": 0.106
+    }
+   },
+   "center_30m": {
+    "before": {
+     "median_abs_center_m": 0.405,
+     "p90_abs_center_m": 2.19,
+     "max_abs_center_m": 2.325,
+     "share_beyond_1m": 0.378,
+     "episodes": 10
+    },
+    "after": {
+     "median_abs_center_m": 0.427,
+     "p90_abs_center_m": 2.198,
+     "max_abs_center_m": 2.341,
+     "share_beyond_1m": 0.389,
+     "episodes": 6
+    }
+   },
+   "alarm_load_after": {
+    "excursion_frames": 98,
+    "clean_frames": 151,
+    "clusters_per_excursion_frame": 2.52,
+    "clusters_per_clean_frame": 0.95,
+    "share_of_clusters": 0.632
+   }
+  },
+  {
+   "bag": "roundT_pressureGate_roundT",
+   "on_track": {
+    "before": {
+     "clusters": 1153,
+     "events": 72,
+     "candidates": 4
+    },
+    "after": {
+     "clusters": 475,
+     "events": 29,
+     "candidates": 3
+    }
+   },
+   "extrapolation": {
+    "before": {
+     "samples": 1934,
+     "median_abs_tangent_error_m": 0.056,
+     "p90_abs_tangent_error_m": 0.285,
+     "share_arc_better": 0.229,
+     "share_error_above_stated": 0.142
+    },
+    "after": {
+     "samples": 2230,
+     "median_abs_tangent_error_m": 0.039,
+     "p90_abs_tangent_error_m": 0.305,
+     "share_arc_better": 0.254,
+     "share_error_above_stated": 0.085
+    }
+   },
+   "center_30m": {
+    "before": {
+     "median_abs_center_m": 0.375,
+     "p90_abs_center_m": 1.725,
+     "max_abs_center_m": 2.04,
+     "share_beyond_1m": 0.336,
+     "episodes": 7
+    },
+    "after": {
+     "median_abs_center_m": 0.417,
+     "p90_abs_center_m": 1.723,
+     "max_abs_center_m": 2.032,
+     "share_beyond_1m": 0.34,
+     "episodes": 2
+    }
+   },
+   "alarm_load_after": {
+    "excursion_frames": 91,
+    "clean_frames": 177,
+    "clusters_per_excursion_frame": 3.44,
+    "clusters_per_clean_frame": 0.92,
+    "share_of_clusters": 0.659
+   }
+  },
+  {
+   "bag": "roundT_squareT_pressureGate_squareT",
+   "on_track": {
+    "before": {
+     "clusters": 6258,
+     "events": 169,
+     "candidates": 1
+    },
+    "after": {
+     "clusters": 2460,
+     "events": 130,
+     "candidates": 1
+    }
+   },
+   "extrapolation": {
+    "before": {
+     "samples": 4875,
+     "median_abs_tangent_error_m": 0.045,
+     "p90_abs_tangent_error_m": 0.405,
+     "share_arc_better": 0.176,
+     "share_error_above_stated": 0.139
+    },
+    "after": {
+     "samples": 5086,
+     "median_abs_tangent_error_m": 0.025,
+     "p90_abs_tangent_error_m": 0.349,
+     "share_arc_better": 0.232,
+     "share_error_above_stated": 0.106
+    }
+   },
+   "center_30m": {
+    "before": {
+     "median_abs_center_m": 0.165,
+     "p90_abs_center_m": 1.875,
+     "max_abs_center_m": 2.22,
+     "share_beyond_1m": 0.308,
+     "episodes": 15
+    },
+    "after": {
+     "median_abs_center_m": 0.168,
+     "p90_abs_center_m": 1.874,
+     "max_abs_center_m": 2.149,
+     "share_beyond_1m": 0.318,
+     "episodes": 11
+    }
+   },
+   "alarm_load_after": {
+    "excursion_frames": 171,
+    "clean_frames": 372,
+    "clusters_per_excursion_frame": 12.46,
+    "clusters_per_clean_frame": 0.8,
+    "share_of_clusters": 0.877
+   }
+  },
+  {
+   "bag": "squareT_platform_squareT_switch",
+   "on_track": {
+    "before": {
+     "clusters": 413,
+     "events": 20,
+     "candidates": 0
+    },
+    "after": {
+     "clusters": 251,
+     "events": 7,
+     "candidates": 0
+    }
+   },
+   "extrapolation": {
+    "before": {
+     "samples": 9468,
+     "median_abs_tangent_error_m": 0.03,
+     "p90_abs_tangent_error_m": 0.075,
+     "share_arc_better": 0.163,
+     "share_error_above_stated": 0.001
+    },
+    "after": {
+     "samples": 9314,
+     "median_abs_tangent_error_m": 0.028,
+     "p90_abs_tangent_error_m": 0.073,
+     "share_arc_better": 0.196,
+     "share_error_above_stated": 0.002
+    }
+   },
+   "center_30m": {
+    "before": {
+     "median_abs_center_m": 0.15,
+     "p90_abs_center_m": 0.18,
+     "max_abs_center_m": 0.225,
+     "share_beyond_1m": 0.0,
+     "episodes": 0
+    },
+    "after": {
+     "median_abs_center_m": 0.15,
+     "p90_abs_center_m": 0.172,
+     "max_abs_center_m": 0.21,
+     "share_beyond_1m": 0.0,
+     "episodes": 0
+    }
+   },
+   "alarm_load_after": {
+    "excursion_frames": 0,
+    "clean_frames": 877,
+    "clusters_per_excursion_frame": 0.0,
+    "clusters_per_clean_frame": 0.29,
+    "share_of_clusters": 0.0
+   }
+  }
+ ],
+ "totals": {
+  "on_track_before": {
+   "cl": 11115,
+   "ev": 381,
+   "cd": 15
+  },
+  "on_track_after": {
+   "cl": 5635,
+   "ev": 258,
+   "cd": 11
+  },
+  "alarm_load_after": {
+   "frames": 2483,
+   "excursion_frames": 369,
+   "share_of_frames": 0.149,
+   "share_of_clusters": 0.506
+  }
+ },
+ "conclusion": "The geometry repair halved in-envelope cluster load (11115 -> 5635) but did not fix track-centre lock failures: the centre still reaches 2.0-3.2 m off axis at the 30 m probe in the same three recordings, with essentially unchanged p90 and excursion share. Because the repair cut clean-frame load about threefold while excursion-frame load fell far less, the residual load is now more concentrated in excursion frames than before (ratio 15.6x against 10.5x in the worst recording). Replacing the endpoint tangent with an arc stays refuted on the repaired code: the arc wins 22 percent of held-out anchors."
+}
