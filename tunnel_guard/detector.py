@@ -60,7 +60,11 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                       cluster_points=cloud)
     if not len(cloud):
         return []
-    core, _, heights, observed, nominal_overlap = geometry.classify(cloud, remove_background=False)
+    core, _, heights, observed, nominal_overlap, boundary = geometry.classify(
+        cloud, remove_background=False, include_boundary=True)
+    # Mixed evidence (one interior + one boundary return) must not disappear
+    # merely because neither subset separately reaches weak_min_voxels.
+    uncertain_support = core | (~observed & nominal_overlap) | boundary
     method = config["segmentation_method"]
     if method == "density":
         labels, density_core = density_labels(cloud, config)
@@ -72,7 +76,7 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     components = []
     if arrays is not None:
         arrays.update(cluster_labels=labels, cluster_core=core, cluster_observed=observed,
-                      cluster_nominal_overlap=nominal_overlap)
+                      cluster_nominal_overlap=nominal_overlap, cluster_boundary_uncertain=boundary)
     for label in np.unique(labels):
         if label < 0:
             continue
@@ -92,7 +96,7 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                 components.append({"component_id": int(label), "reason": "below_min_extent", "points": len(indices)})
             continue
         intersects = len(inside) >= config["weak_min_voxels"]
-        unresolved = np.count_nonzero(~observed[indices] & nominal_overlap[indices]) >= config["weak_min_voxels"]
+        unresolved = np.count_nonzero(uncertain_support[indices]) >= config["weak_min_voxels"]
         dense_count = int(np.count_nonzero(density_core[indices]))
         if not intersects and not unresolved and dense_count == 0:
             rejected["weak_without_envelope_support"] += 1
@@ -108,20 +112,24 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                 distance_points = cloud[inside]
                 distance_method = "supported_envelope_min_x"
             elif unresolved:
-                distance_points = q[~observed[indices] & nominal_overlap[indices]]
-                distance_method = "unresolved_nominal_envelope_min_x"
+                distance_points = q[uncertain_support[indices]]
+                distance_method = "unresolved_envelope_evidence_min_x"
         witness = distance_points[np.argmin(distance_points[:, 0])]
         objects.append({"bbox_min": minimum.tolist(), "bbox_max": maximum.tolist(),
                         "component_id": int(label),
                         "cluster_nearest_x_m": float(np.min(q[:, 0])),
                         "supported_envelope_nearest_x_m": float(np.min(cloud[inside, 0])) if len(inside) else None,
-                        "unresolved_envelope_nearest_x_m": float(np.min(q[~observed[indices] & nominal_overlap[indices], 0])) if unresolved else None,
+                        "unresolved_envelope_nearest_x_m": float(np.min(q[uncertain_support[indices], 0])) if unresolved else None,
                         "center": ((minimum + maximum) / 2).tolist(), "extent_m": extent.tolist(),
                         "distance_m": float(witness[0]), "distance_method": distance_method,
                         "distance_support_point": witness.tolist(), "distance_support_points": len(distance_points),
                         "path_relation": "intersecting" if intersects else ("unresolved" if unresolved else "adjacent"),
                         "support_voxels": len(indices), "density_core_voxels": dense_count,
                         "in_envelope_voxels": len(inside), "_support_points": q,
+                        "boundary_uncertain_voxels": int(np.count_nonzero(boundary[indices])),
+                        "path_relation_reason": ("inside_heuristic_path_interval" if intersects else
+                            ("lateral_boundary_uncertainty" if unresolved and np.any(boundary[indices]) else
+                             ("unsupported_nominal_envelope" if unresolved else "outside_envelope_evidence"))),
                         "height_above_bed_m": [float(heights[indices].min()), float(heights[indices].max())],
                         "immediate": bool(instant)})
         if arrays is not None:

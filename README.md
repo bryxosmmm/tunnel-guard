@@ -14,6 +14,15 @@ See [annotation review](docs/ANNOTATION_REVIEW.md) and [sensor evidence](docs/SE
 
 See [NEXT_ITERATION.md](NEXT_ITERATION.md): the complete 201-frame annotated sequence, stage-by-stage point evidence, and an optional envelope-support distance definition. All five provisional observations retained their localization; detection decisions stayed unchanged. This is a correction of distance semantics, not a measured detection-range improvement. The default recipe retains the original cluster-minimum distance; use `configs/iteration-envelope-distance.json` for the new mode.
 
+## Latest alarm-cause correction
+
+See [alarm-cause iteration](docs/ALARM_CAUSE_ITERATION.md). Lateral path uncertainty now
+separates interior evidence from uncertain boundary crossings; unresolved points remain
+candidates and appear orange in RViz. Two fixed structures retain their complete boxes
+while losing unsupported certainty. A real candidate near 56 m remains detected. Across
+402 real frames, definite-alarm frames decrease, but warning-free operation and field
+false-alarm improvement are **not established**.
+
 ## Team work
 
 See [next iteration assignments](docs/TEAM_TASKS.md): reviewed episodes, sensor/time evidence, Ubuntu/RViz validation, and oriented evaluation. Use separate branches from `experiments/morev`.

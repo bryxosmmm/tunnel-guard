@@ -202,7 +202,13 @@ class TrackGeometry:
         uncertainty[nearest > self.config["path_max_extrapolation_m"]] = np.inf
         return center, np.interp(x, a[:, 0], a[:, 2]), uncertainty
 
-    def classify(self, points: np.ndarray, *, remove_background: bool = True):
+    def classify(self, points: np.ndarray, *, remove_background: bool = True,
+                 include_boundary: bool = False):
+        """Classify support; optionally expose uncertain lateral envelope intersections.
+
+        The interval uses the existing heuristic path uncertainty, not calibrated
+        probability or a guarantee about the physical vehicle envelope.
+        """
         cfg = self.config
         z, ground_uncertainty = self.ground(points)
         center, gauge, path_uncertainty = self.path(points[:, 0])
@@ -227,7 +233,16 @@ class TrackGeometry:
         on_rail = (observed & (np.abs(np.abs(lateral) - gauge / 2) < cfg["rail_half_width_m"] + path_uncertainty)
                    & (running_height <= cfg["rail_vertical_margin_m"]))
         ground_supported = (ground_uncertainty <= cfg["ground_max_uncertainty_m"]) & vertical & ~on_rail
-        core = ground_supported & observed & (np.abs(lateral) <= width)
+        # A supported path estimate still has nonzero uncertainty. Project its
+        # lateral offset through the same roll transform as the measured points.
+        # A nominal crossing by a millimetre is not a definite intrusion when
+        # the path centre is uncertain by centimetres. Preserve both sides of
+        # that boundary as unresolved evidence instead of discarding the points.
+        lateral_uncertainty = path_uncertainty * np.sqrt(1 + slope**2)
+        nominal_core = ground_supported & observed & (np.abs(lateral) <= width)
+        core = nominal_core & (np.abs(lateral) + lateral_uncertainty <= width)
+        boundary = (ground_supported & observed & ~core
+                    & (np.abs(lateral) - lateral_uncertainty <= width))
         # Segmentation precedes the collision gate. Do not amputate the feet or
         # head of an object just because only part intersects the envelope.
         segmentation_height = (running_height >= cfg["min_running_height_m"]) & (running_height <= envelope[-1, 1] + cfg["cluster_context_margin_m"])
@@ -235,12 +250,14 @@ class TrackGeometry:
         nominal_overlap = ((running_height >= envelope[0, 0]) & (running_height <= envelope[-1, 1])
                            & ~on_rail & (np.abs(lateral) <= width))
         if remove_background and self.background is not None:
-            background = self.background.mask(points, observed & nominal_overlap)
+            background = self.background.mask(points, (observed & nominal_overlap) | boundary)
             context &= ~background
-        return core, context, height, observed, nominal_overlap
+        result = (core, context, height, observed, nominal_overlap)
+        return result + (boundary,) if include_boundary else result
 
     def describe(self) -> dict:
         return {"valid": self.valid, "reason": self.reason, "ground_quality": self.ground_quality,
+                "lateral_boundary_policy": "heuristic_path_interval",
                 "ground_plane": None if self.plane is None else self.plane.tolist(),
                 "rail_head_height_m": self.rail_head_height_m,
                 "ground_anchors": self.ground_anchors.tolist(), "rail_anchors": self.rail_anchors.tolist(),

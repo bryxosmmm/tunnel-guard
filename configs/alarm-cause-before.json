@@ -1,0 +1,27 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/alarm-cause-before",
+  "every": 1,
+  "max_frames": 201,
+  "visualization": false,
+  "diagnostic_frames": [
+    0,
+    25,
+    75,
+    181,
+    200
+  ],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_unlabelled_alarm_diagnosis"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_unlabelled_alarm_diagnosis"
+    }
+  ],
+  "hypothesis": "Determine whether nominal-boundary evidence is incorrectly treated as certain envelope intersection despite path uncertainty.",
+  "criterion": "Preserve measured candidate support; separate certain versus boundary-uncertain evidence without declaring unknown regions clear. Inspect fixed 2m/34m/56m cases; report all changes on both sequences. No accuracy inferred without reviewed hazards/negatives."
+}
