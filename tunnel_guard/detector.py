@@ -1,7 +1,7 @@
 """Class-agnostic occupancy detection with published KISS-ICP motion compensation."""
 from __future__ import annotations
 
-from collections import deque
+from collections import Counter, deque
 import json
 from pathlib import Path
 import time
@@ -66,12 +66,21 @@ def load_config(path: str | Path) -> dict:
         raise ValueError("Invalid sensor range bounds")
     if not isinstance(config.get("deskew_enabled", False), bool):
         raise ValueError("deskew_enabled must be boolean")
+    if config.get("obstacle_distance_mode", "cluster_min_x") not in ("cluster_min_x", "envelope_support_min_x"):
+        raise ValueError("Unknown obstacle_distance_mode")
     return config
 
 
-def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict) -> list[dict]:
+def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict,
+                       diagnostics: dict | None = None, arrays: dict | None = None) -> list[dict]:
     _, context, _, _, _ = geometry.classify(points)
     cloud = voxel_representatives(points[context], config["cluster_voxel_m"])
+    if diagnostics is not None:
+        diagnostics.update(state="ran", context_points=int(context.sum()), cluster_points=len(cloud), rejected={})
+    if arrays is not None:
+        before = geometry.classify(points, remove_background=False)[1]
+        arrays.update(context_before_background=points[before], context_after_background=points[context],
+                      cluster_points=cloud)
     if not len(cloud):
         return []
     core, _, heights, observed, nominal_overlap = geometry.classify(cloud, remove_background=False)
@@ -82,34 +91,70 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
         labels = published_labels(cloud, geometry.plane, config, method)
         density_core = labels >= 0
     objects = []
+    rejected = Counter()
+    components = []
+    if arrays is not None:
+        arrays.update(cluster_labels=labels, cluster_core=core, cluster_observed=observed,
+                      cluster_nominal_overlap=nominal_overlap)
     for label in np.unique(labels):
         if label < 0:
             continue
         indices = np.flatnonzero(labels == label)
         inside = indices[core[indices]]
         if len(indices) < config["weak_min_voxels"]:
+            rejected["below_weak_min_voxels"] += 1
+            if arrays is not None:
+                components.append({"component_id": int(label), "reason": "below_weak_min_voxels", "points": len(indices)})
             continue
         q = cloud[indices]
         minimum, maximum = q.min(axis=0), q.max(axis=0)
         extent = maximum - minimum
         if extent.max() < config["cluster_min_extent_m"]:
+            rejected["below_min_extent"] += 1
+            if arrays is not None:
+                components.append({"component_id": int(label), "reason": "below_min_extent", "points": len(indices)})
             continue
         intersects = len(inside) >= config["weak_min_voxels"]
         unresolved = np.count_nonzero(~observed[indices] & nominal_overlap[indices]) >= config["weak_min_voxels"]
         dense_count = int(np.count_nonzero(density_core[indices]))
         if not intersects and not unresolved and dense_count == 0:
+            rejected["weak_without_envelope_support"] += 1
+            if arrays is not None:
+                components.append({"component_id": int(label), "reason": "weak_without_envelope_support", "points": len(indices)})
             continue
         instant = (dense_count >= config["immediate_min_voxels"]
                    and extent[2] >= config["immediate_min_height_m"])
+        distance_points = q
+        distance_method = "cluster_min_x"
+        if config.get("obstacle_distance_mode", "cluster_min_x") == "envelope_support_min_x":
+            if intersects:
+                distance_points = cloud[inside]
+                distance_method = "supported_envelope_min_x"
+            elif unresolved:
+                distance_points = q[~observed[indices] & nominal_overlap[indices]]
+                distance_method = "unresolved_nominal_envelope_min_x"
+        witness = distance_points[np.argmin(distance_points[:, 0])]
         objects.append({"bbox_min": minimum.tolist(), "bbox_max": maximum.tolist(),
+                        "component_id": int(label),
+                        "cluster_nearest_x_m": float(np.min(q[:, 0])),
+                        "supported_envelope_nearest_x_m": float(np.min(cloud[inside, 0])) if len(inside) else None,
+                        "unresolved_envelope_nearest_x_m": float(np.min(q[~observed[indices] & nominal_overlap[indices], 0])) if unresolved else None,
                         "center": ((minimum + maximum) / 2).tolist(), "extent_m": extent.tolist(),
-                        "distance_m": float(np.min(q[:, 0])),
+                        "distance_m": float(witness[0]), "distance_method": distance_method,
+                        "distance_support_point": witness.tolist(), "distance_support_points": len(distance_points),
                         "path_relation": "intersecting" if intersects else ("unresolved" if unresolved else "adjacent"),
                         "support_voxels": len(indices), "density_core_voxels": dense_count,
                         "in_envelope_voxels": len(inside), "_support_points": q,
                         "height_above_bed_m": [float(heights[indices].min()), float(heights[indices].max())],
                         "immediate": bool(instant)})
-    return sorted(objects, key=lambda o: o["distance_m"])
+        if arrays is not None:
+            components.append({"component_id": int(label), "reason": "accepted", "points": len(indices)})
+    if diagnostics is not None:
+        diagnostics.update(rejected=dict(rejected), accepted=len(objects), noise_points=int(np.count_nonzero(labels < 0)))
+        if arrays is not None:
+            diagnostics["components"] = components
+    # Keep association order independent of the selected distance definition.
+    return sorted(objects, key=lambda o: o["cluster_nearest_x_m"])
 
 
 class Detector:
@@ -124,6 +169,7 @@ class Detector:
         self.frame_number = 0
         self.display_points = np.empty((0, 3))
         self.display_support = {}
+        self.diagnostic_arrays = {}
         self.motion_translation_covariance = np.eye(3) * config["tracking_pose_sigma_m"]**2
 
     def _new_odometry(self):
@@ -252,7 +298,8 @@ class Detector:
                        confirmation="immediate_geometry" if obj["immediate"] else ("temporal_evidence" if confirmed else "pending"),
                        track_age_s=stamp - track["first_stamp"])
 
-    def process(self, points: np.ndarray, timestamp_s: float, point_times: np.ndarray | None = None) -> dict:
+    def process(self, points: np.ndarray, timestamp_s: float, point_times: np.ndarray | None = None,
+                *, capture_diagnostics: bool = False) -> dict:
         started = time.perf_counter()
         points = np.asarray(points, dtype=np.float64)
         if points.ndim != 2 or points.shape[1] != 3 or not np.isfinite(timestamp_s):
@@ -274,10 +321,15 @@ class Detector:
         self.last_timestamp = timestamp_s
         self.frame_number += 1
         self.display_support = {}
+        self.diagnostic_arrays = {"decoded_points": points} if capture_diagnostics else {}
+        pipeline = {"geometry": {"state": "not_run"}, "segmentation": {"state": "not_run"},
+                    "association": {"state": "not_run"}}
         finite = np.isfinite(points).all(axis=1)
         radii = np.linalg.norm(points, axis=1)
         keep = finite & (radii >= self.config["min_range_m"]) & (radii <= self.config["max_range_m"])
         points = points[keep]
+        if capture_diagnostics:
+            self.diagnostic_arrays["range_points"] = points
         self.display_points = points
         if len(point_times):
             point_times = point_times[keep]
@@ -286,10 +338,13 @@ class Detector:
         result = {"timestamp_s": timestamp_s, "status": "unknown", "objects": [], "nearest_obstacle_m": None,
                   "input_valid_points": len(points), "gap_reset": reset,
                   "coordinate_frame": "tunnel_guard_local",
-                  "distance_method": "minimum_forward_x_of_current_observed_cluster",
+                  "distance_method": ("minimum_forward_x_of_envelope_evidence_for_hazards"
+                      if self.config.get("obstacle_distance_mode", "cluster_min_x") == "envelope_support_min_x"
+                      else "minimum_forward_x_of_current_observed_cluster"),
                   "distance_origin": "configured_processing_frame_origin",
                   "distance_along_path_m": None,
                   "health": "unavailable", "health_reasons": ["insufficient_returns"],
+                  "pipeline": pipeline,
                   "envelope_calibration": self.config["envelope_calibration"]}
         if len(points) < self.config["ground_min_support"]:
             self.tracks.clear()
@@ -303,9 +358,18 @@ class Detector:
         crop = ((frame[:, 0] >= self.config["min_forward_m"])
                 & (np.abs(frame[:, 1]) < self.config["context_half_width_m"]))
         reduced = voxel_representatives(frame[crop], self.config["geometry_voxel_m"])
+        if capture_diagnostics:
+            self.diagnostic_arrays.update(registered_points=frame, cropped_points=frame[crop], geometry_voxel_points=reduced)
         geometry = TrackGeometry(reduced, self.config)
-        objects = cluster_candidates(reduced, geometry, self.config) if geometry.valid else []
+        pipeline["geometry"] = {"state": "ran", "valid": geometry.valid, "reason": geometry.reason}
+        objects = cluster_candidates(reduced, geometry, self.config, pipeline["segmentation"],
+                                     self.diagnostic_arrays if capture_diagnostics else None) if geometry.valid else []
+        if not geometry.valid:
+            pipeline["segmentation"]["reason"] = geometry.reason
         self._associate(objects, pose, timestamp_s, motion["valid"])
+        pipeline["association"] = {"state": "ran", "candidates": len(objects),
+                                   "confirmed": sum(o["confirmed"] for o in objects),
+                                   "history_cleared_for_motion": not motion["valid"]}
         hazards = [o for o in objects if o["path_relation"] in ("intersecting", "unresolved")]
         confirmed = [o for o in hazards if o["confirmed"]]
         certain = [o for o in confirmed if o["path_relation"] == "intersecting"]

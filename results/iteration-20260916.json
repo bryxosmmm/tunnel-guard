@@ -1,0 +1,1439 @@
+{
+  "base_revision": "3a221cf7b823400c9f9aabf3f87f4225e958da85",
+  "initial_working_tree": "",
+  "hardware": {
+    "model": "MacBook Air",
+    "chip": "Apple M3",
+    "memory_gb": 16,
+    "source": "system_profiler SPHardwareDataType; no target Intel measurements"
+  },
+  "fixed_sequence": {
+    "bag": "doubleT_obstacle",
+    "frames": [
+      0,
+      200
+    ],
+    "every": 1,
+    "initialization": "one detector at frame 0, never restarted at annotation frames"
+  },
+  "annotations_sha256": "8dfe58e0e2723fec56298cd656a99adff992edace2a5ea965eeacd125b7fd8c6",
+  "source_events": 1,
+  "observations_before": [
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 0,
+      "event_id": "upright_structure_17m",
+      "state": "observed",
+      "measurement_timestamp_ns": 946687297199933052,
+      "coordinate_frame": "tunnel_guard_local",
+      "health": "degraded",
+      "geometry": {
+        "state": "ran",
+        "valid": true,
+        "reason": "supported_geometry"
+      },
+      "association": {
+        "state": "ran",
+        "candidates": 181,
+        "confirmed": 17,
+        "history_cleared_for_motion": true
+      },
+      "segmentation_state": "ran",
+      "stage_box_points": {
+        "decoded_points": {
+          "state": "captured",
+          "points": 998
+        },
+        "range_points": {
+          "state": "captured",
+          "points": 998
+        },
+        "registered_points": {
+          "state": "captured",
+          "points": 998
+        },
+        "cropped_points": {
+          "state": "captured",
+          "points": 998
+        },
+        "geometry_voxel_points": {
+          "state": "captured",
+          "points": 386
+        },
+        "context_before_background": {
+          "state": "captured",
+          "points": 383
+        },
+        "context_after_background": {
+          "state": "captured",
+          "points": 383
+        },
+        "cluster_points": {
+          "state": "captured",
+          "points": 383
+        }
+      },
+      "components_with_box_support": [
+        {
+          "component_id": 39,
+          "points_in_box": 383,
+          "decision": {
+            "component_id": 39,
+            "reason": "accepted",
+            "points": 416
+          },
+          "track_id": 41,
+          "confirmed": true
+        }
+      ],
+      "best_candidate": {
+        "component_id": 39,
+        "track_id": 41,
+        "confirmed": true,
+        "hits": 1,
+        "confirmation": "immediate_geometry",
+        "path_relation": "adjacent",
+        "distance_m": 16.79903793334961,
+        "cluster_nearest_x_m": 16.79903793334961,
+        "supported_envelope_nearest_x_m": null,
+        "bbox_min": [
+          16.79903793334961,
+          1.2154653072357178,
+          -1.798304557800293
+        ],
+        "bbox_max": [
+          17.394569396972656,
+          1.8740063905715942,
+          2.2096729278564453
+        ],
+        "iou": 0.28562566672680045,
+        "matches_provisional_box": true
+      }
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 50,
+      "event_id": "upright_structure_17m",
+      "state": "observed",
+      "measurement_timestamp_ns": 946687302200034022,
+      "coordinate_frame": "tunnel_guard_local",
+      "health": "degraded",
+      "geometry": {
+        "state": "ran",
+        "valid": true,
+        "reason": "supported_geometry"
+      },
+      "association": {
+        "state": "ran",
+        "candidates": 220,
+        "confirmed": 186,
+        "history_cleared_for_motion": false
+      },
+      "segmentation_state": "ran",
+      "stage_box_points": {
+        "decoded_points": {
+          "state": "captured",
+          "points": 1006
+        },
+        "range_points": {
+          "state": "captured",
+          "points": 1006
+        },
+        "registered_points": {
+          "state": "captured",
+          "points": 1006
+        },
+        "cropped_points": {
+          "state": "captured",
+          "points": 1006
+        },
+        "geometry_voxel_points": {
+          "state": "captured",
+          "points": 387
+        },
+        "context_before_background": {
+          "state": "captured",
+          "points": 385
+        },
+        "context_after_background": {
+          "state": "captured",
+          "points": 385
+        },
+        "cluster_points": {
+          "state": "captured",
+          "points": 385
+        }
+      },
+      "components_with_box_support": [
+        {
+          "component_id": 40,
+          "points_in_box": 383,
+          "decision": {
+            "component_id": 40,
+            "reason": "accepted",
+            "points": 415
+          },
+          "track_id": 41,
+          "confirmed": true
+        },
+        {
+          "component_id": 409,
+          "points_in_box": 2,
+          "decision": {
+            "component_id": 409,
+            "reason": "weak_without_envelope_support",
+            "points": 2
+          },
+          "track_id": null,
+          "confirmed": null
+        }
+      ],
+      "best_candidate": {
+        "component_id": 40,
+        "track_id": 41,
+        "confirmed": true,
+        "hits": 3,
+        "confirmation": "immediate_geometry",
+        "path_relation": "adjacent",
+        "distance_m": 16.79110336303711,
+        "cluster_nearest_x_m": 16.79110336303711,
+        "supported_envelope_nearest_x_m": null,
+        "bbox_min": [
+          16.79110336303711,
+          1.2154653072357178,
+          -1.8145068883895874
+        ],
+        "bbox_max": [
+          17.388347625732422,
+          1.875327467918396,
+          2.210700273513794
+        ],
+        "iou": 0.28862976328801504,
+        "matches_provisional_box": true
+      }
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 100,
+      "event_id": "upright_structure_17m",
+      "state": "observed",
+      "measurement_timestamp_ns": 946687307200073957,
+      "coordinate_frame": "tunnel_guard_local",
+      "health": "degraded",
+      "geometry": {
+        "state": "ran",
+        "valid": true,
+        "reason": "supported_geometry"
+      },
+      "association": {
+        "state": "ran",
+        "candidates": 250,
+        "confirmed": 230,
+        "history_cleared_for_motion": false
+      },
+      "segmentation_state": "ran",
+      "stage_box_points": {
+        "decoded_points": {
+          "state": "captured",
+          "points": 1009
+        },
+        "range_points": {
+          "state": "captured",
+          "points": 1009
+        },
+        "registered_points": {
+          "state": "captured",
+          "points": 1009
+        },
+        "cropped_points": {
+          "state": "captured",
+          "points": 1009
+        },
+        "geometry_voxel_points": {
+          "state": "captured",
+          "points": 387
+        },
+        "context_before_background": {
+          "state": "captured",
+          "points": 385
+        },
+        "context_after_background": {
+          "state": "captured",
+          "points": 385
+        },
+        "cluster_points": {
+          "state": "captured",
+          "points": 385
+        }
+      },
+      "components_with_box_support": [
+        {
+          "component_id": 41,
+          "points_in_box": 384,
+          "decision": {
+            "component_id": 41,
+            "reason": "accepted",
+            "points": 419
+          },
+          "track_id": 41,
+          "confirmed": true
+        },
+        {
+          "component_id": 461,
+          "points_in_box": 1,
+          "decision": {
+            "component_id": 461,
+            "reason": "below_weak_min_voxels",
+            "points": 1
+          },
+          "track_id": null,
+          "confirmed": null
+        }
+      ],
+      "best_candidate": {
+        "component_id": 41,
+        "track_id": 41,
+        "confirmed": true,
+        "hits": 3,
+        "confirmation": "immediate_geometry",
+        "path_relation": "adjacent",
+        "distance_m": 16.806503295898438,
+        "cluster_nearest_x_m": 16.806503295898438,
+        "supported_envelope_nearest_x_m": null,
+        "bbox_min": [
+          16.806503295898438,
+          1.215743064880371,
+          -1.81281578540802
+        ],
+        "bbox_max": [
+          17.394569396972656,
+          1.8744466304779053,
+          2.3644113540649414
+        ],
+        "iou": 0.2794295268179076,
+        "matches_provisional_box": true
+      }
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 150,
+      "event_id": "upright_structure_17m",
+      "state": "observed",
+      "measurement_timestamp_ns": 946687312300053000,
+      "coordinate_frame": "tunnel_guard_local",
+      "health": "degraded",
+      "geometry": {
+        "state": "ran",
+        "valid": true,
+        "reason": "supported_geometry"
+      },
+      "association": {
+        "state": "ran",
+        "candidates": 203,
+        "confirmed": 182,
+        "history_cleared_for_motion": false
+      },
+      "segmentation_state": "ran",
+      "stage_box_points": {
+        "decoded_points": {
+          "state": "captured",
+          "points": 996
+        },
+        "range_points": {
+          "state": "captured",
+          "points": 996
+        },
+        "registered_points": {
+          "state": "captured",
+          "points": 996
+        },
+        "cropped_points": {
+          "state": "captured",
+          "points": 996
+        },
+        "geometry_voxel_points": {
+          "state": "captured",
+          "points": 384
+        },
+        "context_before_background": {
+          "state": "captured",
+          "points": 382
+        },
+        "context_after_background": {
+          "state": "captured",
+          "points": 382
+        },
+        "cluster_points": {
+          "state": "captured",
+          "points": 382
+        }
+      },
+      "components_with_box_support": [
+        {
+          "component_id": 39,
+          "points_in_box": 382,
+          "decision": {
+            "component_id": 39,
+            "reason": "accepted",
+            "points": 417
+          },
+          "track_id": 41,
+          "confirmed": true
+        }
+      ],
+      "best_candidate": {
+        "component_id": 39,
+        "track_id": 41,
+        "confirmed": true,
+        "hits": 3,
+        "confirmation": "immediate_geometry",
+        "path_relation": "adjacent",
+        "distance_m": 16.810937881469727,
+        "cluster_nearest_x_m": 16.810937881469727,
+        "supported_envelope_nearest_x_m": null,
+        "bbox_min": [
+          16.810937881469727,
+          1.2154653072357178,
+          -1.8157751560211182
+        ],
+        "bbox_max": [
+          17.390583038330078,
+          1.8692541122436523,
+          2.3649604320526123
+        ],
+        "iou": 0.2748436027603294,
+        "matches_provisional_box": true
+      }
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 200,
+      "event_id": "upright_structure_17m",
+      "state": "observed",
+      "measurement_timestamp_ns": 946687317599961996,
+      "coordinate_frame": "tunnel_guard_local",
+      "health": "degraded",
+      "geometry": {
+        "state": "ran",
+        "valid": true,
+        "reason": "supported_geometry"
+      },
+      "association": {
+        "state": "ran",
+        "candidates": 201,
+        "confirmed": 190,
+        "history_cleared_for_motion": false
+      },
+      "segmentation_state": "ran",
+      "stage_box_points": {
+        "decoded_points": {
+          "state": "captured",
+          "points": 991
+        },
+        "range_points": {
+          "state": "captured",
+          "points": 991
+        },
+        "registered_points": {
+          "state": "captured",
+          "points": 991
+        },
+        "cropped_points": {
+          "state": "captured",
+          "points": 991
+        },
+        "geometry_voxel_points": {
+          "state": "captured",
+          "points": 382
+        },
+        "context_before_background": {
+          "state": "captured",
+          "points": 379
+        },
+        "context_after_background": {
+          "state": "captured",
+          "points": 379
+        },
+        "cluster_points": {
+          "state": "captured",
+          "points": 379
+        }
+      },
+      "components_with_box_support": [
+        {
+          "component_id": 33,
+          "points_in_box": 379,
+          "decision": {
+            "component_id": 33,
+            "reason": "accepted",
+            "points": 411
+          },
+          "track_id": 2807,
+          "confirmed": true
+        }
+      ],
+      "best_candidate": {
+        "component_id": 33,
+        "track_id": 2807,
+        "confirmed": true,
+        "hits": 3,
+        "confirmation": "immediate_geometry",
+        "path_relation": "adjacent",
+        "distance_m": 16.79814338684082,
+        "cluster_nearest_x_m": 16.79814338684082,
+        "supported_envelope_nearest_x_m": null,
+        "bbox_min": [
+          16.79814338684082,
+          1.2154653072357178,
+          -1.7991282939910889
+        ],
+        "bbox_max": [
+          17.38935661315918,
+          1.8744466304779053,
+          2.2096729278564453
+        ],
+        "iou": 0.28418022377082913,
+        "matches_provisional_box": true
+      }
+    }
+  ],
+  "observations_after": [
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 0,
+      "event_id": "upright_structure_17m",
+      "state": "observed",
+      "measurement_timestamp_ns": 946687297199933052,
+      "coordinate_frame": "tunnel_guard_local",
+      "health": "degraded",
+      "geometry": {
+        "state": "ran",
+        "valid": true,
+        "reason": "supported_geometry"
+      },
+      "association": {
+        "state": "ran",
+        "candidates": 181,
+        "confirmed": 17,
+        "history_cleared_for_motion": true
+      },
+      "segmentation_state": "ran",
+      "stage_box_points": {
+        "decoded_points": {
+          "state": "captured",
+          "points": 998
+        },
+        "range_points": {
+          "state": "captured",
+          "points": 998
+        },
+        "registered_points": {
+          "state": "captured",
+          "points": 998
+        },
+        "cropped_points": {
+          "state": "captured",
+          "points": 998
+        },
+        "geometry_voxel_points": {
+          "state": "captured",
+          "points": 386
+        },
+        "context_before_background": {
+          "state": "captured",
+          "points": 383
+        },
+        "context_after_background": {
+          "state": "captured",
+          "points": 383
+        },
+        "cluster_points": {
+          "state": "captured",
+          "points": 383
+        }
+      },
+      "components_with_box_support": [
+        {
+          "component_id": 39,
+          "points_in_box": 383,
+          "decision": {
+            "component_id": 39,
+            "reason": "accepted",
+            "points": 416
+          },
+          "track_id": 41,
+          "confirmed": true
+        }
+      ],
+      "best_candidate": {
+        "component_id": 39,
+        "track_id": 41,
+        "confirmed": true,
+        "hits": 1,
+        "confirmation": "immediate_geometry",
+        "path_relation": "adjacent",
+        "distance_m": 16.79903793334961,
+        "cluster_nearest_x_m": 16.79903793334961,
+        "supported_envelope_nearest_x_m": null,
+        "bbox_min": [
+          16.79903793334961,
+          1.2154653072357178,
+          -1.798304557800293
+        ],
+        "bbox_max": [
+          17.394569396972656,
+          1.8740063905715942,
+          2.2096729278564453
+        ],
+        "iou": 0.28562566672680045,
+        "matches_provisional_box": true
+      }
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 50,
+      "event_id": "upright_structure_17m",
+      "state": "observed",
+      "measurement_timestamp_ns": 946687302200034022,
+      "coordinate_frame": "tunnel_guard_local",
+      "health": "degraded",
+      "geometry": {
+        "state": "ran",
+        "valid": true,
+        "reason": "supported_geometry"
+      },
+      "association": {
+        "state": "ran",
+        "candidates": 220,
+        "confirmed": 186,
+        "history_cleared_for_motion": false
+      },
+      "segmentation_state": "ran",
+      "stage_box_points": {
+        "decoded_points": {
+          "state": "captured",
+          "points": 1006
+        },
+        "range_points": {
+          "state": "captured",
+          "points": 1006
+        },
+        "registered_points": {
+          "state": "captured",
+          "points": 1006
+        },
+        "cropped_points": {
+          "state": "captured",
+          "points": 1006
+        },
+        "geometry_voxel_points": {
+          "state": "captured",
+          "points": 387
+        },
+        "context_before_background": {
+          "state": "captured",
+          "points": 385
+        },
+        "context_after_background": {
+          "state": "captured",
+          "points": 385
+        },
+        "cluster_points": {
+          "state": "captured",
+          "points": 385
+        }
+      },
+      "components_with_box_support": [
+        {
+          "component_id": 40,
+          "points_in_box": 383,
+          "decision": {
+            "component_id": 40,
+            "reason": "accepted",
+            "points": 415
+          },
+          "track_id": 41,
+          "confirmed": true
+        },
+        {
+          "component_id": 409,
+          "points_in_box": 2,
+          "decision": {
+            "component_id": 409,
+            "reason": "weak_without_envelope_support",
+            "points": 2
+          },
+          "track_id": null,
+          "confirmed": null
+        }
+      ],
+      "best_candidate": {
+        "component_id": 40,
+        "track_id": 41,
+        "confirmed": true,
+        "hits": 3,
+        "confirmation": "immediate_geometry",
+        "path_relation": "adjacent",
+        "distance_m": 16.79110336303711,
+        "cluster_nearest_x_m": 16.79110336303711,
+        "supported_envelope_nearest_x_m": null,
+        "bbox_min": [
+          16.79110336303711,
+          1.2154653072357178,
+          -1.8145068883895874
+        ],
+        "bbox_max": [
+          17.388347625732422,
+          1.875327467918396,
+          2.210700273513794
+        ],
+        "iou": 0.28862976328801504,
+        "matches_provisional_box": true
+      }
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 100,
+      "event_id": "upright_structure_17m",
+      "state": "observed",
+      "measurement_timestamp_ns": 946687307200073957,
+      "coordinate_frame": "tunnel_guard_local",
+      "health": "degraded",
+      "geometry": {
+        "state": "ran",
+        "valid": true,
+        "reason": "supported_geometry"
+      },
+      "association": {
+        "state": "ran",
+        "candidates": 250,
+        "confirmed": 230,
+        "history_cleared_for_motion": false
+      },
+      "segmentation_state": "ran",
+      "stage_box_points": {
+        "decoded_points": {
+          "state": "captured",
+          "points": 1009
+        },
+        "range_points": {
+          "state": "captured",
+          "points": 1009
+        },
+        "registered_points": {
+          "state": "captured",
+          "points": 1009
+        },
+        "cropped_points": {
+          "state": "captured",
+          "points": 1009
+        },
+        "geometry_voxel_points": {
+          "state": "captured",
+          "points": 387
+        },
+        "context_before_background": {
+          "state": "captured",
+          "points": 385
+        },
+        "context_after_background": {
+          "state": "captured",
+          "points": 385
+        },
+        "cluster_points": {
+          "state": "captured",
+          "points": 385
+        }
+      },
+      "components_with_box_support": [
+        {
+          "component_id": 41,
+          "points_in_box": 384,
+          "decision": {
+            "component_id": 41,
+            "reason": "accepted",
+            "points": 419
+          },
+          "track_id": 41,
+          "confirmed": true
+        },
+        {
+          "component_id": 461,
+          "points_in_box": 1,
+          "decision": {
+            "component_id": 461,
+            "reason": "below_weak_min_voxels",
+            "points": 1
+          },
+          "track_id": null,
+          "confirmed": null
+        }
+      ],
+      "best_candidate": {
+        "component_id": 41,
+        "track_id": 41,
+        "confirmed": true,
+        "hits": 3,
+        "confirmation": "immediate_geometry",
+        "path_relation": "adjacent",
+        "distance_m": 16.806503295898438,
+        "cluster_nearest_x_m": 16.806503295898438,
+        "supported_envelope_nearest_x_m": null,
+        "bbox_min": [
+          16.806503295898438,
+          1.215743064880371,
+          -1.81281578540802
+        ],
+        "bbox_max": [
+          17.394569396972656,
+          1.8744466304779053,
+          2.3644113540649414
+        ],
+        "iou": 0.2794295268179076,
+        "matches_provisional_box": true
+      }
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 150,
+      "event_id": "upright_structure_17m",
+      "state": "observed",
+      "measurement_timestamp_ns": 946687312300053000,
+      "coordinate_frame": "tunnel_guard_local",
+      "health": "degraded",
+      "geometry": {
+        "state": "ran",
+        "valid": true,
+        "reason": "supported_geometry"
+      },
+      "association": {
+        "state": "ran",
+        "candidates": 203,
+        "confirmed": 182,
+        "history_cleared_for_motion": false
+      },
+      "segmentation_state": "ran",
+      "stage_box_points": {
+        "decoded_points": {
+          "state": "captured",
+          "points": 996
+        },
+        "range_points": {
+          "state": "captured",
+          "points": 996
+        },
+        "registered_points": {
+          "state": "captured",
+          "points": 996
+        },
+        "cropped_points": {
+          "state": "captured",
+          "points": 996
+        },
+        "geometry_voxel_points": {
+          "state": "captured",
+          "points": 384
+        },
+        "context_before_background": {
+          "state": "captured",
+          "points": 382
+        },
+        "context_after_background": {
+          "state": "captured",
+          "points": 382
+        },
+        "cluster_points": {
+          "state": "captured",
+          "points": 382
+        }
+      },
+      "components_with_box_support": [
+        {
+          "component_id": 39,
+          "points_in_box": 382,
+          "decision": {
+            "component_id": 39,
+            "reason": "accepted",
+            "points": 417
+          },
+          "track_id": 41,
+          "confirmed": true
+        }
+      ],
+      "best_candidate": {
+        "component_id": 39,
+        "track_id": 41,
+        "confirmed": true,
+        "hits": 3,
+        "confirmation": "immediate_geometry",
+        "path_relation": "adjacent",
+        "distance_m": 16.810937881469727,
+        "cluster_nearest_x_m": 16.810937881469727,
+        "supported_envelope_nearest_x_m": null,
+        "bbox_min": [
+          16.810937881469727,
+          1.2154653072357178,
+          -1.8157751560211182
+        ],
+        "bbox_max": [
+          17.390583038330078,
+          1.8692541122436523,
+          2.3649604320526123
+        ],
+        "iou": 0.2748436027603294,
+        "matches_provisional_box": true
+      }
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 200,
+      "event_id": "upright_structure_17m",
+      "state": "observed",
+      "measurement_timestamp_ns": 946687317599961996,
+      "coordinate_frame": "tunnel_guard_local",
+      "health": "degraded",
+      "geometry": {
+        "state": "ran",
+        "valid": true,
+        "reason": "supported_geometry"
+      },
+      "association": {
+        "state": "ran",
+        "candidates": 201,
+        "confirmed": 190,
+        "history_cleared_for_motion": false
+      },
+      "segmentation_state": "ran",
+      "stage_box_points": {
+        "decoded_points": {
+          "state": "captured",
+          "points": 991
+        },
+        "range_points": {
+          "state": "captured",
+          "points": 991
+        },
+        "registered_points": {
+          "state": "captured",
+          "points": 991
+        },
+        "cropped_points": {
+          "state": "captured",
+          "points": 991
+        },
+        "geometry_voxel_points": {
+          "state": "captured",
+          "points": 382
+        },
+        "context_before_background": {
+          "state": "captured",
+          "points": 379
+        },
+        "context_after_background": {
+          "state": "captured",
+          "points": 379
+        },
+        "cluster_points": {
+          "state": "captured",
+          "points": 379
+        }
+      },
+      "components_with_box_support": [
+        {
+          "component_id": 33,
+          "points_in_box": 379,
+          "decision": {
+            "component_id": 33,
+            "reason": "accepted",
+            "points": 411
+          },
+          "track_id": 2807,
+          "confirmed": true
+        }
+      ],
+      "best_candidate": {
+        "component_id": 33,
+        "track_id": 2807,
+        "confirmed": true,
+        "hits": 3,
+        "confirmation": "immediate_geometry",
+        "path_relation": "adjacent",
+        "distance_m": 16.79814338684082,
+        "cluster_nearest_x_m": 16.79814338684082,
+        "supported_envelope_nearest_x_m": null,
+        "bbox_min": [
+          16.79814338684082,
+          1.2154653072357178,
+          -1.7991282939910889
+        ],
+        "bbox_max": [
+          17.38935661315918,
+          1.8744466304779053,
+          2.2096729278564453
+        ],
+        "iou": 0.28418022377082913,
+        "matches_provisional_box": true
+      }
+    }
+  ],
+  "before_summary": [
+    {
+      "frames": 201,
+      "recording_duration_s": 20.400028824806213,
+      "status_frames": {
+        "obstacle": 201
+      },
+      "geometry_valid_frames": 201,
+      "motion_valid_frames": 200,
+      "processing_ms": {
+        "p50": 865.2552500134334,
+        "p95": 900.7450410281308,
+        "p99": 954.607792024035
+      },
+      "read_and_process_ms": {
+        "p50": 909.1878749895841,
+        "p95": 947.143875004258,
+        "p99": 993.5843329876661
+      },
+      "alarm_episodes_unlabelled": [
+        {
+          "start_frame": 0,
+          "start_s": 946687297.1999332,
+          "end_s": 946687317.599962,
+          "frames": 201
+        }
+      ],
+      "accuracy": null,
+      "accuracy_validity": "No ground truth implied by bag name or alarm count",
+      "bag": "doubleT_obstacle",
+      "split": "development_nonexhaustive_one_provisional_structure",
+      "wall_s": 206.12527312495513,
+      "ingestion": {
+        "source_messages": 201,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 201
+      },
+      "process_peak_rss_bytes": 1873297408,
+      "diagnostic_write_total_s": 8.67351991601754,
+      "visualization_total_s": 16.841626998444553
+    }
+  ],
+  "after_summary": [
+    {
+      "frames": 201,
+      "recording_duration_s": 20.400028824806213,
+      "status_frames": {
+        "obstacle": 201
+      },
+      "geometry_valid_frames": 201,
+      "motion_valid_frames": 200,
+      "processing_ms": {
+        "p50": 868.6622919631191,
+        "p95": 914.4932079943828,
+        "p99": 959.1347909881733
+      },
+      "read_and_process_ms": {
+        "p50": 909.0553330024704,
+        "p95": 963.3834999985993,
+        "p99": 1017.6289160153829
+      },
+      "alarm_episodes_unlabelled": [
+        {
+          "start_frame": 0,
+          "start_s": 946687297.1999332,
+          "end_s": 946687317.599962,
+          "frames": 201
+        }
+      ],
+      "accuracy": null,
+      "accuracy_validity": "No ground truth implied by bag name or alarm count",
+      "bag": "doubleT_obstacle",
+      "split": "development_nonexhaustive_one_provisional_structure",
+      "wall_s": 207.42123520799214,
+      "ingestion": {
+        "source_messages": 201,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 201
+      },
+      "process_peak_rss_bytes": 2011332608,
+      "diagnostic_write_total_s": 8.725829626084305,
+      "visualization_total_s": 16.982043377880473
+    }
+  ],
+  "comparison": {
+    "before": "build/iteration-baseline",
+    "after": "build/iteration-envelope-distance",
+    "compared_frames": 201,
+    "missing_before": [],
+    "missing_after": [],
+    "changed_detection_frames": [],
+    "witness_objects_on_captured_frames": 1889,
+    "witness_membership_errors": 0,
+    "max_witness_x_error_m": 0.0,
+    "interpretation": "Different distance definitions, not detection range improvement. No false-positive rate without verified negatives."
+  },
+  "changed_object_observations": 1083,
+  "changed_nearest_frames": 155,
+  "distance_change_examples": [
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 0,
+      "before_m": 33.921974182128906,
+      "after_m": 34.263916015625
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 1,
+      "before_m": 2.026082992553711,
+      "after_m": 2.0434257984161377
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 2,
+      "before_m": 2.0232653617858887,
+      "after_m": 2.0463366508483887
+    }
+  ],
+  "candidate_instances_before": 43580,
+  "candidate_instances_after": 43580,
+  "confirmed_instances_before": 38393,
+  "confirmed_instances_after": 38393,
+  "confirmed_hazard_instances_after": 4558,
+  "false_positive_rate": null,
+  "false_positive_reason": "No verified negative intervals",
+  "baseline_distance_gap_observations": 648,
+  "rejected_components_baseline": {
+    "weak_without_envelope_support": 51960,
+    "below_weak_min_voxels": 85487,
+    "below_min_extent": 5404
+  },
+  "localization_before": {
+    "label_status": "provisional_geometry",
+    "prediction_scope": "near_track_objects",
+    "minimum_3d_iou": 0.25,
+    "evaluated_frames": 5,
+    "missing_frames": [],
+    "exhaustive_frames": 0,
+    "tp": 5,
+    "fn": 0,
+    "fp_exhaustive_only": 0,
+    "annotated_object_recall": 1.0,
+    "precision_exhaustive_only": null,
+    "recall_exhaustive_only": null,
+    "f1_exhaustive_only": null,
+    "event_recall": 1.0,
+    "distance_mae_m": 0.2011451721191392,
+    "matched_mean_3d_iou": 0.2825417566727763,
+    "validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric"
+    ],
+    "events": {
+      "doubleT_obstacle:upright_structure_17m": {
+        "annotated_frames": 5,
+        "matched_frames": 5,
+        "first_detection_distance_m": 16.6
+      }
+    },
+    "frames": [
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 0,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            1,
+            0,
+            0.28562566672680045
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 50,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            36,
+            0,
+            0.28862976328801504
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 100,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            40,
+            0,
+            0.2794295268179076
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 150,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            37,
+            0,
+            0.2748436027603294
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 200,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            33,
+            0,
+            0.28418022377082913
+          ]
+        ]
+      }
+    ],
+    "annotations_sha256": "8dfe58e0e2723fec56298cd656a99adff992edace2a5ea965eeacd125b7fd8c6",
+    "run": "build/iteration-baseline"
+  },
+  "localization_after": {
+    "label_status": "provisional_geometry",
+    "prediction_scope": "near_track_objects",
+    "minimum_3d_iou": 0.25,
+    "evaluated_frames": 5,
+    "missing_frames": [],
+    "exhaustive_frames": 0,
+    "tp": 5,
+    "fn": 0,
+    "fp_exhaustive_only": 0,
+    "annotated_object_recall": 1.0,
+    "precision_exhaustive_only": null,
+    "recall_exhaustive_only": null,
+    "f1_exhaustive_only": null,
+    "event_recall": 1.0,
+    "distance_mae_m": 0.2011451721191392,
+    "matched_mean_3d_iou": 0.2825417566727763,
+    "validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric"
+    ],
+    "events": {
+      "doubleT_obstacle:upright_structure_17m": {
+        "annotated_frames": 5,
+        "matched_frames": 5,
+        "first_detection_distance_m": 16.6
+      }
+    },
+    "frames": [
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 0,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            1,
+            0,
+            0.28562566672680045
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 50,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            36,
+            0,
+            0.28862976328801504
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 100,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            40,
+            0,
+            0.2794295268179076
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 150,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            37,
+            0,
+            0.2748436027603294
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 200,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            33,
+            0,
+            0.28418022377082913
+          ]
+        ]
+      }
+    ],
+    "annotations_sha256": "8dfe58e0e2723fec56298cd656a99adff992edace2a5ea965eeacd125b7fd8c6",
+    "run": "build/iteration-envelope-distance"
+  },
+  "source_and_config_identity": {
+    "iteration-baseline": {
+      "git_revision": "3a221cf7b823400c9f9aabf3f87f4225e958da85",
+      "git_status": " M tunnel_guard/detector.py\n M tunnel_guard/run.py\n?? configs/iteration-episodes.json\n?? tunnel_guard/trace_analysis.py\n",
+      "source_sha256": {
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/background.py": "fcbbaa5c01b165da3ddca8dee326f00b6964546454c327d283de758648e80af0",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/detector.py": "d35422adf1818b6b7cb88460958ff178d3e5873d5f4f8cfdd4a889e51062ce7a",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/evaluate.py": "88ae992a7dfd4152bef2fa0aa4f2887930faf8c886c88176c80a9e348ada9bde",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/geometry.py": "e64861339f1079a8ff59f9d05f247896f7c03e9bc9088bd5f7b5e25efb446fa9",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/inspect_bag.py": "ccb30abe90954ab9e7862bcc914b9803ff538c5e4dd4695c97f189d04b766374",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/io.py": "f1634ee30f4fac7b82bbe811eb3dc5320493eae32cbc63e6b0520ddd4bba6651",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/osdar.py": "3af192dd391793dde9ef733c34235cd9ccaac332a07f71670081ceab40f54734",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/run.py": "631cc845fcae660366d3d1c3a34cb7f9647d8843ffa6f34f2d6368e07bf9c417",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/segmentation.py": "d2d989cdc8abb1308b545d8dd25ca60219954c58de4e2bb64d1934cbe45c393d",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/surface_evaluate.py": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/trace_analysis.py": "0b189430f01f80971c8f4c0608e18ce7fb9c37b2c639f8e6fc9cb03e928593f6",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/visualization.py": "7ef241a61af9ada6ace76ae842aa4500b6d423e4f49843e1dae6a33318b2cc80"
+      },
+      "config_sha256": "5eab9164d191e19b4b92f93f29f47077b0dfe60a1b9dfd97948f0ee912195038",
+      "command": [
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/run.py",
+        "--experiment",
+        "configs/iteration-episodes.json"
+      ],
+      "bags": [
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+          "split": "development_nonexhaustive_one_provisional_structure",
+          "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+          "files": [
+            {
+              "name": "doubleT_obstacle_0.db3",
+              "bytes": 4821250048,
+              "mtime_ns": 1788354643000000000
+            }
+          ]
+        }
+      ],
+      "packages": {
+        "numpy": "2.5.3",
+        "scipy": "1.18.1",
+        "rosbags": "0.11.5",
+        "kiss-icp": "1.3.0",
+        "open3d": "0.19.0",
+        "travel-seg": null,
+        "hdbscan": null,
+        "pypatchworkpp": null
+      },
+      "python": "3.12.8 (v3.12.8:2dc476bcb91, Dec  3 2024, 14:43:19) [Clang 13.0.0 (clang-1300.0.29.30)]"
+    },
+    "iteration-envelope-distance": {
+      "git_revision": "3a221cf7b823400c9f9aabf3f87f4225e958da85",
+      "git_status": " M tunnel_guard/detector.py\n M tunnel_guard/run.py\n M tunnel_guard/visualization.py\n?? configs/detector-envelope-distance.json\n?? configs/iteration-envelope-distance.json\n?? configs/iteration-episodes.json\n?? configs/iteration-visual-cases.json\n?? tunnel_guard/trace_analysis.py\n",
+      "source_sha256": {
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/background.py": "fcbbaa5c01b165da3ddca8dee326f00b6964546454c327d283de758648e80af0",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/detector.py": "02a8f58c6cf5f61a2f84ba99d0e1912e9e31631201c73914f017ed1f5487ac09",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/evaluate.py": "88ae992a7dfd4152bef2fa0aa4f2887930faf8c886c88176c80a9e348ada9bde",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/geometry.py": "e64861339f1079a8ff59f9d05f247896f7c03e9bc9088bd5f7b5e25efb446fa9",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/inspect_bag.py": "ccb30abe90954ab9e7862bcc914b9803ff538c5e4dd4695c97f189d04b766374",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/io.py": "f1634ee30f4fac7b82bbe811eb3dc5320493eae32cbc63e6b0520ddd4bba6651",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/osdar.py": "3af192dd391793dde9ef733c34235cd9ccaac332a07f71670081ceab40f54734",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/run.py": "631cc845fcae660366d3d1c3a34cb7f9647d8843ffa6f34f2d6368e07bf9c417",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/segmentation.py": "d2d989cdc8abb1308b545d8dd25ca60219954c58de4e2bb64d1934cbe45c393d",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/surface_evaluate.py": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/trace_analysis.py": "0b189430f01f80971c8f4c0608e18ce7fb9c37b2c639f8e6fc9cb03e928593f6",
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/visualization.py": "c9272d3d7447f43ffdeca77c641377bf40c63cd542c831b0143aee1faa8a289f"
+      },
+      "config_sha256": "d2d1cfabd2bfd63ffb56c1e4950593fa1a87420b0c3cd504bd83e015bc91d960",
+      "command": [
+        "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/run.py",
+        "--experiment",
+        "configs/iteration-envelope-distance.json"
+      ],
+      "bags": [
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+          "split": "development_nonexhaustive_one_provisional_structure",
+          "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+          "files": [
+            {
+              "name": "doubleT_obstacle_0.db3",
+              "bytes": 4821250048,
+              "mtime_ns": 1788354643000000000
+            }
+          ]
+        }
+      ],
+      "packages": {
+        "numpy": "2.5.3",
+        "scipy": "1.18.1",
+        "rosbags": "0.11.5",
+        "kiss-icp": "1.3.0",
+        "open3d": "0.19.0",
+        "travel-seg": null,
+        "hdbscan": null,
+        "pypatchworkpp": null
+      },
+      "python": "3.12.8 (v3.12.8:2dc476bcb91, Dec  3 2024, 14:43:19) [Clang 13.0.0 (clang-1300.0.29.30)]"
+    }
+  },
+  "analysis_source_sha256": "ccaea517a3aae46263b5396897174caca29ffcb8d61af72f3edac0b2734577be"
+}

@@ -6,6 +6,18 @@ Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 
 
 The current review, real-data comparison and limitations are in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). The latest iteration processed two real 30-frame prefixes. Historical results below are separate evidence.
 
+## Review of new annotations
+
+See [annotation review](docs/ANNOTATION_REVIEW.md) and [sensor evidence](docs/SENSOR_PROFILE.md). The new person panel contains one manual anchor and 35 detector-propagated boxes. Raw-cloud review and a fresh 201-frame run are complete; the panel is not accepted as independent ground truth. Original oriented label files are now included; their AABB conversion reproduces all 36 exported boxes exactly. The author reports reviewing all propagated positions. The box convention and oriented evaluation remain to be resolved.
+
+## Latest real-sequence iteration
+
+See [NEXT_ITERATION.md](NEXT_ITERATION.md): the complete 201-frame annotated sequence, stage-by-stage point evidence, and an optional envelope-support distance definition. All five provisional observations retained their localization; detection decisions stayed unchanged. This is a correction of distance semantics, not a measured detection-range improvement. The default recipe retains the original cluster-minimum distance; use `configs/iteration-envelope-distance.json` for the new mode.
+
+## Team work
+
+See [next iteration assignments](docs/TEAM_TASKS.md): reviewed episodes, sensor/time evidence, Ubuntu/RViz validation, and oriented evaluation. Use separate branches from `experiments/morev`.
+
 ## Quick start
 
 Python 3.11+; Python 3.13.5 was used for the latest audit (older results used 3.12). Install [uv](https://docs.astral.sh/uv/), then:

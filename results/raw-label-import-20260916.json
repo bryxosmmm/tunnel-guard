@@ -1,0 +1,8 @@
+{
+  "source_commit": "3e2d017",
+  "observations": 36,
+  "maximum_aabb_difference_m": 0.0,
+  "coordinates_changed": false,
+  "review_status": "author_report_not_independent_second_review",
+  "oriented_iou_reproduced": false
+}

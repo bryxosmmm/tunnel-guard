@@ -36,6 +36,8 @@ def read_box_files(label_dir: Path) -> dict[int, list[dict]]:
         boxed = json.loads(entry.read_text())
         if not isinstance(boxed, list):
             raise ValueError(f"{entry} must contain a list of boxes")
+        if int(entry.stem) in frames:
+            raise ValueError(f"Multiple label files resolve to frame {int(entry.stem)}")
         frames[int(entry.stem)] = boxed
     return frames
 
@@ -77,6 +79,7 @@ def export(plan: dict, config_path: Path) -> dict:
         "prediction_scope": plan["prediction_scope"],
         "minimum_iou": float(plan["minimum_iou"]),
         "provenance": plan["provenance"],
+        "box_semantics": plan.get("box_semantics", "unspecified"),
         "frames": [],
     }
     summary = {}
@@ -85,6 +88,7 @@ def export(plan: dict, config_path: Path) -> dict:
         if not label_dir.is_dir():
             raise FileNotFoundError(f"Missing label directory {label_dir}")
         annotated = read_box_files(label_dir)
+        sources = {int(p.stem): p for p in label_dir.glob("*.json") if p.stem.isdigit()}
         exhaustive = {int(f) for f in scene_plan.get("exhaustive_frames") or []}
         available = {int(p.stem) for p in (scene_root / scene / "lidar").iterdir() if p.stem.isdigit()}
         if not available:
@@ -104,6 +108,10 @@ def export(plan: dict, config_path: Path) -> dict:
                     "bbox_max": high,
                     "class": str(box["obj_type"]),
                     "path_intersection": str(plan.get("path_intersection", "unverified")),
+                    "annotation_origin": scene_plan.get("annotation_origins", {}).get(
+                        str(frame), {}).get(str(box["obj_id"]), "unspecified"),
+                    "source_box_psr": box["psr"],
+                    "source_label_sha256": digest(sources[frame]),
                 })
             annotation["frames"].append({
                 "bag": scene, "frame": frame, "exhaustive": frame in exhaustive, "objects": objects,

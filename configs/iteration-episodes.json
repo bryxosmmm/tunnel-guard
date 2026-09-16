@@ -1,0 +1,30 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/iteration-baseline",
+  "every": 1,
+  "max_frames": 201,
+  "visualization": true,
+  "display_max_points": 50000,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_nonexhaustive_one_provisional_structure"
+    }
+  ],
+  "annotations_for_offline_analysis_only": "annotations/sourcecraft-provisional.json",
+  "episode_definition": "Sequential frames 0..200 inclusive cover every available authored observation (0,50,100,150,200) and all intervening history. No warm start at annotation frames. No verified negative interval is available.",
+  "hypothesis": "Stage provenance on the fixed sequence can distinguish measured support lost before candidates from association/confirmation and distance-definition effects.",
+  "criterion": "Account for stage execution and measured support for all five provisional observations; choose at most one reproduced cause, retaining baseline outputs and thresholds. Detection accuracy is not established by this panel.",
+  "diagnostic_frames": [
+    0,
+    25,
+    50,
+    75,
+    100,
+    125,
+    150,
+    175,
+    200
+  ]
+}

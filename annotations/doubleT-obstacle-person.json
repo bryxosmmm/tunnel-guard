@@ -22,7 +22,27 @@
             -0.3307368336516112
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 5.2974978777135435,
+              "y": 2.260276005271453,
+              "z": -1.2240391550856322
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "2b8f801cea4bc5b4d8028616ffeb2d0317ce6542896eeb87be2de2ae4ad78cf4",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -44,7 +64,27 @@
             -0.3352231735733795
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 5.61099405213964,
+              "y": 2.264087585137289,
+              "z": -1.2285254950074005
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "4e378d4a049dc91c001234a62dcd75696952ca4a503502572663ecfeef8f215d",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -66,7 +106,27 @@
             -0.3397095134951478
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 5.924490226565736,
+              "y": 2.2678991650031253,
+              "z": -1.2330118349291688
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "5e08e76803af944171866d05af628df7a4b5f22652e4049443b84d02b40d5e34",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -88,7 +148,27 @@
             -0.34419585341691583
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 6.237986400991833,
+              "y": 2.2717107448689617,
+              "z": -1.2374981748509368
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "a99777fdd8afd09323af00fb6d4d6894009334026a668695f07aa67ef2813008",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -110,7 +190,27 @@
             -0.3486821933386841
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 6.55148257541793,
+              "y": 2.2755223247347978,
+              "z": -1.241984514772705
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "61021ece8e6547238268544a1704ad36c9032f4f84f872871c3d08a186477e3d",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -132,7 +232,27 @@
             -0.3531685332604524
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 6.864978749844027,
+              "y": 2.2793339046006342,
+              "z": -1.2464708546944734
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "eaf1a40a27f0d77659877e1d454f407e1642a2341aac5d774703a0ca3cc00dfa",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -154,7 +274,27 @@
             -0.35765487318222045
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 7.178474924270123,
+              "y": 2.2831454844664707,
+              "z": -1.2509571946162414
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "ae0680dcb0bae123c316404f6e3d7375aef32a3b431f695dbcee050aadb31328",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -176,7 +316,27 @@
             -0.3621412131039885
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 7.49197109869622,
+              "y": 2.2869570643323067,
+              "z": -1.2554435345380095
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "e12445cecfe3739ea8c11b9c3bd2f85090556e52cf4e93c52e7049a1a879f7a2",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -198,7 +358,27 @@
             -0.366627553025757
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 7.805467273122316,
+              "y": 2.290768644198143,
+              "z": -1.259929874459778
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "10c0b0ca01fe43ff55d369d4d360784265aa3b75ea14f04f172f459eb71755a5",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -220,7 +400,27 @@
             -0.37111389294752506
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 8.118963447548413,
+              "y": 2.2945802240639797,
+              "z": -1.264416214381546
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "4552e7deb2d1ad5b88ee6d672fcf3c72e6aa722f75786adb6f973e2d4c154f59",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -242,7 +442,27 @@
             -0.37560023286929334
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 8.432459621974509,
+              "y": 2.2983918039298157,
+              "z": -1.2689025543033143
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "20642a1a878e5d3d83747ef306134f4e81c2a0937066112d48f2d69eecf64dc7",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -264,7 +484,27 @@
             -0.3800865727910614
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 8.745955796400606,
+              "y": 2.3022033837956517,
+              "z": -1.2733888942250824
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "85d294622f93e1419bd844fe0738fa8e3ea4d3b59ff3034437be93883cf11f5c",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -286,7 +526,27 @@
             -0.3845729127128297
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 9.059451970826702,
+              "y": 2.3060149636614886,
+              "z": -1.2778752341468507
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "35569c9e7d413c78e82356c614d3fbca42b191b53c187ac761988419fb07ca16",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -308,7 +568,27 @@
             -0.38905925263459773
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 9.3729481452528,
+              "y": 2.3098265435273246,
+              "z": -1.2823615740686187
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "c5728c159f0e0d7f2acff282d45be307f21c98ee4d19ebb983a1e7c0e1a5ddc6",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -330,7 +610,27 @@
             -0.393545592556366
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 9.686444319678895,
+              "y": 2.3136381233931607,
+              "z": -1.286847913990387
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "89a22b7b2a698fb121e445cdff68c11065fccd1cff98991ee80745b9a3c9c61a",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -352,7 +652,27 @@
             -0.3980319324781343
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 9.999940494104992,
+              "y": 2.317449703258997,
+              "z": -1.2913342539121553
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "834b8c40b1b770badc988b767b173af0233b1d6492dd4f3bf65308e975fb70b7",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -374,7 +694,27 @@
             -0.40251827239990234
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "manual_anchor",
+          "source_box_psr": {
+            "position": {
+              "x": 10.313436668531088,
+              "y": 2.3212612831248336,
+              "z": -1.2958205938339233
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "09ff01dfde0aa762277b1b023e9bb7fd7027e91a64612c40e6e9452b66834b06",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -396,7 +736,27 @@
             -0.4070046123216706
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 10.626932842957185,
+              "y": 2.3250728629906696,
+              "z": -1.3003069337556916
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "b1c5a6044cee2d42bca12322a2098bd4cc26f227eec98d34dc37b3345570aca8",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -418,7 +778,27 @@
             -0.4114909522434387
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 10.94042901738328,
+              "y": 2.328884442856506,
+              "z": -1.3047932736774597
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "a59bf0ee1fd358f12e85ebd8d387e170ec26938fe80197da24a97e898102073f",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -440,7 +820,27 @@
             -0.41597729216520696
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 11.253925191809378,
+              "y": 2.3326960227223426,
+              "z": -1.309279613599228
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "d9553a22198a884f719ff1dba5ee85e782265f4315de3f0ec37d0b00875813bc",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -462,7 +862,27 @@
             -0.42046363208697524
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 11.567421366235473,
+              "y": 2.3365076025881786,
+              "z": -1.3137659535209962
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "2e0550e2203988037fb88c0938592c5c508d683d1288d3ec547aadd1072ec27a",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -484,7 +904,27 @@
             -0.4249499720087433
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 11.88091754066157,
+              "y": 2.340319182454015,
+              "z": -1.3182522934427643
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "af6fb203e4ebd9afaf79cfc8134dfeac6709d109e03b937c0783633cb1862eb3",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -506,7 +946,27 @@
             -0.42943631193051157
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 12.194413715087666,
+              "y": 2.3441307623198515,
+              "z": -1.3227386333645326
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "d1f88ec5af61a463ff2dd1e50d9f4601c8a522b28e46dcfdea608866a3dce999",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -528,7 +988,27 @@
             -0.43392265185227985
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 12.507909889513764,
+              "y": 2.3479423421856875,
+              "z": -1.3272249732863008
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "ef626d67e44e736db3545d9a291b52cbcc13cc664d38e2c2e6aad34a71ff5dbb",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -550,7 +1030,27 @@
             -0.4384089917740479
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 12.82140606393986,
+              "y": 2.351753922051524,
+              "z": -1.331711313208069
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "512035ecc8f42118f235a844c7eb8e3e4ff6fc09d5349c88d75ca8448ccdba5e",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -572,7 +1072,27 @@
             -0.4428953316958162
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 13.134902238365957,
+              "y": 2.3555655019173605,
+              "z": -1.3361976531298372
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "fb8cdae4f66a79f69ab42071ad5221b0fe6d3517c8d2e1c0b13c7b9464f7c812",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -594,7 +1114,27 @@
             -0.44738167161758424
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 13.448398412792052,
+              "y": 2.3593770817831965,
+              "z": -1.3406839930516052
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "dcb6d928143ed0ab7bf25b264e04d2bd0e54a0250881fa75f84cc50638ae7241",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -616,7 +1156,27 @@
             -0.4518680115393525
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 13.76189458721815,
+              "y": 2.363188661649033,
+              "z": -1.3451703329733735
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "85eeabe67c31ad23f7ef243f7b3e05c47c8a43468608c734974eb9827d76eea1",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -638,7 +1198,27 @@
             -0.4563543514611208
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 14.075390761644247,
+              "y": 2.367000241514869,
+              "z": -1.3496566728951418
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "8cb858c6a3a212b26c66d58d83c88ed852be1318989c0dea54a3ecff9da945f4",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -660,7 +1240,27 @@
             -0.46084069138288886
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 14.388886936070342,
+              "y": 2.3708118213807055,
+              "z": -1.3541430128169099
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "42da797c3f673fc77dad46eaf7be8bfc4e62d224fdc54220df735acdf7be411d",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -682,7 +1282,27 @@
             -0.46532703130465713
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 14.70238311049644,
+              "y": 2.374623401246542,
+              "z": -1.3586293527386781
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "9752a2cb3001c7d632f007adada17b2fe5d090fc62d3dddb97806af329565f4f",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -704,7 +1324,27 @@
             -0.4698133712264252
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 15.015879284922535,
+              "y": 2.378434981112378,
+              "z": -1.3631156926604462
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "edea2eebf404dc1a6b8557cfc090a70894eb1bb4790b284c8f1dfce9292046e1",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -726,7 +1366,27 @@
             -0.47429971114819347
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 15.329375459348633,
+              "y": 2.3822465609782144,
+              "z": -1.3676020325822145
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "2996ec399995e4feb68e2762548707a0a97332569fed7cc8d514b0daf4833953",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -748,7 +1408,27 @@
             -0.47878605106996175
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 15.642871633774728,
+              "y": 2.386058140844051,
+              "z": -1.3720883725039827
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "6c5f5267082608486cf7dec4c09552c2ada1d74384fc6df9ebf5273aedb9d67f",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -770,7 +1450,27 @@
             -0.4832723909917298
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 15.956367808200826,
+              "y": 2.389869720709887,
+              "z": -1.3765747124257508
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "82ba5fd479a0ce0323e0cb439b3ef095a9d068cbc30e5a37403211a64e2c0497",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     },
@@ -792,9 +1492,31 @@
             -0.4877587309134981
           ],
           "class": "Person",
-          "path_intersection": "unverified"
+          "path_intersection": "unverified",
+          "annotation_origin": "detector_track_propagation",
+          "source_box_psr": {
+            "position": {
+              "x": 16.269863982626923,
+              "y": 2.3936813005757234,
+              "z": -1.381061052347519
+            },
+            "rotation": {
+              "x": 0,
+              "y": 0,
+              "z": 0.40633550881934155
+            },
+            "scale": {
+              "x": 0.9730469350415936,
+              "y": 1.2633608438125727,
+              "z": 1.786604642868042
+            }
+          },
+          "source_label_sha256": "0e27d6cdc64f59046132cfdebf2e97dd6f2265ce432bbc3eb59d1320e9619e6c",
+          "review_status": "position_reviewed_by_author_report"
         }
       ]
     }
-  ]
+  ],
+  "box_semantics": "unspecified",
+  "review_provenance": "Author reports visual position review of all frames 165-200; constant size and rotation from frame 181. Centers propagated using a detector-track velocity fit. Full-volume versus observed-support convention still requires explicit agreement."
 }
