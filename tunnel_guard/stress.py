@@ -2,8 +2,10 @@
 from __future__ import annotations
 
 import argparse
+import functools
 import itertools
 import json
+import os
 from pathlib import Path
 import time
 
@@ -11,7 +13,7 @@ import numpy as np
 
 from .detector import Detector, load_config
 from .evaluate import evaluate_frames
-from .run import digest, environment, write_json
+from .run import digest, environment, ordered_parallel, write_json
 
 
 def beam_directions(config: dict, rng: np.random.Generator) -> np.ndarray:
@@ -106,9 +108,17 @@ def run_case(case: dict, stress: dict, detector_config: dict, index: int):
     return rows, labels, visible_counts
 
 
+def run_case_indexed(item: tuple[int, dict], stress: dict, detector_config: dict):
+    index, case = item
+    rows, labels, visible = run_case(case, stress, detector_config, index)
+    return index, rows, labels, visible
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--experiment", type=Path, required=True)
+    parser.add_argument("--workers", type=int, default=os.cpu_count() or 1,
+                        help="processes for independent scenes; each scene is deterministic from the plan seed")
     args = parser.parse_args()
     stress = json.loads(args.experiment.read_text())
     detector_config = load_config(stress["detector_config"])
@@ -123,11 +133,14 @@ def main():
     for source in Path(__file__).parent.glob("*.py"):
         (source_dir / source.name).write_bytes(source.read_bytes())
     write_json(output / "manifest.json", environment() | {"config_sha256": digest(Path(stress["detector_config"]))})
+    case_list = list(cases(stress))
+    workers = max(1, min(args.workers, len(case_list)))
     predictions, annotations, records = {}, [], []
     started = time.perf_counter()
+    worker = functools.partial(run_case_indexed, stress=stress, detector_config=detector_config)
     with (output / "predictions.jsonl").open("x") as stream:
-        for index, case in enumerate(cases(stress)):
-            rows, labels, visible = run_case(case, stress, detector_config, index)
+        for index, rows, labels, visible in ordered_parallel(list(enumerate(case_list)), worker, workers):
+            case = case_list[index]
             for row in rows:
                 predictions[(row["bag"], row["frame"])] = row
                 stream.write(json.dumps(row, allow_nan=False) + "\n")
