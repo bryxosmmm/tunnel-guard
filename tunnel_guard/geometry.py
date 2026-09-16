@@ -47,6 +47,16 @@ GEOMETRY_DEFAULTS = {
     "rail_support_symmetry_min": 0.4,
     "path_sigma_floor_m": 0.06,
     "path_growth_bounds_m_per_m": [0.004, 0.02],
+    # The per-step search is bounded by heading alone. Track geometry also bounds
+    # curvature, and this is the tightest main-line radius a metro alignment uses;
+    # depot and turnout geometry is sharper and is not what the envelope follows.
+    "rail_min_radius_m": 150.0,
+    # A bend is only implausible when it exceeds that radius by more than the
+    # anchors' own measured sigma explains, so the test rescales itself with the
+    # evidence instead of assuming one lateral noise level for every recording.
+    "kink_max_sigma": 5.0,
+    "kink_sigma_floor_m": 0.005,
+    "kink_truncation_enabled": False,
 }
 
 
@@ -137,6 +147,8 @@ class TrackGeometry:
         self.gauge_convention_conflict = False
         self.path_growth_m_per_m = None
         self.path_horizon_m = None
+        self.kink_truncated_at_m = None
+        self.kink_excess_sigma = None
         self.rail_head_height_m = None
         self.reason = self.ground_quality["reason"]
         if self.plane is None:
@@ -375,6 +387,8 @@ class TrackGeometry:
             inner_gauges.append(gauge_inner)
         if len(anchors) >= 3 and setting(cfg, "longitudinal_extension_enabled"):
             self._rail_extension(rail, rail_h, anchors, heads, sigmas, inner_gauges)
+        if len(anchors) >= 3 and setting(cfg, "kink_truncation_enabled"):
+            self._truncate_at_kink(anchors, heads, sigmas, inner_gauges)
         self.rail_anchors = np.asarray(anchors, dtype=float).reshape(-1, 4)
         self.rail_head_anchors = np.asarray([[a[0], head, sigma]
                                              for a, head, sigma in zip(anchors, heads, sigmas)],
@@ -390,6 +404,40 @@ class TrackGeometry:
             > cfg["rail_gauge_tolerance_m"])
         if heads:
             self.rail_head_height_m = float(np.median(heads))
+
+    def _truncate_at_kink(self, anchors: list, heads: list, sigmas: list, inner_gauges: list):
+        """Cut the alignment back to its last anchor that bends like track.
+
+        Each step is accepted within a heading budget around the previous anchor, and the
+        pairing score rewards proximity to that extrapolation, so once one rail is matched
+        against a parallel structure the chain is rewarded for staying on it. Nothing in that
+        loop bounds curvature, yet track geometry does: over a step ``dx`` an alignment cannot
+        bend more than ``dx^2 / rail_min_radius_m``. A bend past that which the anchors' own
+        sigma cannot explain is a mismatch, not a curve, so the chain is truncated there and
+        the certified horizon shortens instead of the envelope being placed on another track.
+
+        At least two anchors are kept. A chain suspect from its very first bend is a different
+        failure, and turning those frames into no geometry at all is not evidenced here.
+        """
+        x = np.asarray([a[0] for a in anchors], dtype=float)
+        center = np.asarray([a[1] for a in anchors], dtype=float)
+        sigma = np.maximum(np.asarray(sigmas, dtype=float),
+                           setting(self.config, "kink_sigma_floor_m"))
+        bend = center[2:] - 2 * center[1:-1] + center[:-2]
+        noise = np.sqrt(sigma[2:] ** 2 + 4 * sigma[1:-1] ** 2 + sigma[:-2] ** 2)
+        step = np.minimum(np.diff(x)[1:], np.diff(x)[:-1])
+        excess = (np.abs(bend) - step ** 2 / setting(self.config, "rail_min_radius_m")) / noise
+        suspect = np.flatnonzero(excess > setting(self.config, "kink_max_sigma"))
+        if not len(suspect):
+            return
+        # bend[i] is centred on anchor i+1, so anchor i+1 is the first one in doubt.
+        keep = max(2, int(suspect[0]) + 1)
+        if keep >= len(anchors):
+            return
+        self.kink_truncated_at_m = float(x[keep - 1])
+        self.kink_excess_sigma = float(excess[suspect[0]])
+        for chain in (anchors, heads, sigmas, inner_gauges):
+            del chain[keep:]
 
     def _rail_extension(self, rail: np.ndarray, rail_h: np.ndarray, anchors: list, heads: list,
                         sigmas: list, inner_gauges: list):
@@ -539,5 +587,7 @@ class TrackGeometry:
                 "gauge_convention_conflict": self.gauge_convention_conflict,
                 "path_growth_m_per_m": self.path_growth_m_per_m,
                 "path_horizon_m": self.path_horizon_m,
+                "kink_truncated_at_m": self.kink_truncated_at_m,
+                "kink_excess_sigma": self.kink_excess_sigma,
                 "ground_anchors": self.ground_anchors.tolist(), "rail_anchors": self.rail_anchors.tolist(),
                 "background": None if self.background is None else self.background.describe()}

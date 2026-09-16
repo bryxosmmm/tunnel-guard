@@ -1,0 +1,202 @@
+{
+ "change": "kink_truncation_enabled in tunnel_guard/geometry.py, default false",
+ "statistic": "Second difference of the anchor centre, minus the bend a rail_min_radius_m alignment allows over that step, divided by the propagated per-anchor rail_sigma. The chain is cut at the first anchor whose excess passes kink_max_sigma. Physical bound plus the code own evidence; the sigma threshold itself was chosen from this data and is the part that needs independent confirmation.",
+ "settings": {
+  "rail_min_radius_m": 150.0,
+  "kink_max_sigma": 5.0,
+  "kink_sigma_floor_m": 0.005
+ },
+ "panels": {
+  "quality": {
+   "base": {
+    "tp": 162,
+    "fn": 54,
+    "fp_exhaustive_only": 21,
+    "event_recall": 0.9027777777777778,
+    "precision_exhaustive_only": 0.8852459016393442,
+    "f1_exhaustive_only": 0.8120300751879699,
+    "distance_mae_m": 0.0003614190176008837,
+    "negative_episode_rate": 0.0
+   },
+   "kink": {
+    "tp": 162,
+    "fn": 54,
+    "fp_exhaustive_only": 21,
+    "event_recall": 0.9027777777777778,
+    "precision_exhaustive_only": 0.8852459016393442,
+    "f1_exhaustive_only": 0.8120300751879699,
+    "distance_mae_m": 0.0003614190176008837,
+    "negative_episode_rate": 0.0
+   },
+   "identical": true
+  },
+  "heldout": {
+   "base": {
+    "tp": 159,
+    "fn": 57,
+    "fp_exhaustive_only": 25,
+    "event_recall": 0.8888888888888888,
+    "precision_exhaustive_only": 0.8641304347826086,
+    "f1_exhaustive_only": 0.795,
+    "distance_mae_m": 0.0003663092429296303,
+    "negative_episode_rate": 0.0
+   },
+   "kink": {
+    "tp": 159,
+    "fn": 57,
+    "fp_exhaustive_only": 25,
+    "event_recall": 0.8888888888888888,
+    "precision_exhaustive_only": 0.8641304347826086,
+    "f1_exhaustive_only": 0.795,
+    "distance_mae_m": 0.0003663092429296303,
+    "negative_episode_rate": 0.0
+   },
+   "identical": true
+  },
+  "measured": {
+   "base": {
+    "tp": 710,
+    "fn": 250,
+    "fp_exhaustive_only": 176,
+    "event_recall": 0.8125,
+    "precision_exhaustive_only": 0.801354401805869,
+    "f1_exhaustive_only": 0.7692307692307693,
+    "distance_mae_m": 0.0011122197283741718,
+    "negative_episode_rate": 0.0
+   },
+   "kink": {
+    "tp": 710,
+    "fn": 250,
+    "fp_exhaustive_only": 176,
+    "event_recall": 0.8125,
+    "precision_exhaustive_only": 0.801354401805869,
+    "f1_exhaustive_only": 0.7692307692307693,
+    "distance_mae_m": 0.0011122197283741718,
+    "negative_episode_rate": 0.0
+   },
+   "identical": true
+  }
+ },
+ "recordings": [
+  {
+   "bag": "doubleT_obstacle",
+   "clusters": {
+    "before": 882,
+    "after": 800
+   },
+   "events": {
+    "before": 51,
+    "after": 52
+   },
+   "candidates": {
+    "before": 4,
+    "after": 4
+   },
+   "truncation_fires": 2,
+   "frames": 201,
+   "fire_share": 0.01,
+   "median_horizon_loss_m": 20.0
+  },
+  {
+   "bag": "doubleT_platform",
+   "clusters": {
+    "before": 1174,
+    "after": 1174
+   },
+   "events": {
+    "before": 16,
+    "after": 16
+   },
+   "candidates": {
+    "before": 1,
+    "after": 1
+   },
+   "truncation_fires": 0,
+   "frames": 345,
+   "fire_share": 0.0,
+   "median_horizon_loss_m": 0.0
+  },
+  {
+   "bag": "roundT_doubleT",
+   "clusters": {
+    "before": 393,
+    "after": 354
+   },
+   "events": {
+    "before": 25,
+    "after": 21
+   },
+   "candidates": {
+    "before": 2,
+    "after": 1
+   },
+   "truncation_fires": 47,
+   "frames": 249,
+   "fire_share": 0.1888,
+   "median_horizon_loss_m": 25.0
+  },
+  {
+   "bag": "roundT_pressureGate_roundT",
+   "clusters": {
+    "before": 475,
+    "after": 536
+   },
+   "events": {
+    "before": 29,
+    "after": 27
+   },
+   "candidates": {
+    "before": 3,
+    "after": 3
+   },
+   "truncation_fires": 16,
+   "frames": 268,
+   "fire_share": 0.0597,
+   "median_horizon_loss_m": 20.0
+  },
+  {
+   "bag": "roundT_squareT_pressureGate_squareT",
+   "clusters": {
+    "before": 2460,
+    "after": 787
+   },
+   "events": {
+    "before": 130,
+    "after": 105
+   },
+   "candidates": {
+    "before": 1,
+    "after": 2
+   },
+   "truncation_fires": 96,
+   "frames": 545,
+   "fire_share": 0.1761,
+   "median_horizon_loss_m": 20.0
+  },
+  {
+   "bag": "squareT_platform_squareT_switch",
+   "clusters": {
+    "before": 251,
+    "after": 98
+   },
+   "events": {
+    "before": 7,
+    "after": 7
+   },
+   "candidates": {
+    "before": 0,
+    "after": 0
+   },
+   "truncation_fires": 5,
+   "frames": 877,
+   "fire_share": 0.0057,
+   "median_horizon_loss_m": 20.0
+  }
+ ],
+ "totals": {
+  "clusters_before": 5635,
+  "clusters_after": 3749,
+  "reduction": 0.335
+ },
+ "conclusion": "All three synthetic panels are bit-identical with and without the gate, so it costs no event recall, precision or localisation there - but the synthetic scenes never bend the alignment, so the panels prove the absence of a regression and not the presence of a benefit. On the six recordings in-envelope clusters fall 5635 -> 3749 (-33 percent) and candidates stay at 11. The gate fires on 0-19 percent of frames per recording, almost entirely in the three recordings that show centre lock failures, and costs a median 20-25 m of certified horizon in the frames where it fires. One recording regresses: roundT_pressureGate_roundT rises 475 -> 536 clusters, consistent with a truncated chain leaving a noisier two-anchor tangent that can swing the envelope. Fewer in-envelope clusters is not a measured precision gain: without exhaustive negative episodes it cannot be shown that what was removed was infrastructure rather than real support."
+}

@@ -42,9 +42,12 @@ def load_config(path: str | Path) -> dict:
     for name in ("ground_extension_max_offset_m",
                  "ground_extension_window_growth", "ground_extension_max_window_m",
                  "rail_extension_max_offset_m", "rail_extension_window_growth",
-                 "rail_extension_max_window_m", "path_sigma_floor_m"):
+                 "rail_extension_max_window_m", "path_sigma_floor_m",
+                 "rail_min_radius_m", "kink_max_sigma", "kink_sigma_floor_m"):
         if name in config and (not np.isfinite(config[name]) or config[name] <= 0):
             raise ValueError(f"{name} must be positive and finite")
+    if not isinstance(config.get("kink_truncation_enabled", False), bool):
+        raise ValueError("kink_truncation_enabled must be boolean")
     if "rail_head_width_m" in config and (not np.isfinite(config["rail_head_width_m"])
                                           or not 0 < config["rail_head_width_m"] < 0.5 * config["rail_gauge_m"]):
         raise ValueError("rail_head_width_m must be positive and less than half the standard gauge")
