@@ -5,6 +5,7 @@
 /build/
 /dist/
 /.local-research/
+/SUSTechPOINTS/
 
 # Machine-specific tools and agent state
 /.third_party/

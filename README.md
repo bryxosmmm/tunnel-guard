@@ -139,7 +139,6 @@ See `results/acceptance.json` and `results/panel-summary.csv`. **Acceptance: not
 | Original synthetic panel | 65/72 (90.3%) | 88.5% | 0/38 negative alarm episodes |
 | Untouched random seed | 64/72 (88.9%) | 86.4% | Same scenario families, not a domain holdout |
 | Measured beam pattern, 10–300 m | 77/96 (80.2%) | 80.1% | 1,460 frames; 0/50 negative episodes |
-| Independent OSDaR23 subset | 1/5 (20%) | Not available | 1/37 independently authored boxes matched |
 
 All synthetic panels fail the declared 95% event-recall target. Measured-pattern event recall: 100% at 10–100 m, 66.7% at 150 m, 58.3% at 200 m, 16.7% at 300 m. Ideal raycasting is **not hardware range or reflectivity validation**.
 
@@ -161,13 +160,7 @@ uv run python -m tunnel_guard.stress --experiment configs/stress-measured-patter
 
 The ground audit also needs the six organizer bags. TRAVEL and HDBSCAN comparisons share geometry/tracking to isolate segmentation; they are not complete neural SOTA benchmarks.
 
-For the independent outdoor-railway check, download `1_calibration_1.1.zip` from [OSDaR23](https://data.fid-move.de/dataset/osdar23) into `data/real/osdar23/`, then run:
-
-```sh
-uv run python -m tunnel_guard.osdar --experiment configs/osdar-evaluation.json
-```
-
-The fixed adapter uses standard gauge and translates the railhead-origin coordinates. It does not tune against individual objects. Outdoor transfer was poor, including objects with substantial returns. Target-metro exhaustive positives, negatives, and held-out recordings are still needed.
+Target-metro exhaustive positives, negatives, and held-out recordings are still needed.
 
 ## Dependencies and data licenses
 
@@ -175,6 +168,5 @@ The fixed adapter uses standard gauge and translates the railhead-origin coordin
 - [Open3D](https://www.open3d.org/), MIT, pinned to 0.19.0: plane segmentation, voxel sampling, normal and covariance estimation for background rejection. Its standard distribution adds substantial transitive dependencies.
 - [TRAVEL](https://github.com/url-kaist/TRAVEL), **GPL-3.0-or-later**: optional comparison dependency only. Review license obligations before distributing an integrated derivative.
 - [HDBSCAN](https://github.com/scikit-learn-contrib/hdbscan), BSD; [Patchwork++](https://github.com/url-kaist/patchwork-plusplus), BSD-2-Clause: optional published comparisons.
-- OSDaR23 annotations: CC0-1.0; sensor data: CC BY-SA 3.0 de. Neither the raw dataset nor its archive is committed.
 
 No project-wide redistribution license is granted here. Keep organizer data, credentials, local agent configuration and generated artifacts out of commits.

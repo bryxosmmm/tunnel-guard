@@ -1,7 +1,7 @@
 {
   "promoted": false,
   "criteria_unchanged": true,
-  "reason": "Development, seed holdout, and measured-pattern event recall fail95%; independent transfer fails badly; high real alert burden and runtime remain unresolved.",
+  "reason": "Development, seed holdout, and measured-pattern event recall fail95%; high real alert burden and runtime remain unresolved.",
   "panels": {
     "development": {
       "artifact": "build/tunnel-guard-stress-quality-final/metrics.json",
@@ -38,20 +38,6 @@
       "event_recall": 0.8020833333333334,
       "validity_warnings": [],
       "negative_episode_rate": 0.0
-    },
-    "independent_osdar": {
-      "artifact": "build/tunnel-guard-osdar23/metrics.json",
-      "evaluated_frames": 10,
-      "tp": 1,
-      "fn": 36,
-      "annotated_object_recall": 0.02702702702702703,
-      "precision_exhaustive_only": null,
-      "f1_exhaustive_only": null,
-      "event_recall": 0.2,
-      "validity_warnings": [
-        "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
-        "Independent outdoor railway subset, not metro safety validation; class subset is nonexhaustive for class-agnostic detection"
-      ]
     },
     "provisional_metro": {
       "artifact": "build/tunnel-guard-real-quality/provisional-localization.json",
@@ -92,7 +78,6 @@
     "Temporal spatial evidence adds confirmation delay and uses heuristic covariance; no calibrated probability claim.",
     "GOST reference contour replaces arbitrary envelope; actual vehicle swept envelope remains unavailable.",
     "Published GPL TRAVEL remains optional comparison-only dependency.",
-    "Independent OSDaR23 subset is outdoor railway and nonexhaustive; no target-metro precision claim.",
     "Measured beam raycasting is not hardware range/reflectivity validation."
   ]
 }
