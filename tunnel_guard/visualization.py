@@ -22,6 +22,10 @@ def corridor_edges(description: dict, config: dict) -> np.ndarray:
     geometry.ground_anchors = np.asarray(description["ground_anchors"])
     geometry.rail_anchors = np.asarray(description["rail_anchors"])
     geometry.rail_head_height_m = description["rail_head_height_m"]
+    geometry.rail_head_anchors = np.asarray(description.get("rail_head_anchors") or np.empty((0, 3)))
+    geometry.rail_sigma = np.asarray(description.get("rail_sigmas_m") or np.empty(0))
+    geometry.rail_gauge_inner = np.empty(0)
+    geometry.path_growth_m_per_m = description.get("path_growth_m_per_m")
     segments = np.asarray(config["envelope_segments_m"])
     # Retain both sides of width discontinuities at adjacent segment boundaries.
     contour = [(float(h), float(w + config["envelope_margin_m"]))
@@ -39,7 +43,7 @@ def corridor_edges(description: dict, config: dict) -> np.ndarray:
             p = np.array([[x, center[0] + dy, 0.0]])
             ground, uncertainty = geometry.ground(p)
             supported &= uncertainty[0] <= config["ground_max_uncertainty_m"]
-            ring.append([x, p[0, 1], ground[0] + geometry.rail_head_height_m + h * normal])
+            ring.append([x, p[0, 1], ground[0] + geometry.rail_head_profile(np.array([x]))[0] + h * normal])
         if not supported:
             previous = None
             continue

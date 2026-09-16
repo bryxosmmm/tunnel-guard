@@ -39,6 +39,29 @@ def load_config(path: str | Path) -> dict:
                  "odometry_voxel_m", "frame_max_gap_s", "track_max_gap_s"):
         if not np.isfinite(config[name]) or config[name] <= 0:
             raise ValueError(f"{name} must be positive and finite")
+    for name in ("ground_extension_max_offset_m",
+                 "ground_extension_window_growth", "ground_extension_max_window_m",
+                 "rail_extension_max_offset_m", "rail_extension_window_growth",
+                 "rail_extension_max_window_m", "path_sigma_floor_m"):
+        if name in config and (not np.isfinite(config[name]) or config[name] <= 0):
+            raise ValueError(f"{name} must be positive and finite")
+    if "rail_head_width_m" in config and (not np.isfinite(config["rail_head_width_m"])
+                                          or not 0 < config["rail_head_width_m"] < 0.5 * config["rail_gauge_m"]):
+        raise ValueError("rail_head_width_m must be positive and less than half the standard gauge")
+    for name in ("ground_extension_model_anchors", "ground_extension_misses_max",
+                 "ground_extension_min_points", "rail_model_anchors", "rail_extension_min_points",
+                 "rail_extension_misses_max"):
+        if name in config and (isinstance(config[name], bool) or not isinstance(config[name], int)
+                               or config[name] < 1):
+            raise ValueError(f"{name} must be a positive integer")
+    band = config.get("rail_head_band_m")
+    if band is not None and not (isinstance(band, list) and len(band) == 2 and band[0] < band[1]):
+        raise ValueError("rail_head_band_m must be [low, high] with low < high")
+    bounds = config.get("path_growth_bounds_m_per_m")
+    if bounds is not None and not (isinstance(bounds, list) and len(bounds) == 2 and 0 < bounds[0] <= bounds[1]):
+        raise ValueError("path_growth_bounds_m_per_m must be [min, max] with 0 < min <= max")
+    if "rail_support_symmetry_min" in config and not 0 < config["rail_support_symmetry_min"] <= 1:
+        raise ValueError("rail_support_symmetry_min must be in (0, 1]")
     if not 0 <= config["min_range_m"] < config["max_range_m"]:
         raise ValueError("Invalid sensor range bounds")
     if not isinstance(config.get("deskew_enabled", False), bool):
