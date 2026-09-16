@@ -62,7 +62,17 @@ The five supplied annotation boxes describe **one provisional upright structure*
 
 ## Label the recordings in SUSTechPOINTS
 
-Human labels do not exist yet for the six recordings, and no score can be computed without them. The upstream [SUSTechPOINTS](https://github.com/naurril/SUSTechPOINTS) annotation tool is used for that work; it is not part of this repository. `build/sustech-import.py` converts every bag to per-frame `.pcd` scenes under `SUSTechPOINTS/data/<bag>/`, keeping `tunnel_guard_local` coordinates and full density. Frame `00000N.pcd` is bag message index `N`, the same index the run JSONL uses. Start the tool with `python main.py` inside `SUSTechPOINTS` and open <http://127.0.0.1:8081>.
+Human labels do not exist yet for the six recordings, and no score can be computed without them. The upstream [SUSTechPOINTS](https://github.com/naurril/SUSTechPOINTS) annotation tool is used for that work; it is not part of this repository. Set it up at the revision this project was built against, then load the recordings:
+
+```sh
+git clone https://github.com/naurril/SUSTechPOINTS
+cd SUSTechPOINTS && git checkout 50fa18871a6d46507ff9057175669235885f79f9   # dev-auto-annotate
+git apply ../patches/sustechpoints-metro-taxonomy.patch                     # see "Classes" below
+pip install -r requirement.txt                                              # tensorflow, cherrypy, jinja2, filterpy
+cd .. && uv run python -m tunnel_guard.sustech_import --experiment configs/evaluation-quality.json
+```
+
+`tunnel_guard.sustech_import` writes one `.pcd` per bag message into `SUSTechPOINTS/data/<bag>/lidar/`, keeping `tunnel_guard_local` coordinates, intensity and full density, and an empty `label/` beside it. Frame `00000N.pcd` is bag message index `N` — the same index the run JSONL uses, so detector output and labels refer to the same frame. It reproduces the current scene files byte for byte (checked on three frames), and it refuses to overwrite an existing scene. Start the tool with `python main.py` inside `SUSTechPOINTS` and open <http://127.0.0.1:8081>; `server.conf` listens on `0.0.0.0`, so it is also reachable over a private network such as Tailscale (the tool has no authentication).
 
 Boxes are authored by hand: the detector's candidates are not good enough to seed a panel, and labels a detector supplies for its own scoring cannot measure that detector. After a labelling pass, convert the tool's label files into the schema the evaluator validates:
 
@@ -94,7 +104,7 @@ The tool's own auto-annotation is not usable for this data: `GET /auto_annotate`
 
 ### Classes
 
-`public/js/obj_cfg.js` carries a metro taxonomy in place of the upstream driving classes: `Person`, `ForeignObject`, `Equipment` (things that must not be on the track), then `PlatformEdge`, `PressureGate`, `TrackSwitch`, `TrackFixture`, `Cable`, `WallLining` (content the recordings actually contain), then `Unknown` and `DontCare`. The same names are repeated in `tools/check_labels.py` (server-side `/checkscene`) and `tools/visualize-camera.py`; keep the three in sync. `Unknown` is the fallback of `get_obj_cfg_by_type`, so it must exist.
+The patch in `patches/` makes `public/js/obj_cfg.js` carry a metro taxonomy in place of the upstream driving classes: `Person`, `ForeignObject`, `Equipment` (things that must not be on the track), then `PlatformEdge`, `PressureGate`, `TrackSwitch`, `TrackFixture`, `Cable`, `WallLining` (content the recordings actually contain), then `Unknown` and `DontCare`. The same names are repeated in `tools/check_labels.py` (server-side `/checkscene`) and `tools/visualize-camera.py`; keep the three in sync. `Unknown` is the fallback of `get_obj_cfg_by_type`, so it must exist.
 
 The organizers do not require a class and the detector is class-agnostic, so this field is not a supervised target. It exists so a reviewer can attribute alerts: the measured failure mode is nuisance alarms on tunnel infrastructure, and without a label for "this was the platform edge" those alarms cannot be explained. Labels written with the removed driving names still load and render through the `Unknown` configuration, but `/checkscene` reports them as unrecognisable.
 
@@ -117,6 +127,8 @@ Nothing except scene directories may live under `SUSTechPOINTS/data/`: `scene_re
 | `tunnel_guard/annotate.py` | Extract raw frames for annotation review |
 | `tunnel_guard/sustech.py` | SUSTechPOINTS human labels into the `annotations/*.json` schema |
 | `tunnel_guard/on_track.py` | Objects with real point support inside the clearance envelope |
+| `tunnel_guard/sustech_import.py` | Recordings into SUSTechPOINTS scenes |
+| `patches/` | Modifications applied to the pinned SUSTechPOINTS revision |
 | `configs/detector.json` | Default detector recipe; no bag-specific branches |
 | `results/` | Small recorded result summaries; full artifacts remain local |
 

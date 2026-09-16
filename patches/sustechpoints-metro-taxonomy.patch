@@ -1,0 +1,205 @@
+diff --git a/public/js/annotation.js b/public/js/annotation.js
+index 3c8255d..6756511 100644
+--- a/public/js/annotation.js
++++ b/public/js/annotation.js
+@@ -283,7 +283,7 @@ function Annotation(sceneMeta, world, frameInfo){
+         box.scale.y=4.5;
+         box.scale.z=1.5;
+         box.name="bbox";
+-        box.obj_type="car";                
++        box.obj_type="Unknown";
+ 
+         //box.computeLineDistances();
+         
+diff --git a/public/js/editor.js b/public/js/editor.js
+index 8ea6b39..b226745 100644
+--- a/public/js/editor.js
++++ b/public/js/editor.js
+@@ -1359,7 +1359,7 @@ function Editor(editorUi, wrapperUi, editorCfg, data, name="editor"){
+         console.log(lidar_point_indices);
+ 
+         var self=this;
+-        let obj_type = "Car";
++        let obj_type = "Unknown";
+         this.data.world.lidar.set_spec_points_color(lidar_point_indices, {x:0,y:0,z:1});
+         this.data.world.lidar.update_points_color();
+         this.render();
+diff --git a/public/js/obj_cfg.js b/public/js/obj_cfg.js
+index 1b00222..69405bb 100644
+--- a/public/js/obj_cfg.js
++++ b/public/js/obj_cfg.js
+@@ -4,72 +4,32 @@ class ObjectCategory
+ {
+ 
+ 
++    // Metro tunnel obstacle taxonomy for the LCT recordings.
++    //
++    // The detector is class-agnostic and the organizers do not require a class, so these
++    // entries exist for the reviewer: to record what was seen, and to attribute nuisance
++    // alarms to tunnel infrastructure instead of leaving every alert as "object".
++    // Hazard classes come first, then the expected tunnel content, then the two
++    // non-committal classes. `Unknown` is also the class written by detector proposals
++    // (tunnel_guard/sustech.py) and the fallback of get_obj_cfg_by_type, so it must stay.
++    // Sizes are metres in the annotated frame (x forward, y lateral, z up).
+     obj_type_map = {
+-        Car:            {color: '#86af49',  size:[4.5, 1.8, 1.5], attr:["door open", "trunk open"]},
+-        Pedestrian:     {color: '#ff0000',  size:[0.4, 0.5, 1.7], attr:["umbrella", "sitting", "squating", "bending over", "luggage"]},
+-        Van:            {color: '#00ff00',  size:[4.5, 1.8, 1.5], attr:["door open", "trunk open"]},
+-        Bus:            {color: '#ffff00',  size:[13, 3, 3.5]},
+-        Truck:          {color: '#00ffff',  size:[10., 2.8, 3]},
+-        
+-        ScooterRider:   {color: '#ff8800',  size:[1.6, 0.6, 1.6], attr:["umbrella", "1 passenger", "2 passengers", "3 passengers"]},
+-        Scooter:        {color: '#aaaa00',  size:[1.6, 0.6, 1.0]},
+-
+-        
+-        BicycleRider:   {color: '#88ff00',  size:[1.6, 0.6, 1.7], attr:["umbrella", "1 passenger", "2 passengers", "3 passengers"]},
+-        Bicycle:        {color: '#ff8800',  size:[1.6, 0.6, 1.2], attr:["laying down"]},
+-
+-
+-        Motorcycle:     {color: '#aaaa00',  size:[1.6, 0.6, 1.2], attr:["umbrella"]},
+-        MotorcyleRider: {color: '#ff8800',  size:[1.6, 0.6, 1.6], attr:["umbrella", "1 passenger", "2 passengers", "3 passengers"]},
++        Person:         {color: '#ff0000',  size:[0.5, 0.5, 1.75], attr:["standing", "crouching", "lying"]},
++        ForeignObject:  {color: '#ff8800',  size:[1.0, 0.8, 0.8]},
+ 
+-        
+-
+-        PoliceCar:      {color: '#86af49',  size:[4.5, 1.8, 1.5]},
+-        TourCar:        {color: '#86af49',  size:[4.4, 1.5, 2.2]},
+-
+-        RoadWorker:     {color: '#ff0000',  size:[0.4, 0.5, 1.7]},
+-        Child:          {color: '#ff0000',  size:[0.4, 0.5, 1.2]},
++        Equipment:      {color: '#ffd800',  size:[2.0, 1.5, 1.5], attr:["scaffold", "machine", "material"]},
+ 
+-        //Crowd:          {color: '#ff0000',  size:[1.6, 0.6, 1.2]},
+ 
+-        BabyCart:       {color: '#ff0000',  size:[0.8, 0.5, 1.0]},
+-        Cart:           {color: '#ff0000',  size:[0.8, 0.5, 1.0]},
+-        Cone:           {color: '#ff0000',  size:[0.3, 0.3, 0.6]},
+-        FireHydrant:    {color: '#ff0000',  size:[0.4, 0.4, 0.6]},
+-        SaftyTriangle:  {color: '#ff0000',  size:[0.3, 0.4, 0.4]},
+-        PlatformCart:   {color: '#ff0000',  size:[1.2, 0.8, 1.0]},
+-        ConstructionCart: {color: '#ff0000',  size:[1.2, 0.8, 1.0]},
+-        RoadBarrel:     {color: '#ff0000',  size:[0.5, 0.5, 0.6]},
+-        TrafficBarrier: {color: '#ff0000',  size:[1.5, 0.3, 1.2]},
+-        LongVehicle:    {color: '#ff0000',  size:[16, 3, 3]},
++        PlatformEdge:   {color: '#86af49',  size:[4.0, 0.8, 0.4]},
++        PressureGate:   {color: '#00c000',  size:[3.0, 0.5, 3.0]},
++        TrackSwitch:    {color: '#00ffff',  size:[4.0, 2.0, 0.6]},
++        TrackFixture:   {color: '#00aaff',  size:[1.0, 0.5, 0.5]},
++        Cable:          {color: '#aa00ff',  size:[1.5, 0.3, 0.3]},
++        WallLining:     {color: '#808080',  size:[2.0, 1.0, 2.0]},
+ 
+-        
+-        BicycleGroup:   {color: '#ff0000',  size:[1.6, 0.6, 1.2]},
+-        
+ 
+-        ConcreteTruck:  {color: '#00ffff',  size:[10., 2.8, 3]},
+-        Tram:           {color: '#00ffff',  size:[10., 2.8, 3]},
+-        Excavator:      {color: '#00ffff',  size:[6., 3, 3]},
+-
+-        Animal:         {color: '#00aaff',  size:[1.6, 0.6, 1.2]},
+-
+-        TrashCan:         {color: '#00aaff',  size:[0.6, 0.4, 1.0]},
+-
+-        ForkLift:       {color: '#00aaff',  size:[5.0, 1.2, 2.0]},
+-        Trimotorcycle:  {color: '#00aaff',  size:[2.6, 1.0, 1.6]},
+-        FreightTricycle: {color: '#00aaff',  size:[2.6, 1.0, 1.6]},
+-        Crane:          {color: '#00aaff',  size:[5.0, 1.2, 2.0]},
+-        RoadRoller:     {color: '#00aaff',  size:[2.7, 1.5, 2.0]},
+-        Bulldozer:      {color: '#00aaff',  size:[3.0, 2.0, 2.0]},
+-
+-        DontCare:       {color: '#00ff88',  size:[4, 4, 3]},
+-        Misc:           {color: '#008888',  size:[4.5, 1.8, 1.5]},
+-        Unknown:        {color: '#008888',  size:[4.5, 1.8, 1.5]},
+-        Unknown1:       {color: '#008888',  size:[4.5, 1.8, 1.5]},
+-        Unknown2:       {color: '#008888',  size:[4.5, 1.8, 1.5]},
+-        Unknown3:       {color: '#008888',  size:[4.5, 1.8, 1.5]},
+-        Unknown4:       {color: '#008888',  size:[4.5, 1.8, 1.5]},
+-        Unknown5:       {color: '#008888',  size:[4.5, 1.8, 1.5]},
++        Unknown:        {color: '#008888',  size:[1.0, 1.0, 1.0]},
++        DontCare:       {color: '#00ff88',  size:[1.0, 1.0, 1.0]},
+     };
+ 
+ 
+@@ -77,7 +37,7 @@ class ObjectCategory
+         
+     }
+ 
+-    popularCategories = ["Car", "Pedestrian", "Van", "Bus", "Truck", "Scooter", "ScooterRider", "Bicycle", "BicycleRider"];
++    popularCategories = ["Person", "ForeignObject", "Equipment", "TrackFixture", "PlatformEdge", "PressureGate", "TrackSwitch", "Cable", "WallLining"];
+ 
+     guess_obj_type_by_dimension(scale){
+ 
+diff --git a/tools/check_labels.py b/tools/check_labels.py
+index b051b7d..2f1a20c 100644
+--- a/tools/check_labels.py
++++ b/tools/check_labels.py
+@@ -10,11 +10,9 @@ class LabelChecker:
+         self.load_frame_ids()
+         self.load_labels()
+ 
++        # Keep in sync with obj_type_map in public/js/obj_cfg.js.
+         self.def_labels = [
+-        "Car","Pedestrian","Van","Bus","Truck","ScooterRider","Scooter","BicycleRider","Bicycle","Motorcycle","MotorcyleRider","PoliceCar","TourCar","RoadWorker","Child",
+-        "BabyCart","Cart","Cone","FireHydrant","SaftyTriangle","PlatformCart","ConstructionCart","RoadBarrel","TrafficBarrier","LongVehicle","BicycleGroup","ConcreteTruck",
+-        "Tram","Excavator","Animal","TrashCan","ForkLift","Trimotorcycle","FreightTricycle,","Crane","RoadRoller","Bulldozer","DontCare","Misc","Unknown","Unknown1","Unknown2",
+-        "Unknown3","Unknown4","Unknown5",
++        "Person","ForeignObject","Equipment","PlatformEdge","PressureGate","TrackSwitch","TrackFixture","Cable","WallLining","Unknown","DontCare",
+         ]
+ 
+         self.messages = []
+@@ -104,7 +102,7 @@ class LabelChecker:
+ 
+         #print("object", obj_id, len(label_list), "instances")
+ 
+-        if label_list[0][1]['obj_type'] == 'Pedestrian':
++        if label_list[0][1]['obj_type'] == 'Person':
+             return
+             
+         mean = {}
+diff --git a/tools/visualize-camera.py b/tools/visualize-camera.py
+index 030dcc1..a067ed7 100644
+--- a/tools/visualize-camera.py
++++ b/tools/visualize-camera.py
+@@ -66,20 +66,18 @@ intrinsic_matrix  = np.reshape(intrinsic, [3,3])
+ 
+ 
+ obj_color_map = {
+-    "Car":            (0  ,255,0  ),#'#00ff00',
+-    "Van":            (0  ,255,0  ),#'#00ff00',
+-    "Bus":            (0  ,255,255),#'#ffff00', 
+-    "Pedestrian":     (0  ,0  ,255),#'#ff0000',
+-    "Rider":          (0  ,136,255),#'#ff8800',
+-    "Cyclist":        (0  ,136,255),#'#ff8800',
+-    "Bicycle":        (0  ,255,136),#'#88ff00',
+-    "BicycleGroup":   (0  ,255,136),#'#88ff00',
+-    "Motor":          (0  ,176,176),#'#aaaa00',
+-    "Truck":          (255,255,0  ),#'#00ffff',
+-    "Tram":           (255,255,0  ),#'#00ffff',
+-    "Animal":         (255,176,0  ),#'#00aaff',
+-    "Misc":           (136,136,0  ),#'#008888',
+-    "Unknown":        (136,136,0  ),#'#008888',
++    # Metro tunnel taxonomy; keep in sync with obj_type_map in public/js/obj_cfg.js.
++    "Person":         (255,0,0  ),
++    "ForeignObject":  (255,136,0),
++    "Equipment":      (255,216,0),
++    "PlatformEdge":   (134,175,73),
++    "PressureGate":   (0,192,0  ),
++    "TrackSwitch":    (0,255,255),
++    "TrackFixture":   (0,170,255),
++    "Cable":          (170,0,255),
++    "WallLining":     (128,128,128),
++    "Unknown":        (136,136,0),
++    "DontCare":       (0,255,136),
+ }
+ 
+ 
+@@ -101,7 +99,7 @@ colorlist=[
+ (255,128,0),
+ ]
+ def get_obj_color(obj_type):
+-    return obj_color_map[obj_type]
++    return obj_color_map.get(obj_type, obj_color_map["Unknown"])
+     
+ colormap = {}
+ def get_color(obj_id):
