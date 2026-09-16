@@ -1,0 +1,146 @@
+{
+  "label_status": "provisional_geometry",
+  "prediction_scope": "near_track_objects",
+  "minimum_iou": 0.25,
+  "path_intersection": "unverified",
+  "provenance": "One person-sized object in doubleT_obstacle. The box was authored by hand at frame 181 and propagated over frames 165-200 by a constant-velocity fit of the detector's own track of that object (0.31 m per frame along +x, fit residual median 0.10 m, max 0.20 m); the tunnel is stationary in this recording, so the motion is the object's (a tracked ceiling fixture moves 0.001 m per frame). No frame is exhaustive: this records where one object is, not that the frames hold nothing else, and object identity as a person is the reviewer's judgement, not a measurement.",
+  "scene_root": "SUSTechPOINTS/data",
+  "scenes": {
+    "doubleT_obstacle": {
+      "label_directory": "label",
+      "exhaustive_frames": [],
+      "annotation_origins": {
+        "165": {
+          "7": "detector_track_propagation"
+        },
+        "166": {
+          "7": "detector_track_propagation"
+        },
+        "167": {
+          "7": "detector_track_propagation"
+        },
+        "168": {
+          "7": "detector_track_propagation"
+        },
+        "169": {
+          "7": "detector_track_propagation"
+        },
+        "170": {
+          "7": "detector_track_propagation"
+        },
+        "171": {
+          "7": "detector_track_propagation"
+        },
+        "172": {
+          "7": "detector_track_propagation"
+        },
+        "173": {
+          "7": "detector_track_propagation"
+        },
+        "174": {
+          "7": "detector_track_propagation"
+        },
+        "175": {
+          "7": "detector_track_propagation"
+        },
+        "176": {
+          "7": "detector_track_propagation"
+        },
+        "177": {
+          "7": "detector_track_propagation"
+        },
+        "178": {
+          "7": "detector_track_propagation"
+        },
+        "179": {
+          "7": "detector_track_propagation"
+        },
+        "180": {
+          "7": "detector_track_propagation"
+        },
+        "181": {
+          "7": "manual_anchor"
+        },
+        "182": {
+          "7": "detector_track_propagation"
+        },
+        "183": {
+          "7": "detector_track_propagation"
+        },
+        "184": {
+          "7": "detector_track_propagation"
+        },
+        "185": {
+          "7": "detector_track_propagation"
+        },
+        "186": {
+          "7": "detector_track_propagation"
+        },
+        "187": {
+          "7": "detector_track_propagation"
+        },
+        "188": {
+          "7": "detector_track_propagation"
+        },
+        "189": {
+          "7": "detector_track_propagation"
+        },
+        "190": {
+          "7": "detector_track_propagation"
+        },
+        "191": {
+          "7": "detector_track_propagation"
+        },
+        "192": {
+          "7": "detector_track_propagation"
+        },
+        "193": {
+          "7": "detector_track_propagation"
+        },
+        "194": {
+          "7": "detector_track_propagation"
+        },
+        "195": {
+          "7": "detector_track_propagation"
+        },
+        "196": {
+          "7": "detector_track_propagation"
+        },
+        "197": {
+          "7": "detector_track_propagation"
+        },
+        "198": {
+          "7": "detector_track_propagation"
+        },
+        "199": {
+          "7": "detector_track_propagation"
+        },
+        "200": {
+          "7": "detector_track_propagation"
+        }
+      }
+    },
+    "doubleT_platform": {
+      "label_directory": "label",
+      "exhaustive_frames": []
+    },
+    "roundT_doubleT": {
+      "label_directory": "label",
+      "exhaustive_frames": []
+    },
+    "roundT_pressureGate_roundT": {
+      "label_directory": "label",
+      "exhaustive_frames": []
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "label_directory": "label",
+      "exhaustive_frames": []
+    },
+    "squareT_platform_squareT_switch": {
+      "label_directory": "label",
+      "exhaustive_frames": []
+    }
+  },
+  "output": "annotations/doubleT-obstacle-person.json",
+  "box_semantics": "unspecified"
+}

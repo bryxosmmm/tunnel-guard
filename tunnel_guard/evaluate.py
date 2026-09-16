@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 import argparse
-from collections import defaultdict
+from collections import Counter, defaultdict
 import json
 from pathlib import Path
 
@@ -113,7 +113,15 @@ def evaluate_frames(predictions: dict, annotations: dict) -> dict:
         validity.append("Missing prediction frames: panel incomplete")
     if not events:
         validity.append("No annotated positive events")
+    origins = Counter(obj.get("annotation_origin", "unspecified")
+                      for frame in annotations["frames"] for obj in frame["objects"])
+    if origins["detector_track_propagation"]:
+        validity.append("Labels propagated from detector tracks are not independent evaluation evidence; review each box against raw measurements")
+    if annotations.get("box_semantics", "unspecified") == "unspecified":
+        validity.append("Annotation box semantics are unspecified: observed support and full object volume may not be comparable")
     return {"label_status": annotations["label_status"], "prediction_scope": annotations["prediction_scope"],
+            "annotation_origins": dict(origins),
+            "box_semantics": annotations.get("box_semantics", "unspecified"),
             "minimum_3d_iou": annotations["minimum_iou"],
             "evaluated_frames": len(records), "missing_frames": missing, "exhaustive_frames": exhaustive_count,
             "tp": tp, "fn": fn, "fp_exhaustive_only": fp, "annotated_object_recall": recall,

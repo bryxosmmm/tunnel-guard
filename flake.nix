@@ -23,6 +23,7 @@
           packages = with pkgs; [
             python
             uv
+            wget
             ruff
           ];
 

@@ -6,6 +6,10 @@ Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 
 
 The current review, real-data comparison and limitations are in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). The latest iteration processed two real 30-frame prefixes. Historical results below are separate evidence.
 
+## Review of new annotations
+
+See [annotation review](docs/ANNOTATION_REVIEW.md) and [sensor evidence](docs/SENSOR_PROFILE.md). The new person panel contains one manual anchor and 35 detector-propagated boxes. Raw-cloud review and a fresh 201-frame run are complete; the panel is not accepted as independent ground truth. Original oriented label files are still needed.
+
 ## Latest real-sequence iteration
 
 See [NEXT_ITERATION.md](NEXT_ITERATION.md): the complete 201-frame annotated sequence, stage-by-stage point evidence, and an optional envelope-support distance definition. All five provisional observations retained their localization; detection decisions stayed unchanged. This is a correction of distance semantics, not a measured detection-range improvement. The default recipe retains the original cluster-minimum distance; use `configs/iteration-envelope-distance.json` for the new mode.
@@ -64,6 +68,55 @@ uv run python -m tunnel_guard.evaluate \
 
 The five supplied annotation boxes describe **one provisional upright structure**, not independent verified hazards. They are nonexhaustive: real precision cannot be computed from them.
 
+## Label the recordings in SUSTechPOINTS
+
+Human labels do not exist yet for the six recordings, and no score can be computed without them. The upstream [SUSTechPOINTS](https://github.com/naurril/SUSTechPOINTS) annotation tool is used for that work: its source is vendored under `SUSTechPOINTS/` at upstream revision `50fa188`, with this project's taxonomy patch already applied (the delta is kept in `patches/`). What is not tracked, matching the tool's own rules and this project's data rule, is its `data/` directory, its virtualenv and the 14 MB model release.
+
+```sh
+cd SUSTechPOINTS
+python3 -m venv .venv && .venv/bin/pip install -r requirement.txt
+wget https://github.com/naurril/SUSTechPOINTS/releases/download/0.1/deep_annotation_inference.h5 -P algos/models
+cd .. && uv run python -m tunnel_guard.sustech_import --experiment configs/evaluation-quality.json
+```
+
+`tunnel_guard.sustech_import` writes one `.pcd` per bag message into `SUSTechPOINTS/data/<bag>/lidar/`, keeping `tunnel_guard_local` coordinates, intensity and full density, and an empty `label/` beside it. Frame `00000N.pcd` is bag message index `N` — the same index the run JSONL uses, so detector output and labels refer to the same frame. It reproduces the current scene files byte for byte (checked on three frames), and it refuses to overwrite an existing scene. Start the tool with `python main.py` inside `SUSTechPOINTS` and open <http://127.0.0.1:8081>; `server.conf` listens on `0.0.0.0`, so it is also reachable over a private network such as Tailscale (the tool has no authentication).
+
+Boxes are authored by hand: the detector's candidates are not good enough to seed a panel, and labels a detector supplies for its own scoring cannot measure that detector. After a labelling pass, convert the tool's label files into the schema the evaluator validates:
+
+```sh
+uv run python -m tunnel_guard.sustech --config configs/annotation-export.json
+```
+
+`configs/annotation-export.json` requires the reviewer to declare which frames are exhaustively labelled, including frames with no object: those become the scored negative frames, and `tunnel_guard.evaluate` counts nothing else as a false alarm. Rotated boxes are exported as their axis-aligned envelope, which is what the IoU matcher consumes.
+
+### What is labelled so far
+
+`annotations/doubleT-obstacle-person.json` holds the one object we have: `doubleT_obstacle` frames 165–200, one person-sized box, `event_id 7`, `class Person`. The box was authored by hand at frame 181 and propagated over the other 35 frames by a constant-velocity fit of the detector's own track of that object — it recedes at 0.31 m/frame along +x while the tunnel itself stays fixed in the sensor frame (a tracked ceiling fixture moves 0.001 m/frame), so the motion is the object's, not the train's. Every frame is `exhaustive: false`: this records where one object is, not that the frames contain nothing else, and "person" is the reviewer's judgement. The same boxes are visible in the tool as `doubleT_obstacle` frames 165–200.
+
+### Objects inside the clearance envelope
+
+`tunnel_guard/on_track.py` finds intrusions the way the detector should: only returns that actually fall inside the GOST contour are clustered, and a cluster is dropped when it is a face of a large surface, or when its lateral/vertical profile runs continuously or repeats along the tunnel — cable runs, linings, trays and posts. Over the six recordings that is **11,115 in-envelope clusters → 381 events → 15 candidates**, against 335–347 boxes per frame from the detector.
+
+```sh
+uv run python -m tunnel_guard.on_track \
+  --bag data/sourcecraft_subset/for_hackathon/doubleT_obstacle \
+  --config configs/on-track-probe.json --output build/on-track-events.json
+```
+
+Thresholds are in `configs/on-track-probe.json`. The strongest candidate is `doubleT_obstacle` around x ≈ 55.7 m, y ≈ −0.5 m: a compact 0.45 × 1.02 × 1.35 m mass standing on the bed, isolated from any surface, present in frames 2–75 and then gone. Two limits matter. Geometry cannot separate a permanent fixture that pokes into the contour from a foreign object — the ~34 m hit in the same recording is a post running through the whole recording. And on the `roundT_*`/`squareT_*` curves the track-centre estimate drifts laterally, putting 139 of 169 events in one recording at |y| = 1.6–3.2 m while the GOST half-width never exceeds 1.535 m; `report.max_lateral_m` drops those, which is why the count is 15 and not 381. That same drift is a large part of the detector's alarm load.
+
+The surviving candidates are also written into the tool as separate scenes (`<bag>_candidates`, with `lidar` symlinked to the real clouds) so they can be stepped through without touching the human labels.
+
+The tool's own auto-annotation is not usable for this data: `GET /auto_annotate` returns HTTP 500 because `annotate_file` is defined inside an `if False:` block and its clustering binary and discrimination model are absent, and `/predict_rotation` feeds uncentered coordinates to a model trained on centred object crops, so its angle barely depends on the selected object.
+
+### Classes
+
+The patch in `patches/` makes `public/js/obj_cfg.js` carry a metro taxonomy in place of the upstream driving classes: `Person`, `ForeignObject`, `Equipment` (things that must not be on the track), then `PlatformEdge`, `PressureGate`, `TrackSwitch`, `TrackFixture`, `Cable`, `WallLining` (content the recordings actually contain), then `Unknown` and `DontCare`. The same names are repeated in `tools/check_labels.py` (server-side `/checkscene`) and `tools/visualize-camera.py`; keep the three in sync. `Unknown` is the fallback of `get_obj_cfg_by_type`, so it must exist.
+
+The organizers do not require a class and the detector is class-agnostic, so this field is not a supervised target. It exists so a reviewer can attribute alerts: the measured failure mode is nuisance alarms on tunnel infrastructure, and without a label for "this was the platform edge" those alarms cannot be explained. Labels written with the removed driving names still load and render through the `Unknown` configuration, but `/checkscene` reports them as unrecognisable.
+
+Nothing except scene directories may live under `SUSTechPOINTS/data/`: `scene_reader` treats every entry as a scene and fails on any other file.
+
 ## Code map
 
 | Path | Purpose |
@@ -79,6 +132,10 @@ The five supplied annotation boxes describe **one provisional upright structure*
 | `tunnel_guard/evaluate.py` | One-to-one IoU matching and annotation validity |
 | `tunnel_guard/stress.py` | Occlusion-aware synthetic ray-cast evaluation |
 | `tunnel_guard/annotate.py` | Extract raw frames for annotation review |
+| `tunnel_guard/sustech.py` | SUSTechPOINTS human labels into the `annotations/*.json` schema |
+| `tunnel_guard/on_track.py` | Objects with real point support inside the clearance envelope |
+| `tunnel_guard/sustech_import.py` | Recordings into SUSTechPOINTS scenes |
+| `patches/` | Modifications applied to the pinned SUSTechPOINTS revision |
 | `configs/detector.json` | Default detector recipe; no bag-specific branches |
 | `results/` | Small recorded result summaries; full artifacts remain local |
 
@@ -143,7 +200,6 @@ See `results/acceptance.json` and `results/panel-summary.csv`. **Acceptance: not
 | Original synthetic panel | 65/72 (90.3%) | 88.5% | 0/38 negative alarm episodes |
 | Untouched random seed | 64/72 (88.9%) | 86.4% | Same scenario families, not a domain holdout |
 | Measured beam pattern, 10–300 m | 77/96 (80.2%) | 80.1% | 1,460 frames; 0/50 negative episodes |
-| Independent OSDaR23 subset | 1/5 (20%) | Not available | 1/37 independently authored boxes matched |
 
 All synthetic panels fail the declared 95% event-recall target. Measured-pattern event recall: 100% at 10–100 m, 66.7% at 150 m, 58.3% at 200 m, 16.7% at 300 m. Ideal raycasting is **not hardware range or reflectivity validation**.
 
@@ -165,13 +221,7 @@ uv run python -m tunnel_guard.stress --experiment configs/stress-measured-patter
 
 The ground audit also needs the six organizer bags. TRAVEL and HDBSCAN comparisons share geometry/tracking to isolate segmentation; they are not complete neural SOTA benchmarks.
 
-For the independent outdoor-railway check, download `1_calibration_1.1.zip` from [OSDaR23](https://data.fid-move.de/dataset/osdar23) into `data/real/osdar23/`, then run:
-
-```sh
-uv run python -m tunnel_guard.osdar --experiment configs/osdar-evaluation.json
-```
-
-The fixed adapter uses standard gauge and translates the railhead-origin coordinates. It does not tune against individual objects. Outdoor transfer was poor, including objects with substantial returns. Target-metro exhaustive positives, negatives, and held-out recordings are still needed.
+Target-metro exhaustive positives, negatives, and held-out recordings are still needed.
 
 ## Dependencies and data licenses
 
@@ -179,6 +229,5 @@ The fixed adapter uses standard gauge and translates the railhead-origin coordin
 - [Open3D](https://www.open3d.org/), MIT, pinned to 0.19.0: plane segmentation, voxel sampling, normal and covariance estimation for background rejection. Its standard distribution adds substantial transitive dependencies.
 - [TRAVEL](https://github.com/url-kaist/TRAVEL), **GPL-3.0-or-later**: optional comparison dependency only. Review license obligations before distributing an integrated derivative.
 - [HDBSCAN](https://github.com/scikit-learn-contrib/hdbscan), BSD; [Patchwork++](https://github.com/url-kaist/patchwork-plusplus), BSD-2-Clause: optional published comparisons.
-- OSDaR23 annotations: CC0-1.0; sensor data: CC BY-SA 3.0 de. Neither the raw dataset nor its archive is committed.
 
 No project-wide redistribution license is granted here. Keep organizer data, credentials, local agent configuration and generated artifacts out of commits.

@@ -6,6 +6,12 @@
 /dist/
 /.local-research/
 
+# Vendored annotation tool: source is tracked, runtime state is not.
+# The tool's own .gitignore covers its data/ and *.h5.
+/SUSTechPOINTS/.venv/
+/SUSTechPOINTS/**/__pycache__/
+/SUSTechPOINTS/temp/
+
 # Machine-specific tools and agent state
 /.third_party/
 /.direnv/
