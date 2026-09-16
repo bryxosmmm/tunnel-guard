@@ -116,7 +116,7 @@ def evaluate_frames(predictions: dict, annotations: dict) -> dict:
     origins = Counter(obj.get("annotation_origin", "unspecified")
                       for frame in annotations["frames"] for obj in frame["objects"])
     if origins["detector_track_propagation"]:
-        validity.append("Labels propagated from detector tracks are not independent evaluation evidence; review each box against raw measurements")
+        validity.append("Labels include detector-track propagation; retain author review provenance and do not treat this panel as an independent holdout")
     if annotations.get("box_semantics", "unspecified") == "unspecified":
         validity.append("Annotation box semantics are unspecified: observed support and full object volume may not be comparable")
     return {"label_status": annotations["label_status"], "prediction_scope": annotations["prediction_scope"],

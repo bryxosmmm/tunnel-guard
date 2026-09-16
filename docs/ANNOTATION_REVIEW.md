@@ -1,6 +1,22 @@
 # Review of teammate annotations — 2026-09-16
 
-## Decision
+## Update after commit 3e2d017
+
+Original PSR files are now available under `annotations/sustech-raw/doubleT_obstacle/`.
+All 36 were read and converted using the existing exporter: maximum difference from
+stored AABBs is exactly 0 m. The annotation JSON now retains PSR and source hashes.
+The author reports checking position on every frame; size and rotation remain fixed
+from frame 181. The earlier uncertainty about whether propagated positions were reviewed
+is resolved by this report, not by an independent second annotation pass. Full-object
+versus observed-support box convention still needs explicit agreement. The author's
+oriented-IoU numbers have not yet been reproduced here.
+
+Contact sheets remain local under `build/annotation-review-20260916/`; regenerate with the command below.
+
+Original missing-file findings below describe the earlier review, not current availability.
+The merge has since been committed for team publication. Next tasks: `docs/TEAM_TASKS.md`.
+
+## Original decision and evidence
 
 Incoming commits `0f85612..57945f4` were fetched and merged into `experiments/morev`
 (base `d7105dc`) without conflicts, without a commit or push. Prior distance and
