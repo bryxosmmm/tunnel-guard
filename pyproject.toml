@@ -11,6 +11,7 @@ dependencies = ["numpy>=1.26,<3", "scipy>=1.11,<2", "rosbags==0.11.5", "kiss-icp
 
 [project.optional-dependencies]
 comparison = ["travel-seg==1.1.0", "hdbscan==0.8.44", "pypatchworkpp==1.1.0"]
+learning = ["scikit-learn>=1.4,<2"]
 
 [project.scripts]
 tunnel-guard = "tunnel_guard.run:main"

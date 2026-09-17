@@ -658,3 +658,19 @@ uv run python -m tunnel_guard.center_stability \
 - **Шесть записей в двух конфигурациях установки.** Holdout по записям честен, но перенос на другой тоннель этим не устанавливается, и заявлять его нельзя.
 - Это **детектор, а не поправка**. Чтобы исправлять центр, нужно править `geometry.py`, который к тому же сейчас разошёлся между `main` и `experiments/morev`.
 - Качество обнаружения препятствий по-прежнему не измерено: нужны отрицательные эпизоды из задачи A.
+
+## Воспроизведение
+
+```sh
+uv run python -m tunnel_guard.learned_offset \
+  --bag data/sourcecraft_subset/for_hackathon/doubleT_obstacle \
+  --bag data/sourcecraft_subset/for_hackathon/doubleT_platform \
+  --bag data/sourcecraft_subset/for_hackathon/roundT_doubleT \
+  --bag data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT \
+  --bag data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT \
+  --bag data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch \
+  --stability build/post-repair/center-stability.json \
+  --output build/learned-offset.json
+```
+
+Требует необязательный extra: `uv pip install -e '.[learning]'`. Профили сечений кэшируются в `build/section-profiles.npz`, первый прогон считает их около десяти минут. Обученная модель **не сохраняется**: при holdout по записям их шесть, и отложенный `.pkl` намекал бы на готовность, которой нет.

@@ -1,10 +1,4 @@
 {
- "date": "2026-09-17",
- "seed": 20260915,
- "question": "Can the bore-to-track offset be learned from the section profile, and does it then expose the adjacent-track lock failure?",
- "features": "64-bin centred lateral profile at the probed range, 64-bin mean near-field profile (10 and 15 m), plus range, analytic near-field offset, symmetry score, section width, near width, near symmetry score, width difference, bore axis (136 total)",
- "model": "sklearn HistGradientBoostingRegressor(max_depth=6, max_iter=500, learning_rate=0.05, l2_regularization=1.0)",
- "protocol": "Leave-one-recording-out. Excursion frames (|centre| > 1 m at the 30 m probe) are excluded from training because their target is the quantity that is wrong; predicting on them is therefore a test on an unseen regime. scikit-learn is not a declared project dependency and no training code is added to the package.",
  "offset_prediction": {
   "doubleT_obstacle": {
    "rows": 651,
@@ -60,11 +54,6 @@
     "analytic_baseline": 0.207,
     "trivial_track_on_axis": 0.166,
     "model": 0.053
-   },
-   "p90_abs_error_m": {
-    "analytic_baseline": 2.178,
-    "trivial_track_on_axis": 0.57,
-    "model": 0.389
    }
   }
  },
@@ -130,5 +119,15 @@
    }
   }
  },
- "conclusion": "The section profile carries the offset: pooled median error falls to 0.053 m against 0.207 m for the analytic constant and 0.166 m for claiming the track runs down the sensor axis, and the model beats that trivial claim by 7.5x on the one recording with a real mounting yaw, so it is not reproducing a zero. Used as a check on frames it never trained on, the predicted centre disagrees with the rails by 1.70 m against 0.05 m on clean frames, catching 90 percent of excursion rows at 2.5 percent false on clean rows. Limits: the excursion label is our own rail-based criterion rather than ground truth, six recordings in two mounting configurations cannot establish transfer to another tunnel, and this detects the failure without yet correcting it."
+ "config": "configs/detector.json",
+ "seed": 20260915,
+ "rows": 9092,
+ "features": 136,
+ "protocol": "Leave-one-recording-out. Excursion frames are excluded from training because their target is the quantity that is wrong, so predicting on them tests an unseen regime. The trivial predictor claims the track runs down the sensor axis and is reported because this subset is mostly aligned.",
+ "date": "2026-09-17",
+ "question": "Can the bore-to-track offset be learned from the section profile, and does it then expose the adjacent-track lock failure?",
+ "feature_definition": "64-bin centred lateral profile at the probed range, 64-bin mean near-field profile (10 and 15 m), plus range, analytic near-field offset, symmetry score, section width, near width, near symmetry score, width difference and bore axis",
+ "model": "sklearn HistGradientBoostingRegressor(max_depth=6, max_iter=500, learning_rate=0.05, l2_regularization=1.0)",
+ "dependency_note": "scikit-learn is an optional extra (pip install -e \".[learning]\") imported where it is used, the same pattern the published segmentation backends follow. No trained model is stored: leave-one-recording-out produces one model per fold, and a saved artefact would imply a readiness this does not have.",
+ "conclusion": "The section profile carries the offset: pooled median error 0.053 m against 0.207 m for the analytic constant and 0.166 m for claiming the track runs down the sensor axis. That trivial claim is the control that matters, because this subset is mostly aligned; an earlier attempt on nine scalars was entirely explained by it. The profile version beats it 7.5x on doubleT_obstacle, the one recording with a real mounting yaw, so the offset genuinely lives in the section shape. Used as a check on frames it never trained on, the predicted centre disagrees with the rails by 1.70 m against 0.05 m on clean frames, catching 90 percent of excursion rows at 2.5 percent false. Limits: the excursion label is our own rail-based criterion and not ground truth, six recordings in two mounting configurations cannot establish transfer to another tunnel, and this detects the failure without correcting it."
 }
