@@ -12,6 +12,7 @@ from kiss_icp.kiss_icp import KissICP
 from scipy.optimize import linear_sum_assignment
 from scipy.spatial import cKDTree
 
+from . import accelerator
 from .geometry import TrackGeometry, voxel_count, voxel_representatives
 from .segmentation import density_labels, published_labels
 
@@ -53,6 +54,10 @@ def load_config(path: str | Path) -> dict:
     query_workers = config.get("query_workers", -1)
     if type(query_workers) is not int or (query_workers < 1 and query_workers != -1):
         raise ValueError("query_workers must be -1 (all cores) or a positive integer")
+    if not isinstance(config.get("native_kernels", False), bool):
+        raise ValueError("native_kernels must be boolean")
+    if config.get("native_kernels", False):
+        from . import _native  # Fail explicitly when the selected kernels are unavailable.
     if config.get("obstacle_distance_mode", "cluster_min_x") not in ("cluster_min_x", "envelope_support_min_x"):
         raise ValueError("Unknown obstacle_distance_mode")
     return config
@@ -161,6 +166,7 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
 
 class Detector:
     def __init__(self, config: dict):
+        self.native_kernels = accelerator.native(config)
         self.config = config
         self.odometry = self._new_odometry()
         self.previous_source = None
@@ -344,8 +350,8 @@ class Detector:
         # A non-finite coordinate always yields a non-finite radius, which fails
         # one of the range bounds, so an explicit finite test would drop exactly
         # the same rows. Measurements are decoded as float64 triples.
-        radii = np.linalg.norm(points, axis=1)
-        keep = (radii >= self.config["min_range_m"]) & (radii <= self.config["max_range_m"])
+        keep = accelerator.range_indices(points, self.config["min_range_m"], self.config["max_range_m"],
+                                         self.native_kernels)
         points = points[keep]
         if capture_diagnostics:
             self.diagnostic_arrays["range_points"] = points

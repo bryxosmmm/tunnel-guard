@@ -1,0 +1,25 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/perf-cpp-native-20260917",
+  "every": 1,
+  "max_frames": null,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Native kernels reproduce the C++-backend baseline field for field on 798 real scans.",
+  "criterion": "Complete every scan of the three recordings; retain JSONL for an exact decision/ID/support comparison at absolute and relative tolerance 1e-10."
+}

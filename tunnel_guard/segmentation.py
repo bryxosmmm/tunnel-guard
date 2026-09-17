@@ -5,13 +5,11 @@ not a reproduction claim. TRAVEL and HDBSCAN backends call released code directl
 """
 from __future__ import annotations
 
-from itertools import chain
-
 import numpy as np
-from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 from scipy.spatial import cKDTree
 
+from . import accelerator
 from .geometry import query_workers
 
 
@@ -28,28 +26,10 @@ def density_labels(points: np.ndarray, config: dict) -> tuple[np.ndarray, np.nda
     radius = np.clip(config["density_radius_m"] + config["density_angular_radius_rad"] * distance,
                      config["density_radius_m"], config["cluster_max_radius_m"])
     metric_points = points * np.array([1., 1., config["density_vertical_scale"]])
-    tree = cKDTree(metric_points)
-    # Query each point's actual radius, then retain the same mutual-radius
-    # undirected edges. A distant point must not enlarge every near-point query.
-    # Query points are independent, so worker threads change scheduling only:
-    # the retained edge set, the graph and the component labels stay identical.
+    # Mutual-radius edges: identical selection in both branches, see accelerator.
+    graph, degree = accelerator.density_graph(metric_points, radius, config,
+                                              accelerator.native(config))
     configured = config.get("query_workers", -1)
-    neighbors = tree.query_ball_point(metric_points, radius, return_sorted=False,
-                                      workers=query_workers(n, configured))
-    counts = np.fromiter(map(len, neighbors), dtype=np.int64, count=n)
-    row = np.repeat(np.arange(n), counts)
-    # Consume the ragged neighbour lists directly into the flat column array
-    # instead of materialising and concatenating N small arrays.
-    column = np.fromiter(chain.from_iterable(neighbors), dtype=np.int64, count=int(counts.sum()))
-    forward = row < column
-    pairs = np.column_stack((row[forward], column[forward]))
-    if len(pairs):
-        delta = metric_points[pairs[:, 0]] - metric_points[pairs[:, 1]]
-        pairs = pairs[np.einsum("ij,ij->i", delta, delta) <= np.minimum(radius[pairs[:, 0]], radius[pairs[:, 1]])**2]
-    edge_i = np.concatenate((pairs[:, 0], pairs[:, 1]))
-    edge_j = np.concatenate((pairs[:, 1], pairs[:, 0]))
-    graph = coo_matrix((np.ones(len(edge_i), dtype=np.uint8), (edge_i, edge_j)), shape=(n, n)).tocsr()
-    degree = np.asarray(graph.sum(axis=1)).ravel() + 1
     required = np.maximum(config["density_min_far"], np.ceil(config["density_min_near"] *
                           np.minimum(1., (config["density_reference_range_m"] / np.maximum(distance, 1.))**2)))
     core = degree >= required

@@ -1,5 +1,5 @@
 #define PY_SSIZE_T_CLEAN
-#include <Python.h>
+#include "native.h"
 #include <algorithm>
 #include <array>
 #include <cmath>
@@ -25,7 +25,7 @@ struct ReleaseGIL {
 
 // Match numpy.unique(floor(points / size), axis=0, return_index=True):
 // lexicographic voxel order, first original measurement in each voxel.
-static PyObject* voxel_indices(PyObject*, PyObject* args) {
+PyObject* voxel_indices(PyObject*, PyObject* args) {
     PyObject* object;
     double size;
     if (!PyArg_ParseTuple(args, "Od", &object, &size)) return nullptr;
@@ -78,7 +78,7 @@ static PyObject* voxel_indices(PyObject*, PyObject* args) {
 }
 // Count distinct voxels; identical key derivation to voxel_indices, without
 // materialising or sorting the keys when only the count is consumed.
-static PyObject* voxel_count(PyObject*, PyObject* args) {
+PyObject* voxel_count(PyObject*, PyObject* args) {
     PyObject* object;
     double size;
     if (!PyArg_ParseTuple(args, "Od", &object, &size)) return nullptr;
@@ -123,11 +123,3 @@ static PyObject* voxel_count(PyObject*, PyObject* args) {
     PyBuffer_Release(&buffer);
     return PyLong_FromSsize_t(distinct);
 }
-
-static PyMethodDef methods[] = {
-    {"voxel_indices", voxel_indices, METH_VARARGS, "First measurement indices, lexicographic voxel order."},
-    {"voxel_count", voxel_count, METH_VARARGS, "Number of distinct voxels for the same keys."},
-    {nullptr, nullptr, 0, nullptr}
-};
-static PyModuleDef module = {PyModuleDef_HEAD_INIT, "_native", nullptr, -1, methods};
-PyMODINIT_FUNC PyInit__native() { return PyModule_Create(&module); }

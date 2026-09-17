@@ -8,6 +8,8 @@ from __future__ import annotations
 import numpy as np
 from scipy.signal import find_peaks
 
+from . import accelerator
+
 
 def voxel_representatives(points: np.ndarray, size: float, backend: str = "numpy") -> np.ndarray:
     if not len(points):
@@ -171,6 +173,10 @@ class TrackGeometry:
     def ground(self, points: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         if self.plane is None or not len(self.ground_anchors):
             return np.full(len(points), np.nan), np.full(len(points), np.inf)
+        native = accelerator.native(self.config)
+        if native is not None:
+            return accelerator.ground_values(points, self.plane, self.ground_anchors,
+                                             self.config["ground_max_extrapolation_m"], native)
         x = points[:, 0]
         anchors = self.ground_anchors
         shift = np.interp(x, anchors[:, 0], anchors[:, 1])
@@ -277,6 +283,13 @@ class TrackGeometry:
         returned values are those of the identical fit.
         """
         cfg = self.config
+        native = accelerator.classify_geometry(points, self, accelerator.native(cfg))
+        if native is not None:
+            core, context, height, observed, nominal_overlap, boundary = native
+            if remove_background and self.background is not None:
+                context &= ~self.background.mask(points, (observed & nominal_overlap) | boundary)
+            return (core, context, height, observed, nominal_overlap, boundary) if include_boundary \
+                else (core, context, height, observed, nominal_overlap)
         z, ground_uncertainty = self.ground(points) if ground is None else ground
         center, gauge, path_uncertainty = self.path(points[:, 0])
         height = points[:, 2] - z

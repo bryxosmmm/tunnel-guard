@@ -6,6 +6,7 @@ import open3d as o3d
 from threadpoolctl import ThreadpoolController
 
 from scipy.spatial import cKDTree
+from . import accelerator
 from .geometry import query_workers
 from .segmentation import level_rotation
 
@@ -21,6 +22,7 @@ class TunnelBackground:
         self.patches = []
         self.input_points = len(points)
         self.query_workers = config.get("query_workers", -1)
+        self.native = accelerator.native(config)
         leveled = points @ self.rotation.T
         # Never learn an obstruction inside supported vehicle clearance as lining.
         # The same bed fit is reused by classification instead of refitted.
@@ -116,10 +118,8 @@ class TunnelBackground:
         for plane, transverse, strips, _ in self.patches:
             lo = min(strip[0] for strip in strips) - cfg["support_margin_m"]
             hi = max(strip[1] for strip in strips) + cfg["support_margin_m"]
-            window = np.flatnonzero((leveled[:, 0] >= lo) & (leveled[:, 0] <= hi))
-            if not len(window):
-                continue
-            candidates = window[np.abs(leveled[window] @ plane[:3] + plane[3]) <= cfg["remove_distance_m"]]
+            candidates = accelerator.patch_candidates(leveled, plane, lo, hi,
+                                                      cfg["remove_distance_m"], self.native)
             if len(candidates):
                 prepared.append((plane, transverse, strips, candidates))
         if not prepared:
@@ -137,26 +137,22 @@ class TunnelBackground:
             # Preserve locally well-supported normals that disagree with lining.
             near = (~protected[candidates] & ~background[candidates]
                     & ~(reliable[index] & (np.abs(aligned[index] @ plane[:3]) < cfg["normal_alignment_cos"])))
-            sample_distance = np.abs(self.sample @ plane[:3] + plane[3])
-            protrusion = (self.normal_reliable & (sample_distance >= cfg["protrusion_depth_m"])
-                          & (sample_distance <= cfg["protection_radius_m"])
-                          & (np.abs(self.normals @ plane[:3]) < cfg["normal_alignment_cos"]))
             near_ids = candidates[near]
-            if protrusion.any() and len(near_ids):
-                # Keep attachment edges near a supported protruding face; otherwise
-                # its near-wall column is amputated by the surface-distance band.
-                distance, _ = cKDTree(self.sample[protrusion]).query(
-                    leveled[near_ids], workers=query_workers(len(near_ids), self.query_workers))
-                near_ids = near_ids[distance > cfg["protection_radius_m"]]
+            if len(near_ids):
+                protrusion = accelerator.protrusion_ids(
+                    self.sample, self.normals, self.normal_reliable, plane,
+                    cfg["protrusion_depth_m"], cfg["protection_radius_m"], cfg["normal_alignment_cos"],
+                    self.native)
+                if len(protrusion):
+                    # Keep attachment edges near a supported protruding face; otherwise
+                    # its near-wall column is amputated by the surface-distance band.
+                    keep = accelerator.keep_outside_radius(
+                        leveled[near_ids], self.sample[protrusion], cfg["protection_radius_m"], self.native)
+                    near_ids = near_ids[keep]
             if not len(near_ids):
                 continue
-            q = leveled[near_ids]
-            inside = np.zeros(len(near_ids), dtype=bool)
-            for strip_lo, strip_hi, bottom, top in strips:
-                inside |= ((q[:, 0] >= strip_lo - cfg["support_margin_m"]) & (q[:, 0] <= strip_hi + cfg["support_margin_m"])
-                           & (q[:, transverse] >= bottom - cfg["support_margin_m"])
-                           & (q[:, transverse] <= top + cfg["support_margin_m"]))
-            background[near_ids[inside]] = True
+            background[accelerator.strip_inside(leveled, near_ids, strips, cfg["support_margin_m"],
+                                                transverse, self.native)] = True
         return background
 
     def describe(self):
