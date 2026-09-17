@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-from http.server import BaseHTTPRequestHandler, HTTPServer
+from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
@@ -52,27 +52,31 @@ def main():
         np.asarray(config["sensor_rotation"]),
         np.asarray(config["sensor_translation"]),
     )
-    with Reader(args.bag) as reader:
 
-        class Handler(BaseHTTPRequestHandler):
-            def do_GET(self):
-                url = urlparse(self.path)
-                try:
-                    if url.path == "/":
-                        payload, kind = (
-                            Path(__file__).with_name("review.html").read_bytes(),
-                            "text/html; charset=utf-8",
-                        )
-                    elif url.path == "/metadata":
-                        payload = json.dumps(
-                            {"bag": args.bag.name, "frames": [r["frame"] for r in rows]}
-                        ).encode()
-                        kind = "application/json"
-                    elif url.path == "/frame":
-                        index = int(parse_qs(url.query)["index"][0])
-                        if index < 0 or index >= len(rows):
-                            raise ValueError("Frame index outside recorded run")
-                        row = rows[index]
+    class Handler(BaseHTTPRequestHandler):
+        def setup(self):
+            super().setup()
+            self.connection.settimeout(15)
+
+        def do_GET(self):
+            url = urlparse(self.path)
+            try:
+                if url.path == "/":
+                    payload, kind = (
+                        Path(__file__).with_name("review.html").read_bytes(),
+                        "text/html; charset=utf-8",
+                    )
+                elif url.path == "/metadata":
+                    payload = json.dumps(
+                        {"bag": args.bag.name, "frames": [r["frame"] for r in rows]}
+                    ).encode()
+                    kind = "application/json"
+                elif url.path == "/frame":
+                    index = int(parse_qs(url.query)["index"][0])
+                    if index < 0 or index >= len(rows):
+                        raise ValueError("Frame index outside recorded run")
+                    row = rows[index]
+                    with Reader(args.bag) as reader:
                         connections = [
                             c for c in reader.connections if c.topic == row["topic"]
                         ]
@@ -95,59 +99,59 @@ def main():
                                     msg, rotation, translation
                                 )
                                 break
-                        if cloud is None:
-                            raise ValueError(
-                                "Exact source measurement not found; refusing a different frame"
-                            )
-                        count = len(cloud)
-                        cloud = cloud[
-                            :: max(1, int(np.ceil(count / args.display_max_points)))
-                        ].round(4)
-                        response = {
-                            "row": row
-                            | {
-                                "measurement_timestamp_ns_string": str(
-                                    row["measurement_timestamp_ns"]
-                                )
-                            },
-                            "points": cloud.tolist(),
-                            "decoded_points": count,
-                            "distances": distance_summary(row),
-                            "corridor": corridor_edges(row.get("geometry", {}), config)
-                            .round(4)
-                            .tolist(),
-                        }
-                        payload, kind = (
-                            json.dumps(response, allow_nan=False).encode(),
-                            "application/json",
+                    if cloud is None:
+                        raise ValueError(
+                            "Exact source measurement not found; refusing a different frame"
                         )
-                    else:
-                        self.send_error(404)
-                        return
-                    self.send_response(200)
-                    self.send_header("Content-Type", kind)
-                    self.send_header("Content-Length", str(len(payload)))
-                    self.send_header("Cache-Control", "no-store")
-                    self.end_headers()
-                    self.wfile.write(payload)
-                except (ValueError, KeyError, IndexError) as error:
-                    payload = json.dumps({"error": str(error)}).encode()
-                    self.send_response(400)
-                    self.send_header("Content-Type", "application/json")
-                    self.end_headers()
-                    self.wfile.write(payload)
+                    count = len(cloud)
+                    cloud = cloud[
+                        :: max(1, int(np.ceil(count / args.display_max_points)))
+                    ].round(4)
+                    response = {
+                        "row": row
+                        | {
+                            "measurement_timestamp_ns_string": str(
+                                row["measurement_timestamp_ns"]
+                            )
+                        },
+                        "points": cloud.tolist(),
+                        "decoded_points": count,
+                        "distances": distance_summary(row),
+                        "corridor": corridor_edges(row.get("geometry", {}), config)
+                        .round(4)
+                        .tolist(),
+                    }
+                    payload, kind = (
+                        json.dumps(response, allow_nan=False).encode(),
+                        "application/json",
+                    )
+                else:
+                    self.send_error(404)
+                    return
+                self.send_response(200)
+                self.send_header("Content-Type", kind)
+                self.send_header("Content-Length", str(len(payload)))
+                self.send_header("Cache-Control", "no-store")
+                self.end_headers()
+                self.wfile.write(payload)
+            except (ValueError, KeyError, IndexError) as error:
+                payload = json.dumps({"error": str(error)}).encode()
+                self.send_response(400)
+                self.send_header("Content-Type", "application/json")
+                self.end_headers()
+                self.wfile.write(payload)
 
-        server = HTTPServer(("127.0.0.1", args.port), Handler)
-        print(
-            f"Recorded review: http://127.0.0.1:{args.port} — {len(rows)} frames; Ctrl-C to stop",
-            flush=True,
-        )
-        try:
-            server.serve_forever()
-        except KeyboardInterrupt:
-            pass
-        finally:
-            server.server_close()
+    server = ThreadingHTTPServer(("127.0.0.1", args.port), Handler)
+    print(
+        f"Recorded review: http://127.0.0.1:{args.port} — {len(rows)} frames; Ctrl-C to stop",
+        flush=True,
+    )
+    try:
+        server.serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        server.server_close()
 
 
 if __name__ == "__main__":

@@ -120,3 +120,30 @@ The offline CLI also works in an installed image without a Git checkout. Its
 manifest then records `git_revision: null` and `git_status: null`; source/config
 hashes and source snapshots remain available. Mount the experiment recipe and
 output directory explicitly, as shown by `configs/goal-ros-offline-prefix.json`.
+
+### Viewer recovery and disk cleanup (2026-09-17)
+
+The initial single-connection HTTP server was found listening but unresponsive
+(15 s HTTP timeout). It now uses `ThreadingHTTPServer`, a 15 s per-connection
+socket timeout and a separate bag Reader per frame request, so an idle browser
+connection cannot monopolize the server or share SQLite reader state across
+threads. The repaired server returned metadata for all 345 platform frames and
+real frame 344 with 28,179 display points; browser reload was inspected.
+
+To reclaim local disk, the two locally built `tunnel-guard` images and the 19
+identified cache records from this iteration were removed. Existing unrelated
+images, containers and volumes were retained. Three extracted copies under
+`build/goal-data/for_hackathon/` (about 13 GiB) were removed after checking their
+filenames against a successful full listing of the retained archive. Results,
+source snapshots, annotations and the archive remain. Restore only the recording
+needed for a new run, for example:
+
+```bash
+mkdir -p build/goal-data
+tar --zstd -xf archive/for_hackathon.zst -C build/goal-data \
+  for_hackathon/squareT_platform_squareT_switch
+```
+
+The platform browser example uses the existing `data/sourcecraft_subset` copy
+and needs neither this extraction nor Docker. Rebuilding the Humble image is an
+explicit separate operation; it is not necessary to view results on macOS.
