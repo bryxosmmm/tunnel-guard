@@ -43,6 +43,10 @@ def load_config(path: str | Path) -> dict:
         raise ValueError("Invalid sensor range bounds")
     if not isinstance(config.get("deskew_enabled", False), bool):
         raise ValueError("deskew_enabled must be boolean")
+    if config.get("voxel_backend", "numpy") not in ("numpy", "cpp"):
+        raise ValueError("voxel_backend must be numpy or cpp")
+    if config.get("voxel_backend") == "cpp":
+        from . import _native  # Fail explicitly when the selected accelerator is unavailable.
     ransac_threads = config.get("background", {}).get("ransac_threads", 1)
     if type(ransac_threads) is not int or ransac_threads < 1:
         raise ValueError("background.ransac_threads must be a positive integer")
@@ -54,7 +58,7 @@ def load_config(path: str | Path) -> dict:
 def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict,
                        diagnostics: dict | None = None, arrays: dict | None = None) -> list[dict]:
     _, context, _, _, _ = geometry.classify(points)
-    cloud = voxel_representatives(points[context], config["cluster_voxel_m"])
+    cloud = voxel_representatives(points[context], config["cluster_voxel_m"], config.get("voxel_backend", "numpy"))
     if diagnostics is not None:
         diagnostics.update(state="ran", context_points=int(context.sum()), cluster_points=len(cloud), rejected={})
     if arrays is not None:
@@ -280,7 +284,7 @@ class Detector:
             track["evidence"].append((stamp, support_world - world[index]))
             while track["evidence"] and stamp - track["evidence"][0][0] > cfg["evidence_window_s"]:
                 track["evidence"].popleft()
-            evidence = voxel_representatives(np.vstack([e[1] for e in track["evidence"]]), cfg["cluster_voxel_m"])
+            evidence = voxel_representatives(np.vstack([e[1] for e in track["evidence"]]), cfg["cluster_voxel_m"], cfg.get("voxel_backend", "numpy"))
             if not track["history"] or track["history"][-1] != self.frame_number:
                 track["history"].append(self.frame_number)
             hits = sum(f > self.frame_number - cfg["confirmation_window"] for f in track["history"])
@@ -367,7 +371,7 @@ class Detector:
         motion_s = time.perf_counter() - motion_started
         crop = ((frame[:, 0] >= self.config["min_forward_m"])
                 & (np.abs(frame[:, 1]) < self.config["context_half_width_m"]))
-        reduced = voxel_representatives(frame[crop], self.config["geometry_voxel_m"])
+        reduced = voxel_representatives(frame[crop], self.config["geometry_voxel_m"], self.config.get("voxel_backend", "numpy"))
         if capture_diagnostics:
             self.diagnostic_arrays.update(registered_points=frame, cropped_points=frame[crop], geometry_voxel_points=reduced)
         geometry = TrackGeometry(reduced, self.config)

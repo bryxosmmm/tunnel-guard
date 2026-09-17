@@ -7,7 +7,8 @@ WORKDIR /opt/tunnel-guard
 COPY docker/constraints.txt ./docker/constraints.txt
 RUN python3 -m pip install --upgrade pip==24.3.1 setuptools==75.8.0 wheel==0.45.1 \
     && python3 -m pip install -r docker/constraints.txt
-COPY pyproject.toml ./
+COPY pyproject.toml setup.py ./
+COPY cpp ./cpp
 COPY tunnel_guard ./tunnel_guard
 RUN python3 -m pip install --upgrade packaging==24.2 \
     && python3 -m pip install --no-build-isolation --no-deps .

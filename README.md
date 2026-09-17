@@ -10,6 +10,10 @@ The initial review and its two real 30-frame prefixes are documented in [docs/AU
 
 See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and ROS2 launch commands, and [iteration evidence](docs/GOAL_ITERATION.md) for all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
 
+## Native acceleration and calibration experiment
+
+See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md). Optional C++ voxel selection preserved compared outputs on 798 real scans; a paired cached-scan benchmark reduced median processing from 602 to 504 ms (about 16%). This is still below 10 Hz. The new chronological calibration CLI evaluated 120 real scans: all three provisional track-relative orientation candidates failed the declared stability gates and were **not installed**. Vehicle mounting calibration still needs an independent vehicle reference.
+
 ## Coverage expansion and modeled insertions
 
 See [coverage expansion](docs/COVERAGE_EXPANSION.md): complete platform and round-to-double tunnel runs, plus nine controlled cases on actual measured ray directions. Modeled support is traced through processing stages; missing rays, occlusion and candidate rejection are reported separately. Synthetic attribution is not field recall. The production detector is frozen for this experiment; its parameters were not tuned to inserted boxes.

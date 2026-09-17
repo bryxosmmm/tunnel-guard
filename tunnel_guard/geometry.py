@@ -9,10 +9,18 @@ import numpy as np
 from scipy.signal import find_peaks
 
 
-def voxel_representatives(points: np.ndarray, size: float) -> np.ndarray:
+def voxel_representatives(points: np.ndarray, size: float, backend: str = "numpy") -> np.ndarray:
     if not len(points):
         return points
-    _, indices = np.unique(np.floor(points / size).astype(np.int64), axis=0, return_index=True)
+    if backend == "cpp":
+        from . import _native
+        if points.dtype != np.float64:
+            raise ValueError("cpp voxel backend requires float64 measurements")
+        indices = np.frombuffer(_native.voxel_indices(np.ascontiguousarray(points), size), dtype=np.int64)
+    elif backend == "numpy":
+        _, indices = np.unique(np.floor(points / size).astype(np.int64), axis=0, return_index=True)
+    else:
+        raise ValueError("Unknown voxel backend")
     return points[indices]
 
 
@@ -22,7 +30,7 @@ def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, d
     mask = ((points[:, 0] >= lo) & (points[:, 0] <= hi)
             & (np.abs(points[:, 1]) < config["ground_fit_half_width_m"])
             & (points[:, 2] > -max_height) & (points[:, 2] < -min_height))
-    sample = voxel_representatives(points[mask], max(config["geometry_voxel_m"], 0.12))
+    sample = voxel_representatives(points[mask], max(config["geometry_voxel_m"], 0.12), config.get("voxel_backend", "numpy"))
     rng = np.random.default_rng(config["seed"])
     if len(sample) > 6000:
         sample = sample[rng.choice(len(sample), 6000, replace=False)]

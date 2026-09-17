@@ -12,3 +12,7 @@
 !launch/
 !launch/*.py
 !tunnel_guard/review.html
+
+!setup.py
+!cpp/
+!cpp/*.cpp
