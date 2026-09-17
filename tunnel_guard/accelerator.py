@@ -269,6 +269,13 @@ def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncert
     return objects, rejected, rows
 
 
+def normal_covariances(sample: np.ndarray, radius: float, max_nn: int, module):
+    """Uncapped neighbour counts and mean-centred covariances in one grid pass."""
+    counts, components = module.normal_covariances(np.ascontiguousarray(sample), radius, int(max_nn))
+    return (np.frombuffer(counts, dtype=np.int64),
+            np.frombuffer(components, dtype=np.float64).reshape(-1, 6))
+
+
 def voxel_counts(stacks, size: float, module=None):
     """Distinct voxel count per evidence stack, one call for every object.
 

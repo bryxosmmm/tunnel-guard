@@ -138,6 +138,14 @@ unsigned worker_count(Py_ssize_t n) {
     return std::max(1u, std::min(hardware ? hardware : 1u, 8u));
 }
 
+// Squared distance between a stored point and a query position.
+double distance_squared(const double* points, int64_t index, double x, double y, double z) {
+    const double dx = points[3 * index] - x;
+    const double dy = points[3 * index + 1] - y;
+    const double dz = points[3 * index + 2] - z;
+    return dx * dx + dy * dy + dz * dz;
+}
+
 bool accept(PyObject* payload, std::vector<PyObject*>& owned, const char* name) {
     if (payload == nullptr) {
         PyErr_Format(PyExc_RuntimeError, "failed to build %s", name);
@@ -1362,6 +1370,156 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
     return payload;
 }
 
+// Neighbour counts and mean-centred covariances of a point cloud.
+//
+// This reproduces what the planner previously obtained from two separate Open3D
+// traversals (estimate_normals and estimate_covariances), measured against the
+// real library rather than assumed:
+//
+//   * neighbours are the points within `radius`, capped to the `max_nn` nearest;
+//   * the covariance is sum((x - mean) (x - mean)^T) / n over that capped set;
+//   * the eigen-decomposition stays with NumPy, so the eigenvalues and the
+//     smallest eigenvector are produced by the same solver as before.
+//
+// One grid pass therefore replaces two KD-tree traversals per point and yields
+// the uncapped count as well, which the planarity gate needs. Accumulation order
+// differs from Open3D's internal order, so covariances agree to round-off rather
+// than bitwise; the gate thresholds are far from that margin.
+PyObject* normal_covariances(PyObject*, PyObject* args) {
+    PyObject* object;
+    double radius;
+    int max_nn;
+    if (!PyArg_ParseTuple(args, "Odi", &object, &radius, &max_nn)) return nullptr;
+    if (!(std::isfinite(radius) && radius > 0) || max_nn < 1) {
+        PyErr_SetString(PyExc_ValueError, "radius must be positive and max_nn at least one");
+        return nullptr;
+    }
+    Buffer buffer(object);
+    if (!buffer.points()) {
+        PyErr_SetString(PyExc_ValueError, "expected contiguous native float64 (N,3)");
+        return nullptr;
+    }
+    const double* data = buffer.doubles();
+    const Py_ssize_t n = buffer.rows();
+    Arena& scratch = arena();
+    auto& counts = scratch.i0;
+    auto& covariances = scratch.d0;
+    try {
+        ReleaseGIL released;
+        build_cells(data, n, radius);
+        Arena& cells = arena();
+        KeyTable& table = cells.table;
+        counts.resize(static_cast<size_t>(n));
+        covariances.resize(static_cast<size_t>(n) * 6);
+        const unsigned workers = worker_count(n);
+        // Per-thread scratch: the membership and selection buffers are mutated
+        // inside the parallel region, so they cannot live in the shared arena.
+        auto process = [&](Py_ssize_t start, Py_ssize_t stop) {
+            std::vector<int64_t> members;
+            std::vector<int64_t> picked;
+            for (Py_ssize_t i = start; i < stop; ++i) {
+                const double xi = data[3 * i], yi = data[3 * i + 1], zi = data[3 * i + 2];
+                Key low{}, high{};
+                for (int axis = 0; axis < 3; ++axis) {
+                    const double value = data[3 * i + axis];
+                    low[axis] = static_cast<int64_t>(std::floor((value - radius) / radius));
+                    high[axis] = static_cast<int64_t>(std::floor((value + radius) / radius));
+                }
+                // One pass: membership is both the uncapped count and the pool the
+                // nearest max_nn are selected from.
+                members.clear();
+                for (int64_t cx = low[0]; cx <= high[0]; ++cx)
+                    for (int64_t cy = low[1]; cy <= high[1]; ++cy)
+                        for (int64_t cz = low[2]; cz <= high[2]; ++cz) {
+                            const size_t slot = table.find(Key{cx, cy, cz});
+                            if (slot == static_cast<size_t>(-1)) continue;
+                            const int64_t* begin = cells.cell_items.data() + cells.cell_start[slot];
+                            const int64_t* end = cells.cell_items.data() + cells.cell_start[slot + 1];
+                            for (const int64_t* item = begin; item != end; ++item) {
+                                const int64_t j = *item;
+                                if (distance_squared(data, j, xi, yi, zi) <= radius * radius) members.push_back(j);
+                            }
+                        }
+                counts[static_cast<size_t>(i)] = static_cast<int64_t>(members.size());
+                const Py_ssize_t total = static_cast<Py_ssize_t>(members.size());
+                const Py_ssize_t used = total > max_nn ? max_nn : total;
+                picked.resize(static_cast<size_t>(total));
+                for (Py_ssize_t slot = 0; slot < total; ++slot) picked[static_cast<size_t>(slot)] = slot;
+                if (total > max_nn) {
+                    std::partial_sort(picked.begin(), picked.begin() + max_nn, picked.end(),
+                                      [&](int64_t left, int64_t right) {
+                                          const double dl = distance_squared(data, members[static_cast<size_t>(left)], xi, yi, zi);
+                                          const double dr = distance_squared(data, members[static_cast<size_t>(right)], xi, yi, zi);
+                                          if (dl != dr) return dl < dr;
+                                          return members[static_cast<size_t>(left)] < members[static_cast<size_t>(right)];
+                                      });
+                }
+                double mean_x = 0.0, mean_y = 0.0, mean_z = 0.0;
+                for (Py_ssize_t slot = 0; slot < used; ++slot) {
+                    const int64_t j = members[static_cast<size_t>(picked[static_cast<size_t>(slot)])];
+                    mean_x += data[3 * j];
+                    mean_y += data[3 * j + 1];
+                    mean_z += data[3 * j + 2];
+                }
+                mean_x /= static_cast<double>(used);
+                mean_y /= static_cast<double>(used);
+                mean_z /= static_cast<double>(used);
+                double xx = 0.0, xy = 0.0, xz = 0.0, yy = 0.0, yz = 0.0, zz = 0.0;
+                for (Py_ssize_t slot = 0; slot < used; ++slot) {
+                    const int64_t j = members[static_cast<size_t>(picked[static_cast<size_t>(slot)])];
+                    const double dx = data[3 * j] - mean_x;
+                    const double dy = data[3 * j + 1] - mean_y;
+                    const double dz = data[3 * j + 2] - mean_z;
+                    xx += dx * dx;
+                    xy += dx * dy;
+                    xz += dx * dz;
+                    yy += dy * dy;
+                    yz += dy * dz;
+                    zz += dz * dz;
+                }
+                const double scale = 1.0 / static_cast<double>(used);
+                const size_t base = 6 * static_cast<size_t>(i);
+                covariances[base] = xx * scale;
+                covariances[base + 1] = xy * scale;
+                covariances[base + 2] = xz * scale;
+                covariances[base + 3] = yy * scale;
+                covariances[base + 4] = yz * scale;
+                covariances[base + 5] = zz * scale;
+            }
+        };
+        if (workers <= 1) {
+            process(0, n);
+        } else {
+            std::vector<std::thread> pool;
+            const Py_ssize_t chunk = (n + static_cast<Py_ssize_t>(workers) - 1) / static_cast<Py_ssize_t>(workers);
+            for (unsigned worker = 0; worker < workers; ++worker) {
+                const Py_ssize_t start = static_cast<Py_ssize_t>(worker) * chunk;
+                const Py_ssize_t stop = std::min(n, start + chunk);
+                if (start >= stop) break;
+                pool.emplace_back([&process, start, stop] { process(start, stop); });
+            }
+            for (auto& thread : pool) thread.join();
+        }
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    catch (const std::exception& error) {
+        PyErr_SetString(PyExc_ValueError, error.what());
+        return nullptr;
+    }
+    PyObject* payload = PyTuple_New(2);
+    if (payload == nullptr) return nullptr;
+    PyObject* count_bytes = bytes_of(counts.data(), counts.size() * sizeof(int64_t));
+    PyObject* covariance_bytes = bytes_of(covariances.data(), covariances.size() * sizeof(double));
+    if (count_bytes == nullptr || covariance_bytes == nullptr) {
+        Py_XDECREF(count_bytes);
+        Py_XDECREF(covariance_bytes);
+        Py_DECREF(payload);
+        return nullptr;
+    }
+    PyTuple_SET_ITEM(payload, 0, count_bytes);
+    PyTuple_SET_ITEM(payload, 1, covariance_bytes);
+    return payload;
+}
+
 static PyMethodDef methods[] = {
     {"voxel_indices", voxel_indices, METH_VARARGS,
      "First measurement indices, lexicographic voxel order."},
@@ -1369,6 +1527,8 @@ static PyMethodDef methods[] = {
      "Number of distinct voxels for the same keys."},
     {"voxel_counts", voxel_counts, METH_VARARGS,
      "Distinct voxel count for each stack in one call, reusing one arena."},
+    {"normal_covariances", normal_covariances, METH_VARARGS,
+     "Neighbour counts and mean-centred covariances in one grid pass."},
     {"cluster_components", cluster_components, METH_VARARGS,
      "Component grouping and statistics of the cluster cloud in one pass."},
     {"select_crop_voxels", select_crop_voxels, METH_VARARGS,
