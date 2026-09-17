@@ -24,6 +24,25 @@ def voxel_representatives(points: np.ndarray, size: float, backend: str = "numpy
     return points[indices]
 
 
+def envelope_width_bounds(low: np.ndarray, high: np.ndarray, segments: np.ndarray,
+                          margin: float) -> tuple[np.ndarray, np.ndarray]:
+    """Extrema of a piecewise-linear half-width over each height interval.
+
+    Visit both sides of segment discontinuities. Closed segment endpoints make
+    an exactly coincident step conservative, without sampling away narrow steps.
+    Intervals outside the vertical contour have no overlap (inf, -inf).
+    """
+    minimum, maximum = np.full(len(low), np.inf), np.full(len(low), -np.inf)
+    for bottom, top, start, end in segments:
+        a, b = np.maximum(low, bottom), np.minimum(high, top)
+        overlap = a <= b
+        wa = start + (end - start) * (a[overlap] - bottom) / (top - bottom) + margin
+        wb = start + (end - start) * (b[overlap] - bottom) / (top - bottom) + margin
+        minimum[overlap] = np.minimum(minimum[overlap], np.minimum(wa, wb))
+        maximum[overlap] = np.maximum(maximum[overlap], np.maximum(wa, wb))
+    return minimum, maximum
+
+
 def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, dict]:
     lo, hi = config["ground_fit_range_m"]
     min_height, max_height = config["ground_sensor_height_bounds_m"]
@@ -212,7 +231,7 @@ class TrackGeometry:
 
     def classify(self, points: np.ndarray, *, remove_background: bool = True,
                  include_boundary: bool = False):
-        """Classify support; optionally expose uncertain lateral envelope intersections.
+        """Classify support; optionally expose uncertain envelope intersections.
 
         The interval uses the existing heuristic path uncertainty, not calibrated
         probability or a guarantee about the physical vehicle envelope.
@@ -235,22 +254,24 @@ class TrackGeometry:
         width = segment[:, 2] + fraction * (segment[:, 3] - segment[:, 2]) + cfg["envelope_margin_m"]
         observed = ((ground_uncertainty <= cfg["ground_max_uncertainty_m"])
                     & (path_uncertainty <= cfg["path_max_uncertainty_m"]))
-        vertical = ((running_height >= envelope[0, 0] + ground_uncertainty)
-                    & (running_height <= envelope[-1, 1]))
         # Remove only the measured rail-head band, not all points near a rail.
         on_rail = (observed & (np.abs(np.abs(lateral) - gauge / 2) < cfg["rail_half_width_m"] + path_uncertainty)
                    & (running_height <= cfg["rail_vertical_margin_m"]))
-        ground_supported = (ground_uncertainty <= cfg["ground_max_uncertainty_m"]) & vertical & ~on_rail
-        # A supported path estimate still has nonzero uncertainty. Project its
-        # lateral offset through the same roll transform as the measured points.
-        # A nominal crossing by a millimetre is not a definite intrusion when
-        # the path centre is uncertain by centimetres. Preserve both sides of
-        # that boundary as unresolved evidence instead of discarding the points.
-        lateral_uncertainty = path_uncertainty * np.sqrt(1 + slope**2)
-        nominal_core = ground_supported & observed & (np.abs(lateral) <= width)
-        core = nominal_core & (np.abs(lateral) + lateral_uncertainty <= width)
-        boundary = (ground_supported & observed & ~core
-                    & (np.abs(lateral) - lateral_uncertainty <= width))
+        # Propagate existing bed-height error through BOTH coordinates. A height
+        # error can also cross a step in the reference contour's half-width.
+        # Marginal bounds discard correlation and are conservative: they can
+        # retain extra unresolved evidence, never certify a marginal intrusion.
+        bed_error = np.where(observed, ground_uncertainty, 0.)
+        height_error = bed_error / normal_scale
+        low, high = running_height - height_error, running_height + height_error
+        min_width, max_width = envelope_width_bounds(low, high, envelope, cfg["envelope_margin_m"])
+        lateral_uncertainty = (np.where(observed, path_uncertainty, 0.) * np.sqrt(1 + slope**2)
+                               + abs(slope) * bed_error / np.sqrt(1 + slope**2))
+        vertical_inside = (low >= envelope[0, 0]) & (high <= envelope[-1, 1])
+        core = observed & ~on_rail & vertical_inside & (np.abs(lateral) + lateral_uncertainty <= min_width)
+        possible = ((high >= envelope[0, 0]) & (low <= envelope[-1, 1])
+                    & (np.abs(lateral) - lateral_uncertainty <= max_width))
+        boundary = observed & ~on_rail & ~core & possible
         # Segmentation precedes the collision gate. Do not amputate the feet or
         # head of an object just because only part intersects the envelope.
         segmentation_height = (running_height >= cfg["min_running_height_m"]) & (running_height <= envelope[-1, 1] + cfg["cluster_context_margin_m"])
@@ -265,7 +286,8 @@ class TrackGeometry:
 
     def describe(self) -> dict:
         return {"valid": self.valid, "reason": self.reason, "ground_quality": self.ground_quality,
-                "lateral_boundary_policy": "heuristic_path_interval",
+                "lateral_boundary_policy": "heuristic_path_and_ground_interval",
+                "boundary_uncertainty_scope": "path_center_and_bed_height_only_not_full_extrinsics",
                 "ground_plane": None if self.plane is None else self.plane.tolist(),
                 "rail_head_height_m": self.rail_head_height_m,
                 "ground_anchors": self.ground_anchors.tolist(), "rail_anchors": self.rail_anchors.tolist(),

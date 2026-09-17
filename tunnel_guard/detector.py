@@ -138,8 +138,8 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                         "support_voxels": len(indices), "density_core_voxels": dense_count,
                         "in_envelope_voxels": len(inside), "_support_points": q,
                         "boundary_uncertain_voxels": int(np.count_nonzero(boundary[indices])),
-                        "path_relation_reason": ("inside_heuristic_path_interval" if intersects else
-                            ("lateral_boundary_uncertainty" if unresolved and np.any(boundary[indices]) else
+                        "path_relation_reason": ("inside_heuristic_path_and_ground_interval" if intersects else
+                            ("envelope_boundary_uncertainty" if unresolved and np.any(boundary[indices]) else
                              ("unsupported_nominal_envelope" if unresolved else "outside_envelope_evidence"))),
                         "height_above_bed_m": [float(heights[indices].min()), float(heights[indices].max())],
                         "immediate": bool(instant),

@@ -14,6 +14,10 @@ See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and RO
 
 See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md). Optional C++ voxel selection preserved compared outputs on 798 real scans; a paired cached-scan benchmark reduced median processing from 602 to 504 ms (about 16%). This is still below 10 Hz. The new chronological calibration CLI evaluated 120 real scans: all three provisional track-relative orientation candidates failed the declared stability gates and were **not installed**. Vehicle mounting calibration still needs an independent vehicle reference.
 
+## Small detections and contour uncertainty
+
+See [small-object review and calibration limits](docs/ENVELOPE_INTERVAL_REVIEW.md). Height uncertainty now propagates through the stepped contour width and both vertical boundaries. On 798 real scans, confirmed intersection observations changed from 718 to 649; small detections and nuisance alarms remain unresolved, and this is not a precision improvement claim. The browser exposes measured box sizes, support counts and exact diagnostic points for selected saved frames.
+
 ## Coverage expansion and modeled insertions
 
 See [coverage expansion](docs/COVERAGE_EXPANSION.md): complete platform and round-to-double tunnel runs, plus nine controlled cases on actual measured ray directions. Modeled support is traced through processing stages; missing rays, occlusion and candidate rejection are reported separately. Synthetic attribution is not field recall. The production detector is frozen for this experiment; its parameters were not tuned to inserted boxes.
