@@ -13,7 +13,7 @@ from scipy.optimize import linear_sum_assignment
 from scipy.spatial import cKDTree
 
 from . import accelerator
-from .geometry import TrackGeometry, voxel_count, voxel_representatives
+from .geometry import TrackGeometry, voxel_representatives
 from .segmentation import density_labels, published_labels
 
 

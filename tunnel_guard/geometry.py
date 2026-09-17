@@ -26,20 +26,6 @@ def voxel_representatives(points: np.ndarray, size: float, backend: str = "numpy
     return points[indices]
 
 
-def voxel_count(points: np.ndarray, size: float, backend: str = "numpy") -> int:
-    """Number of distinct voxels; equal to len(voxel_representatives(...))."""
-    if not len(points):
-        return 0
-    if backend == "cpp":
-        from . import _native
-        if points.dtype != np.float64:
-            raise ValueError("cpp voxel backend requires float64 measurements")
-        return int(_native.voxel_count(np.ascontiguousarray(points), size))
-    if backend == "numpy":
-        return int(np.unique(np.floor(points / size).astype(np.int64), axis=0).shape[0])
-    raise ValueError("Unknown voxel backend")
-
-
 # scipy prepares worker threads per call, so parallelism only pays for large
 # query batches: measured on this machine, 1024 points are still slower with
 # workers and 4096 points break even. The threshold selects scheduling only;
