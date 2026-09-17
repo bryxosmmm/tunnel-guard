@@ -60,23 +60,54 @@ def symmetry_axis(lateral: np.ndarray) -> tuple[float | None, float | None]:
     return float(SHIFTS[best]), float(overlap[best] / total)
 
 
-def frame_row(scan_points: np.ndarray, geometry: TrackGeometry) -> dict:
+def centred_profile(lateral: np.ndarray, axis: float) -> np.ndarray | None:
+    """Lateral profile referred to the section's own axis and normalised to unit mass.
+
+    Centring removes the offset being calibrated, so what remains compares shape alone.
+    """
+    profile = np.histogram(lateral - axis, bins=EDGES)[0].astype(float)
+    total = profile.sum()
+    return profile / total if total > 0 else None
+
+
+def frame_row(scan_points: np.ndarray, geometry: TrackGeometry) -> tuple[dict, dict]:
     height = scan_points[:, 2] - geometry.ground(scan_points)[0]
     anchors = geometry.rail_anchors
-    probes = {}
+    probes, profiles = {}, {}
     for probe in NEAR_RANGES_M + FAR_RANGES_M:
         slab = ((np.abs(scan_points[:, 0] - probe) < SLAB_HALF_M) & (height > MIN_HEIGHT_M)
                 & (np.abs(scan_points[:, 1]) < 8))
-        axis, score = symmetry_axis(scan_points[slab, 1])
+        lateral = scan_points[slab, 1]
+        axis, score = symmetry_axis(lateral)
         anchored = len(anchors) >= 2 and anchors[0, 0] <= probe <= anchors[-1, 0]
+        width = None
+        if axis is not None and len(lateral) >= 60:
+            profiles[str(probe)] = centred_profile(lateral, axis)
+            centred = lateral - axis
+            width = float(np.quantile(centred, 0.95) - np.quantile(centred, 0.05))
         probes[str(probe)] = {
-            "bore_axis_m": axis, "symmetry_score": score,
+            "bore_axis_m": axis, "symmetry_score": score, "section_width_m": width,
             "rail_center_m": (float(np.interp(probe, anchors[:, 0], anchors[:, 1]))
                               if anchored else None)}
-    return probes
+    return probes, profiles
 
 
-def calibrated_disagreement(probes: dict, min_score: float) -> dict:
+def section_match(profiles: dict, probe: str) -> float | None:
+    """How much of the near section's shape the far section reproduces, in [0, 1].
+
+    Carrying a near-field offset outward is only valid while the cross-section stays the same.
+    A platform edge or a widening changes the shape without necessarily costing much symmetry,
+    which is exactly the case the symmetry score alone failed to catch.
+    """
+    near = [profiles[str(r)] for r in NEAR_RANGES_M if str(r) in profiles]
+    far = profiles.get(probe)
+    if not near or far is None:
+        return None
+    return float(np.minimum(np.mean(near, axis=0), far).sum())
+
+
+def calibrated_disagreement(probes: dict, profiles: dict, min_score: float,
+                            min_section_match: float) -> dict:
     """Bore prediction of the track centre, and how far the rails sit from it.
 
     Returns nothing usable when the near field cannot calibrate the offset or when the
@@ -100,14 +131,16 @@ def calibrated_disagreement(probes: dict, min_score: float) -> dict:
         if p["bore_axis_m"] is None or p["rail_center_m"] is None:
             continue
         score = min(p["symmetry_score"], worst_near)
-        if score < min_score:
+        match = section_match(profiles, str(probe))
+        if score < min_score or match is None or match < min_section_match:
             continue
         predicted = p["bore_axis_m"] - offset
         out["by_range"][str(probe)] = {
             "predicted_center_m": round(predicted, 3),
             "rail_center_m": round(p["rail_center_m"], 3),
             "disagreement_m": round(abs(predicted - p["rail_center_m"]), 3),
-            "symmetry_score": round(score, 3)}
+            "symmetry_score": round(score, 3),
+            "section_match": round(match, 3)}
     if out["by_range"]:
         out["usable"] = True
         out["reason"] = "bore_readable"
@@ -115,7 +148,8 @@ def calibrated_disagreement(probes: dict, min_score: float) -> dict:
     return out
 
 
-def measure(bag: Path, detector: dict, every: int, max_frames: int | None, min_score: float) -> dict:
+def measure(bag: Path, detector: dict, every: int, max_frames: int | None, min_score: float,
+            min_section_match: float) -> dict:
     rows = []
     for scan in iter_bag(bag, detector, every=every, max_frames=max_frames):
         forward = ((scan.points[:, 0] >= detector["min_forward_m"])
@@ -125,9 +159,12 @@ def measure(bag: Path, detector: dict, every: int, max_frames: int | None, min_s
                                                        detector["geometry_voxel_m"]), detector)
         if not geometry.valid:
             continue
-        probes = frame_row(scan.points, geometry)
+        probes, profiles = frame_row(scan.points, geometry)
+        for probe in FAR_RANGES_M:
+            probes[str(probe)]["section_match"] = section_match(profiles, str(probe))
         rows.append({"frame": scan.index, "probes": probes,
-                     "check": calibrated_disagreement(probes, min_score)})
+                     "check": calibrated_disagreement(probes, profiles, min_score,
+                                                      min_section_match)})
     usable = [r for r in rows if r["check"]["usable"]]
     disagreement = np.asarray([r["check"]["max_disagreement_m"] for r in usable])
     return {
@@ -148,15 +185,18 @@ def main():
     parser.add_argument("--every", type=int, default=1)
     parser.add_argument("--max-frames", type=int, default=None)
     parser.add_argument("--min-symmetry-score", type=float, default=0.50)
+    parser.add_argument("--min-section-match", type=float, default=0.0,
+                        help="shape agreement required between the near and probed section")
     args = parser.parse_args()
 
     detector = load_config(args.config)
     detector = {**detector, "background": {**detector["background"], "enabled": False}}
-    results = [measure(bag, detector, args.every, args.max_frames, args.min_symmetry_score)
-               for bag in args.bag]
+    results = [measure(bag, detector, args.every, args.max_frames, args.min_symmetry_score,
+                       args.min_section_match) for bag in args.bag]
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.write_text(json.dumps({
         "config": str(args.config), "min_symmetry_score": args.min_symmetry_score,
+        "min_section_match": args.min_section_match,
         "near_ranges_m": list(NEAR_RANGES_M), "far_ranges_m": list(FAR_RANGES_M),
         "seed": detector["seed"], "recordings": results}, indent=1) + "\n")
 
