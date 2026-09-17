@@ -31,17 +31,21 @@ struct KeyTable {
     size_t mask = 0;
     size_t count = 0;
 
+    // Sized between 1x and 4x of what the next call needs: a modestly smaller
+    // request keeps the current arrays (per-stack counting reuses them instead of
+    // reallocating), while a much larger frame shrinks them back so probing stays
+    // cache resident.
     void reset(size_t expected) {
         size_t capacity = 16;
         while (capacity < expected * 2 + 1) capacity <<= 1;
-        if (keys.size() != capacity) {
+        if (keys.size() < capacity || keys.size() > capacity * 4) {
             keys.resize(capacity);
             values.resize(capacity);
             used.assign(capacity, 0);
         } else {
             std::fill(used.begin(), used.end(), 0);
         }
-        mask = capacity - 1;
+        mask = keys.size() - 1;
         count = 0;
     }
 
@@ -83,6 +87,7 @@ struct Arena {
     std::vector<int64_t> i0, i1, i2, i3, i4, i5;
     std::vector<uint8_t> b0, b1, b2, b3, b4;
     std::vector<std::pair<Key, int64_t>> ordered;
+    std::vector<std::pair<uint64_t, int64_t>> packed;
     std::vector<std::vector<int64_t>> sinks;
     KeyTable table;
     std::vector<int64_t> cell_start;   // prefix sums over table slots + 1

@@ -65,16 +65,46 @@ PyObject* voxel_indices(PyObject*, PyObject* args) {
                 const size_t slot = table.slot_of(key, inserted);
                 if (inserted) table.values[slot] = static_cast<int64_t>(i);
             }
-            auto& ordered = scratch.ordered;
-            ordered.clear();
-            ordered.reserve(table.count);
-            for (size_t slot = 0; slot < table.keys.size(); ++slot)
-                if (table.used[slot]) ordered.emplace_back(table.keys[slot], table.values[slot]);
-            std::sort(ordered.begin(), ordered.end(), [](const auto& a, const auto& b) { return a.first < b.first; });
+            // Sort in integer order, which is the order numpy.unique(axis=0)
+            // produced. When every key fits in a 21-bit biased field the triple
+            // packs into one order-preserving 64-bit word, so the sort compares a
+            // single integer instead of three; otherwise the exact triple is
+            // sorted as before.
+            constexpr int64_t kBias = 1 << 20;
             auto& indices = scratch.i0;
             indices.clear();
-            indices.reserve(ordered.size());
-            for (const auto& entry : ordered) indices.push_back(entry.second);
+            indices.reserve(table.count);
+            bool packable = true;
+            for (size_t slot = 0; slot < table.keys.size() && packable; ++slot) {
+                if (!table.used[slot]) continue;
+                for (int axis = 0; axis < 3; ++axis)
+                    if (table.keys[slot][axis] < -kBias || table.keys[slot][axis] >= kBias) { packable = false; break; }
+            }
+            if (packable) {
+                auto& packed = scratch.packed;
+                packed.clear();
+                packed.reserve(table.count);
+                for (size_t slot = 0; slot < table.keys.size(); ++slot) {
+                    if (!table.used[slot]) continue;
+                    const Key& key = table.keys[slot];
+                    const uint64_t word = (static_cast<uint64_t>(key[0] + kBias) << 42)
+                        | (static_cast<uint64_t>(key[1] + kBias) << 21)
+                        | static_cast<uint64_t>(key[2] + kBias);
+                    packed.emplace_back(word, table.values[slot]);
+                }
+                std::sort(packed.begin(), packed.end(),
+                          [](const auto& a, const auto& b) { return a.first < b.first; });
+                for (const auto& entry : packed) indices.push_back(entry.second);
+            } else {
+                auto& ordered = scratch.ordered;
+                ordered.clear();
+                ordered.reserve(table.count);
+                for (size_t slot = 0; slot < table.keys.size(); ++slot)
+                    if (table.used[slot]) ordered.emplace_back(table.keys[slot], table.values[slot]);
+                std::sort(ordered.begin(), ordered.end(),
+                          [](const auto& a, const auto& b) { return a.first < b.first; });
+                for (const auto& entry : ordered) indices.push_back(entry.second);
+            }
             filled = &indices;
         }
         PyBuffer_Release(&buffer);

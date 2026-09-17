@@ -105,54 +105,71 @@ class TunnelBackground:
                     self.patches.append((plane, transverse, strips, kind))
 
     def mask(self, points: np.ndarray, protected: np.ndarray) -> np.ndarray:
+        """Points claimed by observed longitudinal surfaces.
+
+        Candidate windowing, the distance band and the per-patch bookkeeping are
+        shared; the native branch answers every patch in one call and marks this
+        array in place, while the loop below stays as the reference for recipes
+        without native kernels. Both use the same single neighbour query.
+        """
         cfg = self.config
         leveled = points @ self.rotation.T
         background = np.zeros(len(points), dtype=bool)
         if not self.patches:
             return background
-        # A patch can only claim points inside its observed longitudinal strips,
-        # and only points within remove_distance of its plane can be candidates.
-        # Neither test depends on the running mask, so every patch's candidates
-        # are collected first and answered by one neighbour query.
-        prepared = []
-        for plane, transverse, strips, _ in self.patches:
-            lo = min(strip[0] for strip in strips) - cfg["support_margin_m"]
-            hi = max(strip[1] for strip in strips) + cfg["support_margin_m"]
-            candidates = accelerator.patch_candidates(leveled, plane, lo, hi,
-                                                      cfg["remove_distance_m"], self.native)
-            if len(candidates):
-                prepared.append((plane, transverse, strips, candidates))
-        if not prepared:
-            return background
-        union = np.unique(np.concatenate([candidates for _, _, _, candidates in prepared]))
+        planes = np.asarray([patch[0] for patch in self.patches], dtype=float)
+        transverse = np.asarray([patch[1] for patch in self.patches], dtype=np.int64)
+        bounds = np.asarray([[min(strip[0] for strip in patch[2]) - cfg["support_margin_m"],
+                              max(strip[1] for strip in patch[2]) + cfg["support_margin_m"]]
+                             for patch in self.patches], dtype=float)
+        strip_boxes, strip_offsets = [], np.zeros(len(self.patches) + 1, dtype=np.int64)
+        for index, patch in enumerate(self.patches):
+            strip_boxes.extend(patch[2])
+            strip_offsets[index + 1] = len(strip_boxes)
+        strip_boxes = np.asarray(strip_boxes, dtype=float).reshape(-1, 4)
+        union, candidates, candidate_offsets = accelerator.mask_candidates(
+            leveled, planes, bounds, cfg["remove_distance_m"], self.native)
         distances, nearest = self.normal_tree.query(
             leveled[union], workers=query_workers(len(union), self.query_workers))
         reliable = (distances <= cfg["normal_radius_m"]) & self.normal_reliable[nearest]
         aligned = self.normals[nearest]
         slot = np.full(len(points), -1, dtype=np.int64)
         slot[union] = np.arange(len(union))
-        for plane, transverse, strips, candidates in prepared:
-            index = slot[candidates]
+        if self.native is not None:
+            # Expand the union-indexed neighbour results to candidate order, which
+            # is how the per-patch pass indexes them.
+            accelerator.mask_apply(leveled, protected, background, planes, transverse, strip_boxes,
+                                   strip_offsets, candidates, candidate_offsets,
+                                   np.ascontiguousarray(reliable[slot[candidates]]),
+                                   np.ascontiguousarray(aligned[slot[candidates]]),
+                                   self.sample, self.normals, self.normal_reliable,
+                                   cfg["support_margin_m"], cfg["protrusion_depth_m"],
+                                   cfg["protection_radius_m"], cfg["normal_alignment_cos"], self.native)
+            return background
+        for patch, plane in enumerate(planes):
+            ids = candidates[candidate_offsets[patch]:candidate_offsets[patch + 1]]
+            if not len(ids):
+                continue
+            index = slot[ids]
             # A panel face can approach the wall without becoming part of it.
             # Preserve locally well-supported normals that disagree with lining.
-            near = (~protected[candidates] & ~background[candidates]
+            near = (~protected[ids] & ~background[ids]
                     & ~(reliable[index] & (np.abs(aligned[index] @ plane[:3]) < cfg["normal_alignment_cos"])))
-            near_ids = candidates[near]
+            near_ids = ids[near]
             if len(near_ids):
                 protrusion = accelerator.protrusion_ids(
                     self.sample, self.normals, self.normal_reliable, plane,
-                    cfg["protrusion_depth_m"], cfg["protection_radius_m"], cfg["normal_alignment_cos"],
-                    self.native)
+                    cfg["protrusion_depth_m"], cfg["protection_radius_m"], cfg["normal_alignment_cos"])
                 if len(protrusion):
                     # Keep attachment edges near a supported protruding face; otherwise
                     # its near-wall column is amputated by the surface-distance band.
-                    keep = accelerator.keep_outside_radius(
-                        leveled[near_ids], self.sample[protrusion], cfg["protection_radius_m"], self.native)
-                    near_ids = near_ids[keep]
+                    near_ids = near_ids[accelerator.keep_outside_radius(
+                        leveled[near_ids], self.sample[protrusion], cfg["protection_radius_m"])]
             if not len(near_ids):
                 continue
-            background[accelerator.strip_inside(leveled, near_ids, strips, cfg["support_margin_m"],
-                                                transverse, self.native)] = True
+            boxes = strip_boxes[strip_offsets[patch]:strip_offsets[patch + 1]]
+            background[accelerator.strip_inside(leveled, near_ids, boxes, cfg["support_margin_m"],
+                                                int(transverse[patch]))] = True
         return background
 
     def describe(self):

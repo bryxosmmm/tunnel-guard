@@ -900,7 +900,7 @@ PyObject* mask_apply(PyObject*, PyObject* args) {
         *strips_object, *strip_offsets_object, *candidates_object, *candidate_offsets_object,
         *reliable_object, *aligned_object, *sample_object, *normals_object, *normal_reliable_object;
     double margin, depth, radius, alignment;
-    if (!PyArg_ParseTuple(args, "OOOOOOOOOOOOOOOdddd", &points_object, &protected_object, &background_object,
+    if (!PyArg_ParseTuple(args, "OOOOOOOOOOOOOO" "dddd", &points_object, &protected_object, &background_object,
                           &planes_object, &transverse_object, &strips_object, &strip_offsets_object,
                           &candidates_object, &candidate_offsets_object, &reliable_object, &aligned_object,
                           &sample_object, &normals_object, &normal_reliable_object,
@@ -973,9 +973,20 @@ PyObject* mask_apply(PyObject*, PyObject* args) {
             protrusion_samples(sample_points, normal_vectors, sample_reliable, sample.rows(), model,
                                depth, radius, alignment, protrusions);
             if (!protrusions.empty()) {
+                // Distances are taken to the protruding samples only, exactly as
+                // the reference gathers sample[protrusion] before querying.
+                Arena& scratch = arena();
+                auto& targets = scratch.d10;
+                targets.resize(protrusions.size() * 3);
+                for (size_t index = 0; index < protrusions.size(); ++index) {
+                    const int64_t source = protrusions[index];
+                    targets[3 * index] = sample_points[3 * source];
+                    targets[3 * index + 1] = sample_points[3 * source + 1];
+                    targets[3 * index + 2] = sample_points[3 * source + 2];
+                }
                 cleared.clear();
                 clear_of_targets(data, near_ids.data(), static_cast<Py_ssize_t>(near_ids.size()),
-                                 sample_points, sample.rows(), radius, cleared);
+                                 targets.data(), static_cast<Py_ssize_t>(protrusions.size()), radius, cleared);
                 near_ids.swap(cleared);
             }
             if (near_ids.empty()) continue;
