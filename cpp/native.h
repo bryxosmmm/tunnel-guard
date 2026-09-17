@@ -3,6 +3,100 @@
 
 #include <Python.h>
 
+#include <array>
+#include <cstdint>
+#include <vector>
+
+// Voxel key: floor(point / size) per axis, the same derivation for every kernel
+// that has to agree with numpy.unique(..., axis=0).
+using Key = std::array<int64_t, 3>;
+
+struct KeyHash {
+    size_t operator()(const Key& k) const noexcept {
+        size_t h = 0;
+        for (auto v : k) h ^= std::hash<int64_t>{}(v) + 0x9e3779b9U + (h << 6) + (h >> 2);
+        return h;
+    }
+};
+
+bool voxel_key_of(const double* point, double size, Key& key);
+
+// Open-addressed key table. Iteration order is the caller's (insert order is
+// preserved outside the table), and there is no per-key allocation: the arrays
+// are reused across frames by the arena below.
+struct KeyTable {
+    std::vector<Key> keys;
+    std::vector<int64_t> values;
+    std::vector<uint8_t> used;
+    size_t mask = 0;
+    size_t count = 0;
+
+    void reset(size_t expected) {
+        size_t capacity = 16;
+        while (capacity < expected * 2 + 1) capacity <<= 1;
+        if (keys.size() != capacity) {
+            keys.resize(capacity);
+            values.resize(capacity);
+            used.assign(capacity, 0);
+        } else {
+            std::fill(used.begin(), used.end(), 0);
+        }
+        mask = capacity - 1;
+        count = 0;
+    }
+
+    // Index of the key's slot, inserting an empty slot when absent. The slot is
+    // stable until the next reset(), so callers may cache it.
+    size_t slot_of(const Key& key, bool& inserted) {
+        size_t index = KeyHash{}(key) & mask;
+        for (;;) {
+            if (!used[index]) {
+                used[index] = 1;
+                keys[index] = key;
+                values[index] = 0;
+                ++count;
+                inserted = true;
+                return index;
+            }
+            if (keys[index] == key) {
+                inserted = false;
+                return index;
+            }
+            index = (index + 1) & mask;
+        }
+    }
+
+    size_t find(const Key& key) const {
+        size_t index = KeyHash{}(key) & mask;
+        for (;;) {
+            if (!used[index]) return static_cast<size_t>(-1);
+            if (keys[index] == key) return index;
+            index = (index + 1) & mask;
+        }
+    }
+};
+
+// Per-thread scratch that grows to the largest frame seen and is then reused, so
+// steady-state frames allocate nothing beyond the copies the caller receives.
+struct Arena {
+    std::vector<double> d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10;
+    std::vector<int64_t> i0, i1, i2, i3, i4, i5;
+    std::vector<uint8_t> b0, b1, b2, b3, b4;
+    std::vector<std::pair<Key, int64_t>> ordered;
+    std::vector<std::vector<int64_t>> sinks;
+    KeyTable table;
+    std::vector<int64_t> cell_start;   // prefix sums over table slots + 1
+    std::vector<int64_t> cell_items;   // flattened memberships, insert order
+    std::vector<int64_t> cell_cursor;
+};
+
+Arena& arena();
+
+// Group point indices by voxel cell of the given size into the arena's table and
+// flat membership arrays. Any point within `size` of another shares a cell, so
+// the grouping is exact for a radius up to `size`.
+void build_cells(const double* points, Py_ssize_t n, double size);
+
 // cpp/voxel.cpp
 PyObject* voxel_indices(PyObject* self, PyObject* args);
 PyObject* voxel_count(PyObject* self, PyObject* args);
@@ -10,9 +104,12 @@ PyObject* voxel_count(PyObject* self, PyObject* args);
 // cpp/kernels.cpp -- registered in kernels.cpp
 PyObject* range_indices(PyObject* self, PyObject* args);
 PyObject* mutual_graph(PyObject* self, PyObject* args);
+PyObject* voxel_counts(PyObject* self, PyObject* args);
 PyObject* patch_candidates(PyObject* self, PyObject* args);
 PyObject* strip_inside(PyObject* self, PyObject* args);
 PyObject* protrusion_ids(PyObject* self, PyObject* args);
 PyObject* within_radius(PyObject* self, PyObject* args);
-PyObject* classify_geometry(PyObject* self, PyObject* args);
 PyObject* ground_values(PyObject* self, PyObject* args);
+PyObject* classify_geometry(PyObject* self, PyObject* args);
+PyObject* mask_candidates(PyObject* self, PyObject* args);
+PyObject* mask_apply(PyObject* self, PyObject* args);

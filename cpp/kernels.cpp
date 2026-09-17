@@ -1,52 +1,97 @@
-// Native kernels for the Python-side detector glue.
+// Native kernels for the detector's per-frame glue.
 //
-// Every function here reproduces, value for value, the NumPy expression it
-// replaces: same arithmetic order, same tie-breaking, same selection. Anything
-// whose reference implementation lives inside Open3D (plane proposals, normal
-// and covariance estimation) is deliberately NOT reimplemented: those outputs
-// cannot be reproduced bit for bit and they gate real decisions.
+// Two rules govern this file.
 //
-// Nothing here defines a threshold, tolerance or algorithm of its own; it only
-// evaluates predicates the detector already applies, in the same order.
+// 1. Numerical identity. Every function reproduces, value for value, the NumPy
+//    expression it replaces: same arithmetic order, same tie-breaking, same
+//    selection. NumPy evaluates np.interp with one fused rounding and its
+//    elementwise ufuncs with separate roundings; the kernels match both. Nothing
+//    here defines a threshold or changes a decision.
+//
+// 2. No per-call allocation in steady state. Every scratch buffer lives in a
+//    thread-local arena that grows to the largest frame seen and is then reused,
+//    so a frame costs copies, not malloc/free or page faults. Callers receive
+//    explicit copies because the arena is overwritten by the next call.
+//
+// Deliberately absent: Open3D plane proposals and normal/covariance estimation.
+// Their outputs cannot be reproduced bit for bit (adaptive stopping depends on
+// scheduling; the fast normal path is not the covariance eigenvector), and they
+// gate real decisions.
 #define PY_SSIZE_T_CLEAN
 #include "native.h"
 
 #include <algorithm>
-#include <array>
-#include <utility>
 #include <cmath>
-#include <cstdint>
 #include <cstring>
 #include <stdexcept>
 #include <thread>
 #include <unordered_map>
-#include <vector>
+#include <utility>
+
+Arena& arena() {
+    static thread_local Arena instance;
+    return instance;
+}
+
+void build_cells(const double* points, Py_ssize_t n, double size) {
+    Arena& scratch = arena();
+    KeyTable& table = scratch.table;
+    table.reset(static_cast<size_t>(n));
+    for (Py_ssize_t i = 0; i < n; ++i) {
+        Key key{};
+        if (!voxel_key_of(points + 3 * i, size, key))
+            throw std::invalid_argument("nonfinite or out-of-range grid coordinate");
+        bool inserted = false;
+        const size_t slot = table.slot_of(key, inserted);
+        ++table.values[slot];
+    }
+    const size_t capacity = table.keys.size();
+    scratch.cell_start.assign(capacity + 1, 0);
+    size_t placed = 0;
+    for (size_t slot = 0; slot < capacity; ++slot) {
+        scratch.cell_start[slot] = static_cast<int64_t>(placed);
+        if (table.used[slot]) placed += static_cast<size_t>(table.values[slot]);
+    }
+    scratch.cell_start[capacity] = static_cast<int64_t>(placed);
+    scratch.cell_items.resize(placed);
+    scratch.cell_cursor.assign(capacity, 0);
+    for (Py_ssize_t i = 0; i < n; ++i) {
+        Key key{};
+        voxel_key_of(points + 3 * i, size, key);
+        bool inserted = false;
+        const size_t slot = table.slot_of(key, inserted);
+        scratch.cell_items[static_cast<size_t>(scratch.cell_start[slot]) + static_cast<size_t>(scratch.cell_cursor[slot]++)] = i;
+    }
+}
 
 namespace {
-
-using Key = std::array<int64_t, 3>;
-
-struct KeyHash {
-    size_t operator()(const Key& k) const noexcept {
-        size_t h = 0;
-        for (auto v : k) h ^= std::hash<int64_t>{}(v) + 0x9e3779b9U + (h << 6) + (h >> 2);
-        return h;
-    }
-};
 
 struct ReleaseGIL {
     PyThreadState* state = PyEval_SaveThread();
     ~ReleaseGIL() { PyEval_RestoreThread(state); }
 };
 
+// Reusable scratch. Capacity is retained across frames; resizing within
+// capacity never reallocates, which is the point of the arena.
+struct Workspace {
+    std::vector<double> d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10;
+    std::vector<int64_t> i0, i1, i2, i3, i4;
+    std::vector<uint8_t> b0, b1, b2, b3, b4;
+    std::vector<std::pair<Key, int64_t>> ordered;
+    std::vector<std::vector<int64_t>> sinks;
+};
+
+thread_local Workspace workspace;
+
 class Buffer {
 public:
-    Buffer(PyObject* object, const char* what) : what_(what) {
-        ok_ = PyObject_GetBuffer(object, &view_, PyBUF_FORMAT | PyBUF_C_CONTIGUOUS) == 0;
+    Buffer(PyObject* object, int flags = PyBUF_FORMAT | PyBUF_C_CONTIGUOUS) {
+        ok_ = PyObject_GetBuffer(object, &view_, flags) == 0;
     }
     ~Buffer() { if (ok_) PyBuffer_Release(&view_); }
     Buffer(const Buffer&) = delete;
     Buffer& operator=(const Buffer&) = delete;
+    bool ok() const { return ok_; }
     bool points() const {
         return ok_ && view_.ndim == 2 && view_.shape[1] == 3 && view_.itemsize == sizeof(double)
             && view_.format && std::strcmp(view_.format, "d") == 0;
@@ -67,16 +112,20 @@ public:
         return ok_ && view_.ndim == 1 && view_.itemsize == sizeof(bool)
             && view_.format && std::strcmp(view_.format, "?") == 0;
     }
+    bool writable_flags() const {
+        return ok_ && view_.ndim == 1 && view_.itemsize == sizeof(bool) && (view_.readonly == 0)
+            && view_.format && std::strcmp(view_.format, "?") == 0;
+    }
     const double* doubles() const { return static_cast<const double*>(view_.buf); }
     const int64_t* int64s() const { return static_cast<const int64_t*>(view_.buf); }
     const bool* bools() const { return static_cast<const bool*>(view_.buf); }
+    bool* writable_bools() const { return static_cast<bool*>(view_.buf); }
     Py_ssize_t rows() const { return view_.ndim >= 1 ? view_.shape[0] : 0; }
     Py_ssize_t size() const { return view_.len / static_cast<Py_ssize_t>(view_.itemsize); }
 
 private:
     Py_buffer view_{};
     bool ok_ = false;
-    const char* what_;
 };
 
 PyObject* bytes_of(const void* data, size_t bytes) {
@@ -88,6 +137,131 @@ unsigned worker_count(Py_ssize_t n) {
     const unsigned hardware = std::thread::hardware_concurrency();
     return std::max(1u, std::min(hardware ? hardware : 1u, 8u));
 }
+
+bool accept(PyObject* payload, std::vector<PyObject*>& owned, const char* name) {
+    if (payload == nullptr) {
+        PyErr_Format(PyExc_RuntimeError, "failed to build %s", name);
+        return false;
+    }
+    owned.push_back(payload);
+    return true;
+}
+
+// np.interp semantics: clamped outside the anchor range, NaN in, NaN out, and
+// one fused rounding for the product-sum exactly as NumPy's compiled version.
+void interp_into(const double* x, Py_ssize_t n, const double* xp, const double* fp,
+                 Py_ssize_t m, double* out) {
+    if (m == 1) {
+        for (Py_ssize_t i = 0; i < n; ++i) out[i] = fp[0];
+        return;
+    }
+    for (Py_ssize_t i = 0; i < n; ++i) {
+        const double value = x[i];
+        if (std::isnan(value)) { out[i] = value; continue; }
+        if (value <= xp[0]) { out[i] = fp[0]; continue; }
+        if (value >= xp[m - 1]) { out[i] = fp[m - 1]; continue; }
+        Py_ssize_t low = 0, high = m - 1;
+        while (high - low > 1) {
+            const Py_ssize_t middle = (low + high) / 2;
+            if (xp[middle] <= value) low = middle; else high = middle;
+        }
+        const double slope = (fp[low + 1] - fp[low]) / (xp[low + 1] - xp[low]);
+        out[i] = std::fma(slope, value - xp[low], fp[low]);
+    }
+}
+
+void nearest_anchor_into(const double* x, Py_ssize_t n, const double* anchor_x, Py_ssize_t m, double* out) {
+    for (Py_ssize_t i = 0; i < n; ++i) {
+        const double value = x[i];
+        Py_ssize_t position = m;
+        if (!std::isnan(value)) {
+            Py_ssize_t low = 0, high = m;
+            while (low < high) {
+                const Py_ssize_t middle = (low + high) / 2;
+                if (anchor_x[middle] < value) low = middle + 1; else high = middle;
+            }
+            position = low;
+        }
+        if (position < 1) position = 1;
+        if (position > m - 1) position = m - 1;
+        const double left = std::abs(value - anchor_x[position - 1]);
+        const double right = std::abs(anchor_x[position] - value);
+        out[i] = left < right ? left : right;
+    }
+}
+
+Py_ssize_t segment_index(const double* edges, Py_ssize_t m, double value) {
+    Py_ssize_t low = 0, high = m;
+    while (low < high) {
+        const Py_ssize_t middle = (low + high) / 2;
+        if (edges[middle] <= value) low = middle + 1; else high = middle;
+    }
+    Py_ssize_t index = low - 1;
+    if (index < 0) index = 0;
+    if (index > m - 1) index = m - 1;
+    return index;
+}
+
+// Indices inside one plane's distance band within an already windowed slice.
+void band_candidates(const double* points, const int64_t* ids, Py_ssize_t count, const double* plane,
+                     double distance, std::vector<int64_t>& out) {
+    for (Py_ssize_t row = 0; row < count; ++row) {
+        const int64_t point = ids[row];
+        const double signed_distance = points[3 * point] * plane[0] + points[3 * point + 1] * plane[1]
+            + points[3 * point + 2] * plane[2] + plane[3];
+        if (std::abs(signed_distance) <= distance) out.push_back(point);
+    }
+}
+
+void protrusion_samples(const double* sample, const double* normals, const bool* reliable, Py_ssize_t n,
+                        const double* plane, double depth, double radius, double alignment,
+                        std::vector<int64_t>& out) {
+    for (Py_ssize_t i = 0; i < n; ++i) {
+        if (!reliable[i]) continue;
+        const double raw = sample[3 * i] * plane[0] + sample[3 * i + 1] * plane[1]
+            + sample[3 * i + 2] * plane[2] + plane[3];
+        const double distance = std::abs(raw);
+        if (!(distance >= depth && distance <= radius)) continue;
+        const double cosine = std::abs(normals[3 * i] * plane[0] + normals[3 * i + 1] * plane[1]
+                                       + normals[3 * i + 2] * plane[2]);
+        if (cosine < alignment) out.push_back(static_cast<int64_t>(i));
+    }
+}
+
+// Whether each query point has a target within the protection radius. Same
+// Euclidean form as the tree query it replaces.
+void clear_of_targets(const double* query, const int64_t* ids, Py_ssize_t count, const double* targets,
+                      Py_ssize_t target_count, double radius, std::vector<int64_t>& out) {
+    for (Py_ssize_t row = 0; row < count; ++row) {
+        const int64_t point = ids[row];
+        const double x = query[3 * point], y = query[3 * point + 1], z = query[3 * point + 2];
+        bool hit = false;
+        for (Py_ssize_t j = 0; j < target_count; ++j) {
+            const double dx = x - targets[3 * j];
+            const double dy = y - targets[3 * j + 1];
+            const double dz = z - targets[3 * j + 2];
+            if (std::sqrt(dx * dx + dy * dy + dz * dz) <= radius) { hit = true; break; }
+        }
+        if (!hit) out.push_back(point);
+    }
+}
+
+void strips_of(const double* points, const int64_t* ids, Py_ssize_t count, const double* strips,
+               Py_ssize_t strip_count, double margin, long transverse, std::vector<int64_t>& out) {
+    for (Py_ssize_t row = 0; row < count; ++row) {
+        const int64_t point = ids[row];
+        const double x = points[3 * point];
+        const double lateral = points[3 * point + transverse];
+        for (Py_ssize_t s = 0; s < strip_count; ++s) {
+            const double* box = strips + 4 * s;
+            if (x >= box[0] - margin && x <= box[1] + margin
+                    && lateral >= box[2] - margin && lateral <= box[3] + margin) {
+                out.push_back(point);
+                break;
+            }
+        }
+    }
+}
 }  // namespace
 
 // Kept measurement indices for a radial band: |p| within [min, max].
@@ -95,17 +269,17 @@ PyObject* range_indices(PyObject*, PyObject* args) {
     PyObject* object;
     double minimum, maximum;
     if (!PyArg_ParseTuple(args, "Odd", &object, &minimum, &maximum)) return nullptr;
-    Buffer buffer(object, "points");
-    if (!buffer.points()) {
+    Buffer points(object);
+    if (!points.points()) {
         PyErr_SetString(PyExc_ValueError, "expected contiguous native float64 (N,3)");
         return nullptr;
     }
-    const auto* data = buffer.doubles();
-    const Py_ssize_t n = buffer.rows();
-    std::vector<int64_t> kept;
+    const auto* data = points.doubles();
+    const Py_ssize_t n = points.rows();
+    auto& kept = workspace.i0;
     try {
         ReleaseGIL released;
-        kept.reserve(static_cast<size_t>(n));
+        kept.clear();
         for (Py_ssize_t i = 0; i < n; ++i) {
             const double x = data[3 * i], y = data[3 * i + 1], z = data[3 * i + 2];
             const double radius = std::sqrt(x * x + y * y + z * z);
@@ -114,6 +288,59 @@ PyObject* range_indices(PyObject*, PyObject* args) {
         }
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     return bytes_of(kept.data(), kept.size() * sizeof(int64_t));
+}
+
+// Distinct voxel count per stack of evidence points, one call for all objects.
+// The key derivation is shared with voxel_indices, so the count equals
+// len(voxel_representatives(points, size)) for each stack.
+PyObject* voxel_counts(PyObject*, PyObject* args) {
+    PyObject* sequence;
+    double size;
+    if (!PyArg_ParseTuple(args, "Od", &sequence, &size)) return nullptr;
+    if (!(std::isfinite(size) && size > 0)) {
+        PyErr_SetString(PyExc_ValueError, "voxel size must be finite and positive");
+        return nullptr;
+    }
+    PyObject* iterator = PyObject_GetIter(sequence);
+    if (iterator == nullptr) return nullptr;
+    auto& counts = workspace.i1;
+    try {
+        counts.clear();
+        PyObject* item = nullptr;
+        while ((item = PyIter_Next(iterator)) != nullptr) {
+            Buffer points(item);
+            if (!points.points()) {
+                Py_DECREF(item);
+                Py_DECREF(iterator);
+                PyErr_SetString(PyExc_ValueError, "expected contiguous native float64 (N,3) per entry");
+                return nullptr;
+            }
+            const double* data = points.doubles();
+            const Py_ssize_t n = points.rows();
+            arena().table.reset(static_cast<size_t>(n));
+            Py_ssize_t distinct = 0;
+            for (Py_ssize_t i = 0; i < n; ++i) {
+                Key key{};
+                if (!voxel_key_of(data + 3 * i, size, key))
+                    throw std::invalid_argument("nonfinite or out-of-range voxel coordinate");
+                bool inserted = false;
+                arena().table.slot_of(key, inserted);
+                if (inserted) ++distinct;
+            }
+            counts.push_back(static_cast<int64_t>(distinct));
+            Py_DECREF(item);
+        }
+        Py_DECREF(iterator);
+        if (PyErr_Occurred()) return nullptr;
+    } catch (const std::bad_alloc&) {
+        Py_DECREF(iterator);
+        return PyErr_NoMemory();
+    } catch (const std::exception& error) {
+        Py_DECREF(iterator);
+        PyErr_SetString(PyExc_ValueError, error.what());
+        return nullptr;
+    }
+    return bytes_of(counts.data(), counts.size() * sizeof(int64_t));
 }
 
 // Mutual-radius connectivity graph.
@@ -132,8 +359,8 @@ PyObject* mutual_graph(PyObject*, PyObject* args) {
     PyObject* radius_object;
     double cell;
     if (!PyArg_ParseTuple(args, "OOd", &points_object, &radius_object, &cell)) return nullptr;
-    Buffer points(points_object, "points");
-    Buffer radius(radius_object, "radius");
+    Buffer points(points_object);
+    Buffer radius(radius_object);
     if (!points.points() || !radius.vector() || radius.size() != points.rows()) {
         PyErr_SetString(PyExc_ValueError, "expected (N,3) float64 points and matching radius vector");
         return nullptr;
@@ -145,24 +372,20 @@ PyObject* mutual_graph(PyObject*, PyObject* args) {
     const double* data = points.doubles();
     const double* reach = radius.doubles();
     const Py_ssize_t n = points.rows();
-    std::vector<int64_t> indptr(static_cast<size_t>(n) + 1, 0);
-    std::vector<int64_t> indices;
-    std::vector<int64_t> degree(static_cast<size_t>(n), 0);
+    auto& indptr = workspace.i0;
+    auto& indices = workspace.i1;
+    auto& degree = workspace.i2;
     try {
         ReleaseGIL released;
-        std::unordered_map<Key, std::vector<int64_t>, KeyHash> cells;
-        cells.reserve(static_cast<size_t>(n) * 2);
-        for (Py_ssize_t i = 0; i < n; ++i) {
-            Key key{};
-            for (int axis = 0; axis < 3; ++axis) {
-                const double value = std::floor(data[3 * i + axis] / cell);
-                if (!std::isfinite(value) || value < -0x1p62 || value >= 0x1p62)
-                    throw std::invalid_argument("nonfinite or out-of-range grid coordinate");
-                key[axis] = static_cast<int64_t>(value);
-            }
-            cells[key].push_back(static_cast<int64_t>(i));
-        }
-        const auto enumerate = [&](Py_ssize_t start, Py_ssize_t stop, std::vector<int64_t>& sink) {
+        build_cells(data, n, cell);
+        Arena& scratch = arena();
+        KeyTable& table = scratch.table;
+        // Pair enumeration, threaded over points with arena-backed sinks.
+        auto& sinks = workspace.sinks;
+        const unsigned workers = worker_count(n);
+        sinks.resize(workers);
+        for (auto& sink : sinks) sink.clear();
+        const auto collect = [&](Py_ssize_t start, Py_ssize_t stop, std::vector<int64_t>& sink) {
             for (Py_ssize_t i = start; i < stop; ++i) {
                 const double ri = reach[i];
                 const double xi = data[3 * i], yi = data[3 * i + 1], zi = data[3 * i + 2];
@@ -175,9 +398,12 @@ PyObject* mutual_graph(PyObject*, PyObject* args) {
                 for (int64_t cx = low[0]; cx <= high[0]; ++cx)
                     for (int64_t cy = low[1]; cy <= high[1]; ++cy)
                         for (int64_t cz = low[2]; cz <= high[2]; ++cz) {
-                            const auto found = cells.find(Key{cx, cy, cz});
-                            if (found == cells.end()) continue;
-                            for (int64_t j : found->second) {
+                            const size_t slot = table.find(Key{cx, cy, cz});
+                            if (slot == static_cast<size_t>(-1)) continue;
+                            const int64_t* begin = scratch.cell_items.data() + scratch.cell_start[slot];
+                            const int64_t* end = scratch.cell_items.data() + scratch.cell_start[slot + 1];
+                            for (const int64_t* item = begin; item != end; ++item) {
+                                const int64_t j = *item;
                                 if (j <= i) continue;
                                 const double dx = xi - data[3 * j];
                                 const double dy = yi - data[3 * j + 1];
@@ -192,52 +418,62 @@ PyObject* mutual_graph(PyObject*, PyObject* args) {
                         }
             }
         };
-        std::vector<std::vector<int64_t>> locals(worker_count(n));
-        if (locals.size() == 1) {
-            enumerate(0, n, locals.front());
+        if (workers <= 1) {
+            collect(0, n, sinks.front());
         } else {
             std::vector<std::thread> pool;
-            const Py_ssize_t chunk = (n + static_cast<Py_ssize_t>(locals.size()) - 1) / static_cast<Py_ssize_t>(locals.size());
-            for (size_t worker = 0; worker < locals.size(); ++worker) {
+            const Py_ssize_t chunk = (n + static_cast<Py_ssize_t>(workers) - 1) / static_cast<Py_ssize_t>(workers);
+            for (unsigned worker = 0; worker < workers; ++worker) {
                 const Py_ssize_t start = static_cast<Py_ssize_t>(worker) * chunk;
                 const Py_ssize_t stop = std::min(n, start + chunk);
                 if (start >= stop) break;
-                pool.emplace_back([&enumerate, start, stop, &sink = locals[worker]] { enumerate(start, stop, sink); });
+                pool.emplace_back([&collect, start, stop, &sink = sinks[worker]] { collect(start, stop, sink); });
             }
             for (auto& thread : pool) thread.join();
         }
-        std::vector<int64_t> pairs;
         size_t total = 0;
-        for (const auto& local : locals) total += local.size();
-        pairs.reserve(total);
-        for (const auto& local : locals) pairs.insert(pairs.end(), local.begin(), local.end());
-        for (size_t index = 0; index < pairs.size(); index += 2) {
-            ++degree[static_cast<size_t>(pairs[index])];
-            ++degree[static_cast<size_t>(pairs[index + 1])];
-        }
-        for (Py_ssize_t i = 0; i < n; ++i) indptr[i + 1] = indptr[i] + degree[static_cast<size_t>(i)];
-        indices.resize(static_cast<size_t>(indptr[n]));
-        std::vector<int64_t> cursor(indptr.begin(), indptr.end() - 1);
-        for (size_t index = 0; index < pairs.size(); index += 2) {
-            const int64_t first = pairs[index], second = pairs[index + 1];
-            indices[static_cast<size_t>(cursor[static_cast<size_t>(first)]++)] = second;
-            indices[static_cast<size_t>(cursor[static_cast<size_t>(second)]++)] = first;
-        }
+        for (const auto& sink : sinks) total += sink.size();
+        indptr.assign(static_cast<size_t>(n) + 1, 0);
+        degree.assign(static_cast<size_t>(n), 0);
+        for (const auto& sink : sinks)
+            for (size_t index = 0; index < sink.size(); index += 2) {
+                ++degree[static_cast<size_t>(sink[index])];
+                ++degree[static_cast<size_t>(sink[index + 1])];
+            }
+        for (Py_ssize_t i = 0; i < n; ++i) indptr[static_cast<size_t>(i) + 1] = indptr[static_cast<size_t>(i)] + degree[static_cast<size_t>(i)];
+        indices.assign(static_cast<size_t>(indptr[static_cast<size_t>(n)]), 0);
+        auto& cursor = workspace.i3;
+        cursor.assign(indptr.begin(), indptr.end() - 1);
+        for (const auto& sink : sinks)
+            for (size_t index = 0; index < sink.size(); index += 2) {
+                const int64_t first = sink[index], second = sink[index + 1];
+                indices[static_cast<size_t>(cursor[static_cast<size_t>(first)]++)] = second;
+                indices[static_cast<size_t>(cursor[static_cast<size_t>(second)]++)] = first;
+            }
         for (Py_ssize_t i = 0; i < n; ++i) {
-            auto begin = indices.begin() + indptr[i];
+            auto begin = indices.begin() + indptr[static_cast<size_t>(i)];
             std::sort(begin, begin + degree[static_cast<size_t>(i)]);
         }
+        (void)total;
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     catch (const std::exception& error) {
         PyErr_SetString(PyExc_ValueError, error.what());
         return nullptr;
     }
-    std::vector<uint8_t> weight(indices.size(), 1);
+    std::vector<uint8_t>& weight = workspace.b0;
+    weight.assign(indices.size(), 1);
     PyObject* payload = PyTuple_New(4);
-    PyTuple_SET_ITEM(payload, 0, bytes_of(indptr.data(), indptr.size() * sizeof(int64_t)));
-    PyTuple_SET_ITEM(payload, 1, bytes_of(indices.data(), indices.size() * sizeof(int64_t)));
-    PyTuple_SET_ITEM(payload, 2, bytes_of(weight.data(), weight.size()));
-    PyTuple_SET_ITEM(payload, 3, bytes_of(degree.data(), degree.size() * sizeof(int64_t)));
+    if (payload == nullptr) return nullptr;
+    std::vector<PyObject*> owned;
+    if (!accept(bytes_of(indptr.data(), indptr.size() * sizeof(int64_t)), owned, "indptr")
+            || !accept(bytes_of(indices.data(), indices.size() * sizeof(int64_t)), owned, "indices")
+            || !accept(bytes_of(weight.data(), weight.size()), owned, "weights")
+            || !accept(bytes_of(degree.data(), degree.size() * sizeof(int64_t)), owned, "degree")) {
+        Py_DECREF(payload);
+        for (PyObject* object : owned) Py_DECREF(object);
+        return nullptr;
+    }
+    for (size_t index = 0; index < owned.size(); ++index) PyTuple_SET_ITEM(payload, index, owned[index]);
     return payload;
 }
 
@@ -247,25 +483,25 @@ PyObject* patch_candidates(PyObject*, PyObject* args) {
     PyObject* plane_object;
     double low, high, distance;
     if (!PyArg_ParseTuple(args, "OOddd", &object, &plane_object, &low, &high, &distance)) return nullptr;
-    Buffer points(object, "leveled points");
-    Buffer plane(plane_object, "plane");
+    Buffer points(object);
+    Buffer plane(plane_object);
     if (!points.points() || !plane.vector() || plane.size() != 4) {
         PyErr_SetString(PyExc_ValueError, "expected (N,3) points and a 4 element plane");
         return nullptr;
     }
     const double* data = points.doubles();
-    const double* model = plane.doubles();
     const Py_ssize_t n = points.rows();
-    std::vector<int64_t> ids;
+    auto& window = workspace.i0;
+    auto& ids = workspace.i1;
     try {
         ReleaseGIL released;
+        window.clear();
         for (Py_ssize_t i = 0; i < n; ++i) {
             const double x = data[3 * i];
-            if (!(x >= low && x <= high)) continue;
-            const double signed_distance = x * model[0] + data[3 * i + 1] * model[1]
-                + data[3 * i + 2] * model[2] + model[3];
-            if (std::abs(signed_distance) <= distance) ids.push_back(static_cast<int64_t>(i));
+            if (x >= low && x <= high) window.push_back(static_cast<int64_t>(i));
         }
+        ids.clear();
+        band_candidates(data, window.data(), static_cast<Py_ssize_t>(window.size()), plane.doubles(), distance, ids);
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     return bytes_of(ids.data(), ids.size() * sizeof(int64_t));
 }
@@ -279,33 +515,18 @@ PyObject* strip_inside(PyObject*, PyObject* args) {
     long transverse;
     if (!PyArg_ParseTuple(args, "OOOdl", &object, &ids_object, &strips_object, &margin, &transverse))
         return nullptr;
-    Buffer points(object, "leveled points");
-    Buffer ids(ids_object, "ids");
-    Buffer strips(strips_object, "strips");
+    Buffer points(object);
+    Buffer ids(ids_object);
+    Buffer strips(strips_object);
     if (!points.points() || !ids.integers() || !strips.matrix(4)) {
         PyErr_SetString(PyExc_ValueError, "expected points (N,3), int64 ids and (M,4) strips");
         return nullptr;
     }
-    const double* data = points.doubles();
-    const int64_t* index = ids.int64s();
-    const double* strip = strips.doubles();
-    const Py_ssize_t rows = ids.size(), count = strips.rows();
-    std::vector<int64_t> inside;
+    auto& inside = workspace.i2;
     try {
-        ReleaseGIL released;
-        for (Py_ssize_t row = 0; row < rows; ++row) {
-            const int64_t point = index[row];
-            const double x = data[3 * point];
-            const double lateral = data[3 * point + transverse];
-            for (Py_ssize_t s = 0; s < count; ++s) {
-                const double* box = strip + 4 * s;
-                if (x >= box[0] - margin && x <= box[1] + margin
-                        && lateral >= box[2] - margin && lateral <= box[3] + margin) {
-                    inside.push_back(point);
-                    break;
-                }
-            }
-        }
+        inside.clear();
+        strips_of(points.doubles(), ids.int64s(), ids.size(), strips.doubles(), strips.rows(), margin,
+                  transverse, inside);
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     return bytes_of(inside.data(), inside.size() * sizeof(int64_t));
 }
@@ -319,10 +540,10 @@ PyObject* protrusion_ids(PyObject*, PyObject* args) {
     double depth, radius, alignment;
     if (!PyArg_ParseTuple(args, "OOOOddd", &sample_object, &normals_object, &reliable_object,
                           &plane_object, &depth, &radius, &alignment)) return nullptr;
-    Buffer sample(sample_object, "sample");
-    Buffer normals(normals_object, "normals");
-    Buffer reliable(reliable_object, "reliable");
-    Buffer plane(plane_object, "plane");
+    Buffer sample(sample_object);
+    Buffer normals(normals_object);
+    Buffer reliable(reliable_object);
+    Buffer plane(plane_object);
     if (!sample.points() || !normals.points() || !reliable.flags() || !plane.vector() || plane.size() != 4) {
         PyErr_SetString(PyExc_ValueError, "expected sample/normals (N,3), bool reliability and a 4 element plane");
         return nullptr;
@@ -331,24 +552,11 @@ PyObject* protrusion_ids(PyObject*, PyObject* args) {
         PyErr_SetString(PyExc_ValueError, "sample, normals and reliability must agree in length");
         return nullptr;
     }
-    const double* points = sample.doubles();
-    const double* directions = normals.doubles();
-    const bool* usable = reliable.bools();
-    const double* model = plane.doubles();
-    const Py_ssize_t n = sample.rows();
-    std::vector<int64_t> ids;
+    auto& ids = workspace.i3;
     try {
-        ReleaseGIL released;
-        for (Py_ssize_t i = 0; i < n; ++i) {
-            if (!usable[i]) continue;
-            const double raw = points[3 * i] * model[0] + points[3 * i + 1] * model[1]
-                + points[3 * i + 2] * model[2] + model[3];
-            const double distance = std::abs(raw);
-            if (!(distance >= depth && distance <= radius)) continue;
-            const double cosine = std::abs(directions[3 * i] * model[0] + directions[3 * i + 1] * model[1]
-                                           + directions[3 * i + 2] * model[2]);
-            if (cosine < alignment) ids.push_back(static_cast<int64_t>(i));
-        }
+        ids.clear();
+        protrusion_samples(sample.doubles(), normals.doubles(), reliable.bools(), sample.rows(),
+                           plane.doubles(), depth, radius, alignment, ids);
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     return bytes_of(ids.data(), ids.size() * sizeof(int64_t));
 }
@@ -359,107 +567,98 @@ PyObject* within_radius(PyObject*, PyObject* args) {
     PyObject* target_object;
     double radius;
     if (!PyArg_ParseTuple(args, "OOd", &query_object, &target_object, &radius)) return nullptr;
-    Buffer query(query_object, "query");
-    Buffer target(target_object, "targets");
+    Buffer query(query_object);
+    Buffer target(target_object);
     if (!query.points() || !target.points()) {
         PyErr_SetString(PyExc_ValueError, "expected (N,3) float64 query and target points");
         return nullptr;
     }
-    const double* q = query.doubles();
-    const double* t = target.doubles();
-    const Py_ssize_t queries = query.rows(), targets = target.rows();
-    std::vector<uint8_t> hit(static_cast<size_t>(queries), 0);
+    const Py_ssize_t queries = query.rows();
+    auto& ids = workspace.i4;
+    auto& hit = workspace.b1;
     try {
-        ReleaseGIL released;
+        ids.clear();
+        for (Py_ssize_t i = 0; i < queries; ++i) ids.push_back(static_cast<int64_t>(i));
+        hit.assign(static_cast<size_t>(queries), 0);
+        const double* q = query.doubles();
+        const double* t = target.doubles();
+        const Py_ssize_t targets = target.rows();
         for (Py_ssize_t i = 0; i < queries; ++i) {
-            const double xi = q[3 * i], yi = q[3 * i + 1], zi = q[3 * i + 2];
+            const double x = q[3 * i], y = q[3 * i + 1], z = q[3 * i + 2];
             for (Py_ssize_t j = 0; j < targets; ++j) {
-                const double dx = xi - t[3 * j];
-                const double dy = yi - t[3 * j + 1];
-                const double dz = zi - t[3 * j + 2];
-                // Same Euclidean form the tree query used: sqrt of the squared sum.
-                if (std::sqrt(dx * dx + dy * dy + dz * dz) <= radius) {
-                    hit[static_cast<size_t>(i)] = 1;
-                    break;
-                }
+                const double dx = x - t[3 * j];
+                const double dy = y - t[3 * j + 1];
+                const double dz = z - t[3 * j + 2];
+                if (std::sqrt(dx * dx + dy * dy + dz * dz) <= radius) { hit[static_cast<size_t>(i)] = 1; break; }
             }
         }
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     return bytes_of(hit.data(), hit.size());
 }
 
-
-// --- geometry classification -------------------------------------------------
-//
-// Mirrors TrackGeometry.ground/path/classify exactly: same interpolation form,
-// same comparison order, same clipping. The reference implementation is the
-// NumPy path in tunnel_guard/geometry.py and the two are compared array for
-// array by scripts/check_kernels.py.
-
-namespace {
-
-// np.interp semantics: linear inside the anchor range, clamped outside, NaN in,
-// NaN out. Slope uses the same expression NumPy evaluates.
-void interp_into(const double* x, Py_ssize_t n, const double* xp, const double* fp,
-                 Py_ssize_t m, double* out) {
-    if (m == 0) return;
-    if (m == 1) {
-        for (Py_ssize_t i = 0; i < n; ++i) out[i] = fp[0];
-        return;
+// Track-bed reference: interpolated shift, nearest-anchor extrapolation penalty
+// and the fitted plane, exactly as TrackGeometry.ground evaluates them.
+PyObject* ground_values(PyObject*, PyObject* args) {
+    PyObject *points_object, *plane_object, *anchor_object;
+    double maximum;
+    if (!PyArg_ParseTuple(args, "OOOd", &points_object, &plane_object, &anchor_object, &maximum)) return nullptr;
+    Buffer points(points_object);
+    Buffer plane(plane_object);
+    Buffer anchor(anchor_object);
+    if (!points.points() || !plane.vector() || plane.size() != 3 || !anchor.matrix(3) || anchor.rows() < 1) {
+        PyErr_SetString(PyExc_ValueError, "expected points (N,3), plane (3) and ground anchors (G,3)");
+        return nullptr;
     }
-    for (Py_ssize_t i = 0; i < n; ++i) {
-        const double value = x[i];
-        if (std::isnan(value)) { out[i] = value; continue; }
-        if (value <= xp[0]) { out[i] = fp[0]; continue; }
-        if (value >= xp[m - 1]) { out[i] = fp[m - 1]; continue; }
-        Py_ssize_t low = 0, high = m - 1;
-        while (high - low > 1) {
-            const Py_ssize_t middle = (low + high) / 2;
-            if (xp[middle] <= value) low = middle; else high = middle;
+    const Py_ssize_t n = points.rows(), g = anchor.rows();
+    const double* data = points.doubles();
+    const double* model = plane.doubles();
+    const double* anchors = anchor.doubles();
+    auto& x = workspace.d0;
+    auto& z = workspace.d1;
+    auto& uncertainty = workspace.d2;
+    auto& anchor_x = workspace.d3;
+    auto& anchor_shift = workspace.d4;
+    auto& anchor_spread = workspace.d5;
+    try {
+        ReleaseGIL released;
+        x.resize(static_cast<size_t>(n));
+        z.resize(static_cast<size_t>(n));
+        uncertainty.resize(static_cast<size_t>(n));
+        anchor_x.resize(static_cast<size_t>(g));
+        anchor_shift.resize(static_cast<size_t>(g));
+        anchor_spread.resize(static_cast<size_t>(g));
+        for (Py_ssize_t i = 0; i < n; ++i) x[static_cast<size_t>(i)] = data[3 * i];
+        for (Py_ssize_t i = 0; i < g; ++i) {
+            anchor_x[static_cast<size_t>(i)] = anchors[3 * i];
+            anchor_shift[static_cast<size_t>(i)] = anchors[3 * i + 1];
+            anchor_spread[static_cast<size_t>(i)] = anchors[3 * i + 2];
         }
-        const double slope = (fp[low + 1] - fp[low]) / (xp[low + 1] - xp[low]);
-        // NumPy's compiled interp evaluates this product-sum with one rounding,
-        // unlike its elementwise ufuncs; std::fma reproduces that exactly.
-        out[i] = std::fma(slope, value - xp[low], fp[low]);
-    }
-}
-
-// Nearest |x - anchor| without materialising the dense difference.
-void nearest_anchor_into(const double* x, Py_ssize_t n, const double* anchor_x, Py_ssize_t m, double* out) {
-    for (Py_ssize_t i = 0; i < n; ++i) {
-        const double value = x[i];
-        Py_ssize_t position = 0;
-        if (!std::isnan(value)) {
-            Py_ssize_t low = 0, high = m;
-            while (low < high) {
-                const Py_ssize_t middle = (low + high) / 2;
-                if (anchor_x[middle] < value) low = middle + 1; else high = middle;
-            }
-            position = low;
-        } else {
-            position = m;
+        auto& shift = workspace.d6;
+        auto& reach = workspace.d7;
+        shift.resize(static_cast<size_t>(n));
+        reach.resize(static_cast<size_t>(n));
+        interp_into(x.data(), n, anchor_x.data(), anchor_shift.data(), g, shift.data());
+        interp_into(x.data(), n, anchor_x.data(), anchor_spread.data(), g, uncertainty.data());
+        nearest_anchor_into(x.data(), n, anchor_x.data(), g, reach.data());
+        for (Py_ssize_t i = 0; i < n; ++i) {
+            const size_t index = static_cast<size_t>(i);
+            uncertainty[index] = uncertainty[index] + reach[index] * 0.008;
+            if (reach[index] > maximum) uncertainty[index] = INFINITY;
+            z[index] = data[3 * i] * model[0] + data[3 * i + 1] * model[1] + model[2] + shift[index];
         }
-        if (position < 1) position = 1;
-        if (position > m - 1) position = m - 1;
-        const double left = std::abs(value - anchor_x[position - 1]);
-        const double right = std::abs(anchor_x[position] - value);
-        out[i] = left < right ? left : right;
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    PyObject* payload = PyTuple_New(2);
+    if (payload == nullptr) return nullptr;
+    std::vector<PyObject*> owned;
+    if (!accept(bytes_of(z.data(), z.size() * sizeof(double)), owned, "ground height")
+            || !accept(bytes_of(uncertainty.data(), uncertainty.size() * sizeof(double)), owned, "ground uncertainty")) {
+        Py_DECREF(payload);
+        for (PyObject* object : owned) Py_DECREF(object);
+        return nullptr;
     }
+    for (size_t index = 0; index < owned.size(); ++index) PyTuple_SET_ITEM(payload, index, owned[index]);
+    return payload;
 }
-
-// np.searchsorted(side="right") - 1, clipped into the segment table.
-Py_ssize_t segment_index(const double* edges, Py_ssize_t m, double value) {
-    Py_ssize_t low = 0, high = m;
-    while (low < high) {
-        const Py_ssize_t middle = (low + high) / 2;
-        if (edges[middle] <= value) low = middle + 1; else high = middle;
-    }
-    Py_ssize_t index = low - 1;
-    if (index < 0) index = 0;
-    if (index > m - 1) index = m - 1;
-    return index;
-}
-}  // namespace
 
 // Returns core, context, height, observed, nominal_overlap, boundary.
 PyObject* classify_geometry(PyObject*, PyObject* args) {
@@ -473,11 +672,11 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
                           &rail_half_width, &rail_vertical_margin, &min_running_height,
                           &cluster_context_margin, &segmentation_half_width, &envelope_margin,
                           &rail_max_heading)) return nullptr;
-    Buffer points(points_object, "points");
-    Buffer plane(plane_object, "plane");
-    Buffer ground(ground_object, "ground anchors");
-    Buffer rail(rail_object, "rail anchors");
-    Buffer envelope(envelope_object, "envelope");
+    Buffer points(points_object);
+    Buffer plane(plane_object);
+    Buffer ground(ground_object);
+    Buffer rail(rail_object);
+    Buffer envelope(envelope_object);
     if (!points.points() || !plane.vector() || plane.size() != 3 || !ground.matrix(3)
             || !rail.matrix(4) || !envelope.matrix(4)) {
         PyErr_SetString(PyExc_ValueError,
@@ -492,83 +691,93 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
         PyErr_SetString(PyExc_ValueError, "classification requires ground anchors, two rail anchors and an envelope");
         return nullptr;
     }
-    std::vector<double> height(static_cast<size_t>(n)), running(static_cast<size_t>(n)),
-        lateral(static_cast<size_t>(n)), width(static_cast<size_t>(n)), center(static_cast<size_t>(n)),
-        gauge(static_cast<size_t>(n)), ground_uncertainty(static_cast<size_t>(n)),
-        path_uncertainty(static_cast<size_t>(n)), shift(static_cast<size_t>(n)),
-        rail_uncertainty(static_cast<size_t>(n)), nearest(static_cast<size_t>(n));
-    std::vector<uint8_t> core(static_cast<size_t>(n)), context(static_cast<size_t>(n)),
-        observed(static_cast<size_t>(n)), overlap(static_cast<size_t>(n)), boundary(static_cast<size_t>(n));
-    std::vector<double> xs(static_cast<size_t>(n));
+    auto& height = workspace.d0;
+    auto& running = workspace.d1;
+    auto& lateral = workspace.d2;
+    auto& width = workspace.d3;
+    auto& center = workspace.d4;
+    auto& gauge = workspace.d5;
+    auto& ground_uncertainty = workspace.d6;
+    auto& path_uncertainty = workspace.d7;
+    auto& scratch_x = workspace.d8;
+    auto& scratch_reach = workspace.d9;
+    auto& core = workspace.b0;
+    auto& context = workspace.b1;
+    auto& observed = workspace.b2;
+    auto& overlap = workspace.b3;
+    auto& boundary = workspace.b4;
     try {
         ReleaseGIL released;
-        for (Py_ssize_t i = 0; i < n; ++i) xs[static_cast<size_t>(i)] = data[3 * i];
-        // ground(): shift, uncertainty, z
+        const auto size = static_cast<size_t>(n);
+        for (auto* vector : {&height, &running, &lateral, &width, &center, &gauge,
+                             &ground_uncertainty, &path_uncertainty, &scratch_x, &scratch_reach})
+            vector->resize(size);
+        for (auto* vector : {&core, &context, &observed, &overlap, &boundary}) vector->resize(size);
+        for (Py_ssize_t i = 0; i < n; ++i) scratch_x[static_cast<size_t>(i)] = data[3 * i];
         const double* ground_x = ground.doubles();
         const double* ground_shift = ground.doubles() + 1;
         const double* ground_spread = ground.doubles() + 2;
-        std::vector<double> anchor_x(static_cast<size_t>(g)), anchor_shift(static_cast<size_t>(g)),
-            anchor_spread(static_cast<size_t>(g));
+        std::vector<double> anchors_x(static_cast<size_t>(g));
+        std::vector<double> anchors_shift(static_cast<size_t>(g));
+        std::vector<double> anchors_spread(static_cast<size_t>(g));
         for (Py_ssize_t i = 0; i < g; ++i) {
-            anchor_x[static_cast<size_t>(i)] = ground_x[3 * i];
-            anchor_shift[static_cast<size_t>(i)] = ground_shift[3 * i];
-            anchor_spread[static_cast<size_t>(i)] = ground_spread[3 * i];
+            anchors_x[static_cast<size_t>(i)] = ground_x[3 * i];
+            anchors_shift[static_cast<size_t>(i)] = ground_shift[3 * i];
+            anchors_spread[static_cast<size_t>(i)] = ground_spread[3 * i];
         }
-        interp_into(xs.data(), n, anchor_x.data(), anchor_shift.data(), g, shift.data());
-        interp_into(xs.data(), n, anchor_x.data(), anchor_spread.data(), g, ground_uncertainty.data());
-        nearest_anchor_into(xs.data(), n, anchor_x.data(), g, nearest.data());
+        interp_into(scratch_x.data(), n, anchors_x.data(), anchors_shift.data(), g, center.data());
+        interp_into(scratch_x.data(), n, anchors_x.data(), anchors_spread.data(), g, ground_uncertainty.data());
+        nearest_anchor_into(scratch_x.data(), n, anchors_x.data(), g, scratch_reach.data());
         for (Py_ssize_t i = 0; i < n; ++i) {
             const size_t index = static_cast<size_t>(i);
-            ground_uncertainty[index] += nearest[index] * 0.008;
-            if (nearest[index] > ground_max_extrapolation) ground_uncertainty[index] = INFINITY;
-            const double z = data[3 * i] * model[0] + data[3 * i + 1] * model[1] + model[2] + shift[index];
+            ground_uncertainty[index] = ground_uncertainty[index] + scratch_reach[index] * 0.008;
+            if (scratch_reach[index] > ground_max_extrapolation) ground_uncertainty[index] = INFINITY;
+            const double z = data[3 * i] * model[0] + data[3 * i + 1] * model[1] + model[2] + center[index];
             height[index] = data[3 * i + 2] - z;
         }
-        // path(): center, gauge, uncertainty
         const double* rail_x = rail.doubles();
         const double* rail_center = rail.doubles() + 1;
         const double* rail_gauge = rail.doubles() + 2;
-        std::vector<double> anchors_x(static_cast<size_t>(r)), anchors_center(static_cast<size_t>(r)),
-            anchors_gauge(static_cast<size_t>(r));
+        std::vector<double> rail_anchor_x(static_cast<size_t>(r));
+        std::vector<double> rail_anchor_center(static_cast<size_t>(r));
+        std::vector<double> rail_anchor_gauge(static_cast<size_t>(r));
         for (Py_ssize_t i = 0; i < r; ++i) {
-            anchors_x[static_cast<size_t>(i)] = rail_x[4 * i];
-            anchors_center[static_cast<size_t>(i)] = rail_center[4 * i];
-            anchors_gauge[static_cast<size_t>(i)] = rail_gauge[4 * i];
+            rail_anchor_x[static_cast<size_t>(i)] = rail_x[4 * i];
+            rail_anchor_center[static_cast<size_t>(i)] = rail_center[4 * i];
+            rail_anchor_gauge[static_cast<size_t>(i)] = rail_gauge[4 * i];
         }
-        interp_into(xs.data(), n, anchors_x.data(), anchors_center.data(), r, center.data());
-        interp_into(xs.data(), n, anchors_x.data(), anchors_gauge.data(), r, gauge.data());
-        nearest_anchor_into(xs.data(), n, anchors_x.data(), r, rail_uncertainty.data());
+        interp_into(scratch_x.data(), n, rail_anchor_x.data(), rail_anchor_center.data(), r, lateral.data());
+        interp_into(scratch_x.data(), n, rail_anchor_x.data(), rail_anchor_gauge.data(), r, gauge.data());
+        nearest_anchor_into(scratch_x.data(), n, rail_anchor_x.data(), r, scratch_reach.data());
         {
             const std::array<std::pair<int, int>, 2> edges = {{{0, 1}, {-1, -2}}};
             for (const auto& edge : edges) {
-                const int here = edge.first, other = edge.second;
-                const int index_here = here < 0 ? static_cast<int>(r) + here : here;
-                const int index_other = other < 0 ? static_cast<int>(r) + other : other;
-                double slope = (anchors_center[index_here] - anchors_center[index_other])
-                    / (anchors_x[index_here] - anchors_x[index_other]);
+                const int index_here = edge.first < 0 ? static_cast<int>(r) + edge.first : edge.first;
+                const int index_other = edge.second < 0 ? static_cast<int>(r) + edge.second : edge.second;
+                double slope = (rail_anchor_center[index_here] - rail_anchor_center[index_other])
+                    / (rail_anchor_x[index_here] - rail_anchor_x[index_other]);
                 slope = std::max(-rail_max_heading, std::min(rail_max_heading, slope));
-                const bool below = here == 0;
+                const bool below = edge.first == 0;
                 for (Py_ssize_t i = 0; i < n; ++i) {
-                    const double value = xs[static_cast<size_t>(i)];
-                    if ((below && value < anchors_x[0]) || (!below && value > anchors_x[r - 1])) {
-                        center[static_cast<size_t>(i)] = anchors_center[index_here]
-                            + slope * (value - anchors_x[index_here]);
+                    const double value = scratch_x[static_cast<size_t>(i)];
+                    if ((below && value < rail_anchor_x[0]) || (!below && value > rail_anchor_x[r - 1])) {
+                        lateral[static_cast<size_t>(i)] = rail_anchor_center[index_here]
+                            + slope * (value - rail_anchor_x[index_here]);
                     }
                 }
             }
         }
         for (Py_ssize_t i = 0; i < n; ++i) {
             const size_t index = static_cast<size_t>(i);
-            const double reach = rail_uncertainty[index];
+            const double reach = scratch_reach[index];
             // NumPy forms the square first and scales it afterwards.
             path_uncertainty[index] = 0.06 + 0.008 * reach + 0.0003 * (reach * reach);
             if (reach > path_max_extrapolation) path_uncertainty[index] = INFINITY;
         }
-        // classify()
+        for (Py_ssize_t i = 0; i < n; ++i) center[static_cast<size_t>(i)] = lateral[static_cast<size_t>(i)];
         const double* segments = envelope.doubles();
         const double low_edge = segments[0];
         const double high_edge = segments[4 * (s - 1) + 1];
-        // Segment lower edges are the first column of the contiguous table.
         std::vector<double> segment_edges(static_cast<size_t>(s));
         for (Py_ssize_t i = 0; i < s; ++i) segment_edges[static_cast<size_t>(i)] = segments[4 * i];
         const double slope_plane = model[1];
@@ -612,60 +821,173 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
         }
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     PyObject* payload = PyTuple_New(6);
-    PyTuple_SET_ITEM(payload, 0, bytes_of(core.data(), core.size()));
-    PyTuple_SET_ITEM(payload, 1, bytes_of(context.data(), context.size()));
-    PyTuple_SET_ITEM(payload, 2, bytes_of(height.data(), height.size() * sizeof(double)));
-    PyTuple_SET_ITEM(payload, 3, bytes_of(observed.data(), observed.size()));
-    PyTuple_SET_ITEM(payload, 4, bytes_of(overlap.data(), overlap.size()));
-    PyTuple_SET_ITEM(payload, 5, bytes_of(boundary.data(), boundary.size()));
+    if (payload == nullptr) return nullptr;
+    std::vector<PyObject*> owned;
+    if (!accept(bytes_of(core.data(), core.size()), owned, "core")
+            || !accept(bytes_of(context.data(), context.size()), owned, "context")
+            || !accept(bytes_of(height.data(), height.size() * sizeof(double)), owned, "height")
+            || !accept(bytes_of(observed.data(), observed.size()), owned, "observed")
+            || !accept(bytes_of(overlap.data(), overlap.size()), owned, "nominal_overlap")
+            || !accept(bytes_of(boundary.data(), boundary.size()), owned, "boundary")) {
+        Py_DECREF(payload);
+        for (PyObject* object : owned) Py_DECREF(object);
+        return nullptr;
+    }
+    for (size_t index = 0; index < owned.size(); ++index) PyTuple_SET_ITEM(payload, index, owned[index]);
     return payload;
 }
 
-
-// Track-bed reference: interpolated shift, nearest-anchor extrapolation penalty
-// and the fitted plane, exactly as TrackGeometry.ground evaluates them.
-PyObject* ground_values(PyObject*, PyObject* args) {
-    PyObject *points_object, *plane_object, *anchor_object;
-    double maximum;
-    if (!PyArg_ParseTuple(args, "OOOd", &points_object, &plane_object, &anchor_object, &maximum)) return nullptr;
-    Buffer points(points_object, "points");
-    Buffer plane(plane_object, "plane");
-    Buffer anchor(anchor_object, "ground anchors");
-    if (!points.points() || !plane.vector() || plane.size() != 3 || !anchor.matrix(3) || anchor.rows() < 1) {
-        PyErr_SetString(PyExc_ValueError, "expected points (N,3), plane (3) and ground anchors (G,3)");
+// Every patch's candidates in one call: the concatenated candidate indices, the
+// per-patch slice offsets, and their unique union for the neighbour query.
+PyObject* mask_candidates(PyObject*, PyObject* args) {
+    PyObject *points_object, *planes_object, *bounds_object;
+    double distance;
+    if (!PyArg_ParseTuple(args, "OOOd", &points_object, &planes_object, &bounds_object, &distance)) return nullptr;
+    Buffer points(points_object);
+    Buffer planes(planes_object);
+    Buffer bounds(bounds_object);
+    if (!points.points() || !planes.matrix(4) || !bounds.matrix(2) || planes.rows() != bounds.rows()) {
+        PyErr_SetString(PyExc_ValueError, "expected points (N,3), planes (P,4) and bounds (P,2)");
         return nullptr;
     }
-    const Py_ssize_t n = points.rows(), g = anchor.rows();
     const double* data = points.doubles();
-    const double* model = plane.doubles();
-    const double* anchors = anchor.doubles();
-    std::vector<double> x(static_cast<size_t>(n)), z(static_cast<size_t>(n)),
-        uncertainty(static_cast<size_t>(n));
+    const Py_ssize_t n = points.rows(), patches = planes.rows();
+    const double* models = planes.doubles();
+    const double* limits = bounds.doubles();
+    auto& window = workspace.i0;
+    auto& candidates = workspace.i1;
+    auto& offsets = workspace.i2;
+    auto& union_ids = workspace.i3;
     try {
         ReleaseGIL released;
-        for (Py_ssize_t i = 0; i < n; ++i) x[static_cast<size_t>(i)] = data[3 * i];
-        std::vector<double> anchor_x(static_cast<size_t>(g)), anchor_shift(static_cast<size_t>(g)),
-            anchor_spread(static_cast<size_t>(g)), out_shift(static_cast<size_t>(n));
-        for (Py_ssize_t i = 0; i < g; ++i) {
-            anchor_x[static_cast<size_t>(i)] = anchors[3 * i];
-            anchor_shift[static_cast<size_t>(i)] = anchors[3 * i + 1];
-            anchor_spread[static_cast<size_t>(i)] = anchors[3 * i + 2];
+        candidates.clear();
+        offsets.assign(static_cast<size_t>(patches) + 1, 0);
+        for (Py_ssize_t patch = 0; patch < patches; ++patch) {
+            const double low = limits[2 * patch], high = limits[2 * patch + 1];
+            window.clear();
+            for (Py_ssize_t i = 0; i < n; ++i) {
+                const double x = data[3 * i];
+                if (x >= low && x <= high) window.push_back(static_cast<int64_t>(i));
+            }
+            band_candidates(data, window.data(), static_cast<Py_ssize_t>(window.size()), models + 4 * patch,
+                            distance, candidates);
+            offsets[static_cast<size_t>(patch) + 1] = static_cast<int64_t>(candidates.size());
         }
-        interp_into(x.data(), n, anchor_x.data(), anchor_shift.data(), g, out_shift.data());
-        interp_into(x.data(), n, anchor_x.data(), anchor_spread.data(), g, uncertainty.data());
-        std::vector<double> reach(static_cast<size_t>(n));
-        nearest_anchor_into(x.data(), n, anchor_x.data(), g, reach.data());
-        for (Py_ssize_t i = 0; i < n; ++i) {
-            const size_t index = static_cast<size_t>(i);
-            uncertainty[index] = uncertainty[index] + reach[index] * 0.008;
-            if (reach[index] > maximum) uncertainty[index] = INFINITY;
-            z[index] = data[3 * i] * model[0] + data[3 * i + 1] * model[1] + model[2] + out_shift[index];
+        union_ids.assign(candidates.begin(), candidates.end());
+        std::sort(union_ids.begin(), union_ids.end());
+        union_ids.erase(std::unique(union_ids.begin(), union_ids.end()), union_ids.end());
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    PyObject* payload = PyTuple_New(3);
+    if (payload == nullptr) return nullptr;
+    std::vector<PyObject*> owned;
+    if (!accept(bytes_of(union_ids.data(), union_ids.size() * sizeof(int64_t)), owned, "union")
+            || !accept(bytes_of(candidates.data(), candidates.size() * sizeof(int64_t)), owned, "candidates")
+            || !accept(bytes_of(offsets.data(), offsets.size() * sizeof(int64_t)), owned, "candidate offsets")) {
+        Py_DECREF(payload);
+        for (PyObject* object : owned) Py_DECREF(object);
+        return nullptr;
+    }
+    for (size_t index = 0; index < owned.size(); ++index) PyTuple_SET_ITEM(payload, index, owned[index]);
+    return payload;
+}
+
+// The whole per-patch mask pass in one call: candidate filtering against the
+// running mask, attachment-edge protection, strip membership, and the in-place
+// background mark. `reliable` and `aligned` arrive already expanded to
+// candidate order, exactly as the NumPy loop indexes them.
+PyObject* mask_apply(PyObject*, PyObject* args) {
+    PyObject *points_object, *protected_object, *background_object, *planes_object, *transverse_object,
+        *strips_object, *strip_offsets_object, *candidates_object, *candidate_offsets_object,
+        *reliable_object, *aligned_object, *sample_object, *normals_object, *normal_reliable_object;
+    double margin, depth, radius, alignment;
+    if (!PyArg_ParseTuple(args, "OOOOOOOOOOOOOOOdddd", &points_object, &protected_object, &background_object,
+                          &planes_object, &transverse_object, &strips_object, &strip_offsets_object,
+                          &candidates_object, &candidate_offsets_object, &reliable_object, &aligned_object,
+                          &sample_object, &normals_object, &normal_reliable_object,
+                          &margin, &depth, &radius, &alignment)) return nullptr;
+    Buffer points(points_object);
+    Buffer protected_ids(protected_object);
+    Buffer background(background_object, PyBUF_FORMAT | PyBUF_C_CONTIGUOUS | PyBUF_WRITABLE);
+    Buffer planes(planes_object);
+    Buffer transverse(transverse_object);
+    Buffer strips(strips_object);
+    Buffer strip_offsets(strip_offsets_object);
+    Buffer candidates(candidates_object);
+    Buffer candidate_offsets(candidate_offsets_object);
+    Buffer reliable(reliable_object);
+    Buffer aligned(aligned_object);
+    Buffer sample(sample_object);
+    Buffer normals(normals_object);
+    Buffer normal_reliable(normal_reliable_object);
+    if (!points.points() || !protected_ids.flags() || !background.writable_flags() || !planes.matrix(4)
+            || !transverse.integers() || !strips.matrix(4) || !strip_offsets.integers() || !candidates.integers()
+            || !candidate_offsets.integers() || !reliable.flags() || !aligned.points()
+            || !sample.points() || !normals.points() || !normal_reliable.flags()) {
+        PyErr_SetString(PyExc_ValueError, "mask_apply received inconsistent buffers");
+        return nullptr;
+    }
+    const Py_ssize_t patches = planes.rows();
+    if (transverse.size() != patches || strip_offsets.size() != patches + 1
+            || candidate_offsets.size() != patches + 1 || reliable.size() != candidates.size()
+            || aligned.rows() != candidates.size()) {
+        PyErr_SetString(PyExc_ValueError, "mask_apply expects per-patch offsets and per-candidate arrays");
+        return nullptr;
+    }
+    const double* data = points.doubles();
+    const double* models = planes.doubles();
+    const bool* protected_flags = protected_ids.bools();
+    bool* background_flags = background.writable_bools();
+    const int64_t* transverse_values = transverse.int64s();
+    const double* strip_boxes = strips.doubles();
+    const int64_t* strip_bounds = strip_offsets.int64s();
+    const int64_t* candidate_ids = candidates.int64s();
+    const int64_t* candidate_bounds = candidate_offsets.int64s();
+    const bool* reliable_flags = reliable.bools();
+    const double* aligned_normals = aligned.doubles();
+    const double* sample_points = sample.doubles();
+    const double* normal_vectors = normals.doubles();
+    const bool* sample_reliable = normal_reliable.bools();
+    try {
+        ReleaseGIL released;
+        auto& near_ids = workspace.i0;
+        auto& protrusions = workspace.i1;
+        auto& cleared = workspace.i2;
+        auto& inside = workspace.i3;
+        for (Py_ssize_t patch = 0; patch < patches; ++patch) {
+            const double* model = models + 4 * patch;
+            const int64_t begin = candidate_bounds[patch], end = candidate_bounds[patch + 1];
+            near_ids.clear();
+            for (int64_t row = begin; row < end; ++row) {
+                const int64_t point = candidate_ids[row];
+                if (protected_flags[point] || background_flags[point]) continue;
+                if (reliable_flags[row]) {
+                    const double cosine = std::abs(aligned_normals[3 * row] * model[0]
+                                                   + aligned_normals[3 * row + 1] * model[1]
+                                                   + aligned_normals[3 * row + 2] * model[2]);
+                    if (cosine < alignment) continue;
+                }
+                near_ids.push_back(point);
+            }
+            if (near_ids.empty()) continue;
+            protrusions.clear();
+            protrusion_samples(sample_points, normal_vectors, sample_reliable, sample.rows(), model,
+                               depth, radius, alignment, protrusions);
+            if (!protrusions.empty()) {
+                cleared.clear();
+                clear_of_targets(data, near_ids.data(), static_cast<Py_ssize_t>(near_ids.size()),
+                                 sample_points, sample.rows(), radius, cleared);
+                near_ids.swap(cleared);
+            }
+            if (near_ids.empty()) continue;
+            inside.clear();
+            const int64_t strip_begin = strip_bounds[patch], strip_end = strip_bounds[patch + 1];
+            strips_of(data, near_ids.data(), static_cast<Py_ssize_t>(near_ids.size()),
+                      strip_boxes + 4 * strip_begin, static_cast<Py_ssize_t>(strip_end - strip_begin),
+                      margin, static_cast<long>(transverse_values[patch]), inside);
+            for (int64_t point : inside) background_flags[point] = true;
         }
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
-    PyObject* payload = PyTuple_New(2);
-    PyTuple_SET_ITEM(payload, 0, bytes_of(z.data(), z.size() * sizeof(double)));
-    PyTuple_SET_ITEM(payload, 1, bytes_of(uncertainty.data(), uncertainty.size() * sizeof(double)));
-    return payload;
+    Py_RETURN_NONE;
 }
 
 static PyMethodDef methods[] = {
@@ -673,6 +995,8 @@ static PyMethodDef methods[] = {
      "First measurement indices, lexicographic voxel order."},
     {"voxel_count", voxel_count, METH_VARARGS,
      "Number of distinct voxels for the same keys."},
+    {"voxel_counts", voxel_counts, METH_VARARGS,
+     "Distinct voxel count for each stack in one call, reusing one arena."},
     {"range_indices", range_indices, METH_VARARGS,
      "Measurement indices with |p| inside a radial band; non-finite fails a bound."},
     {"mutual_graph", mutual_graph, METH_VARARGS,
@@ -683,12 +1007,16 @@ static PyMethodDef methods[] = {
      "Given points landing inside any of a patch's observed strips."},
     {"protrusion_ids", protrusion_ids, METH_VARARGS,
      "Samples whose distance band and normal alignment protect an attachment edge."},
+    {"within_radius", within_radius, METH_VARARGS,
+     "Per-query flag: a target lies within the Euclidean protection radius."},
     {"ground_values", ground_values, METH_VARARGS,
      "Track-bed reference height and extrapolation uncertainty for the current scan."},
     {"classify_geometry", classify_geometry, METH_VARARGS,
      "Envelope, rail-relative and ground support classification of the current scan."},
-    {"within_radius", within_radius, METH_VARARGS,
-     "Per-query flag: a target lies within the Euclidean protection radius."},
+    {"mask_candidates", mask_candidates, METH_VARARGS,
+     "All patch candidates, their slice offsets and their unique union in one call."},
+    {"mask_apply", mask_apply, METH_VARARGS,
+     "Full per-patch background mask pass, marking the caller's mask in place."},
     {nullptr, nullptr, 0, nullptr}
 };
 

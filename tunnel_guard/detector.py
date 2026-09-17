@@ -63,10 +63,34 @@ def load_config(path: str | Path) -> dict:
     return config
 
 
+def voxel_unique_at(config: dict, reductive_size: float | None) -> bool:
+    """Whether a cloud already holds at most one point per cluster voxel.
+
+    True when the cloud was reduced on a grid that the cluster grid refines: the
+    same size, or a coarser size that is an integer multiple, so no two surviving
+    points can share a cluster voxel and the key order is preserved. Callers that
+    cannot guarantee this pass None and take the full reduction.
+    """
+    if reductive_size is None:
+        return False
+    size = config["cluster_voxel_m"]
+    if not (size > 0 and reductive_size > 0):
+        return False
+    ratio = reductive_size / size
+    return size <= reductive_size and abs(ratio - round(ratio)) < 1e-9
+
+
 def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict,
-                       diagnostics: dict | None = None, arrays: dict | None = None) -> list[dict]:
+                       diagnostics: dict | None = None, arrays: dict | None = None,
+                       *, reduced_on_grid_m: float | None = None) -> list[dict]:
     _, context, _, _, _ = geometry.classify(points)
-    cloud = voxel_representatives(points[context], config["cluster_voxel_m"], config.get("voxel_backend", "numpy"))
+    if voxel_unique_at(config, reduced_on_grid_m):
+        # The context cloud is already one point per cluster voxel in key order,
+        # so the reduction below would only reproduce the same rows in the same
+        # order; filtering keeps it identical without the sort.
+        cloud = points[context]
+    else:
+        cloud = voxel_representatives(points[context], config["cluster_voxel_m"], config.get("voxel_backend", "numpy"))
     if diagnostics is not None:
         diagnostics.update(state="ran", context_points=int(context.sum()), cluster_points=len(cloud), rejected={})
     if arrays is not None:
@@ -266,6 +290,7 @@ class Detector:
             for row, column in zip(rows, columns):
                 if column < len(world) and cost[row, column] < 1e6:
                     matched[int(column)] = ids[row]
+        pending: list[dict] = []
         for index, obj in enumerate(objects):
             key = matched.get(index)
             if key is None:
@@ -293,11 +318,9 @@ class Detector:
             track["evidence"].append((stamp, support_world - world[index]))
             while track["evidence"] and stamp - track["evidence"][0][0] > cfg["evidence_window_s"]:
                 track["evidence"].popleft()
-            evidence_count = voxel_count(np.vstack([e[1] for e in track["evidence"]]), cfg["cluster_voxel_m"], cfg.get("voxel_backend", "numpy"))
             if not track["history"] or track["history"][-1] != self.frame_number:
                 track["history"].append(self.frame_number)
             hits = sum(f > self.frame_number - cfg["confirmation_window"] for f in track["history"])
-            confirmed = obj["immediate"] or (hits >= cfg["confirmation_hits"] and evidence_count >= cfg["evidence_min_points"])
             # Object persistence cannot confirm a new path intrusion. Count only
             # current-scan interior evidence, once per strictly increasing scan.
             interior_history = track["intersection_history"]
@@ -305,10 +328,29 @@ class Detector:
                 interior_history.append((self.frame_number, stamp))
             recent_interior = [(f, s) for f, s in interior_history
                                if f > self.frame_number - cfg["confirmation_window"]]
+            track.update(state=state, covariance=covariance, stamp=stamp, extent=np.asarray(obj["extent_m"]))
+            # Accumulated support is the one quantity that needs its own call per
+            # track; the stacks are counted together after this loop, so the field
+            # writes below keep their original order.
+            pending.append({"obj": obj, "key": key, "hits": hits, "recent_interior": recent_interior,
+                            "state": state, "covariance": covariance, "track": track,
+                            "evidence": np.vstack([e[1] for e in track["evidence"]])})
+        # One native call counts every track's accumulated evidence, instead of
+        # one call per track: the same distinct-voxel count, same per-track value.
+        counts = accelerator.voxel_counts([record["evidence"] for record in pending],
+                                          cfg["cluster_voxel_m"], self.native_kernels)
+        for record, count in zip(pending, counts):
+            record["count"] = int(count)
+        for record in pending:
+            obj, key, hits = record["obj"], record["key"], record["hits"]
+            recent_interior = record["recent_interior"]
+            state, covariance, track = record["state"], record["covariance"], record["track"]
+            confirmed = obj["immediate"] or (hits >= cfg["confirmation_hits"]
+                                             and int(record["count"]) >= cfg["evidence_min_points"])
             intersection_confirmed = (confirmed and obj["path_relation"] == "intersecting"
                                       and (obj["intersection_immediate"] or len(recent_interior) >= cfg["confirmation_hits"]))
-            track.update(state=state, covariance=covariance, stamp=stamp, extent=np.asarray(obj["extent_m"]))
-            obj.update(track_id=key, hits=hits, confirmed=bool(confirmed), accumulated_support_voxels=evidence_count,
+            obj.update(track_id=key, hits=hits, confirmed=bool(confirmed),
+                       accumulated_support_voxels=int(record["count"]),
                        intersection_confirmed=bool(intersection_confirmed),
                        intersection_hits=len(recent_interior),
                        intersection_evidence_timestamps_s=[s for _, s in recent_interior],
@@ -388,7 +430,8 @@ class Detector:
         geometry = TrackGeometry(reduced, self.config)
         pipeline["geometry"] = {"state": "ran", "valid": geometry.valid, "reason": geometry.reason}
         objects = cluster_candidates(reduced, geometry, self.config, pipeline["segmentation"],
-                                     self.diagnostic_arrays if capture_diagnostics else None) if geometry.valid else []
+                                     self.diagnostic_arrays if capture_diagnostics else None,
+                                     reduced_on_grid_m=self.config["geometry_voxel_m"]) if geometry.valid else []
         if not geometry.valid:
             pipeline["segmentation"]["reason"] = geometry.reason
         self._associate(objects, pose, timestamp_s, motion["valid"])

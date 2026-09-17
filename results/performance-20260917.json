@@ -1,7 +1,7 @@
 {
   "date": "2026-09-17",
   "scope": "Latency and throughput of the shipped detector pipeline; no detection decision changed.",
-  "revision": "f0411791bd67668ca9a348bd83adc4dfe067c1a3",
+  "revision": "9d3175ffc192896b412050fa66f1fd5f0e6604db",
   "machine": {
     "python": "3.12.14 (main, Aug 12 2026, 13:57:54) [Clang 21.1.8 ]",
     "platform": "macOS-26.5.2-arm64-arm-64bit",
@@ -11,8 +11,9 @@
   "protocol": {
     "paired_benchmark": "native_benchmark: 20 cached real scans of doubleT_obstacle, one warm-up scan per backend, three repetitions alternating numpy/cpp, no decoding, display or serialisation in the timed region",
     "stage_attribution": "profile_stages: 24 cached real scans, wrapper timing around existing callables; before and after were measured back to back under the same concurrent load",
+    "fused_calls": "One native call per frame for the background mask pass, one for every track's evidence count, and one arena-backed table shared by voxel selection, the clustering grid and the mask; steady-state kernels allocate nothing beyond the copies the caller receives.",
     "kernel_identity": "scripts/check_kernels.py: kernels evaluated against the NumPy expression they replace on captured real inputs (37 checks); scripts/check_geometry_kernels.py: every classification, mask and fitted-geometry array compared between the NumPy and native recipes on the same scans (26 arrays, byte identical)",
-    "equivalence_panel": "build/perf-cpp-after2-20260917 vs build/perf-cpp-native-20260917"
+    "equivalence_panel": "build/perf-cpp-native-20260917 vs build/perf-cpp-fused-20260917"
   },
   "paired_benchmark_median_of_run_p50_ms": {
     "baseline": {
@@ -20,44 +21,21 @@
       "cpp": 390.03949949994876
     },
     "after": {
-      "numpy": 344.86820849997457,
-      "cpp": 209.56677099957233
+      "numpy": 302.5089170000683,
+      "cpp": 205.0992704998862
     }
   },
   "paired_benchmark_speedup": {
-    "cpp": 1.8611705359565078,
-    "numpy": 1.457070495670152
+    "cpp": 1.9017108083773764,
+    "numpy": 1.6610991057160203
   },
   "equivalence": {
     "bags": [
       {
         "bag": "doubleT_obstacle",
-        "before_sha256": "1d63da7b1407e2f5018781e6fc941d11ad1b79ce7ee3335fcafb85216507ed3e",
-        "after_sha256": "5351e0457617b2454df9b78bc7d2f833db84bce30647d92ecf3d45e44b6f4744",
+        "before_sha256": "5351e0457617b2454df9b78bc7d2f833db84bce30647d92ecf3d45e44b6f4744",
+        "after_sha256": "b6590843dfa2bbe14afb54ce5e125b40d0b2b0c9ff24125e741e75e9119d15d9",
         "before_statistics": {
-          "frames": 201,
-          "status_frames": {
-            "unresolved_obstacle": 60,
-            "obstacle": 141
-          },
-          "health_frames": {
-            "degraded": 201
-          },
-          "geometry_valid_frames": 201,
-          "motion_valid_frames": 200,
-          "candidate_observations": 44515,
-          "support_voxel_observations": 3855603,
-          "confirmed_intersection_observations": 241,
-          "candidate_observations_at_least_60m": 10656,
-          "histories_with_future_timestamps": 0,
-          "histories_with_duplicate_timestamps": 0,
-          "processing_ms": {
-            "p50": 276.11562499987485,
-            "p95": 300.4801669999324,
-            "p99": 312.97987500011004
-          }
-        },
-        "after_statistics": {
           "frames": 201,
           "status_frames": {
             "unresolved_obstacle": 60,
@@ -80,40 +58,40 @@
             "p99": 234.92254200027674
           }
         },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 60,
+            "obstacle": 141
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44515,
+          "support_voxel_observations": 3855603,
+          "confirmed_intersection_observations": 241,
+          "candidate_observations_at_least_60m": 10656,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 207.59275000000343,
+            "p95": 213.20879099948797,
+            "p99": 235.07579099987197
+          }
+        },
         "missing_after": [],
         "extra_after": [],
         "measurement_identity_errors": [],
         "changed_frames_by_field": {},
-        "largest_compared_float_difference": 5.551115123125783e-14
+        "largest_compared_float_difference": 4.3520742565306136e-14
       },
       {
         "bag": "doubleT_platform",
-        "before_sha256": "370d92fed596fb61dfca6e52e96af0f1122270fe57cb4f7783c92f60f3e1cac6",
-        "after_sha256": "da32efb3d925891cef9a15d8b4cce26804901ae5fff470b8abb6dc576eb319a2",
+        "before_sha256": "da32efb3d925891cef9a15d8b4cce26804901ae5fff470b8abb6dc576eb319a2",
+        "after_sha256": "4988130627db9de2401bde49e04cf53d75f3757e859f5a960c1474d7e1bbdeb8",
         "before_statistics": {
-          "frames": 345,
-          "status_frames": {
-            "unresolved_obstacle": 258,
-            "obstacle": 87
-          },
-          "health_frames": {
-            "degraded": 345
-          },
-          "geometry_valid_frames": 345,
-          "motion_valid_frames": 240,
-          "candidate_observations": 68133,
-          "support_voxel_observations": 4236118,
-          "confirmed_intersection_observations": 266,
-          "candidate_observations_at_least_60m": 22168,
-          "histories_with_future_timestamps": 0,
-          "histories_with_duplicate_timestamps": 0,
-          "processing_ms": {
-            "p50": 196.8294580001384,
-            "p95": 248.75344160000174,
-            "p99": 262.9454984399308
-          }
-        },
-        "after_statistics": {
           "frames": 345,
           "status_frames": {
             "unresolved_obstacle": 258,
@@ -136,41 +114,40 @@
             "p99": 202.36231195962318
           }
         },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68133,
+          "support_voxel_observations": 4236118,
+          "confirmed_intersection_observations": 266,
+          "candidate_observations_at_least_60m": 22168,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 139.39562500036118,
+            "p95": 187.7390835999904,
+            "p99": 200.23027199986245
+          }
+        },
         "missing_after": [],
         "extra_after": [],
         "measurement_identity_errors": [],
         "changed_frames_by_field": {},
-        "largest_compared_float_difference": 6.683542608243442e-14
+        "largest_compared_float_difference": 6.661338147750939e-14
       },
       {
         "bag": "roundT_doubleT",
-        "before_sha256": "124133c6c1d2e1c804f62ffd4b66a5b6cefbfc6d68af23f5a85c88ace84f4050",
-        "after_sha256": "307722d5fee5456c1886836202ccba14ccdabfa715542da1d23457cfd180f1b0",
+        "before_sha256": "307722d5fee5456c1886836202ccba14ccdabfa715542da1d23457cfd180f1b0",
+        "after_sha256": "d062c89367599dc646d4f735d99bc10fea2a501d7b5f4e0233b4b877c3ffc5ef",
         "before_statistics": {
-          "frames": 252,
-          "status_frames": {
-            "candidate": 1,
-            "unresolved_obstacle": 182,
-            "obstacle": 69
-          },
-          "health_frames": {
-            "degraded": 252
-          },
-          "geometry_valid_frames": 252,
-          "motion_valid_frames": 251,
-          "candidate_observations": 48776,
-          "support_voxel_observations": 4039076,
-          "confirmed_intersection_observations": 211,
-          "candidate_observations_at_least_60m": 11422,
-          "histories_with_future_timestamps": 0,
-          "histories_with_duplicate_timestamps": 0,
-          "processing_ms": {
-            "p50": 218.22006299998975,
-            "p95": 269.81416874991737,
-            "p99": 283.045797160039
-          }
-        },
-        "after_statistics": {
           "frames": 252,
           "status_frames": {
             "candidate": 1,
@@ -194,15 +171,39 @@
             "p99": 205.8560564198342
           }
         },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 182,
+            "obstacle": 69
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48776,
+          "support_voxel_observations": 4039076,
+          "confirmed_intersection_observations": 211,
+          "candidate_observations_at_least_60m": 11422,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 164.5280000002458,
+            "p95": 193.7731374998293,
+            "p99": 201.51167642046858
+          }
+        },
         "missing_after": [],
         "extra_after": [],
         "measurement_identity_errors": [],
         "changed_frames_by_field": {},
-        "largest_compared_float_difference": 5.041522754822836e-13
+        "largest_compared_float_difference": 4.11226608321158e-13
       }
     ],
     "identical_discrete_fields": true,
-    "max_float_difference": 5.041522754822836e-13
+    "max_float_difference": 4.11226608321158e-13
   },
   "equivalence_numpy_backend": {
     "before": "build/perf-current-corpus-20260917",
@@ -584,39 +585,43 @@
       "geometry.voxel_representatives": 0.44
     },
     "after_cpp": {
-      "background.mask": 23.52,
-      "detector.Detector._associate": 16.09,
-      "detector.Detector._motion": 28.45,
-      "detector.Detector.process": 293.35,
-      "detector.cluster_candidates": 106.54,
-      "detector.density_labels": 64.03,
-      "detector.voxel_representatives": 18.38,
-      "geometry.TrackGeometry.__init__": 112.24,
-      "geometry.TrackGeometry.classify": 35.6,
-      "geometry.voxel_representatives": 0.43
+      "background.TunnelBackground.__init__": 90.35,
+      "background.mask": 13.94,
+      "detector.Detector._associate": 14.1,
+      "detector.Detector._motion": 26.52,
+      "detector.Detector.process": 206.01,
+      "detector.cluster_candidates": 41.37,
+      "detector.density_labels": 14.78,
+      "detector.voxel_representatives": 12.8,
+      "geometry.TrackGeometry.__init__": 101.32,
+      "geometry.TrackGeometry._ground_profile": 3.0,
+      "geometry.TrackGeometry._rail_profile": 3.14,
+      "geometry.TrackGeometry.classify": 20.26,
+      "geometry.robust_plane": 4.83,
+      "geometry.voxel_representatives": 0.44
     }
   },
   "corpus_after_cpp_ms": [
     {
       "bag": "doubleT_obstacle",
       "frames": 201,
-      "p50": 210.76083400021162,
-      "p95": 216.54770799977996,
-      "wall_s": 53.4123734169998
+      "p50": 207.59275000000343,
+      "p95": 213.20879099948797,
+      "wall_s": 51.78339045900066
     },
     {
       "bag": "doubleT_platform",
       "frames": 345,
-      "p50": 142.4214580001717,
-      "p95": 178.29990000009278,
-      "wall_s": 57.119149375000234
+      "p50": 139.39562500036118,
+      "p95": 187.7390835999904,
+      "wall_s": 55.357515124999736
     },
     {
       "bag": "roundT_doubleT",
       "frames": 252,
-      "p50": 171.11820799982524,
-      "p95": 199.37653285064695,
-      "wall_s": 47.50930558300024
+      "p50": 164.5280000002458,
+      "p95": 193.7731374998293,
+      "wall_s": 45.98735245900025
     }
   ],
   "rejected_options": {
