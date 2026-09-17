@@ -15,6 +15,10 @@ See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and RO
 See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md) and the [native integration report](docs/NATIVE_INTEGRATION.md). Native acceleration is integrated with the current interval-envelope policy. Use `configs/detector-native.json`; ROS container defaults select this recipe. The Python recipe remains available as a reference. Historical performance experiments are retained in `results/performance-20260917.json`; they are not evidence for the merged revision. Mounting calibration remains provisional: all three evaluated orientation candidates failed stability gates and were not installed.
 
 
+## Reported 1.075 m mounting reference
+
+See [railhead-support observations and chronological replay](docs/MOUNTING_REFERENCE.md). The reported empty/stationary height has unknown applicability to individual recordings. Direct support estimates are about 1.500 / 1.086 / 1.093 m across three recordings; no calibration is installed. All 798 compared detector outputs are preserved. A frozen-rotation replay on 738 later scans retains failures, including worse support in the round tunnel. The browser and RViz export now show the actual points supporting the estimate.
+
 ## Small detections and contour uncertainty
 
 See [small-object review and calibration limits](docs/ENVELOPE_INTERVAL_REVIEW.md). Height uncertainty now propagates through the stepped contour width and both vertical boundaries. On 798 real scans, confirmed intersection observations changed from 718 to 649; small detections and nuisance alarms remain unresolved, and this is not a precision improvement claim. The browser exposes measured box sizes, support counts and exact diagnostic points for selected saved frames.

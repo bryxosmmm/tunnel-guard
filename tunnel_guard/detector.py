@@ -14,6 +14,7 @@ from scipy.spatial import cKDTree
 
 from . import accelerator
 from .geometry import TrackGeometry, voxel_representatives
+from .mounting import observe_mounting, validate_mounting_config
 from .segmentation import density_labels, published_labels
 
 
@@ -60,6 +61,7 @@ def load_config(path: str | Path) -> dict:
         from . import _native  # Fail explicitly when the selected kernels are unavailable.
     if config.get("obstacle_distance_mode", "cluster_min_x") not in ("cluster_min_x", "envelope_support_min_x"):
         raise ValueError("Unknown obstacle_distance_mode")
+    validate_mounting_config(config)
     return config
 
 
@@ -482,6 +484,11 @@ class Detector:
         if capture_diagnostics:
             self.diagnostic_arrays.update(registered_points=frame, cropped_points=frame[crop], geometry_voxel_points=reduced)
         geometry = TrackGeometry(reduced, self.config)
+        mounting_started = time.perf_counter()
+        mounting = observe_mounting(reduced, geometry, self.config)
+        mounting_s = time.perf_counter() - mounting_started
+        if mounting is not None:
+            result.update(mounting=mounting, mounting_observation_s=mounting_s)
         pipeline["geometry"] = {"state": "ran", "valid": geometry.valid, "reason": geometry.reason}
         carried: list = []
         objects = cluster_candidates(reduced, geometry, self.config, pipeline["segmentation"],

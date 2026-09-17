@@ -220,5 +220,33 @@
   "query_workers": -1,
   "native_kernels": true,
   "deskew_policy": "Disabled until acquisition span versus scan period and prior deskew provenance are verified. KISS-ICP normalizes the supplied point-time range to one full previous motion increment.",
-  "voxel_backend": "cpp"
+  "voxel_backend": "cpp",
+  "installation_reference": {
+    "source": "user_report_2026-09-17",
+    "statement": "Лидар (нулевая точка его отсчёта) стоит на уровне 1075мм от уровня головки рельсов, ровно посередине между ними. На пустом вагоне без движения.",
+    "height_above_railheads_m": 1.075,
+    "lateral_offset_from_track_center_m": 0.0,
+    "condition": "empty_stationary_wagon",
+    "recording_applicability_verified": false,
+    "measurement_uncertainty_m": null,
+    "height_direction_definition": "reported above railheads; gravity vertical versus track-plane normal unspecified",
+    "vehicle_front_offset_m": null,
+    "mounting_angles_deg": null,
+    "vehicle_extrinsics_verified": false
+  },
+  "mounting_observer": {
+    "fit_range_m": [
+      5.0,
+      20.0
+    ],
+    "bin_m": 1.0,
+    "min_points_per_side_bin": 5,
+    "min_upper_points_per_side_bin": 2,
+    "upper_support_quantile": 0.75,
+    "min_paired_bins": 6,
+    "min_span_m": 8.0,
+    "max_fit_residual_m": 0.08,
+    "reference_height_band_m": 0.1,
+    "reference_lateral_band_m": 0.15
+  }
 }
