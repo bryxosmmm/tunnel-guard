@@ -84,7 +84,7 @@ struct KeyTable {
 // steady-state frames allocate nothing beyond the copies the caller receives.
 struct Arena {
     std::vector<double> d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10;
-    std::vector<int64_t> i0, i1, i2, i3, i4, i5;
+    std::vector<int64_t> i0, i1, i2, i3, i4, i5, i6;
     std::vector<uint8_t> b0, b1, b2, b3, b4;
     std::vector<std::pair<Key, int64_t>> ordered;
     std::vector<std::pair<uint64_t, int64_t>> packed;
@@ -105,6 +105,7 @@ void build_cells(const double* points, Py_ssize_t n, double size);
 // cpp/voxel.cpp
 PyObject* voxel_indices(PyObject* self, PyObject* args);
 PyObject* voxel_count(PyObject* self, PyObject* args);
+PyObject* select_crop_voxels(PyObject* self, PyObject* args);
 
 // cpp/kernels.cpp -- registered in kernels.cpp
 PyObject* range_indices(PyObject* self, PyObject* args);
@@ -118,3 +119,4 @@ PyObject* ground_values(PyObject* self, PyObject* args);
 PyObject* classify_geometry(PyObject* self, PyObject* args);
 PyObject* mask_candidates(PyObject* self, PyObject* args);
 PyObject* mask_apply(PyObject* self, PyObject* args);
+PyObject* cluster_components(PyObject* self, PyObject* args);

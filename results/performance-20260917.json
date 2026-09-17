@@ -1,7 +1,7 @@
 {
   "date": "2026-09-17",
   "scope": "Latency and throughput of the shipped detector pipeline; no detection decision changed.",
-  "revision": "1c719a3dd8f0732919b9681ed2a3929c0ca5b11a",
+  "revision": "22155a11417b0ec355523c0a3668e2bca8cc354d",
   "machine": {
     "python": "3.12.14 (main, Aug 12 2026, 13:57:54) [Clang 21.1.8 ]",
     "platform": "macOS-26.5.2-arm64-arm-64bit",
@@ -11,9 +11,10 @@
   "protocol": {
     "paired_benchmark": "native_benchmark: 20 cached real scans of doubleT_obstacle, one warm-up scan per backend, three repetitions alternating numpy/cpp, no decoding, display or serialisation in the timed region",
     "stage_attribution": "profile_stages: 24 cached real scans, wrapper timing around existing callables; before and after were measured back to back under the same concurrent load",
+    "kernel_timing": "voxel_indices 5.8 ms on a 236k crop (packed-key sort); select_crop_voxels 5.1 ms including the crop; voxel_counts 3.0 ms for 220 stacks; classify_geometry 1.6 ms per 72k call; ground_values 0.55 ms; mask_apply 0.19 ms; cluster_components replaces a 12.2 ms NumPy loop with one native pass",
     "fused_calls": "One native call per frame for the background mask pass, one for every track's evidence count, and one arena-backed table shared by voxel selection, the clustering grid and the mask; steady-state kernels allocate nothing beyond the copies the caller receives.",
     "kernel_identity": "scripts/check_kernels.py: kernels evaluated against the NumPy expression they replace on captured real inputs (37 checks); scripts/check_geometry_kernels.py: every classification, mask and fitted-geometry array compared between the NumPy and native recipes on the same scans (26 arrays, byte identical)",
-    "equivalence_panel": "build/perf-cpp-fused-20260917 vs build/perf-cpp-opt-20260917"
+    "equivalence_panel": "build/perf-cpp-opt-20260917 vs build/perf-cpp-components2-20260917"
   },
   "paired_benchmark_median_of_run_p50_ms": {
     "baseline": {
@@ -21,44 +22,21 @@
       "cpp": 390.03949949994876
     },
     "after": {
-      "numpy": 301.16233350054245,
-      "cpp": 199.0696249999928
+      "numpy": 292.35566699981064,
+      "cpp": 189.03241650014024
     }
   },
   "paired_benchmark_speedup": {
-    "cpp": 1.9593119718789989,
-    "numpy": 1.6685263580580876
+    "cpp": 2.063347158764483,
+    "numpy": 1.718787587244754
   },
   "equivalence": {
     "bags": [
       {
         "bag": "doubleT_obstacle",
-        "before_sha256": "b6590843dfa2bbe14afb54ce5e125b40d0b2b0c9ff24125e741e75e9119d15d9",
-        "after_sha256": "984a21e0dbe218231604d12f6615d60c4a03bf5ca7f660f8989d675105d5c7b2",
+        "before_sha256": "984a21e0dbe218231604d12f6615d60c4a03bf5ca7f660f8989d675105d5c7b2",
+        "after_sha256": "f40270bdf044da83414fce920159a2431aa2e6c55015cdd4ae9fe76da0a5020c",
         "before_statistics": {
-          "frames": 201,
-          "status_frames": {
-            "unresolved_obstacle": 60,
-            "obstacle": 141
-          },
-          "health_frames": {
-            "degraded": 201
-          },
-          "geometry_valid_frames": 201,
-          "motion_valid_frames": 200,
-          "candidate_observations": 44515,
-          "support_voxel_observations": 3855603,
-          "confirmed_intersection_observations": 241,
-          "candidate_observations_at_least_60m": 10656,
-          "histories_with_future_timestamps": 0,
-          "histories_with_duplicate_timestamps": 0,
-          "processing_ms": {
-            "p50": 207.59275000000343,
-            "p95": 213.20879099948797,
-            "p99": 235.07579099987197
-          }
-        },
-        "after_statistics": {
           "frames": 201,
           "status_frames": {
             "unresolved_obstacle": 60,
@@ -81,40 +59,40 @@
             "p99": 225.2755839999736
           }
         },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 60,
+            "obstacle": 141
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44515,
+          "support_voxel_observations": 3855603,
+          "confirmed_intersection_observations": 241,
+          "candidate_observations_at_least_60m": 10656,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 190.34495899995818,
+            "p95": 198.04587500038906,
+            "p99": 216.89470799992705
+          }
+        },
         "missing_after": [],
         "extra_after": [],
         "measurement_identity_errors": [],
         "changed_frames_by_field": {},
-        "largest_compared_float_difference": 4.418687638008123e-14
+        "largest_compared_float_difference": 4.529709940470639e-14
       },
       {
         "bag": "doubleT_platform",
-        "before_sha256": "4988130627db9de2401bde49e04cf53d75f3757e859f5a960c1474d7e1bbdeb8",
-        "after_sha256": "279e386667ad9fea9f62382964d34d1051c1daa47622e5838d715d28fff58042",
+        "before_sha256": "279e386667ad9fea9f62382964d34d1051c1daa47622e5838d715d28fff58042",
+        "after_sha256": "980111604ecb704283cb207b8fc6f5202543e09f1e64207ca6b58e8f10cbef8d",
         "before_statistics": {
-          "frames": 345,
-          "status_frames": {
-            "unresolved_obstacle": 258,
-            "obstacle": 87
-          },
-          "health_frames": {
-            "degraded": 345
-          },
-          "geometry_valid_frames": 345,
-          "motion_valid_frames": 240,
-          "candidate_observations": 68133,
-          "support_voxel_observations": 4236118,
-          "confirmed_intersection_observations": 266,
-          "candidate_observations_at_least_60m": 22168,
-          "histories_with_future_timestamps": 0,
-          "histories_with_duplicate_timestamps": 0,
-          "processing_ms": {
-            "p50": 139.39562500036118,
-            "p95": 187.7390835999904,
-            "p99": 200.23027199986245
-          }
-        },
-        "after_statistics": {
           "frames": 345,
           "status_frames": {
             "unresolved_obstacle": 258,
@@ -137,41 +115,40 @@
             "p99": 196.44675200019265
           }
         },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68133,
+          "support_voxel_observations": 4236118,
+          "confirmed_intersection_observations": 266,
+          "candidate_observations_at_least_60m": 22168,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 129.26995799989527,
+            "p95": 168.8855917998808,
+            "p99": 192.93622152024912
+          }
+        },
         "missing_after": [],
         "extra_after": [],
         "measurement_identity_errors": [],
         "changed_frames_by_field": {},
-        "largest_compared_float_difference": 7.149836278586008e-14
+        "largest_compared_float_difference": 7.571721027943568e-14
       },
       {
         "bag": "roundT_doubleT",
-        "before_sha256": "d062c89367599dc646d4f735d99bc10fea2a501d7b5f4e0233b4b877c3ffc5ef",
-        "after_sha256": "2ef92e27b451605001af54415f53438a841cc4de63c22aa63d186c06fb236074",
+        "before_sha256": "2ef92e27b451605001af54415f53438a841cc4de63c22aa63d186c06fb236074",
+        "after_sha256": "a356a2c3be577622cfbd35ce770564c6343971d8a6caddaf388efb8553d9b95f",
         "before_statistics": {
-          "frames": 252,
-          "status_frames": {
-            "candidate": 1,
-            "unresolved_obstacle": 182,
-            "obstacle": 69
-          },
-          "health_frames": {
-            "degraded": 252
-          },
-          "geometry_valid_frames": 252,
-          "motion_valid_frames": 251,
-          "candidate_observations": 48776,
-          "support_voxel_observations": 4039076,
-          "confirmed_intersection_observations": 211,
-          "candidate_observations_at_least_60m": 11422,
-          "histories_with_future_timestamps": 0,
-          "histories_with_duplicate_timestamps": 0,
-          "processing_ms": {
-            "p50": 164.5280000002458,
-            "p95": 193.7731374998293,
-            "p99": 201.51167642046858
-          }
-        },
-        "after_statistics": {
           "frames": 252,
           "status_frames": {
             "candidate": 1,
@@ -195,15 +172,39 @@
             "p99": 201.8466600003194
           }
         },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 182,
+            "obstacle": 69
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48776,
+          "support_voxel_observations": 4039076,
+          "confirmed_intersection_observations": 211,
+          "candidate_observations_at_least_60m": 11422,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 151.83979149969673,
+            "p95": 176.9421411499934,
+            "p99": 186.31213325011234
+          }
+        },
         "missing_after": [],
         "extra_after": [],
         "measurement_identity_errors": [],
         "changed_frames_by_field": {},
-        "largest_compared_float_difference": 4.718447854656915e-13
+        "largest_compared_float_difference": 5.824854487634923e-13
       }
     ],
     "identical_discrete_fields": true,
-    "max_float_difference": 4.718447854656915e-13
+    "max_float_difference": 5.824854487634923e-13
   },
   "equivalence_numpy_backend": {
     "before": "build/perf-current-corpus-20260917",
@@ -585,43 +586,42 @@
       "geometry.voxel_representatives": 0.44
     },
     "after_cpp": {
-      "background.TunnelBackground.__init__": 90.61,
-      "background.mask": 12.5,
-      "detector.Detector._associate": 15.63,
-      "detector.Detector._motion": 26.61,
-      "detector.Detector.process": 200.51,
-      "detector.cluster_candidates": 39.5,
-      "detector.density_labels": 15.32,
-      "detector.voxel_representatives": 7.18,
-      "geometry.TrackGeometry.__init__": 101.78,
-      "geometry.TrackGeometry._ground_profile": 2.99,
-      "geometry.TrackGeometry._rail_profile": 3.18,
-      "geometry.TrackGeometry.classify": 18.74,
-      "geometry.robust_plane": 5.0,
-      "geometry.voxel_representatives": 0.63
+      "background.TunnelBackground.__init__": 90.86,
+      "background.mask": 12.54,
+      "detector.Detector._associate": 15.04,
+      "detector.Detector._motion": 26.63,
+      "detector.Detector.process": 191.03,
+      "detector.cluster_candidates": 31.93,
+      "detector.density_labels": 14.84,
+      "geometry.TrackGeometry.__init__": 101.66,
+      "geometry.TrackGeometry._ground_profile": 3.0,
+      "geometry.TrackGeometry._rail_profile": 3.12,
+      "geometry.TrackGeometry.classify": 18.75,
+      "geometry.robust_plane": 4.67,
+      "geometry.voxel_representatives": 0.26
     }
   },
   "corpus_after_cpp_ms": [
     {
       "bag": "doubleT_obstacle",
       "frames": 201,
-      "p50": 200.87837500068417,
-      "p95": 207.86354200026835,
-      "wall_s": 51.44849770900055
+      "p50": 190.34495899995818,
+      "p95": 198.04587500038906,
+      "wall_s": 49.841146332999415
     },
     {
       "bag": "doubleT_platform",
       "frames": 345,
-      "p50": 137.4383749998742,
-      "p95": 180.0141167997936,
-      "wall_s": 56.993073583000296
+      "p50": 129.26995799989527,
+      "p95": 168.8855917998808,
+      "wall_s": 52.387640875000216
     },
     {
       "bag": "roundT_doubleT",
       "frames": 252,
-      "p50": 165.69368749969726,
-      "p95": 192.5851166999564,
-      "wall_s": 47.620738374999746
+      "p50": 151.83979149969673,
+      "p95": 176.9421411499934,
+      "wall_s": 42.62545399999999
     }
   ],
   "rejected_options": {

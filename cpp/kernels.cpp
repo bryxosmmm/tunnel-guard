@@ -1001,6 +1001,367 @@ PyObject* mask_apply(PyObject*, PyObject* args) {
     Py_RETURN_NONE;
 }
 
+// Longitudinal-window crop and voxel reduction in one call.
+//
+// The reduction itself is the same dedupe the standalone kernel performs, but
+// the representatives are ordered without a global sort: the leading key axis is
+// counted into its own buckets, and only the (few) representatives sharing one
+// column are compared with each other. Since the axis is the most significant
+// field, concatenating the columns in ascending order is exactly the
+// lexicographic key order numpy.unique(axis=0) produced, and the retained
+// measurement per voxel is still the first one in input order.
+//
+// The crop is applied while keys are computed, so the cropped copy of the cloud
+// never exists.
+PyObject* select_crop_voxels(PyObject*, PyObject* args) {
+    PyObject* object;
+    double min_forward, half_width, size;
+    if (!PyArg_ParseTuple(args, "Oddd", &object, &min_forward, &half_width, &size)) return nullptr;
+    if (!(std::isfinite(size) && size > 0)) {
+        PyErr_SetString(PyExc_ValueError, "voxel size must be finite and positive");
+        return nullptr;
+    }
+    Buffer buffer(object);
+    if (!buffer.points()) {
+        PyErr_SetString(PyExc_ValueError, "expected contiguous native float64 (N,3)");
+        return nullptr;
+    }
+    const double* data = buffer.doubles();
+    const Py_ssize_t n = buffer.rows();
+    Arena& scratch = arena();
+    auto& indices = scratch.i0;
+    try {
+        // The GIL is released only around the computation; the returned copy is
+        // built afterwards, when the guard has been destroyed.
+        {
+            ReleaseGIL released;
+            KeyTable& table = scratch.table;
+            table.reset(static_cast<size_t>(n));
+            int64_t lowest = 0, highest = 0;
+            bool any = false;
+            for (Py_ssize_t i = 0; i < n; ++i) {
+                const double x = data[3 * i], y = data[3 * i + 1];
+                if (!(x >= min_forward && std::abs(y) < half_width)) continue;
+                Key key{};
+                if (!voxel_key_of(data + 3 * i, size, key))
+                    throw std::invalid_argument("nonfinite or out-of-range voxel coordinate");
+                bool inserted = false;
+                const size_t slot = table.slot_of(key, inserted);
+                if (inserted) table.values[slot] = static_cast<int64_t>(i);
+                if (!any || key[0] < lowest) lowest = key[0];
+                if (!any || key[0] > highest) highest = key[0];
+                any = true;
+            }
+            indices.clear();
+            if (any) {
+                const int64_t columns = highest - lowest + 1;
+                auto& offsets = scratch.i1;
+                auto& cursor = scratch.i2;
+                auto& column_slots = scratch.i3;
+                offsets.assign(static_cast<size_t>(columns) + 1, 0);
+                for (size_t slot = 0; slot < table.keys.size(); ++slot)
+                    if (table.used[slot]) ++offsets[static_cast<size_t>(table.keys[slot][0] - lowest) + 1];
+                for (int64_t column = 0; column < columns; ++column) offsets[static_cast<size_t>(column) + 1] += offsets[static_cast<size_t>(column)];
+                cursor.assign(offsets.begin(), offsets.end() - 1);
+                column_slots.resize(table.count);
+                for (size_t slot = 0; slot < table.keys.size(); ++slot)
+                    if (table.used[slot])
+                        column_slots[static_cast<size_t>(cursor[static_cast<size_t>(table.keys[slot][0] - lowest)]++)] = static_cast<int64_t>(slot);
+                indices.reserve(table.count);
+                const Key* keys = table.keys.data();
+                for (int64_t column = 0; column < columns; ++column) {
+                    const int64_t begin = offsets[static_cast<size_t>(column)];
+                    const int64_t end = offsets[static_cast<size_t>(column) + 1];
+                    if (end == begin) continue;
+                    auto first = column_slots.begin() + begin;
+                    auto last = column_slots.begin() + end;
+                    // Only the representatives inside one column are ordered here.
+                    std::sort(first, last, [keys](int64_t left, int64_t right) {
+                        const Key& a = keys[left];
+                        const Key& b = keys[right];
+                        if (a[1] != b[1]) return a[1] < b[1];
+                        return a[2] < b[2];
+                    });
+                    for (auto entry = first; entry != last; ++entry)
+                        indices.push_back(table.values[static_cast<size_t>(*entry)]);
+                }
+            }
+        }
+        return bytes_of(indices.data(), indices.size() * sizeof(int64_t));
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    catch (const std::exception& error) {
+        PyErr_SetString(PyExc_ValueError, error.what());
+        return nullptr;
+    }
+}
+
+// Per-component statistics of the cluster cloud.
+//
+// One grouping pass by label (ascending, members ascending) followed by a single
+// scan per component replaces a Python loop whose time went into thousands of
+// small NumPy calls. Every value is the same expression the reference loop
+// evaluates: min/max and their difference, element counts, and the first member
+// achieving the minimum forward coordinate. Rejection happens in the same order,
+// and the object dictionaries stay in Python, where they cost under a
+// millisecond.
+//
+// Payload order: labels, offsets, members, reason codes, path relation, distance
+// method, relation reason, bbox min, bbox max, centre, extent, height span,
+// witness, distance, distance support points, cluster nearest x, supported
+// nearest x, unresolved nearest x, support voxels, density-core voxels,
+// in-envelope voxels, boundary voxels, immediate, interior density-core voxels,
+// interior height span, intersection immediate.
+PyObject* cluster_components(PyObject*, PyObject* args) {
+    PyObject *cloud_object, *labels_object, *core_object, *boundary_object, *dense_object,
+        *heights_object, *uncertain_object;
+    int weak_min_voxels, immediate_min_voxels, envelope_support_mode;
+    double min_extent, immediate_min_height;
+    if (!PyArg_ParseTuple(args, "OOOOOOOiiddi", &cloud_object, &labels_object, &core_object,
+                          &boundary_object, &dense_object, &heights_object, &uncertain_object,
+                          &weak_min_voxels, &immediate_min_voxels, &min_extent,
+                          &immediate_min_height, &envelope_support_mode)) return nullptr;
+    Buffer cloud(cloud_object);
+    Buffer labels(labels_object);
+    Buffer core(core_object);
+    Buffer boundary(boundary_object);
+    Buffer dense(dense_object);
+    Buffer heights(heights_object);
+    Buffer uncertain(uncertain_object);
+    if (!cloud.points() || !labels.integers() || !core.flags() || !boundary.flags() || !dense.flags()
+            || !heights.vector() || !uncertain.flags()) {
+        PyErr_SetString(PyExc_ValueError, "expected cloud (K,3), int64 labels, bool masks and heights");
+        return nullptr;
+    }
+    const Py_ssize_t n = cloud.rows();
+    if (labels.size() != n || core.size() != n || boundary.size() != n || dense.size() != n
+            || heights.size() != n || uncertain.size() != n) {
+        PyErr_SetString(PyExc_ValueError, "cloud, labels, masks and heights must agree in length");
+        return nullptr;
+    }
+    const double* points = cloud.doubles();
+    const int64_t* tag = labels.int64s();
+    const bool* in_core = core.bools();
+    const bool* on_boundary = boundary.bools();
+    const bool* is_dense = dense.bools();
+    const double* bed_height = heights.doubles();
+    const bool* is_uncertain = uncertain.bools();
+    Arena& scratch = arena();
+    std::vector<int64_t> label_rows, offsets_out, member_rows, reason_codes, relations,
+        distance_codes, relation_reasons, support_counts, dense_counts, envelope_counts,
+        boundary_counts, support_points, interior_dense;
+    std::vector<double> bbox_min, bbox_max, centres, extents, height_spans, witnesses, distances,
+        nearest_cluster, nearest_supported, nearest_unresolved, interior_heights;
+    std::vector<uint8_t> immediate_flags, intersection_flags;
+    try {
+        ReleaseGIL released;
+        int64_t lowest = 0, highest = -1;
+        for (Py_ssize_t i = 0; i < n; ++i) {
+            const int64_t value = tag[i];
+            if (value < 0) continue;
+            if (highest < 0 || value < lowest) lowest = value;
+            if (highest < 0 || value > highest) highest = value;
+        }
+        auto& counts = scratch.i0;
+        auto& members = scratch.i1;
+        auto& present = scratch.i2;
+        if (highest >= 0) {
+            const int64_t span = highest - lowest + 1;
+            counts.assign(static_cast<size_t>(span) + 1, 0);
+            for (Py_ssize_t i = 0; i < n; ++i)
+                if (tag[i] >= 0) ++counts[static_cast<size_t>(tag[i] - lowest) + 1];
+            for (int64_t index = 0; index < span; ++index)
+                counts[static_cast<size_t>(index) + 1] += counts[static_cast<size_t>(index)];
+            members.resize(static_cast<size_t>(counts[static_cast<size_t>(span)]));
+            auto& cursor = scratch.i3;
+            cursor.assign(counts.begin(), counts.end() - 1);
+            for (Py_ssize_t i = 0; i < n; ++i) {
+                if (tag[i] < 0) continue;
+                members[static_cast<size_t>(cursor[static_cast<size_t>(tag[i] - lowest)]++)] = i;
+            }
+            // Absent labels contribute no members, so removing their empty runs
+            // leaves the surviving offsets valid.
+            offsets_out.assign(1, 0);
+            for (int64_t index = 0; index < span; ++index) {
+                if (counts[static_cast<size_t>(index) + 1] > counts[static_cast<size_t>(index)]) {
+                    label_rows.push_back(lowest + index);
+                    offsets_out.push_back(counts[static_cast<size_t>(index) + 1]);
+                }
+            }
+            // The members live in the arena, which the next call reuses, so the
+            // returned copy is taken here.
+            member_rows.assign(members.begin(), members.end());
+        }
+        const size_t rows = label_rows.size();
+        for (size_t row = 0; row < rows; ++row) {
+            const int64_t begin = offsets_out[row], end = offsets_out[row + 1];
+            const size_t length = static_cast<size_t>(end - begin);
+            double low[3] = {HUGE_VAL, HUGE_VAL, HUGE_VAL};
+            double high[3] = {-HUGE_VAL, -HUGE_VAL, -HUGE_VAL};
+            double lowest_x = HUGE_VAL, height_low = HUGE_VAL, height_high = -HUGE_VAL;
+            for (size_t slot = 0; slot < length; ++slot) {
+                const int64_t i = members[static_cast<size_t>(begin) + slot];
+                for (int axis = 0; axis < 3; ++axis) {
+                    const double value = points[3 * i + axis];
+                    if (value < low[axis]) low[axis] = value;
+                    if (value > high[axis]) high[axis] = value;
+                }
+                if (points[3 * i] < lowest_x) lowest_x = points[3 * i];
+                if (bed_height[i] < height_low) height_low = bed_height[i];
+                if (bed_height[i] > height_high) height_high = bed_height[i];
+            }
+            bbox_min.insert(bbox_min.end(), low, low + 3);
+            bbox_max.insert(bbox_max.end(), high, high + 3);
+            for (int axis = 0; axis < 3; ++axis) centres.push_back(0.5 * (low[axis] + high[axis]));
+            double largest = 0.0;
+            for (int axis = 0; axis < 3; ++axis) {
+                const double span_axis = high[axis] - low[axis];
+                extents.push_back(span_axis);
+                if (span_axis > largest) largest = span_axis;
+            }
+            height_spans.push_back(height_low);
+            height_spans.push_back(height_high);
+            nearest_cluster.push_back(lowest_x);
+            int64_t inside = 0, uncertain_count = 0, dense_count = 0, boundary_count = 0;
+            int64_t interior_dense_count = 0;
+            double interior_low = HUGE_VAL, interior_high = -HUGE_VAL;
+            double supported_x = HUGE_VAL, unresolved_x = HUGE_VAL;
+            if (static_cast<int>(length) >= weak_min_voxels && largest >= min_extent) {
+                for (size_t slot = 0; slot < length; ++slot) {
+                    const int64_t i = members[static_cast<size_t>(begin) + slot];
+                    if (in_core[i]) {
+                        ++inside;
+                        if (is_dense[i]) ++interior_dense_count;
+                        // The interior span is the height spread of the support
+                        // points themselves, not of the bed-relative heights.
+                        if (points[3 * i + 2] < interior_low) interior_low = points[3 * i + 2];
+                        if (points[3 * i + 2] > interior_high) interior_high = points[3 * i + 2];
+                        if (points[3 * i] < supported_x) supported_x = points[3 * i];
+                    }
+                    if (is_uncertain[i]) {
+                        ++uncertain_count;
+                        if (points[3 * i] < unresolved_x) unresolved_x = points[3 * i];
+                    }
+                    if (is_dense[i]) ++dense_count;
+                    if (on_boundary[i]) ++boundary_count;
+                }
+            }
+            const bool intersects = inside >= weak_min_voxels;
+            const bool unresolved = uncertain_count >= weak_min_voxels;
+            int reason = 0;
+            if (static_cast<int>(length) < weak_min_voxels) reason = 1;
+            else if (largest < min_extent) reason = 2;
+            else if (!intersects && !unresolved && dense_count == 0) reason = 3;
+            reason_codes.push_back(reason);
+            if (reason != 0) {
+                relations.push_back(0);
+                relation_reasons.push_back(0);
+                distance_codes.push_back(0);
+                distances.push_back(0.0);
+                witnesses.insert(witnesses.end(), 3, 0.0);
+                support_points.push_back(0);
+                support_counts.push_back(static_cast<int64_t>(length));
+                dense_counts.push_back(dense_count);
+                envelope_counts.push_back(inside);
+                boundary_counts.push_back(boundary_count);
+                immediate_flags.push_back(0);
+                interior_dense.push_back(0);
+                interior_heights.push_back(0.0);
+                intersection_flags.push_back(0);
+                nearest_supported.push_back(NAN);
+                nearest_unresolved.push_back(NAN);
+                continue;
+            }
+            // The reported distance follows the configured support definition.
+            int mode = 0;
+            if (envelope_support_mode != 0) {
+                if (intersects) mode = 1;
+                else if (unresolved) mode = 2;
+            }
+            double witness_x = HUGE_VAL, witness_y = 0.0, witness_z = 0.0;
+            int64_t considered = 0;
+            for (size_t slot = 0; slot < length; ++slot) {
+                const int64_t i = members[static_cast<size_t>(begin) + slot];
+                const bool selected = mode == 0 ? true : (mode == 1 ? in_core[i] : is_uncertain[i]);
+                if (!selected) continue;
+                ++considered;
+                if (points[3 * i] < witness_x) {
+                    witness_x = points[3 * i];
+                    witness_y = points[3 * i + 1];
+                    witness_z = points[3 * i + 2];
+                }
+            }
+            witnesses.push_back(witness_x);
+            witnesses.push_back(witness_y);
+            witnesses.push_back(witness_z);
+            distances.push_back(witness_x);
+            support_points.push_back(considered);
+            support_counts.push_back(static_cast<int64_t>(length));
+            dense_counts.push_back(dense_count);
+            envelope_counts.push_back(inside);
+            boundary_counts.push_back(boundary_count);
+            immediate_flags.push_back(
+                (dense_count >= immediate_min_voxels && extents[3 * row + 2] >= immediate_min_height) ? 1 : 0);
+            interior_dense.push_back(interior_dense_count);
+            const double interior_span = interior_low > interior_high ? 0.0 : interior_high - interior_low;
+            interior_heights.push_back(interior_span);
+            intersection_flags.push_back(
+                (interior_dense_count >= immediate_min_voxels && interior_span >= immediate_min_height) ? 1 : 0);
+            relations.push_back(intersects ? 1 : (unresolved ? 2 : 0));
+            relation_reasons.push_back(intersects ? 0 : (unresolved ? (boundary_count > 0 ? 1 : 2) : 3));
+            distance_codes.push_back(mode);
+            nearest_supported.push_back(inside > 0 ? supported_x : NAN);
+            nearest_unresolved.push_back(unresolved ? unresolved_x : NAN);
+        }
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    catch (const std::exception& error) {
+        PyErr_SetString(PyExc_ValueError, error.what());
+        return nullptr;
+    }
+    const std::vector<std::pair<const void*, size_t>> blocks = {
+        {label_rows.data(), label_rows.size() * sizeof(int64_t)},
+        {offsets_out.data(), offsets_out.size() * sizeof(int64_t)},
+        {member_rows.data(), member_rows.size() * sizeof(int64_t)},
+        {reason_codes.data(), reason_codes.size() * sizeof(int64_t)},
+        {relations.data(), relations.size() * sizeof(int64_t)},
+        {distance_codes.data(), distance_codes.size() * sizeof(int64_t)},
+        {relation_reasons.data(), relation_reasons.size() * sizeof(int64_t)},
+        {bbox_min.data(), bbox_min.size() * sizeof(double)},
+        {bbox_max.data(), bbox_max.size() * sizeof(double)},
+        {centres.data(), centres.size() * sizeof(double)},
+        {extents.data(), extents.size() * sizeof(double)},
+        {height_spans.data(), height_spans.size() * sizeof(double)},
+        {witnesses.data(), witnesses.size() * sizeof(double)},
+        {distances.data(), distances.size() * sizeof(double)},
+        {support_points.data(), support_points.size() * sizeof(int64_t)},
+        {nearest_cluster.data(), nearest_cluster.size() * sizeof(double)},
+        {nearest_supported.data(), nearest_supported.size() * sizeof(double)},
+        {nearest_unresolved.data(), nearest_unresolved.size() * sizeof(double)},
+        {support_counts.data(), support_counts.size() * sizeof(int64_t)},
+        {dense_counts.data(), dense_counts.size() * sizeof(int64_t)},
+        {envelope_counts.data(), envelope_counts.size() * sizeof(int64_t)},
+        {boundary_counts.data(), boundary_counts.size() * sizeof(int64_t)},
+        {immediate_flags.data(), immediate_flags.size()},
+        {interior_dense.data(), interior_dense.size() * sizeof(int64_t)},
+        {interior_heights.data(), interior_heights.size() * sizeof(double)},
+        {intersection_flags.data(), intersection_flags.size()},
+    };
+    PyObject* payload = PyTuple_New(static_cast<Py_ssize_t>(blocks.size()));
+    if (payload == nullptr) return nullptr;
+    std::vector<PyObject*> owned;
+    owned.reserve(blocks.size());
+    for (size_t index = 0; index < blocks.size(); ++index) {
+        PyObject* block_object = bytes_of(blocks[index].first, blocks[index].second);
+        if (block_object == nullptr) {
+            Py_DECREF(payload);
+            for (PyObject* object : owned) Py_DECREF(object);
+            return nullptr;
+        }
+        owned.push_back(block_object);
+        PyTuple_SET_ITEM(payload, static_cast<Py_ssize_t>(index), block_object);
+    }
+    return payload;
+}
+
 static PyMethodDef methods[] = {
     {"voxel_indices", voxel_indices, METH_VARARGS,
      "First measurement indices, lexicographic voxel order."},
@@ -1008,6 +1369,10 @@ static PyMethodDef methods[] = {
      "Number of distinct voxels for the same keys."},
     {"voxel_counts", voxel_counts, METH_VARARGS,
      "Distinct voxel count for each stack in one call, reusing one arena."},
+    {"cluster_components", cluster_components, METH_VARARGS,
+     "Component grouping and statistics of the cluster cloud in one pass."},
+    {"select_crop_voxels", select_crop_voxels, METH_VARARGS,
+     "Longitudinal-window crop and voxel reduction in one slice-partitioned pass."},
     {"range_indices", range_indices, METH_VARARGS,
      "Measurement indices with |p| inside a radial band; non-finite fails a bound."},
     {"mutual_graph", mutual_graph, METH_VARARGS,

@@ -32,6 +32,26 @@ def native(config: dict):
     return _native
 
 
+def crop_voxels(frame: np.ndarray, min_forward: float, half_width: float, size: float, module=None):
+    """Indices of the voxel representatives inside a longitudinal window.
+
+    Numerically identical to reducing frame[crop] on the same grid: the retained
+    measurement per voxel is the first in input order and the rows come back in
+    key order. The native branch does the crop, the key computation and the
+    reduction in one partitioned pass, so the cropped copy never exists.
+    """
+    if module is not None:
+        return np.frombuffer(module.select_crop_voxels(np.ascontiguousarray(frame), min_forward,
+                                                       half_width, size), dtype=np.int64)
+    crop = (frame[:, 0] >= min_forward) & (np.abs(frame[:, 1]) < half_width)
+    window = np.flatnonzero(crop)
+    cropped = frame[window]
+    if not len(cropped):
+        return np.empty(0, dtype=np.int64)
+    _, first = np.unique(np.floor(cropped / size).astype(np.int64), axis=0, return_index=True)
+    return window[first]
+
+
 def range_indices(points: np.ndarray, minimum: float, maximum: float, module=None) -> np.ndarray:
     """Rows whose radius lies inside the sensor band."""
     if module is not None:
@@ -160,6 +180,93 @@ def classify_geometry(points: np.ndarray, geometry, module=None):
         config["envelope_margin_m"], config["rail_max_heading"])
     return tuple(np.frombuffer(payload[index], dtype=np.uint8).astype(bool) if index in (0, 1, 3, 4, 5)
                  else np.frombuffer(payload[index], dtype=np.float64) for index in range(6))
+
+
+RELATION_NAMES = ("adjacent", "intersecting", "unresolved")
+RELATION_REASONS = ("inside_heuristic_path_interval", "lateral_boundary_uncertainty",
+                    "unsupported_nominal_envelope", "outside_envelope_evidence")
+DISTANCE_METHODS = ("cluster_min_x", "supported_envelope_min_x", "unresolved_envelope_evidence_min_x")
+REJECTION_NAMES = {0: None, 1: "below_weak_min_voxels", 2: "below_min_extent",
+                   3: "weak_without_envelope_support"}
+
+
+def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncertain_support, config, module):
+    """Component statistics for the cluster cloud, in one native call.
+
+    Returns the accepted candidate dictionaries in component order, the rejection
+    counts keyed by reason, and one (component_id, reason, points) row per
+    component for the diagnostic listing. `_support_points` carries the
+    component's own cloud rows, exactly as the reference loop slices them.
+    """
+    payload = module.cluster_components(
+        np.ascontiguousarray(cloud), np.ascontiguousarray(labels, dtype=np.int64),
+        np.ascontiguousarray(core), np.ascontiguousarray(boundary), np.ascontiguousarray(density_core),
+        np.ascontiguousarray(heights), np.ascontiguousarray(uncertain_support),
+        int(config["weak_min_voxels"]), int(config["immediate_min_voxels"]),
+        float(config["cluster_min_extent_m"]), float(config["immediate_min_height_m"]),
+        1 if config.get("obstacle_distance_mode", "cluster_min_x") == "envelope_support_min_x" else 0)
+    (ids, offsets, members, reasons, relations, distance_codes, relation_reasons, bbox_min, bbox_max,
+     centres, extents, height_spans, witnesses, distances, support_points, nearest_cluster,
+     nearest_supported, nearest_unresolved, support_counts, dense_counts, envelope_counts,
+     boundary_counts, immediate, interior_dense, interior_heights, intersection_immediate) = payload
+
+    def integers(block):
+        return np.frombuffer(block, dtype=np.int64)
+
+    def reals(block):
+        return np.frombuffer(block, dtype=np.float64)
+
+    def flags(block):
+        return np.frombuffer(block, dtype=np.uint8).astype(bool)
+
+    ids, offsets, members = integers(ids), integers(offsets), integers(members)
+    reasons, relations = integers(reasons), integers(relations)
+    distance_codes, relation_reasons = integers(distance_codes), integers(relation_reasons)
+    bbox_min, bbox_max = reals(bbox_min), reals(bbox_max)
+    centres, extents, height_spans = reals(centres), reals(extents), reals(height_spans)
+    witnesses, distances = reals(witnesses), reals(distances)
+    support_points = integers(support_points)
+    nearest_cluster, nearest_supported = reals(nearest_cluster), reals(nearest_supported)
+    nearest_unresolved = reals(nearest_unresolved)
+    support_counts, dense_counts = integers(support_counts), integers(dense_counts)
+    envelope_counts, boundary_counts = integers(envelope_counts), integers(boundary_counts)
+    interior_dense, interior_heights = integers(interior_dense), reals(interior_heights)
+    immediate, intersection_immediate = flags(immediate), flags(intersection_immediate)
+    objects, rows, rejected = [], [], {}
+    for row, component in enumerate(ids):
+        begin, end = int(offsets[row]), int(offsets[row + 1])
+        reason = REJECTION_NAMES[int(reasons[row])]
+        rows.append({"component_id": int(component), "reason": reason or "accepted", "points": end - begin})
+        if reason is not None:
+            rejected[reason] = rejected.get(reason, 0) + 1
+            continue
+        objects.append({
+            "bbox_min": bbox_min[3 * row:3 * row + 3].tolist(),
+            "bbox_max": bbox_max[3 * row:3 * row + 3].tolist(),
+            "component_id": int(component),
+            "cluster_nearest_x_m": float(nearest_cluster[row]),
+            "supported_envelope_nearest_x_m": None if np.isnan(nearest_supported[row]) else float(nearest_supported[row]),
+            "unresolved_envelope_nearest_x_m": None if np.isnan(nearest_unresolved[row]) else float(nearest_unresolved[row]),
+            "center": centres[3 * row:3 * row + 3].tolist(),
+            "extent_m": extents[3 * row:3 * row + 3].tolist(),
+            "distance_m": float(distances[row]),
+            "distance_method": DISTANCE_METHODS[int(distance_codes[row])],
+            "distance_support_point": witnesses[3 * row:3 * row + 3].tolist(),
+            "distance_support_points": int(support_points[row]),
+            "path_relation": RELATION_NAMES[int(relations[row])],
+            "support_voxels": int(support_counts[row]),
+            "density_core_voxels": int(dense_counts[row]),
+            "in_envelope_voxels": int(envelope_counts[row]),
+            "_support_points": cloud[members[begin:end]],
+            "boundary_uncertain_voxels": int(boundary_counts[row]),
+            "path_relation_reason": RELATION_REASONS[int(relation_reasons[row])],
+            "height_above_bed_m": [float(height_spans[2 * row]), float(height_spans[2 * row + 1])],
+            "immediate": bool(immediate[row]),
+            "interior_density_core_voxels": int(interior_dense[row]),
+            "interior_height_span_m": float(interior_heights[row]),
+            "intersection_immediate": bool(intersection_immediate[row]),
+        })
+    return objects, rejected, rows
 
 
 def voxel_counts(stacks, size: float, module=None):
