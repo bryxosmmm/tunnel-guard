@@ -23,6 +23,14 @@ See [small-object review and calibration limits](docs/ENVELOPE_INTERVAL_REVIEW.m
 
 See [runtime profile and verification](docs/RUNTIME_CONTEXT_OPTIMIZATION.md). Avoiding unused background queries and repeated component scans preserved compared outputs on all 798 real scans. That pre-integration version measured 315–469 ms on the development Mac. See [native integration](docs/NATIVE_INTEGRATION.md) for current timings and remaining bottlenecks; target-hardware performance is unverified.
 
+## Decode and complete offline latency
+
+See [decoder preservation and latency scope](docs/DECODE_AND_LATENCY.md). Paired
+real-cloud decoding decreased from 11.70 to 7.60 ms; all 174.5 million valid point
+observations and normalized times matched exactly. The complete offline loop
+measures 140–201 ms median across three recordings, including read/decode,
+inference and result serialization. This is not live sensor-to-display latency.
+
 ## Coverage expansion and modeled insertions
 
 See [coverage expansion](docs/COVERAGE_EXPANSION.md): complete platform and round-to-double tunnel runs, plus nine controlled cases on actual measured ray directions. Modeled support is traced through processing stages; missing rays, occlusion and candidate rejection are reported separately. Synthetic attribution is not field recall. The production detector is frozen for this experiment; its parameters were not tuned to inserted boxes.

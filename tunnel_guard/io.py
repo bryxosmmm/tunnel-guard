@@ -3,6 +3,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import time
 
 import numpy as np
 from rosbags.rosbag2 import Reader
@@ -23,6 +24,8 @@ class Scan:
     measurement_timestamp_ns: int = 0
     record_timestamp_ns: int = 0
     skipped_duplicate_scans: int = 0
+    deserialize_s: float = 0.0
+    decode_s: float = 0.0
 
 
 def decode_cloud(message, rotation: np.ndarray, translation: np.ndarray):
@@ -51,20 +54,45 @@ def decode_cloud(message, rotation: np.ndarray, translation: np.ndarray):
                       "offsets": [fields[n].offset for n in names], "itemsize": message.point_step})
     records = np.ndarray((message.height, message.width), dtype=dtype, buffer=message.data,
                          strides=(message.row_step, message.point_step))
-    points = np.column_stack([records[n].ravel() for n in required]).astype(np.float64)
-    valid = np.isfinite(points).all(axis=1) & (np.einsum("ij,ij->i", points, points) > 1e-6)
+    # Copy strided fields directly into their final float64 array. Building a
+    # float32 column_stack first made an extra full cloud and padded-row copies.
+    points = np.empty((message.height, message.width, 3), dtype=np.float64)
+    for axis, name in enumerate(required):
+        points[:, :, axis] = records[name]
+    points = points.reshape(-1, 3)
+    valid = (np.isfinite(points[:, 0]) & np.isfinite(points[:, 1]) & np.isfinite(points[:, 2])
+             & (np.einsum("ij,ij->i", points, points) > 1e-6))
+    invalid = len(points) - int(np.count_nonzero(valid))
     times = np.empty(0, dtype=np.float64)
     duration = 0.0
     if time_name and valid.any():
-        raw_time = records[time_name].ravel().astype(np.float64)[valid]
-        if np.isfinite(raw_time).all() and np.ptp(raw_time) > 0:
+        raw_time = records[time_name].ravel().astype(np.float64, copy=False)
+        if invalid:
+            raw_time = raw_time[valid]
+        if np.isfinite(raw_time).all():
             duration = float(np.ptp(raw_time))
+        if duration > 0:
             times = (raw_time - raw_time.min()) / duration
             # Only a field named timestamp is interpreted as absolute seconds.
             # Other time fields retain normalized ordering but unknown units.
             if time_name != "timestamp":
                 duration = 0.0
-    return points[valid] @ rotation.T + translation, times, int((~valid).sum()), duration
+    if invalid:
+        points = points[valid]
+    # Exact signed axis permutations cover the current mounting recipe. General
+    # calibrated rotations keep the matrix product and its arithmetic order.
+    axes = np.argmax(np.abs(rotation), axis=1)
+    signs = rotation[np.arange(3), axes]
+    permutation = np.zeros((3, 3))
+    permutation[np.arange(3), axes] = signs
+    if len(set(axes)) == 3 and np.all(np.abs(signs) == 1) and np.array_equal(rotation, permutation):
+        transformed = np.empty_like(points)
+        for axis, source in enumerate(axes):
+            np.multiply(points[:, source], signs[axis], out=transformed[:, axis])
+    else:
+        transformed = points @ rotation.T
+    transformed += translation
+    return transformed, times, invalid, duration
 
 
 def iter_bag(path: Path, config: dict, *, topic: str | None = None, every: int = 1,
@@ -90,7 +118,9 @@ def iter_bag(path: Path, config: dict, *, topic: str | None = None, every: int =
             if max_frames is not None and emitted >= max_frames:
                 break
             stats["source_messages"] += 1
+            deserialize_start = time.perf_counter()
             message = store.deserialize_cdr(raw, connection.msgtype)
+            deserialize_s = time.perf_counter() - deserialize_start
             stamp = message.header.stamp
             if not 0 <= stamp.nanosec < 1_000_000_000 or stamp.sec < 0:
                 raise ValueError(f"Invalid acquisition timestamp at scan {index}")
@@ -110,9 +140,11 @@ def iter_bag(path: Path, config: dict, *, topic: str | None = None, every: int =
             if index % every:
                 stats["subsampled_measurements"] += 1
                 continue
+            decode_start = time.perf_counter()
             points, times, invalid, duration = decode_cloud(message, rotation, translation)
+            decode_s = time.perf_counter() - decode_start
             stats["emitted_scans"] += 1
             yield Scan(index, measurement_ns * 1e-9, points, times, message.header.frame_id,
                        connection.topic, message.height * message.width, invalid, duration,
-                       measurement_ns, timestamp_ns, duplicates)
+                       measurement_ns, timestamp_ns, duplicates, deserialize_s, decode_s)
             emitted += 1

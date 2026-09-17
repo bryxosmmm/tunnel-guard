@@ -156,15 +156,19 @@ def main():
         visual = (ResultBag(output / f"{bag.name}_rviz", config,
                             experiment.get("display_max_points", 100000))
                   if experiment.get("visualization", False) else nullcontext())
-        with (output / f"{bag.name}.jsonl").open("x") as stream, visual as display:
+        with (output / f"{bag.name}.jsonl").open("x") as stream, visual as display, \
+                (output / f"{bag.name}-timing.jsonl").open("x") as timing_stream:
             while True:
                 frame_start = time.perf_counter()
                 try:
                     scan = next(iterator)
                 except StopIteration:
                     break
+                inference_start = time.perf_counter()
+                ingestion_s = inference_start - frame_start
                 row = detector.process(scan.points, scan.timestamp_s, scan.point_times,
                                        capture_diagnostics=scan.index in diagnostic_frames)
+                inference_s = time.perf_counter() - inference_start
                 row.update(frame=scan.index, bag=bag.name, raw_points=scan.raw_points,
                            invalid_points=scan.invalid_points, sensor_frame=scan.frame_id,
                            topic=scan.topic, scan_duration_s=scan.scan_duration_s,
@@ -172,6 +176,8 @@ def main():
                            record_timestamp_ns=scan.record_timestamp_ns,
                            source_scan_id=f"{scan.topic}:{scan.frame_id}:{scan.measurement_timestamp_ns}",
                            skipped_duplicate_scans=scan.skipped_duplicate_scans,
+                           deserialize_s=scan.deserialize_s, decode_s=scan.decode_s,
+                           ingestion_s=ingestion_s,
                            read_and_process_s=time.perf_counter() - frame_start)
                 if scan.index in diagnostic_frames:
                     diagnostic_start = time.perf_counter()
@@ -185,7 +191,19 @@ def main():
                     display_started = time.perf_counter()
                     display.write(row, detector.display_points, scan.measurement_timestamp_ns, detector.display_support)
                     row["visualization_s"] = time.perf_counter() - display_started
+                write_start = time.perf_counter()
                 stream.write(json.dumps(row, allow_nan=False) + "\n")
+                result_write_s = time.perf_counter() - write_start
+                iteration_s = time.perf_counter() - frame_start
+                timing_stream.write(json.dumps({
+                    "frame": scan.index, "measurement_timestamp_ns": scan.measurement_timestamp_ns,
+                    "ingestion_s": ingestion_s, "deserialize_s": scan.deserialize_s,
+                    "decode_s": scan.decode_s, "inference_s": inference_s,
+                    "visualization_s": row.get("visualization_s", 0),
+                    "diagnostic_write_s": row.get("diagnostic_write_s", 0),
+                    "result_serialize_and_buffer_write_s": result_write_s,
+                    "offline_iteration_s": iteration_s,
+                }) + "\n")
                 # Full object/support records are already durable in JSONL.
                 # Keep only fields used by summarize(), not every track history
                 # and covariance from the entire recording.
@@ -194,7 +212,8 @@ def main():
                     | {"geometry": {"valid": row.get("geometry", {}).get("valid", False)},
                        "motion": {"valid": row.get("motion", {}).get("valid", False)},
                        "diagnostic_write_s": row.get("diagnostic_write_s", 0),
-                       "visualization_s": row.get("visualization_s", 0)})
+                       "visualization_s": row.get("visualization_s", 0),
+                       "decode_s": scan.decode_s, "offline_iteration_s": iteration_s})
                 if len(rows) % 50 == 0:
                     stream.flush()
                     print(f"{bag.name}: {len(rows)} frames, {row['status']}, nearest={row['nearest_obstacle_m']}", flush=True)
@@ -205,6 +224,13 @@ def main():
                                     "process_peak_rss_bytes": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * (1 if sys.platform == "darwin" else 1024),
                                     "diagnostic_write_total_s": sum(r.get("diagnostic_write_s", 0) for r in rows),
                                     "visualization_total_s": sum(r.get("visualization_s", 0) for r in rows)}
+        summary["stage_ms"] = {key: {name: float(np.quantile([r[key] for r in rows], q) * 1000)
+                                             for name, q in (("p50", .5), ("p95", .95))}
+                               for key in ("decode_s", "offline_iteration_s")}
+        summary["latency_scope"] = (
+            "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/"
+            "RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log "
+            "write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age.")
         summaries.append(summary)
         write_json(output / "summary.json", summaries)
         print(json.dumps({k: summary[k] for k in ("bag", "frames", "status_frames", "processing_ms", "wall_s")}), flush=True)

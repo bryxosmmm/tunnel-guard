@@ -1,0 +1,480 @@
+{
+  "date": "2026-09-17",
+  "baseline_revision": "839d9fa",
+  "decoder_benchmark": {
+    "frames": 798,
+    "point_observations": 174539002,
+    "changed_frames": [],
+    "layouts": [
+      {
+        "height": 1,
+        "width": 921600,
+        "point_step": 26,
+        "row_step": 23961600,
+        "bigendian": false,
+        "fields": [
+          [
+            "x",
+            0,
+            7,
+            1
+          ],
+          [
+            "y",
+            4,
+            7,
+            1
+          ],
+          [
+            "z",
+            8,
+            7,
+            1
+          ],
+          [
+            "intensity",
+            12,
+            7,
+            1
+          ],
+          [
+            "ring",
+            16,
+            4,
+            1
+          ],
+          [
+            "timestamp",
+            18,
+            8,
+            1
+          ]
+        ]
+      },
+      {
+        "height": 1,
+        "width": 307200,
+        "point_step": 26,
+        "row_step": 7987200,
+        "bigendian": false,
+        "fields": [
+          [
+            "x",
+            0,
+            7,
+            1
+          ],
+          [
+            "y",
+            4,
+            7,
+            1
+          ],
+          [
+            "z",
+            8,
+            7,
+            1
+          ],
+          [
+            "intensity",
+            12,
+            7,
+            1
+          ],
+          [
+            "ring",
+            16,
+            4,
+            1
+          ],
+          [
+            "timestamp",
+            18,
+            8,
+            1
+          ]
+        ]
+      }
+    ],
+    "repetitions": 3,
+    "max_coordinate_difference": 0.0,
+    "max_time_difference": 0.0,
+    "timing_scope": "decode_cloud only, alternating per-message order; no deserialization or comparison cost",
+    "decode_ms": {
+      "before": {
+        "p50": 11.703895492246374,
+        "p95": 29.677842001547102
+      },
+      "after": {
+        "p50": 7.603375008329749,
+        "p95": 20.795718769659285
+      }
+    },
+    "limitations": [
+      "Only recorded layouts/transforms exercised; no generated layout cases.",
+      "No safety/accuracy claim or target hardware measurement."
+    ]
+  },
+  "detector_comparison": {
+    "panel": "configs/decode-panel.json",
+    "panel_sha256": "db55ac81d5eb9335a0562be5ed0a61f39ffad130dc312e09701c25dc363bed7f",
+    "accuracy": null,
+    "limitations": [
+      "Alarm counts on nonexhaustively labelled development recordings are not precision, recall or false-alarm rate.",
+      "Repeated frames and candidates are not independent object events.",
+      "Timing is descriptive; concurrent workloads and visualization settings differ.",
+      "Float comparison uses absolute and relative tolerance 1e-10; discrete decisions and IDs are exact."
+    ],
+    "bags": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/integrated-native-real/doubleT_obstacle.jsonl",
+        "after": "build/decode-real/doubleT_obstacle.jsonl",
+        "before_sha256": "8ce4aeb1958f89b3c266e9e7b7ce3fba3df5e7906a47b9f7571203dca6c26c9e",
+        "after_sha256": "dd9b45532d8ee407a50b17c3d82fe294b8c74d9ea6f537545c0ba4b631890674",
+        "before_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 82,
+            "obstacle": 119
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44603,
+          "support_voxel_observations": 3856178,
+          "confirmed_intersection_observations": 203,
+          "candidate_observations_at_least_60m": 10665,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 154.62495799874887,
+            "p95": 200.9285839740187,
+            "p99": 240.17950001871213
+          }
+        },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 82,
+            "obstacle": 119
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44603,
+          "support_voxel_observations": 3856178,
+          "confirmed_intersection_observations": 203,
+          "candidate_observations_at_least_60m": 10665,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 153.2666659913957,
+            "p95": 215.97770898370072,
+            "p99": 245.69354200502858
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 4.529709940470639e-14
+      },
+      {
+        "bag": "doubleT_platform",
+        "before": "build/integrated-native-real/doubleT_platform.jsonl",
+        "after": "build/decode-real/doubleT_platform.jsonl",
+        "before_sha256": "9410e827a73957c0fce75df9d45ee6426849ff402c7b385b37f79d44c35d125b",
+        "after_sha256": "557e038ef57441e087300d4e63f514c31b9eb362bac6d9e6860b9a7372415232",
+        "before_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68321,
+          "support_voxel_observations": 4237359,
+          "confirmed_intersection_observations": 255,
+          "candidate_observations_at_least_60m": 22191,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 125.98854099633172,
+            "p95": 231.363474985119,
+            "p99": 341.02547053480527
+          }
+        },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68321,
+          "support_voxel_observations": 4237359,
+          "confirmed_intersection_observations": 255,
+          "candidate_observations_at_least_60m": 22191,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 123.52358299540356,
+            "p95": 198.34790860768413,
+            "p99": 271.4728399692103
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 5.967448757360216e-14
+      },
+      {
+        "bag": "roundT_doubleT",
+        "before": "build/integrated-native-real/roundT_doubleT.jsonl",
+        "after": "build/decode-real/roundT_doubleT.jsonl",
+        "before_sha256": "6cf383e177203e8c145af055eb790237d0b44b1c4793c81f4c3a0c3d5a54ede2",
+        "after_sha256": "a650606a1de563bbf9a077e2b42078113100e443fd08d2e414adbbde655d4842",
+        "before_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 187,
+            "obstacle": 64
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48953,
+          "support_voxel_observations": 4039823,
+          "confirmed_intersection_observations": 191,
+          "candidate_observations_at_least_60m": 11435,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 124.29204198997468,
+            "p95": 161.17505243746564,
+            "p99": 187.6897787570489
+          }
+        },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 187,
+            "obstacle": 64
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48953,
+          "support_voxel_observations": 4039823,
+          "confirmed_intersection_observations": 191,
+          "candidate_observations_at_least_60m": 11435,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 131.99283299036324,
+            "p95": 194.43601891398427,
+            "p99": 247.96026941796305
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 5.085931675807842e-13
+      }
+    ]
+  },
+  "offline_summaries": [
+    {
+      "frames": 201,
+      "recording_duration_s": 20.400028824806213,
+      "status_frames": {
+        "unresolved_obstacle": 82,
+        "obstacle": 119
+      },
+      "geometry_valid_frames": 201,
+      "motion_valid_frames": 200,
+      "processing_ms": {
+        "p50": 153.2666659913957,
+        "p95": 215.97770898370072,
+        "p99": 245.69354200502858
+      },
+      "read_and_process_ms": {
+        "p50": 197.56362499902025,
+        "p95": 273.49054196383804,
+        "p99": 383.67862498853356
+      },
+      "alarm_episodes_unlabelled": [
+        {
+          "start_frame": 0,
+          "start_s": 946687297.1999332,
+          "end_s": 946687317.599962,
+          "frames": 201
+        }
+      ],
+      "accuracy": null,
+      "accuracy_validity": "No ground truth implied by bag name or alarm count",
+      "bag": "doubleT_obstacle",
+      "split": "development_not_blind",
+      "wall_s": 43.74133404099848,
+      "ingestion": {
+        "source_messages": 201,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 201
+      },
+      "process_peak_rss_bytes": 757432320,
+      "diagnostic_write_total_s": 0,
+      "visualization_total_s": 0,
+      "stage_ms": {
+        "decode_s": {
+          "p50": 19.758125010412186,
+          "p95": 29.18879099888727
+        },
+        "offline_iteration_s": {
+          "p50": 201.22254197485745,
+          "p95": 276.69845800846815
+        }
+      },
+      "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age."
+    },
+    {
+      "frames": 345,
+      "recording_duration_s": 34.399957060813904,
+      "status_frames": {
+        "unresolved_obstacle": 258,
+        "obstacle": 87
+      },
+      "geometry_valid_frames": 345,
+      "motion_valid_frames": 240,
+      "processing_ms": {
+        "p50": 123.52358299540356,
+        "p95": 198.34790860768413,
+        "p99": 271.4728399692103
+      },
+      "read_and_process_ms": {
+        "p50": 136.4099159836769,
+        "p95": 220.7213415880688,
+        "p99": 285.06310004740953
+      },
+      "alarm_episodes_unlabelled": [
+        {
+          "start_frame": 0,
+          "start_s": 946693350.33343,
+          "end_s": 946693384.7333871,
+          "frames": 345
+        }
+      ],
+      "accuracy": null,
+      "accuracy_validity": "No ground truth implied by bag name or alarm count",
+      "bag": "doubleT_platform",
+      "split": "development_not_blind",
+      "wall_s": 51.632865874969866,
+      "ingestion": {
+        "source_messages": 345,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 345
+      },
+      "process_peak_rss_bytes": 757432320,
+      "diagnostic_write_total_s": 0,
+      "visualization_total_s": 0,
+      "stage_ms": {
+        "decode_s": {
+          "p50": 7.160833978559822,
+          "p95": 9.96389980427921
+        },
+        "offline_iteration_s": {
+          "p50": 139.76037502288818,
+          "p95": 224.02147502871236
+        }
+      },
+      "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age."
+    },
+    {
+      "frames": 252,
+      "recording_duration_s": 25.099918127059937,
+      "status_frames": {
+        "candidate": 1,
+        "unresolved_obstacle": 187,
+        "obstacle": 64
+      },
+      "geometry_valid_frames": 252,
+      "motion_valid_frames": 251,
+      "processing_ms": {
+        "p50": 131.99283299036324,
+        "p95": 194.43601891398427,
+        "p99": 247.96026941796305
+      },
+      "read_and_process_ms": {
+        "p50": 146.24097949126735,
+        "p95": 217.28429024224167,
+        "p99": 276.4592778257794
+      },
+      "alarm_episodes_unlabelled": [
+        {
+          "start_frame": 1,
+          "start_s": 946692931.7334151,
+          "end_s": 946692956.7333181,
+          "frames": 251
+        }
+      ],
+      "accuracy": null,
+      "accuracy_validity": "No ground truth implied by bag name or alarm count",
+      "bag": "roundT_doubleT",
+      "split": "development_not_blind",
+      "wall_s": 39.804472999996506,
+      "ingestion": {
+        "source_messages": 252,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 252
+      },
+      "process_peak_rss_bytes": 757432320,
+      "diagnostic_write_total_s": 0,
+      "visualization_total_s": 0,
+      "stage_ms": {
+        "decode_s": {
+          "p50": 7.344792014919221,
+          "p95": 10.889587650308384
+        },
+        "offline_iteration_s": {
+          "p50": 149.55629099858925,
+          "p95": 220.54564407153512
+        }
+      },
+      "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age."
+    }
+  ],
+  "limitations": [
+    "Replay is offline; no ROS queue, transport, sensor-to-host clock synchronization or rendering latency measured.",
+    "ROS timing fields added by source inspection only; no ROS runtime available on this Mac.",
+    "Only actual recorded single-row little-endian 26-byte layouts and configured axis mapping exercised.",
+    "Full-replay latency is descriptive, not a paired end-to-end speedup measurement.",
+    "Nonexhaustive labels cannot establish obstacle precision/recall or safety."
+  ]
+}
