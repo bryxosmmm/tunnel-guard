@@ -3,6 +3,8 @@ from __future__ import annotations
 
 import argparse
 import copy
+import importlib
+import importlib.util
 import json
 from pathlib import Path
 import shutil
@@ -26,6 +28,23 @@ def main():
     config = load_config(recipe['detector_config'])
     if recipe['seed'] != config['seed']:
         raise ValueError('Seed mismatch')
+    variants = [('numpy', Detector, 'numpy'), ('cpp', Detector, 'cpp')]
+    baseline_hashes = None
+    if recipe.get('baseline_source'):
+        # Compare a saved Python source snapshot with this revision, sharing the
+        # unchanged native kernel. Never rewrite the historical source snapshot.
+        baseline = Path(recipe['baseline_source']).resolve()
+        spec = importlib.util.spec_from_file_location('_runtime_before', baseline / '__init__.py',
+                                                     submodule_search_locations=[str(baseline)])
+        package = importlib.util.module_from_spec(spec)
+        sys.modules[spec.name] = package
+        spec.loader.exec_module(package)
+        sys.modules[spec.name + '._native'] = _native
+        package._native = _native
+        before_detector = importlib.import_module(spec.name + '.detector').Detector
+        backend = config.get('voxel_backend', 'numpy')
+        variants = [('before', before_detector, backend), ('after', Detector, backend)]
+        baseline_hashes = {p.name: digest(p) for p in sorted(baseline.glob('*.py'))}
     output = Path(recipe['output'])
     output.mkdir(parents=True, exist_ok=False)
     write_json(output / 'experiment.json', recipe)
@@ -39,6 +58,8 @@ def main():
                                'native_binary_sha256': digest(Path(_native.__file__)),
                                'native_source_sha256': digest(source),
                                'config_sha256': digest(Path(recipe['detector_config'])),
+                               'baseline_source_sha256': baseline_hashes,
+                               'variants': [{'name': name, 'voxel_backend': backend} for name, _, backend in variants],
                                'bag_metadata_sha256': digest(bag / 'metadata.yaml'),
                                'bag_files': [{'name': p.name, 'size': p.stat().st_size, 'mtime_ns': p.stat().st_mtime_ns}
                                              for p in sorted(bag.glob('*.db3'))]}
@@ -49,18 +70,18 @@ def main():
     write_json(output / 'manifest.json', manifest)
     # Load libraries and exercise each implementation on the same real first
     # frame before timing. Fresh detectors below retain identical cold tracking.
-    for backend in ('numpy', 'cpp'):
+    for _, constructor, backend in variants:
         cfg = copy.deepcopy(config) | {'voxel_backend': backend}
-        Detector(cfg).process(scans[0].points, scans[0].timestamp_s, scans[0].point_times)
+        constructor(cfg).process(scans[0].points, scans[0].timestamp_s, scans[0].point_times)
     runs, comparisons = [], []
     for repeat in range(recipe['repetitions']):
-        order = ('numpy', 'cpp') if repeat % 2 == 0 else ('cpp', 'numpy')
+        order = variants if repeat % 2 == 0 else list(reversed(variants))
         paths = {}
-        for backend in order:
+        for name, constructor, backend in order:
             cfg = copy.deepcopy(config) | {'voxel_backend': backend}
-            detector = Detector(cfg)
-            path = output / f'{repeat}-{backend}.jsonl'
-            paths[backend] = path
+            detector = constructor(cfg)
+            path = output / f'{repeat}-{name}.jsonl'
+            paths[name] = path
             elapsed = []
             with path.open('x') as stream:
                 for scan in scans:
@@ -71,18 +92,19 @@ def main():
                                record_timestamp_ns=scan.record_timestamp_ns, sensor_frame=scan.frame_id,
                                topic=scan.topic, benchmark_elapsed_s=elapsed[-1])
                     stream.write(json.dumps(row, allow_nan=False) + '\n')
-            record = {'repeat': repeat, 'backend': backend, 'order': list(order),
+            record = {'repeat': repeat, 'backend': name, 'voxel_backend': backend,
+                      'order': [v[0] for v in order],
                       'frames': len(scans), 'elapsed_s': sum(elapsed),
                       'processing_ms': {name: float(np.quantile(elapsed, q)*1000)
                                         for name, q in [('p50', .5), ('p95', .95)]}}
             runs.append(record)
             print(json.dumps(record), flush=True)
-        comparisons.append(compare({'bag': bag.name, 'before': str(paths['numpy']), 'after': str(paths['cpp'])}))
+        comparisons.append(compare({'bag': bag.name, 'before': str(paths[variants[0][0]]), 'after': str(paths[variants[1][0]])}))
     medians = {backend: float(np.median([r['processing_ms']['p50'] for r in runs if r['backend'] == backend]))
-               for backend in ('numpy', 'cpp')}
+               for backend, _, _ in variants}
     write_json(output / 'report.json', {'runs': runs, 'comparisons': comparisons,
                                       'median_of_run_p50_ms': medians,
-                                      'p50_speedup': medians['numpy'] / medians['cpp'],
+                                      'p50_speedup': medians[variants[0][0]] / medians[variants[1][0]],
                                       'limitations': ['Cached prefix of one development recording, not full field latency.',
                                                       'No bag decoding, rendering or ROS transport in timed region.',
                                                       'Sequential alternating runs reduce but cannot eliminate machine-load and thermal effects.',

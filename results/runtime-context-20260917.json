@@ -1,0 +1,496 @@
+{
+  "base_commit": "2c69efd",
+  "full_comparison": {
+    "panel": "configs/runtime-context-panel.json",
+    "panel_sha256": "ca3b88b3c90c5e0471f939653cda803e8be57c733e7bf7e834678fe723969ecc",
+    "accuracy": null,
+    "limitations": [
+      "Alarm counts on nonexhaustively labelled development recordings are not precision, recall or false-alarm rate.",
+      "Repeated frames and candidates are not independent object events.",
+      "Timing is descriptive; concurrent workloads and visualization settings differ.",
+      "Float comparison uses absolute and relative tolerance 1e-10; discrete decisions and IDs are exact."
+    ],
+    "bags": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/envelope-interval-real/doubleT_obstacle.jsonl",
+        "after": "build/runtime-context-real/doubleT_obstacle.jsonl",
+        "before_sha256": "e1eee94c10064081254a0f9a10b21021464785631245edc2722cb1469452a4f5",
+        "after_sha256": "85a2f5fe83e981ce361516602f970b68e999900c0d3b09a6dace660140c88056",
+        "before_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 82,
+            "obstacle": 119
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44603,
+          "support_voxel_observations": 3856178,
+          "confirmed_intersection_observations": 203,
+          "candidate_observations_at_least_60m": 10665,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 543.1347079575062,
+            "p95": 648.9159999764524,
+            "p99": 845.5824999837205
+          }
+        },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 82,
+            "obstacle": 119
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44603,
+          "support_voxel_observations": 3856178,
+          "confirmed_intersection_observations": 203,
+          "candidate_observations_at_least_60m": 10665,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 469.0715419710614,
+            "p95": 546.7085840064101,
+            "p99": 645.5557079752907
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 4.529709940470639e-14
+      },
+      {
+        "bag": "doubleT_platform",
+        "before": "build/envelope-interval-real/doubleT_platform.jsonl",
+        "after": "build/runtime-context-real/doubleT_platform.jsonl",
+        "before_sha256": "52d1601a70c485a88b9b5775b07dcea1b64dd4dfdf9452c2c05911548981c1d7",
+        "after_sha256": "df2370f2c51d3e3a6def4cac93addb9ba4dab88c7dbabe747cddb87218453bb8",
+        "before_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68321,
+          "support_voxel_observations": 4237359,
+          "confirmed_intersection_observations": 255,
+          "candidate_observations_at_least_60m": 22191,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 361.0774999833666,
+            "p95": 457.81009137863293,
+            "p99": 548.0143380397931
+          }
+        },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68321,
+          "support_voxel_observations": 4237359,
+          "confirmed_intersection_observations": 255,
+          "candidate_observations_at_least_60m": 22191,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 315.41670800652355,
+            "p95": 392.4336328054779,
+            "p99": 428.78592993365606
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 6.439293542825908e-14
+      },
+      {
+        "bag": "roundT_doubleT",
+        "before": "build/envelope-interval-real/roundT_doubleT.jsonl",
+        "after": "build/runtime-context-real/roundT_doubleT.jsonl",
+        "before_sha256": "53bd668d19b48f1e30985fc29cf3ace79f1e4eba290714d44305d6211b6b590d",
+        "after_sha256": "6bc675c3aeb75727c4eaf7b911df6157c46e0c04de9ebdd349403b3b023e18b8",
+        "before_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 187,
+            "obstacle": 64
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48953,
+          "support_voxel_observations": 4039823,
+          "confirmed_intersection_observations": 191,
+          "candidate_observations_at_least_60m": 11435,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 440.83022949052975,
+            "p95": 569.588818619377,
+            "p99": 633.0913256481292
+          }
+        },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 187,
+            "obstacle": 64
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48953,
+          "support_voxel_observations": 4039823,
+          "confirmed_intersection_observations": 191,
+          "candidate_observations_at_least_60m": 11435,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 371.8396670301445,
+            "p95": 430.16318109002896,
+            "p99": 456.4073600783013
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 4.300448885885544e-13
+      }
+    ]
+  },
+  "paired_benchmark": {
+    "runs": [
+      {
+        "repeat": 0,
+        "backend": "before",
+        "voxel_backend": "cpp",
+        "order": [
+          "before",
+          "after"
+        ],
+        "frames": 20,
+        "elapsed_s": 10.896522207127418,
+        "processing_ms": {
+          "p50": 533.0794789770152,
+          "p95": 601.2534315726953
+        }
+      },
+      {
+        "repeat": 0,
+        "backend": "after",
+        "voxel_backend": "cpp",
+        "order": [
+          "before",
+          "after"
+        ],
+        "frames": 20,
+        "elapsed_s": 9.198341790877748,
+        "processing_ms": {
+          "p50": 461.2919375067577,
+          "p95": 481.5826354082674
+        }
+      },
+      {
+        "repeat": 1,
+        "backend": "after",
+        "voxel_backend": "cpp",
+        "order": [
+          "after",
+          "before"
+        ],
+        "frames": 20,
+        "elapsed_s": 9.174639376171399,
+        "processing_ms": {
+          "p50": 460.82300049602054,
+          "p95": 474.8561357642757
+        }
+      },
+      {
+        "repeat": 1,
+        "backend": "before",
+        "voxel_backend": "cpp",
+        "order": [
+          "after",
+          "before"
+        ],
+        "frames": 20,
+        "elapsed_s": 10.593298999941908,
+        "processing_ms": {
+          "p50": 526.1710415070411,
+          "p95": 569.3492274003802
+        }
+      },
+      {
+        "repeat": 2,
+        "backend": "before",
+        "voxel_backend": "cpp",
+        "order": [
+          "before",
+          "after"
+        ],
+        "frames": 20,
+        "elapsed_s": 10.649403334362432,
+        "processing_ms": {
+          "p50": 529.684500041185,
+          "p95": 563.403462819406
+        }
+      },
+      {
+        "repeat": 2,
+        "backend": "after",
+        "voxel_backend": "cpp",
+        "order": [
+          "before",
+          "after"
+        ],
+        "frames": 20,
+        "elapsed_s": 9.241371959040407,
+        "processing_ms": {
+          "p50": 460.682604520116,
+          "p95": 488.4245916357031
+        }
+      }
+    ],
+    "comparisons": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/runtime-context-paired/0-before.jsonl",
+        "after": "build/runtime-context-paired/0-after.jsonl",
+        "before_sha256": "8ba059e7b793c01d9f491bdc2b1a29db28db9fffc4d5242da9052cd81cb80bef",
+        "after_sha256": "3f8f2283f35eb2308364189aed6174e9d39f2f59496ae2b938cf2b7ab74e180b",
+        "before_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4336,
+          "support_voxel_observations": 382291,
+          "confirmed_intersection_observations": 26,
+          "candidate_observations_at_least_60m": 1010,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 532.3512085014954,
+            "p95": 600.2798232424539,
+            "p99": 609.1399982233997
+          }
+        },
+        "after_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4336,
+          "support_voxel_observations": 382291,
+          "confirmed_intersection_observations": 26,
+          "candidate_observations_at_least_60m": 1010,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 460.81135401618667,
+            "p95": 480.5822184687713,
+            "p99": 488.3210773282917
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 3.419486915845482e-14
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/runtime-context-paired/1-before.jsonl",
+        "after": "build/runtime-context-paired/1-after.jsonl",
+        "before_sha256": "bc762af66096ff6997244a8303dcbdbd3da4337646d77483b094a749c15df053",
+        "after_sha256": "244814cf4eddbbdb3b5794d25648d156916cf17d0148d51cd73fd9bdd6b7a6af",
+        "before_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4336,
+          "support_voxel_observations": 382291,
+          "confirmed_intersection_observations": 26,
+          "candidate_observations_at_least_60m": 1010,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 525.2712710062042,
+            "p95": 568.7362649245188,
+            "p99": 604.2696529952809
+          }
+        },
+        "after_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4336,
+          "support_voxel_observations": 382291,
+          "confirmed_intersection_observations": 26,
+          "candidate_observations_at_least_60m": 1010,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 460.1114790129941,
+            "p95": 473.46626634243876,
+            "p99": 476.2734532682225
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 2.2648549702353193e-14
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/runtime-context-paired/2-before.jsonl",
+        "after": "build/runtime-context-paired/2-after.jsonl",
+        "before_sha256": "fe06e21fbe10162bd3850da4dab506bcbf0b4d82b6bb180593960b0a6e2506c7",
+        "after_sha256": "2fe540ea8c1c97982c85d75ae1413d16df8e24b38f93ed9eb2d37fe5a7b71cb0",
+        "before_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4336,
+          "support_voxel_observations": 382291,
+          "confirmed_intersection_observations": 26,
+          "candidate_observations_at_least_60m": 1010,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 528.6613749922253,
+            "p95": 562.7388306544162,
+            "p99": 578.5759333451279
+          }
+        },
+        "after_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4336,
+          "support_voxel_observations": 382291,
+          "confirmed_intersection_observations": 26,
+          "candidate_observations_at_least_60m": 1010,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 459.96935400762595,
+            "p95": 487.5328413385432,
+            "p99": 488.2150682748761
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 8.43769498715119e-15
+      }
+    ],
+    "median_of_run_p50_ms": {
+      "before": 529.684500041185,
+      "after": 460.82300049602054
+    },
+    "p50_speedup": 1.149431559342835,
+    "limitations": [
+      "Cached prefix of one development recording, not full field latency.",
+      "No bag decoding, rendering or ROS transport in timed region.",
+      "Sequential alternating runs reduce but cannot eliminate machine-load and thermal effects.",
+      "No accuracy conclusion; only output equivalence and cost."
+    ]
+  },
+  "profile_10_real_scans_seconds": {
+    "background_before": 1.003,
+    "background_after": 0.318,
+    "cluster_candidates_before": 2.626,
+    "cluster_candidates_after": 1.895,
+    "density_labels_after": 1.195
+  },
+  "evidence_sha256": {
+    "build/runtime-context-real/comparison.json": "cd5cb1f137aae45248412cd02f5e72c7adb0470b200e2d2adc91c34ac227d5f1",
+    "build/runtime-context-paired/report.json": "e97b0d1ee950b7ff6db1f166ae1c6ec988603c07f31873faca9ad77cf4e0b1dd"
+  },
+  "verification": "Actual detector on real scans; no automated tests, synthetic data or target-Linux verification.",
+  "limits": [
+    "Not 10Hz.",
+    "Paired timing excludes bag decoding, GUI and ROS transport.",
+    "Recorded warning counts are not field accuracy."
+  ]
+}

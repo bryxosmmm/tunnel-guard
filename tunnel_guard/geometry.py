@@ -279,8 +279,13 @@ class TrackGeometry:
         nominal_overlap = ((running_height >= envelope[0, 0]) & (running_height <= envelope[-1, 1])
                            & ~on_rail & (np.abs(lateral) <= width))
         if remove_background and self.background is not None:
-            background = self.background.mask(points, (observed & nominal_overlap) | boundary)
-            context &= ~background
+            # Background decisions are consumed only for segmentation context;
+            # protected points cannot be removed. Each mask decision depends on
+            # the frozen surface model, not on other query points, so avoid the
+            # expensive nearest-normal search for all unused/protected returns.
+            eligible = np.flatnonzero(context & ~((observed & nominal_overlap) | boundary))
+            if len(eligible):
+                context[eligible] &= ~self.background.mask(points[eligible], np.zeros(len(eligible), dtype=bool))
         result = (core, context, height, observed, nominal_overlap)
         return result + (boundary,) if include_boundary else result
 

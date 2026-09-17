@@ -18,6 +18,10 @@ See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md). Optional C++
 
 See [small-object review and calibration limits](docs/ENVELOPE_INTERVAL_REVIEW.md). Height uncertainty now propagates through the stepped contour width and both vertical boundaries. On 798 real scans, confirmed intersection observations changed from 718 to 649; small detections and nuisance alarms remain unresolved, and this is not a precision improvement claim. The browser exposes measured box sizes, support counts and exact diagnostic points for selected saved frames.
 
+## Runtime reduction without reducing coverage
+
+See [runtime profile and verification](docs/RUNTIME_CONTEXT_OPTIMIZATION.md). Avoiding unused background queries and repeated component scans preserved compared outputs on all 798 real scans. Current per-recording processing medians are 315–469 ms on the development Mac: still not 10 Hz. Neighbourhood construction remains a measured bottleneck; target-hardware performance is unverified.
+
 ## Coverage expansion and modeled insertions
 
 See [coverage expansion](docs/COVERAGE_EXPANSION.md): complete platform and round-to-double tunnel runs, plus nine controlled cases on actual measured ray directions. Modeled support is traced through processing stages; missing rays, occlusion and candidate rejection are reported separately. Synthetic attribution is not field recall. The production detector is frozen for this experiment; its parameters were not tuned to inserted boxes.

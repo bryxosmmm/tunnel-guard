@@ -84,10 +84,18 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     if arrays is not None:
         arrays.update(cluster_labels=labels, cluster_core=core, cluster_observed=observed,
                       cluster_nominal_overlap=nominal_overlap, cluster_boundary_uncertain=boundary)
-    for label in np.unique(labels):
+    # One stable grouping replaces a full labels==label scan per component.
+    # Stable order preserves original point order within every cluster, hence
+    # witness selection, box ties and temporal evidence ordering stay unchanged.
+    order = np.argsort(labels, kind="stable")
+    sorted_labels = labels[order]
+    starts = np.r_[0, np.flatnonzero(np.diff(sorted_labels)) + 1]
+    stops = np.r_[starts[1:], len(order)]
+    for start, stop in zip(starts, stops):
+        label = sorted_labels[start]
         if label < 0:
             continue
-        indices = np.flatnonzero(labels == label)
+        indices = order[start:stop]
         inside = indices[core[indices]]
         if len(indices) < config["weak_min_voxels"]:
             rejected["below_weak_min_voxels"] += 1

@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/runtime-profile-after",
+  "every": 1,
+  "max_frames": 10,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Query frozen background only on consumable unprotected context; stably group cluster indices once.",
+  "criterion": "Same non-timing outputs on fixed real scans; lower measured processing cost."
+}

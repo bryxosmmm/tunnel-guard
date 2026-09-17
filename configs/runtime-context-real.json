@@ -1,0 +1,25 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/runtime-context-real",
+  "every": 1,
+  "max_frames": null,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Avoid unused background queries and repeated per-label scans without altering detector evidence.",
+  "criterion": "All compared non-timing outputs match the saved 798-scan envelope-interval run within 1e-10."
+}
