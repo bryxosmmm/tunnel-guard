@@ -143,6 +143,9 @@ def main():
     needed = {(f["bag"], f["frame"]) for f in annotations["frames"]}
     predictions = {}
     for path in sorted(args.run.glob("*.jsonl")):
+        # Runner timing streams are telemetry, not object predictions.
+        if path.name.endswith("-timing.jsonl"):
+            continue
         with path.open() as stream:
             for line in stream:
                 row = json.loads(line)

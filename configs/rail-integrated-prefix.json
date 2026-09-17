@@ -1,0 +1,26 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/rail-integrated-prefix",
+  "every": 1,
+  "max_frames": 3,
+  "visualization": true,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Relocate rail anchors into common observed longitudinal support instead of inventing support at window centers or discarding oblique rail pairs",
+  "criterion": "No accepted rail anchor outside both longitudinal support hulls; retain candidates and report all evidence changes, no false-positive claims",
+  "display_max_points": 10000
+}

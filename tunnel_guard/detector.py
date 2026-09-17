@@ -61,6 +61,10 @@ def load_config(path: str | Path) -> dict:
         from . import _native  # Fail explicitly when the selected kernels are unavailable.
     if config.get("obstacle_distance_mode", "cluster_min_x") not in ("cluster_min_x", "envelope_support_min_x"):
         raise ValueError("Unknown obstacle_distance_mode")
+    if config.get("rail_center_estimator", "histogram") not in ("histogram", "paired_line"):
+        raise ValueError("Unknown rail_center_estimator")
+    if config.get("rail_anchor_support", "window") not in ("window", "bracketed", "measured"):
+        raise ValueError("Unknown rail_anchor_support")
     validate_mounting_config(config)
     return config
 
