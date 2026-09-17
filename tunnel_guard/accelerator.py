@@ -269,11 +269,19 @@ def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncert
     return objects, rejected, rows
 
 
-def normal_covariances(sample: np.ndarray, radius: float, max_nn: int, module):
-    """Uncapped neighbour counts and mean-centred covariances in one grid pass."""
-    counts, components = module.normal_covariances(np.ascontiguousarray(sample), radius, int(max_nn))
+def normal_statistics(sample: np.ndarray, radius: float, max_nn: int, module):
+    """Neighbour counts, covariances, eigenvalues and normals in one grid pass.
+
+    The eigenvalues and the smallest eigenvector are produced natively by Jacobi
+    rotations with a fixed sweep count, so the result is a deterministic function
+    of the covariance and stays accurate for repeated eigenvalues.
+    """
+    counts, components, eigenvalues, normals = module.normal_covariances(
+        np.ascontiguousarray(sample), radius, int(max_nn))
     return (np.frombuffer(counts, dtype=np.int64),
-            np.frombuffer(components, dtype=np.float64).reshape(-1, 6))
+            np.frombuffer(components, dtype=np.float64).reshape(-1, 6),
+            np.frombuffer(eigenvalues, dtype=np.float64).reshape(-1, 3),
+            np.frombuffer(normals, dtype=np.float64).reshape(-1, 3))
 
 
 def voxel_counts(stacks, size: float, module=None):

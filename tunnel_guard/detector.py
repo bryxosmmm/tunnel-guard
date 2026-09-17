@@ -82,8 +82,15 @@ def voxel_unique_at(config: dict, reductive_size: float | None) -> bool:
 
 def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict,
                        diagnostics: dict | None = None, arrays: dict | None = None,
-                       *, reduced_on_grid_m: float | None = None) -> list[dict]:
-    _, context, _, _, _ = geometry.classify(points)
+                       *, reduced_on_grid_m: float | None = None,
+                       classification_out: list | None = None) -> list[dict]:
+    classification = geometry.classify(points)
+    if classification_out is not None:
+        # The caller needs the same classification for its range bins; the two
+        # are identical because the inputs are, and background removal only
+        # touches `context`.
+        classification_out.append(classification)
+    _, context, _, _, _ = classification
     if voxel_unique_at(config, reduced_on_grid_m):
         # The context cloud is already one point per cluster voxel in key order,
         # so the reduction below would only reproduce the same rows in the same
@@ -457,9 +464,11 @@ class Detector:
             self.diagnostic_arrays.update(registered_points=frame, cropped_points=frame[crop], geometry_voxel_points=reduced)
         geometry = TrackGeometry(reduced, self.config)
         pipeline["geometry"] = {"state": "ran", "valid": geometry.valid, "reason": geometry.reason}
+        carried: list = []
         objects = cluster_candidates(reduced, geometry, self.config, pipeline["segmentation"],
                                      self.diagnostic_arrays if capture_diagnostics else None,
-                                     reduced_on_grid_m=self.config["geometry_voxel_m"]) if geometry.valid else []
+                                     reduced_on_grid_m=self.config["geometry_voxel_m"],
+                                     classification_out=carried) if geometry.valid else []
         if not geometry.valid:
             pipeline["segmentation"]["reason"] = geometry.reason
         self._associate(objects, pose, timestamp_s, motion["valid"])
@@ -472,7 +481,9 @@ class Detector:
         status = ("obstacle" if certain else ("unresolved_obstacle" if confirmed else
                   ("candidate" if hazards else ("no_obstacle_observed" if geometry.valid else "unknown"))))
         bins = []
-        _, _, _, observed, _ = geometry.classify(reduced, remove_background=False)
+        # Reuse the classification the cluster stage already computed for exactly
+        # this array instead of classifying it a second time.
+        _, _, _, observed, _ = carried[0]
         for lo, hi in zip(self.config["range_bins_m"][:-1], self.config["range_bins_m"][1:]):
             mask = (reduced[:, 0] >= lo) & (reduced[:, 0] < hi)
             raw_mask = (frame[:, 0] >= lo) & (frame[:, 0] < hi) & crop

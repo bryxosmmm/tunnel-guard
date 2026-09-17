@@ -138,6 +138,55 @@ unsigned worker_count(Py_ssize_t n) {
     return std::max(1u, std::min(hardware ? hardware : 1u, 8u));
 }
 
+// Eigen-decomposition of a symmetric 3x3 matrix: eigenvalues ascending and the
+// eigenvector of the smallest one.
+//
+// Jacobi rotations with a fixed sweep count: no convergence test, no branch on
+// the spectrum, so the result is a deterministic function of the input and stays
+// accurate when eigenvalues are repeated (where the closed-form trigonometric
+// solution loses several digits to cancellation).
+void symmetric_eigen3(double xx, double xy, double xz, double yy, double yz, double zz,
+                      double eigenvalues[3], double normal[3]) {
+    double a[3][3] = {{xx, xy, xz}, {xy, yy, yz}, {xz, yz, zz}};
+    double v[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}};
+    for (int sweep = 0; sweep < 8; ++sweep) {
+        for (int pair = 0; pair < 3; ++pair) {
+            const int i = pair == 0 ? 0 : (pair == 1 ? 0 : 1);
+            const int j = pair == 0 ? 1 : (pair == 1 ? 2 : 2);
+            if (a[i][j] == 0.0) continue;
+            const double theta = (a[j][j] - a[i][i]) / (2.0 * a[i][j]);
+            const double sign = theta >= 0.0 ? 1.0 : -1.0;
+            const double t = sign / (std::abs(theta) + std::sqrt(theta * theta + 1.0));
+            const double c = 1.0 / std::sqrt(t * t + 1.0);
+            const double s = t * c;
+            for (int k = 0; k < 3; ++k) {
+                const double aik = a[i][k], ajk = a[j][k];
+                a[i][k] = c * aik - s * ajk;
+                a[j][k] = s * aik + c * ajk;
+            }
+            for (int k = 0; k < 3; ++k) {
+                const double aki = a[k][i], akj = a[k][j];
+                a[k][i] = c * aki - s * akj;
+                a[k][j] = s * aki + c * akj;
+            }
+            for (int k = 0; k < 3; ++k) {
+                const double vki = v[k][i], vkj = v[k][j];
+                v[k][i] = c * vki - s * vkj;
+                v[k][j] = s * vki + c * vkj;
+            }
+        }
+    }
+    int smallest = 0, middle = 1, largest = 2;
+    const double diagonal[3] = {a[0][0], a[1][1], a[2][2]};
+    if (diagonal[middle] < diagonal[smallest]) { const int swap = smallest; smallest = middle; middle = swap; }
+    if (diagonal[largest] < diagonal[middle]) { const int swap = middle; middle = largest; largest = swap; }
+    if (diagonal[middle] < diagonal[smallest]) { const int swap = smallest; smallest = middle; middle = swap; }
+    eigenvalues[0] = diagonal[smallest];
+    eigenvalues[1] = diagonal[middle];
+    eigenvalues[2] = diagonal[largest];
+    for (int k = 0; k < 3; ++k) normal[k] = v[k][smallest];
+}
+
 // Squared distance between a stored point and a query position.
 double distance_squared(const double* points, int64_t index, double x, double y, double z) {
     const double dx = points[3 * index] - x;
@@ -1404,6 +1453,8 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
     Arena& scratch = arena();
     auto& counts = scratch.i0;
     auto& covariances = scratch.d0;
+    auto& eigenvalues = scratch.d1;
+    auto& normals_out = scratch.d2;
     try {
         ReleaseGIL released;
         build_cells(data, n, radius);
@@ -1411,6 +1462,8 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
         KeyTable& table = cells.table;
         counts.resize(static_cast<size_t>(n));
         covariances.resize(static_cast<size_t>(n) * 6);
+        eigenvalues.resize(static_cast<size_t>(n) * 3);
+        normals_out.resize(static_cast<size_t>(n) * 3);
         const unsigned workers = worker_count(n);
         // Per-thread scratch: the membership and selection buffers are mutated
         // inside the parallel region, so they cannot live in the shared arena.
@@ -1485,6 +1538,13 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
                 covariances[base + 3] = yy * scale;
                 covariances[base + 4] = yz * scale;
                 covariances[base + 5] = zz * scale;
+                double values[3], direction[3];
+                symmetric_eigen3(xx * scale, xy * scale, xz * scale, yy * scale, yz * scale, zz * scale,
+                                 values, direction);
+                for (int axis = 0; axis < 3; ++axis) {
+                    eigenvalues[3 * static_cast<size_t>(i) + axis] = values[axis];
+                    normals_out[3 * static_cast<size_t>(i) + axis] = direction[axis];
+                }
             }
         };
         if (workers <= 1) {
@@ -1505,18 +1565,25 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
         PyErr_SetString(PyExc_ValueError, error.what());
         return nullptr;
     }
-    PyObject* payload = PyTuple_New(2);
+    PyObject* payload = PyTuple_New(4);
     if (payload == nullptr) return nullptr;
     PyObject* count_bytes = bytes_of(counts.data(), counts.size() * sizeof(int64_t));
     PyObject* covariance_bytes = bytes_of(covariances.data(), covariances.size() * sizeof(double));
-    if (count_bytes == nullptr || covariance_bytes == nullptr) {
+    PyObject* eigenvalue_bytes = bytes_of(eigenvalues.data(), eigenvalues.size() * sizeof(double));
+    PyObject* normal_bytes = bytes_of(normals_out.data(), normals_out.size() * sizeof(double));
+    if (count_bytes == nullptr || covariance_bytes == nullptr || eigenvalue_bytes == nullptr
+            || normal_bytes == nullptr) {
         Py_XDECREF(count_bytes);
         Py_XDECREF(covariance_bytes);
+        Py_XDECREF(eigenvalue_bytes);
+        Py_XDECREF(normal_bytes);
         Py_DECREF(payload);
         return nullptr;
     }
     PyTuple_SET_ITEM(payload, 0, count_bytes);
     PyTuple_SET_ITEM(payload, 1, covariance_bytes);
+    PyTuple_SET_ITEM(payload, 2, eigenvalue_bytes);
+    PyTuple_SET_ITEM(payload, 3, normal_bytes);
     return payload;
 }
 

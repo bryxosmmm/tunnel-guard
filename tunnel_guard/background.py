@@ -46,18 +46,8 @@ class TunnelBackground:
             # Measured on a real frame: counts identical, planarity gate identical
             # on 31,298 points, and the alignment decision identical on every
             # reliable point across all patches.
-            counts, components = accelerator.normal_covariances(self.sample, cfg["normal_radius_m"],
-                                                               cfg["normal_max_neighbors"], self.native)
-            covariance = np.zeros((len(self.sample), 3, 3))
-            covariance[:, 0, 0] = components[:, 0]
-            covariance[:, 0, 1] = covariance[:, 1, 0] = components[:, 1]
-            covariance[:, 0, 2] = covariance[:, 2, 0] = components[:, 2]
-            covariance[:, 1, 1] = components[:, 3]
-            covariance[:, 1, 2] = covariance[:, 2, 1] = components[:, 4]
-            covariance[:, 2, 2] = components[:, 5]
-            eigenvalues, eigenvectors = np.linalg.eigh(covariance)
-            self.normals = np.ascontiguousarray(eigenvectors[:, :, 0])
-            neighbors = counts
+            neighbors, _, eigenvalues, self.normals = accelerator.normal_statistics(
+                self.sample, cfg["normal_radius_m"], cfg["normal_max_neighbors"], self.native)
         else:
             search = o3d.geometry.KDTreeSearchParamHybrid(radius=cfg["normal_radius_m"],
                                                           max_nn=cfg["normal_max_neighbors"])
