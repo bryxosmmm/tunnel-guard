@@ -51,6 +51,25 @@ def nearest_anchor_distance(x: np.ndarray, anchor_x: np.ndarray) -> np.ndarray:
     return np.minimum(np.abs(x - anchor_x[position - 1]), np.abs(anchor_x[position] - x))
 
 
+def envelope_width_bounds(low: np.ndarray, high: np.ndarray, segments: np.ndarray,
+                          margin: float) -> tuple[np.ndarray, np.ndarray]:
+    """Extrema of a piecewise-linear half-width over each height interval.
+
+    Visit both sides of segment discontinuities. Closed segment endpoints make
+    an exactly coincident step conservative, without sampling away narrow steps.
+    Intervals outside the vertical contour have no overlap (inf, -inf).
+    """
+    minimum, maximum = np.full(len(low), np.inf), np.full(len(low), -np.inf)
+    for bottom, top, start, end in segments:
+        a, b = np.maximum(low, bottom), np.minimum(high, top)
+        overlap = a <= b
+        wa = start + (end - start) * (a[overlap] - bottom) / (top - bottom) + margin
+        wb = start + (end - start) * (b[overlap] - bottom) / (top - bottom) + margin
+        minimum[overlap] = np.minimum(minimum[overlap], np.minimum(wa, wb))
+        maximum[overlap] = np.maximum(maximum[overlap], np.maximum(wa, wb))
+    return minimum, maximum
+
+
 def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, dict]:
     lo, hi = config["ground_fit_range_m"]
     min_height, max_height = config["ground_sensor_height_bounds_m"]
@@ -277,7 +296,7 @@ class TrackGeometry:
 
     def classify(self, points: np.ndarray, *, remove_background: bool = True,
                  include_boundary: bool = False, ground: tuple | None = None):
-        """Classify support; optionally expose uncertain lateral envelope intersections.
+        """Classify support; optionally expose uncertain envelope intersections.
 
         The interval uses the existing heuristic path uncertainty, not calibrated
         probability or a guarantee about the physical vehicle envelope. A caller
@@ -289,7 +308,14 @@ class TrackGeometry:
         if native is not None:
             core, context, height, observed, nominal_overlap, boundary = native
             if remove_background and self.background is not None:
-                context &= ~self.background.mask(points, (observed & nominal_overlap) | boundary)
+                # Only segmentation context consumes the background decision and
+                # protected returns can never be removed, so the frozen model is
+                # queried for those points alone. Each decision reads the model
+                # and the point itself, never another query point, so the result
+                # for the queried points is the one the full pass produced.
+                eligible = np.flatnonzero(context & ~((observed & nominal_overlap) | boundary))
+                if len(eligible):
+                    context[eligible] &= ~self.background.mask(points[eligible], np.zeros(len(eligible), dtype=bool))
             return (core, context, height, observed, nominal_overlap, boundary) if include_boundary \
                 else (core, context, height, observed, nominal_overlap)
         z, ground_uncertainty = self.ground(points) if ground is None else ground
@@ -309,22 +335,24 @@ class TrackGeometry:
         width = segment[:, 2] + fraction * (segment[:, 3] - segment[:, 2]) + cfg["envelope_margin_m"]
         observed = ((ground_uncertainty <= cfg["ground_max_uncertainty_m"])
                     & (path_uncertainty <= cfg["path_max_uncertainty_m"]))
-        vertical = ((running_height >= envelope[0, 0] + ground_uncertainty)
-                    & (running_height <= envelope[-1, 1]))
         # Remove only the measured rail-head band, not all points near a rail.
         on_rail = (observed & (np.abs(np.abs(lateral) - gauge / 2) < cfg["rail_half_width_m"] + path_uncertainty)
                    & (running_height <= cfg["rail_vertical_margin_m"]))
-        ground_supported = (ground_uncertainty <= cfg["ground_max_uncertainty_m"]) & vertical & ~on_rail
-        # A supported path estimate still has nonzero uncertainty. Project its
-        # lateral offset through the same roll transform as the measured points.
-        # A nominal crossing by a millimetre is not a definite intrusion when
-        # the path centre is uncertain by centimetres. Preserve both sides of
-        # that boundary as unresolved evidence instead of discarding the points.
-        lateral_uncertainty = path_uncertainty * np.sqrt(1 + slope**2)
-        nominal_core = ground_supported & observed & (np.abs(lateral) <= width)
-        core = nominal_core & (np.abs(lateral) + lateral_uncertainty <= width)
-        boundary = (ground_supported & observed & ~core
-                    & (np.abs(lateral) - lateral_uncertainty <= width))
+        # Propagate existing bed-height error through BOTH coordinates. A height
+        # error can also cross a step in the reference contour's half-width.
+        # Marginal bounds discard correlation and are conservative: they can
+        # retain extra unresolved evidence, never certify a marginal intrusion.
+        bed_error = np.where(observed, ground_uncertainty, 0.)
+        height_error = bed_error / normal_scale
+        low, high = running_height - height_error, running_height + height_error
+        min_width, max_width = envelope_width_bounds(low, high, envelope, cfg["envelope_margin_m"])
+        lateral_uncertainty = (np.where(observed, path_uncertainty, 0.) * np.sqrt(1 + slope**2)
+                               + abs(slope) * bed_error / np.sqrt(1 + slope**2))
+        vertical_inside = (low >= envelope[0, 0]) & (high <= envelope[-1, 1])
+        core = observed & ~on_rail & vertical_inside & (np.abs(lateral) + lateral_uncertainty <= min_width)
+        possible = ((high >= envelope[0, 0]) & (low <= envelope[-1, 1])
+                    & (np.abs(lateral) - lateral_uncertainty <= max_width))
+        boundary = observed & ~on_rail & ~core & possible
         # Segmentation precedes the collision gate. Do not amputate the feet or
         # head of an object just because only part intersects the envelope.
         segmentation_height = (running_height >= cfg["min_running_height_m"]) & (running_height <= envelope[-1, 1] + cfg["cluster_context_margin_m"])
@@ -332,14 +360,20 @@ class TrackGeometry:
         nominal_overlap = ((running_height >= envelope[0, 0]) & (running_height <= envelope[-1, 1])
                            & ~on_rail & (np.abs(lateral) <= width))
         if remove_background and self.background is not None:
-            background = self.background.mask(points, (observed & nominal_overlap) | boundary)
-            context &= ~background
+            # Background decisions are consumed only for segmentation context;
+            # protected points cannot be removed. Each mask decision depends on
+            # the frozen surface model, not on other query points, so avoid the
+            # expensive nearest-normal search for all unused/protected returns.
+            eligible = np.flatnonzero(context & ~((observed & nominal_overlap) | boundary))
+            if len(eligible):
+                context[eligible] &= ~self.background.mask(points[eligible], np.zeros(len(eligible), dtype=bool))
         result = (core, context, height, observed, nominal_overlap)
         return result + (boundary,) if include_boundary else result
 
     def describe(self) -> dict:
         return {"valid": self.valid, "reason": self.reason, "ground_quality": self.ground_quality,
-                "lateral_boundary_policy": "heuristic_path_interval",
+                "lateral_boundary_policy": "heuristic_path_and_ground_interval",
+                "boundary_uncertainty_scope": "path_center_and_bed_height_only_not_full_extrinsics",
                 "ground_plane": None if self.plane is None else self.plane.tolist(),
                 "rail_head_height_m": self.rail_head_height_m,
                 "ground_anchors": self.ground_anchors.tolist(), "rail_anchors": self.rail_anchors.tolist(),

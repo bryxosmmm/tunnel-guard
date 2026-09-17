@@ -39,7 +39,7 @@
     flex: 1;
     min-width: 180px;
   }
-  #info {
+  #info, #selection {
     padding: 10px 20px;
     white-space: pre-wrap;
   }
@@ -123,10 +123,13 @@
 <div id="legend">
   🟥 Подтверждённое пересечение · 🟧 Подтверждённый объект, пересечение не
   подтверждено · 🟨 Кандидат · серый: рядом · голубой: опорный контур<br /><small
-    >Боксы описывают наблюдаемые отражения. Отсутствие бокса не доказывает
+    >Голубой контур — расчётный габарит, а не измеренный кузов поезда.
+    Красный означает пересечение модели, не доказанную опасность столкновения.
+    Боксы описывают наблюдаемые отражения. Отсутствие бокса не доказывает
     свободный путь. Прорежено только отображение облака.</small
   >
 </div>
+<div id="selection">Выберите объект в таблице: размеры, поддержка и причина решения.</div>
 <div id="objects"></div>
 <script>
   const $ = (id) => document.getElementById(id);
@@ -134,7 +137,10 @@
     data,
     index = 0,
     playing = false,
-    busy = false;
+    busy = false,
+    selected = null,
+    supportPoints = [],
+    selectionRequest = 0;
   const views = [
     { canvas: $("xy"), dim: 1, bounds: [0, 100, -8, 8] },
     { canvas: $("xz"), dim: 2, bounds: [0, 100, -4, 5] },
@@ -150,6 +156,46 @@
   }
   function format(x) {
     return x == null ? "нет" : Number(x).toFixed(2);
+  }
+  function reason(value) {
+    return ({
+      inside_heuristic_path_interval: "Внутри с учётом боковой ошибки пути",
+      inside_heuristic_path_and_ground_interval: "Внутри с учётом ошибки пути и высоты",
+      lateral_boundary_uncertainty: "Неопределённость боковой границы",
+      envelope_boundary_uncertainty: "Неопределённость границы габарита по высоте или ширине",
+      unsupported_nominal_envelope: "Недостаточная опора геометрии",
+      outside_envelope_evidence: "Вне расчётного габарита",
+    })[value] || value || "Не записано";
+  }
+  async function focusObject(o) {
+    selected = o;
+    supportPoints = [];
+    const request = ++selectionRequest;
+    for (let v of views) {
+      const pad = Math.max(0.25, Math.min(2, Math.max(...o.extent_m)));
+      v.bounds = [o.bbox_min[0] - pad, o.bbox_max[0] + pad,
+                  o.bbox_min[v.dim] - pad, o.bbox_max[v.dim] + pad];
+    }
+    const details = `#${o.track_id} · наблюдаемый размер XYZ: ${o.extent_m.map(format).join(" × ")} м\n` +
+      `Точек-представителей: ${o.support_voxels}; внутри: ${o.in_envelope_voxels}; у неопределённой границы: ${o.boundary_uncertain_voxels || 0}\n` +
+      `Новых измерений в окне: ${o.hits}; с внутренней опорой: ${o.intersection_hits ?? "не записано"}\n` +
+      `${reason(o.path_relation_reason)}. Подтверждение: ${o.intersection_confirmation || o.confirmation}.\n` +
+      `Размер бокса — размер отражений; класс и физическая опасность не установлены.\n`;
+    $("selection").textContent = details + "Загрузка точек поддержки…";
+    draw();
+    try {
+      const response = await fetch(`/object?index=${index}&id=${o.track_id}`);
+      const result = await response.json();
+      if (!response.ok) throw Error(result.error);
+      if (request !== selectionRequest) return;
+      supportPoints = result.points;
+      $("selection").textContent = details + (result.available
+        ? `Яркие точки: ${result.points.length} точных представителей текущего кадра, без прореживания.`
+        : "Точные точки поддержки для этого кадра не сохранены. Серое облако прорежено; оно не показывает всю опору решения.");
+      draw();
+    } catch (error) {
+      if (request === selectionRequest) $("selection").textContent = details + error.message;
+    }
   }
   function project(v, p) {
     let b = v.bounds,
@@ -188,7 +234,7 @@
       for (let k = 0; k < data.corridor.length; k += 2)
         line(v, data.corridor[k], data.corridor[k + 1], "#23b9ce");
       for (let o of data.row.objects) {
-        if (o.path_relation === "adjacent" && !$("adjacent").checked) continue;
+        if (o.path_relation === "adjacent" && !$("adjacent").checked && selected !== o) continue;
         let a = o.bbox_min,
           b = o.bbox_max,
           p = a.slice(),
@@ -218,6 +264,11 @@
           c.fillRect(k[0] - 3, k[1] - 3, 6, 6);
         }
       }
+      c.fillStyle = selected ? color(selected) : "white";
+      for (const point of supportPoints) {
+        const p = project(v, point), radius = 3 * devicePixelRatio;
+        c.fillRect(p[0] - radius / 2, p[1] - radius / 2, radius, radius);
+      }
       c.fillStyle = "white";
       c.font = `${13 * devicePixelRatio}px system-ui`;
       c.fillText(
@@ -232,6 +283,10 @@
     n = Math.round(n);
     index = Math.max(0, Math.min(meta.frames.length - 1, n));
     busy = true;
+    ++selectionRequest;
+    selected = null;
+    supportPoints = [];
+    $("selection").textContent = "Выберите объект в таблице: размеры, поддержка и причина решения.";
     $("slider").value = index;
     $("number").value = index;
     $("error").textContent = "";
@@ -252,6 +307,8 @@
         "Положение",
         "Объект / пересечение",
         "Измерений",
+        "Размер XYZ, м",
+        "Точек / внутри",
       ]) {
         let cell = head.insertCell();
         cell.textContent = label;
@@ -266,19 +323,15 @@
           o.path_relation,
           `${o.confirmation} / ${o.intersection_confirmation || "unknown"}`,
           o.hits,
+          o.extent_m.map(format).join(" × "),
+          `${o.support_voxels} / ${o.in_envelope_voxels}`,
         ])
           row.insertCell().textContent = value;
         row.onclick = () => {
-          for (let v of views) {
-            let pad = 2;
-            v.bounds = [
-              o.bbox_min[0] - pad,
-              o.bbox_max[0] + pad,
-              o.bbox_min[v.dim] - pad,
-              o.bbox_max[v.dim] + pad,
-            ];
-          }
-          draw();
+          if (busy) return;
+          playing = false;
+          $("play").textContent = "▶";
+          focusObject(o);
         };
       }
       $("objects").replaceChildren(t);
@@ -292,6 +345,7 @@
     }
     if (playing)
       setTimeout(() => {
+        if (!playing) return;
         if (index < meta.frames.length - 1) load(index + 1);
         else {
           playing = false;
@@ -364,7 +418,7 @@
     .then((r) => r.json())
     .then((m) => {
       meta = m;
-      $("name").textContent = m.frames.length + " кадров";
+      $("name").textContent = `${m.frames.length} кадров · ${m.run}`;
       $("slider").max = $("number").max = m.frames.length - 1;
       load(0);
     })

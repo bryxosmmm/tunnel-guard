@@ -29,6 +29,15 @@ support point. Missing contour means unsupported geometry, not unlimited clearan
 Displayed distance is forward x in the configured processing frame, not distance
 along a curved path or from the front bumper.
 
+The table also shows measured XYZ extent and total/interior support counts.
+Click an object to pause and inspect its confirmation reason. For saved diagnostic
+frames the browser overlays its exact current-scan voxel representatives without
+sampling; otherwise it explicitly reports that these points were not saved.
+A small support box is not an estimate of the full object's size, and red means
+intersection of the model rather than a verified physical collision hazard.
+See [the current small-detection review](ENVELOPE_INTERVAL_REVIEW.md) for the
+updated real run and example platform frame 223. The run name appears in the toolbar.
+
 The `--run` directory must contain `<bag-name>.jsonl`, `detector.json`, and
 `manifest.json` from `tunnel_guard.run`. `--bag` points to the original bag folder.
 Arbitrary seeking works through bag record timestamps; inference uses acquisition

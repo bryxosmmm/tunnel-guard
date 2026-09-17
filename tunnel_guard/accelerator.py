@@ -227,7 +227,7 @@ def classify_geometry(points: np.ndarray, geometry, module=None):
 
 
 RELATION_NAMES = ("adjacent", "intersecting", "unresolved")
-RELATION_REASONS = ("inside_heuristic_path_interval", "lateral_boundary_uncertainty",
+RELATION_REASONS = ("inside_heuristic_path_and_ground_interval", "envelope_boundary_uncertainty",
                     "unsupported_nominal_envelope", "outside_envelope_evidence")
 DISTANCE_METHODS = ("cluster_min_x", "supported_envelope_min_x", "unresolved_envelope_evidence_min_x")
 REJECTION_NAMES = {0: None, 1: "below_weak_min_voxels", 2: "below_min_extent",

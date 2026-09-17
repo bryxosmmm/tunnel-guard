@@ -1,7 +1,7 @@
 {
   "date": "2026-09-17",
   "scope": "Latency and throughput of the shipped detector pipeline; no detection decision changed.",
-  "revision": "310a8b59c62f0ed6c277d4b53c6b5c81c10f9cbf",
+  "revision": "bb8c20cdf0fa78319f0b67cdffc33c738b4fe136",
   "machine": {
     "python": "3.12.14 (main, Aug 12 2026, 13:57:54) [Clang 21.1.8 ]",
     "platform": "macOS-26.5.2-arm64-arm-64bit",
@@ -22,13 +22,13 @@
       "cpp": 390.03949949994876
     },
     "after": {
-      "numpy": 217.85445800014713,
-      "cpp": 116.22712549888092
+      "numpy": 218.6853750008595,
+      "cpp": 115.63022950031154
     }
   },
   "paired_benchmark_speedup": {
-    "cpp": 3.355838818397898,
-    "numpy": 2.3065733706472784
+    "cpp": 3.373162028523846,
+    "numpy": 2.2978093139422806
   },
   "equivalence": {
     "bags": [
@@ -772,25 +772,89 @@
     {
       "bag": "doubleT_obstacle",
       "frames": 201,
-      "p50": 123.35129200073425,
-      "p95": 129.41379100084305,
-      "wall_s": 36.342340457998944
+      "p50": 113.21616600253037,
+      "p95": 116.93558299884899,
+      "wall_s": 33.570264916997985
     },
     {
       "bag": "doubleT_platform",
       "frames": 345,
-      "p50": 99.61033400031738,
-      "p95": 143.8209244002792,
-      "wall_s": 42.543798959000924
+      "p50": 90.38795800006483,
+      "p95": 123.28905000031232,
+      "wall_s": 38.969993124999746
     },
     {
       "bag": "roundT_doubleT",
       "frames": 252,
-      "p50": 111.11910399995395,
-      "p95": 148.63226440074865,
-      "wall_s": 33.42232158300067
+      "p50": 101.64847949999967,
+      "p95": 137.73764770085108,
+      "wall_s": 31.31468337499973
     }
   ],
+  "optional_faster_recipe": {
+    "config": "configs/detector-native-fast.json",
+    "measured": 109.25600049813511,
+    "verdict": "not recommended and not the reported figure",
+    "alarm_cost": {
+      "identity": {
+        "doubleT_obstacle": {
+          "unresolved_obstacle": 82,
+          "obstacle": 119
+        },
+        "doubleT_platform": {
+          "unresolved_obstacle": 258,
+          "obstacle": 87
+        },
+        "roundT_doubleT": {
+          "candidate": 1,
+          "unresolved_obstacle": 187,
+          "obstacle": 64
+        }
+      },
+      "fast": {
+        "doubleT_obstacle": {
+          "unresolved_obstacle": 82,
+          "obstacle": 119
+        },
+        "doubleT_platform": {
+          "unresolved_obstacle": 258,
+          "obstacle": 87
+        },
+        "roundT_doubleT": {
+          "candidate": 1,
+          "unresolved_obstacle": 186,
+          "obstacle": 65
+        }
+      }
+    },
+    "reason": "Two background plane proposals per window instead of three buys 115.6 -> 109.3 ms in the paired benchmark, about 5%, while moving one recording's definite-alarm frames by one in the opposite direction. That is a detection decision traded for latency, so the reported recipe keeps three proposals and the speedup comes from the kernels alone."
+  },
+  "upstream_correction_in_this_revision": {
+    "source": "origin/experiments/morev 2c69efd, 48977ad (teammate review and correction)",
+    "semantic_fix": "Bed-height uncertainty now propagates through the stepped reference contour and both vertical boundaries, not only the lower threshold; the native classification kernel implements the same interval.",
+    "reproduced_counts": {
+      "doubleT_obstacle": {
+        "unresolved_obstacle": 82,
+        "obstacle": 119
+      },
+      "doubleT_platform": {
+        "unresolved_obstacle": 258,
+        "obstacle": 87
+      },
+      "roundT_doubleT": {
+        "candidate": 1,
+        "unresolved_obstacle": 187,
+        "obstacle": 64
+      }
+    },
+    "expected_from_review": {
+      "doubleT_obstacle": 119,
+      "doubleT_platform": 87,
+      "roundT_doubleT": 64
+    },
+    "agreement": "the native recipe reproduces every count the review reports for the corrected reference",
+    "unused_query_restriction": "The background model is now queried only for the returns whose decision is consumed, in both the reference and native paths; this is what closes the remaining latency gap without a parameter change."
+  },
   "rejected_options": {
     "parallel_open3d_ransac": {
       "measurement": "ransac_threads=8 on 60 real scans: build/perf-ransac8-a-20260917 vs build/perf-ransac8-b-20260917, 0 changed fields, 3.0e-14 float, p50 281-287 ms against 292 ms serial under the same load",
@@ -810,6 +874,7 @@
     "Apple M4 laptop timings; the target Intel i7-9700E is not measured here.",
     "Worker threads improve single-frame latency at higher core use; retained edges, graph and labels were compared rather than parallel scheduling.",
     "Open3D plane proposals stay serialised at one RANSAC thread; that determinism tradeoff is unchanged.",
-    "Equivalence is verified on recorded development scans, not on unseen field data."
+    "Equivalence is verified on recorded development scans, not on unseen field data.",
+    "The reported figure is the recipe with three background proposals per window; the optional two-proposal recipe is faster but trades one alarm frame, so it is not the shipped setting."
   ]
 }

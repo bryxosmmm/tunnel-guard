@@ -68,9 +68,33 @@ def main():
                     )
                 elif url.path == "/metadata":
                     payload = json.dumps(
-                        {"bag": args.bag.name, "frames": [r["frame"] for r in rows]}
+                        {"bag": args.bag.name, "run": args.run.name,
+                         "frames": [r["frame"] for r in rows]}
                     ).encode()
                     kind = "application/json"
+                elif url.path == "/object":
+                    query = parse_qs(url.query)
+                    index, identity = int(query["index"][0]), int(query["id"][0])
+                    if index < 0 or index >= len(rows):
+                        raise ValueError("Frame index outside recorded run")
+                    row = rows[index]
+                    obj = next((o for o in row["objects"] if o["track_id"] == identity), None)
+                    if obj is None:
+                        raise ValueError("Object ID is absent from this frame")
+                    response = {"available": False, "points": [], "reason": "diagnostics_not_recorded"}
+                    diagnostic = row.get("diagnostic_points")
+                    if diagnostic:
+                        path = (args.run / diagnostic).resolve()
+                        if not path.is_relative_to(args.run.resolve()):
+                            raise ValueError("Diagnostic path outside run")
+                        if path.is_file():
+                            with np.load(path, allow_pickle=False) as arrays:
+                                support = arrays["cluster_points"][arrays["cluster_labels"] == obj["component_id"]]
+                            if len(support) != obj["support_voxels"]:
+                                raise ValueError("Recorded support count differs from object record")
+                            response = {"available": True, "points": support.tolist(),
+                                        "reason": "exact_current_scan_voxel_representatives"}
+                    payload, kind = json.dumps(response, allow_nan=False).encode(), "application/json"
                 elif url.path == "/frame":
                     index = int(parse_qs(url.query)["index"][0])
                     if index < 0 or index >= len(rows):

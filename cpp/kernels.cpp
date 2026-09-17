@@ -859,17 +859,40 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
             const bool ground_ok = ground_uncertainty[index] <= ground_max_uncertainty;
             const bool path_ok = path_uncertainty[index] <= path_max_uncertainty;
             observed[index] = (ground_ok && path_ok) ? 1 : 0;
-            const bool vertical = (running_height >= low_edge + ground_uncertainty[index])
-                && (running_height <= high_edge);
-            const double lateral_uncertainty = path_uncertainty[index] * lateral_scale;
             const bool on_rail = observed[index]
                 && (std::abs(std::abs(lateral_value) - gauge[index] / 2.0) < rail_half_width + path_uncertainty[index])
                 && (running_height <= rail_vertical_margin);
-            const bool supported = ground_ok && vertical && !on_rail;
-            const bool nominal = supported && observed[index] && (std::abs(lateral_value) <= half_width);
-            core[index] = (nominal && (std::abs(lateral_value) + lateral_uncertainty <= half_width)) ? 1 : 0;
-            boundary[index] = (supported && observed[index] && !core[index]
-                               && (std::abs(lateral_value) - lateral_uncertainty <= half_width)) ? 1 : 0;
+            // The bed-height error is propagated through both coordinates, so a
+            // height error that crosses a step in the reference contour's width is
+            // part of the interval, not ignored. The bounds below are exact
+            // extrema of the piecewise-linear half-width over the height interval,
+            // visiting both sides of every jump, exactly as the reference does.
+            const double bed_error = observed[index] ? ground_uncertainty[index] : 0.0;
+            const double height_error = bed_error / normal_scale;
+            const double low_height = running_height - height_error;
+            const double high_height = running_height + height_error;
+            double min_width = INFINITY, max_width = -INFINITY;
+            for (Py_ssize_t segment = 0; segment < s; ++segment) {
+                const double* limits = segments + 4 * segment;
+                const double bottom = limits[0], top = limits[1];
+                const double first = std::max(low_height, bottom);
+                const double second = std::min(high_height, top);
+                if (!(first <= second)) continue;
+                const double at_first = limits[2] + (limits[3] - limits[2]) * (first - bottom) / (top - bottom)
+                    + envelope_margin;
+                const double at_second = limits[2] + (limits[3] - limits[2]) * (second - bottom) / (top - bottom)
+                    + envelope_margin;
+                min_width = std::min(min_width, std::min(at_first, at_second));
+                max_width = std::max(max_width, std::max(at_first, at_second));
+            }
+            const double lateral_uncertainty = (observed[index] ? path_uncertainty[index] : 0.0) * lateral_scale
+                + std::abs(slope_plane) * bed_error / lateral_scale;
+            const bool vertical = (low_height >= low_edge) && (high_height <= high_edge);
+            core[index] = (observed[index] && !on_rail && vertical
+                           && (std::abs(lateral_value) + lateral_uncertainty <= min_width)) ? 1 : 0;
+            const bool possible = (high_height >= low_edge) && (low_height <= high_edge)
+                && (std::abs(lateral_value) - lateral_uncertainty <= max_width);
+            boundary[index] = (observed[index] && !on_rail && !core[index] && possible) ? 1 : 0;
             const bool segmentation = (running_height >= min_running_height)
                 && (running_height <= high_edge + cluster_context_margin);
             context[index] = (segmentation && !on_rail
@@ -1008,7 +1031,6 @@ PyObject* mask_apply(PyObject*, PyObject* args) {
     try {
         ReleaseGIL released;
         auto& near_ids = workspace.i0;
-        auto& protrusions = workspace.i1;
         auto& cleared = workspace.i2;
         auto& inside = workspace.i3;
         // The attachment-edge predicate depends only on the plane and the sample
@@ -1257,7 +1279,6 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
         }
         auto& counts = scratch.i0;
         auto& members = scratch.i1;
-        auto& present = scratch.i2;
         if (highest >= 0) {
             const int64_t span = highest - lowest + 1;
             counts.assign(static_cast<size_t>(span) + 1, 0);
