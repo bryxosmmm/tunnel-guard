@@ -67,6 +67,10 @@ def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, d
     design = np.column_stack((sample[:, :2], np.ones(len(sample))))
     best, best_count = None, 0
     tolerance = config["ground_inlier_m"]
+    # The proposals are drawn and solved one at a time, exactly as before, so the
+    # random stream and the singular-trial skips are unchanged. Only the inlier
+    # counting is batched over proposals afterwards.
+    proposals = []
     for _ in range(config["ground_ransac_trials"]):
         ids = rng.choice(len(sample), 3, replace=False)
         try:
@@ -76,9 +80,13 @@ def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, d
         if (np.any(np.abs(plane[:2]) > config["ground_max_slopes"])
                 or not -max_height < plane[2] < -min_height):
             continue
-        count = int(np.count_nonzero(np.abs(sample[:, 2] - design @ plane) < tolerance))
-        if count > best_count:
-            best, best_count = plane, count
+        proposals.append(plane)
+    if proposals:
+        candidates = np.stack(proposals)
+        projected = design @ candidates.T
+        counts = np.count_nonzero(np.abs(sample[:, 2, None] - projected) < tolerance, axis=0)
+        winner = int(np.argmax(counts))
+        best, best_count = candidates[winner], int(counts[winner])
     if best is None:
         return None, diagnostics | {"reason": "no_upright_track_bed_plane"}
     for _ in range(3):
@@ -131,6 +139,14 @@ class TrackGeometry:
         previous = 0.0
         half = cfg["ground_local_window_m"] / 2
         limit = cfg["ground_inlier_m"] * 2
+        native = accelerator.native(cfg)
+        if native is not None:
+            anchors = accelerator.ground_profile(points, self.plane, cfg["ground_segment_m"], cfg["max_range_m"],
+                                                 cfg["ground_local_window_m"], cfg["ground_fit_half_width_m"],
+                                                 cfg["ground_inlier_m"], cfg["ground_min_support"],
+                                                 cfg["ground_max_slopes"][0], native)
+            self.ground_anchors = anchors.reshape(-1, 3)
+            return
         # Sorting once makes each longitudinal window a contiguous slice of the
         # same measurements; the original inequalities are then applied to the
         # slice, so the selected set, its median and its spread are unchanged.

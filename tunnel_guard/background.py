@@ -47,7 +47,8 @@ class TunnelBackground:
             # on 31,298 points, and the alignment decision identical on every
             # reliable point across all patches.
             neighbors, _, eigenvalues, self.normals = accelerator.normal_statistics(
-                self.sample, cfg["normal_radius_m"], cfg["normal_max_neighbors"], self.native)
+                self.sample, cfg["normal_radius_m"], cfg["normal_max_neighbors"],
+                cfg["normal_min_neighbors"], self.native)
         else:
             search = o3d.geometry.KDTreeSearchParamHybrid(radius=cfg["normal_radius_m"],
                                                           max_nn=cfg["normal_max_neighbors"])
@@ -67,8 +68,17 @@ class TunnelBackground:
         if len(leveled):
             domains += [(float(x), float(x + cfg["window_m"])) for x in
                         np.arange(leveled[:, 0].min(), leveled[:, 0].max(), cfg["window_m"] / 2)]
-        for lo, hi in domains:
-            remainder = sample[(sample[:, 0] >= lo) & (sample[:, 0] <= hi)]
+        scratch_rows = np.empty_like(sample) if self.native is not None else None
+        if self.native is not None and domains:
+            # Window membership for every domain in one call; the slices are the
+            # same rows the per-domain mask selected.
+            window_ids, offsets = accelerator.window_indices(sample, np.asarray(domains, dtype=float), self.native)
+            windowed = sample[window_ids]
+        for domain, (lo, hi) in enumerate(domains):
+            if self.native is not None:
+                remainder = windowed[offsets[domain]:offsets[domain + 1]]
+            else:
+                remainder = sample[(sample[:, 0] >= lo) & (sample[:, 0] <= hi)]
             for _ in range(cfg["planes_per_window"]):
                 if len(remainder) < cfg["min_support"]:
                     break
@@ -82,9 +92,12 @@ class TunnelBackground:
                 if len(indices) < cfg["min_support"]:
                     break
                 support = remainder[indices]
-                retained = np.ones(len(remainder), dtype=bool)
-                retained[indices] = False
-                remainder = remainder[retained]
+                if self.native is not None:
+                    remainder = accelerator.remove_rows(remainder, indices, scratch_rows, self.native)
+                else:
+                    retained = np.ones(len(remainder), dtype=bool)
+                    retained[indices] = False
+                    remainder = remainder[retained]
                 plane = np.asarray(plane)
                 normal = plane[:3]
                 if abs(normal[0]) > cfg["max_longitudinal_normal"]:
@@ -99,23 +112,28 @@ class TunnelBackground:
                     continue
                 # Require observed support in each longitudinal strip. A fitted
                 # plane cannot erase geometry across an unobserved gap or range.
-                strips = []
-                strip_ids = np.floor(support[:, 0] / cfg["strip_m"]).astype(int)
-                _, inverse, counts = np.unique(strip_ids, return_inverse=True, return_counts=True)
-                order = np.argsort(inverse, kind="stable")
-                bounds = np.concatenate(([0], np.cumsum(counts)))
-                strip_x = support[order, 0]
-                strip_t = support[order, transverse]
-                for index in range(len(counts)):
-                    if counts[index] < cfg["min_strip_support"]:
-                        continue
-                    start, stop = int(bounds[index]), int(bounds[index + 1])
-                    span = float(strip_t[start:stop].max() - strip_t[start:stop].min())
-                    if span < cfg["min_strip_span_m"]:
-                        continue
-                    strips.append((float(strip_x[start:stop].min()), float(strip_x[start:stop].max()),
-                                   float(strip_t[start:stop].min()), float(strip_t[start:stop].max())))
-                if strips:
+                if self.native is not None:
+                    strips = accelerator.support_strips(support, transverse, cfg["strip_m"],
+                                                        cfg["min_strip_support"], cfg["min_strip_span_m"],
+                                                        self.native)
+                else:
+                    strips = []
+                    strip_ids = np.floor(support[:, 0] / cfg["strip_m"]).astype(int)
+                    _, inverse, counts = np.unique(strip_ids, return_inverse=True, return_counts=True)
+                    order = np.argsort(inverse, kind="stable")
+                    bounds_strip = np.concatenate(([0], np.cumsum(counts)))
+                    strip_x = support[order, 0]
+                    strip_t = support[order, transverse]
+                    for index in range(len(counts)):
+                        if counts[index] < cfg["min_strip_support"]:
+                            continue
+                        start, stop = int(bounds_strip[index]), int(bounds_strip[index + 1])
+                        span = float(strip_t[start:stop].max() - strip_t[start:stop].min())
+                        if span < cfg["min_strip_span_m"]:
+                            continue
+                        strips.append((float(strip_x[start:stop].min()), float(strip_x[start:stop].max()),
+                                       float(strip_t[start:stop].min()), float(strip_t[start:stop].max())))
+                if len(strips):
                     self.patches.append((plane, transverse, strips, kind))
 
     def mask(self, points: np.ndarray, protected: np.ndarray) -> np.ndarray:

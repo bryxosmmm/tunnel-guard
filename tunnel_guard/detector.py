@@ -501,12 +501,21 @@ class Detector:
         # Reuse the classification the cluster stage already computed for exactly
         # this array instead of classifying it a second time.
         _, _, _, observed, _ = carried[0]
-        for lo, hi in zip(self.config["range_bins_m"][:-1], self.config["range_bins_m"][1:]):
-            mask = (reduced[:, 0] >= lo) & (reduced[:, 0] < hi)
-            raw_mask = (frame[:, 0] >= lo) & (frame[:, 0] < hi) & crop
-            bins.append({"range_m": [lo, hi], "returns": int(mask.sum()),
-                         "returns_before_geometry_voxel": int(raw_mask.sum()),
-                         "geometry_supported_returns": int(np.count_nonzero(mask & observed))})
+        edges = self.config["range_bins_m"]
+        if self.native_kernels is not None:
+            counts = accelerator.range_summary(reduced, frame, crop, observed,
+                                               np.column_stack((edges[:-1], edges[1:])), self.native_kernels)
+            for index, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
+                bins.append({"range_m": [lo, hi], "returns": int(counts[index, 0]),
+                             "returns_before_geometry_voxel": int(counts[index, 1]),
+                             "geometry_supported_returns": int(counts[index, 2])})
+        else:
+            for lo, hi in zip(edges[:-1], edges[1:]):
+                mask = (reduced[:, 0] >= lo) & (reduced[:, 0] < hi)
+                raw_mask = (frame[:, 0] >= lo) & (frame[:, 0] < hi) & crop
+                bins.append({"range_m": [lo, hi], "returns": int(mask.sum()),
+                             "returns_before_geometry_voxel": int(raw_mask.sum()),
+                             "geometry_supported_returns": int(np.count_nonzero(mask & observed))})
         health_reasons = []
         if not geometry.valid:
             health_reasons.append(geometry.reason)

@@ -122,3 +122,8 @@ PyObject* mask_apply(PyObject* self, PyObject* args);
 PyObject* cluster_components(PyObject* self, PyObject* args);
 PyObject* normal_covariances(PyObject* self, PyObject* args);
 PyObject* component_labels(PyObject* self, PyObject* args);
+PyObject* window_indices(PyObject* self, PyObject* args);
+PyObject* remove_rows(PyObject* self, PyObject* args);
+PyObject* support_strips(PyObject* self, PyObject* args);
+PyObject* ground_profile(PyObject* self, PyObject* args);
+PyObject* range_summary(PyObject* self, PyObject* args);

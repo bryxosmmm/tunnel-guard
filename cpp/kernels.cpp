@@ -75,7 +75,7 @@ struct ReleaseGIL {
 // capacity never reallocates, which is the point of the arena.
 struct Workspace {
     std::vector<double> d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10;
-    std::vector<int64_t> i0, i1, i2, i3, i4;
+    std::vector<int64_t> i0, i1, i2, i3, i4, i5, i6;
     std::vector<uint8_t> b0, b1, b2, b3, b4;
     std::vector<std::pair<Key, int64_t>> ordered;
     std::vector<std::vector<int64_t>> sinks;
@@ -112,6 +112,7 @@ public:
         return ok_ && view_.ndim == 1 && view_.itemsize == sizeof(bool)
             && view_.format && std::strcmp(view_.format, "?") == 0;
     }
+    Py_buffer const& view() const { return view_; }
     bool writable_flags() const {
         return ok_ && view_.ndim == 1 && view_.itemsize == sizeof(bool) && (view_.readonly == 0)
             && view_.format && std::strcmp(view_.format, "?") == 0;
@@ -1010,6 +1011,42 @@ PyObject* mask_apply(PyObject*, PyObject* args) {
         auto& protrusions = workspace.i1;
         auto& cleared = workspace.i2;
         auto& inside = workspace.i3;
+        // The attachment-edge predicate depends only on the plane and the sample
+        // cloud, never on the running mask, so every patch's protected set is
+        // computed up front. Only the claim step below is order dependent.
+        auto& protected_sets = workspace.i4;
+        auto& protected_offsets = workspace.i5;
+        protected_sets.clear();
+        protected_offsets.assign(static_cast<size_t>(patches) + 1, 0);
+        {
+            std::vector<std::vector<int64_t>> local(static_cast<size_t>(patches));
+            std::vector<std::thread> pool;
+            const unsigned workers = worker_count(patches * sample.rows() / 64);
+            const Py_ssize_t chunk = (patches + static_cast<Py_ssize_t>(workers) - 1) / static_cast<Py_ssize_t>(workers);
+            for (unsigned worker = 0; worker < workers; ++worker) {
+                const Py_ssize_t start = static_cast<Py_ssize_t>(worker) * chunk;
+                const Py_ssize_t stop = std::min(patches, start + chunk);
+                if (start >= stop) break;
+                pool.emplace_back([&, start, stop] {
+                    for (Py_ssize_t patch = start; patch < stop; ++patch) {
+                        protrusion_samples(sample_points, normal_vectors, sample_reliable, sample.rows(),
+                                           models + 4 * patch, depth, radius, alignment, local[static_cast<size_t>(patch)]);
+                    }
+                });
+            }
+            for (auto& thread : pool) thread.join();
+            for (Py_ssize_t patch = 0; patch < patches; ++patch) {
+                protected_offsets[static_cast<size_t>(patch) + 1] =
+                    protected_offsets[static_cast<size_t>(patch)]
+                    + static_cast<int64_t>(local[static_cast<size_t>(patch)].size());
+            }
+            protected_sets.resize(static_cast<size_t>(protected_offsets[static_cast<size_t>(patches)]));
+            for (Py_ssize_t patch = 0; patch < patches; ++patch) {
+                const auto& source = local[static_cast<size_t>(patch)];
+                std::copy(source.begin(), source.end(),
+                          protected_sets.begin() + protected_offsets[static_cast<size_t>(patch)]);
+            }
+        }
         for (Py_ssize_t patch = 0; patch < patches; ++patch) {
             const double* model = models + 4 * patch;
             const int64_t begin = candidate_bounds[patch], end = candidate_bounds[patch + 1];
@@ -1026,24 +1063,24 @@ PyObject* mask_apply(PyObject*, PyObject* args) {
                 near_ids.push_back(point);
             }
             if (near_ids.empty()) continue;
-            protrusions.clear();
-            protrusion_samples(sample_points, normal_vectors, sample_reliable, sample.rows(), model,
-                               depth, radius, alignment, protrusions);
-            if (!protrusions.empty()) {
+            const int64_t protected_begin = protected_offsets[static_cast<size_t>(patch)];
+            const int64_t protected_end = protected_offsets[static_cast<size_t>(patch) + 1];
+            if (protected_end > protected_begin) {
                 // Distances are taken to the protruding samples only, exactly as
                 // the reference gathers sample[protrusion] before querying.
                 Arena& scratch = arena();
                 auto& targets = scratch.d10;
-                targets.resize(protrusions.size() * 3);
-                for (size_t index = 0; index < protrusions.size(); ++index) {
-                    const int64_t source = protrusions[index];
+                const size_t protected_count = static_cast<size_t>(protected_end - protected_begin);
+                targets.resize(protected_count * 3);
+                for (size_t index = 0; index < protected_count; ++index) {
+                    const int64_t source = protected_sets[static_cast<size_t>(protected_begin) + index];
                     targets[3 * index] = sample_points[3 * source];
                     targets[3 * index + 1] = sample_points[3 * source + 1];
                     targets[3 * index + 2] = sample_points[3 * source + 2];
                 }
                 cleared.clear();
                 clear_of_targets(data, near_ids.data(), static_cast<Py_ssize_t>(near_ids.size()),
-                                 targets.data(), static_cast<Py_ssize_t>(protrusions.size()), radius, cleared);
+                                 targets.data(), static_cast<Py_ssize_t>(protected_count), radius, cleared);
                 near_ids.swap(cleared);
             }
             if (near_ids.empty()) continue;
@@ -1438,7 +1475,8 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
     PyObject* object;
     double radius;
     int max_nn;
-    if (!PyArg_ParseTuple(args, "Odi", &object, &radius, &max_nn)) return nullptr;
+    int min_neighbors;
+    if (!PyArg_ParseTuple(args, "Odii", &object, &radius, &max_nn, &min_neighbors)) return nullptr;
     if (!(std::isfinite(radius) && radius > 0) || max_nn < 1) {
         PyErr_SetString(PyExc_ValueError, "radius must be positive and max_nn at least one");
         return nullptr;
@@ -1673,6 +1711,318 @@ PyObject* component_labels(PyObject*, PyObject* args) {
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
 }
 
+// Longitudinal window membership for every domain in one call.
+//
+// Equivalent to [flatnonzero((x >= lo) & (x <= hi)) for lo, hi in bounds], with
+// the slices concatenated and their offsets returned.
+PyObject* window_indices(PyObject*, PyObject* args) {
+    PyObject *points_object, *bounds_object;
+    if (!PyArg_ParseTuple(args, "OO", &points_object, &bounds_object)) return nullptr;
+    Buffer points(points_object);
+    Buffer bounds(bounds_object);
+    if (!points.points() || !bounds.matrix(2)) {
+        PyErr_SetString(PyExc_ValueError, "expected points (N,3) and bounds (D,2)");
+        return nullptr;
+    }
+    const double* data = points.doubles();
+    const double* limits = bounds.doubles();
+    const Py_ssize_t n = points.rows(), domains = bounds.rows();
+    Arena& scratch = arena();
+    std::vector<int64_t>* rows = &scratch.i0;
+    std::vector<int64_t>* slices = &scratch.i1;
+    try {
+        // The GIL is released only around the computation; the copies the caller
+        // receives are built afterwards, when the guard has been destroyed.
+        {
+            ReleaseGIL released;
+            rows->clear();
+            rows->reserve(static_cast<size_t>(n));
+            slices->assign(static_cast<size_t>(domains) + 1, 0);
+            for (Py_ssize_t domain = 0; domain < domains; ++domain) {
+                const double low = limits[2 * domain], high = limits[2 * domain + 1];
+                for (Py_ssize_t i = 0; i < n; ++i) {
+                    const double x = data[3 * i];
+                    if (x >= low && x <= high) rows->push_back(static_cast<int64_t>(i));
+                }
+                (*slices)[static_cast<size_t>(domain) + 1] = static_cast<int64_t>(rows->size());
+            }
+        }
+        PyObject* payload = PyTuple_New(2);
+        if (payload == nullptr) return nullptr;
+        PyObject* index_bytes = bytes_of(rows->data(), rows->size() * sizeof(int64_t));
+        PyObject* offset_bytes = bytes_of(slices->data(), slices->size() * sizeof(int64_t));
+        if (index_bytes == nullptr || offset_bytes == nullptr) {
+            Py_XDECREF(index_bytes);
+            Py_XDECREF(offset_bytes);
+            Py_DECREF(payload);
+            return nullptr;
+        }
+        PyTuple_SET_ITEM(payload, 0, index_bytes);
+        PyTuple_SET_ITEM(payload, 1, offset_bytes);
+        return payload;
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+}
+
+// Rows kept after dropping the listed ones, written into the caller's buffer so
+// the result stays writeable for the geometry library. Returns the row count.
+PyObject* remove_rows(PyObject*, PyObject* args) {
+    PyObject *points_object, *remove_object, *out_object;
+    if (!PyArg_ParseTuple(args, "OOO", &points_object, &remove_object, &out_object)) return nullptr;
+    Buffer points(points_object);
+    Buffer remove(remove_object);
+    Buffer out(out_object, PyBUF_FORMAT | PyBUF_C_CONTIGUOUS | PyBUF_WRITABLE);
+    if (!points.points() || !remove.integers() || !out.points() || out.view().readonly) {
+        PyErr_SetString(PyExc_ValueError, "expected points (N,3), int64 row indices and a writeable (N,3) output");
+        return nullptr;
+    }
+    const double* data = points.doubles();
+    double* target = const_cast<double*>(out.doubles());
+    const int64_t* drop = remove.int64s();
+    const Py_ssize_t n = points.rows(), count = remove.size();
+    if (out.rows() < n) {
+        PyErr_SetString(PyExc_ValueError, "output buffer must hold at least as many rows as the input");
+        return nullptr;
+    }
+    Arena& scratch = arena();
+    Py_ssize_t kept = 0;
+    try {
+        {
+            ReleaseGIL released;
+            auto& dropped = scratch.b0;
+            dropped.assign(static_cast<size_t>(n), 0);
+            for (Py_ssize_t index = 0; index < count; ++index) {
+                const int64_t row = drop[index];
+                if (row >= 0 && row < n) dropped[static_cast<size_t>(row)] = 1;
+            }
+            for (Py_ssize_t i = 0; i < n; ++i) {
+                if (dropped[static_cast<size_t>(i)]) continue;
+                target[3 * kept] = data[3 * i];
+                target[3 * kept + 1] = data[3 * i + 1];
+                target[3 * kept + 2] = data[3 * i + 2];
+                ++kept;
+            }
+        }
+        return PyLong_FromSsize_t(kept);
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+}
+
+// Observed strips of a fitted plane's support: longitudinal groups, in ascending
+// group order, keeping those with enough points and enough transverse span.
+PyObject* support_strips(PyObject*, PyObject* args) {
+    PyObject* support_object;
+    long transverse;
+    double strip_size, min_support, min_span;
+    if (!PyArg_ParseTuple(args, "Olddd", &support_object, &transverse, &strip_size, &min_support, &min_span))
+        return nullptr;
+    Buffer support(support_object);
+    if (!support.points() || strip_size <= 0.0) {
+        PyErr_SetString(PyExc_ValueError, "expected support (S,3) and a positive strip width");
+        return nullptr;
+    }
+    const double* data = support.doubles();
+    const Py_ssize_t n = support.rows();
+    Arena& scratch = arena();
+    std::vector<double>* result = &scratch.d1;
+    try {
+        {
+            ReleaseGIL released;
+            result->clear();
+            if (n > 0) {
+                // Group by floor(x / strip). Groups are visited in ascending id,
+                // which is the order the reference produced.
+                auto& ids = scratch.i0;
+                ids.resize(static_cast<size_t>(n));
+                int64_t lowest = 0, highest = 0;
+                for (Py_ssize_t i = 0; i < n; ++i) {
+                    const double value = std::floor(data[3 * i] / strip_size);
+                    if (!std::isfinite(value) || value < -0x1p62 || value >= 0x1p62)
+                        throw std::invalid_argument("nonfinite or out-of-range strip coordinate");
+                    ids[static_cast<size_t>(i)] = static_cast<int64_t>(value);
+                    if (i == 0 || ids[static_cast<size_t>(i)] < lowest) lowest = ids[static_cast<size_t>(i)];
+                    if (i == 0 || ids[static_cast<size_t>(i)] > highest) highest = ids[static_cast<size_t>(i)];
+                }
+                const int64_t span = highest - lowest + 1;
+                auto& counts = scratch.i1;
+                auto& offsets = scratch.i2;
+                counts.assign(static_cast<size_t>(span) + 1, 0);
+                for (Py_ssize_t i = 0; i < n; ++i)
+                    ++counts[static_cast<size_t>(ids[static_cast<size_t>(i)] - lowest) + 1];
+                for (int64_t index = 0; index < span; ++index)
+                    counts[static_cast<size_t>(index) + 1] += counts[static_cast<size_t>(index)];
+                offsets.assign(counts.begin(), counts.end());
+                auto& cursor = scratch.i3;
+                cursor.assign(counts.begin(), counts.end() - 1);
+                auto& order = scratch.i4;
+                order.resize(static_cast<size_t>(n));
+                for (Py_ssize_t i = 0; i < n; ++i) {
+                    const size_t group = static_cast<size_t>(ids[static_cast<size_t>(i)] - lowest);
+                    order[static_cast<size_t>(cursor[group]++)] = i;
+                }
+                for (int64_t group = 0; group < span; ++group) {
+                    const int64_t begin = offsets[static_cast<size_t>(group)];
+                    const int64_t end = offsets[static_cast<size_t>(group) + 1];
+                    const int64_t size = end - begin;
+                    if (size < static_cast<int64_t>(min_support)) continue;
+                    double low_x = HUGE_VAL, high_x = -HUGE_VAL, low_t = HUGE_VAL, high_t = -HUGE_VAL;
+                    for (int64_t slot = begin; slot < end; ++slot) {
+                        const int64_t row = order[static_cast<size_t>(slot)];
+                        const double x = data[3 * row], lateral = data[3 * row + transverse];
+                        if (x < low_x) low_x = x;
+                        if (x > high_x) high_x = x;
+                        if (lateral < low_t) low_t = lateral;
+                        if (lateral > high_t) high_t = lateral;
+                    }
+                    if (high_t - low_t < min_span) continue;
+                    result->push_back(low_x);
+                    result->push_back(high_x);
+                    result->push_back(low_t);
+                    result->push_back(high_t);
+                }
+            }
+        }
+        return bytes_of(result->data(), result->size() * sizeof(double));
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    catch (const std::exception& error) {
+        PyErr_SetString(PyExc_ValueError, error.what());
+        return nullptr;
+    }
+}
+
+// Track-bed profile anchors.
+//
+// Equivalent to the reference loop: each longitudinal window takes the
+// measurements inside it whose residual is near the previous anchor's shift, and
+// keeps the window's median shift with its scaled median absolute deviation.
+// Medians are order independent, so the anchors do not depend on the order the
+// window's rows are visited.
+PyObject* ground_profile(PyObject*, PyObject* args) {
+    PyObject* points_object;
+    PyObject* plane_object;
+    double segment, maximum, half_window, half_width, inlier, min_support, slope_limit;
+    if (!PyArg_ParseTuple(args, "OOddddddd", &points_object, &plane_object, &segment, &maximum,
+                          &half_window, &half_width, &inlier, &min_support, &slope_limit)) return nullptr;
+    Buffer points(points_object);
+    Buffer plane(plane_object);
+    if (!points.points() || !plane.vector() || plane.size() != 3 || !(segment > 0)) {
+        PyErr_SetString(PyExc_ValueError, "expected points (N,3), a 3 element plane and a positive segment length");
+        return nullptr;
+    }
+    const double* data = points.doubles();
+    const double* model = plane.doubles();
+    const Py_ssize_t n = points.rows();
+    Arena& scratch = arena();
+    std::vector<double>* anchors = &scratch.d0;
+    try {
+        {
+            ReleaseGIL released;
+            auto& residual = scratch.d1;
+            residual.resize(static_cast<size_t>(n));
+            for (Py_ssize_t i = 0; i < n; ++i)
+                residual[static_cast<size_t>(i)] = data[3 * i + 2]
+                    - (data[3 * i] * model[0] + data[3 * i + 1] * model[1] + model[2]);
+            anchors->clear();
+            double previous = 0.0;
+            const double limit = inlier * 2.0;
+            auto& values = scratch.d2;
+            auto& deviations = scratch.d3;
+            for (double x = segment; x < maximum; x += segment) {
+                values.clear();
+                double low_x = HUGE_VAL, high_x = -HUGE_VAL, low_y = HUGE_VAL, high_y = -HUGE_VAL;
+                for (Py_ssize_t i = 0; i < n; ++i) {
+                    const double px = data[3 * i], py = data[3 * i + 1];
+                    if (!(std::abs(px - x) < half_window)) continue;
+                    if (!(std::abs(py) < half_width)) continue;
+                    if (!(std::abs(residual[static_cast<size_t>(i)] - previous) < limit)) continue;
+                    values.push_back(residual[static_cast<size_t>(i)]);
+                    if (px < low_x) low_x = px;
+                    if (px > high_x) high_x = px;
+                    if (py < low_y) low_y = py;
+                    if (py > high_y) high_y = py;
+                }
+                const size_t count = values.size();
+                if (count < static_cast<size_t>(std::max(12.0, min_support / 3.0))) continue;
+                if (high_x - low_x < 1.5 || high_y - low_y < 0.4) continue;
+                std::nth_element(values.begin(), values.begin() + count / 2, values.end());
+                const double middle = values[count / 2];
+                const double shift = (count % 2 == 1) ? middle
+                    : 0.5 * (middle + *std::max_element(values.begin(), values.begin() + count / 2));
+                deviations.clear();
+                deviations.reserve(count);
+                for (double value : values) deviations.push_back(std::abs(value - shift));
+                std::nth_element(deviations.begin(), deviations.begin() + count / 2, deviations.end());
+                const double middle_deviation = deviations[count / 2];
+                const double mad = (count % 2 == 1) ? middle_deviation
+                    : 0.5 * (middle_deviation + *std::max_element(deviations.begin(), deviations.begin() + count / 2));
+                if (!anchors->empty()
+                        && std::abs(shift - previous) / (x - anchors->at(anchors->size() - 3)) > slope_limit)
+                    continue;
+                anchors->push_back(x);
+                anchors->push_back(shift);
+                anchors->push_back(std::max(mad * 1.4826, 0.015));
+                previous = shift;
+            }
+        }
+        return bytes_of(anchors->data(), anchors->size() * sizeof(double));
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+}
+
+// Per-range-bin return counts for the observability summary.
+//
+// Replaces the per-bin boolean masks in Python: for each bin the number of
+// geometry-cloud rows inside it, the number of raw cropped rows inside it, and
+// how many of the geometry rows carry supported geometry.
+PyObject* range_summary(PyObject*, PyObject* args) {
+    PyObject *reduced_object, *frame_object, *crop_object, *observed_object, *bins_object;
+    if (!PyArg_ParseTuple(args, "OOOOO", &reduced_object, &frame_object, &crop_object, &observed_object,
+                          &bins_object)) return nullptr;
+    Buffer reduced(reduced_object);
+    Buffer frame(frame_object);
+    Buffer crop(crop_object);
+    Buffer observed(observed_object);
+    Buffer bins(bins_object);
+    if (!reduced.points() || !frame.points() || !crop.flags() || !observed.flags() || !bins.matrix(2)) {
+        PyErr_SetString(PyExc_ValueError, "expected two point clouds, two bool masks and (B,2) bin edges");
+        return nullptr;
+    }
+    if (crop.size() != frame.rows() || observed.size() != reduced.rows()) {
+        PyErr_SetString(PyExc_ValueError, "masks must match the clouds they describe");
+        return nullptr;
+    }
+    const double* clouds = reduced.doubles();
+    const double* raw = frame.doubles();
+    const bool* keep = crop.bools();
+    const bool* supported = observed.bools();
+    const double* edges = bins.doubles();
+    const Py_ssize_t rows = reduced.rows(), raw_rows = frame.rows(), count = bins.rows();
+    Arena& scratch = arena();
+    std::vector<int64_t>* result = &scratch.i0;
+    try {
+        {
+            ReleaseGIL released;
+            result->assign(static_cast<size_t>(count) * 3, 0);
+            for (Py_ssize_t bin = 0; bin < count; ++bin) {
+                const double low = edges[2 * bin], high = edges[2 * bin + 1];
+                int64_t inside = 0, before = 0, with_geometry = 0;
+                for (Py_ssize_t i = 0; i < rows; ++i) {
+                    const double x = clouds[3 * i];
+                    if (x >= low && x < high) {
+                        ++inside;
+                        if (supported[i]) ++with_geometry;
+                    }
+                }
+                for (Py_ssize_t i = 0; i < raw_rows; ++i) {
+                    const double x = raw[3 * i];
+                    if (keep[i] && x >= low && x < high) ++before;
+                }
+                (*result)[3 * bin] = inside;
+                (*result)[3 * bin + 1] = before;
+                (*result)[3 * bin + 2] = with_geometry;
+            }
+        }
+        return bytes_of(result->data(), result->size() * sizeof(int64_t));
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+}
+
 static PyMethodDef methods[] = {
     {"voxel_indices", voxel_indices, METH_VARARGS,
      "First measurement indices, lexicographic voxel order."},
@@ -1680,6 +2030,16 @@ static PyMethodDef methods[] = {
      "Number of distinct voxels for the same keys."},
     {"voxel_counts", voxel_counts, METH_VARARGS,
      "Distinct voxel count for each stack in one call, reusing one arena."},
+    {"window_indices", window_indices, METH_VARARGS,
+     "Longitudinal window membership for every domain in one call."},
+    {"remove_rows", remove_rows, METH_VARARGS,
+     "Rows kept after dropping the listed indices, in order."},
+    {"range_summary", range_summary, METH_VARARGS,
+     "Per-range-bin return counts for the observability summary."},
+    {"ground_profile", ground_profile, METH_VARARGS,
+     "Track-bed profile anchors along the recording axis."},
+    {"support_strips", support_strips, METH_VARARGS,
+     "Observed longitudinal strips of a plane's support."},
     {"component_labels", component_labels, METH_VARARGS,
      "Union-find component labels of a subset, numbered like scipy's."},
     {"normal_covariances", normal_covariances, METH_VARARGS,

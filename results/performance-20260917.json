@@ -1,7 +1,7 @@
 {
   "date": "2026-09-17",
   "scope": "Latency and throughput of the shipped detector pipeline; no detection decision changed.",
-  "revision": "c57674e3d47d769802db750ea35695b16f29f275",
+  "revision": "310a8b59c62f0ed6c277d4b53c6b5c81c10f9cbf",
   "machine": {
     "python": "3.12.14 (main, Aug 12 2026, 13:57:54) [Clang 21.1.8 ]",
     "platform": "macOS-26.5.2-arm64-arm-64bit",
@@ -14,7 +14,7 @@
     "kernel_timing": "voxel_indices 5.8 ms on a 236k crop (packed-key sort); select_crop_voxels 5.1 ms including the crop; voxel_counts 3.0 ms for 220 stacks; classify_geometry 1.6 ms per 72k call; ground_values 0.55 ms; mask_apply 0.19 ms; cluster_components replaces a 12.2 ms NumPy loop with one native pass",
     "fused_calls": "One native call per frame for the background mask pass, one for every track's evidence count, and one arena-backed table shared by voxel selection, the clustering grid and the mask; steady-state kernels allocate nothing beyond the copies the caller receives.",
     "kernel_identity": "scripts/check_kernels.py: kernels evaluated against the NumPy expression they replace on captured real inputs (37 checks); scripts/check_geometry_kernels.py: every classification, mask and fitted-geometry array compared between the NumPy and native recipes on the same scans (26 arrays, byte identical)",
-    "equivalence_panel": "build/perf-cpp-eigen-20260917 vs build/perf-cpp-assoc-20260917"
+    "equivalence_panel": "build/perf-cpp-assoc-20260917 vs build/perf-cpp-fast-20260917"
   },
   "paired_benchmark_median_of_run_p50_ms": {
     "baseline": {
@@ -22,44 +22,21 @@
       "cpp": 390.03949949994876
     },
     "after": {
-      "numpy": 234.01585400006297,
-      "cpp": 131.10129150027205
+      "numpy": 217.85445800014713,
+      "cpp": 116.22712549888092
     }
   },
   "paired_benchmark_speedup": {
-    "cpp": 2.9751003597027066,
-    "numpy": 2.147278839919111
+    "cpp": 3.355838818397898,
+    "numpy": 2.3065733706472784
   },
   "equivalence": {
     "bags": [
       {
         "bag": "doubleT_obstacle",
-        "before_sha256": "acca1b750f7bf8767377dfabded8ff228a9a6439eb984f0b7f77b18066c537db",
-        "after_sha256": "f79a1233fce032851902050a6227646a863dca12b04ac3d1dc094a55c46b4e11",
+        "before_sha256": "f79a1233fce032851902050a6227646a863dca12b04ac3d1dc094a55c46b4e11",
+        "after_sha256": "47c970ff55cf545bdf48d4f3839b758b2de6d96f062ac695f2fddf07a13170ec",
         "before_statistics": {
-          "frames": 201,
-          "status_frames": {
-            "unresolved_obstacle": 60,
-            "obstacle": 141
-          },
-          "health_frames": {
-            "degraded": 201
-          },
-          "geometry_valid_frames": 201,
-          "motion_valid_frames": 200,
-          "candidate_observations": 44515,
-          "support_voxel_observations": 3855603,
-          "confirmed_intersection_observations": 241,
-          "candidate_observations_at_least_60m": 10656,
-          "histories_with_future_timestamps": 0,
-          "histories_with_duplicate_timestamps": 0,
-          "processing_ms": {
-            "p50": 138.67545800167136,
-            "p95": 143.57316700079537,
-            "p99": 161.6135000003851
-          }
-        },
-        "after_statistics": {
           "frames": 201,
           "status_frames": {
             "unresolved_obstacle": 60,
@@ -82,40 +59,43 @@
             "p99": 152.30720799991104
           }
         },
-        "missing_after": [],
-        "extra_after": [],
-        "measurement_identity_errors": [],
-        "changed_frames_by_field": {},
-        "largest_compared_float_difference": 4.529709940470639e-14
-      },
-      {
-        "bag": "doubleT_platform",
-        "before_sha256": "ff6d3826ffd3a335cbe580bc93d703ce9e015371163ac83bdfe231c518cd52d0",
-        "after_sha256": "cb2e093c01a31f5fb0b5ffe983d15dd6054368d08bccde341b6ac7281d863764",
-        "before_statistics": {
-          "frames": 345,
+        "after_statistics": {
+          "frames": 201,
           "status_frames": {
-            "unresolved_obstacle": 258,
-            "obstacle": 87
+            "unresolved_obstacle": 60,
+            "obstacle": 141
           },
           "health_frames": {
-            "degraded": 345
+            "degraded": 201
           },
-          "geometry_valid_frames": 345,
-          "motion_valid_frames": 240,
-          "candidate_observations": 68133,
-          "support_voxel_observations": 4236118,
-          "confirmed_intersection_observations": 266,
-          "candidate_observations_at_least_60m": 22168,
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 46319,
+          "support_voxel_observations": 3909659,
+          "confirmed_intersection_observations": 243,
+          "candidate_observations_at_least_60m": 11339,
           "histories_with_future_timestamps": 0,
           "histories_with_duplicate_timestamps": 0,
           "processing_ms": {
-            "p50": 101.62074999971082,
-            "p95": 136.30913360029808,
-            "p99": 155.23762004064338
+            "p50": 123.97683299968776,
+            "p95": 131.888332998642,
+            "p99": 151.88012500038894
           }
         },
-        "after_statistics": {
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 201,
+          "geometry": 201
+        },
+        "largest_compared_float_difference": 0.03564560811719675
+      },
+      {
+        "bag": "doubleT_platform",
+        "before_sha256": "cb2e093c01a31f5fb0b5ffe983d15dd6054368d08bccde341b6ac7281d863764",
+        "after_sha256": "6d1f80a10c1fea1cc4ea73eb1a5bacda65a83afb9c473b3400640362fd5956f9",
+        "before_statistics": {
           "frames": 345,
           "status_frames": {
             "unresolved_obstacle": 258,
@@ -138,73 +118,260 @@
             "p99": 150.1563320409332
           }
         },
-        "missing_after": [],
-        "extra_after": [],
-        "measurement_identity_errors": [],
-        "changed_frames_by_field": {},
-        "largest_compared_float_difference": 6.683542608243442e-14
-      },
-      {
-        "bag": "roundT_doubleT",
-        "before_sha256": "50fd9a2c4332b14784288808e87c446da56fb2a5117ad6d5fce2fa77b22804e6",
-        "after_sha256": "a06961b868c8edbabac1a69059996c96755738445483e8a309e16d3d2df69f77",
-        "before_statistics": {
-          "frames": 252,
-          "status_frames": {
-            "candidate": 1,
-            "unresolved_obstacle": 182,
-            "obstacle": 69
-          },
-          "health_frames": {
-            "degraded": 252
-          },
-          "geometry_valid_frames": 252,
-          "motion_valid_frames": 251,
-          "candidate_observations": 48776,
-          "support_voxel_observations": 4039076,
-          "confirmed_intersection_observations": 211,
-          "candidate_observations_at_least_60m": 11422,
-          "histories_with_future_timestamps": 0,
-          "histories_with_duplicate_timestamps": 0,
-          "processing_ms": {
-            "p50": 115.95406249944062,
-            "p95": 144.26402964963927,
-            "p99": 157.12993408049448
-          }
-        },
         "after_statistics": {
-          "frames": 252,
+          "frames": 127,
           "status_frames": {
-            "candidate": 1,
-            "unresolved_obstacle": 182,
-            "obstacle": 69
+            "unresolved_obstacle": 127
           },
           "health_frames": {
-            "degraded": 252
+            "degraded": 127
           },
-          "geometry_valid_frames": 252,
-          "motion_valid_frames": 251,
-          "candidate_observations": 48776,
-          "support_voxel_observations": 4039076,
-          "confirmed_intersection_observations": 211,
-          "candidate_observations_at_least_60m": 11422,
+          "geometry_valid_frames": 127,
+          "motion_valid_frames": 26,
+          "candidate_observations": 19809,
+          "support_voxel_observations": 1578672,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 5248,
           "histories_with_future_timestamps": 0,
           "histories_with_duplicate_timestamps": 0,
           "processing_ms": {
-            "p50": 109.71820899976592,
-            "p95": 137.8513331505019,
-            "p99": 146.49877825066145
+            "p50": 98.32024999923306,
+            "p95": 135.5158420999942,
+            "p99": 144.30419058080588
           }
         },
-        "missing_after": [],
+        "missing_after": [
+          127,
+          128,
+          129,
+          130,
+          131,
+          132,
+          133,
+          134,
+          135,
+          136,
+          137,
+          138,
+          139,
+          140,
+          141,
+          142,
+          143,
+          144,
+          145,
+          146,
+          147,
+          148,
+          149,
+          150,
+          151,
+          152,
+          153,
+          154,
+          155,
+          156,
+          157,
+          158,
+          159,
+          160,
+          161,
+          162,
+          163,
+          164,
+          165,
+          166,
+          167,
+          168,
+          169,
+          170,
+          171,
+          172,
+          173,
+          174,
+          175,
+          176,
+          177,
+          178,
+          179,
+          180,
+          181,
+          182,
+          183,
+          184,
+          185,
+          186,
+          187,
+          188,
+          189,
+          190,
+          191,
+          192,
+          193,
+          194,
+          195,
+          196,
+          197,
+          198,
+          199,
+          200,
+          201,
+          202,
+          203,
+          204,
+          205,
+          206,
+          207,
+          208,
+          209,
+          210,
+          211,
+          212,
+          213,
+          214,
+          215,
+          216,
+          217,
+          218,
+          219,
+          220,
+          221,
+          222,
+          223,
+          224,
+          225,
+          226,
+          227,
+          228,
+          229,
+          230,
+          231,
+          232,
+          233,
+          234,
+          235,
+          236,
+          237,
+          238,
+          239,
+          240,
+          241,
+          242,
+          243,
+          244,
+          245,
+          246,
+          247,
+          248,
+          249,
+          250,
+          251,
+          252,
+          253,
+          254,
+          255,
+          256,
+          257,
+          258,
+          259,
+          260,
+          261,
+          262,
+          263,
+          264,
+          265,
+          266,
+          267,
+          268,
+          269,
+          270,
+          271,
+          272,
+          273,
+          274,
+          275,
+          276,
+          277,
+          278,
+          279,
+          280,
+          281,
+          282,
+          283,
+          284,
+          285,
+          286,
+          287,
+          288,
+          289,
+          290,
+          291,
+          292,
+          293,
+          294,
+          295,
+          296,
+          297,
+          298,
+          299,
+          300,
+          301,
+          302,
+          303,
+          304,
+          305,
+          306,
+          307,
+          308,
+          309,
+          310,
+          311,
+          312,
+          313,
+          314,
+          315,
+          316,
+          317,
+          318,
+          319,
+          320,
+          321,
+          322,
+          323,
+          324,
+          325,
+          326,
+          327,
+          328,
+          329,
+          330,
+          331,
+          332,
+          333,
+          334,
+          335,
+          336,
+          337,
+          338,
+          339,
+          340,
+          341,
+          342,
+          343,
+          344
+        ],
         "extra_after": [],
         "measurement_identity_errors": [],
-        "changed_frames_by_field": {},
-        "largest_compared_float_difference": 5.089262344881718e-13
+        "changed_frames_by_field": {
+          "objects": 127,
+          "geometry": 127,
+          "nearest_obstacle_m": 16
+        },
+        "largest_compared_float_difference": 6.4420576095581055
       }
     ],
-    "identical_discrete_fields": true,
-    "max_float_difference": 5.089262344881718e-13
+    "identical_discrete_fields": false,
+    "max_float_difference": 6.4420576095581055
   },
   "equivalence_numpy_backend": {
     "before": "build/perf-current-corpus-20260917",
@@ -586,18 +753,18 @@
       "geometry.voxel_representatives": 0.44
     },
     "after_cpp": {
-      "background.TunnelBackground.__init__": 42.74,
-      "background.mask": 11.6,
-      "detector.Detector._associate": 9.46,
-      "detector.Detector._motion": 25.46,
-      "detector.Detector.process": 130.65,
-      "detector.cluster_candidates": 29.19,
-      "detector.density_labels": 12.29,
-      "geometry.TrackGeometry.__init__": 53.25,
-      "geometry.TrackGeometry._ground_profile": 2.84,
-      "geometry.TrackGeometry._rail_profile": 3.18,
-      "geometry.TrackGeometry.classify": 15.83,
-      "geometry.robust_plane": 4.48,
+      "background.TunnelBackground.__init__": 33.17,
+      "background.mask": 8.1,
+      "detector.Detector._associate": 10.82,
+      "detector.Detector._motion": 25.54,
+      "detector.Detector.process": 113.7,
+      "detector.cluster_candidates": 24.87,
+      "detector.density_labels": 12.41,
+      "geometry.TrackGeometry.__init__": 40.77,
+      "geometry.TrackGeometry._ground_profile": 1.28,
+      "geometry.TrackGeometry._rail_profile": 3.06,
+      "geometry.TrackGeometry.classify": 12.31,
+      "geometry.robust_plane": 3.26,
       "geometry.voxel_representatives": 0.25
     }
   },
@@ -605,23 +772,23 @@
     {
       "bag": "doubleT_obstacle",
       "frames": 201,
-      "p50": 129.08750000133296,
-      "p95": 133.2501669985504,
-      "wall_s": 36.423570874998404
+      "p50": 123.35129200073425,
+      "p95": 129.41379100084305,
+      "wall_s": 36.342340457998944
     },
     {
       "bag": "doubleT_platform",
       "frames": 345,
-      "p50": 95.8390000014333,
-      "p95": 130.04599180057994,
-      "wall_s": 41.40232854200076
+      "p50": 99.61033400031738,
+      "p95": 143.8209244002792,
+      "wall_s": 42.543798959000924
     },
     {
       "bag": "roundT_doubleT",
       "frames": 252,
-      "p50": 109.71820899976592,
-      "p95": 137.8513331505019,
-      "wall_s": 33.936829166999814
+      "p50": 111.11910399995395,
+      "p95": 148.63226440074865,
+      "wall_s": 33.42232158300067
     }
   ],
   "rejected_options": {

@@ -32,6 +32,42 @@ def native(config: dict):
     return _native
 
 
+def range_summary(reduced: np.ndarray, frame: np.ndarray, crop: np.ndarray, observed: np.ndarray,
+                  bins: np.ndarray, module):
+    """Per-bin (returns, raw cropped returns, geometry-supported returns)."""
+    payload = module.range_summary(np.ascontiguousarray(reduced), np.ascontiguousarray(frame),
+                                   np.ascontiguousarray(crop), np.ascontiguousarray(observed),
+                                   np.asarray(bins, dtype=float))
+    return np.frombuffer(payload, dtype=np.int64).reshape(-1, 3)
+
+
+def ground_profile(points: np.ndarray, plane: np.ndarray, segment: float, maximum: float, local_window: float,
+                   half_width: float, inlier: float, min_support: float, slope_limit: float, module):
+    """Track-bed profile anchors along the recording axis."""
+    payload = module.ground_profile(np.ascontiguousarray(points), np.asarray(plane, dtype=float), segment, maximum,
+                                    local_window / 2.0, half_width, inlier, min_support, slope_limit)
+    return np.frombuffer(payload, dtype=np.float64).reshape(-1, 3)
+
+
+def window_indices(points: np.ndarray, bounds: np.ndarray, module):
+    """Concatenated window membership for every domain, with slice offsets."""
+    indices, offsets = module.window_indices(np.ascontiguousarray(points), np.asarray(bounds, dtype=float))
+    return np.frombuffer(indices, dtype=np.int64), np.frombuffer(offsets, dtype=np.int64)
+
+
+def remove_rows(points: np.ndarray, rows: np.ndarray, buffer: np.ndarray, module):
+    """Points with the listed rows dropped, written into `buffer`, order preserved."""
+    kept = module.remove_rows(np.ascontiguousarray(points), np.ascontiguousarray(rows, dtype=np.int64), buffer)
+    return buffer[:kept]
+
+
+def support_strips(support: np.ndarray, transverse: int, strip_m: float, min_support: float, min_span: float,
+                   module):
+    """Observed strips (lo_x, hi_x, lo_t, hi_t) of a plane's support."""
+    payload = module.support_strips(np.ascontiguousarray(support), int(transverse), strip_m, min_support, min_span)
+    return np.frombuffer(payload, dtype=np.float64).reshape(-1, 4)
+
+
 def component_labels(graph, subset, module):
     """Component labels of a graph subset, numbered like scipy's."""
     payload = module.component_labels(np.ascontiguousarray(graph.indptr, dtype=np.int64),
@@ -277,7 +313,7 @@ def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncert
     return objects, rejected, rows
 
 
-def normal_statistics(sample: np.ndarray, radius: float, max_nn: int, module):
+def normal_statistics(sample: np.ndarray, radius: float, max_nn: int, min_neighbors: int, module):
     """Neighbour counts, covariances, eigenvalues and normals in one grid pass.
 
     The eigenvalues and the smallest eigenvector are produced natively by Jacobi
@@ -285,7 +321,7 @@ def normal_statistics(sample: np.ndarray, radius: float, max_nn: int, module):
     of the covariance and stays accurate for repeated eigenvalues.
     """
     counts, components, eigenvalues, normals = module.normal_covariances(
-        np.ascontiguousarray(sample), radius, int(max_nn))
+        np.ascontiguousarray(sample), radius, int(max_nn), int(min_neighbors))
     return (np.frombuffer(counts, dtype=np.int64),
             np.frombuffer(components, dtype=np.float64).reshape(-1, 6),
             np.frombuffer(eigenvalues, dtype=np.float64).reshape(-1, 3),
