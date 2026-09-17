@@ -46,6 +46,8 @@ static PyObject* voxel_indices(PyObject*, PyObject* args) {
         ReleaseGIL released;
         const auto* data = static_cast<const double*>(buffer.buf);
         const auto n = buffer.shape[0];
+        // Dedupe first: real clouds collapse to far fewer voxels than returns,
+        // so hashing N measurements costs less than sorting all N.
         std::unordered_map<Key, int64_t, Hash> first;
         first.reserve(static_cast<size_t>(n));
         for (Py_ssize_t i = 0; i < n; ++i) {
@@ -74,8 +76,57 @@ static PyObject* voxel_indices(PyObject*, PyObject* args) {
     return PyBytes_FromStringAndSize(reinterpret_cast<const char*>(indices.data()),
                                     static_cast<Py_ssize_t>(indices.size() * sizeof(int64_t)));
 }
+// Count distinct voxels; identical key derivation to voxel_indices, without
+// materialising or sorting the keys when only the count is consumed.
+static PyObject* voxel_count(PyObject*, PyObject* args) {
+    PyObject* object;
+    double size;
+    if (!PyArg_ParseTuple(args, "Od", &object, &size)) return nullptr;
+    if (!(std::isfinite(size) && size > 0)) {
+        PyErr_SetString(PyExc_ValueError, "voxel size must be finite and positive");
+        return nullptr;
+    }
+    Py_buffer buffer{};
+    if (PyObject_GetBuffer(object, &buffer, PyBUF_FORMAT | PyBUF_C_CONTIGUOUS) < 0) return nullptr;
+    if (buffer.ndim != 2 || buffer.shape[1] != 3 || buffer.itemsize != sizeof(double)
+        || !buffer.format || std::strcmp(buffer.format, "d") != 0) {
+        PyBuffer_Release(&buffer);
+        PyErr_SetString(PyExc_ValueError, "expected contiguous native float64 (N,3)");
+        return nullptr;
+    }
+    Py_ssize_t distinct = 0;
+    try {
+        ReleaseGIL released;
+        const auto* data = static_cast<const double*>(buffer.buf);
+        const auto n = buffer.shape[0];
+        std::unordered_map<Key, int64_t, Hash> first;
+        first.reserve(static_cast<size_t>(n));
+        for (Py_ssize_t i = 0; i < n; ++i) {
+            Key key{};
+            for (int axis = 0; axis < 3; ++axis) {
+                const double v = std::floor(data[3*i+axis] / size);
+                if (!std::isfinite(v) || v < -0x1p63 || v >= 0x1p63)
+                    throw std::invalid_argument("nonfinite or out-of-range voxel coordinate");
+                key[axis] = static_cast<int64_t>(v);
+            }
+            first.emplace(key, static_cast<int64_t>(i));
+        }
+        distinct = static_cast<Py_ssize_t>(first.size());
+    } catch (const std::bad_alloc&) {
+        PyBuffer_Release(&buffer);
+        return PyErr_NoMemory();
+    } catch (const std::exception& error) {
+        PyBuffer_Release(&buffer);
+        PyErr_SetString(PyExc_ValueError, error.what());
+        return nullptr;
+    }
+    PyBuffer_Release(&buffer);
+    return PyLong_FromSsize_t(distinct);
+}
+
 static PyMethodDef methods[] = {
     {"voxel_indices", voxel_indices, METH_VARARGS, "First measurement indices, lexicographic voxel order."},
+    {"voxel_count", voxel_count, METH_VARARGS, "Number of distinct voxels for the same keys."},
     {nullptr, nullptr, 0, nullptr}
 };
 static PyModuleDef module = {PyModuleDef_HEAD_INIT, "_native", nullptr, -1, methods};

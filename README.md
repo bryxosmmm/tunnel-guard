@@ -12,7 +12,7 @@ See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and RO
 
 ## Native acceleration and calibration experiment
 
-See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md). Optional C++ voxel selection preserved compared outputs on 798 real scans; a paired cached-scan benchmark reduced median processing from 602 to 504 ms (about 16%). This is still below 10 Hz. The new chronological calibration CLI evaluated 120 real scans: all three provisional track-relative orientation candidates failed the declared stability gates and were **not installed**. Vehicle mounting calibration still needs an independent vehicle reference.
+See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md). Optional C++ voxel selection preserved compared outputs on 798 real scans; a paired cached-scan benchmark reduced median processing from 602 to 504 ms (about 16%). This is still below 10 Hz. Latency work on 2026-09-17 kept every detection decision and reduced the C++-backend median further to **273 ms per frame** (paired benchmark: 390 → 273 ms, 1.43×) with the NumPy default at 408 ms (503 → 408). Measured evidence: `results/performance-20260917.json`. That is 3.7 Hz against a 100 ms / 10 Hz budget, with per-frame p95 around 292 ms; the remaining time is dominated by Open3D surface fitting, density clustering and KISS-ICP, and reaching 10 Hz from here needs native kernels, not scheduling. The new chronological calibration CLI evaluated 120 real scans: all three provisional track-relative orientation candidates failed the declared stability gates and were **not installed**. Vehicle mounting calibration still needs an independent vehicle reference.
 
 ## Coverage expansion and modeled insertions
 
@@ -170,6 +170,8 @@ Pipeline: validated points → KISS-ICP pose (optional deskew) → local bed and
 
 **Deskew is disabled in the current recipes.** The observed point-time span differs from the frame period, especially in cropped clouds; KISS-ICP normalizes that span to a full previous motion increment. `deskew_enabled=true` restores the experimental mode, but needs verified timing and prior-deskew provenance. Turning it off leaves motion distortion unresolved. This change is not a claim of higher detection accuracy.
 
+`query_workers` (both detector recipes, default `-1`) sets the worker threads for the scipy nearest-neighbour queries in density clustering and background masking. Each query is independent, so scheduling changes no retained edge, connected component or detector decision; worker threads are not used for Open3D's plane proposals, which stay serialised for repeatability. Latency evidence: `results/performance-20260917.json`.
+
 Segmentation preserves object portions outside the clearance gate. Dense instances cannot merge through a thin chain of border points. Temporal matching uses velocity, heuristic covariance, shape, and distinct-frame evidence. Missing path support must not turn rail removal into an infinite-width exclusion zone.
 
 Tunnel-background rejection uses Open3D plane fitting and local normals. Only observed longitudinal surface strips are removed; cross-track panels, supported clearance intersections, protruding faces and their attachment edges are protected. No generic sparse-outlier deletion is applied. It is a local planar approximation, not a complete curved-tunnel model.
@@ -233,7 +235,7 @@ All synthetic panels fail the declared 95% event-recall target. Measured-pattern
 
 Final metro localization: 5/5 unchanged provisional boxes at IoU ≥0.25, mean IoU 0.282; earlier baseline was 2/5. One object sampled five times does not establish generalization.
 
-Full real run: 2,488 frames; 1,579 `obstacle`, 819 `unresolved_obstacle`. These are **not false-positive counts** without exhaustive labels. Per-bag median processing was 294–486 ms on Apple M4: not real-time at the recording rate, and not target Intel performance.
+Full real run: 2,488 frames; 1,579 `obstacle`, 819 `unresolved_obstacle`. These are **not false-positive counts** without exhaustive labels. Per-bag median processing was 294–486 ms on Apple M4 before the latency work; the three re-run recordings measure 194–293 ms with the C++ backend afterwards (see `results/performance-20260917.json`): not real-time at the recording rate, and not target Intel performance.
 
 Published backend comparisons and height/tilt ground audits are summarized in `results/`. The saved segmentation comparison predates the last support-preservation correction; its original full source/config snapshots are local under `build/`. Running the current comparison recipe evaluates the current code, not that historical snapshot. Paths inside result summaries refer to these intentionally untracked original artifacts.
 

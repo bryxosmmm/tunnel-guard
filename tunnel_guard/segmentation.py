@@ -5,10 +5,14 @@ not a reproduction claim. TRAVEL and HDBSCAN backends call released code directl
 """
 from __future__ import annotations
 
+from itertools import chain
+
 import numpy as np
 from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 from scipy.spatial import cKDTree
+
+from .geometry import query_workers
 
 
 def density_labels(points: np.ndarray, config: dict) -> tuple[np.ndarray, np.ndarray]:
@@ -27,10 +31,16 @@ def density_labels(points: np.ndarray, config: dict) -> tuple[np.ndarray, np.nda
     tree = cKDTree(metric_points)
     # Query each point's actual radius, then retain the same mutual-radius
     # undirected edges. A distant point must not enlarge every near-point query.
-    neighbors = tree.query_ball_point(metric_points, radius, return_sorted=False)
-    counts = np.fromiter((len(ids) for ids in neighbors), dtype=np.int64, count=n)
+    # Query points are independent, so worker threads change scheduling only:
+    # the retained edge set, the graph and the component labels stay identical.
+    configured = config.get("query_workers", -1)
+    neighbors = tree.query_ball_point(metric_points, radius, return_sorted=False,
+                                      workers=query_workers(n, configured))
+    counts = np.fromiter(map(len, neighbors), dtype=np.int64, count=n)
     row = np.repeat(np.arange(n), counts)
-    column = np.concatenate(neighbors).astype(np.int64, copy=False)
+    # Consume the ragged neighbour lists directly into the flat column array
+    # instead of materialising and concatenating N small arrays.
+    column = np.fromiter(chain.from_iterable(neighbors), dtype=np.int64, count=int(counts.sum()))
     forward = row < column
     pairs = np.column_stack((row[forward], column[forward]))
     if len(pairs):
@@ -51,7 +61,8 @@ def density_labels(points: np.ndarray, config: dict) -> tuple[np.ndarray, np.nda
         labels[core_ids] = core_labels
         border_ids = np.flatnonzero(~core)
         if len(border_ids):
-            dd, near = cKDTree(metric_points[core_ids]).query(metric_points[border_ids])
+            dd, near = cKDTree(metric_points[core_ids]).query(
+                metric_points[border_ids], workers=query_workers(len(border_ids), configured))
             accepted = dd <= np.minimum(radius[border_ids], radius[core_ids[near]])
             labels[border_ids[accepted]] = core_labels[near[accepted]]
     weak_ids = np.flatnonzero(labels < 0)

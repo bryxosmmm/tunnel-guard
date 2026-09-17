@@ -12,7 +12,7 @@ from kiss_icp.kiss_icp import KissICP
 from scipy.optimize import linear_sum_assignment
 from scipy.spatial import cKDTree
 
-from .geometry import TrackGeometry, voxel_representatives
+from .geometry import TrackGeometry, voxel_count, voxel_representatives
 from .segmentation import density_labels, published_labels
 
 
@@ -50,6 +50,9 @@ def load_config(path: str | Path) -> dict:
     ransac_threads = config.get("background", {}).get("ransac_threads", 1)
     if type(ransac_threads) is not int or ransac_threads < 1:
         raise ValueError("background.ransac_threads must be a positive integer")
+    query_workers = config.get("query_workers", -1)
+    if type(query_workers) is not int or (query_workers < 1 and query_workers != -1):
+        raise ValueError("query_workers must be -1 (all cores) or a positive integer")
     if config.get("obstacle_distance_mode", "cluster_min_x") not in ("cluster_min_x", "envelope_support_min_x"):
         raise ValueError("Unknown obstacle_distance_mode")
     return config
@@ -284,11 +287,11 @@ class Detector:
             track["evidence"].append((stamp, support_world - world[index]))
             while track["evidence"] and stamp - track["evidence"][0][0] > cfg["evidence_window_s"]:
                 track["evidence"].popleft()
-            evidence = voxel_representatives(np.vstack([e[1] for e in track["evidence"]]), cfg["cluster_voxel_m"], cfg.get("voxel_backend", "numpy"))
+            evidence_count = voxel_count(np.vstack([e[1] for e in track["evidence"]]), cfg["cluster_voxel_m"], cfg.get("voxel_backend", "numpy"))
             if not track["history"] or track["history"][-1] != self.frame_number:
                 track["history"].append(self.frame_number)
             hits = sum(f > self.frame_number - cfg["confirmation_window"] for f in track["history"])
-            confirmed = obj["immediate"] or (hits >= cfg["confirmation_hits"] and len(evidence) >= cfg["evidence_min_points"])
+            confirmed = obj["immediate"] or (hits >= cfg["confirmation_hits"] and evidence_count >= cfg["evidence_min_points"])
             # Object persistence cannot confirm a new path intrusion. Count only
             # current-scan interior evidence, once per strictly increasing scan.
             interior_history = track["intersection_history"]
@@ -299,7 +302,7 @@ class Detector:
             intersection_confirmed = (confirmed and obj["path_relation"] == "intersecting"
                                       and (obj["intersection_immediate"] or len(recent_interior) >= cfg["confirmation_hits"]))
             track.update(state=state, covariance=covariance, stamp=stamp, extent=np.asarray(obj["extent_m"]))
-            obj.update(track_id=key, hits=hits, confirmed=bool(confirmed), accumulated_support_voxels=len(evidence),
+            obj.update(track_id=key, hits=hits, confirmed=bool(confirmed), accumulated_support_voxels=evidence_count,
                        intersection_confirmed=bool(intersection_confirmed),
                        intersection_hits=len(recent_interior),
                        intersection_evidence_timestamps_s=[s for _, s in recent_interior],
@@ -338,9 +341,11 @@ class Detector:
         self.diagnostic_arrays = {"decoded_points": points} if capture_diagnostics else {}
         pipeline = {"geometry": {"state": "not_run"}, "segmentation": {"state": "not_run"},
                     "association": {"state": "not_run"}}
-        finite = np.isfinite(points).all(axis=1)
+        # A non-finite coordinate always yields a non-finite radius, which fails
+        # one of the range bounds, so an explicit finite test would drop exactly
+        # the same rows. Measurements are decoded as float64 triples.
         radii = np.linalg.norm(points, axis=1)
-        keep = finite & (radii >= self.config["min_range_m"]) & (radii <= self.config["max_range_m"])
+        keep = (radii >= self.config["min_range_m"]) & (radii <= self.config["max_range_m"])
         points = points[keep]
         if capture_diagnostics:
             self.diagnostic_arrays["range_points"] = points

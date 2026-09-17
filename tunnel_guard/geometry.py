@@ -24,6 +24,45 @@ def voxel_representatives(points: np.ndarray, size: float, backend: str = "numpy
     return points[indices]
 
 
+def voxel_count(points: np.ndarray, size: float, backend: str = "numpy") -> int:
+    """Number of distinct voxels; equal to len(voxel_representatives(...))."""
+    if not len(points):
+        return 0
+    if backend == "cpp":
+        from . import _native
+        if points.dtype != np.float64:
+            raise ValueError("cpp voxel backend requires float64 measurements")
+        return int(_native.voxel_count(np.ascontiguousarray(points), size))
+    if backend == "numpy":
+        return int(np.unique(np.floor(points / size).astype(np.int64), axis=0).shape[0])
+    raise ValueError("Unknown voxel backend")
+
+
+# scipy prepares worker threads per call, so parallelism only pays for large
+# query batches: measured on this machine, 1024 points are still slower with
+# workers and 4096 points break even. The threshold selects scheduling only;
+# each query is independent, so results are identical either way.
+PARALLEL_QUERY_MIN_POINTS = 4096
+
+
+def query_workers(count: int, configured: int) -> int:
+    """Worker count for one independent nearest-neighbour query batch."""
+    if configured != -1:
+        return configured
+    return -1 if count >= PARALLEL_QUERY_MIN_POINTS else 1
+
+
+def nearest_anchor_distance(x: np.ndarray, anchor_x: np.ndarray) -> np.ndarray:
+    """Exact nearest |x - anchor_x| without materialising an N x M difference.
+
+    Anchors are strictly increasing, so the nearest anchor is one of the two
+    bracketing a value; the compared differences are the same subtractions the
+    dense form would take, and NaN propagates as before.
+    """
+    position = np.clip(np.searchsorted(anchor_x, x), 1, len(anchor_x) - 1)
+    return np.minimum(np.abs(x - anchor_x[position - 1]), np.abs(anchor_x[position] - x))
+
+
 def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, dict]:
     lo, hi = config["ground_fit_range_m"]
     min_height, max_height = config["ground_sensor_height_bounds_m"]
@@ -99,16 +138,26 @@ class TrackGeometry:
     def _ground_profile(self, points: np.ndarray):
         cfg = self.config
         residual = points[:, 2] - (points[:, :2] @ self.plane[:2] + self.plane[2])
+        lateral_ok = np.abs(points[:, 1]) < cfg["ground_fit_half_width_m"]
         anchors = []
         previous = 0.0
+        half = cfg["ground_local_window_m"] / 2
+        limit = cfg["ground_inlier_m"] * 2
+        # Sorting once makes each longitudinal window a contiguous slice of the
+        # same measurements; the original inequalities are then applied to the
+        # slice, so the selected set, its median and its spread are unchanged.
+        order = np.argsort(points[:, 0], kind="stable")
+        sorted_x = points[order, 0]
         for x in np.arange(cfg["ground_segment_m"], cfg["max_range_m"], cfg["ground_segment_m"]):
-            mask = ((np.abs(points[:, 0] - x) < cfg["ground_local_window_m"] / 2)
-                    & (np.abs(points[:, 1]) < cfg["ground_fit_half_width_m"])
-                    & (np.abs(residual - previous) < cfg["ground_inlier_m"] * 2))
-            values = residual[mask]
+            start = np.searchsorted(sorted_x, x - half, side="left")
+            stop = np.searchsorted(sorted_x, x + half, side="right")
+            ids = order[start:stop]
+            ids = ids[(np.abs(sorted_x[start:stop] - x) < half) & lateral_ok[ids]
+                      & (np.abs(residual[ids] - previous) < limit)]
+            values = residual[ids]
             if len(values) < max(12, cfg["ground_min_support"] // 3):
                 continue
-            support_points = points[mask]
+            support_points = points[ids]
             if np.ptp(support_points[:, 0]) < 1.5 or np.ptp(support_points[:, 1]) < 0.4:
                 continue
             shift = float(np.median(values))
@@ -125,7 +174,7 @@ class TrackGeometry:
         x = points[:, 0]
         anchors = self.ground_anchors
         shift = np.interp(x, anchors[:, 0], anchors[:, 1])
-        nearest = np.min(np.abs(x[:, None] - anchors[None, :, 0]), axis=1)
+        nearest = nearest_anchor_distance(x, anchors[:, 0])
         uncertainty = np.interp(x, anchors[:, 0], anchors[:, 2]) + nearest * 0.008
         uncertainty[nearest > self.config["ground_max_extrapolation_m"]] = np.inf
         z = points[:, :2] @ self.plane[:2] + self.plane[2] + shift
@@ -142,9 +191,17 @@ class TrackGeometry:
         anchors, head_heights = [], []
         bin_size = cfg["rail_bin_m"]
         offset = int(np.ceil(4 / bin_size)) + 2
+        # Same treatment as the bed profile: one sort, then the identical
+        # inequality is applied to each contiguous longitudinal slice.
+        order = np.argsort(rail[:, 0], kind="stable")
+        sorted_x = rail[order, 0]
         for x in np.arange(5.0, cfg["max_range_m"], cfg["ground_segment_m"]):
             window = min(cfg["rail_max_window_m"], cfg["rail_window_m"] + x * cfg["rail_window_growth"])
-            q = rail[np.abs(rail[:, 0] - x) < window / 2]
+            half = window / 2
+            start = np.searchsorted(sorted_x, x - half, side="left")
+            stop = np.searchsorted(sorted_x, x + half, side="right")
+            ids = order[start:stop]
+            q = rail[ids[np.abs(sorted_x[start:stop] - x) < half]]
             if not len(q):
                 continue
             slope = 0.0
@@ -205,20 +262,22 @@ class TrackGeometry:
             slope = np.clip((a[edge, 1] - a[other, 1]) / (a[edge, 0] - a[other, 0]),
                             -self.config["rail_max_heading"], self.config["rail_max_heading"])
             center[mask] = a[edge, 1] + slope * (x[mask] - a[edge, 0])
-        nearest = np.min(np.abs(x[:, None] - a[None, :, 0]), axis=1)
+        nearest = nearest_anchor_distance(x, a[:, 0])
         uncertainty = 0.06 + 0.008 * nearest + 0.0003 * nearest**2
         uncertainty[nearest > self.config["path_max_extrapolation_m"]] = np.inf
         return center, np.interp(x, a[:, 0], a[:, 2]), uncertainty
 
     def classify(self, points: np.ndarray, *, remove_background: bool = True,
-                 include_boundary: bool = False):
+                 include_boundary: bool = False, ground: tuple | None = None):
         """Classify support; optionally expose uncertain lateral envelope intersections.
 
         The interval uses the existing heuristic path uncertainty, not calibrated
-        probability or a guarantee about the physical vehicle envelope.
+        probability or a guarantee about the physical vehicle envelope. A caller
+        that already fitted the bed for the same array may pass it in; the
+        returned values are those of the identical fit.
         """
         cfg = self.config
-        z, ground_uncertainty = self.ground(points)
+        z, ground_uncertainty = self.ground(points) if ground is None else ground
         center, gauge, path_uncertainty = self.path(points[:, 0])
         height = points[:, 2] - z
         rail_head = self.rail_head_height_m if self.rail_head_height_m is not None else np.nan

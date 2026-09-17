@@ -6,6 +6,7 @@ import open3d as o3d
 from threadpoolctl import ThreadpoolController
 
 from scipy.spatial import cKDTree
+from .geometry import query_workers
 from .segmentation import level_rotation
 
 
@@ -19,10 +20,12 @@ class TunnelBackground:
         self.rotation = level_rotation(geometry.plane)
         self.patches = []
         self.input_points = len(points)
+        self.query_workers = config.get("query_workers", -1)
         leveled = points @ self.rotation.T
-        _, _, _, supported, overlap = geometry.classify(points)
         # Never learn an obstruction inside supported vehicle clearance as lining.
-        bed, _ = geometry.ground(points)
+        # The same bed fit is reused by classification instead of refitted.
+        bed, ground_uncertainty = geometry.ground(points)
+        _, _, _, supported, overlap = geometry.classify(points, ground=(bed, ground_uncertainty))
         above_rail = points[:, 2] - bed - geometry.rail_head_height_m
         eligible = leveled[~(supported & overlap) & (above_rail >= cfg["min_seed_height_m"])]
         pcd = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(eligible)).voxel_down_sample(cfg["voxel_m"])
@@ -36,7 +39,9 @@ class TunnelBackground:
         self.normal_tree = cKDTree(sample)
         self.normals = np.asarray(pcd.normals)
         eigenvalues = np.linalg.eigvalsh(np.asarray(pcd.covariances))
-        neighbors = self.normal_tree.query_ball_point(sample, cfg["normal_radius_m"], return_length=True)
+        neighbors = self.normal_tree.query_ball_point(
+            sample, cfg["normal_radius_m"], return_length=True,
+            workers=query_workers(len(sample), self.query_workers))
         self.normal_reliable = ((neighbors >= cfg["normal_min_neighbors"]) & (eigenvalues[:, 1] > cfg["normal_min_variance_m2"])
                                 & (eigenvalues[:, 0] <= cfg["normal_planarity_ratio"] * eigenvalues[:, 1]))
         o3d.utility.random.seed(config["seed"])
@@ -80,12 +85,20 @@ class TunnelBackground:
                 # plane cannot erase geometry across an unobserved gap or range.
                 strips = []
                 strip_ids = np.floor(support[:, 0] / cfg["strip_m"]).astype(int)
-                for strip in np.unique(strip_ids):
-                    q = support[strip_ids == strip]
-                    if len(q) < cfg["min_strip_support"] or np.ptp(q[:, transverse]) < cfg["min_strip_span_m"]:
+                _, inverse, counts = np.unique(strip_ids, return_inverse=True, return_counts=True)
+                order = np.argsort(inverse, kind="stable")
+                bounds = np.concatenate(([0], np.cumsum(counts)))
+                strip_x = support[order, 0]
+                strip_t = support[order, transverse]
+                for index in range(len(counts)):
+                    if counts[index] < cfg["min_strip_support"]:
                         continue
-                    strips.append((float(q[:, 0].min()), float(q[:, 0].max()),
-                                   float(q[:, transverse].min()), float(q[:, transverse].max())))
+                    start, stop = int(bounds[index]), int(bounds[index + 1])
+                    span = float(strip_t[start:stop].max() - strip_t[start:stop].min())
+                    if span < cfg["min_strip_span_m"]:
+                        continue
+                    strips.append((float(strip_x[start:stop].min()), float(strip_x[start:stop].max()),
+                                   float(strip_t[start:stop].min()), float(strip_t[start:stop].max())))
                 if strips:
                     self.patches.append((plane, transverse, strips, kind))
 
@@ -95,33 +108,55 @@ class TunnelBackground:
         background = np.zeros(len(points), dtype=bool)
         if not self.patches:
             return background
-        distances, nearest = self.normal_tree.query(leveled)
-        reliable = (distances <= cfg["normal_radius_m"]) & self.normal_reliable[nearest]
+        # A patch can only claim points inside its observed longitudinal strips,
+        # and only points within remove_distance of its plane can be candidates.
+        # Neither test depends on the running mask, so every patch's candidates
+        # are collected first and answered by one neighbour query.
+        prepared = []
         for plane, transverse, strips, _ in self.patches:
-            near = (np.abs(leveled @ plane[:3] + plane[3]) <= cfg["remove_distance_m"]) & ~protected & ~background
+            lo = min(strip[0] for strip in strips) - cfg["support_margin_m"]
+            hi = max(strip[1] for strip in strips) + cfg["support_margin_m"]
+            window = np.flatnonzero((leveled[:, 0] >= lo) & (leveled[:, 0] <= hi))
+            if not len(window):
+                continue
+            candidates = window[np.abs(leveled[window] @ plane[:3] + plane[3]) <= cfg["remove_distance_m"]]
+            if len(candidates):
+                prepared.append((plane, transverse, strips, candidates))
+        if not prepared:
+            return background
+        union = np.unique(np.concatenate([candidates for _, _, _, candidates in prepared]))
+        distances, nearest = self.normal_tree.query(
+            leveled[union], workers=query_workers(len(union), self.query_workers))
+        reliable = (distances <= cfg["normal_radius_m"]) & self.normal_reliable[nearest]
+        aligned = self.normals[nearest]
+        slot = np.full(len(points), -1, dtype=np.int64)
+        slot[union] = np.arange(len(union))
+        for plane, transverse, strips, candidates in prepared:
+            index = slot[candidates]
             # A panel face can approach the wall without becoming part of it.
             # Preserve locally well-supported normals that disagree with lining.
-            near &= ~(reliable & (np.abs(self.normals[nearest] @ plane[:3]) < cfg["normal_alignment_cos"]))
+            near = (~protected[candidates] & ~background[candidates]
+                    & ~(reliable[index] & (np.abs(aligned[index] @ plane[:3]) < cfg["normal_alignment_cos"])))
             sample_distance = np.abs(self.sample @ plane[:3] + plane[3])
             protrusion = (self.normal_reliable & (sample_distance >= cfg["protrusion_depth_m"])
                           & (sample_distance <= cfg["protection_radius_m"])
                           & (np.abs(self.normals @ plane[:3]) < cfg["normal_alignment_cos"]))
-            near_ids = np.flatnonzero(near)
+            near_ids = candidates[near]
             if protrusion.any() and len(near_ids):
                 # Keep attachment edges near a supported protruding face; otherwise
                 # its near-wall column is amputated by the surface-distance band.
-                distance, _ = cKDTree(self.sample[protrusion]).query(leveled[near_ids])
-                near[near_ids[distance <= cfg["protection_radius_m"]]] = False
-            ids = np.flatnonzero(near)
-            if not len(ids):
+                distance, _ = cKDTree(self.sample[protrusion]).query(
+                    leveled[near_ids], workers=query_workers(len(near_ids), self.query_workers))
+                near_ids = near_ids[distance > cfg["protection_radius_m"]]
+            if not len(near_ids):
                 continue
-            q = leveled[ids]
-            inside = np.zeros(len(ids), dtype=bool)
-            for lo, hi, bottom, top in strips:
-                inside |= ((q[:, 0] >= lo - cfg["support_margin_m"]) & (q[:, 0] <= hi + cfg["support_margin_m"])
+            q = leveled[near_ids]
+            inside = np.zeros(len(near_ids), dtype=bool)
+            for strip_lo, strip_hi, bottom, top in strips:
+                inside |= ((q[:, 0] >= strip_lo - cfg["support_margin_m"]) & (q[:, 0] <= strip_hi + cfg["support_margin_m"])
                            & (q[:, transverse] >= bottom - cfg["support_margin_m"])
                            & (q[:, transverse] <= top + cfg["support_margin_m"]))
-            background[ids[inside]] = True
+            background[near_ids[inside]] = True
         return background
 
     def describe(self):
