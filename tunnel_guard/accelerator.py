@@ -200,76 +200,12 @@ def mask_apply(leveled: np.ndarray, protected: np.ndarray, background: np.ndarra
                alignment: float, module) -> None:
     """Mark the caller's background mask for every patch, in patch order.
 
-    `reliable` and `aligned` are the neighbour-query results expanded to candidate
-    order, exactly as the reference loop in tunnel_guard/background.py indexes
-    them. This is the native branch only; that loop is the reference.
+    `reliable` and `aligned` are the neighbour-query results expanded to
+    candidate order, exactly as the reference loop in
+    tunnel_guard/background.py indexes them. This is the native branch only;
+    that loop is the reference.
     """
     module.mask_apply(np.ascontiguousarray(leveled), protected, background,
                       np.asarray(planes, dtype=float), transverse, np.asarray(strips, dtype=float),
                       strip_offsets, candidates, candidate_offsets, reliable, aligned,
                       sample, normals, normal_reliable, margin, depth, radius, alignment)
-
-
-def voxel_counts(stacks, size: float, module=None):
-    """Distinct voxel count per evidence stack, one call for every object.
-
-    Equal to [len(voxel_representatives(stack, size)) for stack in stacks]; the
-    counts are integers, so the native and NumPy branches agree exactly.
-    """
-    if module is not None:
-        payload = module.voxel_counts(list(stacks), size)
-        return np.frombuffer(payload, dtype=np.int64)
-    return np.array([len(np.unique(np.floor(stack / size).astype(np.int64), axis=0)) if len(stack) else 0
-                     for stack in stacks], dtype=np.int64)
-
-
-def mask_candidates(leveled: np.ndarray, planes: np.ndarray, bounds: np.ndarray, distance: float,
-                    module=None):
-    """All patch candidates, their per-patch slices, and their unique union."""
-    if module is not None:
-        union, candidates, offsets = module.mask_candidates(
-            np.ascontiguousarray(leveled), np.asarray(planes, dtype=float), np.asarray(bounds, dtype=float), distance)
-        return (np.frombuffer(union, dtype=np.int64), np.frombuffer(candidates, dtype=np.int64),
-                np.frombuffer(offsets, dtype=np.int64))
-    offset = [0]
-    prepared = []
-    for plane, bound in zip(planes, bounds):
-        ids = patch_candidates(leveled, plane, bound[0], bound[1], distance)
-        prepared.append(ids)
-        offset.append(offset[-1] + len(ids))
-    union = np.unique(np.concatenate(prepared)) if prepared else np.empty(0, dtype=np.int64)
-    return union, np.concatenate(prepared) if prepared else np.empty(0, dtype=np.int64), np.asarray(offset, dtype=np.int64)
-
-
-def mask_apply(leveled: np.ndarray, protected: np.ndarray, background: np.ndarray, planes: np.ndarray,
-               transverse: np.ndarray, strips: np.ndarray, strip_offsets: np.ndarray, candidates: np.ndarray,
-               candidate_offsets: np.ndarray, reliable: np.ndarray, aligned: np.ndarray, sample: np.ndarray,
-               normals: np.ndarray, normal_reliable: np.ndarray, margin: float, depth: float, radius: float,
-               alignment: float, module=None) -> None:
-    """Mark the caller's background mask for every patch, in patch order."""
-    if module is not None:
-        module.mask_apply(np.ascontiguousarray(leveled), protected, background,
-                          np.asarray(planes, dtype=float), transverse, np.asarray(strips, dtype=float),
-                          strip_offsets, candidates, candidate_offsets, reliable, aligned,
-                          sample, normals, normal_reliable, margin, depth, radius, alignment)
-        return
-    for patch in range(len(planes)):
-        begin, end = candidate_offsets[patch], candidate_offsets[patch + 1]
-        ids = candidates[begin:end]
-        near = ~protected[ids] & ~background[ids]
-        if reliable is None:
-            # Reference path: the neighbour query is answered inside the caller,
-            # so the alignment test is applied per patch from the sample cloud.
-            ids = ids[near]
-        else:
-            close = reliable[begin:end] & (np.abs(aligned[begin:end] @ planes[patch][:3]) < alignment)
-            ids = ids[near & ~close]
-        if not len(ids):
-            continue
-        protrusion = protrusion_ids(sample, normals, normal_reliable, planes[patch], depth, radius, alignment)
-        if len(protrusion):
-            ids = ids[keep_outside_radius(leveled[ids], sample[protrusion], radius)]
-        if not len(ids):
-            continue
-        boxes = strips[strip_offsets[patch]:strip_offsets[patch + 1]]
-        background[strip_inside(leveled, ids, boxes, margin, int(transverse[patch]))] = True
