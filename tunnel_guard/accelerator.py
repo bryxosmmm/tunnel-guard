@@ -32,6 +32,14 @@ def native(config: dict):
     return _native
 
 
+def component_labels(graph, subset, module):
+    """Component labels of a graph subset, numbered like scipy's."""
+    payload = module.component_labels(np.ascontiguousarray(graph.indptr, dtype=np.int64),
+                                     np.ascontiguousarray(graph.indices, dtype=np.int64),
+                                     np.ascontiguousarray(subset))
+    return np.frombuffer(payload, dtype=np.int64)
+
+
 def crop_voxels(frame: np.ndarray, min_forward: float, half_width: float, size: float, module=None):
     """Indices of the voxel representatives inside a longitudinal window.
 

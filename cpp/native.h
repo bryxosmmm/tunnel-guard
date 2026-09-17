@@ -121,3 +121,4 @@ PyObject* mask_candidates(PyObject* self, PyObject* args);
 PyObject* mask_apply(PyObject* self, PyObject* args);
 PyObject* cluster_components(PyObject* self, PyObject* args);
 PyObject* normal_covariances(PyObject* self, PyObject* args);
+PyObject* component_labels(PyObject* self, PyObject* args);

@@ -1,7 +1,7 @@
 {
   "date": "2026-09-17",
   "scope": "Latency and throughput of the shipped detector pipeline; no detection decision changed.",
-  "revision": "7d410e905c8d5c8ff1419bc38a7e1e2d45ecbd3c",
+  "revision": "c57674e3d47d769802db750ea35695b16f29f275",
   "machine": {
     "python": "3.12.14 (main, Aug 12 2026, 13:57:54) [Clang 21.1.8 ]",
     "platform": "macOS-26.5.2-arm64-arm-64bit",
@@ -14,7 +14,7 @@
     "kernel_timing": "voxel_indices 5.8 ms on a 236k crop (packed-key sort); select_crop_voxels 5.1 ms including the crop; voxel_counts 3.0 ms for 220 stacks; classify_geometry 1.6 ms per 72k call; ground_values 0.55 ms; mask_apply 0.19 ms; cluster_components replaces a 12.2 ms NumPy loop with one native pass",
     "fused_calls": "One native call per frame for the background mask pass, one for every track's evidence count, and one arena-backed table shared by voxel selection, the clustering grid and the mask; steady-state kernels allocate nothing beyond the copies the caller receives.",
     "kernel_identity": "scripts/check_kernels.py: kernels evaluated against the NumPy expression they replace on captured real inputs (37 checks); scripts/check_geometry_kernels.py: every classification, mask and fitted-geometry array compared between the NumPy and native recipes on the same scans (26 arrays, byte identical)",
-    "equivalence_panel": "build/perf-cpp-normal-20260917 vs build/perf-cpp-eigen-20260917"
+    "equivalence_panel": "build/perf-cpp-eigen-20260917 vs build/perf-cpp-assoc-20260917"
   },
   "paired_benchmark_median_of_run_p50_ms": {
     "baseline": {
@@ -22,44 +22,21 @@
       "cpp": 390.03949949994876
     },
     "after": {
-      "numpy": 241.96649999976216,
-      "cpp": 138.1552709999596
+      "numpy": 234.01585400006297,
+      "cpp": 131.10129150027205
     }
   },
   "paired_benchmark_speedup": {
-    "cpp": 2.8231966589248905,
-    "numpy": 2.0767225690350903
+    "cpp": 2.9751003597027066,
+    "numpy": 2.147278839919111
   },
   "equivalence": {
     "bags": [
       {
         "bag": "doubleT_obstacle",
-        "before_sha256": "24a1256b4935508c20273d70fdcf8c47888f005278734492b151034e5524a3ae",
-        "after_sha256": "acca1b750f7bf8767377dfabded8ff228a9a6439eb984f0b7f77b18066c537db",
+        "before_sha256": "acca1b750f7bf8767377dfabded8ff228a9a6439eb984f0b7f77b18066c537db",
+        "after_sha256": "f79a1233fce032851902050a6227646a863dca12b04ac3d1dc094a55c46b4e11",
         "before_statistics": {
-          "frames": 201,
-          "status_frames": {
-            "unresolved_obstacle": 60,
-            "obstacle": 141
-          },
-          "health_frames": {
-            "degraded": 201
-          },
-          "geometry_valid_frames": 201,
-          "motion_valid_frames": 200,
-          "candidate_observations": 44515,
-          "support_voxel_observations": 3855603,
-          "confirmed_intersection_observations": 241,
-          "candidate_observations_at_least_60m": 10656,
-          "histories_with_future_timestamps": 0,
-          "histories_with_duplicate_timestamps": 0,
-          "processing_ms": {
-            "p50": 157.96874999978172,
-            "p95": 162.67066699947463,
-            "p99": 182.29629200050113
-          }
-        },
-        "after_statistics": {
           "frames": 201,
           "status_frames": {
             "unresolved_obstacle": 60,
@@ -82,40 +59,40 @@
             "p99": 161.6135000003851
           }
         },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 60,
+            "obstacle": 141
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44515,
+          "support_voxel_observations": 3855603,
+          "confirmed_intersection_observations": 241,
+          "candidate_observations_at_least_60m": 10656,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 129.08750000133296,
+            "p95": 133.2501669985504,
+            "p99": 152.30720799991104
+          }
+        },
         "missing_after": [],
         "extra_after": [],
         "measurement_identity_errors": [],
         "changed_frames_by_field": {},
-        "largest_compared_float_difference": 3.730349362740526e-14
+        "largest_compared_float_difference": 4.529709940470639e-14
       },
       {
         "bag": "doubleT_platform",
-        "before_sha256": "47a40384128edefd495f3f2665e85a7f5f33c18864832629a5eb2d233f37f1ac",
-        "after_sha256": "ff6d3826ffd3a335cbe580bc93d703ce9e015371163ac83bdfe231c518cd52d0",
+        "before_sha256": "ff6d3826ffd3a335cbe580bc93d703ce9e015371163ac83bdfe231c518cd52d0",
+        "after_sha256": "cb2e093c01a31f5fb0b5ffe983d15dd6054368d08bccde341b6ac7281d863764",
         "before_statistics": {
-          "frames": 345,
-          "status_frames": {
-            "unresolved_obstacle": 258,
-            "obstacle": 87
-          },
-          "health_frames": {
-            "degraded": 345
-          },
-          "geometry_valid_frames": 345,
-          "motion_valid_frames": 240,
-          "candidate_observations": 68133,
-          "support_voxel_observations": 4236118,
-          "confirmed_intersection_observations": 266,
-          "candidate_observations_at_least_60m": 22168,
-          "histories_with_future_timestamps": 0,
-          "histories_with_duplicate_timestamps": 0,
-          "processing_ms": {
-            "p50": 111.80854200028989,
-            "p95": 146.78914139967674,
-            "p99": 165.59825347994774
-          }
-        },
-        "after_statistics": {
           "frames": 345,
           "status_frames": {
             "unresolved_obstacle": 258,
@@ -138,41 +115,40 @@
             "p99": 155.23762004064338
           }
         },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68133,
+          "support_voxel_observations": 4236118,
+          "confirmed_intersection_observations": 266,
+          "candidate_observations_at_least_60m": 22168,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 95.8390000014333,
+            "p95": 130.04599180057994,
+            "p99": 150.1563320409332
+          }
+        },
         "missing_after": [],
         "extra_after": [],
         "measurement_identity_errors": [],
         "changed_frames_by_field": {},
-        "largest_compared_float_difference": 5.728750807065808e-14
+        "largest_compared_float_difference": 6.683542608243442e-14
       },
       {
         "bag": "roundT_doubleT",
-        "before_sha256": "4c26cfeb15d69b2ea259924500ce402760c1db689255dd8e4a4f2341d4ac8933",
-        "after_sha256": "50fd9a2c4332b14784288808e87c446da56fb2a5117ad6d5fce2fa77b22804e6",
+        "before_sha256": "50fd9a2c4332b14784288808e87c446da56fb2a5117ad6d5fce2fa77b22804e6",
+        "after_sha256": "a06961b868c8edbabac1a69059996c96755738445483e8a309e16d3d2df69f77",
         "before_statistics": {
-          "frames": 252,
-          "status_frames": {
-            "candidate": 1,
-            "unresolved_obstacle": 182,
-            "obstacle": 69
-          },
-          "health_frames": {
-            "degraded": 252
-          },
-          "geometry_valid_frames": 252,
-          "motion_valid_frames": 251,
-          "candidate_observations": 48776,
-          "support_voxel_observations": 4039076,
-          "confirmed_intersection_observations": 211,
-          "candidate_observations_at_least_60m": 11422,
-          "histories_with_future_timestamps": 0,
-          "histories_with_duplicate_timestamps": 0,
-          "processing_ms": {
-            "p50": 130.19647949977298,
-            "p95": 154.94407065016276,
-            "p99": 163.87341975994786
-          }
-        },
-        "after_statistics": {
           "frames": 252,
           "status_frames": {
             "candidate": 1,
@@ -196,15 +172,39 @@
             "p99": 157.12993408049448
           }
         },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 182,
+            "obstacle": 69
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48776,
+          "support_voxel_observations": 4039076,
+          "confirmed_intersection_observations": 211,
+          "candidate_observations_at_least_60m": 11422,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 109.71820899976592,
+            "p95": 137.8513331505019,
+            "p99": 146.49877825066145
+          }
+        },
         "missing_after": [],
         "extra_after": [],
         "measurement_identity_errors": [],
         "changed_frames_by_field": {},
-        "largest_compared_float_difference": 5.271338920920243e-13
+        "largest_compared_float_difference": 5.089262344881718e-13
       }
     ],
     "identical_discrete_fields": true,
-    "max_float_difference": 5.271338920920243e-13
+    "max_float_difference": 5.089262344881718e-13
   },
   "equivalence_numpy_backend": {
     "before": "build/perf-current-corpus-20260917",
@@ -586,18 +586,18 @@
       "geometry.voxel_representatives": 0.44
     },
     "after_cpp": {
-      "background.TunnelBackground.__init__": 42.92,
-      "background.mask": 11.76,
-      "detector.Detector._associate": 14.39,
-      "detector.Detector._motion": 25.31,
-      "detector.Detector.process": 136.48,
-      "detector.cluster_candidates": 30.28,
-      "detector.density_labels": 14.01,
+      "background.TunnelBackground.__init__": 42.74,
+      "background.mask": 11.6,
+      "detector.Detector._associate": 9.46,
+      "detector.Detector._motion": 25.46,
+      "detector.Detector.process": 130.65,
+      "detector.cluster_candidates": 29.19,
+      "detector.density_labels": 12.29,
       "geometry.TrackGeometry.__init__": 53.25,
-      "geometry.TrackGeometry._ground_profile": 2.87,
-      "geometry.TrackGeometry._rail_profile": 3.02,
-      "geometry.TrackGeometry.classify": 16.19,
-      "geometry.robust_plane": 4.44,
+      "geometry.TrackGeometry._ground_profile": 2.84,
+      "geometry.TrackGeometry._rail_profile": 3.18,
+      "geometry.TrackGeometry.classify": 15.83,
+      "geometry.robust_plane": 4.48,
       "geometry.voxel_representatives": 0.25
     }
   },
@@ -605,23 +605,23 @@
     {
       "bag": "doubleT_obstacle",
       "frames": 201,
-      "p50": 138.67545800167136,
-      "p95": 143.57316700079537,
-      "wall_s": 38.960996707999584
+      "p50": 129.08750000133296,
+      "p95": 133.2501669985504,
+      "wall_s": 36.423570874998404
     },
     {
       "bag": "doubleT_platform",
       "frames": 345,
-      "p50": 101.62074999971082,
-      "p95": 136.30913360029808,
-      "wall_s": 43.42782370799978
+      "p50": 95.8390000014333,
+      "p95": 130.04599180057994,
+      "wall_s": 41.40232854200076
     },
     {
       "bag": "roundT_doubleT",
       "frames": 252,
-      "p50": 115.95406249944062,
-      "p95": 144.26402964963927,
-      "wall_s": 34.34621945800063
+      "p50": 109.71820899976592,
+      "p95": 137.8513331505019,
+      "wall_s": 33.936829166999814
     }
   ],
   "rejected_options": {

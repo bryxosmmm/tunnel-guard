@@ -1507,40 +1507,48 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
                                           return members[static_cast<size_t>(left)] < members[static_cast<size_t>(right)];
                                       });
                 }
-                double mean_x = 0.0, mean_y = 0.0, mean_z = 0.0;
-                for (Py_ssize_t slot = 0; slot < used; ++slot) {
-                    const int64_t j = members[static_cast<size_t>(picked[static_cast<size_t>(slot)])];
-                    mean_x += data[3 * j];
-                    mean_y += data[3 * j + 1];
-                    mean_z += data[3 * j + 2];
-                }
-                mean_x /= static_cast<double>(used);
-                mean_y /= static_cast<double>(used);
-                mean_z /= static_cast<double>(used);
+                // One pass of raw moments, then the covariance as
+                // E[x x^T] - mean mean^T: same matrix as the centred form, one
+                // loop instead of two, and the same accumulation shape the
+                // library uses.
+                double sx = 0.0, sy = 0.0, sz = 0.0;
                 double xx = 0.0, xy = 0.0, xz = 0.0, yy = 0.0, yz = 0.0, zz = 0.0;
                 for (Py_ssize_t slot = 0; slot < used; ++slot) {
                     const int64_t j = members[static_cast<size_t>(picked[static_cast<size_t>(slot)])];
-                    const double dx = data[3 * j] - mean_x;
-                    const double dy = data[3 * j + 1] - mean_y;
-                    const double dz = data[3 * j + 2] - mean_z;
-                    xx += dx * dx;
-                    xy += dx * dy;
-                    xz += dx * dz;
-                    yy += dy * dy;
-                    yz += dy * dz;
-                    zz += dz * dz;
+                    const double x = data[3 * j], y = data[3 * j + 1], z = data[3 * j + 2];
+                    sx += x;
+                    sy += y;
+                    sz += z;
+                    xx += x * x;
+                    xy += x * y;
+                    xz += x * z;
+                    yy += y * y;
+                    yz += y * z;
+                    zz += z * z;
                 }
                 const double scale = 1.0 / static_cast<double>(used);
+                xx *= scale;
+                xy *= scale;
+                xz *= scale;
+                yy *= scale;
+                yz *= scale;
+                zz *= scale;
+                const double mean_x = sx * scale, mean_y = sy * scale, mean_z = sz * scale;
+                xx -= mean_x * mean_x;
+                xy -= mean_x * mean_y;
+                xz -= mean_x * mean_z;
+                yy -= mean_y * mean_y;
+                yz -= mean_y * mean_z;
+                zz -= mean_z * mean_z;
                 const size_t base = 6 * static_cast<size_t>(i);
-                covariances[base] = xx * scale;
-                covariances[base + 1] = xy * scale;
-                covariances[base + 2] = xz * scale;
-                covariances[base + 3] = yy * scale;
-                covariances[base + 4] = yz * scale;
-                covariances[base + 5] = zz * scale;
+                covariances[base] = xx;
+                covariances[base + 1] = xy;
+                covariances[base + 2] = xz;
+                covariances[base + 3] = yy;
+                covariances[base + 4] = yz;
+                covariances[base + 5] = zz;
                 double values[3], direction[3];
-                symmetric_eigen3(xx * scale, xy * scale, xz * scale, yy * scale, yz * scale, zz * scale,
-                                 values, direction);
+                symmetric_eigen3(xx, xy, xz, yy, yz, zz, values, direction);
                 for (int axis = 0; axis < 3; ++axis) {
                     eigenvalues[3 * static_cast<size_t>(i) + axis] = values[axis];
                     normals_out[3 * static_cast<size_t>(i) + axis] = direction[axis];
@@ -1587,6 +1595,84 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
     return payload;
 }
 
+// Connected-component labels of a subset of a graph.
+//
+// Union-find over the subset's edges, with each component's root kept as its
+// lowest node index, then relabelled in ascending root order. That is exactly the
+// numbering scipy.sparse.csgraph.connected_components produces (verified on
+// scrambled graphs), so the labels are interchangeable with the library's.
+PyObject* component_labels(PyObject*, PyObject* args) {
+    PyObject *indptr_object, *indices_object, *subset_object;
+    if (!PyArg_ParseTuple(args, "OOO", &indptr_object, &indices_object, &subset_object)) return nullptr;
+    Buffer indptr(indptr_object);
+    Buffer indices(indices_object);
+    Buffer subset(subset_object);
+    if (!indptr.integers() || !indices.integers() || !subset.flags()) {
+        PyErr_SetString(PyExc_ValueError, "expected int64 indptr/indices and a bool subset mask");
+        return nullptr;
+    }
+    const int64_t* start = indptr.int64s();
+    const int64_t* columns = indices.int64s();
+    const bool* selected = subset.bools();
+    const Py_ssize_t n = subset.size();
+    if (indptr.size() != n + 1) {
+        PyErr_SetString(PyExc_ValueError, "indptr must have one entry per node plus one");
+        return nullptr;
+    }
+    Arena& scratch = arena();
+    std::vector<int64_t>* result = &scratch.i2;
+    try {
+        // The GIL is released only around the computation; the returned copy is
+        // built afterwards, when the guard has been destroyed.
+        {
+            ReleaseGIL released;
+            auto& parent = scratch.i0;
+            auto& labels = scratch.i1;
+            parent.resize(static_cast<size_t>(n));
+            for (Py_ssize_t node = 0; node < n; ++node) parent[static_cast<size_t>(node)] = node;
+            const auto find = [&parent](int64_t node) {
+                while (parent[static_cast<size_t>(node)] != node) {
+                    parent[static_cast<size_t>(node)] =
+                        parent[static_cast<size_t>(parent[static_cast<size_t>(node)])];
+                    node = parent[static_cast<size_t>(node)];
+                }
+                return node;
+            };
+            for (Py_ssize_t node = 0; node < n; ++node) {
+                if (!selected[node]) continue;
+                for (int64_t edge = start[node]; edge < start[node + 1]; ++edge) {
+                    const int64_t other = columns[edge];
+                    if (other < 0 || other >= n || !selected[other]) continue;
+                    const int64_t left = find(node), right = find(other);
+                    if (left == right) continue;
+                    // The lower index wins, so a component's root is its lowest node.
+                    if (left < right) parent[static_cast<size_t>(right)] = left;
+                    else parent[static_cast<size_t>(left)] = right;
+                }
+            }
+            // Relabel by ascending root, matching the library's numbering: a
+            // component is first met at its lowest node, so roots arrive in order.
+            labels.assign(static_cast<size_t>(n), -1);
+            int64_t next = 0;
+            for (Py_ssize_t node = 0; node < n; ++node) {
+                if (!selected[node]) continue;
+                const int64_t root = find(node);
+                // A component is first met at its lowest node, so numbering on
+                // first sight gives ascending order by minimum member, which is
+                // the numbering the library produces.
+                if (labels[static_cast<size_t>(root)] < 0)
+                    labels[static_cast<size_t>(root)] = next++;
+                labels[static_cast<size_t>(node)] = labels[static_cast<size_t>(root)];
+            }
+            result->clear();
+            result->reserve(static_cast<size_t>(n));
+            for (Py_ssize_t node = 0; node < n; ++node)
+                if (selected[node]) result->push_back(labels[static_cast<size_t>(node)]);
+        }
+        return bytes_of(result->data(), result->size() * sizeof(int64_t));
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+}
+
 static PyMethodDef methods[] = {
     {"voxel_indices", voxel_indices, METH_VARARGS,
      "First measurement indices, lexicographic voxel order."},
@@ -1594,6 +1680,8 @@ static PyMethodDef methods[] = {
      "Number of distinct voxels for the same keys."},
     {"voxel_counts", voxel_counts, METH_VARARGS,
      "Distinct voxel count for each stack in one call, reusing one arena."},
+    {"component_labels", component_labels, METH_VARARGS,
+     "Union-find component labels of a subset, numbered like scipy's."},
     {"normal_covariances", normal_covariances, METH_VARARGS,
      "Neighbour counts and mean-centred covariances in one grid pass."},
     {"cluster_components", cluster_components, METH_VARARGS,

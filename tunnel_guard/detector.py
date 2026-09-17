@@ -292,27 +292,44 @@ class Detector:
         world = np.array([o["center"] for o in objects], dtype=float).reshape(-1, 3)
         world = world @ pose[:3, :3].T + pose[:3, 3]
         measurement_cov = np.eye(3) * cfg["tracking_position_sigma_m"]**2 + self.motion_translation_covariance
+        # Prediction and the association cost are the same per-track arithmetic as
+        # before, batched over tracks: the Python loop around these small matrices
+        # cost more than the matrices themselves. Each batched operation still
+        # dispatches one BLAS/LAPACK call per matrix, so the values are those of the
+        # unbatched form.
         predicted = {}
-        for key in ids:
-            t = self.tracks[key]
-            dt = stamp - t["stamp"]
-            transition = np.eye(6)
-            transition[:3, 3:] = np.eye(3) * dt
-            noise_map = np.vstack((np.eye(3) * dt**2 / 2, np.eye(3) * dt))
-            covariance = transition @ t["covariance"] @ transition.T + noise_map @ noise_map.T * cfg["tracking_acceleration_sigma_mps2"]**2
-            predicted[key] = (transition @ t["state"], covariance)
+        if ids:
+            states = np.stack([self.tracks[key]["state"] for key in ids])
+            covariances = np.stack([self.tracks[key]["covariance"] for key in ids])
+            gaps = np.asarray([stamp - self.tracks[key]["stamp"] for key in ids])
+            identity = np.eye(6)
+            shift = np.zeros((6, 6))
+            shift[:3, 3:] = np.eye(3)
+            transitions = identity[None] + shift[None] * gaps[:, None, None]
+            # Built as the original expression and multiplied per matrix, so the
+            # batched call dispatches the same BLAS routine on the same operands.
+            noise_maps = np.zeros((len(ids), 6, 3))
+            noise_maps[:, :3, :3] = np.eye(3)[None] * (gaps**2 / 2.0)[:, None, None]
+            noise_maps[:, 3:, :3] = np.eye(3)[None] * gaps[:, None, None]
+            noise = (noise_maps @ np.transpose(noise_maps, (0, 2, 1))) * cfg["tracking_acceleration_sigma_mps2"]**2
+            advanced = transitions @ covariances @ np.transpose(transitions, (0, 2, 1)) + noise
+            for row, key in enumerate(ids):
+                # Kept per track: a matrix-vector product is a different BLAS
+                # routine than the batched matrix-matrix form.
+                predicted[key] = (transitions[row] @ states[row], advanced[row])
         matched = {}
         if ids and len(world):
             cost = np.full((len(ids), len(world)), 1e6)
             extents = np.asarray([o["extent_m"] for o in objects]) + .1
-            for row, key in enumerate(ids):
-                state, covariance = predicted[key]
-                inverse = np.linalg.inv(covariance[:3, :3] + measurement_cov)
-                residual = world - state[:3]
-                mahalanobis = np.einsum("ni,ij,nj->n", residual, inverse, residual)
-                shape = np.linalg.norm(np.log(extents / (self.tracks[key]["extent"] + .1)), axis=1)
-                allowed = (mahalanobis <= cfg["tracking_mahalanobis_gate"]) & (shape <= cfg["tracking_extent_log_gate"])
-                cost[row, allowed] = mahalanobis[allowed] + shape[allowed]
+            track_extents = np.asarray([self.tracks[key]["extent"] for key in ids]) + .1
+            positions = np.stack([predicted[key][0][:3] for key in ids])
+            covariances = np.stack([predicted[key][1][:3, :3] for key in ids])
+            inverse = np.linalg.inv(covariances + measurement_cov)
+            residual = world[None, :, :] - positions[:, None, :]
+            mahalanobis = np.einsum("tni,tij,tnj->tn", residual, inverse, residual)
+            shape = np.linalg.norm(np.log(extents[None, :, :] / track_extents[:, None, :]), axis=2)
+            allowed = (mahalanobis <= cfg["tracking_mahalanobis_gate"]) & (shape <= cfg["tracking_extent_log_gate"])
+            cost[allowed] = mahalanobis[allowed] + shape[allowed]
             # Add unmatched assignments: an impossible pair cannot steal a valid match.
             padded = np.column_stack((cost, np.full((len(ids), len(ids)), cfg["tracking_mahalanobis_gate"] + cfg["tracking_extent_log_gate"] + 1)))
             rows, columns = linear_sum_assignment(padded)
