@@ -12,7 +12,8 @@ See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and RO
 
 ## Native acceleration and calibration experiment
 
-See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md). Optional C++ voxel selection preserved compared outputs on 798 real scans; a paired cached-scan benchmark reduced median processing from 602 to 504 ms (about 16%). This is still below 10 Hz. The new chronological calibration CLI evaluated 120 real scans: all three provisional track-relative orientation candidates failed the declared stability gates and were **not installed**. Vehicle mounting calibration still needs an independent vehicle reference.
+See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md) and the [native integration report](docs/NATIVE_INTEGRATION.md). Native acceleration is integrated with the current interval-envelope policy. Use `configs/detector-native.json`; ROS container defaults select this recipe. The Python recipe remains available as a reference. Historical performance experiments are retained in `results/performance-20260917.json`; they are not evidence for the merged revision. Mounting calibration remains provisional: all three evaluated orientation candidates failed stability gates and were not installed.
+
 
 ## Small detections and contour uncertainty
 
@@ -20,7 +21,7 @@ See [small-object review and calibration limits](docs/ENVELOPE_INTERVAL_REVIEW.m
 
 ## Runtime reduction without reducing coverage
 
-See [runtime profile and verification](docs/RUNTIME_CONTEXT_OPTIMIZATION.md). Avoiding unused background queries and repeated component scans preserved compared outputs on all 798 real scans. Current per-recording processing medians are 315–469 ms on the development Mac: still not 10 Hz. Neighbourhood construction remains a measured bottleneck; target-hardware performance is unverified.
+See [runtime profile and verification](docs/RUNTIME_CONTEXT_OPTIMIZATION.md). Avoiding unused background queries and repeated component scans preserved compared outputs on all 798 real scans. That pre-integration version measured 315–469 ms on the development Mac. See [native integration](docs/NATIVE_INTEGRATION.md) for current timings and remaining bottlenecks; target-hardware performance is unverified.
 
 ## Coverage expansion and modeled insertions
 
@@ -178,6 +179,12 @@ Pipeline: validated points → KISS-ICP pose (optional deskew) → local bed and
 
 **Deskew is disabled in the current recipes.** The observed point-time span differs from the frame period, especially in cropped clouds; KISS-ICP normalizes that span to a full previous motion increment. `deskew_enabled=true` restores the experimental mode, but needs verified timing and prior-deskew provenance. Turning it off leaves motion distortion unresolved. This change is not a claim of higher detection accuracy.
 
+`configs/detector-native-fast.json` is the fastest recipe: it is `detector-native.json` with two background plane proposals per window instead of three. That is a behaviour change, so it is kept as a separate recipe: measured on 798 real scans it moves 297 definite alarms to 296 (one frame becomes unresolved) and leaves all three labelled panels unchanged, while `detector-native.json` keeps the original setting and is the integration recipe. Historical pre-kernel comparisons and current interval-policy comparisons must be distinguished.
+
+`native_kernels` (C++ recipe only; the NumPy recipe keeps the reference path) selects the locally built `tunnel_guard._native` kernels: radial range selection, mutual-radius clustering graph, envelope classification, track-bed reference, background patch candidates, protrusion protection, strip membership and the evidence voxel count. `normal_covariances` replaces Open3D's `estimate_normals` plus `estimate_covariances` with one grid pass: neighbours within the radius capped to the nearest `max_nn`, mean-centred covariance over n, and — in the same call — the eigenvalues and the smallest eigenvector by fixed-sweep Jacobi rotations. Three labelled panels (development, seed holdout, measured beam pattern; 2,120 frames) reproduce their recorded tp/fn, event recall and precision exactly with the native kernels. Measured on a real sample: counts identical to the scipy radius count, planarity gate identical on all 31,298 points, normal agreement |dot| = 1.000000000000 on every reliable point and zero alignment differences across all patches — the points whose normals differ are exactly the ones the gate discards.
+
+Native kernels cover voxel selection, neighbour graphs, geometry classification, background masking, component statistics and evidence counting. They use reusable buffers and preserve measurement support on the recorded integration panel. Empirical agreement does not establish identity for all unseen inputs. `query_workers` controls SciPy queries; native kernels also use their own worker threads. Open3D plane proposals remain serial for repeatability. See [integration evidence and limitations](docs/NATIVE_INTEGRATION.md).
+
 Segmentation preserves object portions outside the clearance gate. Dense instances cannot merge through a thin chain of border points. Temporal matching uses velocity, heuristic covariance, shape, and distinct-frame evidence. Missing path support must not turn rail removal into an infinite-width exclusion zone.
 
 Tunnel-background rejection uses Open3D plane fitting and local normals. Only observed longitudinal surface strips are removed; cross-track panels, supported clearance intersections, protruding faces and their attachment edges are protected. No generic sparse-outlier deletion is applied. It is a local planar approximation, not a complete curved-tunnel model.
@@ -241,7 +248,7 @@ All synthetic panels fail the declared 95% event-recall target. Measured-pattern
 
 Final metro localization: 5/5 unchanged provisional boxes at IoU ≥0.25, mean IoU 0.282; earlier baseline was 2/5. One object sampled five times does not establish generalization.
 
-Full real run: 2,488 frames; 1,579 `obstacle`, 819 `unresolved_obstacle`. These are **not false-positive counts** without exhaustive labels. Per-bag median processing was 294–486 ms on Apple M4: not real-time at the recording rate, and not target Intel performance.
+Full real run: 2,488 frames; 1,579 `obstacle`, 819 `unresolved_obstacle`. These are **not false-positive counts** without exhaustive labels. Per-bag median processing was 294–486 ms on Apple M4 before the latency work; the three re-run recordings measure 99–123 ms with the C++ backend and native kernels afterwards (see `results/performance-20260917.json`): still not real-time at the ~10 Hz recording rate, and not target Intel performance.
 
 Published backend comparisons and height/tilt ground audits are summarized in `results/`. The saved segmentation comparison predates the last support-preservation correction; its original full source/config snapshots are local under `build/`. Running the current comparison recipe evaluates the current code, not that historical snapshot. Paths inside result summaries refer to these intentionally untracked original artifacts.
 

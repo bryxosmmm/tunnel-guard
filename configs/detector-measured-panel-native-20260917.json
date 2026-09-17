@@ -1,5 +1,5 @@
 {
-  "seed": 20260915,
+  "seed": 20260917,
   "sensor_rotation": [
     [
       0.0,
@@ -23,7 +23,7 @@
     0.0
   ],
   "min_range_m": 1.0,
-  "max_range_m": 220.0,
+  "max_range_m": 350.0,
   "min_forward_m": 2.0,
   "context_half_width_m": 8.0,
   "geometry_voxel_m": 0.05,
@@ -83,14 +83,16 @@
   "odometry_min_overlap": 0.45,
   "frame_max_gap_s": 0.5,
   "range_bins_m": [
-    2.0,
-    10.0,
-    20.0,
-    40.0,
-    60.0,
-    100.0,
-    150.0,
-    220.0
+    2,
+    10,
+    20,
+    40,
+    60,
+    100,
+    150,
+    200,
+    300,
+    350
   ],
   "segmentation_method": "density",
   "density_radius_m": 0.12,
@@ -213,12 +215,9 @@
     "normal_planarity_ratio": 0.2,
     "normal_alignment_cos": 0.8,
     "protrusion_depth_m": 0.06,
-    "protection_radius_m": 0.35,
-    "ransac_threads": 1
+    "protection_radius_m": 0.35
   },
   "deskew_enabled": false,
-  "query_workers": -1,
-  "native_kernels": true,
   "deskew_policy": "Disabled until acquisition span versus scan period and prior deskew provenance are verified. KISS-ICP normalizes the supplied point-time range to one full previous motion increment.",
-  "voxel_backend": "cpp"
+  "native_kernels": true
 }

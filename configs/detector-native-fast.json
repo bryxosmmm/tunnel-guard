@@ -191,7 +191,7 @@
     "enabled": true,
     "voxel_m": 0.1,
     "window_m": 30.0,
-    "planes_per_window": 3,
+    "planes_per_window": 2,
     "min_support": 40,
     "fit_distance_m": 0.025,
     "remove_distance_m": 0.025,

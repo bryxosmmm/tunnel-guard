@@ -17,7 +17,7 @@ from . import _native
 from .detector import Detector, load_config
 from .io import iter_bag
 from .panel_report import compare
-from .run import digest, environment, git_revision, write_json
+from .run import digest, environment, git_revision, write_json, capture_native_sources
 
 
 def main():
@@ -30,17 +30,25 @@ def main():
         raise ValueError('Seed mismatch')
     variants = [('numpy', Detector, 'numpy'), ('cpp', Detector, 'cpp')]
     baseline_hashes = None
+    baseline_native_hash = None
     if recipe.get('baseline_source'):
-        # Compare a saved Python source snapshot with this revision, sharing the
-        # unchanged native kernel. Never rewrite the historical source snapshot.
+        # Compare a saved Python source snapshot with this revision, optionally loading its
+        # own compiled native module. Never rewrite the historical source snapshot.
         baseline = Path(recipe['baseline_source']).resolve()
         spec = importlib.util.spec_from_file_location('_runtime_before', baseline / '__init__.py',
                                                      submodule_search_locations=[str(baseline)])
         package = importlib.util.module_from_spec(spec)
         sys.modules[spec.name] = package
         spec.loader.exec_module(package)
-        sys.modules[spec.name + '._native'] = _native
-        package._native = _native
+        before_native = _native
+        if recipe.get('baseline_native'):
+            binary = Path(recipe['baseline_native']).resolve()
+            native_spec = importlib.util.spec_from_file_location(spec.name + '._native', binary)
+            before_native = importlib.util.module_from_spec(native_spec)
+            native_spec.loader.exec_module(before_native)
+            baseline_native_hash = digest(binary)
+        sys.modules[spec.name + '._native'] = before_native
+        package._native = before_native
         before_detector = importlib.import_module(spec.name + '.detector').Detector
         backend = config.get('voxel_backend', 'numpy')
         variants = [('before', before_detector, backend), ('after', Detector, backend)]
@@ -51,12 +59,12 @@ def main():
     write_json(output / 'detector.json', config)
     shutil.copytree(Path(__file__).parent, output / 'source' / 'tunnel_guard',
                     ignore=shutil.ignore_patterns('__pycache__', '*.so', '*.dylib', '*.pyd'))
-    source = Path(__file__).parent.parent / 'cpp' / 'voxel.cpp'
-    shutil.copyfile(source, output / 'source' / 'voxel.cpp')
+    native_sources = capture_native_sources(output / 'source')
     bag = Path(recipe['bag'])
     manifest = environment() | {'command': sys.argv, 'git_revision': git_revision(),
                                'native_binary_sha256': digest(Path(_native.__file__)),
-                               'native_source_sha256': digest(source),
+                               'native_sources_sha256': native_sources,
+                               'baseline_native_sha256': baseline_native_hash,
                                'config_sha256': digest(Path(recipe['detector_config'])),
                                'baseline_source_sha256': baseline_hashes,
                                'variants': [{'name': name, 'voxel_backend': backend} for name, _, backend in variants],

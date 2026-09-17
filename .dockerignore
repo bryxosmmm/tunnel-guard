@@ -16,3 +16,5 @@
 !setup.py
 !cpp/
 !cpp/*.cpp
+!cpp/*.h
+!MANIFEST.in

@@ -56,6 +56,22 @@ def environment() -> dict:
             "source_sha256": {str(p): digest(p) for p in sorted(Path(__file__).parent.glob("*.py"))}}
 
 
+def capture_native_sources(destination: Path) -> dict:
+    """Retain every translation unit/header and the build recipe, with hashes."""
+    root = Path(__file__).parent.parent
+    hashes = {}
+    paths = sorted((root / "cpp").glob("*.cpp")) + sorted((root / "cpp").glob("*.h"))
+    paths += [root / "setup.py", root / "MANIFEST.in"]
+    for source in paths:
+        if source.is_file():
+            relative = source.relative_to(root)
+            target = destination / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, target)
+            hashes[str(relative)] = digest(source)
+    return hashes
+
+
 def summarize(rows: list[dict]) -> dict:
     processing = np.asarray([r["processing_s"] for r in rows])
     e2e = np.asarray([r["read_and_process_s"] for r in rows])
@@ -114,14 +130,11 @@ def main():
     if revision is not None:
         (output / "working-tree.patch").write_bytes(subprocess.check_output(
             ["git", "diff", "HEAD", "--", "tunnel_guard", "configs"], cwd=source_root))
-    if config.get("voxel_backend", "numpy") == "cpp":
+    if config.get("voxel_backend", "numpy") == "cpp" or config.get("native_kernels", False):
         from . import _native
         manifest["native_accelerator"] = {"binary_sha256": digest(Path(_native.__file__)),
             "module": "tunnel_guard._native", "backend": "cpp"}
-        native_source = source_root / "cpp" / "voxel.cpp"
-        if native_source.exists():
-            shutil.copyfile(native_source, source_dir / "voxel.cpp")
-            manifest["native_accelerator"]["source_sha256"] = digest(native_source)
+        manifest["native_accelerator"]["sources_sha256"] = capture_native_sources(output / "source")
     write_json(output / "manifest.json", manifest)
     summaries = []
     for entry in experiment["bags"]:

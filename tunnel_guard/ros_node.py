@@ -23,7 +23,7 @@ from .visualization import ResultMessages
 class PerceptionNode(Node):
     def __init__(self):
         super().__init__("tunnel_guard")
-        self.declare_parameter("config", "/opt/tunnel-guard/configs/detector.json")
+        self.declare_parameter("config", "/opt/tunnel-guard/configs/detector-native.json")
         self.declare_parameter("input_topic", "/lidar_points")
         self.declare_parameter("display_max_points", 50000)
         self.declare_parameter("input_timeout_s", 3.0)

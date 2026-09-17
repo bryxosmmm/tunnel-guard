@@ -59,7 +59,7 @@
   "rail_window_growth": 0.35,
   "rail_max_window_m": 35.0,
   "rail_min_span_m": 2.0,
-  "rail_min_longitudinal_bins": 4,
+  "rail_min_longitudinal_bins": 1000000,
   "rail_half_width_m": 0.13,
   "rail_max_heading": 0.12,
   "path_max_extrapolation_m": 25.0,

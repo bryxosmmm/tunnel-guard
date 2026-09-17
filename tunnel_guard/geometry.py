@@ -8,6 +8,8 @@ from __future__ import annotations
 import numpy as np
 from scipy.signal import find_peaks
 
+from . import accelerator
+
 
 def voxel_representatives(points: np.ndarray, size: float, backend: str = "numpy") -> np.ndarray:
     if not len(points):
@@ -43,6 +45,31 @@ def envelope_width_bounds(low: np.ndarray, high: np.ndarray, segments: np.ndarra
     return minimum, maximum
 
 
+# scipy prepares worker threads per call, so parallelism only pays for large
+# query batches: measured on this machine, 1024 points are still slower with
+# workers and 4096 points break even. The threshold selects scheduling only;
+# each query is independent, so results are identical either way.
+PARALLEL_QUERY_MIN_POINTS = 4096
+
+
+def query_workers(count: int, configured: int) -> int:
+    """Worker count for one independent nearest-neighbour query batch."""
+    if configured != -1:
+        return configured
+    return -1 if count >= PARALLEL_QUERY_MIN_POINTS else 1
+
+
+def nearest_anchor_distance(x: np.ndarray, anchor_x: np.ndarray) -> np.ndarray:
+    """Exact nearest |x - anchor_x| without materialising an N x M difference.
+
+    Anchors are strictly increasing, so the nearest anchor is one of the two
+    bracketing a value; the compared differences are the same subtractions the
+    dense form would take, and NaN propagates as before.
+    """
+    position = np.clip(np.searchsorted(anchor_x, x), 1, len(anchor_x) - 1)
+    return np.minimum(np.abs(x - anchor_x[position - 1]), np.abs(anchor_x[position] - x))
+
+
 def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, dict]:
     lo, hi = config["ground_fit_range_m"]
     min_height, max_height = config["ground_sensor_height_bounds_m"]
@@ -59,6 +86,10 @@ def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, d
     design = np.column_stack((sample[:, :2], np.ones(len(sample))))
     best, best_count = None, 0
     tolerance = config["ground_inlier_m"]
+    # The proposals are drawn and solved one at a time, exactly as before, so the
+    # random stream and the singular-trial skips are unchanged. Only the inlier
+    # counting is batched over proposals afterwards.
+    proposals = []
     for _ in range(config["ground_ransac_trials"]):
         ids = rng.choice(len(sample), 3, replace=False)
         try:
@@ -68,9 +99,13 @@ def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, d
         if (np.any(np.abs(plane[:2]) > config["ground_max_slopes"])
                 or not -max_height < plane[2] < -min_height):
             continue
-        count = int(np.count_nonzero(np.abs(sample[:, 2] - design @ plane) < tolerance))
-        if count > best_count:
-            best, best_count = plane, count
+        proposals.append(plane)
+    if proposals:
+        candidates = np.stack(proposals)
+        projected = design @ candidates.T
+        counts = np.count_nonzero(np.abs(sample[:, 2, None] - projected) < tolerance, axis=0)
+        winner = int(np.argmax(counts))
+        best, best_count = candidates[winner], int(counts[winner])
     if best is None:
         return None, diagnostics | {"reason": "no_upright_track_bed_plane"}
     for _ in range(3):
@@ -118,16 +153,34 @@ class TrackGeometry:
     def _ground_profile(self, points: np.ndarray):
         cfg = self.config
         residual = points[:, 2] - (points[:, :2] @ self.plane[:2] + self.plane[2])
+        lateral_ok = np.abs(points[:, 1]) < cfg["ground_fit_half_width_m"]
         anchors = []
         previous = 0.0
+        half = cfg["ground_local_window_m"] / 2
+        limit = cfg["ground_inlier_m"] * 2
+        native = accelerator.native(cfg)
+        if native is not None:
+            anchors = accelerator.ground_profile(points, self.plane, cfg["ground_segment_m"], cfg["max_range_m"],
+                                                 cfg["ground_local_window_m"], cfg["ground_fit_half_width_m"],
+                                                 cfg["ground_inlier_m"], cfg["ground_min_support"],
+                                                 cfg["ground_max_slopes"][0], native)
+            self.ground_anchors = anchors.reshape(-1, 3)
+            return
+        # Sorting once makes each longitudinal window a contiguous slice of the
+        # same measurements; the original inequalities are then applied to the
+        # slice, so the selected set, its median and its spread are unchanged.
+        order = np.argsort(points[:, 0], kind="stable")
+        sorted_x = points[order, 0]
         for x in np.arange(cfg["ground_segment_m"], cfg["max_range_m"], cfg["ground_segment_m"]):
-            mask = ((np.abs(points[:, 0] - x) < cfg["ground_local_window_m"] / 2)
-                    & (np.abs(points[:, 1]) < cfg["ground_fit_half_width_m"])
-                    & (np.abs(residual - previous) < cfg["ground_inlier_m"] * 2))
-            values = residual[mask]
+            start = np.searchsorted(sorted_x, x - half, side="left")
+            stop = np.searchsorted(sorted_x, x + half, side="right")
+            ids = order[start:stop]
+            ids = ids[(np.abs(sorted_x[start:stop] - x) < half) & lateral_ok[ids]
+                      & (np.abs(residual[ids] - previous) < limit)]
+            values = residual[ids]
             if len(values) < max(12, cfg["ground_min_support"] // 3):
                 continue
-            support_points = points[mask]
+            support_points = points[ids]
             if np.ptp(support_points[:, 0]) < 1.5 or np.ptp(support_points[:, 1]) < 0.4:
                 continue
             shift = float(np.median(values))
@@ -141,10 +194,14 @@ class TrackGeometry:
     def ground(self, points: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         if self.plane is None or not len(self.ground_anchors):
             return np.full(len(points), np.nan), np.full(len(points), np.inf)
+        native = accelerator.native(self.config)
+        if native is not None:
+            return accelerator.ground_values(points, self.plane, self.ground_anchors,
+                                             self.config["ground_max_extrapolation_m"], native)
         x = points[:, 0]
         anchors = self.ground_anchors
         shift = np.interp(x, anchors[:, 0], anchors[:, 1])
-        nearest = np.min(np.abs(x[:, None] - anchors[None, :, 0]), axis=1)
+        nearest = nearest_anchor_distance(x, anchors[:, 0])
         uncertainty = np.interp(x, anchors[:, 0], anchors[:, 2]) + nearest * 0.008
         uncertainty[nearest > self.config["ground_max_extrapolation_m"]] = np.inf
         z = points[:, :2] @ self.plane[:2] + self.plane[2] + shift
@@ -161,9 +218,17 @@ class TrackGeometry:
         anchors, head_heights = [], []
         bin_size = cfg["rail_bin_m"]
         offset = int(np.ceil(4 / bin_size)) + 2
+        # Same treatment as the bed profile: one sort, then the identical
+        # inequality is applied to each contiguous longitudinal slice.
+        order = np.argsort(rail[:, 0], kind="stable")
+        sorted_x = rail[order, 0]
         for x in np.arange(5.0, cfg["max_range_m"], cfg["ground_segment_m"]):
             window = min(cfg["rail_max_window_m"], cfg["rail_window_m"] + x * cfg["rail_window_growth"])
-            q = rail[np.abs(rail[:, 0] - x) < window / 2]
+            half = window / 2
+            start = np.searchsorted(sorted_x, x - half, side="left")
+            stop = np.searchsorted(sorted_x, x + half, side="right")
+            ids = order[start:stop]
+            q = rail[ids[np.abs(sorted_x[start:stop] - x) < half]]
             if not len(q):
                 continue
             slope = 0.0
@@ -224,20 +289,31 @@ class TrackGeometry:
             slope = np.clip((a[edge, 1] - a[other, 1]) / (a[edge, 0] - a[other, 0]),
                             -self.config["rail_max_heading"], self.config["rail_max_heading"])
             center[mask] = a[edge, 1] + slope * (x[mask] - a[edge, 0])
-        nearest = np.min(np.abs(x[:, None] - a[None, :, 0]), axis=1)
+        nearest = nearest_anchor_distance(x, a[:, 0])
         uncertainty = 0.06 + 0.008 * nearest + 0.0003 * nearest**2
         uncertainty[nearest > self.config["path_max_extrapolation_m"]] = np.inf
         return center, np.interp(x, a[:, 0], a[:, 2]), uncertainty
 
     def classify(self, points: np.ndarray, *, remove_background: bool = True,
-                 include_boundary: bool = False):
-        """Classify support; optionally expose uncertain envelope intersections.
+                 include_boundary: bool = False, ground: tuple | None = None):
+        """Classify support; optionally expose uncertain lateral envelope intersections.
 
         The interval uses the existing heuristic path uncertainty, not calibrated
-        probability or a guarantee about the physical vehicle envelope.
+        probability or a guarantee about the physical vehicle envelope. A caller
+        that already fitted the bed for the same array may pass it in; the
+        returned values are those of the identical fit.
         """
         cfg = self.config
-        z, ground_uncertainty = self.ground(points)
+        native = accelerator.classify_geometry(points, self, accelerator.native(cfg))
+        if native is not None:
+            core, context, height, observed, nominal_overlap, boundary = native
+            if remove_background and self.background is not None:
+                eligible = np.flatnonzero(context & ~((observed & nominal_overlap) | boundary))
+                if len(eligible):
+                    context[eligible] &= ~self.background.mask(points[eligible], np.zeros(len(eligible), dtype=bool))
+            return (core, context, height, observed, nominal_overlap, boundary) if include_boundary \
+                else (core, context, height, observed, nominal_overlap)
+        z, ground_uncertainty = self.ground(points) if ground is None else ground
         center, gauge, path_uncertainty = self.path(points[:, 0])
         height = points[:, 2] - z
         rail_head = self.rail_head_height_m if self.rail_head_height_m is not None else np.nan

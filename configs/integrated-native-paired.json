@@ -1,0 +1,12 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/integrated-native-paired",
+  "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+  "frames": 20,
+  "repetitions": 3,
+  "hypothesis": "Integrated native detector reduces latency versus 48977ad using each revision's own compiled module",
+  "criterion": "Three alternating 20-real-scan runs: outputs match within 1e-10 and median latency decreases",
+  "baseline_source": "build/integration-baseline/tunnel_guard",
+  "baseline_native": "build/integration-baseline/tunnel_guard/_native.cpython-312-darwin.so"
+}

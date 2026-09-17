@@ -2,6 +2,6 @@
 from setuptools import Extension, setup
 
 setup(ext_modules=[Extension(
-    "tunnel_guard._native", ["cpp/voxel.cpp"], language="c++",
-    extra_compile_args=["-O3", "-std=c++17"], optional=True,
+    "tunnel_guard._native", ["cpp/voxel.cpp", "cpp/kernels.cpp"], language="c++", depends=["cpp/native.h"],
+    extra_compile_args=["-O3", "-std=c++17", "-ffp-contract=off"], optional=True,
 )])

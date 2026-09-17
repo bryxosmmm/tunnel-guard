@@ -214,11 +214,10 @@
     "normal_alignment_cos": 0.8,
     "protrusion_depth_m": 0.06,
     "protection_radius_m": 0.35,
-    "ransac_threads": 1
+    "ransac_threads": 8
   },
   "deskew_enabled": false,
   "query_workers": -1,
-  "native_kernels": true,
   "deskew_policy": "Disabled until acquisition span versus scan period and prior deskew provenance are verified. KISS-ICP normalizes the supplied point-time range to one full previous motion increment.",
   "voxel_backend": "cpp"
 }
