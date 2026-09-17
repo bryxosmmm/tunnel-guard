@@ -1,0 +1,132 @@
+{
+ "date": "2026-09-17",
+ "subject": "declared PointCloud2 input guards, exercised by running the shipped CLI",
+ "method": "Each recording is built from real doubleT_platform messages so that everything except one declared violation stays valid, then tunnel_guard.on_track is run against it and the actual exit status and message are recorded. This is an experiment with kept artefacts, not an automated test suite: no pass/fail runner is added to the project, per AGENTS.md.",
+ "source_recording": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+ "guards": [
+  {
+   "case": "control_untouched",
+   "expected": "accepted",
+   "exit_code": 0,
+   "observed": "accepted",
+   "message": "",
+   "verdict": "as declared"
+  },
+  {
+   "case": "missing_field_x",
+   "expected": "rejected",
+   "exit_code": 1,
+   "observed": "rejected",
+   "message": "ValueError: Missing or unsupported scalar PointCloud2 field: x",
+   "verdict": "as declared"
+  },
+  {
+   "case": "unsupported_datatype",
+   "expected": "rejected",
+   "exit_code": 1,
+   "observed": "rejected",
+   "message": "ValueError: Missing or unsupported scalar PointCloud2 field: y",
+   "verdict": "as declared"
+  },
+  {
+   "case": "field_past_point_step",
+   "expected": "rejected",
+   "exit_code": 1,
+   "observed": "rejected",
+   "message": "ValueError: PointCloud2 field exceeds point_step: z",
+   "verdict": "as declared"
+  },
+  {
+   "case": "row_step_too_short",
+   "expected": "rejected",
+   "exit_code": 1,
+   "observed": "rejected",
+   "message": "ValueError: PointCloud2 row_step is shorter than its row",
+   "verdict": "as declared"
+  },
+  {
+   "case": "truncated_payload",
+   "expected": "rejected",
+   "exit_code": 1,
+   "observed": "rejected",
+   "message": "ValueError: Truncated PointCloud2 data",
+   "verdict": "as declared"
+  },
+  {
+   "case": "invalid_timestamp",
+   "expected": "rejected",
+   "exit_code": 1,
+   "observed": "rejected",
+   "message": "ValueError: Invalid acquisition timestamp at scan 1",
+   "verdict": "as declared"
+  },
+  {
+   "case": "frame_id_changed",
+   "expected": "rejected",
+   "exit_code": 1,
+   "observed": "rejected",
+   "message": "ValueError: Sensor frame changed at scan 2; calibration must be reselected",
+   "verdict": "as declared"
+  },
+  {
+   "case": "missing_frame_id",
+   "expected": "rejected",
+   "exit_code": 1,
+   "observed": "rejected",
+   "message": "ValueError: Missing sensor frame at scan 0",
+   "verdict": "as declared"
+  },
+  {
+   "case": "time_goes_backwards",
+   "expected": "rejected",
+   "exit_code": 1,
+   "observed": "rejected",
+   "message": "ValueError: Acquisition time moved backwards at scan 2; split recording into epochs",
+   "verdict": "as declared"
+  },
+  {
+   "case": "duplicate_measurement",
+   "expected": "skipped",
+   "exit_code": 0,
+   "observed": "accepted",
+   "message": "",
+   "verdict": "as declared"
+  },
+  {
+   "case": "two_pointcloud_topics",
+   "expected": "rejected",
+   "exit_code": 1,
+   "observed": "rejected",
+   "message": "ValueError: Select one PointCloud2 topic; found ['/lidar_points', '/second_lidar'] in build/malformed/two_pointcloud_topics",
+   "verdict": "as declared"
+  }
+ ],
+ "duplicate_measurement_detail": {
+  "messages": 4,
+  "scans_emitted": 3,
+  "duplicates_counted": 1,
+  "control_messages": 4,
+  "control_scans_emitted": 4,
+  "control_duplicates": 0,
+  "note": "Verified through iter_bag diagnostics, because a zero exit code alone would not show whether the repeated measurement was skipped or processed twice."
+ },
+ "blind_sensor": {
+  "note": "Not a declared guard. Every return is replaced by an invalid one, which is a real field condition rather than a malformed message.",
+  "full_control": {
+   "input_valid_points": 186002,
+   "status": "obstacle",
+   "health": "degraded",
+   "objects": 182
+  },
+  "full_blind": {
+   "input_valid_points": 0,
+   "status": "unknown",
+   "health": "unavailable",
+   "reason": "insufficient_returns",
+   "objects": 0
+  },
+  "verdict": "Detector.process reports unknown and unavailable rather than a clear route, which is the required behaviour. The earlier comparison was invalid because the control had been cropped below the minimum return count and also reported insufficient_returns; it was rebuilt at full size."
+ },
+ "observation": "tunnel_guard.on_track prints 0 in-envelope clusters, 0 events, 0 candidates and exits 0 on a blinded recording, which reads the same as a clean one. That command documents itself as evidence for review rather than a hazard decision and is not the safety path, but a reader comparing recordings by that count has nothing distinguishing no coverage from no intrusion.",
+ "conclusion": "All eleven declared guards fire, each with its own message and a non-zero exit, and the duplicate measurement is genuinely skipped rather than processed twice. The audit statement that these branches were verified by reading only is now replaced by a dynamic check. No guard was found missing or wrong."
+}
