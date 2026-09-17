@@ -1,0 +1,134 @@
+{
+ "date": "2026-09-17",
+ "seed": 20260915,
+ "question": "Can the bore-to-track offset be learned from the section profile, and does it then expose the adjacent-track lock failure?",
+ "features": "64-bin centred lateral profile at the probed range, 64-bin mean near-field profile (10 and 15 m), plus range, analytic near-field offset, symmetry score, section width, near width, near symmetry score, width difference, bore axis (136 total)",
+ "model": "sklearn HistGradientBoostingRegressor(max_depth=6, max_iter=500, learning_rate=0.05, l2_regularization=1.0)",
+ "protocol": "Leave-one-recording-out. Excursion frames (|centre| > 1 m at the 30 m probe) are excluded from training because their target is the quantity that is wrong; predicting on them is therefore a test on an unseen regime. scikit-learn is not a declared project dependency and no training code is added to the package.",
+ "offset_prediction": {
+  "doubleT_obstacle": {
+   "rows": 651,
+   "median_abs_error_m": {
+    "analytic_baseline": 0.192,
+    "trivial_track_on_axis": 0.848,
+    "model": 0.113
+   }
+  },
+  "doubleT_platform": {
+   "rows": 1233,
+   "median_abs_error_m": {
+    "analytic_baseline": 0.906,
+    "trivial_track_on_axis": 0.144,
+    "model": 0.168
+   }
+  },
+  "roundT_doubleT": {
+   "rows": 580,
+   "median_abs_error_m": {
+    "analytic_baseline": 0.026,
+    "trivial_track_on_axis": 0.187,
+    "model": 0.043
+   }
+  },
+  "roundT_pressureGate_roundT": {
+   "rows": 634,
+   "median_abs_error_m": {
+    "analytic_baseline": 0.064,
+    "trivial_track_on_axis": 0.184,
+    "model": 0.072
+   }
+  },
+  "roundT_squareT_pressureGate_squareT": {
+   "rows": 1424,
+   "median_abs_error_m": {
+    "analytic_baseline": 0.045,
+    "trivial_track_on_axis": 0.164,
+    "model": 0.019
+   }
+  },
+  "squareT_platform_squareT_switch": {
+   "rows": 3437,
+   "median_abs_error_m": {
+    "analytic_baseline": 1.729,
+    "trivial_track_on_axis": 0.159,
+    "model": 0.052
+   }
+  },
+  "POOLED": {
+   "rows": 7959,
+   "median_abs_error_m": {
+    "analytic_baseline": 0.207,
+    "trivial_track_on_axis": 0.166,
+    "model": 0.053
+   },
+   "p90_abs_error_m": {
+    "analytic_baseline": 2.178,
+    "trivial_track_on_axis": 0.57,
+    "model": 0.389
+   }
+  }
+ },
+ "detection": {
+  "by_recording": {
+   "doubleT_obstacle": {
+    "clean_rows": 651,
+    "excursion_rows": 28,
+    "median_disagreement_clean_m": 0.113,
+    "median_disagreement_excursion_m": 0.269
+   },
+   "doubleT_platform": {
+    "clean_rows": 1233,
+    "excursion_rows": 0,
+    "median_disagreement_clean_m": 0.168,
+    "median_disagreement_excursion_m": null
+   },
+   "roundT_doubleT": {
+    "clean_rows": 580,
+    "excursion_rows": 302,
+    "median_disagreement_clean_m": 0.043,
+    "median_disagreement_excursion_m": 1.598
+   },
+   "roundT_pressureGate_roundT": {
+    "clean_rows": 634,
+    "excursion_rows": 280,
+    "median_disagreement_clean_m": 0.072,
+    "median_disagreement_excursion_m": 1.524
+   },
+   "roundT_squareT_pressureGate_squareT": {
+    "clean_rows": 1424,
+    "excursion_rows": 523,
+    "median_disagreement_clean_m": 0.019,
+    "median_disagreement_excursion_m": 1.859
+   },
+   "squareT_platform_squareT_switch": {
+    "clean_rows": 3437,
+    "excursion_rows": 0,
+    "median_disagreement_clean_m": 0.052,
+    "median_disagreement_excursion_m": null
+   }
+  },
+  "operating_points": {
+   "0.3": {
+    "caught_excursion_rows": 0.972,
+    "false_on_clean_rows": 0.1457
+   },
+   "0.5": {
+    "caught_excursion_rows": 0.943,
+    "false_on_clean_rows": 0.0636
+   },
+   "0.75": {
+    "caught_excursion_rows": 0.897,
+    "false_on_clean_rows": 0.0254
+   },
+   "1.0": {
+    "caught_excursion_rows": 0.844,
+    "false_on_clean_rows": 0.0111
+   },
+   "1.5": {
+    "caught_excursion_rows": 0.622,
+    "false_on_clean_rows": 0.0019
+   }
+  }
+ },
+ "conclusion": "The section profile carries the offset: pooled median error falls to 0.053 m against 0.207 m for the analytic constant and 0.166 m for claiming the track runs down the sensor axis, and the model beats that trivial claim by 7.5x on the one recording with a real mounting yaw, so it is not reproducing a zero. Used as a check on frames it never trained on, the predicted centre disagrees with the rails by 1.70 m against 0.05 m on clean frames, catching 90 percent of excursion rows at 2.5 percent false on clean rows. Limits: the excursion label is our own rail-based criterion rather than ground truth, six recordings in two mounting configurations cannot establish transfer to another tunnel, and this detects the failure without yet correcting it."
+}
