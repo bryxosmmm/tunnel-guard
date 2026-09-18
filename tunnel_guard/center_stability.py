@@ -15,6 +15,16 @@ whatever it locked onto still looks like a rail pair.
 
 Only anchored ranges are probed: extrapolation past the last anchor is a separate question,
 measured in ``path_extrapolation``. Nothing in ``geometry.py`` is modified.
+
+``EXCURSION_M`` compares the centre against the **sensor axis**, which only identifies a lock
+failure while the track itself runs along that axis. That holds for the six sourcecraft
+recordings, where no measurable curvature exists and the largest legitimate offset is the
+mounting yaw. It does not hold on curved track: at radius R the centre is legitimately
+``d^2 / 2R`` off axis, which is 1.1 m at 30 m on a 400 m curve, so every curved frame is
+flagged. On the extended recording, where 12 percent of frames sit below 400 m, this marks
+95-99 percent of curved frames and means nothing. Read the excursion columns only for
+recordings established to be straight, and judge a curved one against its own fitted arc
+rather than against zero.
 """
 from __future__ import annotations
 

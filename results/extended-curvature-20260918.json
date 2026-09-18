@@ -1,0 +1,76 @@
+{
+ "date": "2026-09-18",
+ "recording": "bags.zip -> new_data (11271 scans, 1199.9 s)",
+ "scope": "714 scans from 14 of 221 segments, spread across the whole run; full extraction needs 84 GiB",
+ "same_installation_as_sector_recordings": {
+  "bed_pitch_deg": -0.308,
+  "bed_roll_deg": 0.184,
+  "sensor_height_above_bed_m": 1.309,
+  "track_heading_deg": -0.315,
+  "note": "inside the spread of the five sector recordings; doubleT_obstacle remains the outlier"
+ },
+ "curvature": {
+  "method": "per-frame quadratic fit to the detector own rail anchors, every third frame, 237 frames",
+  "rms_straight_fit_m": 0.025,
+  "rms_quadratic_fit_m": 0.012,
+  "frames_below_800m": 0.22,
+  "frames_below_400m": 0.12,
+  "note": "the old six recordings show no measurable curvature at all, so this regime is new"
+ },
+ "excursion_criterion_invalid_on_curves": {
+  "criterion": "center_stability flags |centre at 30 m| > 1 m, measured against the sensor axis",
+  "why_it_breaks": "a radius R puts the centre d^2/2R off axis legitimately, 1.1 m at 30 m on a 400 m curve",
+  "flagged_share_by_radius": {
+   "under_400m": 0.95,
+   "400_800m": 0.99,
+   "800_2000m": 0.08,
+   "over_2000m": 0.03
+  },
+  "retracted": [
+   "excursions reproduce on the extended recording",
+   "the learned offset transfers as an excursion detector to the extended recording"
+  ],
+  "still_valid": "every section measured on the six sourcecraft recordings, where no curvature exists"
+ },
+ "arc_still_loses_to_tangent": {
+  "held_out_anchors": 13476,
+  "median_abs_error_m_at_20m": {
+   "sharp_under_400m": {
+    "tangent": 0.218,
+    "arc": 1.25
+   },
+   "moderate_400_800m": {
+    "tangent": 0.098,
+    "arc": 0.39
+   },
+   "straight_over_2000m": {
+    "tangent": 0.036,
+    "arc": 0.072
+   }
+  },
+  "note": "the earlier refutation was limited to data without curves; it now holds where curves exist"
+ },
+ "stated_uncertainty_optimistic_on_curves": {
+  "share_tangent_error_above_stated": {
+   "straight_over_2000m": 0.0,
+   "gentle_800_2000m": 0.0,
+   "moderate_400_800m": 0.01,
+   "sharp_under_400m": [
+    0.17,
+    0.31
+   ]
+  }
+ },
+ "curved_frames_carry_disproportionate_load": {
+  "clusters_per_frame": {
+   "under_400m": 3.51,
+   "400_800m": 2.82,
+   "800_2000m": 1.42,
+   "over_2000m": 1.63
+  },
+  "share_of_frames_below_800m": 0.23,
+  "share_of_clusters_below_800m": 0.37
+ },
+ "neither_branch_models_curvature": "main keeps a piecewise linear path; experiments/morev adds refine_rail_pair, described there as a local straight-line refinement and not a general curved-track estimator",
+ "limits": "Subset, not the full recording. Curvature is fitted to the detector own anchors rather than an independent source. No labels: clusters are not alarms and not obstacles. Segment boundaries break event grouping, which biases candidate counts down."
+}
