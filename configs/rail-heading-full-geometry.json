@@ -1,0 +1,15 @@
+{
+  "baseline_run": "build/extended-full",
+  "bag": "data/extended_full/new_data",
+  "probe_ranges_m": [
+    10,
+    20,
+    40,
+    60
+  ],
+  "max_frames": null,
+  "output": "build/rail-heading-full-geometry",
+  "hypothesis": "Preserve the first fitted heading without losing previously available real geometry",
+  "criterion": "Report all recovered/regressed frames and unsupported anchors; no geometric accuracy claim",
+  "rail_initial_heading": "fitted"
+}

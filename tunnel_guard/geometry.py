@@ -264,6 +264,11 @@ class TrackGeometry:
             if not len(q):
                 continue
             slope = 0.0
+            if len(anchors) == 1 and cfg.get("rail_initial_heading", "zero") == "fitted":
+                # The first fitted pair already measures a local tangent. Keep
+                # it until two anchors define a secant; resetting to zero here
+                # makes the next window search across an oblique rail pair.
+                slope = self.rail_support_diagnostics[-1]["heading_slope"]
             if len(anchors) > 1:
                 slope = float(np.clip((anchors[-1][1] - anchors[-2][1]) / (anchors[-1][0] - anchors[-2][0]),
                                       -cfg["rail_max_heading"], cfg["rail_max_heading"]))

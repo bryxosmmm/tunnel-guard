@@ -63,6 +63,8 @@ def load_config(path: str | Path) -> dict:
         raise ValueError("Unknown obstacle_distance_mode")
     if config.get("rail_center_estimator", "histogram") not in ("histogram", "paired_line"):
         raise ValueError("Unknown rail_center_estimator")
+    if config.get("rail_initial_heading", "zero") not in ("zero", "fitted"):
+        raise ValueError("Unknown rail_initial_heading")
     if config.get("rail_anchor_support", "window") not in ("window", "bracketed", "measured"):
         raise ValueError("Unknown rail_anchor_support")
     validate_mounting_config(config)

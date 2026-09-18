@@ -1,0 +1,34 @@
+{
+  "bags": [
+    {
+      "bag": "doubleT_obstacle",
+      "before": "build/rail-measured-real/doubleT_obstacle.jsonl",
+      "after": "build/rail-heading-real/doubleT_obstacle.jsonl"
+    },
+    {
+      "bag": "doubleT_platform",
+      "before": "build/rail-measured-real/doubleT_platform.jsonl",
+      "after": "build/rail-heading-real/doubleT_platform.jsonl"
+    },
+    {
+      "bag": "roundT_doubleT",
+      "before": "build/rail-measured-real/roundT_doubleT.jsonl",
+      "after": "build/rail-heading-real/roundT_doubleT.jsonl"
+    },
+    {
+      "bag": "new_data_0",
+      "before": "build/extended-measured/new_data_0.jsonl",
+      "after": "build/rail-heading-real/new_data_0.jsonl"
+    },
+    {
+      "bag": "new_data_100",
+      "before": "build/extended-measured/new_data_100.jsonl",
+      "after": "build/rail-heading-real/new_data_100.jsonl"
+    },
+    {
+      "bag": "new_data_200",
+      "before": "build/extended-measured/new_data_200.jsonl",
+      "after": "build/rail-heading-real/new_data_200.jsonl"
+    }
+  ]
+}
