@@ -1,0 +1,29 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/extended-measured",
+  "every": 1,
+  "max_frames": null,
+  "visualization": false,
+  "diagnostic_frames": [
+    0,
+    25,
+    50
+  ],
+  "bags": [
+    {
+      "path": "data/extended_subset/new_data_0",
+      "split": "extended_initial_inspection_unlabelled"
+    },
+    {
+      "path": "data/extended_subset/new_data_100",
+      "split": "extended_initial_inspection_unlabelled"
+    },
+    {
+      "path": "data/extended_subset/new_data_200",
+      "split": "extended_initial_inspection_unlabelled"
+    }
+  ],
+  "hypothesis": "Frozen detector decodes extended real data and provides supported rail geometry without sensor calibration assertions",
+  "criterion": "Report decoding, acquisition identity, invalid geometry and temporal evidence failures; no accuracy claims from unlabelled recordings"
+}
