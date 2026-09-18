@@ -65,6 +65,10 @@ def load_config(path: str | Path) -> dict:
         raise ValueError("Unknown rail_center_estimator")
     if config.get("rail_initial_heading", "zero") not in ("zero", "fitted"):
         raise ValueError("Unknown rail_initial_heading")
+    if config.get("rail_pair_continuity", "window") not in ("window", "relocated"):
+        raise ValueError("Unknown rail_pair_continuity")
+    if config.get("rail_frame_mode", "bed") not in ("bed", "local_3d"):
+        raise ValueError("Unknown rail_frame_mode")
     if config.get("rail_anchor_support", "window") not in ("window", "bracketed", "measured"):
         raise ValueError("Unknown rail_anchor_support")
     validate_mounting_config(config)
@@ -533,6 +537,12 @@ class Detector:
                              "returns_before_geometry_voxel": int(raw_mask.sum()),
                              "geometry_supported_returns": int(np.count_nonzero(mask & observed))})
         health_reasons = []
+        if self.config.get("rail_frame_mode", "bed") == "local_3d":
+            health_reasons.append("experimental_local_rail_frames")
+            if not geometry.frame_segments():
+                health_reasons.append("local_rail_frames_unavailable")
+                if status == "no_obstacle_observed":
+                    status = "unknown"
         if not geometry.valid:
             health_reasons.append(geometry.reason)
         if not motion["valid"]:

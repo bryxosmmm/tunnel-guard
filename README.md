@@ -16,6 +16,8 @@ The [Gerasimov/HMM-MOS review and scenario runs](docs/REVIEW_GERASIMOV_20260918.
 
 The [3D track and clearance literature review](docs/TRACK_GEOMETRY_LITERATURE_20260918.md) maps published rail-pair estimation and local clearance coordinates to the remaining curve, grade and cant limitations. It distinguishes proposed adaptations from implemented and evaluated behavior.
 
+[The first 3D geometry iteration](docs/TRACK_LOCAL3D_ITERATION.md) now enforces the configured heading bound at actual rail-anchor locations in the default Python/native recipes. An opt-in `configs/detector-local3d-experimental.json` estimates local head heights and tilted cross-sections shared by classification, viewer and RViz. Real replay and ray-cast curve/grade/cant experiments are recorded; height bias and unresolved alarms prevent promotion of the 3D mode.
+
 See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and ROS2 launch commands, and [iteration evidence](docs/GOAL_ITERATION.md) for all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
 
 ## Native acceleration and calibration experiment

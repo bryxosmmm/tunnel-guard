@@ -30,6 +30,12 @@ def main():
     if policy not in ('zero', 'fitted'):
         raise ValueError('Unknown rail_initial_heading')
     cfg = cfg | {'rail_initial_heading': policy}
+    for name, allowed in [('rail_pair_continuity', ('window', 'relocated')),
+                          ('rail_frame_mode', ('bed', 'local_3d'))]:
+        value = recipe.get(name, allowed[0])
+        if value not in allowed:
+            raise ValueError('Unknown ' + name)
+        cfg[name] = value
     if cfg.get('deskew_enabled', False):
         raise ValueError('Source-only geometry replay requires deskew disabled')
     manifest = json.loads((baseline / 'manifest.json').read_text())
