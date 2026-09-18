@@ -49,6 +49,18 @@ while losing unsupported certainty. A real candidate near 56 m remains detected.
 402 real frames, definite-alarm frames decrease, but warning-free operation and field
 false-alarm improvement are **not established**.
 
+## External method review
+
+See [HMM-MOS review](docs/HMM_MOS_REVIEW.md): the authors' own implementation of the IJRR moving-object
+segmenter, built unmodified and run on our synthetic measured-pattern tunnel and on three real windows.
+It segments objects that are genuinely moving (real walking person: 95% of its labels inside the one
+hand-authored person box) and produced **0 labels on the static object in four synthetic cases at 15, 30,
+60 and 100 m** - the class this project is scored on - because a state change is only counted for
+occupied<->free transitions. Measured cost 0.22 s/frame and 0.30 GB at 60 m, 0.75 s/frame at 100 m, and
+an empty tunnel at metro speed (1.5 m/frame) produced 70k false dynamic labels in 200 frames. Compact
+numbers: `results/hmm-mos-probe-20260918.json`; recipes: `configs/hmm-mos-probe-*.json` and
+`tunnel_guard/hmm_mos_probe.py`. Nothing in the pipeline was changed by this review.
+
 ## Team work
 
 See [next iteration assignments](docs/TEAM_TASKS.md): reviewed episodes, sensor/time evidence, Ubuntu/RViz validation, and oriented evaluation. Use separate branches from `experiments/morev`.

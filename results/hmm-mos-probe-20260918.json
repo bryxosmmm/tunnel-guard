@@ -1,0 +1,2283 @@
+{
+  "review": "docs/HMM_MOS_REVIEW.md",
+  "date": "2026-09-18",
+  "subject": "Bhandari, James, Phillips, McAree, Moving Object Segmentation in Point Cloud Data using Hidden Markov Models, IJRR 45(8) 2026",
+  "implementation": {
+    "repository": "https://github.com/vb44/HMM-MOS",
+    "commit": "3f625031d135b2bbe4297125da11facdaba8ca81",
+    "built": "unmodified source; clang + nix onetbb/yaml-cpp/nanoflann/unordered_dense/eigen/boost",
+    "binary": "/tmp/hmm-mos-probe/HMM-MOS/build/hmmMOS"
+  },
+  "probes": {
+    "hmm-mos-probe-real-obstacle-160-200": {
+      "mode": "real",
+      "frames_per_case": 41,
+      "hmm_mos_config": {
+        "minRange": 0.5,
+        "maxRange": 60.0,
+        "voxelSize": 0.2,
+        "occupancySigma": 0.2,
+        "beliefThreshold": 0.99,
+        "convSize": 5,
+        "localWindowSize": 5,
+        "globalWindowSize": 300,
+        "minOtsu": 3
+      },
+      "seconds": 10.347195666001426,
+      "peak_rss_bytes": 281952256,
+      "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "annotation": "annotations/doubleT-obstacle-person.json",
+      "frames": 41,
+      "dynamic_points_total": 29779,
+      "dynamic_within_reference_box_total": 28409,
+      "frames_with_any_dynamic": 35,
+      "dynamic_cumulative_by_range_m": {
+        "10": 14410,
+        "20": 29779,
+        "30": 29779,
+        "40": 29779,
+        "50": 29779,
+        "60": 29779
+      },
+      "decoded_over_recorded_points": [
+        0.5187,
+        0.5187,
+        0.5186
+      ],
+      "labelled_frames": [
+        166,
+        167,
+        168,
+        169,
+        170,
+        171,
+        172,
+        173,
+        174,
+        175,
+        176,
+        177,
+        178,
+        179,
+        180,
+        181,
+        182,
+        183,
+        184,
+        185,
+        186,
+        187,
+        188,
+        189,
+        190,
+        191,
+        192,
+        193,
+        194,
+        195,
+        196,
+        197,
+        198,
+        199,
+        200
+      ],
+      "max_dynamic_in_frame": 1094,
+      "dynamic_in_detector_candidate_boxes_total": 29539
+    },
+    "hmm-mos-probe-real-obstacle": {
+      "mode": "real",
+      "frames_per_case": 81,
+      "hmm_mos_config": {
+        "minRange": 0.5,
+        "maxRange": 60.0,
+        "voxelSize": 0.2,
+        "occupancySigma": 0.2,
+        "beliefThreshold": 0.99,
+        "convSize": 5,
+        "localWindowSize": 5,
+        "globalWindowSize": 300,
+        "minOtsu": 3
+      },
+      "seconds": 20.323384040999372,
+      "peak_rss_bytes": 313245696,
+      "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "annotation": "annotations/doubleT-obstacle-person.json",
+      "frames": 81,
+      "dynamic_points_total": 862,
+      "dynamic_within_reference_box_total": 0,
+      "frames_with_any_dynamic": 23,
+      "dynamic_cumulative_by_range_m": {
+        "10": 335,
+        "20": 335,
+        "30": 335,
+        "40": 335,
+        "50": 335,
+        "60": 862
+      },
+      "decoded_over_recorded_points": [
+        0.5182,
+        0.5181,
+        0.5181
+      ],
+      "labelled_frames": [
+        13,
+        14,
+        16,
+        17,
+        18,
+        19,
+        21,
+        22,
+        23,
+        24,
+        56,
+        57,
+        58,
+        59,
+        61,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        78,
+        80
+      ],
+      "max_dynamic_in_frame": 102,
+      "dynamic_in_detector_candidate_boxes_total": 504
+    },
+    "hmm-mos-probe-real-roundt-60-160": {
+      "mode": "real",
+      "frames_per_case": 101,
+      "hmm_mos_config": {
+        "minRange": 0.5,
+        "maxRange": 60.0,
+        "voxelSize": 0.2,
+        "occupancySigma": 0.2,
+        "beliefThreshold": 0.99,
+        "convSize": 5,
+        "localWindowSize": 5,
+        "globalWindowSize": 300,
+        "minOtsu": 3
+      },
+      "seconds": 22.689976417001162,
+      "peak_rss_bytes": 339853312,
+      "bag": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "annotation": null,
+      "frames": 101,
+      "dynamic_points_total": 419007,
+      "dynamic_within_reference_box_total": 0,
+      "frames_with_any_dynamic": 44,
+      "dynamic_cumulative_by_range_m": {
+        "10": 306780,
+        "20": 377710,
+        "30": 403947,
+        "40": 414098,
+        "50": 417974,
+        "60": 419007
+      },
+      "decoded_over_recorded_points": [
+        0.5073,
+        0.5075,
+        0.5074
+      ],
+      "labelled_frames": [
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        78,
+        79,
+        80,
+        81,
+        82,
+        83,
+        84,
+        85,
+        86,
+        87,
+        88,
+        89,
+        90,
+        91,
+        92,
+        93,
+        94,
+        95,
+        96,
+        97,
+        98,
+        99,
+        100,
+        101,
+        102,
+        103,
+        119,
+        120,
+        132,
+        135,
+        138,
+        140
+      ],
+      "max_dynamic_in_frame": 23884,
+      "dynamic_in_detector_candidate_boxes_total": 395471
+    },
+    "hmm-mos-probe-synth": {
+      "mode": "synth",
+      "frames_per_case": 60,
+      "hmm_mos_config": {
+        "minRange": 0.5,
+        "maxRange": 60.0,
+        "voxelSize": 0.2,
+        "occupancySigma": 0.2,
+        "beliefThreshold": 0.99,
+        "convSize": 5,
+        "localWindowSize": 5,
+        "globalWindowSize": 300,
+        "minOtsu": 3
+      },
+      "seconds": null,
+      "peak_rss_bytes": null,
+      "cases": [
+        {
+          "id": "empty",
+          "case": {
+            "id": "empty",
+            "kind": "none"
+          },
+          "max_range_m": 60.0,
+          "seconds": 15.878392374999748,
+          "peak_rss_bytes": 735379456,
+          "dynamic_total": 0,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 0,
+          "frames": 60,
+          "max_dynamic_in_frame": 0,
+          "labelled_frames": [],
+          "dynamic_regions": {}
+        },
+        {
+          "id": "static_60_stationary_sensor",
+          "case": {
+            "id": "static_60_stationary_sensor",
+            "kind": "static",
+            "start_m": 60.0,
+            "lateral_m": -0.5,
+            "sensor_step_m": 0.0
+          },
+          "max_range_m": 60.0,
+          "seconds": 13.903130708999015,
+          "peak_rss_bytes": 414334976,
+          "dynamic_total": 0,
+          "dynamic_object_total": 0,
+          "visible_object_total": 6263,
+          "frames_with_labels": 0,
+          "frames": 60,
+          "max_dynamic_in_frame": 0,
+          "labelled_frames": [],
+          "dynamic_regions": {}
+        },
+        {
+          "id": "static_60",
+          "case": {
+            "id": "static_60",
+            "kind": "static",
+            "start_m": 60.0,
+            "lateral_m": -0.5
+          },
+          "max_range_m": 60.0,
+          "seconds": 15.721964000000298,
+          "peak_rss_bytes": 801718272,
+          "dynamic_total": 0,
+          "dynamic_object_total": 0,
+          "visible_object_total": 104493,
+          "frames_with_labels": 0,
+          "frames": 60,
+          "max_dynamic_in_frame": 0,
+          "labelled_frames": [],
+          "dynamic_regions": {}
+        },
+        {
+          "id": "static_100",
+          "case": {
+            "id": "static_100",
+            "kind": "static",
+            "start_m": 100.0,
+            "lateral_m": -0.5
+          },
+          "max_range_m": 60.0,
+          "seconds": 15.75862191700071,
+          "peak_rss_bytes": 832241664,
+          "dynamic_total": 0,
+          "dynamic_object_total": 0,
+          "visible_object_total": 4982,
+          "frames_with_labels": 0,
+          "frames": 60,
+          "max_dynamic_in_frame": 0,
+          "labelled_frames": [],
+          "dynamic_regions": {}
+        },
+        {
+          "id": "static_30",
+          "case": {
+            "id": "static_30",
+            "kind": "static",
+            "start_m": 30.0,
+            "lateral_m": -0.5
+          },
+          "max_range_m": 60.0,
+          "seconds": 15.826470916999824,
+          "peak_rss_bytes": 809926656,
+          "dynamic_total": 9954,
+          "dynamic_object_total": 0,
+          "visible_object_total": 229197,
+          "frames_with_labels": 9,
+          "frames": 60,
+          "max_dynamic_in_frame": 1779,
+          "labelled_frames": [
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36
+          ],
+          "dynamic_regions": {
+            "rail": 0,
+            "floor": 0,
+            "wall": 0,
+            "ceiling": 0,
+            "interior": 9954
+          }
+        },
+        {
+          "id": "approach_60",
+          "case": {
+            "id": "approach_60",
+            "kind": "moving",
+            "start_m": 60.0,
+            "lateral_m": -0.5,
+            "velocity_mps": -1.5
+          },
+          "max_range_m": 60.0,
+          "seconds": 15.68843362500047,
+          "peak_rss_bytes": 661880832,
+          "dynamic_total": 207303,
+          "dynamic_object_total": 173204,
+          "visible_object_total": 183861,
+          "frames_with_labels": 54,
+          "frames": 60,
+          "max_dynamic_in_frame": 22192,
+          "labelled_frames": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25
+          ],
+          "dynamic_regions": {
+            "rail": 827,
+            "floor": 1234,
+            "wall": 0,
+            "ceiling": 0,
+            "interior": 205242
+          }
+        },
+        {
+          "id": "walk_stop_60",
+          "case": {
+            "id": "walk_stop_60",
+            "kind": "moving",
+            "start_m": 60.0,
+            "lateral_m": -0.5,
+            "velocity_mps": -1.5,
+            "stop_frame": 20
+          },
+          "max_range_m": 60.0,
+          "seconds": 15.81653679199917,
+          "peak_rss_bytes": 873119744,
+          "dynamic_total": 3864,
+          "dynamic_object_total": 3812,
+          "visible_object_total": 164151,
+          "frames_with_labels": 19,
+          "frames": 60,
+          "max_dynamic_in_frame": 316,
+          "labelled_frames": [
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24
+          ],
+          "dynamic_regions": {
+            "rail": 50,
+            "floor": 136,
+            "wall": 0,
+            "ceiling": 0,
+            "interior": 3678
+          }
+        },
+        {
+          "id": "appear_40",
+          "case": {
+            "id": "appear_40",
+            "kind": "appearing",
+            "start_m": 40.0,
+            "lateral_m": -0.5,
+            "appear_frame": 10
+          },
+          "max_range_m": 60.0,
+          "seconds": 15.763094583000566,
+          "peak_rss_bytes": 781238272,
+          "dynamic_total": 155446,
+          "dynamic_object_total": 73186,
+          "visible_object_total": 223585,
+          "frames_with_labels": 14,
+          "frames": 60,
+          "max_dynamic_in_frame": 25154,
+          "labelled_frames": [
+            10,
+            11,
+            12,
+            13,
+            14,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47
+          ],
+          "dynamic_regions": {
+            "rail": 365,
+            "floor": 473,
+            "wall": 0,
+            "ceiling": 0,
+            "interior": 154608
+          }
+        }
+      ]
+    },
+    "hmm-mos-probe-synth2": {
+      "mode": "synth",
+      "frames_per_case": 120,
+      "hmm_mos_config": {
+        "minRange": 0.5,
+        "maxRange": 60.0,
+        "voxelSize": 0.2,
+        "occupancySigma": 0.2,
+        "beliefThreshold": 0.99,
+        "convSize": 5,
+        "localWindowSize": 5,
+        "globalWindowSize": 300,
+        "minOtsu": 3
+      },
+      "seconds": null,
+      "peak_rss_bytes": null,
+      "cases": [
+        {
+          "id": "empty_stationary",
+          "case": {
+            "id": "empty_stationary",
+            "kind": "none",
+            "sensor_step_m": 0.0
+          },
+          "max_range_m": 60.0,
+          "seconds": 27.841055082999446,
+          "peak_rss_bytes": 430686208,
+          "dynamic_total": 0,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 0,
+          "frames": 120,
+          "max_dynamic_in_frame": 0,
+          "labelled_frames": [],
+          "dynamic_regions": {}
+        },
+        {
+          "id": "empty_60",
+          "case": {
+            "id": "empty_60",
+            "kind": "none"
+          },
+          "max_range_m": 60.0,
+          "seconds": 33.21151108400045,
+          "peak_rss_bytes": 693600256,
+          "dynamic_total": 3778,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 5,
+          "frames": 120,
+          "max_dynamic_in_frame": 1699,
+          "labelled_frames": [
+            61,
+            62,
+            63,
+            64,
+            65
+          ],
+          "dynamic_regions": {
+            "rail": 0,
+            "floor": 0,
+            "wall": 0,
+            "ceiling": 0,
+            "interior": 3778
+          }
+        },
+        {
+          "id": "empty_20",
+          "case": {
+            "id": "empty_20",
+            "kind": "none",
+            "maxRange": 20.0
+          },
+          "max_range_m": 20.0,
+          "seconds": 10.84585666699968,
+          "peak_rss_bytes": 422739968,
+          "dynamic_total": 0,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 0,
+          "frames": 120,
+          "max_dynamic_in_frame": 0,
+          "labelled_frames": [],
+          "dynamic_regions": {}
+        },
+        {
+          "id": "static_15_20",
+          "case": {
+            "id": "static_15_20",
+            "kind": "static",
+            "start_m": 15.0,
+            "lateral_m": -0.5,
+            "maxRange": 20.0
+          },
+          "max_range_m": 20.0,
+          "seconds": 11.108848750000107,
+          "peak_rss_bytes": 418791424,
+          "dynamic_total": 0,
+          "dynamic_object_total": 0,
+          "visible_object_total": 226784,
+          "frames_with_labels": 0,
+          "frames": 120,
+          "max_dynamic_in_frame": 0,
+          "labelled_frames": [],
+          "dynamic_regions": {}
+        },
+        {
+          "id": "static_60",
+          "case": {
+            "id": "static_60",
+            "kind": "static",
+            "start_m": 60.0,
+            "lateral_m": -0.5
+          },
+          "max_range_m": 60.0,
+          "seconds": 33.5006955000008,
+          "peak_rss_bytes": 922140672,
+          "dynamic_total": 8,
+          "dynamic_object_total": 8,
+          "visible_object_total": 240444,
+          "frames_with_labels": 1,
+          "frames": 120,
+          "max_dynamic_in_frame": 8,
+          "labelled_frames": [
+            105
+          ],
+          "dynamic_regions": {
+            "rail": 0,
+            "floor": 0,
+            "wall": 0,
+            "ceiling": 0,
+            "interior": 8
+          }
+        },
+        {
+          "id": "appear_40",
+          "case": {
+            "id": "appear_40",
+            "kind": "appearing",
+            "start_m": 40.0,
+            "lateral_m": -0.5,
+            "appear_frame": 10
+          },
+          "max_range_m": 60.0,
+          "seconds": 33.56577729200035,
+          "peak_rss_bytes": 799145984,
+          "dynamic_total": 132183,
+          "dynamic_object_total": 76710,
+          "visible_object_total": 236817,
+          "frames_with_labels": 17,
+          "frames": 120,
+          "max_dynamic_in_frame": 26218,
+          "labelled_frames": [
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            108,
+            109,
+            112
+          ],
+          "dynamic_regions": {
+            "rail": 346,
+            "floor": 474,
+            "wall": 0,
+            "ceiling": 0,
+            "interior": 131363
+          }
+        }
+      ]
+    },
+    "hmm-mos-probe-synth3": {
+      "mode": "synth",
+      "frames_per_case": 60,
+      "hmm_mos_config": {
+        "minRange": 0.5,
+        "maxRange": 60.0,
+        "voxelSize": 0.2,
+        "occupancySigma": 0.2,
+        "beliefThreshold": 0.99,
+        "convSize": 5,
+        "localWindowSize": 5,
+        "globalWindowSize": 300,
+        "minOtsu": 3
+      },
+      "seconds": null,
+      "peak_rss_bytes": null,
+      "cases": [
+        {
+          "id": "noise_stationary",
+          "case": {
+            "id": "noise_stationary",
+            "kind": "none",
+            "sensor_step_m": 0.0
+          },
+          "max_range_m": 60.0,
+          "seconds": 13.995666541999526,
+          "peak_rss_bytes": 402784256,
+          "dynamic_total": 0,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 0,
+          "frames": 60,
+          "max_dynamic_in_frame": 0,
+          "labelled_frames": [],
+          "dynamic_regions": {}
+        },
+        {
+          "id": "noise_moving",
+          "case": {
+            "id": "noise_moving",
+            "kind": "none"
+          },
+          "max_range_m": 60.0,
+          "seconds": 15.712957292000283,
+          "peak_rss_bytes": 812498944,
+          "dynamic_total": 0,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 0,
+          "frames": 60,
+          "max_dynamic_in_frame": 0,
+          "labelled_frames": [],
+          "dynamic_regions": {}
+        },
+        {
+          "id": "pose_noise_002",
+          "case": {
+            "id": "pose_noise_002",
+            "kind": "none",
+            "pose_noise_sigma_m": 0.02
+          },
+          "max_range_m": 60.0,
+          "seconds": 15.707718834000843,
+          "peak_rss_bytes": 783269888,
+          "dynamic_total": 10796,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 1,
+          "frames": 60,
+          "max_dynamic_in_frame": 10796,
+          "labelled_frames": [
+            56
+          ],
+          "dynamic_regions": {
+            "rail": 0,
+            "floor": 0,
+            "wall": 0,
+            "ceiling": 0,
+            "interior": 10796
+          }
+        },
+        {
+          "id": "pose_noise_010",
+          "case": {
+            "id": "pose_noise_010",
+            "kind": "none",
+            "pose_noise_sigma_m": 0.1
+          },
+          "max_range_m": 60.0,
+          "seconds": 15.750955625000643,
+          "peak_rss_bytes": 754040832,
+          "dynamic_total": 0,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 0,
+          "frames": 60,
+          "max_dynamic_in_frame": 0,
+          "labelled_frames": [],
+          "dynamic_regions": {}
+        },
+        {
+          "id": "pose_noise_030",
+          "case": {
+            "id": "pose_noise_030",
+            "kind": "none",
+            "pose_noise_sigma_m": 0.3
+          },
+          "max_range_m": 60.0,
+          "seconds": 15.899773500001174,
+          "peak_rss_bytes": 658882560,
+          "dynamic_total": 92417,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 10,
+          "frames": 60,
+          "max_dynamic_in_frame": 23629,
+          "labelled_frames": [
+            7,
+            8,
+            9,
+            11,
+            12,
+            13,
+            31,
+            35,
+            51,
+            59
+          ],
+          "dynamic_regions": {
+            "rail": 32,
+            "floor": 578,
+            "wall": 714,
+            "ceiling": 321,
+            "interior": 90773
+          }
+        }
+      ]
+    },
+    "hmm-mos-probe-synth4b": {
+      "mode": "synth",
+      "frames_per_case": 200,
+      "hmm_mos_config": {
+        "minRange": 0.5,
+        "maxRange": 60.0,
+        "voxelSize": 0.2,
+        "occupancySigma": 0.2,
+        "beliefThreshold": 0.99,
+        "convSize": 5,
+        "localWindowSize": 5,
+        "globalWindowSize": 300,
+        "minOtsu": 3
+      },
+      "seconds": null,
+      "peak_rss_bytes": null,
+      "cases": [
+        {
+          "id": "speed_0p1",
+          "case": {
+            "id": "speed_0p1",
+            "kind": "none",
+            "sensor_step_m": 0.1
+          },
+          "max_range_m": 60.0,
+          "seconds": 50.04559383299966,
+          "peak_rss_bytes": 478396416,
+          "dynamic_total": 0,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 0,
+          "frames": 200,
+          "max_dynamic_in_frame": 0,
+          "labelled_frames": [],
+          "dynamic_regions": {}
+        },
+        {
+          "id": "speed_1p0",
+          "case": {
+            "id": "speed_1p0",
+            "kind": "none",
+            "sensor_step_m": 1.0
+          },
+          "max_range_m": 60.0,
+          "seconds": 56.0364779169995,
+          "peak_rss_bytes": 683458560,
+          "dynamic_total": 3778,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 5,
+          "frames": 200,
+          "max_dynamic_in_frame": 1699,
+          "labelled_frames": [
+            61,
+            62,
+            63,
+            64,
+            65
+          ],
+          "dynamic_regions": {
+            "rail": 0,
+            "floor": 0,
+            "wall": 0,
+            "ceiling": 0,
+            "interior": 3778
+          }
+        },
+        {
+          "id": "speed_1p5",
+          "case": {
+            "id": "speed_1p5",
+            "kind": "none",
+            "sensor_step_m": 1.5
+          },
+          "max_range_m": 60.0,
+          "seconds": 56.510257875001116,
+          "peak_rss_bytes": 750878720,
+          "dynamic_total": 70828,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 10,
+          "frames": 200,
+          "max_dynamic_in_frame": 14325,
+          "labelled_frames": [
+            9,
+            34,
+            35,
+            36,
+            37,
+            38,
+            42,
+            43,
+            44,
+            45
+          ],
+          "dynamic_regions": {
+            "rail": 0,
+            "floor": 0,
+            "wall": 0,
+            "ceiling": 0,
+            "interior": 70828
+          }
+        },
+        {
+          "id": "speed_2p0",
+          "case": {
+            "id": "speed_2p0",
+            "kind": "none",
+            "sensor_step_m": 2.0
+          },
+          "max_range_m": 60.0,
+          "seconds": 53.55719633300032,
+          "peak_rss_bytes": 689864704,
+          "dynamic_total": 44704,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 7,
+          "frames": 200,
+          "max_dynamic_in_frame": 13319,
+          "labelled_frames": [
+            11,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28
+          ],
+          "dynamic_regions": {
+            "rail": 0,
+            "floor": 0,
+            "wall": 0,
+            "ceiling": 0,
+            "interior": 44704
+          }
+        },
+        {
+          "id": "low_density_64x1024_1p5",
+          "case": {
+            "id": "low_density_64x1024_1p5",
+            "kind": "none",
+            "sensor_step_m": 1.5,
+            "scene_overrides": {
+              "azimuth_bins": 1024,
+              "elevation_segments_deg": [
+                [
+                  14.40199089050293,
+                  14.40199089050293,
+                  1
+                ],
+                [
+                  13.024999618530273,
+                  13.024999618530273,
+                  1
+                ],
+                [
+                  12.119998931884766,
+                  12.119998931884766,
+                  1
+                ],
+                [
+                  11.187968254089355,
+                  11.187968254089355,
+                  1
+                ],
+                [
+                  10.258983612060547,
+                  10.258983612060547,
+                  1
+                ],
+                [
+                  9.317968368530273,
+                  9.317968368530273,
+                  1
+                ],
+                [
+                  8.338983535766602,
+                  8.338983535766602,
+                  1
+                ],
+                [
+                  7.3759765625,
+                  7.3759765625,
+                  1
+                ],
+                [
+                  6.414999485015869,
+                  6.414999485015869,
+                  1
+                ],
+                [
+                  5.440976142883301,
+                  5.440976142883301,
+                  1
+                ],
+                [
+                  4.4599995613098145,
+                  4.4599995613098145,
+                  1
+                ],
+                [
+                  3.4659762382507324,
+                  3.4659762382507324,
+                  1
+                ],
+                [
+                  2.450000047683716,
+                  2.450000047683716,
+                  1
+                ],
+                [
+                  1.8409764766693115,
+                  1.8409764766693115,
+                  1
+                ],
+                [
+                  1.59499990940094,
+                  1.59499990940094,
+                  1
+                ],
+                [
+                  1.3249999284744263,
+                  1.3249999284744263,
+                  1
+                ],
+                [
+                  1.0569921731948853,
+                  1.0569921731948853,
+                  1
+                ],
+                [
+                  0.8209764957427979,
+                  0.8209764957427979,
+                  1
+                ],
+                [
+                  0.5909765362739563,
+                  0.5909765362739563,
+                  1
+                ],
+                [
+                  0.3229687213897705,
+                  0.3229687213897705,
+                  1
+                ],
+                [
+                  0.03999999538064003,
+                  0.03999999538064003,
+                  1
+                ],
+                [
+                  -0.1909765601158142,
+                  -0.1909765601158142,
+                  1
+                ],
+                [
+                  -0.4249609410762787,
+                  -0.4249609410762787,
+                  1
+                ],
+                [
+                  -0.6899608969688416,
+                  -0.6899608969688416,
+                  1
+                ],
+                [
+                  -0.9709764122962952,
+                  -0.9709764122962952,
+                  1
+                ],
+                [
+                  -1.2069921493530273,
+                  -1.2069921493530273,
+                  1
+                ],
+                [
+                  -1.4309765100479126,
+                  -1.4309765100479126,
+                  1
+                ],
+                [
+                  -1.7099608182907104,
+                  -1.7099608182907104,
+                  1
+                ],
+                [
+                  -1.9819921255111694,
+                  -1.9819921255111694,
+                  1
+                ],
+                [
+                  -2.2249608039855957,
+                  -2.2249608039855957,
+                  1
+                ],
+                [
+                  -2.449960947036743,
+                  -2.449960947036743,
+                  1
+                ],
+                [
+                  -2.7389843463897705,
+                  -2.7389843463897705,
+                  1
+                ],
+                [
+                  -3.0159764289855957,
+                  -3.0159764289855957,
+                  1
+                ],
+                [
+                  -3.2519919872283936,
+                  -3.2519919872283936,
+                  1
+                ],
+                [
+                  -3.4789841175079346,
+                  -3.4789841175079346,
+                  1
+                ],
+                [
+                  -3.7579681873321533,
+                  -3.7579681873321533,
+                  1
+                ],
+                [
+                  -4.018983840942383,
+                  -4.018983840942383,
+                  1
+                ],
+                [
+                  -4.273984432220459,
+                  -4.273984432220459,
+                  1
+                ],
+                [
+                  -4.500976085662842,
+                  -4.500976085662842,
+                  1
+                ],
+                [
+                  -4.768984317779541,
+                  -4.768984317779541,
+                  1
+                ],
+                [
+                  -5.045976161956787,
+                  -5.045976161956787,
+                  1
+                ],
+                [
+                  -5.29296875,
+                  -5.29296875,
+                  1
+                ],
+                [
+                  -5.520976543426514,
+                  -5.520976543426514,
+                  1
+                ],
+                [
+                  -5.783984184265137,
+                  -5.783984184265137,
+                  1
+                ],
+                [
+                  -6.066991806030273,
+                  -6.066991806030273,
+                  1
+                ],
+                [
+                  -6.685976028442383,
+                  -6.685976028442383,
+                  1
+                ],
+                [
+                  -7.706992149353027,
+                  -7.706992149353027,
+                  1
+                ],
+                [
+                  -8.746991157531738,
+                  -8.746991157531738,
+                  1
+                ],
+                [
+                  -9.749960899353027,
+                  -9.749960899353027,
+                  1
+                ],
+                [
+                  -10.758983612060547,
+                  -10.758983612060547,
+                  1
+                ],
+                [
+                  -11.756991386413574,
+                  -11.756991386413574,
+                  1
+                ],
+                [
+                  -12.771991729736328,
+                  -12.771991729736328,
+                  1
+                ],
+                [
+                  -13.769960403442383,
+                  -13.769960403442383,
+                  1
+                ],
+                [
+                  -14.761991500854492,
+                  -14.761991500854492,
+                  1
+                ],
+                [
+                  -15.747966766357422,
+                  -15.747966766357422,
+                  1
+                ],
+                [
+                  -16.73597526550293,
+                  -16.73597526550293,
+                  1
+                ],
+                [
+                  -17.704959869384766,
+                  -17.704959869384766,
+                  1
+                ],
+                [
+                  -18.661991119384766,
+                  -18.661991119384766,
+                  1
+                ],
+                [
+                  -19.612966537475586,
+                  -19.612966537475586,
+                  1
+                ],
+                [
+                  -20.56199073791504,
+                  -20.56199073791504,
+                  1
+                ],
+                [
+                  -21.492965698242188,
+                  -21.492965698242188,
+                  1
+                ],
+                [
+                  -22.423982620239258,
+                  -22.423982620239258,
+                  1
+                ],
+                [
+                  -23.32796859741211,
+                  -23.32796859741211,
+                  1
+                ],
+                [
+                  -24.23699188232422,
+                  -24.23699188232422,
+                  1
+                ]
+              ]
+            }
+          },
+          "max_range_m": 60.0,
+          "seconds": 42.13368337499924,
+          "peak_rss_bytes": 505692160,
+          "dynamic_total": 3104,
+          "dynamic_object_total": 0,
+          "visible_object_total": 0,
+          "frames_with_labels": 3,
+          "frames": 200,
+          "max_dynamic_in_frame": 1260,
+          "labelled_frames": [
+            24,
+            25,
+            26
+          ],
+          "dynamic_regions": {
+            "rail": 0,
+            "floor": 0,
+            "wall": 0,
+            "ceiling": 0,
+            "interior": 3104
+          }
+        }
+      ]
+    },
+    "hmm-mos-probe-synth5": {
+      "mode": "synth",
+      "frames_per_case": 60,
+      "hmm_mos_config": {
+        "minRange": 0.5,
+        "maxRange": 60.0,
+        "voxelSize": 0.2,
+        "occupancySigma": 0.2,
+        "beliefThreshold": 0.99,
+        "convSize": 5,
+        "localWindowSize": 5,
+        "globalWindowSize": 300,
+        "minOtsu": 3
+      },
+      "seconds": null,
+      "peak_rss_bytes": null,
+      "cases": [
+        {
+          "id": "low_density_moving_object",
+          "case": {
+            "id": "low_density_moving_object",
+            "kind": "moving",
+            "start_m": 60.0,
+            "lateral_m": -0.5,
+            "velocity_mps": -1.5,
+            "sensor_step_m": 1.0,
+            "scene_overrides": {
+              "azimuth_bins": 1024,
+              "elevation_segments_deg": [
+                [
+                  14.40199089050293,
+                  14.40199089050293,
+                  1
+                ],
+                [
+                  13.024999618530273,
+                  13.024999618530273,
+                  1
+                ],
+                [
+                  12.119998931884766,
+                  12.119998931884766,
+                  1
+                ],
+                [
+                  11.187968254089355,
+                  11.187968254089355,
+                  1
+                ],
+                [
+                  10.258983612060547,
+                  10.258983612060547,
+                  1
+                ],
+                [
+                  9.317968368530273,
+                  9.317968368530273,
+                  1
+                ],
+                [
+                  8.338983535766602,
+                  8.338983535766602,
+                  1
+                ],
+                [
+                  7.3759765625,
+                  7.3759765625,
+                  1
+                ],
+                [
+                  6.414999485015869,
+                  6.414999485015869,
+                  1
+                ],
+                [
+                  5.440976142883301,
+                  5.440976142883301,
+                  1
+                ],
+                [
+                  4.4599995613098145,
+                  4.4599995613098145,
+                  1
+                ],
+                [
+                  3.4659762382507324,
+                  3.4659762382507324,
+                  1
+                ],
+                [
+                  2.450000047683716,
+                  2.450000047683716,
+                  1
+                ],
+                [
+                  1.8409764766693115,
+                  1.8409764766693115,
+                  1
+                ],
+                [
+                  1.59499990940094,
+                  1.59499990940094,
+                  1
+                ],
+                [
+                  1.3249999284744263,
+                  1.3249999284744263,
+                  1
+                ],
+                [
+                  1.0569921731948853,
+                  1.0569921731948853,
+                  1
+                ],
+                [
+                  0.8209764957427979,
+                  0.8209764957427979,
+                  1
+                ],
+                [
+                  0.5909765362739563,
+                  0.5909765362739563,
+                  1
+                ],
+                [
+                  0.3229687213897705,
+                  0.3229687213897705,
+                  1
+                ],
+                [
+                  0.03999999538064003,
+                  0.03999999538064003,
+                  1
+                ],
+                [
+                  -0.1909765601158142,
+                  -0.1909765601158142,
+                  1
+                ],
+                [
+                  -0.4249609410762787,
+                  -0.4249609410762787,
+                  1
+                ],
+                [
+                  -0.6899608969688416,
+                  -0.6899608969688416,
+                  1
+                ],
+                [
+                  -0.9709764122962952,
+                  -0.9709764122962952,
+                  1
+                ],
+                [
+                  -1.2069921493530273,
+                  -1.2069921493530273,
+                  1
+                ],
+                [
+                  -1.4309765100479126,
+                  -1.4309765100479126,
+                  1
+                ],
+                [
+                  -1.7099608182907104,
+                  -1.7099608182907104,
+                  1
+                ],
+                [
+                  -1.9819921255111694,
+                  -1.9819921255111694,
+                  1
+                ],
+                [
+                  -2.2249608039855957,
+                  -2.2249608039855957,
+                  1
+                ],
+                [
+                  -2.449960947036743,
+                  -2.449960947036743,
+                  1
+                ],
+                [
+                  -2.7389843463897705,
+                  -2.7389843463897705,
+                  1
+                ],
+                [
+                  -3.0159764289855957,
+                  -3.0159764289855957,
+                  1
+                ],
+                [
+                  -3.2519919872283936,
+                  -3.2519919872283936,
+                  1
+                ],
+                [
+                  -3.4789841175079346,
+                  -3.4789841175079346,
+                  1
+                ],
+                [
+                  -3.7579681873321533,
+                  -3.7579681873321533,
+                  1
+                ],
+                [
+                  -4.018983840942383,
+                  -4.018983840942383,
+                  1
+                ],
+                [
+                  -4.273984432220459,
+                  -4.273984432220459,
+                  1
+                ],
+                [
+                  -4.500976085662842,
+                  -4.500976085662842,
+                  1
+                ],
+                [
+                  -4.768984317779541,
+                  -4.768984317779541,
+                  1
+                ],
+                [
+                  -5.045976161956787,
+                  -5.045976161956787,
+                  1
+                ],
+                [
+                  -5.29296875,
+                  -5.29296875,
+                  1
+                ],
+                [
+                  -5.520976543426514,
+                  -5.520976543426514,
+                  1
+                ],
+                [
+                  -5.783984184265137,
+                  -5.783984184265137,
+                  1
+                ],
+                [
+                  -6.066991806030273,
+                  -6.066991806030273,
+                  1
+                ],
+                [
+                  -6.685976028442383,
+                  -6.685976028442383,
+                  1
+                ],
+                [
+                  -7.706992149353027,
+                  -7.706992149353027,
+                  1
+                ],
+                [
+                  -8.746991157531738,
+                  -8.746991157531738,
+                  1
+                ],
+                [
+                  -9.749960899353027,
+                  -9.749960899353027,
+                  1
+                ],
+                [
+                  -10.758983612060547,
+                  -10.758983612060547,
+                  1
+                ],
+                [
+                  -11.756991386413574,
+                  -11.756991386413574,
+                  1
+                ],
+                [
+                  -12.771991729736328,
+                  -12.771991729736328,
+                  1
+                ],
+                [
+                  -13.769960403442383,
+                  -13.769960403442383,
+                  1
+                ],
+                [
+                  -14.761991500854492,
+                  -14.761991500854492,
+                  1
+                ],
+                [
+                  -15.747966766357422,
+                  -15.747966766357422,
+                  1
+                ],
+                [
+                  -16.73597526550293,
+                  -16.73597526550293,
+                  1
+                ],
+                [
+                  -17.704959869384766,
+                  -17.704959869384766,
+                  1
+                ],
+                [
+                  -18.661991119384766,
+                  -18.661991119384766,
+                  1
+                ],
+                [
+                  -19.612966537475586,
+                  -19.612966537475586,
+                  1
+                ],
+                [
+                  -20.56199073791504,
+                  -20.56199073791504,
+                  1
+                ],
+                [
+                  -21.492965698242188,
+                  -21.492965698242188,
+                  1
+                ],
+                [
+                  -22.423982620239258,
+                  -22.423982620239258,
+                  1
+                ],
+                [
+                  -23.32796859741211,
+                  -23.32796859741211,
+                  1
+                ],
+                [
+                  -24.23699188232422,
+                  -24.23699188232422,
+                  1
+                ]
+              ]
+            }
+          },
+          "max_range_m": 60.0,
+          "seconds": 11.938780624999708,
+          "peak_rss_bytes": 464519168,
+          "dynamic_total": 28863,
+          "dynamic_object_total": 24187,
+          "visible_object_total": 25848,
+          "frames_with_labels": 46,
+          "frames": 60,
+          "max_dynamic_in_frame": 3045,
+          "labelled_frames": [
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33
+          ],
+          "dynamic_regions": {
+            "rail": 118,
+            "floor": 164,
+            "wall": 0,
+            "ceiling": 0,
+            "interior": 28581
+          }
+        },
+        {
+          "id": "low_density_static_object",
+          "case": {
+            "id": "low_density_static_object",
+            "kind": "static",
+            "start_m": 60.0,
+            "lateral_m": -0.5,
+            "sensor_step_m": 1.0,
+            "scene_overrides": {
+              "azimuth_bins": 1024,
+              "elevation_segments_deg": [
+                [
+                  14.40199089050293,
+                  14.40199089050293,
+                  1
+                ],
+                [
+                  13.024999618530273,
+                  13.024999618530273,
+                  1
+                ],
+                [
+                  12.119998931884766,
+                  12.119998931884766,
+                  1
+                ],
+                [
+                  11.187968254089355,
+                  11.187968254089355,
+                  1
+                ],
+                [
+                  10.258983612060547,
+                  10.258983612060547,
+                  1
+                ],
+                [
+                  9.317968368530273,
+                  9.317968368530273,
+                  1
+                ],
+                [
+                  8.338983535766602,
+                  8.338983535766602,
+                  1
+                ],
+                [
+                  7.3759765625,
+                  7.3759765625,
+                  1
+                ],
+                [
+                  6.414999485015869,
+                  6.414999485015869,
+                  1
+                ],
+                [
+                  5.440976142883301,
+                  5.440976142883301,
+                  1
+                ],
+                [
+                  4.4599995613098145,
+                  4.4599995613098145,
+                  1
+                ],
+                [
+                  3.4659762382507324,
+                  3.4659762382507324,
+                  1
+                ],
+                [
+                  2.450000047683716,
+                  2.450000047683716,
+                  1
+                ],
+                [
+                  1.8409764766693115,
+                  1.8409764766693115,
+                  1
+                ],
+                [
+                  1.59499990940094,
+                  1.59499990940094,
+                  1
+                ],
+                [
+                  1.3249999284744263,
+                  1.3249999284744263,
+                  1
+                ],
+                [
+                  1.0569921731948853,
+                  1.0569921731948853,
+                  1
+                ],
+                [
+                  0.8209764957427979,
+                  0.8209764957427979,
+                  1
+                ],
+                [
+                  0.5909765362739563,
+                  0.5909765362739563,
+                  1
+                ],
+                [
+                  0.3229687213897705,
+                  0.3229687213897705,
+                  1
+                ],
+                [
+                  0.03999999538064003,
+                  0.03999999538064003,
+                  1
+                ],
+                [
+                  -0.1909765601158142,
+                  -0.1909765601158142,
+                  1
+                ],
+                [
+                  -0.4249609410762787,
+                  -0.4249609410762787,
+                  1
+                ],
+                [
+                  -0.6899608969688416,
+                  -0.6899608969688416,
+                  1
+                ],
+                [
+                  -0.9709764122962952,
+                  -0.9709764122962952,
+                  1
+                ],
+                [
+                  -1.2069921493530273,
+                  -1.2069921493530273,
+                  1
+                ],
+                [
+                  -1.4309765100479126,
+                  -1.4309765100479126,
+                  1
+                ],
+                [
+                  -1.7099608182907104,
+                  -1.7099608182907104,
+                  1
+                ],
+                [
+                  -1.9819921255111694,
+                  -1.9819921255111694,
+                  1
+                ],
+                [
+                  -2.2249608039855957,
+                  -2.2249608039855957,
+                  1
+                ],
+                [
+                  -2.449960947036743,
+                  -2.449960947036743,
+                  1
+                ],
+                [
+                  -2.7389843463897705,
+                  -2.7389843463897705,
+                  1
+                ],
+                [
+                  -3.0159764289855957,
+                  -3.0159764289855957,
+                  1
+                ],
+                [
+                  -3.2519919872283936,
+                  -3.2519919872283936,
+                  1
+                ],
+                [
+                  -3.4789841175079346,
+                  -3.4789841175079346,
+                  1
+                ],
+                [
+                  -3.7579681873321533,
+                  -3.7579681873321533,
+                  1
+                ],
+                [
+                  -4.018983840942383,
+                  -4.018983840942383,
+                  1
+                ],
+                [
+                  -4.273984432220459,
+                  -4.273984432220459,
+                  1
+                ],
+                [
+                  -4.500976085662842,
+                  -4.500976085662842,
+                  1
+                ],
+                [
+                  -4.768984317779541,
+                  -4.768984317779541,
+                  1
+                ],
+                [
+                  -5.045976161956787,
+                  -5.045976161956787,
+                  1
+                ],
+                [
+                  -5.29296875,
+                  -5.29296875,
+                  1
+                ],
+                [
+                  -5.520976543426514,
+                  -5.520976543426514,
+                  1
+                ],
+                [
+                  -5.783984184265137,
+                  -5.783984184265137,
+                  1
+                ],
+                [
+                  -6.066991806030273,
+                  -6.066991806030273,
+                  1
+                ],
+                [
+                  -6.685976028442383,
+                  -6.685976028442383,
+                  1
+                ],
+                [
+                  -7.706992149353027,
+                  -7.706992149353027,
+                  1
+                ],
+                [
+                  -8.746991157531738,
+                  -8.746991157531738,
+                  1
+                ],
+                [
+                  -9.749960899353027,
+                  -9.749960899353027,
+                  1
+                ],
+                [
+                  -10.758983612060547,
+                  -10.758983612060547,
+                  1
+                ],
+                [
+                  -11.756991386413574,
+                  -11.756991386413574,
+                  1
+                ],
+                [
+                  -12.771991729736328,
+                  -12.771991729736328,
+                  1
+                ],
+                [
+                  -13.769960403442383,
+                  -13.769960403442383,
+                  1
+                ],
+                [
+                  -14.761991500854492,
+                  -14.761991500854492,
+                  1
+                ],
+                [
+                  -15.747966766357422,
+                  -15.747966766357422,
+                  1
+                ],
+                [
+                  -16.73597526550293,
+                  -16.73597526550293,
+                  1
+                ],
+                [
+                  -17.704959869384766,
+                  -17.704959869384766,
+                  1
+                ],
+                [
+                  -18.661991119384766,
+                  -18.661991119384766,
+                  1
+                ],
+                [
+                  -19.612966537475586,
+                  -19.612966537475586,
+                  1
+                ],
+                [
+                  -20.56199073791504,
+                  -20.56199073791504,
+                  1
+                ],
+                [
+                  -21.492965698242188,
+                  -21.492965698242188,
+                  1
+                ],
+                [
+                  -22.423982620239258,
+                  -22.423982620239258,
+                  1
+                ],
+                [
+                  -23.32796859741211,
+                  -23.32796859741211,
+                  1
+                ],
+                [
+                  -24.23699188232422,
+                  -24.23699188232422,
+                  1
+                ]
+              ]
+            }
+          },
+          "max_range_m": 60.0,
+          "seconds": 12.105561166999905,
+          "peak_rss_bytes": 473743360,
+          "dynamic_total": 0,
+          "dynamic_object_total": 0,
+          "visible_object_total": 14674,
+          "frames_with_labels": 0,
+          "frames": 60,
+          "max_dynamic_in_frame": 0,
+          "labelled_frames": [],
+          "dynamic_regions": {}
+        }
+      ]
+    }
+  },
+  "range_envelope": {
+    "hmm-mos-range-100": {
+      "mode": "real",
+      "frames_per_case": 13,
+      "hmm_mos_config": {
+        "minRange": 0.5,
+        "maxRange": 100.0,
+        "voxelSize": 0.2,
+        "occupancySigma": 0.2,
+        "beliefThreshold": 0.99,
+        "convSize": 5,
+        "localWindowSize": 5,
+        "globalWindowSize": 300,
+        "minOtsu": 3
+      },
+      "seconds": 9.777614582999377,
+      "peak_rss_bytes": 440532992,
+      "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "annotation": "annotations/doubleT-obstacle-person.json",
+      "frames": 13,
+      "dynamic_points_total": 0,
+      "dynamic_within_reference_box_total": 0,
+      "frames_with_any_dynamic": 0,
+      "dynamic_cumulative_by_range_m": {
+        "20": 0,
+        "40": 0,
+        "60": 0,
+        "80": 0,
+        "100": 0
+      },
+      "decoded_over_recorded_points": [
+        0.5182,
+        0.5181,
+        0.5181
+      ],
+      "labelled_frames": [],
+      "max_dynamic_in_frame": 0,
+      "dynamic_in_detector_candidate_boxes_total": 0
+    },
+    "hmm-mos-range-20": {
+      "mode": "real",
+      "frames_per_case": 21,
+      "hmm_mos_config": {
+        "minRange": 0.5,
+        "maxRange": 20.0,
+        "voxelSize": 0.2,
+        "occupancySigma": 0.2,
+        "beliefThreshold": 0.99,
+        "convSize": 5,
+        "localWindowSize": 5,
+        "globalWindowSize": 300,
+        "minOtsu": 3
+      },
+      "seconds": 1.026442374999533,
+      "peak_rss_bytes": 192987136,
+      "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "annotation": "annotations/doubleT-obstacle-person.json",
+      "frames": 21,
+      "dynamic_points_total": 146,
+      "dynamic_within_reference_box_total": 0,
+      "frames_with_any_dynamic": 5,
+      "dynamic_cumulative_by_range_m": {
+        "10": 146,
+        "20": 146,
+        "40": 146,
+        "60": 146
+      },
+      "decoded_over_recorded_points": [
+        0.5182,
+        0.5181,
+        0.5181
+      ],
+      "labelled_frames": [
+        13,
+        14,
+        15,
+        16,
+        20
+      ],
+      "max_dynamic_in_frame": 58,
+      "dynamic_in_detector_candidate_boxes_total": 0
+    },
+    "hmm-mos-range-40": {
+      "mode": "real",
+      "frames_per_case": 21,
+      "hmm_mos_config": {
+        "minRange": 0.5,
+        "maxRange": 40.0,
+        "voxelSize": 0.2,
+        "occupancySigma": 0.2,
+        "beliefThreshold": 0.99,
+        "convSize": 5,
+        "localWindowSize": 5,
+        "globalWindowSize": 300,
+        "minOtsu": 3
+      },
+      "seconds": 2.2505834590010636,
+      "peak_rss_bytes": 251412480,
+      "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "annotation": "annotations/doubleT-obstacle-person.json",
+      "frames": 21,
+      "dynamic_points_total": 146,
+      "dynamic_within_reference_box_total": 0,
+      "frames_with_any_dynamic": 5,
+      "dynamic_cumulative_by_range_m": {
+        "10": 146,
+        "20": 146,
+        "40": 146,
+        "60": 146
+      },
+      "decoded_over_recorded_points": [
+        0.5182,
+        0.5181,
+        0.5181
+      ],
+      "labelled_frames": [
+        13,
+        14,
+        15,
+        16,
+        20
+      ],
+      "max_dynamic_in_frame": 58,
+      "dynamic_in_detector_candidate_boxes_total": 0
+    },
+    "hmm-mos-range-60": {
+      "mode": "real",
+      "frames_per_case": 21,
+      "hmm_mos_config": {
+        "minRange": 0.5,
+        "maxRange": 60.0,
+        "voxelSize": 0.2,
+        "occupancySigma": 0.2,
+        "beliefThreshold": 0.99,
+        "convSize": 5,
+        "localWindowSize": 5,
+        "globalWindowSize": 300,
+        "minOtsu": 3
+      },
+      "seconds": 4.610040000001391,
+      "peak_rss_bytes": 295780352,
+      "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "annotation": "annotations/doubleT-obstacle-person.json",
+      "frames": 21,
+      "dynamic_points_total": 159,
+      "dynamic_within_reference_box_total": 0,
+      "frames_with_any_dynamic": 6,
+      "dynamic_cumulative_by_range_m": {
+        "10": 64,
+        "20": 64,
+        "40": 64,
+        "60": 159
+      },
+      "decoded_over_recorded_points": [
+        0.5182,
+        0.5181,
+        0.5181
+      ],
+      "labelled_frames": [
+        13,
+        14,
+        16,
+        17,
+        18,
+        19
+      ],
+      "max_dynamic_in_frame": 36,
+      "dynamic_in_detector_candidate_boxes_total": 95
+    },
+    "hmm-mos-range-80": {
+      "mode": "real",
+      "frames_per_case": 21,
+      "hmm_mos_config": {
+        "minRange": 0.5,
+        "maxRange": 80.0,
+        "voxelSize": 0.2,
+        "occupancySigma": 0.2,
+        "beliefThreshold": 0.99,
+        "convSize": 5,
+        "localWindowSize": 5,
+        "globalWindowSize": 300,
+        "minOtsu": 3
+      },
+      "seconds": 9.016860707999513,
+      "peak_rss_bytes": 359677952,
+      "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "annotation": "annotations/doubleT-obstacle-person.json",
+      "frames": 21,
+      "dynamic_points_total": 159,
+      "dynamic_within_reference_box_total": 0,
+      "frames_with_any_dynamic": 6,
+      "dynamic_cumulative_by_range_m": {
+        "10": 64,
+        "20": 64,
+        "40": 64,
+        "60": 159,
+        "80": 159
+      },
+      "decoded_over_recorded_points": [
+        0.5182,
+        0.5181,
+        0.5181
+      ],
+      "labelled_frames": [
+        13,
+        14,
+        16,
+        17,
+        18,
+        19
+      ],
+      "max_dynamic_in_frame": 36,
+      "dynamic_in_detector_candidate_boxes_total": 95
+    }
+  },
+  "measured": {
+    "static_object_detected": false,
+    "moving_object_labels_fraction_synthetic": 0.94,
+    "moving_object_labels_fraction_real_person_window": 0.9539944256019343,
+    "real_moving_platform_dynamic_labels": 419007,
+    "real_moving_platform_labels_within_10m_fraction": 0.732159605925438,
+    "seconds_per_frame_at_max_range_60": {
+      "synthetic_460k_rays": 0.26,
+      "real_177k_returns": 0.22
+    }
+  }
+}

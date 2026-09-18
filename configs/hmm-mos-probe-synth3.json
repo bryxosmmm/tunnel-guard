@@ -1,0 +1,54 @@
+{
+  "hypothesis": "Separate pose-driven from measurement-noise-driven flicker, and measure the method's own stated pose-error failure mode: every case here has no inserted object, so every dynamic label is a false dynamic on static geometry.",
+  "source": "https://github.com/vb44/HMM-MOS commit 3f625031d135b2bbe4297125da11facdaba8ca81, built unmodified from source",
+  "scene_config": "configs/stress-measured-pattern-final.json",
+  "note": "independent_frame_noise gives each frame its own random dropout/ranging draw, matching real scans. Every case here has no inserted object, so every dynamic label is a false dynamic on static geometry.",
+  "seed": 20260917,
+  "output": "build/hmm-mos-probe-synth3",
+  "frames": 60,
+  "frame_period_s": 0.1,
+  "sensor_step_m": 1.0,
+  "object_dimensions_m": [
+    0.45,
+    1.02,
+    1.35
+  ],
+  "independent_frame_noise": true,
+  "hmm_mos_config": {
+    "minRange": 0.5,
+    "maxRange": 60.0,
+    "voxelSize": 0.2,
+    "occupancySigma": 0.2,
+    "beliefThreshold": 0.99,
+    "convSize": 5,
+    "localWindowSize": 5,
+    "globalWindowSize": 300,
+    "minOtsu": 3
+  },
+  "cases": [
+    {
+      "id": "noise_stationary",
+      "kind": "none",
+      "sensor_step_m": 0.0
+    },
+    {
+      "id": "noise_moving",
+      "kind": "none"
+    },
+    {
+      "id": "pose_noise_002",
+      "kind": "none",
+      "pose_noise_sigma_m": 0.02
+    },
+    {
+      "id": "pose_noise_010",
+      "kind": "none",
+      "pose_noise_sigma_m": 0.1
+    },
+    {
+      "id": "pose_noise_030",
+      "kind": "none",
+      "pose_noise_sigma_m": 0.3
+    }
+  ]
+}
