@@ -449,7 +449,10 @@
       meta = m;
       $("name").textContent = `${m.frames.length} кадров · ${m.run}`;
       $("slider").max = $("number").max = m.frames.length - 1;
-      load(0);
+      const requested = new URLSearchParams(window.location.search).get("frame");
+      const initial = requested === null ? 0 : m.frames.indexOf(Number(requested));
+      if (initial < 0) throw Error("Этот кадр отсутствует в доступных результатах прогона.");
+      load(initial);
     })
     .catch((e) => ($("error").textContent = e.message));
 </script>

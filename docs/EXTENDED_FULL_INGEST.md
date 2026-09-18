@@ -28,12 +28,12 @@ Executed:
 git diff --check
 ```
 
-Prepared, **not executed**:
+Prepared during ingestion and **subsequently executed**; see [full inference and review](EXTENDED_FULL_RUN.md):
 
 ```sh
 .venv-iteration/bin/python -m tunnel_guard.run --experiment configs/extended-full.json
 ```
 
-That recipe uses the original complete metadata so the tracker can continue through file boundaries and reset only according to actual measurement gaps/motion quality. It saves no large diagnostic point arrays by default. Complete detector inference still covers only the earlier 153-cloud sample; do not confuse the full header audit with full-corpus inference.
+That recipe uses the original complete metadata so the tracker can continue through file boundaries and reset only according to actual measurement gaps/motion quality. It saves no large diagnostic point arrays by default. The initial ingestion step covered only the earlier 153-cloud detector sample. The subsequent continuous run now covers all 11,271 source clouds; its separate results and limitations are documented in [EXTENDED_FULL_RUN.md](EXTENDED_FULL_RUN.md).
 
 Evidence: `results/extended-full-ingest-20260918.json`. No automated tests were created or run.
