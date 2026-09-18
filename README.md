@@ -8,7 +8,7 @@ The initial review and its two real 30-frame prefixes are documented in [docs/AU
 
 ## Extended dataset: initial real runs
 
-See [archive inventory and first comparison](docs/EXTENDED_FIRST_LOOK.md): 11,271 clouds in 221 segments, about 84 GiB unpacked. Three fixed segments (153 clouds) were processed by current and previous geometry without tuning. Both fail on the same one frame; no labelled accuracy is established. Only about 1.14 GiB of the archive was extracted.
+See [archive inventory and first comparison](docs/EXTENDED_FIRST_LOOK.md): 11,271 clouds in 221 segments, about 84 GiB unpacked. Three fixed segments (153 clouds) were processed by current and previous geometry without tuning. Both fail on the same one frame; no labelled accuracy is established. The initial sample extracted about 1.14 GiB; after disk cleanup, [the complete recording is now extracted and all acquisition headers audited](docs/EXTENDED_FULL_INGEST.md). Full detector inference is still pending.
 
 ## Usable runtime and full-corpus iteration
 
