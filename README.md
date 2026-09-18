@@ -14,6 +14,8 @@ See [archive inventory and first comparison](docs/EXTENDED_FIRST_LOOK.md): 11,27
 
 The [Gerasimov/HMM-MOS review and scenario runs](docs/REVIEW_GERASIMOV_20260918.md) add reproducible moving, stopped and appearing-object scenes for the actual detector. A first-rail-heading experiment was replayed on all 11,271 real clouds for geometry and 951 clouds end to end. It remains opt-in: nine geometry failures recovered, one new failure and unresolved path-selection changes. HMM-MOS is not used to suppress stationary obstacles.
 
+The [3D track and clearance literature review](docs/TRACK_GEOMETRY_LITERATURE_20260918.md) maps published rail-pair estimation and local clearance coordinates to the remaining curve, grade and cant limitations. It distinguishes proposed adaptations from implemented and evaluated behavior.
+
 See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and ROS2 launch commands, and [iteration evidence](docs/GOAL_ITERATION.md) for all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
 
 ## Native acceleration and calibration experiment
