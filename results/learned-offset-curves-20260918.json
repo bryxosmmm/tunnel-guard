@@ -1,0 +1,55 @@
+{
+ "date": "2026-09-18",
+ "supersedes": "the same-session claim that the analytic formula beats the model on curves",
+ "corpus": {
+  "rows": 24333,
+  "groups": 89,
+  "recordings": 7,
+  "extended_sample": "83 of 221 segments, 4233 of 11271 scans, spread across the whole 20-minute run",
+  "curve_rows": {
+   "under_400m": 1432,
+   "400_800m": 2504
+  }
+ },
+ "protocol": "Groups are whole recordings for the six sourcecraft runs and single storage segments for the extended one, which sit about ninety seconds of travel apart and are therefore different places. Training excludes rows whose anchor chain deviates from its own quadratic by more than 0.05 m; that test is curvature-independent and was validated at 92 percent catch, 21 percent false against the trusted |centre| > 1 m label on the straight recordings, where that label is valid.",
+ "median_abs_offset_error_m": {
+  "under_400m": {
+   "rows": 144,
+   "analytic_formula": 0.289,
+   "model": 0.117
+  },
+  "400_800m": {
+   "rows": 475,
+   "analytic_formula": 0.129,
+   "model": 0.081
+  },
+  "800_2000m": {
+   "rows": 2225,
+   "analytic_formula": 0.051,
+   "model": 0.029
+  },
+  "over_2000m": {
+   "rows": 16464,
+   "analytic_formula": 0.113,
+   "model": 0.024
+  },
+  "pooled": {
+   "rows": 19308,
+   "analytic_formula": 0.096,
+   "model": 0.026
+  }
+ },
+ "hybrid": {
+  "formula_below_800m": {
+   "median": 0.026,
+   "p90": 0.152
+  },
+  "model_everywhere": {
+   "median": 0.026,
+   "p90": 0.143
+  },
+  "verdict": "selecting by radius is no longer worth it; the model alone is equal or better"
+ },
+ "what_changed": "An hour earlier, on a 714-scan sample, the formula beat the model below 400 m: 0.295 against 0.400. That rested on 71 trusted curve rows and training data with essentially no curves. Widening the extended sample sixfold reversed it. The earlier statement was not wrong about its data, it was a conclusion drawn from a sample too thin to carry it.",
+ "limits": "Still a subset: 4233 of 11271 scans. Segments of one continuous run are different places but not independent runs. Curvature is fitted to the detector own anchors. The excursion-detection numbers printed by the command use the |centre| > 1 m criterion, which is invalid on curved data; only the offset-prediction figures here are meaningful. Nothing is wired into the detector."
+}

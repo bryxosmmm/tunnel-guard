@@ -40,7 +40,8 @@ def build_profiles(bags: list[Path], detector: dict, cache: Path) -> dict:
     if cache.exists():
         return dict(np.load(cache, allow_pickle=True))
     columns: dict[str, list] = {k: [] for k in
-                                ("bag", "frame", "range", "profile", "axis", "score", "width", "rail")}
+                                ("bag", "frame", "range", "profile", "axis", "score", "width", "rail",
+                                 "chain_residual", "chain_radius")}
     for index, bag in enumerate(bags):
         for scan in iter_bag(bag, detector):
             forward = ((scan.points[:, 0] >= detector["min_forward_m"])
@@ -52,6 +53,14 @@ def build_profiles(bags: list[Path], detector: dict, cache: Path) -> dict:
                 continue
             height = scan.points[:, 2] - geometry.ground(scan.points)[0]
             anchors = geometry.rail_anchors
+            # Curvature and smoothness of the frame's own anchor chain. The residual is a
+            # curvature-independent stand-in for "these rails cannot be trusted": a real curve
+            # fits a quadratic, a chain that stepped onto the neighbouring track does not.
+            residual, radius = np.inf, np.inf
+            if len(anchors) >= 5:
+                coefficients = np.polyfit(anchors[:, 0], anchors[:, 1], 2)
+                residual = float(np.abs(anchors[:, 1] - np.polyval(coefficients, anchors[:, 0])).max())
+                radius = float(1 / (2 * abs(coefficients[0]))) if coefficients[0] else np.inf
             for probe in NEAR_RANGES_M + FAR_RANGES_M:
                 slab = ((np.abs(scan.points[:, 0] - probe) < SLAB_HALF_M)
                         & (height > MIN_HEIGHT_M) & (np.abs(scan.points[:, 1]) < 8))
@@ -71,6 +80,8 @@ def build_profiles(bags: list[Path], detector: dict, cache: Path) -> dict:
                 columns["width"].append(float(np.quantile(centred, 0.95) - np.quantile(centred, 0.05)))
                 columns["rail"].append(float(np.interp(probe, anchors[:, 0], anchors[:, 1]))
                                        if anchored else np.nan)
+                columns["chain_residual"].append(residual)
+                columns["chain_radius"].append(radius)
         print(f"  profiled {bag.name}", flush=True)
     data = {k: np.asarray(v) for k, v in columns.items()}
     data["bags"] = np.asarray([b.name for b in bags])
