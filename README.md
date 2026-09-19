@@ -430,11 +430,21 @@ uv run python -m tunnel_guard.sustech --config configs/annotation-export.json
 
 ### Objects inside the clearance envelope
 
-`tunnel_guard/on_track.py` finds intrusions the way the detector should: only returns that actually fall inside the GOST contour are clustered, and a cluster is dropped when it is a face of a large surface, or when its lateral/vertical profile runs continuously or repeats along the tunnel — cable runs, linings, trays and posts. Over the six recordings that is **11,115 in-envelope clusters → 381 events → 15 candidates**, against 335–347 boxes per
-frame from the detector. **Evidence status:** those three aggregates have no artifact in this repository - the run they
-came from wrote to `build/`, which is local-only, and `results/` held no summary. A re-measurement with the same command
-is outstanding: a partial run measured `doubleT_platform` at 1030 clusters, 16 events and 0 candidates, which is
-consistent with the aggregate but does not confirm it. Treat the three numbers as unverified until that run is recorded.
+`tunnel_guard/on_track.py` finds intrusions the way the detector should: only returns that actually fall inside the GOST contour are clustered, and a cluster is dropped when it is a face of a large surface, or when its lateral/vertical profile runs continuously or repeats along the tunnel — cable runs, linings, trays and posts. **Evidence status - the aggregate formerly quoted here is NOT reproducible.** It read *11,115 in-envelope clusters → 381 events →
+15 candidates* over the six recordings, with no artifact in this repository, and a re-measurement with the same command does not
+reproduce it. Measured so far, four of six recordings (201 to 877 scans each):
+
+| recording | clusters | events | candidates |
+|---|---:|---:|---:|
+| `roundT_doubleT` | 215 | 17 | 0 |
+| `roundT_pressureGate_roundT` | 177 | 18 | 1 |
+| `squareT_platform_squareT_switch` | 391 | 9 | 0 |
+| `doubleT_platform` | 1030 | 16 | 0 |
+
+That is 1,813 clusters and 60 events across four recordings, so the quoted 11,115 clusters and 381 events are roughly six times
+what the probe produces on this data, and the 15 candidates are not reproduced either (1 measured). The shape of the result holds -
+tens of events and a handful of candidates out of hundreds to thousands of clusters - but the numbers are treated as stale. The two
+remaining recordings are unmeasured; the re-measurement is `results/on-track-counts-20260919.json`.
 
 ```sh
 uv run python -m tunnel_guard.on_track \
