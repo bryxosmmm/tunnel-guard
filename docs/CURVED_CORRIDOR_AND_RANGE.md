@@ -27,7 +27,7 @@ half-width of 1.535 m, so at 60 m the old model was already 55% of the half-widt
 **2. The detector cropped away the curved track before looking at it.** The input was cropped to a fixed
 `context_half_width_m` (8 m) lateral window in the *sensor* frame. On a curve the track leaves that window —
 on R = 300 m the true centre-line departs from the sensor axis by s²/(2R): 0.67 m at 20 m, 2.67 m at
-40 m, 16.7 m at 100 m — so a fixed 8 m half-window holds it only to ~69 m, and less on a tighter curve. So both the
+40 m, 16.7 m at 100 m (these three are arithmetic from the radius, not measurements from a run) — so a fixed 8 m half-window holds it only to ~69 m, and less on a tighter curve. So both the
 returns the corridor must classify *and* the anchors that estimate the curve were discarded before
 classification. This is upstream of cause 1 and, on tighter curves, masks it entirely.
 

@@ -92,6 +92,8 @@ Detailed artifacts: `build/extended-review/early-geometry-ablation.json`, `early
 
 Source frame 6500 has six confirmed-intersection boxes at 42.24–54.55 m, each containing only 6–9 support voxels, with 2–3 recent intersection observations. Their vertical extents are about 0.25–0.37 m. These form a chain near the track level. The last accepted rail anchor is at 34.76 m; all six intersections rely on extrapolated track geometry.
 
+**Evidence status:** this figure comes from the full extended run whose artifacts are local-only; `results/` holds summaries of that run but not this value, so treat it as unverified in the repository.
+
 The figure was regenerated from **all 3,611 valid source returns inside the shown crop**, not the reduced viewer background. It suggests a priority investigation of repeated infrastructure/rail-related support versus the extrapolated corridor. Neither appearance nor repeated confirmation establishes the physical identity of those objects; these are not six labelled obstacles or six proven false positives. Simply dropping small objects would also destroy recall of genuinely small hazards.
 
 ![Full-density source crop and confirmed boxes](figures/extended-confirmed-6500-20260918.png)
