@@ -101,6 +101,16 @@ object as `obstacle` from the first frame with history. Cost **+4-6 ms/frame** (
 139.1 -> 143.3 p50), measured under contention and to be re-measured idle;
 `corridor_crop_threshold_m` disables it at the cost of curves.
 
+## Curves: the full investigation
+
+Two defects, not one: the corridor continued straight past the measured rails, and the detector cropped its
+input to a fixed sensor-frame window that on a curve discards the track and its anchors before
+classification. Both are fixed and measured — on curved scenes the shipped configuration reports the object
+in **16 of 24 cases against 12 before**, with **82% fewer spurious objects**, while the straight-rail panel
+stays byte-identical. The far field is an information limit, with six strategies tested and five rejected on
+their own numbers. Everything, including what is *not* established, is in
+[docs/CURVED_CORRIDOR_AND_RANGE.md](docs/CURVED_CORRIDOR_AND_RANGE.md).
+
 ## What the corridor can and cannot reach (2026-09-19)
 
 Measured, not assumed. The **bed** is sampled to 65-105 m (13-18 anchors per frame - the floor is wide), so
