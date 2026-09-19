@@ -1,0 +1,81 @@
+{
+  "date": "2026-09-19",
+  "scope": "Long-lever track alignment from the tunnel surfaces, built to extend the modelled corridor beyond the rail anchor span. NOT promoted: it did not clear the forward-prediction bar, so the detector's corridor behaviour is unchanged (no recipe selects it).",
+  "module": {
+    "estimator": "tunnel_guard/alignment.py",
+    "harness": "tunnel_guard/alignment_probe.py",
+    "model": "y_s(x) = a_s + b_s x + c x^2, c shared across surfaces, (a_s,b_s) free per surface",
+    "why": "The lining is an extrusion of one profile along the alignment, so every longitudinal surface carries the same curvature with its own offset. Offsets are never combined (that is what wrecked per-bin medians); curvature is pooled, which is what buys precision.",
+    "rails_role": "included as one more surface with weight 4, anchoring offset and heading near field",
+    "reported": [
+      "curvature",
+      "curvature_sigma",
+      "surfaces",
+      "spans",
+      "residual",
+      "horizon_m(budget) = sqrt(2*budget/sigma_curvature)"
+    ]
+  },
+  "requirement_arithmetic": {
+    "0.5 m error at 100 m": "sigma_k <= 1.0e-4",
+    "at 200 m": "2.5e-5",
+    "at 300 m": "1.11e-5"
+  },
+  "measured_estimator": {
+    "fits_available": "5 of 11 sampled frames on roundT_doubleT (else 'only 1 usable traces': chaining breaks)",
+    "residual_m": [
+      0.065,
+      0.088
+    ],
+    "curvature_sigma": [
+      1.2e-05,
+      4.54e-05
+    ],
+    "longest_surface_span_m": [
+      65,
+      115
+    ],
+    "implied_horizon_0p5m": [
+      148,
+      288
+    ],
+    "status": "precision is sufficient; availability is not"
+  },
+  "forward_prediction_abs_error_m": {
+    "method": "Predict the centre-line ahead from a source frame, express that world point in the axes of a later frame that has driven over the same ground, compare with the rails it measures there.",
+    "60 m": {
+      "straight": 0.648,
+      "window": 0.597,
+      "long_lever": 0.602,
+      "samples": 2
+    },
+    "100 m": {
+      "straight": 0.413,
+      "window": 0.422,
+      "long_lever": 0.523,
+      "samples": 1
+    },
+    "200 m": {
+      "straight": 20.841,
+      "window": 20.862,
+      "long_lever": 21.302,
+      "samples": 1
+    },
+    "250 m": {
+      "straight": 37.441,
+      "window": 37.469,
+      "long_lever": 38.155,
+      "samples": 1
+    }
+  },
+  "conclusion": "The binding limit beyond ~100 m is the model class, not the estimate: a single local quadratic fitted to any evidence is 20-38 m off at 200-250 m in these recordings, while its own statistical error would allow 0.5 m. The alignment's curvature changes along the stretch (randomT junctions, transitions), so a per-frame smooth continuation cannot carry 300 m - and no amount of extra surface evidence changes that.",
+  "next_architectures": [
+    "Incremental alignment tracker: carry position/heading/curvature as state across scans, predict, correct against the measured rails near field and the surfaces at range, and publish the corridor from the filtered state. This can follow changing curvature, which a per-frame fit cannot; it needs the same forward-prediction test as its acceptance bar.",
+    "Far-field decision without a corridor: test track-bed and rail continuity (a foreign object interrupts the bed/rail line, and the bed returns to 200+ m). Catches objects on the track without absolute alignment, but not objects sitting inside the envelope beside it."
+  ],
+  "not_claimed": [
+    "No corridor widening, no threshold change, no recipe selects the estimator.",
+    "The 200-250 m rows rest on one sample each; they bound the model, they do not calibrate it.",
+    "Surface availability (5/11 frames) would have to be fixed before any promotion."
+  ]
+}
