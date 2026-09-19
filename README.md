@@ -111,6 +111,37 @@ the `2 d^3 Cov(a,b)` cross term whose sign makes it grow fastest with distance. 
 panel and the corrected metric definitions are in
 [docs/REVIEW_RESPONSE_20260919.md](docs/REVIEW_RESPONSE_20260919.md).
 
+## Two shipped behaviours measured on 2026-09-19
+
+Both are in `configs/detector-native.json`, the recipe the ROS container defaults to, and both were enabled only after
+their own gate.
+
+**The tunnel's own structures leave the hazard list.** A duct, cable tray or walkway edge reaches one scan as a chain
+of small fragments at one cross-section position, repeated along the whole scan, and a fallen object is one cluster at
+its own position. The chain is built from the candidate objects themselves, each placed by its own support, so nothing
+inherits a neighbouring structure's span; a candidate whose position recurs beyond it both fore and aft is the tunnel,
+not an object. Measured: unresolved objects 2757 -> 1323 on `roundT_doubleT` and 3231 -> 1754 on `doubleT_obstacle`,
+with every confirmed obstacle frame preserved (52 of 52) and the full 1460-frame measured-pattern panel byte-identical
+(709/251/176, event recall 0.8021, matched IoU 0.8223, zero empty-scene alarms). Recipe key `infrastructure_continuity`.
+
+**The background model refits by distance travelled, not every frame.** It claims points from the tunnel's own
+longitudinal surfaces — lining, walls, ducts, bed — and those run parallel to travel, so their plane equations in the
+sensor frame barely change between frames a fraction of a metre apart. Building it was the largest single cost in a
+frame (40.3 ms of 123 ms, about 22 overlapping windows of three RANSAC planes each), so it is now reused until the
+pose has advanced `background_refit_travel_m` (1 m), which also means a stopped train refits nothing. Measured on the
+shipped recipe: `roundT_doubleT` 130.7 -> 114.4 ms and `doubleT_obstacle` 143.4 -> 105.9 ms, i.e. 12 and 26 per cent,
+with identical frame statuses and the labelled obstacle preserved. Its gate held every metric on an identical-case
+panel run (tp 182, fn 106, fp 40, precision 0.8198, event recall 0.7917, matched IoU 0.8114, zero negative episodes).
+Stated trade-off: staleness mis-places the bed on a grade by about 5 mm per metre of travel against the 25 mm fit
+distance, which is the margin the 1 m limit keeps.
+
+Both rest on measured limits rather than assumptions: the far-field lateral frame is a sensor property of this route
+(rails vanish by 90 m, the bed band is empty beyond 70 m, partial-arc cross-section fits are ill-conditioned beyond
+80 m), so objects beyond the corridor horizon are reported as unresolved candidates with their distance and their own
+lateral uncertainty, never as a certified clear path. Details, including six approaches measured and rejected for that
+class, are in `results/empty-tunnel-alarm-load-20260919.json`,
+`results/empty-tunnel-alarm-load-attempt2-20260919.json` and `results/background-refit-cadence-20260919.json`.
+
 ## Curves: the full investigation
 
 Two defects, not one: the corridor continued straight past the measured rails, and the detector cropped its
