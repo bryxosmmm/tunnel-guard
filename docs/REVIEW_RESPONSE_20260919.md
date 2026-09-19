@@ -146,7 +146,7 @@ candidate-level metric; it is superseded by this table.
 
 * **Curvature was unvalidated on real turns when the review was written.** The six sourcecraft recordings have almost no measurable
   curvature; the extended 20-minute recording (`data/new_data`, 11 271 scans, 22% of frames below 800 m
-  radius) is where this must be tested. A sampler for it is added (`scripts/bag_subset.py` builds one-split
+  radius) is where this must be tested. A sampler for it is added (`python -m tunnel_guard.extended_subset` builds one-split
   subsets so places spread along the run can be read without copying 84 GiB) — the measurement itself is
   still outstanding.
 * **No universal speedup.** The reviewer's 90-frame comparison shows my branch slower in median processing
