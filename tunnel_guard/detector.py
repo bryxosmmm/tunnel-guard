@@ -295,6 +295,9 @@ class Detector:
         self.previous_centre = None
         self.previous_offset_m = None
         self.previous_max_x = None
+        self.cached_background = None
+        self.background_frame_count = 0
+        self.background_fit_pose = np.zeros(3)
         self.last_timestamp = None
         self.tracks: dict[int, dict] = {}
         self.next_id = 1
@@ -592,19 +595,32 @@ class Detector:
                                                  self.config["geometry_voxel_m"], accelerator_module)]
         if capture_diagnostics:
             self.diagnostic_arrays.update(registered_points=frame, cropped_points=frame[crop], geometry_voxel_points=reduced)
-        geometry = TrackGeometry(reduced, self.config)
-        if len(geometry.rail_anchors) >= 3:
-            edge = geometry._continuation(-1)
-            self.previous_centre = (geometry.rail_anchors[:, :2], edge[2], edge[3], edge[0])
-            # scalar magnitude for the next frame's crop decision, sampled on a coarse station grid
-            # evaluated over the range points actually occupy, not anchor + 200 m: sampling the
-            # continuation far past the data made its own extrapolation decide the gate.
-            limit = float(self.previous_max_x) if self.previous_max_x else float(geometry.rail_anchors[-1, 0])
-            probe = np.linspace(float(geometry.rail_anchors[0, 0]), max(limit, 10.0), 48)
-            self.previous_offset_m = float(np.abs(self._corridor_offset(probe)).max())
+        # The criterion is DISTANCE TRAVELLED, not frames: the model's validity is a spatial property, so a
+        # stopped train needs no refit and a fast one needs refits sooner. Travel is measured on the pose
+        # the odometry already produced, so it costs nothing to evaluate.
+        travel_limit = float(self.config.get("background_refit_travel_m", 0.0))
+        cadence = int(self.config.get("background_refit_every_frames", 1))
+        if travel_limit > 0.0:
+            here = np.asarray(pose, dtype=float)[:3, 3]
+            refit_due = (self.cached_background is None
+                         or float(np.linalg.norm(here - self.background_fit_pose)) >= travel_limit)
+            if refit_due:
+                self.background_fit_pose = here
+        elif cadence > 1:
+            self.background_frame_count += 1
+            refit_due = (self.background_frame_count % cadence) == 1
         else:
-            self.previous_offset_m = None
-        self.previous_max_x = float(frame[:, 0].max()) if len(frame) else None
+            refit_due = True
+        reuse = (not refit_due) and self.cached_background is not None
+        # Skipping the CONSTRUCTION is what saves the time; disabling it and attaching the cached model
+        # afterwards would still pay the 40 ms and throw the result away.
+        geometry_config = (dict(self.config, background=dict(self.config["background"], enabled=False))
+                           if reuse else self.config)
+        geometry = TrackGeometry(reduced, geometry_config)
+        if reuse and geometry.valid:
+            geometry.background = self.cached_background
+        elif refit_due:
+            self.cached_background = geometry.background
         mounting_started = time.perf_counter()
         mounting = observe_mounting(reduced, geometry, self.config)
         mounting_s = time.perf_counter() - mounting_started
