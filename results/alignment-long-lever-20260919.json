@@ -449,6 +449,21 @@
         "doubleT_obstacle": "statuses identical, intersecting identical (68), 14 of 15014 object relations moved from unresolved to adjacent, 0 geometry flips"
       }
     },
-    "harness_caveat": "tunnel_guard.curved_stress.py builds the labelled arc panel, and its labels do not yet match detector boxes at IoU 0.1 in any case, so it is recorded as a work-in-progress tool and is NOT used as acceptance evidence here; the acceptance evidence is the real-recording regression check plus the arc detection behaviour above."
+    "harness_caveat": "tunnel_guard.curved_stress.py builds the labelled arc panel, and its labels do not yet match detector boxes at IoU 0.1 in any case, so it is recorded as a work-in-progress tool and is NOT used as acceptance evidence here; the acceptance evidence is the real-recording regression check plus the arc detection behaviour above.",
+    "cost_and_gate": {
+      "measured_cost_ms_per_frame": {
+        "roundT_doubleT": [
+          127.1,
+          133.6
+        ],
+        "doubleT_obstacle": [
+          139.1,
+          143.3
+        ],
+        "columns": "[before, with the corridor-aware crop]"
+      },
+      "gate": "corridor_crop_threshold_m (0.5 m): the widened path is skipped when the previous frame's corridor offset over the observed range stays below it, so a straight run keeps the original crop exactly. On these recordings the gate engages, because a fitted curvature bends the continuation by metres within the observed range - which is the situation it exists for.",
+      "trade_stated": "+4-6 ms/frame (3-5%) for recovering the curved track: at 100 m on R = 300 m the object was previously discarded entirely. Set corridor_crop_threshold_m high to disable at the cost of curves; the timing measurement was taken while a panel run shared the machine and should be re-measured on an idle one."
+    }
   }
 }

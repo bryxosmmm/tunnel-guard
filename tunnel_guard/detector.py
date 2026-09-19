@@ -252,6 +252,8 @@ class Detector:
         self.previous_source = None
         self.previous_pose = np.eye(4)
         self.previous_centre = None
+        self.previous_offset_m = None
+        self.previous_max_x = None
         self.last_timestamp = None
         self.tracks: dict[int, dict] = {}
         self.next_id = 1
@@ -471,6 +473,8 @@ class Detector:
             self.previous_source = None
             self.previous_pose = np.eye(4)
             self.previous_centre = None
+            self.previous_offset_m = None
+            self.previous_max_x = None
             self.tracks.clear()
         self.last_timestamp = timestamp_s
         self.frame_number += 1
@@ -519,7 +523,13 @@ class Detector:
         # therefore follows the previous frame's corridor, shifted by its measured offset from the
         # axis; with no history, or on the first frame of a bag, the base window applies unchanged.
         base_half = float(self.config["context_half_width_m"])
-        offset = self._corridor_offset(frame[:, 0]) if self.previous_centre is not None else np.zeros(len(frame))
+        # The widened path costs 3.7-6.3 ms/frame (mask, interpolation, copy) and buys nothing where the
+        # track is already inside the base window, which is every frame of the straight recordings. It is
+        # therefore gated on the previous frame's corridor offset, remembered as a scalar, so straight
+        # stretches keep the original crop bit for bit.
+        engage = self.previous_offset_m is not None and self.previous_offset_m > float(
+            self.config.get("corridor_crop_threshold_m", 0.5))
+        offset = self._corridor_offset(frame[:, 0]) if engage else np.zeros(len(frame))
         half = base_half + np.abs(offset)
         crop = (frame[:, 0] >= self.config["min_forward_m"]) & (np.abs(frame[:, 1] - offset) < half)
         # Crop and reduce in one pass: the cropped copy is never materialised, and
@@ -539,6 +549,15 @@ class Detector:
         if len(geometry.rail_anchors) >= 3:
             edge = geometry._continuation(-1)
             self.previous_centre = (geometry.rail_anchors[:, :2], edge[2], edge[3], edge[0])
+            # scalar magnitude for the next frame's crop decision, sampled on a coarse station grid
+            # evaluated over the range points actually occupy, not anchor + 200 m: sampling the
+            # continuation far past the data made its own extrapolation decide the gate.
+            limit = float(self.previous_max_x) if self.previous_max_x else float(geometry.rail_anchors[-1, 0])
+            probe = np.linspace(float(geometry.rail_anchors[0, 0]), max(limit, 10.0), 48)
+            self.previous_offset_m = float(np.abs(self._corridor_offset(probe)).max())
+        else:
+            self.previous_offset_m = None
+        self.previous_max_x = float(frame[:, 0].max()) if len(frame) else None
         mounting_started = time.perf_counter()
         mounting = observe_mounting(reduced, geometry, self.config)
         mounting_s = time.perf_counter() - mounting_started
