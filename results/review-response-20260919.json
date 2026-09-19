@@ -47,10 +47,30 @@
         "corrected_panel": {
           "cases": 24,
           "scene": "R = 300 m arc, 0.8 x 0.8 x 1.0 m object at 40/60/100/150 m, lateral 0.0 and 0.6 m, three frames each",
-          "old_straight_continuation_old_crop": {"candidate": 9, "confirmed_intersecting": 5, "one_to_one_tp": 3, "unmatched": 502},
-          "corridor_crop_only": {"candidate": 9, "confirmed_intersecting": 5, "one_to_one_tp": 3, "unmatched": 486},
-          "curvature_only": {"candidate": 12, "confirmed_intersecting": 6, "one_to_one_tp": 6, "unmatched": 74},
-          "shipped": {"candidate": 14, "confirmed_intersecting": 6, "one_to_one_tp": 6, "unmatched": 74},
+          "old_straight_continuation_old_crop": {
+            "candidate": 9,
+            "confirmed_intersecting": 5,
+            "one_to_one_tp": 3,
+            "unmatched": 502
+          },
+          "corridor_crop_only": {
+            "candidate": 9,
+            "confirmed_intersecting": 5,
+            "one_to_one_tp": 3,
+            "unmatched": 486
+          },
+          "curvature_only": {
+            "candidate": 12,
+            "confirmed_intersecting": 6,
+            "one_to_one_tp": 6,
+            "unmatched": 74
+          },
+          "shipped": {
+            "candidate": 14,
+            "confirmed_intersecting": 6,
+            "one_to_one_tp": 6,
+            "unmatched": 74
+          },
           "artifact": "build/arc2-{old,crop,curve,shipped}/metrics.json"
         },
         "superseded": "the earlier 12 -> 16 of 24 'object reported' figure came from the mis-placed panel and a candidate-level metric"
@@ -81,5 +101,49 @@
     "the crop fix's effect on a frame whose corridor bends back toward the axis (latent case, not present in the current recordings)",
     "curvature continuation accuracy on real sharp curves (extended recording, extended_subset sampler prepared)",
     "any precision or recall claim on real data: there is no exhaustive annotation of the panels or the recordings"
-  ]
+  ],
+  "regression_verification": {
+    "measured_pattern_panel_1460_frames": {
+      "tp": 709,
+      "fn": 251,
+      "fp_exhaustive_only": 176,
+      "precision_exhaustive_only": 0.8011299435028248,
+      "event_recall": 0.8020833333333334,
+      "matched_mean_3d_iou": 0.8223217046829834,
+      "distance_mae_m": 0.001113788444493176,
+      "negative_episode_rate": 0.0,
+      "verdict": "byte-identical to the pre-fix baseline on every metric; wall time 415 -> 430 s is load",
+      "artifact": "build/stress-measured-pattern-review-fix/metrics.json"
+    },
+    "panel_declared_criterion": {
+      "event_recall_min": 0.95,
+      "measured": 0.8021,
+      "passed": false,
+      "note": "not met before these fixes either; reported as the standing gap, not as a regression"
+    },
+    "backend_equivalence": {
+      "geometry_arrays": "20/20 identical",
+      "kernel_checks": "24/24 passed"
+    },
+    "recordings_60_frames_each": {
+      "roundT_doubleT": {
+        "statuses": "identical",
+        "relations": "identical"
+      },
+      "doubleT_obstacle": {
+        "statuses": "identical",
+        "relations": "one object adjacent -> unresolved (10861 -> 10860 adjacent, 3230 -> 3231 unresolved)"
+      }
+    },
+    "prefetch_off_vs_on_30_frames": {
+      "statuses": "identical ({candidate: 1, unresolved_obstacle: 29})",
+      "note": "depth 0 exited 1 with 'No scans processed' before the fix"
+    },
+    "arc_panel_24_cases": {
+      "candidate": "9 -> 14",
+      "confirmed_intersecting": "5 -> 6",
+      "one_to_one_tp": "3 -> 6",
+      "unmatched": "502 -> 74"
+    }
+  }
 }

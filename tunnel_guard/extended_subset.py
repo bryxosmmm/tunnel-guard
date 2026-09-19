@@ -63,29 +63,45 @@ def set_scalar(lines: list[str], header: str, value: int) -> list[str]:
     raise SystemExit(f"no scalar under {header!r}")
 
 
-def build(bag: Path, indices: list[int], out: Path) -> list[Path]:
+def build(bag: Path, indices: list[int], out: Path, group: int = 1) -> list[Path]:
+    """One subset per start index, containing `group` consecutive splits.
+
+    A group longer than one split is what makes the subset a stretch of travel rather than a snapshot:
+    adjacent frames inside one split advance about a metre, which is too little to re-measure ground a
+    continuation predicted 20-80 m ahead. Consecutive splits are the same run continued, so the reader
+    sees one stream and the motion estimator carries across the boundary.
+    """
     source = (bag / "metadata.yaml").read_text().splitlines(keepends=True)
     entries = parse_entries(source)
-    wanted = [f"{bag.name}_{i}.db3" for i in indices]
-    missing = [name for name in wanted if name not in entries]
+    wanted_all = [f"{bag.name}_{i}.db3" for i, in ((i,) for i in indices)]
+    missing = [name for name in wanted_all if name not in entries]
     if missing:
         raise SystemExit(f"no such splits: {missing[:3]}")
 
     built = []
-    for name in wanted:
-        start, duration, count = entries[name]
+    for first in indices:
+        names = [f"{bag.name}_{first + offset}.db3" for offset in range(group)]
+        absent = [name for name in names if name not in entries]
+        if absent:
+            raise SystemExit(f"no such splits: {absent[:3]}")
+        name = names[0]
+        start = min(entries[n][0] for n in names)
+        duration = max(entries[n][0] + entries[n][1] for n in names) - start
+        count = sum(entries[n][2] for n in names)
         lines = list(source)
+        entry_lines = []
+        for entry in names:
+            entry_start, entry_duration, entry_count = entries[entry]
+            entry_lines += [f"    - path: {entry}\n",
+                            "      starting_time:\n",
+                            f"        nanoseconds_since_epoch: {entry_start}\n",
+                            "      duration:\n",
+                            f"        nanoseconds: {entry_duration}\n",
+                            f"      message_count: {entry_count}\n"]
         files = block_bounds(lines, "  files:\n")
-        lines = (lines[:files[0] + 1]
-                 + [f"    - path: {name}\n",
-                    "      starting_time:\n",
-                    f"        nanoseconds_since_epoch: {start}\n",
-                    "      duration:\n",
-                    f"        nanoseconds: {duration}\n",
-                    f"      message_count: {count}\n"]
-                 + lines[files[1]:])
+        lines = lines[:files[0] + 1] + entry_lines + lines[files[1]:]
         paths = block_bounds(lines, "  relative_file_paths:\n")
-        lines = lines[:paths[0] + 1] + [f"    - {name}\n"] + lines[paths[1]:]
+        lines = lines[:paths[0] + 1] + [f"    - {entry}\n" for entry in names] + lines[paths[1]:]
         lines = set_scalar(lines, "  duration:\n", duration)
         lines = set_scalar(lines, "  starting_time:\n", start)
         # The two message counts carry their value inline (global at two spaces, the topic's at
@@ -95,9 +111,10 @@ def build(bag: Path, indices: list[int], out: Path) -> list[Path]:
         text = re.sub(r"(?m)^      message_count: \d+$", f"      message_count: {count}", text, count=1)
         directory = out / name[:-4]
         directory.mkdir(parents=True, exist_ok=True)
-        link = directory / name
-        if not link.exists():
-            link.symlink_to((bag / name).resolve())
+        for entry in names:
+            link = directory / entry
+            if not link.exists():
+                link.symlink_to((bag / entry).resolve())
         (directory / "metadata.yaml").write_text(text)
         built.append(directory)
     return built
@@ -108,8 +125,10 @@ def main() -> None:
     parser.add_argument("--bag", type=Path, required=True)
     parser.add_argument("--indices", type=int, nargs="+", required=True)
     parser.add_argument("--out", type=Path, default=Path("data/extended_subset"))
+    parser.add_argument("--group", type=int, default=1,
+                        help="consecutive splits per subset; 2 gives ~10 s of travel for pair scoring")
     args = parser.parse_args()
-    built = build(args.bag, args.indices, args.out)
+    built = build(args.bag, args.indices, args.out, args.group)
     print(f"{len(built)} subsets under {args.out}: {', '.join(p.name for p in built[:6])} ...")
 
 

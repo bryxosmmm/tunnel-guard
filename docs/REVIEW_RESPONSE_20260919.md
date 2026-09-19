@@ -91,11 +91,38 @@ Honest reading: candidate presence rises 9 → 14 of 24 and unmatched objects fa
 corridor intrusion* rises only 5 → 6. The earlier "12 → 16 of 24" figure came from the mis-placed panel and a
 candidate-level metric; it is superseded by this table.
 
+## Regression verification after the fixes
+
+| check | result |
+|---|---|
+| measured-pattern panel, 1460 frames | **byte-identical**: tp 709, fn 251, fp 176, precision 0.8011, event recall 0.8021, matched mean IoU 0.8223, distance MAE 0.00111 m, zero empty-scene alarms; wall time 415 -> 430 s, which is load, not work |
+| the panel's own declared criterion | `event_recall >= 0.95` is **not met** (0.802). It was not met before these fixes either: unchanged, and reported as the standing gap it is |
+| NumPy vs native | 20/20 geometry arrays identical, 24/24 kernel checks passed |
+| both recordings, 60 frames each | statuses identical; `roundT_doubleT` relations identical; `doubleT_obstacle` moves one object `adjacent -> unresolved` |
+| `prefetch_depth: 0` vs `1`, 30 frames | runs now, statuses identical (`{candidate: 1, unresolved_obstacle: 29}` in both) |
+| arc panel, 24 cases | candidate 9 -> 14, confirmed intersecting 5 -> 6, one-to-one tp 3 -> 6, unmatched 502 -> 74 |
+
 ## What the review is right about and this branch has not changed
 
 * **Horizontal only.** These changes are about the path's lateral geometry. They do not address the rail-head
   height bias the reviewer's own work found, and they do not replace a full `local_3d` check.
-* **Curvature is unvalidated on real turns.** The six sourcecraft recordings have almost no measurable
+* **Curvature on real turns: the instruments exist and are verified; the measurement is in flight.**
+  `python -m tunnel_guard.extended_subset --group 2` writes subsets of *consecutive* splits of the extended
+  recording (~10 s of travel each, chosen spread across the run) whose clouds were verified identical to the
+  source's own scans (51/51 hashes and timestamps, and a uniform 0.1 s step across the split boundary).
+  `python -m tunnel_guard.curve_audit` keeps the frames whose own anchors are genuinely curved and scores the
+  curvature continuation against the previous tangent-with-clipped-slope model, using the rails that a later
+  frame measures over the same ground as the reference.
+
+  Three things had to be measured before a pair test could even run here, and each one changed the design:
+  the extended recording's curvature (274 of 1272 sampled frames at radius <= 800 m, quartiles p25 1126 m,
+  median 3773 m, minimum 138 m - so the sharp curves are a minority and the corpus is mostly near-straight);
+  the vehicle's crawl in these stretches (0.3 m per 0.1 s frame, with stretches that do not move at all,
+  which is why only a travel-based, not adjacent-frame, pairing can label a point past the anchor end); and
+  the anchor span itself (5 to 53 m, so a look-ahead point 20 m past the end sits at ~73 m in the source frame
+  and needs ~28 m of advance before any later frame measures it). **No result is claimed until the run
+  lands.**
+* **Curvature was unvalidated on real turns when the review was written.** The six sourcecraft recordings have almost no measurable
   curvature; the extended 20-minute recording (`data/new_data`, 11 271 scans, 22% of frames below 800 m
   radius) is where this must be tested. A sampler for it is added (`scripts/bag_subset.py` builds one-split
   subsets so places spread along the run can be read without copying 84 GiB) — the measurement itself is
