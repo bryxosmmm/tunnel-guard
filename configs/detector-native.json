@@ -254,7 +254,7 @@
   "rail_pair_continuity": "relocated",
   "path_curve_window_m": 30.0,
   "path_curvature_significance": 4.0,
-  "background_refit_travel_m": 1.0,
+  "background_refit_travel_m": 0.0,
   "infrastructure_continuity": {
     "enabled": true,
     "cross_section_tolerance_m": 0.3,

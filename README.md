@@ -198,8 +198,10 @@ Measured on `doubleT_obstacle`, per-frame medians, before the two shipped runtim
 | input crop and voxel pass | 5.6 | |
 | frame, total | ~123 | |
 
-With the shipped recipe the two recordings measure **114.4 ms** (`roundT_doubleT`) and **105.9 ms**
-(`doubleT_obstacle`) at the 50th percentile, against 130.7 and 143.4 before. Latency here is offline processing time
+With the shipped recipe the two recordings measure **121.1 ms** (`roundT_doubleT`) and **111.6 ms**
+(`doubleT_obstacle`) at the 50th percentile, against 130.7 and 143.4 before: the object-chain filter and eight registration
+threads are shipped, while the background refit cadence that would take them to 114.4 and 105.9 is opt-in, because it voids
+the backend-equivalence guarantee (see `results/equivalence-vs-cadence-20260919.json`). Latency here is offline processing time
 on an Apple M4 while the machine is shared; the deployment stand is an 8-core i7-9700E, so these figures bound the
 shape of the budget rather than the field number. Two runtime ideas were measured and rejected rather than assumed: a
 lateral band for the rail estimator (its 4 m search band is deliberate for rail-pair selection, and narrowing it moved
@@ -218,7 +220,7 @@ not an object. Measured: unresolved objects 2757 -> 1323 on `roundT_doubleT` and
 with every confirmed obstacle frame preserved (52 of 52) and the full 1460-frame measured-pattern panel byte-identical
 (709/251/176, event recall 0.8021, matched IoU 0.8223, zero empty-scene alarms). Recipe key `infrastructure_continuity`.
 
-**The background model refits by distance travelled, not every frame.** It claims points from the tunnel's own
+**The background model CAN refit by distance travelled instead of every frame - opt-in, and off by default.** It claims points from the tunnel's own
 longitudinal surfaces — lining, walls, ducts, bed — and those run parallel to travel, so their plane equations in the
 sensor frame barely change between frames a fraction of a metre apart. Building it was the largest single cost in a
 frame (40.3 ms of 123 ms, about 22 overlapping windows of three RANSAC planes each), so it is now reused until the
@@ -229,7 +231,7 @@ panel run (tp 182, fn 106, fp 40, precision 0.8198, event recall 0.7917, matched
 Stated trade-off: staleness mis-places the bed on a grade by about 5 mm per metre of travel against the 25 mm fit
 distance, which is the margin the 1 m limit keeps.
 
-Confirmed end to end on 2026-09-19: the full 1460-frame measured-pattern panel run with the shipped recipe returns
+Confirmed end to end on 2026-09-19: the full 1460-frame measured-pattern panel run with the shipped changes returns
 **every metric byte-identical** to the pre-change baseline (tp 709, fn 251, fp 176, precision 0.8011, event recall
 0.8021, matched mean IoU 0.8223, distance MAE 0.00111 m, zero empty-scene alarms, identical recall at every range from
 10 to 300 m) while the panel's wall time falls from 430.4 s to 316.5 s - a quarter of the runtime for no change in what
