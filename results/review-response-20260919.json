@@ -88,7 +88,7 @@
       "estimator_failure_is_not_impossibility": "accepted; the far-field section now reads as six strategies that failed here, and names a learned section-conditioned bore offset (teammate's branch: 0.026 m median at 25-40 m, grouped by recording, not wired in) and a prior-pass or survey alignment as avenues this work did not exhaust",
       "horizontal_only": "these changes are lateral geometry; the rail-head height bias the reviewer found and a full local_3d check remain unaddressed here",
       "no_universal_speedup": "the reviewer's 90-frame runs show this branch slower in median processing on all three recordings and better in wall time per frame on two; consistent with my own numbers, and 10 Hz is not reached",
-      "curvature_unvalidated_on_real_turns": "the six sourcecraft recordings have almost no measurable curvature; the extended recording (data/new_data, 11271 scans, 22% of frames below 800 m radius) is where this must be tested. tunnel_guard.extended_subset builds one-split subsets for sampling it; the measurement is outstanding"
+      "curvature_unvalidated_on_real_turns": "resolved: measured on the extended recording, see curvature_on_real_turns"
     }
   },
   "trade_offs_stated": [
@@ -99,8 +99,8 @@
   ],
   "not_verified": [
     "the crop fix's effect on a frame whose corridor bends back toward the axis (latent case, not present in the current recordings)",
-    "curvature continuation accuracy on real sharp curves (extended recording, extended_subset sampler prepared)",
-    "any precision or recall claim on real data: there is no exhaustive annotation of the panels or the recordings"
+    "any precision or recall claim on real data: there is no exhaustive annotation of the panels or the recordings",
+    "the deep look-aheads on real curves are thin (83 pairs at 20 m, 4 at 30 m); extending them needs subsets with more travel, not a new method"
   ],
   "regression_verification": {
     "measured_pattern_panel_1460_frames": {
