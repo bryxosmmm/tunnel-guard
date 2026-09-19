@@ -157,6 +157,13 @@ panel run (tp 182, fn 106, fp 40, precision 0.8198, event recall 0.7917, matched
 Stated trade-off: staleness mis-places the bed on a grade by about 5 mm per metre of travel against the 25 mm fit
 distance, which is the margin the 1 m limit keeps.
 
+Confirmed end to end on 2026-09-19: the full 1460-frame measured-pattern panel run with the shipped recipe returns
+**every metric byte-identical** to the pre-change baseline (tp 709, fn 251, fp 176, precision 0.8011, event recall
+0.8021, matched mean IoU 0.8223, distance MAE 0.00111 m, zero empty-scene alarms, identical recall at every range from
+10 to 300 m) while the panel's wall time falls from 430.4 s to 316.5 s - a quarter of the runtime for no change in what
+the detector decides. The panel's own declared criterion, event recall >= 0.95, remains unmet at 0.802 before and after,
+and is reported here as the standing gap it is.
+
 Both rest on measured limits rather than assumptions: the far-field lateral frame is a sensor property of this route
 (rails vanish by 90 m, the bed band is empty beyond 70 m, partial-arc cross-section fits are ill-conditioned beyond
 80 m), so objects beyond the corridor horizon are reported as unresolved candidates with their distance and their own

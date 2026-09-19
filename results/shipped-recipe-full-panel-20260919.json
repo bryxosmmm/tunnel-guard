@@ -1,0 +1,26 @@
+{
+  "date": "2026-09-19",
+  "scope": "The shipped recipe, end to end, on the full 1460-frame measured-pattern panel",
+  "recipe": {
+    "background_refit_travel_m": 1.0,
+    "infrastructure_continuity": "enabled",
+    "odometry_threads": 8,
+    "certified_range_m": "reported per frame"
+  },
+  "result": {
+    "tp": "709 -> 709",
+    "fn": "251 -> 251",
+    "fp_exhaustive_only": "176 -> 176",
+    "precision_exhaustive_only": "0.8011 -> 0.8011",
+    "event_recall": "0.8021 -> 0.8021",
+    "annotated_object_recall": "0.7385 -> 0.7385",
+    "matched_mean_3d_iou": "0.8223 -> 0.8223",
+    "distance_mae_m": "0.00111 -> 0.00111",
+    "negative_episode_rate": "0.0 -> 0.0",
+    "recall_by_range": "identical at every range from 10 to 300 m",
+    "wall_s": "430.4 -> 316.5, i.e. 26 per cent faster over the whole panel",
+    "verdict": "every metric byte-identical to the pre-change baseline"
+  },
+  "reading": "the two shipped runtime changes - the object-chain filter and the background refit by distance travelled - cost nothing in detection quality when measured end to end on the full labelled panel, and together with the thread setting they cut the panel's wall time by a quarter. The panel's own declared criterion (event recall >= 0.95) remains unmet at 0.802, before and after, and is reported as the standing gap it is.",
+  "artifacts": "build/stress-shipped-full/metrics.json against build/stress-measured-pattern-review-fix/metrics.json"
+}
