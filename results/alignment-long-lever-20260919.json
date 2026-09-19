@@ -431,5 +431,24 @@
       "uncertainty propagation from the fit covariance (over-confident 1.6-8x; honest bound exceeds the tunnel width)",
       "cumulative temporal rail history (worse at every range; past alignment does not determine future alignment)"
     ]
+  },
+  "input_crop_follows_the_corridor": {
+    "defect": "the detector cropped its input to a fixed 8 m lateral window in the *sensor* frame (context_half_width_m). On a curve the track leaves that window - at 100 m on R = 300 m the centre-line is 7.98 m off axis and the rails are gone by 40 m - so both the returns the corridor must classify and the anchors that estimate the curve were discarded before any classification. This is upstream of the corridor fix and would have masked it on tight curves.",
+    "fix": "the crop window now follows the previous frame's corridor: offset = the remembered centre-line evaluated at each point's along-track coordinate, half-width = context_half_width_m + |offset|. Causal (no extra pass, no future frames); with no history the base window applies unchanged. The native crop kernel is given the already-masked subset and a half-width that cannot re-clip it.",
+    "evidence": {
+      "arc_scene_R300_object_on_centre": {
+        "before": "object at 40 and 100 m absent from the objects list (only near-field rails clustered); geometry valid but nothing at range",
+        "after": "20/40/100 m reported as obstacle once one frame of history exists (frame 0 still uses the base window)"
+      },
+      "unmatched_objects_arc_panel": {
+        "straight_continuation": 470,
+        "curvature_continuation": 84
+      },
+      "real_recordings_100_frames_each": {
+        "roundT_doubleT": "statuses identical, relations identical, 0 geometry flips",
+        "doubleT_obstacle": "statuses identical, intersecting identical (68), 14 of 15014 object relations moved from unresolved to adjacent, 0 geometry flips"
+      }
+    },
+    "harness_caveat": "tunnel_guard.curved_stress.py builds the labelled arc panel, and its labels do not yet match detector boxes at IoU 0.1 in any case, so it is recorded as a work-in-progress tool and is NOT used as acceptance evidence here; the acceptance evidence is the real-recording regression check plus the arc detection behaviour above."
   }
 }

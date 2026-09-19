@@ -251,6 +251,7 @@ class Detector:
         self.odometry = self._new_odometry()
         self.previous_source = None
         self.previous_pose = np.eye(4)
+        self.previous_centre = None
         self.last_timestamp = None
         self.tracks: dict[int, dict] = {}
         self.next_id = 1
@@ -309,6 +310,20 @@ class Detector:
                         "overlap": overlap, "median_residual_m": median}
         self.previous_source, self.previous_pose = source.copy(), pose
         return frame, pose, quality
+
+
+    def _corridor_offset(self, x: np.ndarray) -> np.ndarray:
+        """Previous frame's corridor centre at these along-track coordinates (0 where unknown)."""
+        if self.previous_centre is None:
+            return np.zeros(len(x))
+        anchors, slope, curvature, x_edge = self.previous_centre
+        offset = np.interp(x, anchors[:, 0], anchors[:, 1])
+        beyond = x > x_edge
+        if beyond.any():
+            distance = x[beyond] - x_edge
+            offset[beyond] = anchors[-1, 1] + slope * distance + curvature * distance * distance
+        return offset
+
 
     def _associate(self, objects: list[dict], pose: np.ndarray, stamp: float, motion_valid: bool):
         cfg = self.config
@@ -455,6 +470,7 @@ class Detector:
             self.odometry = self._new_odometry()
             self.previous_source = None
             self.previous_pose = np.eye(4)
+            self.previous_centre = None
             self.tracks.clear()
         self.last_timestamp = timestamp_s
         self.frame_number += 1
@@ -495,18 +511,34 @@ class Detector:
         frame, pose, motion = self._motion(points, point_times)
         self.display_points = frame
         motion_s = time.perf_counter() - motion_started
-        crop = ((frame[:, 0] >= self.config["min_forward_m"])
-                & (np.abs(frame[:, 1]) < self.config["context_half_width_m"]))
+        # Crop around the track, not around the sensor axis. On a curve the track leaves a fixed
+        # lateral window: at 100 m on R = 300 m the centre-line is 7.98 m off axis and the rails are
+        # gone by 40 m, so a sensor-frame window of context_half_width_m both discards the returns the
+        # corridor must classify and truncates the very anchors that estimate the curve (measured on
+        # the analytic arc panel: an object on the track at 100 m produced zero detections). The window
+        # therefore follows the previous frame's corridor, shifted by its measured offset from the
+        # axis; with no history, or on the first frame of a bag, the base window applies unchanged.
+        base_half = float(self.config["context_half_width_m"])
+        offset = self._corridor_offset(frame[:, 0]) if self.previous_centre is not None else np.zeros(len(frame))
+        half = base_half + np.abs(offset)
+        crop = (frame[:, 0] >= self.config["min_forward_m"]) & (np.abs(frame[:, 1] - offset) < half)
         # Crop and reduce in one pass: the cropped copy is never materialised, and
         # the native kernel partitions by the leading key axis so each slice is
-        # deduplicated and sorted in cache.
+        # deduplicated and sorted in cache. The kernel is handed the widened half-width
+        # together with the already-masked cloud, so its partition stays exact.
         accelerator_module = self.native_kernels if self.config.get("voxel_backend", "numpy") == "cpp" else None
-        reduced = frame[accelerator.crop_voxels(frame, self.config["min_forward_m"],
-                                                self.config["context_half_width_m"],
-                                                self.config["geometry_voxel_m"], accelerator_module)]
+        # The kernel returns indices into the array it is given and re-clips laterally, so it is handed
+        # the already corridor-aware subset with a half-width that cannot clip it again.
+        subset = frame[crop]
+        reach = base_half + (float(np.abs(offset).max()) if len(offset) else 0.0)
+        reduced = subset[accelerator.crop_voxels(subset, self.config["min_forward_m"], reach,
+                                                 self.config["geometry_voxel_m"], accelerator_module)]
         if capture_diagnostics:
             self.diagnostic_arrays.update(registered_points=frame, cropped_points=frame[crop], geometry_voxel_points=reduced)
         geometry = TrackGeometry(reduced, self.config)
+        if len(geometry.rail_anchors) >= 3:
+            edge = geometry._continuation(-1)
+            self.previous_centre = (geometry.rail_anchors[:, :2], edge[2], edge[3], edge[0])
         mounting_started = time.perf_counter()
         mounting = observe_mounting(reduced, geometry, self.config)
         mounting_s = time.perf_counter() - mounting_started
