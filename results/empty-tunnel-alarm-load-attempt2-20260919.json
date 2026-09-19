@@ -139,5 +139,36 @@
     "why_the_far_class_survives": "beyond the corridor horizon the lateral coordinate is our own extrapolation and is wrong by metres, so the tunnel's far surfaces drift across cells instead of forming a stable profile - the model is sound but the frame it works in is corrupted out there. Lowering the thresholds to 4 stations and a 10 m span changed nothing, which confirms the frame, not the threshold, is the limit.",
     "verdict": "reverted: it is the right mechanism and it removes the infrastructure classes without touching a single real detection, but it costs 14 percent and changes no frame decision, because the remaining driver is the far class that needs a trustworthy lateral frame first",
     "what_this_leaves": "the empty-tunnel wall is now attributable to exactly one class - the tunnel's own surfaces at 90-164 m, placed by an extrapolated centre. Fixing that needs the far-field lateral frame (external alignment, or a centre estimated from something that survives at range), and then this profile model removes the rest."
+  },
+  "seventh_avenue_researched_and_disproved": {
+    "problem": "the far-field lateral frame: the last class (the tunnel's own surfaces at 90-164 m) is placed by an extrapolated centre",
+    "how_the_field_solves_it": {
+      "map_based_localization": "Daoust & Barfoot, 'Infrastructure-Free Mapping and Localization for Tunnel-Based Rail Applications Using 2D Lidar' (UTIAS, 2017; MASC thesis, and the IEEE IV 2016 paper): sliding-window RQE scan matching with WALL REMOVAL, mapping and localizing relative to a map. Needs a prior map of the route; the organizers' bags are unseen single passes.",
+      "cross_section_fitting": "the clearance-inspection line (railway tunnel clearance by mobile laser scanning, PMC5621173; tunnel cross-section extraction, IAARC/ISPRS/IOP; Taubin ellipse and least-squares circle fitting for lining analysis) fits the tunnel cross-section and uses its axis as the lateral reference, per station rather than as a carried constant.",
+      "profile_models": "modelling the normal cross-section along the axis and calling deviations objects (attempt six, works only where the frame is trustworthy)"
+    },
+    "premise_tested_on_our_data": {
+      "method": "Taubin circle fit in the cross-section plane to raw returns within a 2 m slab at 40/80/120/160 m, centres compared with the rail-derived centre at 20 m, over six consecutive frames",
+      "40_m": {
+        "points": "330-545",
+        "radius_m": "2.51-2.59",
+        "centre_offset_m": "+0.51 -> +0.24 over five frames"
+      },
+      "80_m": {
+        "points": "46-90",
+        "radius_m": "2.45-2.62",
+        "centre_offset_m": "+1.77 -> +1.06, about 0.7 m of drift"
+      },
+      "120_m": {
+        "points": "8-52",
+        "centre_offset_m": "+1.83 to +2.19"
+      },
+      "160_m": {
+        "points": "2-8"
+      },
+      "conclusion": "the radius is well determined but the centre is not: a partial, sparse arc leaves its centre ill-conditioned along the arc, and beyond 80 m there are too few returns to fit at all. The field's per-station fit cannot give a trustworthy lateral frame at range on this sensor."
+    },
+    "verdict": "avenue closed by measurement, not by opinion. The far-field lateral frame is not obtainable in a single pass from this sensor by cross-section fitting, and map-based localization needs a prior map of the route.",
+    "what_this_completes": "fifth independent measurement of the same limit: rails vanish by 90 m, the bed band is empty beyond 70 m, a carried bore offset is biased about 1 m, six estimators failed, and now partial-arc circle fits are ill-conditioned and unmeasurable beyond 80 m. The far-field lateral frame is a sensor property on this route, not a modelling gap."
   }
 }
