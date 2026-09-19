@@ -107,15 +107,21 @@ def coverage_support(nearby: list[dict], lo: np.ndarray, hi: np.ndarray, grid: i
 
 
 def object_on_arc(config: dict, arc_m: float, lateral_m: float, dimensions) -> dict:
-    """Axis-aligned envelope of a box standing on the arc at `arc_m` of arc length."""
+    """Axis-aligned envelope of a box standing on the arc at `arc_m` of arc length.
+
+    `lateral_m` translates the box's centre along the local normal; the box keeps the
+    dimensions it is given. Adding the offset to a half-extent instead would grow the box
+    while leaving its centre on the centre-line, so a case meant to test an object beside
+    the path would still stand on it, just wider.
+    """
     R = float(config["alignment_arc_m"])
     ground = float(config["ground_z_m"]) + float(config["rail_height_m"])
     phi = arc_m / R
-    # point at arc length arc_m along the centre-line, offset laterally by lateral_m
-    x = R * np.sin(phi)
-    y = R - R * np.cos(phi)
     yaw = phi
-    half_x, half_y = (lateral_m + dimensions[0] / 2), dimensions[1] / 2
+    # Centre-line point at this arc length, then the offset along the local normal.
+    x = R * np.sin(phi) - lateral_m * np.sin(yaw)
+    y = (R - R * np.cos(phi)) + lateral_m * np.cos(yaw)
+    half_x, half_y = dimensions[0] / 2, dimensions[1] / 2
     corners = []
     for sx in (-1, 1):
         for sy in (-1, 1):
@@ -199,12 +205,33 @@ def main():
         "cases": len(reported),
         "reported": int(sum(r["prediction_intersecting_label"] for r in reported)),
         "fraction": float(sum(r["prediction_intersecting_label"] for r in reported) / max(len(reported), 1)),
-        "note": "any prediction box intersecting the label region; the metric that survives support splitting"}
+        "note": "CANDIDATE presence, not a confirmed intrusion: any prediction box intersecting the label "
+                "region. It survives support splitting, which one-to-one IoU does not, and it is the metric "
+                "`object_confirmed_intersecting` below refines."}
+    # What the system actually tells the operator: an object confirmed to intersect the reference
+    # corridor. Candidate presence can be high while this stays low, and the difference is the point.
+    confirmed = []
+    for key, row in predictions.items():
+        label = next((f for f in panel if (f["bag"], f["frame"]) == key), None)
+        if label is None or not label["objects"]:
+            continue
+        lo, hi = np.asarray(label["objects"][0]["bbox_min"]), np.asarray(label["objects"][0]["bbox_max"])
+        hits = [o for o in row["objects"] if o.get("intersection_confirmed")
+                and np.all(np.asarray(o["bbox_max"]) >= lo) and np.all(np.asarray(o["bbox_min"]) <= hi)]
+        confirmed.append({"bag": key[0], "frame": key[1], "confirmed": bool(hits)})
+    score["object_confirmed_intersecting"] = {
+        "cases": len(confirmed),
+        "confirmed": int(sum(c["confirmed"] for c in confirmed)),
+        "fraction": float(sum(c["confirmed"] for c in confirmed) / max(len(confirmed), 1)),
+        "note": "cases whose object is confirmed to intersect the reference corridor - the operator-facing "
+                "decision, as opposed to candidate presence"}
     score["union_coverage"] = {"median": float(np.median(covered)) if covered else None,
                                "cases": len(covered),
                                "cases_at_least_half": int(sum(1 for c in covered if c >= 0.5)),
-                               "note": "fraction of the object's visible support covered by the union of "
-                                       "nearby predictions; one-to-one IoU is reported separately"}
+                               "note": "fraction of the label box sampled on an 8-cubed grid that falls "
+                                       "inside nearby predicted boxes. The label box is itself the bounding "
+                                       "envelope of the object's visible support and the sample is a grid, "
+                                       "not the reflection points, so this is a box-overlap measure."}
     score["arc_m"] = experiment["alignment_arc_m"]
     print(json.dumps({k: v for k, v in score.items() if k not in ("frames", "events")}, indent=2))
     write_json(output / "metrics.json", score)

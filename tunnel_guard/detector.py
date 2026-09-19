@@ -540,7 +540,13 @@ class Detector:
         # The kernel returns indices into the array it is given and re-clips laterally, so it is handed
         # the already corridor-aware subset with a half-width that cannot clip it again.
         subset = frame[crop]
-        reach = base_half + (float(np.abs(offset).max()) if len(offset) else 0.0)
+        # The kernel applies its own symmetric lateral limit, and the mask is not symmetric:
+        # it keeps |y - offset| < base + |offset|, which at base 8 and offset 10 reaches y = 28
+        # while |y| < base + max|offset| = 18 clipped that back. The limit is therefore read off
+        # the masked subset itself, plus one voxel to clear the strict inequality, so the pass
+        # cannot drop a point the mask kept, and the grid stays as tight as the data allows.
+        reach = (max(abs(float(subset[:, 1].min())), abs(float(subset[:, 1].max())))
+                 + self.config["geometry_voxel_m"]) if len(subset) else base_half
         reduced = subset[accelerator.crop_voxels(subset, self.config["min_forward_m"], reach,
                                                  self.config["geometry_voxel_m"], accelerator_module)]
         if capture_diagnostics:

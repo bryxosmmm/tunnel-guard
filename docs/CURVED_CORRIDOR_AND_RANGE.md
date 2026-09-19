@@ -64,15 +64,19 @@ curvature shrinks to zero and the crop offset is ~0 there. A curved panel was th
 rails as thin cylinders at gauge and head height, object a world-frame box on the arc, measured beam
 pattern, exact labels). Over 24 cases (object on the track centre of an R = 300 m arc at 20/40/100/150 m):
 
-| configuration | object reported | unmatched objects | union coverage |
-|---|---:|---:|---:|
-| old (straight continuation, old crop) | 12/24 (0.50) | 476 | 0.023 |
-| crop fix only | 12/24 (0.50) | 470 | 0.023 |
-| curvature fix only | 12/24 (0.50) | 84 | 0.047 |
-| **shipped (both)** | **16/24 (0.67)** | **84** | **0.055** |
+| configuration | candidate present | **confirmed intersecting** | one-to-one tp | unmatched |
+|---|---:|---:|---:|---:|
+| old (straight continuation, old crop) | 9/24 | 5/24 | 3 | 502 |
+| corridor crop only | 9/24 | 5/24 | 3 | 486 |
+| curvature continuation only | 12/24 | 6/24 | 6 | 74 |
+| **shipped (both)** | **14/24** | **6/24** | **6** | **74** |
 
-Neither fix alone achieves it: **+33% of cases report the object and 82% fewer spurious objects**, which is
-what the two-cause analysis predicted.
+The first column is *candidate presence* (a prediction box overlapping the object's labelled region), not a
+count of confirmed intrusions — the third column is that, and it is the operator-facing number. Neither fix
+alone achieves the candidate gain, which is what the two-cause analysis predicted. An earlier version of this
+table reported 12 → 16 of 24 as "object reported"; that run also placed the 0.6 m side case *on* the
+centre-line, because `object_on_arc` added the offset to a half-extent, and the metric was candidate-level.
+Both defects were found in review and are fixed; the numbers above supersede it.
 
 **Vertical (up/down) reference.** The bed is sampled to **65–105 m** (13–18 anchors per frame — the floor is
 wide), and inside its own 15 m gate the linear bed extrapolation errs by **≤0.02 m** even where the vertical
@@ -90,7 +94,7 @@ for no measured gain. The uncertainty propagated from the fit covariance is over
 `far_field_lateral_bound_m` — the same σ the classifier used, or `null` beyond the horizon (verified
 reporting-only: 200 frames, identical statuses and objects).
 
-## The far-field limit, and why it is information, not algorithm
+## The far-field limit: six strategies that failed here
 
 | evidence | measurement |
 |---|---|
@@ -102,10 +106,15 @@ reporting-only: 200 frames, identical statuses and objects).
 | uncertainty magnitude | the honest error at 150 m (~4.8 m) exceeds the tunnel width (2.5–4 m) |
 | temporal history as the long lever | **worse** than a single scan at every range (60 m: 1.084–4.840 m vs 0.174; 200 m: 46–76 m vs 10.0) |
 
-So the lateral track relation is not recoverable beyond the modelled horizon on this sensor and route: the
-track's own signature dies at 40–90 m, the only surface that reaches 200 m is biased against the track
-centre, and the alignment's *future* curvature is not a function of anything measured (these routes are
-sequences of independent curves and junctions). Objects beyond the horizon are reported as `unresolved`
+So the lateral track relation was not recovered beyond the modelled horizon here: the track's own signature
+dies at 40–90 m, the one surface that reaches 200 m is biased against the track centre, and these six
+strategies each failed on their own numbers. That is a statement about the methods tried on this data, **not**
+a proof that no method can work — a review of an earlier version of this section made exactly that objection,
+and it is right. Two avenues were not exhausted: a *learned*, section-conditioned bore-to-centre offset (a
+teammate's branch measures 0.026 m median at 25–40 m against 0.096 m for carrying the near offset out,
+grouped by recording, never wired into a detector), and any prior-pass or survey alignment, which is an input
+this project does not have. Neither is validated where it would have to be used, beyond the rails. Objects
+beyond the horizon are reported as `unresolved`
 with a directly measured distance and a trustworthy height, and their lateral relation is stated as unknown
 — never as clear, and never as a certified intrusion.
 

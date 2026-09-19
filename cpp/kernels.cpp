@@ -826,6 +826,7 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
                 const double x_edge = rail_anchor_x[static_cast<size_t>(index_here)];
                 const double y_edge = rail_anchor_center[static_cast<size_t>(index_here)];
                 double slope = 0.0, curvature = 0.0, slope_sigma = 0.0, curvature_sigma = 0.0;
+                double covariance = 0.0;
                 bool fitted = false;
                 const bool below = edge == 0;
                 if (r >= 3 && path_curve_window > 0) {
@@ -863,6 +864,11 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
                             slope_sigma = std::sqrt(std::max(variance * s22 / determinant, 0.0)) / path_curve_window;
                             curvature_sigma = std::sqrt(std::max(variance * s11 / determinant, 0.0))
                                 / (path_curve_window * path_curve_window);
+                            // Off-diagonal of the same inverse, in physical units. The fit is
+                            // one-sided, so this is positive and its d^3 term dominates the
+                            // continuation error at range; omitting it understated the bound.
+                            covariance = -variance * s12
+                                / (determinant * path_curve_window * path_curve_window * path_curve_window);
                             double scaled = curvature_scaled;
                             if (std::abs(scaled) < path_curvature_significance * curvature_sigma
                                     * path_curve_window * path_curve_window) scaled = 0.0;
@@ -887,8 +893,10 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
                     if (below ? (value < rail_anchor_x[0]) : (value > rail_anchor_x[r - 1])) {
                         const double distance = value - x_edge;
                         lateral[index] = y_edge + slope * distance + curvature * distance * distance;
-                        const double extension = std::sqrt((distance * slope_sigma) * (distance * slope_sigma)
-                            + (distance * distance * curvature_sigma) * (distance * distance * curvature_sigma));
+                        const double combined = (distance * slope_sigma) * (distance * slope_sigma)
+                            + ((distance * distance) * curvature_sigma) * ((distance * distance) * curvature_sigma)
+                            + 2.0 * ((distance * distance) * distance) * covariance;
+                        const double extension = std::sqrt(std::max(combined, 0.0));
                         path_uncertainty[index] = std::sqrt(path_uncertainty[index] * path_uncertainty[index]
                             + extension * extension);
                     }

@@ -45,27 +45,38 @@ def prefetch(iterable, depth: int = 1):
     Closing the consumer stops the producer, so a long-lived process cannot leak threads.
     """
     if depth < 1:
-        return iter(iterable)
+        # This function is a generator whether or not it prefetches, so returning an
+        # iterator here would end it without yielding a single scan: `prefetch_depth: 0`
+        # produced an empty run and `iter_bag` then raised "No scans processed".
+        yield from iterable
+        return
     items: queue.Queue = queue.Queue(maxsize=depth)
     done, stop = object(), threading.Event()
+
+    def publish(item) -> bool:
+        """Offer an item until it is queued or the consumer has stopped.
+
+        Every put goes through here, including the exception and the end marker. A
+        blocking put with no timeout cannot be released by `stop`, so a consumer that
+        closes on a full queue would leave the producer thread parked forever.
+        """
+        while not stop.is_set():
+            try:
+                items.put(item, timeout=0.05)
+                return True
+            except queue.Full:
+                continue
+        return False
 
     def produce():
         try:
             for item in iterable:
-                while not stop.is_set():
-                    try:
-                        items.put(item, timeout=0.05)
-                        break
-                    except queue.Full:
-                        continue
-                else:
+                if not publish(item):
                     return
         except Exception as error:  # delivered to the consumer, never swallowed
-            if not stop.is_set():
-                items.put(error)
+            publish(error)
         finally:
-            if not stop.is_set():
-                items.put(done)
+            publish(done)
 
     threading.Thread(target=produce, daemon=True, name="iter_bag_prefetch").start()
     try:

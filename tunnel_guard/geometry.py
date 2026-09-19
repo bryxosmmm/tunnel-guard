@@ -461,8 +461,14 @@ class TrackGeometry:
             best[chosen] = distance[chosen]
         return values, np.isfinite(best)
 
-    def _continuation(self, edge: int) -> tuple[float, float, float, float, float, float]:
+    def _continuation(self, edge: int) -> tuple[float, float, float, float, float, float, float]:
         """Local quadratic continuation of the measured centre-line past an anchor edge.
+
+        Returns the edge point, the continuation slope and curvature, and the fit's own
+        uncertainty: the two standard errors and their covariance. The covariance is not
+        decoration: the fit is one-sided, so slope and curvature are strongly correlated
+        there, and the prediction variance d^2 Var(a) + d^4 Var(b) + 2 d^3 Cov(a,b) loses
+        exactly the term that grows fastest with distance if the cross term is dropped.
 
         The rails are measured over roughly 40 m, which is too short to resolve the alignment by
         a straight tangent: on a curve the true centre-line leaves it quadratically, and at 60 m
@@ -478,7 +484,7 @@ class TrackGeometry:
         * the fit's own covariance is returned so the caller can propagate the extrapolation
           error instead of inventing an uncertainty.
 
-        Returns ``(x_edge, y_edge, slope, curvature, slope_sigma, curvature_sigma)``.
+        Returns ``(x_edge, y_edge, slope, curvature, slope_sigma, curvature_sigma, covariance)``.
         """
         cfg = self.config
         a = self.rail_anchors
@@ -495,7 +501,7 @@ class TrackGeometry:
                 raw = (a[edge, 1] - a[other, 1]) / (a[edge, 0] - a[other, 0])
             else:
                 raw = 0.0
-            return x_edge, y_edge, float(np.clip(raw, -cfg["rail_max_heading"], cfg["rail_max_heading"])), 0.0, 0.0, 0.0
+            return x_edge, y_edge, float(np.clip(raw, -cfg["rail_max_heading"], cfg["rail_max_heading"])), 0.0, 0.0, 0.0, 0.0
         t = (selected[:, 0] - x_edge) / window
         v = selected[:, 1] - y_edge
         s11 = s12 = s22 = b1 = b2 = 0.0
@@ -508,7 +514,7 @@ class TrackGeometry:
             b2 += tt * v_i
         determinant = s11 * s22 - s12 * s12
         if determinant <= 0.0:
-            return x_edge, y_edge, 0.0, 0.0, 0.0, 0.0
+            return x_edge, y_edge, 0.0, 0.0, 0.0, 0.0, 0.0
         slope_scaled = (b1 * s22 - b2 * s12) / determinant
         curvature_scaled = (s11 * b2 - s12 * b1) / determinant
         residual_square = 0.0
@@ -519,10 +525,13 @@ class TrackGeometry:
         variance = residual_square / dof if dof > 0 else 0.0
         slope_sigma = np.sqrt(max(variance * s22 / determinant, 0.0)) / window
         curvature_sigma = np.sqrt(max(variance * s11 / determinant, 0.0)) / (window * window)
+        # Off-diagonal of the same inverse: Cov(a, b) = -s^2 s12 / (det * window^3) in physical units.
+        covariance = -variance * s12 / (determinant * window ** 3)
         if abs(curvature_scaled) < cfg.get("path_curvature_significance", 4.0) * curvature_sigma * window * window:
             curvature_scaled = 0.0
         slope = float(np.clip(slope_scaled / window, -cfg["rail_max_heading"], cfg["rail_max_heading"]))
-        return x_edge, y_edge, slope, float(curvature_scaled / (window * window)), float(slope_sigma), float(curvature_sigma)
+        return (x_edge, y_edge, slope, float(curvature_scaled / (window * window)),
+                float(slope_sigma), float(curvature_sigma), float(covariance))
 
     def path(self, x: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         if len(self.rail_anchors) < 2:
@@ -539,10 +548,17 @@ class TrackGeometry:
         for edge, mask in [(0, x < a[0, 0]), (-1, x > a[-1, 0])]:
             if not mask.any():
                 continue
-            x_edge, y_edge, slope, curvature, slope_sigma, curvature_sigma = self._continuation(edge)
+            (x_edge, y_edge, slope, curvature, slope_sigma, curvature_sigma,
+             covariance) = self._continuation(edge)
             distance = x[mask] - x_edge
             center[mask] = y_edge + slope * distance + curvature * distance * distance
-            extension = np.sqrt((distance * slope_sigma) ** 2 + (distance * distance * curvature_sigma) ** 2)
+            # Full prediction variance: d^2 Var(a) + d^4 Var(b) + 2 d^3 Cov(a, b). The fit is
+            # one-sided, so the cross term is positive and grows faster than either diagonal
+            # term; dropping it understated the continuation error where it decides the
+            # corridor. Clamped because round-off can make a PSD form marginally negative.
+            variance = (distance * slope_sigma) ** 2 + (distance ** 2 * curvature_sigma) ** 2 \
+                + 2.0 * distance ** 3 * covariance
+            extension = np.sqrt(np.maximum(variance, 0.0))
             uncertainty[mask] = np.sqrt(uncertainty[mask] ** 2 + extension**2)
         uncertainty[nearest > cfg["path_max_extrapolation_m"]] = np.inf
         return center, np.interp(x, a[:, 0], a[:, 2]), uncertainty

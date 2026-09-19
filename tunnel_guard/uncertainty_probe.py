@@ -56,7 +56,7 @@ def main():
             g = geometry[k]
             if len(g.rail_anchors) < 3 or look <= g.rail_anchors[-1, 0]:
                 continue
-            x_edge, _, _, _, slope_sigma, curvature_sigma = g._continuation(-1)
+            x_edge, _, _, _, slope_sigma, curvature_sigma, covariance = g._continuation(-1)
             distance = look - x_edge
             extension = float(np.sqrt((distance * slope_sigma) ** 2 + (distance * distance * curvature_sigma) ** 2))
             for n in range(4, 200):

@@ -101,6 +101,16 @@ object as `obstacle` from the first frame with history. Cost **+4-6 ms/frame** (
 139.1 -> 143.3 p50), measured under contention and to be re-measured idle;
 `corridor_crop_threshold_m` disables it at the cost of curves.
 
+## Review response (2026-09-19)
+
+A teammate's review of this branch's corridor and performance work (on `origin/experiments/morev`,
+`docs/REVIEW_GERASIMOV_20260919.md`, against `5587685`) found three P1 defects and three P2 ones. All were
+verified against the code and fixed: a generator that made `prefetch_depth: 0` produce an empty run, a
+corridor crop that re-clipped the widened window symmetrically, and a continuation covariance that omitted
+the `2 d^3 Cov(a,b)` cross term whose sign makes it grow fastest with distance. The measurements, the fixed
+panel and the corrected metric definitions are in
+[docs/REVIEW_RESPONSE_20260919.md](docs/REVIEW_RESPONSE_20260919.md).
+
 ## Curves: the full investigation
 
 Two defects, not one: the corridor continued straight past the measured rails, and the detector cropped its
