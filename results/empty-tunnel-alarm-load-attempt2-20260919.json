@@ -52,5 +52,17 @@
     },
     "consistency": "the full panel's baseline was already 1.00 at 10-100 m, so the targeted gate reproduces the baseline where the changes could plausibly bite",
     "artifact": "build/stress-targeted-gate/metrics.json"
-  }
+  },
+  "third_attempt_rejected": {
+    "idea": "the residual close-range driver is one solid cluster per scan (a walkway or duct edge passing the sensor: 5.5 per frame, median distance 8 m, lateral +1.49 m, height 0.42 m, 210 voxels, extent 1.1 x 0.27 x 0.36 m), too long to be a chain of fragments",
+    "rule": "anisotropic along the track AND at the corridor boundary AND recurring at least three times along the same scan - the third clause specifically so that a single object, such as a person lying along the track, is never dismissed by shape alone",
+    "measured": {
+      "doubleT_obstacle": "statuses unchanged, confirmed obstacle frames preserved 52 of 52 - the safety gate passed",
+      "roundT_doubleT": "5 of 60 frames moved from unresolved_obstacle to no_obstacle_observed",
+      "cost": "processing p50 131 -> 145 ms on roundT_doubleT and 145 -> 156 ms on doubleT_obstacle, about +10 percent on top of the +8 percent of the two committed changes"
+    },
+    "verdict": "rejected: safe but weak - 8 percent of frames cleared for about 10 percent more processing, on a system already at 6 Hz. Same standard as the first attempt.",
+    "next": "the same class needs a discriminator that clears most of the 5.5 objects per frame rather than a few, or the close-range boundary case needs the contour itself to be re-examined: the envelope half-width at 0.42 m height may simply be narrower than the tunnel's real walkway clearance on this route, in which case the correct fix is the reference contour, not a filter"
+  },
+  "state": "two changes committed at 211b507 with their gates; the boundary-structure extension reverted and recorded here"
 }
