@@ -316,5 +316,79 @@
       }
     },
     "not_claimed": "reporting only: no decision, threshold or status changed, verified on 200 frames"
+  },
+  "forward_prediction_powered": {
+    "recording": "roundT_doubleT, 24 source frames (every 10th), poses from build/perf-cpp-opt-20260917",
+    "artifacts": [
+      "build/curve-prediction-n24.json",
+      "build/curve-prediction-far.json"
+    ],
+    "abs_error_median_m": {
+      "look-ahead_40m": {
+        "n": 13,
+        "straight": 0.094,
+        "window_shipped": 0.039,
+        "surface_long_lever": 0.014,
+        "bore_axis": 3.086
+      },
+      "look-ahead_50m": {
+        "n": 20,
+        "straight": 0.37,
+        "window_shipped": 0.11,
+        "surface_long_lever": 0.12,
+        "bore_axis": 1.89
+      },
+      "look-ahead_60m": {
+        "n": 17,
+        "straight": 0.852,
+        "window_shipped": 0.165,
+        "surface_long_lever": 0.158,
+        "bore_axis": 2.988
+      },
+      "look-ahead_100m": {
+        "n": 15,
+        "straight": 4.036,
+        "window_shipped": 1.372,
+        "surface_long_lever": 0.523,
+        "bore_axis": 7.591
+      },
+      "look-ahead_120m": {
+        "n": 13,
+        "straight": 8.249,
+        "window_shipped": 3.502,
+        "surface_long_lever": 6.299,
+        "bore_axis": 8.308
+      },
+      "look-ahead_140m": {
+        "n": 12,
+        "straight": 12.127,
+        "window_shipped": 5.56,
+        "surface_long_lever": 10.607,
+        "bore_axis": 5.125
+      },
+      "look-ahead_160m": {
+        "n": 11,
+        "straight": 17.933,
+        "window_shipped": 12.559,
+        "surface_long_lever": 15.936,
+        "bore_axis": null
+      },
+      "look-ahead_180m": {
+        "n": 9,
+        "straight": 25.027,
+        "window_shipped": 9.886,
+        "surface_long_lever": 22.238,
+        "bore_axis": null
+      }
+    },
+    "conclusions": [
+      "the shipped curvature continuation is 2.4x / 3.4x / 5.2x / 2.9x better than the old straight continuation at 40 / 50 / 60 / 100 m",
+      "the bore axis is worse than the shipped model at every range measured (1.9-8.3 m) - confirmed dead at sample size, not just anecdotally",
+      "the surface long-lever model wins at 100 m (0.523 m) but is worse than the shipped model by 120 m (6.299 vs 3.502) and stays worse: its advantage does not persist, so it was measured and declined rather than wired in (a new per-frame surface extraction plus a C++ kernel path for at most ~15 m of horizon)",
+      "beyond 100 m every model is >= 3.5 m off, i.e. >= 2.3x the 1.535 m corridor half-width; at 180 m the best is 9.886 m (6.4x)"
+    ],
+    "caveats": [
+      "single recording for the far rows; the fine ordering at 40-60 m has n = 13-20 and is not separable between the shipped and surface models there"
+    ]
   }
 }
