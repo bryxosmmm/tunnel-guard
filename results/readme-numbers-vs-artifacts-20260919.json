@@ -1,0 +1,15 @@
+{
+  "date": "2026-09-19",
+  "scope": "The README's numeric claims cross-checked against the artifacts they came from",
+  "method": "each quoted figure loaded from its recorded artifact and compared; three flagged, of which one was this probe's own error",
+  "results": {
+    "panel tp/fn/fp 709/251/176": "match",
+    "panel event recall 0.8021 and matched IoU 0.8223": "match",
+    "panel negative episode rate 0.0": "match",
+    "certified range 57-67 m on roundT_doubleT": "match",
+    "full-panel wall time 430.4 -> 316.5 s": "match",
+    "chain filter's unresolved 2757 -> 1323 and 3231 -> 1754": "match; the probe's first pass flagged it because it used a chain-filter run as the BEFORE arm",
+    "shipped runtime": "MISMATCH - the README quoted 121.1/111.6 ms, which were the four-thread figures; the shipped recipe measures 114.6/110.7"
+  },
+  "why_it_matters": "the same pass exposed a larger error behind it: the cadence's effect had been attributed 12 and 26 per cent by comparing against a configuration that differed in two further ways. Both corrections are now inline in the README and in the cadence record, stated as corrections rather than silently replaced."
+}

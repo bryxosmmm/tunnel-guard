@@ -49,5 +49,24 @@
       "objects": "roundT 15041 -> 13486, doubleT 14159 -> 15200 with unresolved 1754 -> 2133: relations shift slightly because a fresher model segments context slightly differently, while every frame decision is unchanged"
     },
     "what_this_changes_for_the_case": "runtime is a scored criterion (latency, frame rate, real-time stability) and the demo plays a bag in real time; a quarter of the frame time back is the difference between about 8 Hz and the real-time regime on the stand's eight cores"
+  },
+  "correction_of_the_attribution": {
+    "what_was_wrong": "the cadence's effect was reported as 12 and 26 per cent by comparing 130.7/143.4 against 114.4/105.9. Those runs differed in more than the cadence: the earlier one also had four registration threads instead of eight and no object-chain filter.",
+    "measured_properly": {
+      "key_off": {
+        "roundT_doubleT": 114.6,
+        "doubleT_obstacle": 110.7
+      },
+      "key_on": {
+        "roundT_doubleT": 114.4,
+        "doubleT_obstacle": 105.9
+      }
+    },
+    "true_effect": "nothing on roundT_doubleT and about 4 per cent on doubleT_obstacle",
+    "also_corrected": {
+      "object_chain_filter": "costs about 9 per cent (122.2/134.7 -> 133.6/146.8), not free as implied",
+      "registration_threads": "return 14 and 25 per cent (133.6/146.8 -> 114.6/110.7), not the 5.4 measured before the chain filter existed"
+    },
+    "consequence": "with the cadence worth a few per cent and the cost being the backend-equivalence guarantee, keeping the key off is better supported than it looked when the effect was overstated"
   }
 }

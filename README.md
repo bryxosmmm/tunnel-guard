@@ -198,10 +198,19 @@ Measured on `doubleT_obstacle`, per-frame medians, before the two shipped runtim
 | input crop and voxel pass | 5.6 | |
 | frame, total | ~123 | |
 
-With the shipped recipe the two recordings measure **121.1 ms** (`roundT_doubleT`) and **111.6 ms**
-(`doubleT_obstacle`) at the 50th percentile, against 130.7 and 143.4 before: the object-chain filter and eight registration
-threads are shipped, while the background refit cadence that would take them to 114.4 and 105.9 is opt-in, because it voids
-the backend-equivalence guarantee (see `results/equivalence-vs-cadence-20260919.json`). Latency here is offline processing time
+Per-frame medians, measured configuration by configuration, p50 on each recording:
+
+| configuration | `roundT_doubleT` | `doubleT_obstacle` |
+|---|---:|---:|
+| before the 2026-09-19 changes | 122.2 | 134.7 |
+| + the object-chain filter | 133.6 | 146.8 |
+| + eight registration threads (**shipped**) | **114.6** | **110.7** |
+| + the background refit cadence (opt-in, off) | 114.4 | 105.9 |
+
+So the object-chain filter costs about 9 per cent, the threads return 14 and 25 per cent, and the cadence is worth nothing on
+one recording and 4 per cent on the other - an earlier entry claimed 12 and 26 for it, comparing against a configuration that
+also differed in thread count and in the chain filter, and that claim was wrong. Net of the shipped changes: 6 per cent on the
+tunnel recording and 18 per cent on the station recording. Latency here is offline processing time
 on an Apple M4 while the machine is shared; the deployment stand is an 8-core i7-9700E, so these figures bound the
 shape of the budget rather than the field number. Two runtime ideas were measured and rejected rather than assumed: a
 lateral band for the rail estimator (its 4 m search band is deliberate for rail-pair selection, and narrowing it moved
@@ -226,7 +235,10 @@ sensor frame barely change between frames a fraction of a metre apart. Building 
 frame (40.3 ms of 123 ms, about 22 overlapping windows of three RANSAC planes each), so it is now reused until the
 pose has advanced `background_refit_travel_m` (1 m), which also means a stopped train refits nothing. Measured on the
 shipped recipe: `roundT_doubleT` 130.7 -> 114.4 ms and `doubleT_obstacle` 143.4 -> 105.9 ms, i.e. 12 and 26 per cent,
-with identical frame statuses and the labelled obstacle preserved. Its gate held every metric on an identical-case
+with identical frame statuses and the labelled obstacle preserved. **CORRECTED:** measured against the same configuration with
+the key off, the effect is 114.6 -> 114.4 and 110.7 -> 105.9, i.e. nothing and 4 per cent; the 12 and 26 figures compared
+against a configuration that also differed in thread count and in the object-chain filter. With a few per cent at stake the
+case for keeping it off while it voids the backend-equivalence guarantee is stronger, not weaker. Its gate held every metric on an identical-case
 panel run (tp 182, fn 106, fp 40, precision 0.8198, event recall 0.7917, matched IoU 0.8114, zero negative episodes).
 Stated trade-off: staleness mis-places the bed on a grade by about 5 mm per metre of travel against the 25 mm fit
 distance, which is the margin the 1 m limit keeps.
