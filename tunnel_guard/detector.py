@@ -136,6 +136,9 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     # Mixed evidence (one interior + one boundary return) must not disappear
     # merely because neither subset separately reaches weak_min_voxels.
     uncertain_support = core | (~observed & nominal_overlap) | boundary
+    # See the object-chain test at the end of this function: `infrastructure_continuity` in the recipe.
+    continuity = config.get("infrastructure_continuity", {})
+    continuity_enabled = bool(continuity.get("enabled", False))
     method = config["segmentation_method"]
     if method == "density":
         labels, density_core = density_labels(cloud, config)
@@ -162,7 +165,6 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
         if diagnostics is not None:
             diagnostics.update(rejected=dict(rejected), accepted=len(objects),
                                noise_points=int(np.count_nonzero(labels < 0)))
-        return sorted(objects, key=lambda o: o["cluster_nearest_x_m"])
     else:
         order = np.argsort(labels, kind="stable")
         # One stable grouping replaces a full labels==label scan per component.
@@ -241,6 +243,45 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                            noise_points=int(np.count_nonzero(labels < 0)))
         if arrays is not None:
             diagnostics["components"] = components
+    if continuity_enabled and len(objects) > 1:
+        # A tunnel's own duct, cable tray or walkway edge reaches a single scan as a chain of small
+        # fragments at one cross-section position, repeated along the whole scan; a fallen object is one
+        # cluster, or a few, at its own position. The chain is built from the candidates themselves, each
+        # placed by its OWN support. An earlier version bucketed raw points and let an object standing in
+        # front of a wall inherit the wall's span, which dismissed real detections - hence the change of
+        # subject. A candidate is infrastructure only when other candidates at its own cross-section
+        # position continue well beyond it on both sides. Current scan only.
+        tol = float(continuity.get("cross_section_tolerance_m", 0.3))
+        minimum_length = float(continuity.get("minimum_length_m", 12.0))
+        margin = float(continuity.get("reach_m", 12.0))
+        minimum_members = int(continuity.get("minimum_members", 4))
+        placed = []
+        for obj in objects:
+            support = obj["_support_points"]
+            ground_z, _ = geometry.ground(support)
+            centre, _, _ = geometry.path(support[:, 0])
+            placed.append({"lateral": float(np.median(support[:, 1] - centre)),
+                           "height": float(np.median(support[:, 2] - ground_z)),
+                           "lo": float(support[:, 0].min()), "hi": float(support[:, 0].max())})
+        lateral_of = np.asarray([entry["lateral"] for entry in placed])
+        height_of = np.asarray([entry["height"] for entry in placed])
+        for index, obj in enumerate(objects):
+            same = ((np.abs(lateral_of - lateral_of[index]) <= tol)
+                    & (np.abs(height_of - height_of[index]) <= tol))
+            same[index] = False
+            if np.count_nonzero(same) < minimum_members:
+                continue
+            members = np.flatnonzero(same)
+            lo = min(placed[i]["lo"] for i in members)
+            hi = max(placed[i]["hi"] for i in members)
+            if hi - lo < minimum_length:
+                continue
+            if lo > placed[index]["lo"] - margin or hi < placed[index]["hi"] + margin:
+                continue
+            obj["path_relation"] = "adjacent"
+            obj["path_relation_reason"] = "longitudinally_continuous_structure"
+            obj["structure_along_track_m"] = [lo, hi]
+            obj["structure_members"] = int(len(members))
     # Keep association order independent of the selected distance definition.
     return sorted(objects, key=lambda o: o["cluster_nearest_x_m"])
 
@@ -581,7 +622,30 @@ class Detector:
         pipeline["association"] = {"state": "ran", "candidates": len(objects),
                                    "confirmed": sum(o["confirmed"] for o in objects),
                                    "history_cleared_for_motion": not motion["valid"]}
-        hazards = [o for o in objects if o["path_relation"] in ("intersecting", "unresolved")]
+        # A hazard needs certified evidence. `unsupported_nominal_envelope` means the object lies inside
+        # the *nominal* envelope where the path itself is not certified - beyond the measured anchors the
+        # centre is extrapolated and, on a curved or drifting section, is wrong by metres, so the tunnel's
+        # own surfaces appear to be inside the swept path. Counting that as a hazard turns our own
+        # uncertainty into an alarm on nearly every frame of an empty tunnel, which is the scenario the
+        # case is mostly scored on. Such objects stay in the output with their distance and this reason,
+        # and the perception-not-certified fact is reported through health instead.
+        require_certified = bool(self.config.get("hazard_requires_certified_path", True))
+
+        def is_hazard(obj: dict) -> bool:
+            if obj["path_relation"] == "intersecting":
+                return True
+            if obj["path_relation"] != "unresolved":
+                return False
+            if not require_certified:
+                return True
+            # `unsupported_nominal_envelope`: inside the *nominal* envelope where the path itself is not
+            # certified. Beyond the measured anchors the centre is extrapolated and on a drifting section
+            # is wrong by metres, so the tunnel's own surfaces appear to be inside the swept path;
+            # counting that as a hazard turns our uncertainty into an alarm on nearly every frame of an
+            # empty tunnel. Such objects stay in the output with their distance and this reason.
+            return obj["path_relation_reason"] != "unsupported_nominal_envelope"
+
+        hazards = [o for o in objects if is_hazard(o)]
         confirmed = [o for o in hazards if o["confirmed"]]
         certain = [o for o in confirmed if o["intersection_confirmed"]]
         status = ("obstacle" if certain else ("unresolved_obstacle" if confirmed else

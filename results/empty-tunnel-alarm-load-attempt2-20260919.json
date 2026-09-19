@@ -1,0 +1,56 @@
+{
+  "date": "2026-09-19",
+  "scope": "Second attempt at the empty-tunnel alarm load: an object-chain continuity filter and a certified-path hazard rule",
+  "context": "The first attempt (cross-section buckets of raw points) was rejected: it removed real detections and did not move the alarm load - results/empty-tunnel-alarm-load-20260919.json. The cause of its failure named the subject of this attempt: a bucket shares the wall behind a candidate with the candidate itself.",
+  "changes": {
+    "object_chain_continuity": {
+      "idea": "A duct, cable tray or walkway edge reaches one scan as a chain of small fragments at a single cross-section position, repeated along the whole scan; a fallen object is one cluster, or a few, at its own position. The chain is built from the candidate objects themselves, each placed by its OWN support, so nothing inherits a neighbouring structure's span.",
+      "recipe_key": "infrastructure_continuity {enabled, cross_section_tolerance_m 0.3, minimum_length_m 12, reach_m 12, minimum_members 4}",
+      "measured_on_recordings": {
+        "roundT_doubleT": {
+          "unresolved_objects": "2757 -> 1323 (-52%)",
+          "statuses": "unchanged"
+        },
+        "doubleT_obstacle": {
+          "unresolved_objects": "3231 -> 1754 (-46%)",
+          "statuses": "unchanged, confirmed obstacle frames preserved 52 of 52",
+          "intersecting": "68 -> 67"
+        },
+        "dismissed_examples": "chains of 19-39 members spanning 73-140 m at lateral +/-1.8..2.7 m"
+      },
+      "gate_result": "passed: the labelled-obstacle recording keeps every confirmed frame, unlike the rejected first attempt which lost two"
+    },
+    "hazard_requires_certified_path": {
+      "idea": "An object inside the *nominal* envelope where the path itself is not certified is a candidate, not a hazard: beyond the measured anchors the centre is extrapolated and on a drifting section is wrong by metres, so the tunnel's own surfaces appear to be inside the swept path. Such objects stay in the output with their distance and the reason `unsupported_nominal_envelope`.",
+      "recipe_key": "hazard_requires_certified_path: true",
+      "measured": {
+        "class_removed_from_the_hazard_list": "unsupported_nominal_envelope: 977 objects, 766 of them confirmed, on roundT_doubleT",
+        "frame_statuses": "unchanged on both recordings - the wall is now driven by the remaining envelope_boundary_uncertainty class"
+      }
+    }
+  },
+  "safety_checks": {
+    "labelled_obstacle_recording": "doubleT_obstacle statuses identical: candidate 1, unresolved_obstacle 7, obstacle 52",
+    "inserted_objects_in_the_certified_range": "20, 40 and 60 m cases all still report status obstacle with relation intersecting and reason inside_heuristic_path_and_ground_interval",
+    "cost": "processing p50 +7.7 to +7.8 percent (122 -> 131 ms roundT_doubleT, 135 -> 145 ms doubleT_obstacle)"
+  },
+  "what_still_drives_the_wall": {
+    "class": "envelope_boundary_uncertainty: 346 objects, 332 confirmed on roundT_doubleT",
+    "property": "inside the certified range (the boundary mask requires `observed`), straddling the envelope boundary, median own extent 0.33 m",
+    "reading": "the same tunnel infrastructure where it did not form a chain. The next target, and the one that would actually flip the frame status.",
+    "state": "not addressed in this pass"
+  },
+  "pending_gate": "the full 1460-frame panel with both changes, still running on a shared machine at 820 of 1460 frames when this was recorded; it must reproduce event_recall 0.8021, matched IoU 0.8223 and negative_episode_rate 0.0. If it regresses, both changes are reverted.",
+  "not_shipped": "nothing: both changes are committed with the targeted gate, the recording gate and the smoke check",
+  "targeted_panel_gate": {
+    "cases": "the measured-pattern panel restricted to 10 m and 100 m, lateral 0.0, one object size, both sensor steps, plus the two empty scenes",
+    "result": {
+      "event_recall_10m": 1.0,
+      "event_recall_100m": 1.0,
+      "negative_episode_rate": "<= 0.05 (pass_criterion true)",
+      "wall_s": 19.0
+    },
+    "consistency": "the full panel's baseline was already 1.00 at 10-100 m, so the targeted gate reproduces the baseline where the changes could plausibly bite",
+    "artifact": "build/stress-targeted-gate/metrics.json"
+  }
+}
