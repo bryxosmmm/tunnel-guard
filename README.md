@@ -105,13 +105,7 @@ changed no classification at all. Raising the *budget* to 0.7 m would reach 86 m
 it turns two frames of `roundT_doubleT` into certified obstacles (intersecting 12 -> 20) in a band where the
 centre is uncertain by ~1.0 m, for no measured gain. Fitted-curvature sigma propagated from the anchor window is
 over-confident by 1.6x at 50-60 m and 4-8x at 80-150 m, so the heuristic term is the calibrated model.
-Every object record now carries `far_field_lateral_bound_m`: the measured absolute error of that
-extrapolation as a function of how far past the last anchor the object sits (`4.1e-4 * d^2`, calibrated at
-0.19 / 0.72 / 1.53 / 4.79 m for 10 / 40 / 60 / 110 m). On 200 real frames this changed no status, no nearest
-distance and no object identity, while 47-49% of observations - everything beyond the measured anchor span -
-now carry their own uncertainty (median 0.19 m, up to 12 m at ~200 m). A far-field detection therefore states
-what it does not know instead of implying that an unmeasured corridor is clear. Full evidence:
-`results/alignment-long-lever-20260919.json`, `build/uncertainty-calibration.json`.
+Every object record now carries `far_field_lateral_bound_m`: the path uncertainty the classifier itself used at that object's distance - `sqrt(base^2 + extension^2)` with `base = 0.06 + 0.008r + 0.0003r^2`, calibrated to 0.46-1.34x the measured centre error over 10-110 m of extrapolation - or `null` beyond the modelled horizon, where no bounded claim exists. On 200 real frames this changed no status, no nearest distance and no object identity: 11,904 of 15,041 observations on `roundT_doubleT` carry a finite bound (max 0.45 m) and 3,137 state that their lateral track relation is unknown. A far-field detection therefore states what it does not know instead of implying that an unmeasured corridor is clear. Full evidence: `results/alignment-long-lever-20260919.json`, `build/uncertainty-calibration.json`.
 
 ## Reference corridor follows the curve
 

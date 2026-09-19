@@ -89,20 +89,20 @@ def voxel_unique_at(config: dict, reductive_size: float | None) -> bool:
     return size == reductive_size
 
 
-def _far_field_bound(distance_m: float, geometry: TrackGeometry, config: dict) -> float:
-    """Measured-error bound on the corridor's lateral centre beyond the last rail anchor.
+def _far_field_bound(distance_m: float, geometry: TrackGeometry, config: dict) -> float | None:
+    """The path uncertainty the classifier itself used at that distance, reported per object.
 
-    Calibrated on real curves (see results/alignment-long-lever-20260919.json): the extrapolated
-    centre's absolute error is 0.19 / 0.72 / 1.53 / 4.79 m at 10 / 40 / 60 / 110 m past the last
-    anchor, i.e. coefficient * d^2 with coefficient 4.1e-4 m^-1. Reported per object so a far-field
-    detection carries its own uncertainty instead of an implicit claim; zero inside the measured span.
+    Reporting the same sigma keeps the stated uncertainty and the decision consistent by
+    construction: inside the modelled horizon it is the small calibrated value (measured centre error
+    / claimed sigma was 0.46-1.34 over 10-110 m of extrapolation in
+    results/alignment-long-lever-20260919.json), and beyond the horizon it is not bounded at all -
+    reported as None rather than as an invented finite number, because there the corridor is not used
+    for any decision and a numeric bound would imply knowledge that does not exist.
     """
-    anchors = geometry.rail_anchors
-    if len(anchors) == 0:
-        return 0.0
-    past = max(0.0, distance_m - float(anchors[-1, 0]))
-    coefficient = float(config.get("far_field_bound_coefficient", 4.1e-4))
-    return coefficient * past * past
+    if len(geometry.rail_anchors) < 2:
+        return None
+    uncertainty = float(geometry.path(np.array([distance_m]))[2][0])
+    return uncertainty if np.isfinite(uncertainty) else None
 
 
 def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict,
