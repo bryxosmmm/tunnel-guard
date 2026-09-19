@@ -23,7 +23,7 @@ from .visualization import ResultMessages
 class PerceptionNode(Node):
     def __init__(self):
         super().__init__("tunnel_guard")
-        self.declare_parameter("config", "/opt/tunnel-guard/configs/detector.json")
+        self.declare_parameter("config", "/opt/tunnel-guard/configs/detector-native.json")
         self.declare_parameter("input_topic", "/lidar_points")
         self.declare_parameter("display_max_points", 50000)
         self.declare_parameter("input_timeout_s", 3.0)
@@ -133,9 +133,11 @@ class PerceptionNode(Node):
                 raise ValueError(
                     "sensor frame changed; reselect calibration and restart"
                 )
+            decode_started = time.monotonic()
             points, times, invalid, duration = decode_cloud(
                 message, self.rotation, self.translation
             )
+            decode_s = time.monotonic() - decode_started
             self.last_received = received
             self.silent = False
             row = self.detector.process(points, ns * 1e-9, times)
@@ -153,15 +155,21 @@ class PerceptionNode(Node):
                 input_reliability=self.get_parameter("input_reliability").value,
                 input_loss_count=None,
                 input_loss_note="DDS latest-scan policy; source has no sequence counter",
+                decode_s=decode_s,
+                sensor_to_result_s=None,
+                latency_scope="Callback entry to result; excludes DDS queue and publication. Sensor/host clock relation unverified.",
                 callback_processing_s=time.monotonic() - received,
             )
             if row["callback_processing_s"] > 0.1:
                 row["health_reasons"].append("processing_exceeds_10hz_input_period")
                 if row["health"] == "normal":
                     row["health"] = "degraded"
+            publish_started = time.monotonic()
             self.publish(
                 row, self.detector.display_points, ns, self.detector.display_support
             )
+            publish_s = time.monotonic() - publish_started
+            callback_to_publish_return_s = time.monotonic() - received
             self.get_logger().info(
                 json.dumps(
                     {
@@ -170,6 +178,10 @@ class PerceptionNode(Node):
                         "status": row["status"],
                         "nearest_m": row["nearest_obstacle_m"],
                         "processing_s": row["processing_s"],
+                        "decode_s": decode_s,
+                        "callback_processing_s": row["callback_processing_s"],
+                        "publish_s": publish_s,
+                        "callback_to_publish_return_s": callback_to_publish_return_s,
                     }
                 )
             )

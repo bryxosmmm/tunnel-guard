@@ -1,0 +1,2431 @@
+{
+  "archive": {
+    "bytes": 16913914318,
+    "inner_bytes": 17078961996,
+    "inner_zip_crc32": "eb204552"
+  },
+  "uncompressed_total_bytes": 90121539170,
+  "source_message_count": 11271,
+  "source_duration_s": 1199.883468908,
+  "source_segment_count": 221,
+  "source_topics": [
+    {
+      "topic_metadata": {
+        "name": "/lidar_points",
+        "type": "sensor_msgs/msg/PointCloud2",
+        "serialization_format": "cdr",
+        "offered_qos_profiles": "- history: 1\n  depth: 10\n  reliability: 1\n  durability: 2\n  deadline:\n    sec: 9223372036\n    nsec: 854775807\n  lifespan:\n    sec: 9223372036\n    nsec: 854775807\n  liveliness: 1\n  liveliness_lease_duration:\n    sec: 9223372036\n    nsec: 854775807\n  avoid_ros_namespace_conventions: false\n- history: 1\n  depth: 10\n  reliability: 1\n  durability: 2\n  deadline:\n    sec: 9223372036\n    nsec: 854775807\n  lifespan:\n    sec: 9223372036\n    nsec: 854775807\n  liveliness: 1\n  liveliness_lease_duration:\n    sec: 9223372036\n    nsec: 854775807\n  avoid_ros_namespace_conventions: false"
+      },
+      "message_count": 11271
+    }
+  ],
+  "extraction": {
+    "source": "bags.zip::bags/new_data.zst",
+    "selection": "Fixed segment indices 0,100,200 before examining their clouds",
+    "files": [
+      {
+        "archive_member": "./new_data/new_data_200.db3",
+        "path": "data/extended_subset/new_data_200/new_data_200.db3",
+        "bytes": 407789568,
+        "sha256": "e1170952f29c7242498dfdc46f7cbbc705ce8b864d38d8e72137146fd64377a2"
+      },
+      {
+        "archive_member": "./new_data/new_data_100.db3",
+        "path": "data/extended_subset/new_data_100/new_data_100.db3",
+        "bytes": 407789568,
+        "sha256": "27c6c121fdaaae8d86a2b39ffebb726a6c61a000350bb0e7ec36e8407941eb59"
+      },
+      {
+        "archive_member": "./new_data/new_data_0.db3",
+        "path": "data/extended_subset/new_data_0/new_data_0.db3",
+        "bytes": 407789568,
+        "sha256": "1212c4c722d53c26b389ce416a13680f8e6c269180ebe0aba15616a05ca58e53"
+      }
+    ]
+  },
+  "segments": [
+    {
+      "segment": 0,
+      "frames": 51,
+      "geometry_valid": 51,
+      "mounting_observed_frames": 51,
+      "height_proxy_median_m": 1.070705488593396,
+      "measurement_first_ns": 946686689233376980,
+      "measurement_last_ns": 946686694233440042,
+      "nonincreasing_acquisition_steps": 0,
+      "timestamp_overlaps_with_previous_798_frame_panel": 0,
+      "failure_frames": [],
+      "provenance": {
+        "source_metadata": "build/extended-inventory/source-metadata.yaml",
+        "source_metadata_sha256": "7118a5a216d252e8b0ec6e7174e255e06b590164285649f950d8839ebfa9d91f",
+        "original_relative_file": "new_data_0.db3",
+        "original_segment_index": 0,
+        "preceding_record_messages": 0,
+        "subset_messages": 51,
+        "source_messages": 11271,
+        "scope": "Unmodified real SQLite segment; generated metadata covers this segment only. Start tracker anew; not a complete recording."
+      },
+      "layout": {
+        "bag": "data/extended_subset/new_data_0",
+        "metadata_sha256": "f728f16b249ac68d50bdc197ed3e80729a0c9dec701fbb2596cd34f9304ca115",
+        "config_sha256": "3585c29bf5aaef9299dabc74021c0ca8e5764c3a121a443b903a1748732ab586",
+        "topics": [
+          {
+            "topic": "/lidar_points",
+            "type": "sensor_msgs/msg/PointCloud2",
+            "messages": 51
+          }
+        ],
+        "frames": [
+          {
+            "topic": "/lidar_points",
+            "frame_id": "hesai_lidar",
+            "record_ns": 1789642926161078864,
+            "measurement_ns": 946686689233376980,
+            "record_minus_header_s": 842956236.9277018,
+            "width": 307200,
+            "height": 1,
+            "point_step": 26,
+            "row_step": 7987200,
+            "bigendian": false,
+            "fields": [
+              {
+                "name": "x",
+                "offset": 0,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "y",
+                "offset": 4,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "z",
+                "offset": 8,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "intensity",
+                "offset": 12,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "ring",
+                "offset": 16,
+                "datatype": 4,
+                "count": 1
+              },
+              {
+                "name": "timestamp",
+                "offset": 18,
+                "datatype": 8,
+                "count": 1
+              }
+            ],
+            "valid_points": 159162,
+            "invalid_points": 148038,
+            "normalized_point_times": 159162,
+            "inferred_scan_duration_s": 0.03194308280944824,
+            "range_counts": [
+              122439,
+              24668,
+              8211,
+              1503,
+              1772,
+              256,
+              155
+            ]
+          },
+          {
+            "topic": "/lidar_points",
+            "frame_id": "hesai_lidar",
+            "record_ns": 1789642926262345802,
+            "measurement_ns": 946686689333369017,
+            "record_minus_header_s": 842956236.9289768,
+            "width": 307200,
+            "height": 1,
+            "point_step": 26,
+            "row_step": 7987200,
+            "bigendian": false,
+            "fields": [
+              {
+                "name": "x",
+                "offset": 0,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "y",
+                "offset": 4,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "z",
+                "offset": 8,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "intensity",
+                "offset": 12,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "ring",
+                "offset": 16,
+                "datatype": 4,
+                "count": 1
+              },
+              {
+                "name": "timestamp",
+                "offset": 18,
+                "datatype": 8,
+                "count": 1
+              }
+            ],
+            "valid_points": 159588,
+            "invalid_points": 147612,
+            "normalized_point_times": 159588,
+            "inferred_scan_duration_s": 0.031942009925842285,
+            "range_counts": [
+              122935,
+              24551,
+              8253,
+              1498,
+              1773,
+              257,
+              157
+            ]
+          },
+          {
+            "topic": "/lidar_points",
+            "frame_id": "hesai_lidar",
+            "record_ns": 1789642926357044029,
+            "measurement_ns": 946686689433359027,
+            "record_minus_header_s": 842956236.923685,
+            "width": 307200,
+            "height": 1,
+            "point_step": 26,
+            "row_step": 7987200,
+            "bigendian": false,
+            "fields": [
+              {
+                "name": "x",
+                "offset": 0,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "y",
+                "offset": 4,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "z",
+                "offset": 8,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "intensity",
+                "offset": 12,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "ring",
+                "offset": 16,
+                "datatype": 4,
+                "count": 1
+              },
+              {
+                "name": "timestamp",
+                "offset": 18,
+                "datatype": 8,
+                "count": 1
+              }
+            ],
+            "valid_points": 159882,
+            "invalid_points": 147318,
+            "normalized_point_times": 159882,
+            "inferred_scan_duration_s": 0.031942009925842285,
+            "range_counts": [
+              123296,
+              24464,
+              8269,
+              1496,
+              1775,
+              259,
+              163
+            ]
+          }
+        ],
+        "range_bins_m": [
+          2.0,
+          10.0,
+          20.0,
+          40.0,
+          60.0,
+          100.0,
+          150.0,
+          220.0
+        ],
+        "note": "Fields and clocks measured from this prefix only; no calibration, deskew provenance, or range validation implied."
+      }
+    },
+    {
+      "segment": 100,
+      "frames": 51,
+      "geometry_valid": 51,
+      "mounting_observed_frames": 51,
+      "height_proxy_median_m": 1.0924624968002308,
+      "measurement_first_ns": 946687199233450055,
+      "measurement_last_ns": 946687204233348966,
+      "nonincreasing_acquisition_steps": 0,
+      "timestamp_overlaps_with_previous_798_frame_panel": 0,
+      "failure_frames": [],
+      "provenance": {
+        "source_metadata": "build/extended-inventory/source-metadata.yaml",
+        "source_metadata_sha256": "7118a5a216d252e8b0ec6e7174e255e06b590164285649f950d8839ebfa9d91f",
+        "original_relative_file": "new_data_100.db3",
+        "original_segment_index": 100,
+        "preceding_record_messages": 5100,
+        "subset_messages": 51,
+        "source_messages": 11271,
+        "scope": "Unmodified real SQLite segment; generated metadata covers this segment only. Start tracker anew; not a complete recording."
+      },
+      "layout": {
+        "bag": "data/extended_subset/new_data_100",
+        "metadata_sha256": "f4a16fef04434d7f6958667e6e33fd2896991a0648fd43662cbbc2354e491e4f",
+        "config_sha256": "3585c29bf5aaef9299dabc74021c0ca8e5764c3a121a443b903a1748732ab586",
+        "topics": [
+          {
+            "topic": "/lidar_points",
+            "type": "sensor_msgs/msg/PointCloud2",
+            "messages": 51
+          }
+        ],
+        "frames": [
+          {
+            "topic": "/lidar_points",
+            "frame_id": "hesai_lidar",
+            "record_ns": 1789643436188421313,
+            "measurement_ns": 946687199233450055,
+            "record_minus_header_s": 842956236.9549713,
+            "width": 307200,
+            "height": 1,
+            "point_step": 26,
+            "row_step": 7987200,
+            "bigendian": false,
+            "fields": [
+              {
+                "name": "x",
+                "offset": 0,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "y",
+                "offset": 4,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "z",
+                "offset": 8,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "intensity",
+                "offset": 12,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "ring",
+                "offset": 16,
+                "datatype": 4,
+                "count": 1
+              },
+              {
+                "name": "timestamp",
+                "offset": 18,
+                "datatype": 8,
+                "count": 1
+              }
+            ],
+            "valid_points": 178890,
+            "invalid_points": 128310,
+            "normalized_point_times": 178890,
+            "inferred_scan_duration_s": 0.031970977783203125,
+            "range_counts": [
+              100276,
+              56007,
+              15454,
+              3798,
+              2286,
+              806,
+              263
+            ]
+          },
+          {
+            "topic": "/lidar_points",
+            "frame_id": "hesai_lidar",
+            "record_ns": 1789643436286965537,
+            "measurement_ns": 946687199333441019,
+            "record_minus_header_s": 842956236.9535245,
+            "width": 307200,
+            "height": 1,
+            "point_step": 26,
+            "row_step": 7987200,
+            "bigendian": false,
+            "fields": [
+              {
+                "name": "x",
+                "offset": 0,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "y",
+                "offset": 4,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "z",
+                "offset": 8,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "intensity",
+                "offset": 12,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "ring",
+                "offset": 16,
+                "datatype": 4,
+                "count": 1
+              },
+              {
+                "name": "timestamp",
+                "offset": 18,
+                "datatype": 8,
+                "count": 1
+              }
+            ],
+            "valid_points": 189702,
+            "invalid_points": 117498,
+            "normalized_point_times": 189702,
+            "inferred_scan_duration_s": 0.03205299377441406,
+            "range_counts": [
+              113940,
+              50638,
+              17931,
+              3831,
+              2226,
+              932,
+              204
+            ]
+          },
+          {
+            "topic": "/lidar_points",
+            "frame_id": "hesai_lidar",
+            "record_ns": 1789643436389539402,
+            "measurement_ns": 946687199433426023,
+            "record_minus_header_s": 842956236.9561135,
+            "width": 307200,
+            "height": 1,
+            "point_step": 26,
+            "row_step": 7987200,
+            "bigendian": false,
+            "fields": [
+              {
+                "name": "x",
+                "offset": 0,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "y",
+                "offset": 4,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "z",
+                "offset": 8,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "intensity",
+                "offset": 12,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "ring",
+                "offset": 16,
+                "datatype": 4,
+                "count": 1
+              },
+              {
+                "name": "timestamp",
+                "offset": 18,
+                "datatype": 8,
+                "count": 1
+              }
+            ],
+            "valid_points": 181954,
+            "invalid_points": 125246,
+            "normalized_point_times": 181954,
+            "inferred_scan_duration_s": 0.032052040100097656,
+            "range_counts": [
+              103628,
+              52797,
+              18567,
+              3722,
+              2130,
+              888,
+              222
+            ]
+          }
+        ],
+        "range_bins_m": [
+          2.0,
+          10.0,
+          20.0,
+          40.0,
+          60.0,
+          100.0,
+          150.0,
+          220.0
+        ],
+        "note": "Fields and clocks measured from this prefix only; no calibration, deskew provenance, or range validation implied."
+      }
+    },
+    {
+      "segment": 200,
+      "frames": 51,
+      "geometry_valid": 50,
+      "mounting_observed_frames": 49,
+      "height_proxy_median_m": 1.0929761366735062,
+      "measurement_first_ns": 946687750033393025,
+      "measurement_last_ns": 946687758933467984,
+      "nonincreasing_acquisition_steps": 0,
+      "timestamp_overlaps_with_previous_798_frame_panel": 0,
+      "failure_frames": [
+        {
+          "local_frame": 48,
+          "reason": "insufficient_paired_rail_support"
+        }
+      ],
+      "provenance": {
+        "source_metadata": "build/extended-inventory/source-metadata.yaml",
+        "source_metadata_sha256": "7118a5a216d252e8b0ec6e7174e255e06b590164285649f950d8839ebfa9d91f",
+        "original_relative_file": "new_data_200.db3",
+        "original_segment_index": 200,
+        "preceding_record_messages": 10200,
+        "subset_messages": 51,
+        "source_messages": 11271,
+        "scope": "Unmodified real SQLite segment; generated metadata covers this segment only. Start tracker anew; not a complete recording."
+      },
+      "layout": {
+        "bag": "data/extended_subset/new_data_200",
+        "metadata_sha256": "696668de3ccfd60cb7a976865bdb19c1619372a453849256b2b81a60b4339d11",
+        "config_sha256": "3585c29bf5aaef9299dabc74021c0ca8e5764c3a121a443b903a1748732ab586",
+        "topics": [
+          {
+            "topic": "/lidar_points",
+            "type": "sensor_msgs/msg/PointCloud2",
+            "messages": 51
+          }
+        ],
+        "frames": [
+          {
+            "topic": "/lidar_points",
+            "frame_id": "hesai_lidar",
+            "record_ns": 1789643987026537478,
+            "measurement_ns": 946687750033393025,
+            "record_minus_header_s": 842956236.9931444,
+            "width": 307200,
+            "height": 1,
+            "point_step": 26,
+            "row_step": 7987200,
+            "bigendian": false,
+            "fields": [
+              {
+                "name": "x",
+                "offset": 0,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "y",
+                "offset": 4,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "z",
+                "offset": 8,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "intensity",
+                "offset": 12,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "ring",
+                "offset": 16,
+                "datatype": 4,
+                "count": 1
+              },
+              {
+                "name": "timestamp",
+                "offset": 18,
+                "datatype": 8,
+                "count": 1
+              }
+            ],
+            "valid_points": 189478,
+            "invalid_points": 117722,
+            "normalized_point_times": 189478,
+            "inferred_scan_duration_s": 0.03205299377441406,
+            "range_counts": [
+              146204,
+              29472,
+              9995,
+              1937,
+              1315,
+              549,
+              0
+            ]
+          },
+          {
+            "topic": "/lidar_points",
+            "frame_id": "hesai_lidar",
+            "record_ns": 1789643987142632097,
+            "measurement_ns": 946687750133381963,
+            "record_minus_header_s": 842956237.0092502,
+            "width": 307200,
+            "height": 1,
+            "point_step": 26,
+            "row_step": 7987200,
+            "bigendian": false,
+            "fields": [
+              {
+                "name": "x",
+                "offset": 0,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "y",
+                "offset": 4,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "z",
+                "offset": 8,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "intensity",
+                "offset": 12,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "ring",
+                "offset": 16,
+                "datatype": 4,
+                "count": 1
+              },
+              {
+                "name": "timestamp",
+                "offset": 18,
+                "datatype": 8,
+                "count": 1
+              }
+            ],
+            "valid_points": 189722,
+            "invalid_points": 117478,
+            "normalized_point_times": 189722,
+            "inferred_scan_duration_s": 0.032054901123046875,
+            "range_counts": [
+              146357,
+              29588,
+              9928,
+              1937,
+              1333,
+              571,
+              0
+            ]
+          },
+          {
+            "topic": "/lidar_points",
+            "frame_id": "hesai_lidar",
+            "record_ns": 1789643987229429343,
+            "measurement_ns": 946687750233379006,
+            "record_minus_header_s": 842956236.9960504,
+            "width": 307200,
+            "height": 1,
+            "point_step": 26,
+            "row_step": 7987200,
+            "bigendian": false,
+            "fields": [
+              {
+                "name": "x",
+                "offset": 0,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "y",
+                "offset": 4,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "z",
+                "offset": 8,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "intensity",
+                "offset": 12,
+                "datatype": 7,
+                "count": 1
+              },
+              {
+                "name": "ring",
+                "offset": 16,
+                "datatype": 4,
+                "count": 1
+              },
+              {
+                "name": "timestamp",
+                "offset": 18,
+                "datatype": 8,
+                "count": 1
+              }
+            ],
+            "valid_points": 189760,
+            "invalid_points": 117440,
+            "normalized_point_times": 189760,
+            "inferred_scan_duration_s": 0.03205597400665283,
+            "range_counts": [
+              146607,
+              29214,
+              10048,
+              1952,
+              1380,
+              547,
+              0
+            ]
+          }
+        ],
+        "range_bins_m": [
+          2.0,
+          10.0,
+          20.0,
+          40.0,
+          60.0,
+          100.0,
+          150.0,
+          220.0
+        ],
+        "note": "Fields and clocks measured from this prefix only; no calibration, deskew provenance, or range validation implied."
+      }
+    }
+  ],
+  "comparison": {
+    "panel": "configs/extended-panel.json",
+    "panel_sha256": "5b835ba09f2f65821316322c5e87cabdcbda705a6d5f83c0dacd63601cbc8d80",
+    "accuracy": null,
+    "limitations": [
+      "Alarm counts on nonexhaustively labelled development recordings are not precision, recall or false-alarm rate.",
+      "Repeated frames and candidates are not independent object events.",
+      "Timing is descriptive; concurrent workloads and visualization settings differ.",
+      "Float comparison uses absolute and relative tolerance 1e-10; discrete decisions and IDs are exact."
+    ],
+    "bags": [
+      {
+        "bag": "new_data_0",
+        "before": "build/extended-baseline/new_data_0.jsonl",
+        "after": "build/extended-measured/new_data_0.jsonl",
+        "before_sha256": "0e34619e37c166de9bf395a909a2ec41fd50f3a08a204844a2163b3218a35871",
+        "after_sha256": "e6d475a693aa29b7f700c7949d353e84ef2dbe2a31bdb6956b58fd45dee5d1ea",
+        "before_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 50,
+            "obstacle": 1
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 10817,
+          "support_voxel_observations": 795700,
+          "confirmed_intersection_observations": 5,
+          "candidate_observations_at_least_60m": 2750,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 120.954625075683,
+            "p95": 164.22897949814796,
+            "p99": 931.8464169627987
+          }
+        },
+        "after_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 49,
+            "obstacle": 2
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 10771,
+          "support_voxel_observations": 793026,
+          "confirmed_intersection_observations": 8,
+          "candidate_observations_at_least_60m": 2699,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 119.264250039123,
+            "p95": 180.71420851629227,
+            "p99": 848.1065420201048
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 51,
+          "geometry": 51,
+          "range_observability": 24,
+          "nearest_obstacle_m": 6,
+          "status": 1
+        },
+        "first_changed_frames": {
+          "status": [
+            16
+          ],
+          "nearest_obstacle_m": [
+            1,
+            18,
+            42,
+            44,
+            46,
+            47
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            1,
+            2,
+            6,
+            10,
+            13,
+            14,
+            15,
+            16,
+            18,
+            21,
+            26,
+            28,
+            34,
+            36,
+            37,
+            38,
+            39,
+            41,
+            42,
+            43,
+            44,
+            46,
+            47
+          ]
+        },
+        "largest_compared_float_difference": 4.232617616653442
+      },
+      {
+        "bag": "new_data_100",
+        "before": "build/extended-baseline/new_data_100.jsonl",
+        "after": "build/extended-measured/new_data_100.jsonl",
+        "before_sha256": "32f4fe09fdb922739a597711d5ec47f27d448ee3ec9379d3c68d0c04d72fb1a4",
+        "after_sha256": "835d7be3dc8bc93de26649c1e314e8438e9adf2ba408d09950d16cda4968b2cc",
+        "before_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 51
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 8764,
+          "support_voxel_observations": 700005,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 2235,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 192.98533292021602,
+            "p95": 456.13845851039514,
+            "p99": 731.621791550424
+          }
+        },
+        "after_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 51
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 8964,
+          "support_voxel_observations": 694451,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 2312,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 191.28158292733133,
+            "p95": 311.2858335371129,
+            "p99": 361.48358351783827
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "nearest_obstacle_m": 4,
+          "objects": 51,
+          "geometry": 51,
+          "range_observability": 28
+        },
+        "first_changed_frames": {
+          "nearest_obstacle_m": [
+            0,
+            9,
+            17,
+            39
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            2,
+            3,
+            5,
+            6,
+            7,
+            9,
+            10,
+            13,
+            14,
+            15,
+            19,
+            20,
+            22,
+            24,
+            25,
+            30,
+            31,
+            32,
+            34,
+            35,
+            37,
+            42,
+            43,
+            44,
+            46,
+            47,
+            48,
+            50
+          ]
+        },
+        "largest_compared_float_difference": 25.025253295898438
+      },
+      {
+        "bag": "new_data_200",
+        "before": "build/extended-baseline/new_data_200.jsonl",
+        "after": "build/extended-measured/new_data_200.jsonl",
+        "before_sha256": "b82e32da6c19ff141cd18ecebd3c213a6f6fe077e027fa669585dda72cbc523f",
+        "after_sha256": "0a7a5fc26dc83e36046b186ff66f68021406d22e1a6f52dce27b50d5b2e27652",
+        "before_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "candidate": 2,
+            "unresolved_obstacle": 12,
+            "obstacle": 36,
+            "unknown": 1
+          },
+          "health_frames": {
+            "degraded": 50,
+            "unavailable": 1
+          },
+          "geometry_valid_frames": 50,
+          "motion_valid_frames": 49,
+          "candidate_observations": 11178,
+          "support_voxel_observations": 1064450,
+          "confirmed_intersection_observations": 217,
+          "candidate_observations_at_least_60m": 3031,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 190.91404101345688,
+            "p95": 313.9381459914148,
+            "p99": 373.23720793938264
+          }
+        },
+        "after_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 27,
+            "obstacle": 22,
+            "unknown": 1
+          },
+          "health_frames": {
+            "degraded": 50,
+            "unavailable": 1
+          },
+          "geometry_valid_frames": 50,
+          "motion_valid_frames": 49,
+          "candidate_observations": 11328,
+          "support_voxel_observations": 1066051,
+          "confirmed_intersection_observations": 27,
+          "candidate_observations_at_least_60m": 3177,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 142.41370907984674,
+            "p95": 193.54874943383038,
+            "p99": 261.66604150785133
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 50,
+          "geometry": 51,
+          "range_observability": 28,
+          "nearest_obstacle_m": 11,
+          "status": 19
+        },
+        "first_changed_frames": {
+          "status": [
+            11,
+            12,
+            17,
+            19,
+            20,
+            22,
+            23,
+            24,
+            25,
+            27,
+            29,
+            31,
+            32,
+            33,
+            34,
+            35,
+            40,
+            41,
+            50
+          ],
+          "nearest_obstacle_m": [
+            5,
+            6,
+            7,
+            9,
+            11,
+            12,
+            22,
+            27,
+            29,
+            36,
+            41
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            1,
+            2,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            14,
+            15,
+            16,
+            17,
+            19,
+            22,
+            27,
+            28,
+            29,
+            30,
+            34,
+            35,
+            37,
+            38,
+            42,
+            46,
+            47
+          ]
+        },
+        "largest_compared_float_difference": 5.617417573928833
+      }
+    ]
+  },
+  "scope": "Initial fixed unlabelled segment sample; no tuning, no full-corpus inference, no precision/recall or sensor-calibration validation",
+  "full_inventory": [
+    {
+      "name": "./new_data",
+      "bytes": 0,
+      "type": "5"
+    },
+    {
+      "name": "./new_data/new_data_30.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_58.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_200.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_84.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_17.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_73.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_122.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_139.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_70.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_133.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_46.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_215.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_93.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_77.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_59.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_143.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_54.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_211.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_148.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_50.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_13.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_101.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_90.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_66.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_64.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_55.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_113.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_194.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_168.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_189.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_47.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_184.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_192.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_146.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_83.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_81.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_118.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_92.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_187.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_120.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_15.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_209.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_205.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_71.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_19.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_173.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_207.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_111.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_25.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_151.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_79.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_178.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_195.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_117.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_171.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_12.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_80.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_134.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_67.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_175.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_138.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_6.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_27.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_126.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_210.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_159.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_196.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_176.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_91.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_7.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_112.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_96.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_121.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_145.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_2.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_185.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_174.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_183.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_150.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_37.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_136.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_62.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_198.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_155.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_105.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_3.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_204.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_35.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_108.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_26.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_129.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_1.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_82.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_142.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_52.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_38.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_202.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_208.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_45.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_130.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_109.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_57.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_39.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_182.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_161.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_94.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_8.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_60.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_166.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_164.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_180.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_18.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_69.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_163.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_86.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_170.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_188.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_119.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_100.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_48.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_172.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_99.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_22.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_154.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_11.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_85.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_20.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_165.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_4.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_162.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_131.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_44.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_89.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_110.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_140.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_63.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_102.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_0.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_78.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_217.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_203.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_197.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_144.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_61.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/metadata.yaml",
+      "bytes": 44642,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_190.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_34.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_107.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_98.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_193.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_169.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_213.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_40.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_95.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_97.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_14.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_103.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_216.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_199.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_21.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_220.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_49.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_152.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_181.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_160.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_9.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_28.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_115.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_42.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_219.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_124.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_218.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_114.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_153.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_127.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_106.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_167.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_29.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_51.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_41.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_23.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_53.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_177.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_74.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_56.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_31.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_135.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_125.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_132.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_179.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_201.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_212.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_214.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_186.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_68.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_206.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_76.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_149.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_16.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_147.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_32.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_72.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_156.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_33.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_88.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_116.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_191.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_24.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_158.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_141.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_5.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_36.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_104.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_123.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_43.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_87.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_10.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_128.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_65.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_75.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_137.db3",
+      "bytes": 407789568,
+      "type": "0"
+    },
+    {
+      "name": "./new_data/new_data_157.db3",
+      "bytes": 407789568,
+      "type": "0"
+    }
+  ],
+  "acquisition_gaps": [
+    {
+      "segment": 200,
+      "local_frame": 11,
+      "measurement_gap_s": 3.999989033,
+      "record_gap_s": 3.817164602,
+      "tracker_gap_reset": true
+    }
+  ]
+}

@@ -13,10 +13,9 @@
 //    so a frame costs copies, not malloc/free or page faults. Callers receive
 //    explicit copies because the arena is overwritten by the next call.
 //
-// Deliberately absent: Open3D plane proposals and normal/covariance estimation.
-// Their outputs cannot be reproduced bit for bit (adaptive stopping depends on
-// scheduling; the fast normal path is not the covariance eigenvector), and they
-// gate real decisions.
+// Open3D plane proposals remain serial. Native normal/covariance computation
+// is validated empirically on recorded inputs; it is not a bitwise guarantee
+// for arbitrary unseen geometry.
 #define PY_SSIZE_T_CLEAN
 #include "native.h"
 

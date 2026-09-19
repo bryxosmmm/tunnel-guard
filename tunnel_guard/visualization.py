@@ -36,11 +36,29 @@ def corridor_edges(description: dict, config: dict) -> np.ndarray:
     geometry.ground_anchors = np.asarray(description["ground_anchors"])
     geometry.rail_anchors = np.asarray(description["rail_anchors"])
     geometry.rail_head_height_m = description["rail_head_height_m"]
+    geometry.rail_frames = description.get("rail_frames", [])
+    geometry.rail_frame_version = description.get("rail_frame_version", 1)
+    geometry.rail_support_diagnostics = description.get("rail_support_diagnostics", [])
     segments = np.asarray(config["envelope_segments_m"])
     # Retain both sides of width discontinuities at adjacent segment boundaries.
     contour = [(float(h), float(w + config["envelope_margin_m"]))
                for low, high, wlow, whigh in segments for h, w in ((low, wlow), (high, whigh))]
     contour = [(h, -w) for h, w in contour] + [(h, w) for h, w in reversed(contour)]
+    if config.get("rail_frame_mode", "bed") == "local_3d":
+        edges = []
+        for a, b, _, lateral, normal, _, _ in geometry.frame_segments():
+            _, _, path_error = geometry.path(np.asarray([a[0], b[0]]))
+            _, bed_error = geometry.ground(np.asarray([a, b]))
+            if (np.any(path_error > config["path_max_uncertainty_m"])
+                    or np.any(bed_error > config["ground_max_uncertainty_m"])):
+                continue
+            rings = [np.asarray([c + w * lateral + h * normal for h, w in contour]) for c in (a, b)]
+            for ring in rings:
+                for p, q in zip(ring, np.roll(ring, -1, axis=0)):
+                    edges.extend((p, q))
+            for p, q in zip(*rings):
+                edges.extend((p, q))
+        return np.asarray(edges).reshape(-1, 3)
     edges, previous = [], None
     slope = geometry.plane[1]
     normal = np.sqrt(1 + np.sum(geometry.plane[:2] ** 2))
@@ -111,6 +129,10 @@ class ResultMessages:
         point_message = m("sensor_msgs/msg/PointCloud2", header, 1, len(cloud), fields, False, 12,
                           len(cloud) * 12, cloud.view(np.uint8).reshape(-1), True)
         markers = [self.marker(header, "clear", 0, 5, action=3)]
+        mounting = row.get("mounting")
+        if mounting and mounting.get("support_points"):
+            markers.append(self.marker(header, "railhead_support_for_mounting", 0, 8,
+                                       mounting["support_points"], (.1, 1., .6, 1.)))
         corridor = corridor_edges(row.get("geometry", {}), self.config)
         if len(corridor):
             markers.append(self.marker(header, "reference_envelope", 0, 5, corridor))
@@ -140,6 +162,12 @@ class ResultMessages:
                 f"Intrusion={distances['confirmed_intersection_m']} m | uncertain={distances['unresolved_confirmed_m']} m\n"
                 f"{row['health']}: {', '.join(row['health_reasons'])}\n"
                 "Reference envelope; observed support only; route clearance unknown")
+        if mounting:
+            measured = mounting.get("height_above_support_plane_m") if mounting["state"] == "observed" else None
+            estimate = "unavailable" if measured is None else f"{measured:.3f} m"
+            text += (f"\nRail support height: {estimate}; reported static height: "
+                     f"{mounting['reference_height_m']:.3f} m"
+                     "\nRecording applicability unverified; vehicle calibration unverified")
         markers.append(self.marker(header, "quality", 0, 9, color=(1., 1., 1., 1.), text=text, position=(4., 0., 2.)))
         payloads = {"points_display": point_message,
                     "debug_markers": m("visualization_msgs/msg/MarkerArray", markers),

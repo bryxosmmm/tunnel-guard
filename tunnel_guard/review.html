@@ -107,10 +107,12 @@
       min="0"
       value="0"
       style="width: 80px"
-    /><button id="go">Перейти</button><button id="reset">Общий вид</button
+    /><button id="go">Перейти</button><button id="reset">Общий вид</button>
+    <button id="mountZoom">Проверить установку</button
     ><span id="name"></span
     ><label><input id="adjacent" type="checkbox" /> рядом</label
     ><label><input id="labels" type="checkbox" /> подписи</label>
+    <label><input id="mounting" type="checkbox" checked /> опора установки</label>
   </div>
   <small
     >Записанный результат, не живой датчик. Колесо — масштаб, перетаскивание —
@@ -122,7 +124,7 @@
 <div id="plots"><canvas id="xy"></canvas><canvas id="xz"></canvas></div>
 <div id="legend">
   🟥 Подтверждённое пересечение · 🟧 Подтверждённый объект, пересечение не
-  подтверждено · 🟨 Кандидат · серый: рядом · голубой: опорный контур<br /><small
+  подтверждено · 🟨 Кандидат · серый: рядом · голубой: опорный контур · зелёный: точки для оценки установки<br /><small
     >Голубой контур — расчётный габарит, а не измеренный кузов поезда.
     Красный означает пересечение модели, не доказанную опасность столкновения.
     Боксы описывают наблюдаемые отражения. Отсутствие бокса не доказывает
@@ -233,6 +235,13 @@
       }
       for (let k = 0; k < data.corridor.length; k += 2)
         line(v, data.corridor[k], data.corridor[k + 1], "#23b9ce");
+      if ($("mounting").checked) {
+        c.fillStyle = "#35efa4";
+        for (const point of data.row.mounting?.support_points || []) {
+          const p = project(v, point), size = 3 * devicePixelRatio;
+          c.fillRect(p[0] - size / 2, p[1] - size / 2, size, size);
+        }
+      }
       for (let o of data.row.objects) {
         if (o.path_relation === "adjacent" && !$("adjacent").checked && selected !== o) continue;
         let a = o.bbox_min,
@@ -299,6 +308,13 @@
       let r = data.row;
       $("info").textContent =
         `${meta.bag} | кадр ${r.frame} | ${r.status} | пересечение: ${format(data.distances.confirmed_intersection_m)} м · неопределённый объект: ${format(data.distances.unresolved_confirmed_m)} м\nКачество: ${r.health} — ${(r.health_reasons || []).join(", ")}\nИзмерение: ${r.measurement_timestamp_ns_string} нс | показано ${data.points.length} / ${data.decoded_points} отражений | система: ${r.coordinate_frame}`;
+      if (r.mounting) {
+        const m = r.mounting;
+        $("info").textContent += m.state === "observed"
+          ? `\nУстановка: высота над опорой рельсов ${m.height_above_support_plane_m.toFixed(3)} м; заявлено ${m.reference_height_m.toFixed(3)} м; разность ${(m.height_residual_to_reference_m * 1000).toFixed(0)} мм. Боковое смещение ${m.lateral_offset_from_support_center_m.toFixed(3)} м.`
+          : `\nОценка установки недоступна: ${m.reason}.`;
+        $("info").textContent += "\nРазмер дан для пустого неподвижного вагона; применимость к записи не подтверждена. Это диагностика, не установленная калибровка.";
+      }
       let t = document.createElement("table");
       let head = t.insertRow();
       for (let label of [
@@ -393,7 +409,20 @@
   $("number").onkeydown = (e) => {
     if (e.key === "Enter") load(Number(e.target.value));
   };
-  $("adjacent").onchange = $("labels").onchange = draw;
+  $("mountZoom").onclick = () => {
+    const points = data?.row.mounting?.support_points || [];
+    if (!points.length) return;
+    playing = false;
+    $("play").textContent = "▶";
+    $("mounting").checked = true;
+    for (const view of views) {
+      const xs = points.map(p => p[0]), ys = points.map(p => p[view.dim]);
+      view.bounds = [Math.min(...xs) - 1, Math.max(...xs) + 1,
+                     Math.min(...ys) - .4, Math.max(...ys) + .4];
+    }
+    draw();
+  };
+  $("adjacent").onchange = $("labels").onchange = $("mounting").onchange = draw;
   $("slider").onchange = (e) => load(Number(e.target.value));
   $("number").onchange = (e) => load(Number(e.target.value));
   $("prev").onclick = () => load(index - 1);
@@ -420,7 +449,10 @@
       meta = m;
       $("name").textContent = `${m.frames.length} кадров · ${m.run}`;
       $("slider").max = $("number").max = m.frames.length - 1;
-      load(0);
+      const requested = new URLSearchParams(window.location.search).get("frame");
+      const initial = requested === null ? 0 : m.frames.indexOf(Number(requested));
+      if (initial < 0) throw Error("Этот кадр отсутствует в доступных результатах прогона.");
+      load(initial);
     })
     .catch((e) => ($("error").textContent = e.message));
 </script>

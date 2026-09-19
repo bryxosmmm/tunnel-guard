@@ -212,6 +212,10 @@ def classify_geometry(points: np.ndarray, geometry, module=None):
             or len(geometry.rail_anchors) < 2:
         return None
     config = geometry.config
+    # The C++ kernel implements the legacy bed basis. Experimental local 3D
+    # frames use the shared NumPy classifier until profiling warrants a port.
+    if config.get("rail_frame_mode", "bed") == "local_3d":
+        return None
     rail_head = geometry.rail_head_height_m if geometry.rail_head_height_m is not None else float("nan")
     payload = module.classify_geometry(
         np.ascontiguousarray(points), np.asarray(geometry.plane, dtype=float),

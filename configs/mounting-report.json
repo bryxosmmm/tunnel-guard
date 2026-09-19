@@ -1,0 +1,17 @@
+{
+  "run": "build/mounting-real",
+  "output": "build/mounting-report",
+  "fit_frames": 20,
+  "min_observed_fraction": 0.8,
+  "max_rotation_deviation_deg": 1.0,
+  "max_height_span_m": 0.1,
+  "max_lateral_span_m": 0.15,
+  "bags": [
+    "doubleT_obstacle",
+    "doubleT_platform",
+    "roundT_doubleT"
+  ],
+  "plot": true,
+  "hypothesis": "A prefix-frozen railhead-support orientation remains numerically stable and consistent with the reported reference on strictly later acquisitions",
+  "criterion": "80% observed frames per partition; maximum orientation deviation 1 degree, height span .10m, lateral span .15m; no outside-band reference observations; unknown applicability still prohibits installing a vehicle calibration"
+}

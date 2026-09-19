@@ -6,19 +6,38 @@ Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 
 
 The initial review and its two real 30-frame prefixes are documented in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). Subsequent iterations and historical results below are separate evidence.
 
+## Extended dataset: initial real runs
+
+See [archive inventory and first comparison](docs/EXTENDED_FIRST_LOOK.md): 11,271 clouds in 221 segments, about 84 GiB unpacked. Three fixed segments (153 clouds) were processed by current and previous geometry without tuning. Both fail on the same one frame; no labelled accuracy is established. The initial sample extracted about 1.14 GiB; after disk cleanup, [the complete recording is now extracted and all acquisition headers audited](docs/EXTENDED_FULL_INGEST.md). [Continuous detector inference now covers all 11,271 clouds](docs/EXTENDED_FULL_RUN.md): 11,250 frames with supported geometry, 21 unavailable; median processing 132 ms on this Mac. No labelled accuracy is established.
+
 ## Usable runtime and full-corpus iteration
+
+The [Gerasimov/HMM-MOS review and scenario runs](docs/REVIEW_GERASIMOV_20260918.md) add reproducible moving, stopped and appearing-object scenes for the actual detector. A first-rail-heading experiment was replayed on all 11,271 real clouds for geometry and 951 clouds end to end. It remains opt-in: nine geometry failures recovered, one new failure and unresolved path-selection changes. HMM-MOS is not used to suppress stationary obstacles.
+
+The [3D track and clearance literature review](docs/TRACK_GEOMETRY_LITERATURE_20260918.md) maps published rail-pair estimation and local clearance coordinates to the remaining curve, grade and cant limitations. It distinguishes proposed adaptations from implemented and evaluated behavior.
+
+[The first 3D geometry iteration](docs/TRACK_LOCAL3D_ITERATION.md) now enforces the configured heading bound at actual rail-anchor locations in the default Python/native recipes. An opt-in `configs/detector-local3d-experimental.json` estimates local head heights and tilted cross-sections shared by classification, viewer and RViz. Real replay and ray-cast curve/grade/cant experiments are recorded; height bias and unresolved alarms prevent promotion of the 3D mode.
 
 See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and ROS2 launch commands, and [iteration evidence](docs/GOAL_ITERATION.md) for all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
 
 ## Native acceleration and calibration experiment
 
-See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md). Optional C++ voxel selection preserved compared outputs on 798 real scans; a paired cached-scan benchmark reduced median processing from 602 to 504 ms (about 16%). This is still below 10 Hz. Latency work on 2026-09-17 kept every detection decision and reduced the C++-backend median further to **115.6 ms per frame** (paired benchmark: 390 → 115.6 ms, 3.37×); the same kernels on the NumPy voxel backend measure 218.7 ms and the NumPy-only recipe 407 ms on the same scans. Measured evidence: `results/performance-20260917.json`. That is 8.7 Hz against a 100 ms / 10 Hz budget, with per-frame p95 around 118 ms. The reported recipe keeps the original three background plane proposals per window; the two-proposal variant reaches 109.3 ms but trades one recording's definite-alarm count by one frame, so it is not the shipped setting. Open3D's normal and covariance estimation is now reproduced by a native grid pass (8.3× faster, verified identical on every quantity the background gate consumes); what remains from the libraries is Open3D's plane proposals (21 ms, kept because parallelising them makes the planes run-to-run nondeterministic) and KISS-ICP (27 ms), which together are 30% of the remaining frame. The new chronological calibration CLI evaluated 120 real scans: all three provisional track-relative orientation candidates failed the declared stability gates and were **not installed**. Vehicle mounting calibration still needs an independent vehicle reference.
+See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md) and the [native integration report](docs/NATIVE_INTEGRATION.md). Native acceleration is integrated with the current interval-envelope policy. Use `configs/detector-native.json`; ROS container defaults select this recipe. The Python recipe remains available as a reference. Historical performance experiments are retained in `results/performance-20260917.json`; they are not evidence for the merged revision. Mounting calibration remains provisional: all three evaluated orientation candidates failed stability gates and were not installed.
 
 ## Native kernels follow the corrected contour
 
 The corrected interval semantics above are implemented in **both** paths. The native classification kernel computes the same exact extrema of the piecewise-linear contour width over each point's height interval, in the same order, so the C++ recipe is not a frozen copy of the older rule. Verified two ways: the kernel and object checks compare the two recipes array by array (28/28 kernel checks, 20/20 geometry arrays, 624 and 550 candidate objects with no field mismatch), and the native recipe independently reproduces every corpus count the correction reports — `obstacle` frames 119 / 87 / 64 and 82 / 258 / 187 unresolved, identical to the review's table on 798 real scans. The three labelled panels are unchanged (development 162/54, holdout 159/57, measured 709/251), so the correction removes marginal confirmations in the unlabelled corpus, not in the annotated panels.
 
+Their kernel-equivalence and corpus counts were measured on this branch's pre-merge recipes; the object counts move with the rail-heading and decode changes merged below, while the two-backend agreement is re-checked on the merged build.
 The review's other finding — that the background model was queried for returns whose decision is never consumed — is now applied in both paths as well, and it is what closes the remaining latency gap: only segmentation-context returns that are not protected evidence are queried. No threshold changed.
+
+## Measured rail anchors and corrected path geometry
+
+The default recipes now fit paired rail heading and place anchors within actual measured support. See [implementation, real runs and limitations](docs/RAIL_GEOMETRY.md): 798 valid frames, 6093 supported anchors, improved withheld-point residuals on 8/9 saved clouds. Candidate grouping and alarms change; field accuracy and far-object recall remain unverified. The frozen previous recipe is `configs/detector-rail-baseline.json`.
+
+## Reported 1.075 m mounting reference
+
+See [railhead-support observations and chronological replay](docs/MOUNTING_REFERENCE.md). The reported empty/stationary height has unknown applicability to individual recordings. Direct support estimates are about 1.500 / 1.086 / 1.093 m across three recordings; no calibration is installed. All 798 compared detector outputs are preserved. A frozen-rotation replay on 738 later scans retains failures, including worse support in the round tunnel. The browser and RViz export now show the actual points supporting the estimate.
 
 ## Small detections and contour uncertainty
 
@@ -26,7 +45,15 @@ See [small-object review and calibration limits](docs/ENVELOPE_INTERVAL_REVIEW.m
 
 ## Runtime reduction without reducing coverage
 
-See [runtime profile and verification](docs/RUNTIME_CONTEXT_OPTIMIZATION.md). Avoiding unused background queries and repeated component scans preserved compared outputs on all 798 real scans. Current per-recording processing medians are 315–469 ms on the development Mac: still not 10 Hz. Neighbourhood construction remains a measured bottleneck; target-hardware performance is unverified.
+See [runtime profile and verification](docs/RUNTIME_CONTEXT_OPTIMIZATION.md). Avoiding unused background queries and repeated component scans preserved compared outputs on all 798 real scans. That pre-integration version measured 315–469 ms on the development Mac. See [native integration](docs/NATIVE_INTEGRATION.md) for current timings and remaining bottlenecks; target-hardware performance is unverified.
+
+## Decode and complete offline latency
+
+See [decoder preservation and latency scope](docs/DECODE_AND_LATENCY.md). Paired
+real-cloud decoding decreased from 11.70 to 7.60 ms; all 174.5 million valid point
+observations and normalized times matched exactly. The complete offline loop
+measures 140–201 ms median across three recordings, including read/decode,
+inference and result serialization. This is not live sensor-to-display latency.
 
 ## Coverage expansion and modeled insertions
 
@@ -74,7 +101,6 @@ uv sync --locked
 uv run python -m tunnel_guard.run --experiment configs/evaluation-audit.json
 ```
 Agent policy lives in `AGENTS.md`: no subagents or automated tests. Verify changes through actual detector runs and configured evaluations; the repository intentionally has no test suite.
-
 
 The audit recipe requires the two real bags described below. It processes the first 30 consecutive frames of each and writes JSONL, configuration, source snapshots and RViz result bags to `build/audit-reviewed/`. Set `visualization` to `false` in a copied experiment JSON for headless processing; detector decisions do not depend on the display consumer. No model download is needed at runtime.
 
@@ -196,13 +222,11 @@ Pipeline: validated points → KISS-ICP pose (optional deskew) → local bed and
 
 **Deskew is disabled in the current recipes.** The observed point-time span differs from the frame period, especially in cropped clouds; KISS-ICP normalizes that span to a full previous motion increment. `deskew_enabled=true` restores the experimental mode, but needs verified timing and prior-deskew provenance. Turning it off leaves motion distortion unresolved. This change is not a claim of higher detection accuracy.
 
-The reported recipe is `configs/detector-native.json`; it keeps three background plane proposals per window and every detection decision.
-
-`configs/detector-native-fast.json` is an optional faster recipe: the same config with two background plane proposals per window instead of three. It is a behaviour change and is **not recommended**: under the corrected envelope semantics it buys 115.6 → 109.3 ms in the paired benchmark while moving one recording's definite-alarm frames by one in the *opposite* direction (270 → 271 of 798). A detection decision traded for 5% latency is not a trade this pipeline should make by default, so the speedup reported above comes from the kernels alone. The recipe is retained so the comparison stays reproducible.
+`configs/detector-native-fast.json` is the fastest recipe: it is `detector-native.json` with two background plane proposals per window instead of three. That is a behaviour change, so it is kept as a separate recipe: measured on 798 real scans it moves 297 definite alarms to 296 (one frame becomes unresolved) and leaves all three labelled panels unchanged, while `detector-native.json` keeps the original setting and is the integration recipe. Historical pre-kernel comparisons and current interval-policy comparisons must be distinguished.
 
 `native_kernels` (C++ recipe only; the NumPy recipe keeps the reference path) selects the locally built `tunnel_guard._native` kernels: radial range selection, mutual-radius clustering graph, envelope classification, track-bed reference, background patch candidates, protrusion protection, strip membership and the evidence voxel count. `normal_covariances` replaces Open3D's `estimate_normals` plus `estimate_covariances` with one grid pass: neighbours within the radius capped to the nearest `max_nn`, mean-centred covariance over n, and — in the same call — the eigenvalues and the smallest eigenvector by fixed-sweep Jacobi rotations. Three labelled panels (development, seed holdout, measured beam pattern; 2,120 frames) reproduce their recorded tp/fn, event recall and precision exactly with the native kernels. Measured on a real sample: counts identical to the scipy radius count, planarity gate identical on all 31,298 points, normal agreement |dot| = 1.000000000000 on every reliable point and zero alignment differences across all patches — the points whose normals differ are exactly the ones the gate discards.
 
-The per-frame glue is fused: one call performs the whole background mask pass (candidate windowing, distance band, attachment-edge protection, strip membership, marking the caller's mask in place), one call counts every track's accumulated evidence, and voxel selection, the clustering grid and the mask share a single arena-backed open-addressed table that grows to the largest frame seen — steady-state kernels allocate nothing beyond the copies the caller receives. Each kernel reproduces the NumPy expression it replaces — same selection, same arithmetic order, same tie-breaking — and the two branches were compared array for array on captured real frames while this was built (the local harness is not tracked, since the repository deliberately carries no test suite; the outcome is recorded in `results/performance-20260917.json`). `query_workers` (both recipes, default `-1`) sets scipy worker threads for large nearest-neighbour batches only; small batches stay serial because thread setup dominates below a few thousand query points. Neither switch changes a threshold or a decision: on 798 real scans the native recipe is field-for-field identical to the NumPy-era baseline, and Open3D's plane proposals stay serialised for repeatability. Latency evidence: `results/performance-20260917.json`.
+Native kernels cover voxel selection, neighbour graphs, geometry classification, background masking, component statistics and evidence counting. They use reusable buffers and preserve measurement support on the recorded integration panel. Empirical agreement does not establish identity for all unseen inputs. `query_workers` controls SciPy queries; native kernels also use their own worker threads. Open3D plane proposals remain serial for repeatability. See [integration evidence and limitations](docs/NATIVE_INTEGRATION.md).
 
 Segmentation preserves object portions outside the clearance gate. Dense instances cannot merge through a thin chain of border points. Temporal matching uses velocity, heuristic covariance, shape, and distinct-frame evidence. Missing path support must not turn rail removal into an infinite-width exclusion zone.
 

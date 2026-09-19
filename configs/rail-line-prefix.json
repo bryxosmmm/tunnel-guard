@@ -1,0 +1,30 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-rail-line.json",
+  "output": "build/rail-line-prefix",
+  "every": 1,
+  "max_frames": 3,
+  "visualization": false,
+  "diagnostic_frames": [
+    0,
+    100,
+    150,
+    200
+  ],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Paired longitudinal line fits reduce window-center bias compared with histogram centers",
+  "criterion": "Improve independently partitioned real rail support residuals; retain failure and candidate changes; no field accuracy claim"
+}

@@ -125,6 +125,37 @@ def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, d
     return (best if valid else None), diagnostics
 
 
+def refine_rail_pair(q, x, center, gauge, slope, cfg):
+    """Fit both supported heads at x, balancing longitudinal bins and sides.
+
+    Histogram peaks propose a pair; they are not point estimates at the window
+    center when support is asymmetric. Retain the configured strip width; never
+    force installation height or use another acquisition.
+    """
+    for _ in range(2):
+        representatives, sides = [], []
+        for side in (-1, 1):
+            residual = q[:, 1] - (center + slope * (q[:, 0] - x) + side * gauge / 2)
+            head = q[np.abs(residual) < cfg["rail_half_width_m"] / 2]
+            if len(head) < 2 or np.ptp(head[:, 0]) < cfg["rail_min_span_m"]:
+                return None
+            keys = np.floor(head[:, 0] / .30).astype(np.int64)
+            for key in np.unique(keys):
+                representatives.append(np.median(head[keys == key, :2], axis=0))
+                sides.append(side)
+        a = np.asarray(representatives)
+        design = np.column_stack((a[:, 0] - x, np.ones(len(a)), np.asarray(sides) / 2))
+        fit, _, rank, _ = np.linalg.lstsq(design, a[:, 1], rcond=None)
+        if rank < 3:
+            return None
+        slope, center, gauge = map(float, fit)
+        if (abs(slope) > cfg["rail_max_heading"]
+                or abs(gauge - cfg["rail_gauge_m"]) > cfg["rail_gauge_tolerance_m"]
+                or np.max(np.abs(design @ fit - a[:, 1])) > cfg["rail_half_width_m"] / 2):
+            return None
+    return center, gauge, slope
+
+
 class TrackGeometry:
     def __init__(self, points: np.ndarray, config: dict):
         self.config = config
@@ -133,6 +164,10 @@ class TrackGeometry:
         self.ground_anchors = np.empty((0, 3))
         self.rail_anchors = np.empty((0, 4))
         self.rail_head_height_m = None
+        self.rail_support_diagnostics = []
+        self.rail_frames = []
+        self.rail_frame_version = 2
+        self.rail_rejections = []
         self.reason = self.ground_quality["reason"]
         if self.plane is None:
             return
@@ -232,6 +267,11 @@ class TrackGeometry:
             if not len(q):
                 continue
             slope = 0.0
+            if len(anchors) == 1 and cfg.get("rail_initial_heading", "zero") == "fitted":
+                # The first fitted pair already measures a local tangent. Keep
+                # it until two anchors define a secant; resetting to zero here
+                # makes the next window search across an oblique rail pair.
+                slope = self.rail_support_diagnostics[-1]["heading_slope"]
             if len(anchors) > 1:
                 slope = float(np.clip((anchors[-1][1] - anchors[-2][1]) / (anchors[-1][0] - anchors[-2][0]),
                                       -cfg["rail_max_heading"], cfg["rail_max_heading"]))
@@ -261,6 +301,12 @@ class TrackGeometry:
                     if any(np.count_nonzero(mask) < 2 or np.ptp(q[mask, 0]) < cfg["rail_min_span_m"]
                            for mask in (left_points, right_points)):
                         continue
+                    # A long window can see both rails entirely before/after x.
+                    # Such support cannot reset extrapolation uncertainty at x.
+                    if cfg.get("rail_anchor_support", "window") == "bracketed" and any(
+                            not np.min(q[mask, 0]) <= x <= np.max(q[mask, 0])
+                            for mask in (left_points, right_points)):
+                        continue
                     support = int(min(counts[left], counts[right]))
                     score = support / (1 + 4 * abs(center - expected) + 8 * abs(gauge - cfg["rail_gauge_m"]))
                     pairs.append((score, center, gauge, support))
@@ -271,13 +317,149 @@ class TrackGeometry:
                     and abs(pairs[0][1] - pairs[1][1]) > 0.3):
                 break
             _, center, gauge, support = pairs[0]
+            if cfg.get("rail_center_estimator", "histogram") == "paired_line":
+                refined = refine_rail_pair(q, x, center, gauge, slope, cfg)
+                if refined is not None and abs(refined[0] - expected) <= allowed:
+                    center, gauge, slope = refined
+                    lateral = q[:, 1] - slope * (q[:, 0] - x)
             rail_mask = np.abs(np.abs(lateral - center) - gauge / 2) < cfg["rail_half_width_m"] / 2
+            anchor_x = float(x)
+            if cfg.get("rail_anchor_support", "window") == "measured":
+                heads = [q[np.abs(lateral - center - side * gauge / 2) < cfg["rail_half_width_m"] / 2, 0]
+                         for side in (-1, 1)]
+                if any(len(head) < 2 for head in heads):
+                    continue
+                support_low = max(head.min() for head in heads)
+                support_high = min(head.max() for head in heads)
+                if support_low > support_high:
+                    continue
+                # Locate the anchor within BOTH measured longitudinal hulls.
+                # Keep the same fitted lines; do not throw away an oblique pair
+                # merely because the arbitrary window center has no support.
+                anchor_x = float(np.clip(x, support_low, support_high))
+                if anchors and anchor_x <= anchors[-1][0]:
+                    continue
+                center += slope * (anchor_x - x)
+                lateral = q[:, 1] - slope * (q[:, 0] - anchor_x)
+                rail_mask = np.abs(np.abs(lateral - center) - gauge / 2) < cfg["rail_half_width_m"] / 2
+            if cfg.get("rail_anchor_support", "window") == "bracketed":
+                heads = [q[np.abs(lateral - center - side * gauge / 2) < cfg["rail_half_width_m"] / 2, 0]
+                         for side in (-1, 1)]
+                if any(len(head) < 2 or not head.min() <= x <= head.max() for head in heads):
+                    continue
+            if anchors and cfg.get("rail_pair_continuity", "window") == "relocated":
+                dx = anchor_x - anchors[-1][0]
+                # Recheck at the actual measurement location, not the window
+                # centre. A pair behind the window must not inherit its larger
+                # lateral search allowance. Use the existing heading bound.
+                if dx <= 0 or abs(center - anchors[-1][1]) > cfg["rail_max_heading"] * dx:
+                    self.rail_rejections.append({"window_x_m": float(x), "anchor_x_m": anchor_x,
+                                                "reason": "relocated_heading_exceeds_bound"})
+                    continue
             bed, _ = self.ground(q[rail_mask])
             head_heights.append(float(np.quantile(q[rail_mask, 2] - bed, 0.8)))
-            anchors.append((float(x), center, gauge, support))
+            heads = [q[np.abs(lateral - center - side * gauge / 2) < cfg["rail_half_width_m"] / 2, 0]
+                     for side in (-1, 1)]
+            self.rail_support_diagnostics.append({"x_m": anchor_x, "window_center_m": float(x), "heading_slope": float(slope),
+                "side_longitudinal_ranges_m": [[float(head.min()), float(head.max())] if len(head) else None
+                                                for head in heads],
+                "bracketed": bool(all(len(head) and head.min() <= anchor_x <= head.max() for head in heads))})
+            if cfg.get("rail_frame_mode", "bed") == "local_3d":
+                self.rail_frames.append(self._fit_head_heights(q, anchor_x, center, gauge, slope))
+            anchors.append((anchor_x, center, gauge, support))
         self.rail_anchors = np.asarray(anchors, dtype=float).reshape(-1, 4)
         if head_heights:
             self.rail_head_height_m = float(np.median(head_heights))
+
+    def _fit_head_heights(self, points, x, center, gauge, slope):
+        """Local observed head support, not a CAD rail or absolute gravity estimate."""
+        cfg = self.config
+        heights, errors = [], []
+        for side in (-1, 1):
+            lateral = points[:, 1] - center - slope * (points[:, 0] - x)
+            head = points[np.abs(lateral - side * gauge / 2) < cfg["rail_half_width_m"] / 2]
+            bins = np.floor(head[:, 0] / .30).astype(np.int64)
+            keys = np.unique(bins)
+            if len(keys) < cfg["rail_min_longitudinal_bins"] or np.ptp(head[:, 0]) < cfg["rail_min_span_m"]:
+                return None
+            # Equal weight per longitudinal bin; upper support reduces the
+            # influence of web returns without inventing an unseen rail top.
+            samples = np.asarray([(np.median(head[bins == k, 0]),
+                                   np.quantile(head[bins == k, 2], .8)) for k in keys])
+            design = np.column_stack((samples[:, 0] - x, np.ones(len(samples))))
+            fit, _, rank, _ = np.linalg.lstsq(design, samples[:, 1], rcond=None)
+            error = float(np.quantile(np.abs(design @ fit - samples[:, 1]), .9))
+            if rank < 2 or abs(fit[0]) > cfg["ground_max_slopes"][0] or error > cfg["ground_inlier_m"]:
+                return None
+            heights.append(float(fit[1]))
+            errors.append(max(error, .015))
+        return [float(x), float(center), float(np.mean(heights)),
+                float(heights[1] - heights[0]), float(gauge), max(errors)]
+
+    def frame_segments(self):
+        """Piecewise local orthonormal bases shared by decisions and rendering.
+
+        Invalid head fits break support; never bridge them with a smooth curve.
+        """
+        frames = getattr(self, "rail_frames", [])
+        segments = []
+        diagnostics = getattr(self, "rail_support_diagnostics", [])
+        for index, (left, right) in enumerate(zip(frames, frames[1:])):
+            if left is None or right is None:
+                continue
+            a, b = np.asarray(left), np.asarray(right)
+            delta = b[:3] - a[:3]
+            length = np.linalg.norm(delta)
+            if length <= 0 or abs(delta[2] / delta[0]) > self.config["ground_max_slopes"][0]:
+                continue
+            tangent = delta / length
+            cross = np.array([0., (a[4] + b[4]) / 2, (a[3] + b[3]) / 2])
+            cross -= tangent * np.dot(cross, tangent)
+            gauge = np.linalg.norm(cross)
+            if gauge <= 0:
+                continue
+            lateral = cross / gauge
+            normal = np.cross(tangent, lateral)
+            start, end = a[:3].copy(), b[:3].copy()
+            # The first/last anchors need not be the first/last measured rail
+            # returns. Extend only inside BOTH heads' recorded support hulls;
+            # otherwise an arbitrary 5 m window centre creates a near blind zone.
+            if getattr(self, "rail_frame_version", 1) >= 2 and index == 0 and len(diagnostics) == len(frames):
+                ranges = diagnostics[0]['side_longitudinal_ranges_m']
+                if all(r is not None for r in ranges):
+                    x = min(a[0], max(r[0] for r in ranges))
+                    start += tangent * ((x-a[0])/tangent[0])
+            if getattr(self, "rail_frame_version", 1) >= 2 and index == len(frames)-2 and len(diagnostics) == len(frames):
+                ranges = diagnostics[-1]['side_longitudinal_ranges_m']
+                if all(r is not None for r in ranges):
+                    x = max(b[0], min(r[1] for r in ranges))
+                    end += tangent * ((x-b[0])/tangent[0])
+            segments.append((start, end, tangent, lateral, normal, gauge, max(a[5], b[5])))
+        return segments
+
+    def rail_coordinates(self, points):
+        """Coordinates at the closest measured segment; no far extrapolation.
+
+        Lateral/vertical values outside longitudinal support remain unavailable.
+        Selection is by 3D distance to the centreline, independently per point.
+        """
+        size = len(points)
+        best = np.full(size, np.inf)
+        values = np.full((size, 4), np.nan)
+        for a, b, tangent, lateral, normal, gauge, error in self.frame_segments():
+            offset = points - a
+            along = offset @ tangent
+            length = np.linalg.norm(b - a)
+            supported = (along >= 0) & (along <= length)
+            dy, dz = offset @ lateral, offset @ normal
+            distance = dy * dy + dz * dz
+            chosen = supported & (distance < best)
+            values[chosen, 0] = dy[chosen]
+            values[chosen, 1] = dz[chosen]
+            values[chosen, 2] = gauge
+            values[chosen, 3] = error
+            best[chosen] = distance[chosen]
+        return values, np.isfinite(best)
 
     def path(self, x: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         if len(self.rail_anchors) < 2:
@@ -329,12 +511,20 @@ class TrackGeometry:
         running_height = (height - rail_head) / normal_scale
         dy = points[:, 1] - center
         lateral = (dy + slope * (height - rail_head + slope * dy)) / np.sqrt(1 + slope**2)
+        frame_supported = np.ones(len(points), dtype=bool)
+        frame_error = np.zeros(len(points))
+        if cfg.get("rail_frame_mode", "bed") == "local_3d":
+            local, frame_supported = self.rail_coordinates(points)
+            lateral[frame_supported] = local[frame_supported, 0]
+            running_height[frame_supported] = local[frame_supported, 1]
+            gauge[frame_supported] = local[frame_supported, 2]
+            frame_error[frame_supported] = local[frame_supported, 3]
         envelope = np.asarray(cfg["envelope_segments_m"])
         segment = envelope[np.clip(np.searchsorted(envelope[:, 0], running_height, side="right") - 1, 0, len(envelope) - 1)]
         fraction = np.clip((running_height - segment[:, 0]) / (segment[:, 1] - segment[:, 0]), 0, 1)
         width = segment[:, 2] + fraction * (segment[:, 3] - segment[:, 2]) + cfg["envelope_margin_m"]
         observed = ((ground_uncertainty <= cfg["ground_max_uncertainty_m"])
-                    & (path_uncertainty <= cfg["path_max_uncertainty_m"]))
+                    & (path_uncertainty <= cfg["path_max_uncertainty_m"]) & frame_supported)
         # Remove only the measured rail-head band, not all points near a rail.
         on_rail = (observed & (np.abs(np.abs(lateral) - gauge / 2) < cfg["rail_half_width_m"] + path_uncertainty)
                    & (running_height <= cfg["rail_vertical_margin_m"]))
@@ -343,11 +533,15 @@ class TrackGeometry:
         # Marginal bounds discard correlation and are conservative: they can
         # retain extra unresolved evidence, never certify a marginal intrusion.
         bed_error = np.where(observed, ground_uncertainty, 0.)
-        height_error = bed_error / normal_scale
+        # Differential head-height error also tilts the cross-section. This is
+        # a heuristic bound, not a calibrated confidence interval.
+        angular_error = 2 * frame_error / np.maximum(gauge, 1e-6)
+        height_error = bed_error / normal_scale + frame_error + np.abs(lateral) * angular_error
         low, high = running_height - height_error, running_height + height_error
         min_width, max_width = envelope_width_bounds(low, high, envelope, cfg["envelope_margin_m"])
         lateral_uncertainty = (np.where(observed, path_uncertainty, 0.) * np.sqrt(1 + slope**2)
-                               + abs(slope) * bed_error / np.sqrt(1 + slope**2))
+                               + abs(slope) * bed_error / np.sqrt(1 + slope**2)
+                               + np.abs(running_height) * angular_error)
         vertical_inside = (low >= envelope[0, 0]) & (high <= envelope[-1, 1])
         core = observed & ~on_rail & vertical_inside & (np.abs(lateral) + lateral_uncertainty <= min_width)
         possible = ((high >= envelope[0, 0]) & (low <= envelope[-1, 1])
@@ -373,8 +567,18 @@ class TrackGeometry:
     def describe(self) -> dict:
         return {"valid": self.valid, "reason": self.reason, "ground_quality": self.ground_quality,
                 "lateral_boundary_policy": "heuristic_path_and_ground_interval",
-                "boundary_uncertainty_scope": "path_center_and_bed_height_only_not_full_extrinsics",
+                "boundary_uncertainty_scope": ("path_bed_and_head_fit_heuristic_not_full_extrinsics"
+                    if self.config.get("rail_frame_mode", "bed") == "local_3d"
+                    else "path_center_and_bed_height_only_not_full_extrinsics"),
                 "ground_plane": None if self.plane is None else self.plane.tolist(),
+                "rail_center_estimator": self.config.get("rail_center_estimator", "histogram"),
+                "rail_anchor_support": self.config.get("rail_anchor_support", "window"),
+                "rail_support_diagnostics": self.rail_support_diagnostics,
+                "rail_frame_mode": self.config.get("rail_frame_mode", "bed"),
+                "rail_frames": self.rail_frames,
+                "rail_frame_version": self.rail_frame_version,
+                "local_frame_segments": len(self.frame_segments()) if self.rail_frames else 0,
+                "rail_rejections": self.rail_rejections,
                 "rail_head_height_m": self.rail_head_height_m,
                 "ground_anchors": self.ground_anchors.tolist(), "rail_anchors": self.rail_anchors.tolist(),
                 "background": None if self.background is None else self.background.describe()}

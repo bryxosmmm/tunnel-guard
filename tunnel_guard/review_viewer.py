@@ -6,6 +6,7 @@ import argparse
 import hashlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
+import threading
 from pathlib import Path
 from urllib.parse import urlparse, parse_qs
 
@@ -15,6 +16,55 @@ from rosbags.typesys import Stores, get_typestore
 
 from .io import decode_cloud
 from .visualization import corridor_edges, distance_summary
+
+
+class ResultIndex:
+    """Index complete JSONL records by byte offset, keeping objects on disk."""
+
+    def __init__(self, path):
+        self.path = path
+        self.offsets = []
+        self.frames = []
+        self.position = 0
+        stat = path.stat()
+        self.identity = (stat.st_dev, stat.st_ino)
+        self.lock = threading.Lock()
+        self.refresh()
+
+    def refresh(self):
+        with self.lock:
+            stat = self.path.stat()
+            if (stat.st_dev, stat.st_ino) != self.identity or stat.st_size < self.position:
+                raise ValueError("Indexed result file was replaced or truncated")
+            with self.path.open("rb") as stream:
+                stream.seek(self.position)
+                while True:
+                    offset = stream.tell()
+                    line = stream.readline()
+                    if not line.endswith(b"\n"):
+                        break  # A running detector may not have finished this row.
+                    row = json.loads(line)
+                    self.offsets.append(offset)
+                    self.frames.append(row["frame"])
+                    self.position = stream.tell()
+            return list(self.frames)
+
+    def __len__(self):
+        return len(self.offsets)
+
+    def __getitem__(self, index):
+        with self.lock:
+            if index < 0 or index >= len(self.offsets):
+                raise IndexError("Frame index outside recorded run")
+            stat = self.path.stat()
+            if (stat.st_dev, stat.st_ino) != self.identity or stat.st_size < self.position:
+                raise ValueError("Indexed result file was replaced or truncated")
+            with self.path.open("rb") as stream:
+                stream.seek(self.offsets[index])
+                row = json.loads(stream.readline())
+            if row["frame"] != self.frames[index]:
+                raise ValueError("Indexed result frame changed")
+            return row
 
 
 def main():
@@ -31,10 +81,7 @@ def main():
         parser.error(
             "Source cloud replay is exact only with deskew disabled; use the recorded RViz bag for deskewed runs"
         )
-    rows = [
-        json.loads(line)
-        for line in (args.run / (args.bag.name + ".jsonl")).read_text().splitlines()
-    ]
+    rows = ResultIndex(args.run / (args.bag.name + ".jsonl"))
     if not rows:
         parser.error("Result contains no frames")
     manifest = json.loads((args.run / "manifest.json").read_text())
@@ -69,7 +116,7 @@ def main():
                 elif url.path == "/metadata":
                     payload = json.dumps(
                         {"bag": args.bag.name, "run": args.run.name,
-                         "frames": [r["frame"] for r in rows]}
+                         "frames": rows.refresh()}
                     ).encode()
                     kind = "application/json"
                 elif url.path == "/object":

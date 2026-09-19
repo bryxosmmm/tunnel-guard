@@ -1,0 +1,22 @@
+{
+  "source_run": "build/mounting-real",
+  "candidate_report": "build/mounting-report",
+  "output": "build/mounting-corrected-prefix",
+  "max_validation_frames": 3,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "A fixed prefix-only rotation can be applied to later real clouds without using future observations to fit it",
+  "criterion": "Re-estimate paired support after rotation; retain failed observations and all reference disagreements; never install a transform"
+}

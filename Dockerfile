@@ -7,11 +7,12 @@ WORKDIR /opt/tunnel-guard
 COPY docker/constraints.txt ./docker/constraints.txt
 RUN python3 -m pip install --upgrade pip==24.3.1 setuptools==75.8.0 wheel==0.45.1 \
     && python3 -m pip install -r docker/constraints.txt
-COPY pyproject.toml setup.py ./
+COPY pyproject.toml setup.py MANIFEST.in ./
 COPY cpp ./cpp
 COPY tunnel_guard ./tunnel_guard
 RUN python3 -m pip install --upgrade packaging==24.2 \
-    && python3 -m pip install --no-build-isolation --no-deps .
+    && python3 -m pip install --no-build-isolation --no-deps . \
+    && python3 -c "from tunnel_guard import _native"
 COPY configs ./configs
 COPY rviz ./rviz
 COPY launch ./launch

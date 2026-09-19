@@ -1,6 +1,7 @@
 # Local datasets, recordings, and generated experiment artifacts
 /data/
 /archive/
+/bags.zip
 /materials/
 /build/
 /dist/

@@ -10,7 +10,7 @@ def generate_launch_description():
     return LaunchDescription(
         [
             DeclareLaunchArgument(
-                "config", default_value="/opt/tunnel-guard/configs/detector.json"
+                "config", default_value="/opt/tunnel-guard/configs/detector-native.json"
             ),
             DeclareLaunchArgument("input_topic", default_value="/lidar_points"),
             DeclareLaunchArgument("rviz", default_value="false"),

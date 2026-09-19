@@ -14,6 +14,7 @@ from scipy.spatial import cKDTree
 
 from . import accelerator
 from .geometry import TrackGeometry, voxel_representatives
+from .mounting import observe_mounting, validate_mounting_config
 from .segmentation import density_labels, published_labels
 
 
@@ -60,24 +61,32 @@ def load_config(path: str | Path) -> dict:
         from . import _native  # Fail explicitly when the selected kernels are unavailable.
     if config.get("obstacle_distance_mode", "cluster_min_x") not in ("cluster_min_x", "envelope_support_min_x"):
         raise ValueError("Unknown obstacle_distance_mode")
+    if config.get("rail_center_estimator", "histogram") not in ("histogram", "paired_line"):
+        raise ValueError("Unknown rail_center_estimator")
+    if config.get("rail_initial_heading", "zero") not in ("zero", "fitted"):
+        raise ValueError("Unknown rail_initial_heading")
+    if config.get("rail_pair_continuity", "window") not in ("window", "relocated"):
+        raise ValueError("Unknown rail_pair_continuity")
+    if config.get("rail_frame_mode", "bed") not in ("bed", "local_3d"):
+        raise ValueError("Unknown rail_frame_mode")
+    if config.get("rail_anchor_support", "window") not in ("window", "bracketed", "measured"):
+        raise ValueError("Unknown rail_anchor_support")
+    validate_mounting_config(config)
     return config
 
 
 def voxel_unique_at(config: dict, reductive_size: float | None) -> bool:
-    """Whether a cloud already holds at most one point per cluster voxel.
+    """Skip reduction only on the identical grid, preserving key order.
 
-    True when the cloud was reduced on a grid that the cluster grid refines: the
-    same size, or a coarser size that is an integer multiple, so no two surviving
-    points can share a cluster voxel and the key order is preserved. Callers that
-    cannot guarantee this pass None and take the full reduction.
+    A coarser grid may imply uniqueness, but its lexicographic order need not
+    match the finer grid. That order affects cluster labels and track IDs.
     """
     if reductive_size is None:
         return False
     size = config["cluster_voxel_m"]
     if not (size > 0 and reductive_size > 0):
         return False
-    ratio = reductive_size / size
-    return size <= reductive_size and abs(ratio - round(ratio)) < 1e-9
+    return size == reductive_size
 
 
 def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict,
@@ -139,82 +148,78 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                                noise_points=int(np.count_nonzero(labels < 0)))
         return sorted(objects, key=lambda o: o["cluster_nearest_x_m"])
     else:
-        for label in np.unique(labels):
+        order = np.argsort(labels, kind="stable")
+        # One stable grouping replaces a full labels==label scan per component.
+        # Stable order preserves original point order within every cluster, hence
+        # witness selection, box ties and temporal evidence ordering stay unchanged.
+        sorted_labels = labels[order]
+        starts = np.r_[0, np.flatnonzero(np.diff(sorted_labels)) + 1]
+        stops = np.r_[starts[1:], len(order)]
+        for start, stop in zip(starts, stops):
+            label = sorted_labels[start]
             if label < 0:
                 continue
-            indices = np.flatnonzero(labels == label)
-    # One stable grouping replaces a full labels==label scan per component.
-    # Stable order preserves original point order within every cluster, hence
-    # witness selection, box ties and temporal evidence ordering stay unchanged.
-    order = np.argsort(labels, kind="stable")
-    sorted_labels = labels[order]
-    starts = np.r_[0, np.flatnonzero(np.diff(sorted_labels)) + 1]
-    stops = np.r_[starts[1:], len(order)]
-    for start, stop in zip(starts, stops):
-        label = sorted_labels[start]
-        if label < 0:
-            continue
-        indices = order[start:stop]
-        inside = indices[core[indices]]
-        if len(indices) < config["weak_min_voxels"]:
-            rejected["below_weak_min_voxels"] += 1
+            indices = order[start:stop]
+            inside = indices[core[indices]]
+            if len(indices) < config["weak_min_voxels"]:
+                rejected["below_weak_min_voxels"] += 1
+                if arrays is not None:
+                    components.append({"component_id": int(label), "reason": "below_weak_min_voxels", "points": len(indices)})
+                continue
+            q = cloud[indices]
+            minimum, maximum = q.min(axis=0), q.max(axis=0)
+            extent = maximum - minimum
+            if extent.max() < config["cluster_min_extent_m"]:
+                rejected["below_min_extent"] += 1
+                if arrays is not None:
+                    components.append({"component_id": int(label), "reason": "below_min_extent", "points": len(indices)})
+                continue
+            intersects = len(inside) >= config["weak_min_voxels"]
+            unresolved = np.count_nonzero(uncertain_support[indices]) >= config["weak_min_voxels"]
+            dense_count = int(np.count_nonzero(density_core[indices]))
+            if not intersects and not unresolved and dense_count == 0:
+                rejected["weak_without_envelope_support"] += 1
+                if arrays is not None:
+                    components.append({"component_id": int(label), "reason": "weak_without_envelope_support", "points": len(indices)})
+                continue
+            instant = (dense_count >= config["immediate_min_voxels"]
+                       and extent[2] >= config["immediate_min_height_m"])
+            interior_dense_count = int(np.count_nonzero(density_core[inside]))
+            interior_height = float(np.ptp(cloud[inside, 2])) if len(inside) else 0.
+            intersection_immediate = (interior_dense_count >= config["immediate_min_voxels"]
+                                      and interior_height >= config["immediate_min_height_m"])
+            distance_points = q
+            distance_method = "cluster_min_x"
+            if config.get("obstacle_distance_mode", "cluster_min_x") == "envelope_support_min_x":
+                if intersects:
+                    distance_points = cloud[inside]
+                    distance_method = "supported_envelope_min_x"
+                elif unresolved:
+                    distance_points = q[uncertain_support[indices]]
+                    distance_method = "unresolved_envelope_evidence_min_x"
+            witness = distance_points[np.argmin(distance_points[:, 0])]
+            objects.append({"bbox_min": minimum.tolist(), "bbox_max": maximum.tolist(),
+                            "component_id": int(label),
+                            "cluster_nearest_x_m": float(np.min(q[:, 0])),
+                            "supported_envelope_nearest_x_m": float(np.min(cloud[inside, 0])) if len(inside) else None,
+                            "unresolved_envelope_nearest_x_m": float(np.min(q[uncertain_support[indices], 0])) if unresolved else None,
+                            "center": ((minimum + maximum) / 2).tolist(), "extent_m": extent.tolist(),
+                            "distance_m": float(witness[0]), "distance_method": distance_method,
+                            "distance_support_point": witness.tolist(), "distance_support_points": len(distance_points),
+                            "path_relation": "intersecting" if intersects else ("unresolved" if unresolved else "adjacent"),
+                            "support_voxels": len(indices), "density_core_voxels": dense_count,
+                            "in_envelope_voxels": len(inside), "_support_points": q,
+                            "boundary_uncertain_voxels": int(np.count_nonzero(boundary[indices])),
+                            "path_relation_reason": ("inside_heuristic_path_and_ground_interval" if intersects else
+                                ("envelope_boundary_uncertainty" if unresolved and np.any(boundary[indices]) else
+                                 ("unsupported_nominal_envelope" if unresolved else "outside_envelope_evidence"))),
+                            "height_above_bed_m": [float(heights[indices].min()), float(heights[indices].max())],
+                            "immediate": bool(instant),
+                            "interior_density_core_voxels": interior_dense_count,
+                            "interior_height_span_m": interior_height,
+                            "intersection_immediate": bool(intersection_immediate)})
             if arrays is not None:
-                components.append({"component_id": int(label), "reason": "below_weak_min_voxels", "points": len(indices)})
-            continue
-        q = cloud[indices]
-        minimum, maximum = q.min(axis=0), q.max(axis=0)
-        extent = maximum - minimum
-        if extent.max() < config["cluster_min_extent_m"]:
-            rejected["below_min_extent"] += 1
-            if arrays is not None:
-                components.append({"component_id": int(label), "reason": "below_min_extent", "points": len(indices)})
-            continue
-        intersects = len(inside) >= config["weak_min_voxels"]
-        unresolved = np.count_nonzero(uncertain_support[indices]) >= config["weak_min_voxels"]
-        dense_count = int(np.count_nonzero(density_core[indices]))
-        if not intersects and not unresolved and dense_count == 0:
-            rejected["weak_without_envelope_support"] += 1
-            if arrays is not None:
-                components.append({"component_id": int(label), "reason": "weak_without_envelope_support", "points": len(indices)})
-            continue
-        instant = (dense_count >= config["immediate_min_voxels"]
-                   and extent[2] >= config["immediate_min_height_m"])
-        interior_dense_count = int(np.count_nonzero(density_core[inside]))
-        interior_height = float(np.ptp(cloud[inside, 2])) if len(inside) else 0.
-        intersection_immediate = (interior_dense_count >= config["immediate_min_voxels"]
-                                  and interior_height >= config["immediate_min_height_m"])
-        distance_points = q
-        distance_method = "cluster_min_x"
-        if config.get("obstacle_distance_mode", "cluster_min_x") == "envelope_support_min_x":
-            if intersects:
-                distance_points = cloud[inside]
-                distance_method = "supported_envelope_min_x"
-            elif unresolved:
-                distance_points = q[uncertain_support[indices]]
-                distance_method = "unresolved_envelope_evidence_min_x"
-        witness = distance_points[np.argmin(distance_points[:, 0])]
-        objects.append({"bbox_min": minimum.tolist(), "bbox_max": maximum.tolist(),
-                        "component_id": int(label),
-                        "cluster_nearest_x_m": float(np.min(q[:, 0])),
-                        "supported_envelope_nearest_x_m": float(np.min(cloud[inside, 0])) if len(inside) else None,
-                        "unresolved_envelope_nearest_x_m": float(np.min(q[uncertain_support[indices], 0])) if unresolved else None,
-                        "center": ((minimum + maximum) / 2).tolist(), "extent_m": extent.tolist(),
-                        "distance_m": float(witness[0]), "distance_method": distance_method,
-                        "distance_support_point": witness.tolist(), "distance_support_points": len(distance_points),
-                        "path_relation": "intersecting" if intersects else ("unresolved" if unresolved else "adjacent"),
-                        "support_voxels": len(indices), "density_core_voxels": dense_count,
-                        "in_envelope_voxels": len(inside), "_support_points": q,
-                        "boundary_uncertain_voxels": int(np.count_nonzero(boundary[indices])),
-                        "path_relation_reason": ("inside_heuristic_path_and_ground_interval" if intersects else
-                            ("envelope_boundary_uncertainty" if unresolved and np.any(boundary[indices]) else
-                             ("unsupported_nominal_envelope" if unresolved else "outside_envelope_evidence"))),
-                        "height_above_bed_m": [float(heights[indices].min()), float(heights[indices].max())],
-                        "immediate": bool(instant),
-                        "interior_density_core_voxels": interior_dense_count,
-                        "interior_height_span_m": interior_height,
-                        "intersection_immediate": bool(intersection_immediate)})
-        if arrays is not None:
-            components.append({"component_id": int(label), "reason": "accepted", "points": len(indices)})
+                components.append({"component_id": int(label), "reason": "accepted", "points": len(indices)})
     if diagnostics is not None:
         diagnostics.update(rejected=dict(rejected), accepted=len(objects),
                            noise_points=int(np.count_nonzero(labels < 0)))
@@ -486,6 +491,11 @@ class Detector:
         if capture_diagnostics:
             self.diagnostic_arrays.update(registered_points=frame, cropped_points=frame[crop], geometry_voxel_points=reduced)
         geometry = TrackGeometry(reduced, self.config)
+        mounting_started = time.perf_counter()
+        mounting = observe_mounting(reduced, geometry, self.config)
+        mounting_s = time.perf_counter() - mounting_started
+        if mounting is not None:
+            result.update(mounting=mounting, mounting_observation_s=mounting_s)
         pipeline["geometry"] = {"state": "ran", "valid": geometry.valid, "reason": geometry.reason}
         carried: list = []
         objects = cluster_candidates(reduced, geometry, self.config, pipeline["segmentation"],
@@ -506,7 +516,8 @@ class Detector:
         bins = []
         # Reuse the classification the cluster stage already computed for exactly
         # this array instead of classifying it a second time.
-        _, _, _, observed, _ = carried[0]
+        classification = carried[0] if carried else geometry.classify(reduced, remove_background=False)
+        _, _, _, observed, _ = classification
         edges = self.config["range_bins_m"]
         if self.native_kernels is not None:
             counts = accelerator.range_summary(reduced, frame, crop, observed,
@@ -523,6 +534,12 @@ class Detector:
                              "returns_before_geometry_voxel": int(raw_mask.sum()),
                              "geometry_supported_returns": int(np.count_nonzero(mask & observed))})
         health_reasons = []
+        if self.config.get("rail_frame_mode", "bed") == "local_3d":
+            health_reasons.append("experimental_local_rail_frames")
+            if not geometry.frame_segments():
+                health_reasons.append("local_rail_frames_unavailable")
+                if status == "no_obstacle_observed":
+                    status = "unknown"
         if not geometry.valid:
             health_reasons.append(geometry.reason)
         if not motion["valid"]:

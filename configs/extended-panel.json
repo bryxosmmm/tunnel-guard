@@ -1,0 +1,19 @@
+{
+  "bags": [
+    {
+      "bag": "new_data_0",
+      "before": "build/extended-baseline/new_data_0.jsonl",
+      "after": "build/extended-measured/new_data_0.jsonl"
+    },
+    {
+      "bag": "new_data_100",
+      "before": "build/extended-baseline/new_data_100.jsonl",
+      "after": "build/extended-measured/new_data_100.jsonl"
+    },
+    {
+      "bag": "new_data_200",
+      "before": "build/extended-baseline/new_data_200.jsonl",
+      "after": "build/extended-measured/new_data_200.jsonl"
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/rail-heading-default-replay",
+  "every": 1,
+  "max_frames": null,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/extended_subset/new_data_0",
+      "split": "fixed_development_panel"
+    }
+  ],
+  "hypothesis": "Retain a first paired-line tangent until a second anchor exists",
+  "criterion": "Preserve prior valid geometry, report all downstream changes and provisional object matches"
+}
