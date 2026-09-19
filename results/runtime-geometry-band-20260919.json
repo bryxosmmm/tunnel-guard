@@ -58,5 +58,15 @@
     "expected_win": "most of the 40 ms after the first frames of a run, i.e. the largest single runtime win available in this system",
     "verification_plan": "plane caches change the model by design, so the panel cannot be byte-identical; the gate is the panel's metrics (event recall 0.8021, matched IoU 0.8223, zero negative episodes), both recordings' statuses with the labelled obstacle preserved 52 of 52, and a measured frame time before and after",
     "not_attempted": "no code written: the cache is a real feature, and a half-verified version of it would be worse than none"
+  },
+  "association_decomposition_tested": {
+    "idea": "the field's tracking-by-detection practice: gate first, then decompose the assignment on the gate's graph, since no allowed edge crosses a component the per-component optima concatenate to the global optimum",
+    "implementation": "connected components over the gated bipartite graph, then one padded linear_sum_assignment per component",
+    "result": {
+      "identity": "statuses, TRACK IDS and distances identical on both recordings - the strongest available check for an association change",
+      "timing": "112.3 ms vs 114.4 on roundT_doubleT and 105.7 vs 105.9 on doubleT_obstacle: no measurable gain"
+    },
+    "conclusion": "the 10.1 ms attributed to `associate` is per-track bookkeeping - the prediction, gain and covariance updates of roughly 200 tracks - not the assignment itself, so gating cannot reduce it. The next runtime candidate in that stage is batching the per-track updates, with the caveat that it reorders floating-point arithmetic, so it would be verified on decisions rather than bit identity.",
+    "verdict": "reverted: identical output and no speed win, so the decomposition is complexity without benefit"
   }
 }
