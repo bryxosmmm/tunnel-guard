@@ -111,6 +111,28 @@ the `2 d^3 Cov(a,b)` cross term whose sign makes it grow fastest with distance. 
 panel and the corrected metric definitions are in
 [docs/REVIEW_RESPONSE_20260919.md](docs/REVIEW_RESPONSE_20260919.md).
 
+## Where the frame time goes (2026-09-19)
+
+Measured on `doubleT_obstacle`, per-frame medians, before the two shipped runtime changes:
+
+| stage | ms | note |
+|---|---:|---|
+| background model construction | 40.3 | about 22 windows x 3 RANSAC planes; now refitted every metre of travel instead |
+| geometry estimators | 54.7 | of which rail-pair refinement 13.7, surface normals 7.3 (they feed background removal), plane fit 4.3 |
+| candidate clustering | 20.3 | over roughly 21k context points |
+| KISS-ICP motion | 18.1 | registration, now 8 threads |
+| association | 10.1 | per-track bookkeeping, not the assignment (measured by decomposing it) |
+| classification (3 calls) | 8.0 | |
+| input crop and voxel pass | 5.6 | |
+| frame, total | ~123 | |
+
+With the shipped recipe the two recordings measure **114.4 ms** (`roundT_doubleT`) and **105.9 ms**
+(`doubleT_obstacle`) at the 50th percentile, against 130.7 and 143.4 before. Latency here is offline processing time
+on an Apple M4 while the machine is shared; the deployment stand is an 8-core i7-9700E, so these figures bound the
+shape of the budget rather than the field number. Two runtime ideas were measured and rejected rather than assumed: a
+lateral band for the rail estimator (its 4 m search band is deliberate for rail-pair selection, and narrowing it moved
+an anchor 3.6 cm) and a decomposition of the gated assignment (identical output, no gain).
+
 ## Two shipped behaviours measured on 2026-09-19
 
 Both are in `configs/detector-native.json`, the recipe the ROS container defaults to, and both were enabled only after
