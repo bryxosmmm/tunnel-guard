@@ -106,22 +106,32 @@ candidate-level metric; it is superseded by this table.
 
 * **Horizontal only.** These changes are about the path's lateral geometry. They do not address the rail-head
   height bias the reviewer's own work found, and they do not replace a full `local_3d` check.
-* **Curvature on real turns: the instruments exist and are verified; the measurement is in flight.**
-  `python -m tunnel_guard.extended_subset --group 2` writes subsets of *consecutive* splits of the extended
-  recording (~10 s of travel each, chosen spread across the run) whose clouds were verified identical to the
-  source's own scans (51/51 hashes and timestamps, and a uniform 0.1 s step across the split boundary).
-  `python -m tunnel_guard.curve_audit` keeps the frames whose own anchors are genuinely curved and scores the
-  curvature continuation against the previous tangent-with-clipped-slope model, using the rails that a later
-  frame measures over the same ground as the reference.
+* **Curvature on real turns: measured, and the curvature model wins at every depth tested.** The six
+  sourcecraft recordings are near-straight, so the review was right that the fitted continuation was
+  unvalidated where it matters. The extended recording supplies the curves: sampling it as 25 subsets of two
+  consecutive splits each (102 frames, spread across the run) gives 2546 frames of which **541 are curved**
+  (radius <= 800 m; quartiles p25 1123 m, median 5015 m, minimum 138 m). For each curved frame a look-ahead
+  point is taken on each model's centre-line past the anchor end, carried into a later frame that has driven
+  over the same ground, and compared with the rails that frame measures there — label-free, the sensor's own
+  later measurement as reference:
 
-  Three things had to be measured before a pair test could even run here, and each one changed the design:
-  the extended recording's curvature (274 of 1272 sampled frames at radius <= 800 m, quartiles p25 1126 m,
-  median 3773 m, minimum 138 m - so the sharp curves are a minority and the corpus is mostly near-straight);
-  the vehicle's crawl in these stretches (0.3 m per 0.1 s frame, with stretches that do not move at all,
-  which is why only a travel-based, not adjacent-frame, pairing can label a point past the anchor end); and
-  the anchor span itself (5 to 53 m, so a look-ahead point 20 m past the end sits at ~73 m in the source frame
-  and needs ~28 m of advance before any later frame measures it). **No result is claimed until the run
-  lands.**
+  | past the anchor end | pairs | curvature model | tangent model | ratio |
+  |---|---:|---:|---:|---:|
+  | 5 m | 514 | **0.044 m** | 0.074 m | 1.7x |
+  | 10 m | 352 | **0.090 m** | 0.198 m | 2.2x |
+  | 20 m | 83 | **0.247 m** | 0.664 m | 2.7x |
+  | 30 m | 4 | 0.450 m | 1.302 m | 2.9x |
+
+  The gain grows with distance, which is the curvature signature rather than a slope-only improvement, and it
+  holds on radii down to 138 m. Stated plainly: the deep rows are thin (83 pairs at 20 m, 4 at 30 m, because
+  30 m past the anchor end needs ~38 m of advance and a subset carries at most ~33 m); the reference frame's
+  own rail error is common to both models and is not separated here; and this is a continuation-accuracy
+  measurement, not recall or precision. Three things had to be measured before the test could run at all —
+  the curvature distribution above, the vehicle's crawl (some subsets barely move — one
+  nets 2.3 m over 102 frames — while others advance about 30 m, so pairing must be by travel and not by
+  frame index), and the anchor span (5–53 m) — and each one
+  changed the design rather than being assumed.
+
 * **Curvature was unvalidated on real turns when the review was written.** The six sourcecraft recordings have almost no measurable
   curvature; the extended 20-minute recording (`data/new_data`, 11 271 scans, 22% of frames below 800 m
   radius) is where this must be tested. A sampler for it is added (`scripts/bag_subset.py` builds one-split

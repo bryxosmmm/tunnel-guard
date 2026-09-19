@@ -78,6 +78,14 @@ table reported 12 → 16 of 24 as "object reported"; that run also placed the 0.
 centre-line, because `object_on_arc` added the offset to a half-extent, and the metric was candidate-level.
 Both defects were found in review and are fixed; the numbers above supersede it.
 
+**On real curved track.** The measured-pattern panel and the six sourcecraft recordings are near-straight,
+and the arc panel is synthetic, so the continuation was also scored on the extended recording's own curves:
+541 of 2546 sampled frames are curved (radius <= 800 m, minimum 138 m), and against the rails a later frame
+measures over the same ground the curvature model is closer at every look-ahead tested — 0.044 vs 0.074 m at
+5 m past the anchor end (514 pairs), 0.090 vs 0.198 at 10 m (352), 0.247 vs 0.664 at 20 m (83), 0.450 vs
+1.302 at 30 m (4). The gain grows with distance, which is the curvature signature. Thin rows are thin: the
+20 m and 30 m counts are small because a subset carries at most ~33 m of travel.
+
 **Vertical (up/down) reference.** The bed is sampled to **65–105 m** (13–18 anchors per frame — the floor is
 wide), and inside its own 15 m gate the linear bed extrapolation errs by **≤0.02 m** even where the vertical
 curvature is R_v ≈ 7 km. Heights above the running surface are therefore sound far beyond the lateral

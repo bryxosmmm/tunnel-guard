@@ -145,5 +145,54 @@
       "one_to_one_tp": "3 -> 6",
       "unmatched": "502 -> 74"
     }
+  },
+  "curvature_on_real_turns": {
+    "why": "the review's outstanding item: the fitted continuation was validated where the track is nearly straight, and six failed estimators on the old corpus are not evidence about curved track",
+    "recording": "data/new_data, the extended 20-minute run (11271 scans), sampled as 25 subsets of two consecutive splits each (102 frames), indices 0,9,...,216, chosen spread across the run",
+    "method": "tunnel_guard.curve_audit: keep frames whose own anchor chain is curved, take a look-ahead point on each model's centre-line 5/10/20/30 m past the anchor end, carry it into a later frame that has driven over the same ground, and compare with the rails that frame measures there. The reference is the sensor's own later measurement; nothing is hand-annotated. Candidates are chosen by travel (>= 8 m between frames), not by index adjacency, because the vehicle crawls.",
+    "frame_population": {
+      "frames": 2546,
+      "curved_radius_le_800m": 541,
+      "radius_quartiles_m": {
+        "p25": 1123,
+        "median": 5015,
+        "p75": 25006,
+        "min": 138
+      }
+    },
+    "median_abs_error_m": {
+      "5m_past_anchor_end": {
+        "pairs": 514,
+        "curvature_model": 0.044,
+        "tangent_model": 0.074,
+        "ratio": 1.7
+      },
+      "10m": {
+        "pairs": 352,
+        "curvature_model": 0.09,
+        "tangent_model": 0.198,
+        "ratio": 2.2
+      },
+      "20m": {
+        "pairs": 83,
+        "curvature_model": 0.247,
+        "tangent_model": 0.664,
+        "ratio": 2.7
+      },
+      "30m": {
+        "pairs": 4,
+        "curvature_model": 0.45,
+        "tangent_model": 1.302,
+        "ratio": 2.9
+      }
+    },
+    "verdict": "the curvature continuation is closer to what a later frame measures, at every look-ahead tested, on real curved track for the first time including radii down to 138 m; the gain grows with distance, which is the curvature signature rather than a slope-only improvement",
+    "caveats": [
+      "the deep look-aheads are thin: 83 pairs at 20 m and 4 at 30 m, because 30 m past the anchor end needs about 38 m of advance and a subset carries at most ~33 m of travel",
+      "both models are compared at the same point on the same pairs, but the reference frame's own rail estimate carries error that is common to both and is not separated here",
+      "the vehicle crawls in these stretches (net travel 2-33 m per 102-frame subset) and some subsets barely move; the pairs come from the stretches that travel",
+      "this is a continuation-accuracy measurement, not a detection metric: no recall or precision claim follows from it"
+    ],
+    "reproduces": "uv run python -m tunnel_guard.extended_subset --bag data/new_data --indices 0 9 ... --group 2 --out data/extended_pairs && uv run python -m tunnel_guard.run --experiment <25 pairs> && uv run python -m tunnel_guard.curve_audit --run build/extended-pairs-run --bags data/extended_pairs --lookahead 5 10 20 30 --min-travel-m 8"
   }
 }
