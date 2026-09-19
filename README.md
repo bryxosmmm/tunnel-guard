@@ -88,6 +88,19 @@ an empty tunnel at metro speed (1.5 m/frame) produced 70k false dynamic labels i
 numbers: `results/hmm-mos-probe-20260918.json`; recipes: `configs/hmm-mos-probe-*.json` and
 `tunnel_guard/hmm_mos_probe.py`. Nothing in the pipeline was changed by this review.
 
+## The input crop follows the track too (2026-09-19)
+
+The detector cropped its input to a fixed 8 m lateral window in the *sensor* frame, so on a curve the track
+itself left that window and both the returns and the rail anchors that estimate the curve were discarded
+before classification: on the R=300 m arc panel an object standing on the track centre at 20-100 m was
+absent from the objects list entirely. The window now follows the previous frame's remembered corridor and
+is gated on that offset, so a straight run keeps the original crop exactly. Verified: the fixed
+measured-pattern panel is **byte-identical** (709/251/176, precision 0.8011, zero empty-scene alarms) and
+100-frame prefixes of both real recordings keep identical statuses; the R=300 m arc reports the on-track
+object as `obstacle` from the first frame with history. Cost **+4-6 ms/frame** (127.1 -> 133.6,
+139.1 -> 143.3 p50), measured under contention and to be re-measured idle;
+`corridor_crop_threshold_m` disables it at the cost of curves.
+
 ## What the corridor can and cannot reach (2026-09-19)
 
 Measured, not assumed. The **bed** is sampled to 65-105 m (13-18 anchors per frame - the floor is wide), so

@@ -464,6 +464,21 @@
       },
       "gate": "corridor_crop_threshold_m (0.5 m): the widened path is skipped when the previous frame's corridor offset over the observed range stays below it, so a straight run keeps the original crop exactly. On these recordings the gate engages, because a fitted curvature bends the continuation by metres within the observed range - which is the situation it exists for.",
       "trade_stated": "+4-6 ms/frame (3-5%) for recovering the curved track: at 100 m on R = 300 m the object was previously discarded entirely. Set corridor_crop_threshold_m high to disable at the cost of curves; the timing measurement was taken while a panel run shared the machine and should be re-measured on an idle one."
+    },
+    "fixed_panel_regression": {
+      "config": "configs/stress-measured-pattern-cropcheck.json",
+      "commit": "5e2beaa",
+      "result": {
+        "tp": 709,
+        "fn": 251,
+        "fp_exhaustive_only": 176,
+        "precision": 0.8011,
+        "event_recall": 0.8021,
+        "matched_mean_3d_iou": 0.8223,
+        "distance_mae_m": 0.00111,
+        "negative_episode_rate": 0.0
+      },
+      "verdict": "byte-identical to the recorded baseline on 1460 frames: the corridor-aware crop changed no decision on the fixed panel"
     }
   },
   "curved_labelled_panel_wip": {
