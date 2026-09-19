@@ -1,0 +1,10 @@
+{
+  "date": "2026-09-19",
+  "scope": "Recipe drift made routine to detect, and the two documentation defects it found",
+  "guard": "tunnel_guard.config_audit compares every configs/*.json the README or docs reference against the shipped recipe, on every key except the backend selection, and classifies differences as expected for recipes whose names mark them historical (baseline, experimental, fast) and unexplained otherwise. `--fail-on-drift` exits non-zero on the latter.",
+  "defects_found": {
+    "missing_config": "docs/EXPERIMENTS.md referenced configs/evaluation-audit-baseline.json, which does not exist in configs/ - the recipe lives in the archived source tree the same command changes into",
+    "stale_claim": "the README described detector-native-fast.json as detector-native.json with one setting changed; it now differs in 31 keys, so its recorded measurements belong to an earlier state and it is marked historical"
+  },
+  "why_it_matters": "the NumPy reference recipe had already drifted from the shipping one and silently voided the backend-equivalence check; this is the same failure class, now detected routinely instead of by accident"
+}

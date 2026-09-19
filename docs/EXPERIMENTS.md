@@ -87,7 +87,7 @@ tar --zstd -xf archive/for_hackathon.zst -C data/sourcecraft_subset \
 project_root="$PWD"
 (cd build/audit-baseline/source && \
  "$project_root/.venv/bin/python" -m tunnel_guard.run \
- --experiment configs/evaluation-audit-baseline.json)
+ --experiment configs/evaluation-audit-baseline.json)   # this recipe lives in the archived source tree above, not in configs/
 
 .venv/bin/python -m tunnel_guard.run --experiment configs/evaluation-audit.json
 .venv/bin/python -m tunnel_guard.run --experiment build/audit-headless.json
