@@ -496,6 +496,42 @@
       },
       "reading": "2.4x the coverage and 5.6x fewer unmatched objects with the curvature continuation, the same direction and magnitude as the real-data pair test - relative evidence only, not comparable to the IoU panel"
     },
-    "status": "work in progress: not used as acceptance evidence"
+    "status": "work in progress: not used as acceptance evidence",
+    "detection_metrics_four_variants": {
+      "metric": "object_reported = any prediction box intersecting the label region (survives support splitting, unlike one-to-one IoU)",
+      "cases": 24,
+      "scene": "R = 300 m arc, object on the track centre, 20/40/100/150 m, measured beam pattern",
+      "old_straight_continuation_old_crop": {
+        "reported": 12,
+        "fraction": 0.5,
+        "union_coverage": 0.023,
+        "unmatched": 476
+      },
+      "crop_fix_only": {
+        "reported": 12,
+        "fraction": 0.5,
+        "union_coverage": 0.023,
+        "unmatched": 470
+      },
+      "curvature_fix_only": {
+        "reported": 12,
+        "fraction": 0.5,
+        "union_coverage": 0.047,
+        "unmatched": 84
+      },
+      "shipped_both": {
+        "reported": 16,
+        "fraction": 0.67,
+        "union_coverage": 0.055,
+        "unmatched": 84
+      },
+      "reading": "+33% of cases report the object and 82% fewer spurious objects with the shipped configuration; neither fix alone achieves it, so the two ends are complementary",
+      "why_the_fixed_panel_cannot_show_this": "it has straight rails, so the curvature term is shrunk to zero and the crop offset is ~0 - it is byte-identical by construction, and that is a no-regression check, not a demonstration",
+      "caveats": [
+        "one arc radius, stationary sensor, ideal surfaces with the measured beam pattern",
+        "24 cases; the metric is coarse (is the object reported at all) because an object's support splits across clusters here, so one-to-one IoU stays 0 and this panel is not comparable in absolute terms to the project's IoU panels",
+        "these scenes carry little infrastructure, so the 'unmatched' fall is a spurious-object count, not a measured field false-alarm rate"
+      ]
+    }
   }
 }

@@ -183,6 +183,23 @@ def main():
         coverage.append({"bag": key[0], "frame": key[1], "label_points": int(support[0]),
                          "covered_points": int(support[1]), "coverage": float(support[2])})
     covered = [c["coverage"] for c in coverage]
+    # Binary detection metric the one-to-one IoU cannot express when an object's support splits across
+    # clusters: is the object reported at all - does any prediction's box intersect its label region?
+    reported = []
+    for key, row in predictions.items():
+        label = next((f for f in panel if (f["bag"], f["frame"]) == key), None)
+        if label is None or not label["objects"]:
+            continue
+        lo, hi = np.asarray(label["objects"][0]["bbox_min"]), np.asarray(label["objects"][0]["bbox_max"])
+        hits = [o for o in row["objects"]
+                if np.all(np.asarray(o["bbox_max"]) >= lo) and np.all(np.asarray(o["bbox_min"]) <= hi)]
+        reported.append({"bag": key[0], "frame": key[1], "prediction_intersecting_label": bool(hits),
+                         "predictions_intersecting": len(hits)})
+    score["object_reported"] = {
+        "cases": len(reported),
+        "reported": int(sum(r["prediction_intersecting_label"] for r in reported)),
+        "fraction": float(sum(r["prediction_intersecting_label"] for r in reported) / max(len(reported), 1)),
+        "note": "any prediction box intersecting the label region; the metric that survives support splitting"}
     score["union_coverage"] = {"median": float(np.median(covered)) if covered else None,
                                "cases": len(covered),
                                "cases_at_least_half": int(sum(1 for c in covered if c >= 0.5)),
