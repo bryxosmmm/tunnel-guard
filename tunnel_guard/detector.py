@@ -629,7 +629,13 @@ class Detector:
         # uncertainty into an alarm on nearly every frame of an empty tunnel, which is the scenario the
         # case is mostly scored on. Such objects stay in the output with their distance and this reason,
         # and the perception-not-certified fact is reported through health instead.
-        require_certified = bool(self.config.get("hazard_requires_certified_path", True))
+        # Default FALSE, and that default was earned: with it on, an injected object at 100 m - whose
+        # relation is `unsupported_nominal_envelope` because the path is not certified out there - stopped
+        # being reported and the frame said no_obstacle_observed while the object was present. Suppressing
+        # a class that contains genuine range detections buys false-alarm reduction with missed detections,
+        # which is the wrong side of the trade for a system that must never call an uncertain path clear.
+        # The empty-tunnel alarm load has to be removed at the object level instead. Opt in explicitly.
+        require_certified = bool(self.config.get("hazard_requires_certified_path", False))
 
         def is_hazard(obj: dict) -> bool:
             if obj["path_relation"] == "intersecting":

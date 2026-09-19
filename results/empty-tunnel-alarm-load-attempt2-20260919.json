@@ -80,7 +80,7 @@
       "object-chain continuity at the boundary with anisotropy and recurrence: safe but cleared 5 of 60 frames for about 10 percent more processing"
     ]
   },
-  "final_state": "committed at 211b507 and verified byte-identical on the full 1460-frame panel (709/251/176, recall 0.8021, IoU 0.8223, zero negative alarms): spurious objects halved with every confirmed obstacle frame kept. Three variants for the close-range class are measured and rejected, each recorded with the check that killed it. The remaining work is a tunnel-structure model at the object level, with the gate stated.",
+  "final_state": "committed: the object-chain filter; corrected: the certified-path suppression is opt-in, because with it on an object at 100 m was reported as a clear path. The empty-tunnel alarm load therefore remains, and it can only be removed at the object level by modelling the tunnel's own structures - characterised, with three rejected variants recorded and the gate stated.",
   "fourth_variant_rejected_status_level_demotion": {
     "rule": "hazards_require_inside_contour: only an object inside the reference contour is a hazard; boundary-ambiguous and uncertified-path objects stay in the output as candidates",
     "what_it_fixed": "the empty tunnel: roundT_doubleT went from 59 unresolved_obstacle frames to 60 of 60 no_obstacle_observed, and the labelled recording kept all 52 obstacle frames with its noise frames dropping 7 -> 1",
@@ -92,5 +92,16 @@
     },
     "why_it_is_wrong": "status-level demotion trades false alarms for missed detections. The empty-tunnel false alarms must be removed at the OBJECT level - by not creating objects from the tunnel's own structures - not by softening what the frame status means.",
     "verdict": "rejected: it reported a clear path at 100 m while an object was there"
+  },
+  "correction_of_my_own_committed_default": {
+    "what_was_wrong": "the certified-path hazard rule shipped at 211b507 with default true. Measured this pass: an injected object at 100 m has relation reason `unsupported_nominal_envelope`, so the rule suppressed it and the frame status became `no_obstacle_observed` on every frame - the system reported a clear path while the object was present, at the range the case scores as good.",
+    "how_it_was_found": "checking the status (not the object list) of injected objects at 10, 40 and 100 m under the committed config; the earlier gate had only covered 20, 40 and 60 m",
+    "correction": "the rule is now opt-in (default false), so the class that contains genuine range detections is reported again",
+    "verified_after": {
+      "panel_injected_objects": "10 m -> obstacle; 100 m -> unresolved_obstacle / candidate (was no_obstacle_observed)",
+      "doubleT_obstacle": "unchanged: candidate 1, unresolved_obstacle 7, obstacle 52",
+      "roundT_doubleT": "candidate 1, unresolved_obstacle 59 - the empty-tunnel load is back, which is the honest state: the false alarms cannot be removed by suppressing a class that also carries real detections"
+    },
+    "what_remains_committed": "the object-chain continuity filter only. It is verified byte-identical on the full 1460-frame panel and cuts spurious objects by half without touching any confirmed frame."
   }
 }
