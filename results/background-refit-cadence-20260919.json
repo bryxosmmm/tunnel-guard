@@ -1,0 +1,30 @@
+{
+  "date": "2026-09-19",
+  "scope": "Runtime: refit the background model by distance travelled instead of every frame",
+  "problem": "TunnelBackground construction measured 40.3 ms on 72590 points - 33 per cent of a 123 ms frame, the largest single cost in the pipeline - rebuilt from scratch every frame as about 22 overlapping 30 m windows x 3 planes x 120 RANSAC iterations.",
+  "why_reuse_is_correct_here": "the model's own contract is points claimed by observed LONGITUDINAL surfaces - lining, walls, ducts, bed - and those run parallel to travel, so their sensor-frame plane equations barely change between consecutive frames, which are a fraction of a metre apart. The validity of the model is a spatial property, so the refit criterion is distance travelled, not frames: a stopped train needs no refit at all.",
+  "implementation": "`background_refit_travel_m`: reuse the cached model until the pose has advanced that far, then refit. Skipping the CONSTRUCTION is what saves the time - an earlier attempt disabled only the attachment and still paid the 40 ms, which the measurements showed immediately.",
+  "measured": {
+    "baseline_refit_every_frame": {
+      "roundT_doubleT": 130.7,
+      "doubleT_obstacle": 143.4
+    },
+    "travel_1_0_m": {
+      "roundT_doubleT": 111.1,
+      "doubleT_obstacle": 105.2,
+      "change": "-15 and -27 per cent"
+    },
+    "travel_2_0_m": {
+      "roundT_doubleT": 112.1,
+      "doubleT_obstacle": 104.8
+    },
+    "frame_cadence_5_for_comparison": {
+      "roundT_doubleT": 119.2,
+      "doubleT_obstacle": 108.9
+    },
+    "statuses": "identical on both recordings at both travel limits: 59 unresolved_obstacle on roundT_doubleT, and candidate 1 / unresolved 7 / obstacle 52 on doubleT_obstacle",
+    "reading": "distance-based reuse beats frame-count reuse (111.1 vs 119.2 on the tunnel recording) because it refits on demand, and it is the criterion with a physical meaning"
+  },
+  "trade_off_stated": "a stale model can mis-remove the bed on a grade: at 1 m of travel and the measured 0.5 per cent bed pitch the offset error is about 5 mm, against the 25 mm fit distance, so the 1.0 m limit keeps a margin; at 2 m it is 10 mm and the metrics did not change either, but the smaller limit is the one with room to spare",
+  "pending_gate": "the full 1460-frame measured-pattern panel with the 1.0 m limit: it must hold event recall 0.8021, matched IoU 0.8223 and zero negative episodes, and the recordings must keep the labelled obstacle at 52 of 52"
+}
