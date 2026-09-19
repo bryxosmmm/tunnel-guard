@@ -715,7 +715,8 @@ class Detector:
         # far-field lateral bound is attached here rather than inside either builder.
         for obj in objects:
             obj["far_field_lateral_bound_m"] = _far_field_bound(obj["distance_m"], geometry, self.config)
-        return result | {"status": status, "reason": geometry.reason, "objects": objects,
+        return result | {"status": status, "reason": geometry.reason,
+                         "certified_range_m": geometry.certified_range_m(), "objects": objects,
                          "health": "unavailable" if not geometry.valid else ("degraded" if health_reasons else "normal"),
                          "health_reasons": health_reasons,
                          "nearest_obstacle_m": min((o["distance_m"] for o in confirmed), default=None),

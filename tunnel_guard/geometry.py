@@ -651,6 +651,24 @@ class TrackGeometry:
         result = (core, context, height, observed, nominal_overlap)
         return result + (boundary,) if include_boundary else result
 
+    def certified_range_m(self) -> float | None:
+        """How far ahead the corridor itself is certified, in metres.
+
+        The path's uncertainty grows with distance from the nearest measured anchor and the horizon policy stops
+        certification when it exceeds `path_max_uncertainty_m`. Objects beyond that range are reported with their
+        distance and their own uncertainty, but their relation to the swept path is not established - so a consumer
+        needs the range, not only the objects, to read a frame honestly. One coarse evaluation, reporting only.
+        """
+        if not self.valid:
+            return None
+        grid = np.arange(float(self.config["min_forward_m"]), float(self.config["max_range_m"]), 1.0)
+        if not len(grid):
+            return None
+        _, _, uncertainty = self.path(grid)
+        certified = grid[np.isfinite(uncertainty)
+                         & (uncertainty <= self.config["path_max_uncertainty_m"])]
+        return float(certified.max()) if len(certified) else 0.0
+
     def describe(self) -> dict:
         return {"valid": self.valid, "reason": self.reason, "ground_quality": self.ground_quality,
                 "lateral_boundary_policy": "heuristic_path_and_ground_interval",
