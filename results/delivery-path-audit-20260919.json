@@ -1,0 +1,8 @@
+{
+  "date": "2026-09-19",
+  "scope": "The delivery-path audit, consolidated, plus a check that every build input is tracked",
+  "clean_check": "all nine Dockerfile COPY sources exist and are tracked in git - docker/constraints.txt, pyproject.toml, setup.py, MANIFEST.in, cpp (3 files), tunnel_guard (60), configs (205), rviz (1), launch (1) - and none matches a gitignore rule, so a fresh clone builds the same image; CMD points at tunnel_guard.ros_node",
+  "why_that_check_matters": "this repository gitignores scripts/, so a build input that is present locally but ignored would break the image on any other machine while working perfectly here",
+  "artifact": "docs/DELIVERY_PATH_AUDIT.md - the five defects with the failure each would have caused, the clean checks (topics, parameters, display integrity, build inputs, degradation), the unverified list with reasons, and the exact commands an evaluator should run first",
+  "linked_from": "README"
+}

@@ -119,6 +119,14 @@ Run with `input_topic:=<the bag's topic>` when they differ - `ros2 bag info <bag
 `input_timeout_s`, the node degrades to `unavailable` and now logs an error naming the configured topic, the point-cloud
 topics that are actually present, and the parameter to restart with, so the cause is visible rather than silent.
 
+### The audit behind those instructions
+
+Every link of the delivery path was checked on 2026-09-19 and five defects were found and fixed - an unpublished fixed
+frame, a mismatched input topic, an undeclared `tf2_ros` dependency, a build check that did not import the node, and the
+absence of these container instructions together with the host-networking requirement. The checks that came back clean,
+the exact commands to run first, and everything that remains unverified are in
+[docs/DELIVERY_PATH_AUDIT.md](docs/DELIVERY_PATH_AUDIT.md).
+
 ## Running it in the container (2026-09-19)
 
 The submission requires build and run instructions for the container, and the README carried none: it documented the
