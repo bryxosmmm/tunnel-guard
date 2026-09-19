@@ -465,5 +465,22 @@
       "gate": "corridor_crop_threshold_m (0.5 m): the widened path is skipped when the previous frame's corridor offset over the observed range stays below it, so a straight run keeps the original crop exactly. On these recordings the gate engages, because a fitted curvature bends the continuation by metres within the observed range - which is the situation it exists for.",
       "trade_stated": "+4-6 ms/frame (3-5%) for recovering the curved track: at 100 m on R = 300 m the object was previously discarded entirely. Set corridor_crop_threshold_m high to disable at the cost of curves; the timing measurement was taken while a panel run shared the machine and should be re-measured on an idle one."
     }
+  },
+  "curved_labelled_panel_wip": {
+    "tool": "tunnel_guard/curved_stress.py (analytic arc tunnel, exact labels, measured beam pattern)",
+    "why_it_matters": "the shipped synthetic panel has straight rails and therefore cannot test the curvature continuation; this scene puts an object on the centre-line of an R = 300 m arc, where its sensor-frame offset is 0.67 / 2.64 / 7.98 m at 20 / 40 / 100 m",
+    "known_defect": "the detector reports observed support per cluster, and on this scene an object's visible support splits into its near face (319 voxels) and its top face (17 voxels); each is a near-degenerate box against a label spanning both, so one-to-one IoU >= 0.1 matches nothing and the union-coverage measure is on a different scale from the project's IoU panel",
+    "relative_result_24_cases": {
+      "unmatched_objects": {
+        "straight_continuation": 470,
+        "curvature_continuation": 84
+      },
+      "union_coverage_median": {
+        "straight_continuation": 0.023,
+        "curvature_continuation": 0.055
+      },
+      "reading": "2.4x the coverage and 5.6x fewer unmatched objects with the curvature continuation, the same direction and magnitude as the real-data pair test - relative evidence only, not comparable to the IoU panel"
+    },
+    "status": "work in progress: not used as acceptance evidence"
   }
 }

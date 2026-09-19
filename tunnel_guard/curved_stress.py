@@ -88,6 +88,24 @@ def scene_scan_curved(config: dict, directions: np.ndarray, origin: np.ndarray, 
     return directions[keep] * distance[keep][:, None], visible[keep]
 
 
+def coverage_support(nearby: list[dict], lo: np.ndarray, hi: np.ndarray, grid: int = 8):
+    """Fraction of the label box sampled on a grid that falls inside any nearby predicted box.
+
+    The detector's boxes are observed support, and on this scene an object's support can split across
+    clusters, so a union measure answers what one-to-one IoU cannot: is the object's volume covered by
+    what was reported nearby at all.
+    """
+    axes = [np.linspace(lo[i], hi[i], grid) for i in range(3)]
+    sample = np.stack(np.meshgrid(*axes, indexing="ij"), axis=-1).reshape(-1, 3)
+    if not nearby:
+        return len(sample), 0, 0.0
+    boxes = [(np.asarray(o["bbox_min"]), np.asarray(o["bbox_max"])) for o in nearby]
+    inside = np.zeros(len(sample), dtype=bool)
+    for low, high in boxes:
+        inside |= np.all((sample >= low) & (sample <= high), axis=1)
+    return len(sample), int(inside.sum()), float(inside.mean())
+
+
 def object_on_arc(config: dict, arc_m: float, lateral_m: float, dimensions) -> dict:
     """Axis-aligned envelope of a box standing on the arc at `arc_m` of arc length."""
     R = float(config["alignment_arc_m"])
@@ -146,6 +164,30 @@ def main():
                    "minimum_iou": experiment["minimum_iou"], "frames": panel}
     write_json(output / "annotations.json", annotations)
     score = evaluate_frames(predictions, annotations)
+
+    # The evaluator matches one prediction to one label at IoU >= minimum_iou. On this scene an object's
+    # visible support can split into two clusters (its near face and its top), each below that IoU against
+    # a label spanning both, so the one-to-one score under-reports detection. This complementary measure
+    # asks the question the corridor exists to answer: how much of the labelled support is covered by the
+    # union of predictions that lie within the object's neighbourhood - support covered, per case.
+    coverage = []
+    for key, row in predictions.items():
+        label = next((f for f in panel if (f["bag"], f["frame"]) == key), None)
+        if label is None or not label["objects"]:
+            continue
+        lo, hi = np.asarray(label["objects"][0]["bbox_min"]), np.asarray(label["objects"][0]["bbox_max"])
+        centre, radius = (lo + hi) / 2, max(float(np.linalg.norm(hi - lo)), 1.0)
+        nearby = [o for o in row["objects"]
+                  if np.linalg.norm(np.asarray(o["center"]) - centre) <= 2 * radius]
+        support = coverage_support(nearby, lo, hi)
+        coverage.append({"bag": key[0], "frame": key[1], "label_points": int(support[0]),
+                         "covered_points": int(support[1]), "coverage": float(support[2])})
+    covered = [c["coverage"] for c in coverage]
+    score["union_coverage"] = {"median": float(np.median(covered)) if covered else None,
+                               "cases": len(covered),
+                               "cases_at_least_half": int(sum(1 for c in covered if c >= 0.5)),
+                               "note": "fraction of the object's visible support covered by the union of "
+                                       "nearby predictions; one-to-one IoU is reported separately"}
     score["arc_m"] = experiment["alignment_arc_m"]
     print(json.dumps({k: v for k, v in score.items() if k not in ("frames", "events")}, indent=2))
     write_json(output / "metrics.json", score)
