@@ -114,6 +114,29 @@ Three things would change that, none of them present in the current inputs: **mo
 database rather than a per-scan estimate — or the survey), or **a vehicle swept-volume specification**
 (overhang and sway limits, converting an unmeasurable centre-line into a bounded volume claim).
 
+## Was anything worse? The `unresolved` audit (measured, not argued)
+
+A fair challenge — that `unresolved` was zero after the morev merge — was tested by running the merge tree
+(`9de584f`, its own code and config) and HEAD on the same 60-frame windows:
+
+| state | `doubleT_obstacle` adj / unres / inter | statuses | `roundT_doubleT` adj / unres | statuses |
+|---|---|---|---|---|
+| morev merge | 11113 / 3128 / 64 | 8 unres, 52 obstacle | 12327 / 2734 | 59 unres, 1 candidate |
+| my code, **curvature disabled** | 11113 / 3128 / 64 | identical | 12327 / 2734 | identical |
+| + curvature continuation | 10847 / 3254 / 68 | 7 unres, 52 obstacle | 12284 / 2757 | identical |
+| + corridor crop (HEAD) | 10861 / 3230 / 68 | 7 unres, 52 obstacle | 12284 / 2757 | identical |
+
+Three findings. **Unresolved was not zero at the merge** on these recordings (59/60 and 8/60 frames), and no
+artifact in the repository records zero for it — the zero figure belongs to *frames declaring the path clear*
+(0 of 2488). **Nothing but the curvature change moved anything**: with curvature disabled, today's code
+reproduces the merge state exactly, so the reader-overlap and uncertainty-reporting work changed no
+classification. **The curvature change relabels ~3.3% of object relations on the stationary recording** from
+`adjacent` to `unresolved` — both the conservative side and, per `detector.py`, the hazard list — while frame
+statuses stay unchanged or marginally better (8 → 7 unresolved frames). That recording cannot score the
+change either way: the forward-prediction test needs travel over re-measured ground and finds 0 qualifying
+frame pairs at 20/30/50 m look-ahead and 1 at 40 m (0.032 vs 0.040 m). The evidence for the new continuation
+is the curved recording (2.4–5.2×) and the arc panel (12 → 16 of 24 cases).
+
 ## Trade-offs taken, stated
 
 - **Latency.** The corridor-aware crop costs **+4–6 ms/frame** (127.1 → 133.6 and 139.1 → 143.3 p50) because

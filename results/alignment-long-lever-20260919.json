@@ -533,5 +533,76 @@
         "these scenes carry little infrastructure, so the 'unmatched' fall is a spurious-object count, not a measured field false-alarm rate"
       ]
     }
+  },
+  "did_anything_worsen_unresolved_audit": {
+    "question": "the operator believed unresolved was 0 after the morev merge; is today's count a regression?",
+    "method": "ran the merge-morev tree (9de584f, its own code and config) and HEAD on the same 60-frame windows of both recordings; histogram of frame statuses and object path_relation",
+    "morev_merge_state": {
+      "roundT_doubleT": {
+        "status_frames": {
+          "unresolved_obstacle": 59,
+          "candidate": 1
+        },
+        "relations": {
+          "adjacent": 12327,
+          "unresolved": 2734
+        }
+      },
+      "doubleT_obstacle": {
+        "status_frames": {
+          "unresolved_obstacle": 8,
+          "obstacle": 52
+        },
+        "relations": {
+          "adjacent": 11113,
+          "unresolved": 3128,
+          "intersecting": 64
+        }
+      }
+    },
+    "head": {
+      "roundT_doubleT": {
+        "status_frames": {
+          "unresolved_obstacle": 59,
+          "candidate": 1
+        },
+        "relations": {
+          "adjacent": 12284,
+          "unresolved": 2757
+        }
+      },
+      "doubleT_obstacle": {
+        "status_frames": {
+          "unresolved_obstacle": 7,
+          "obstacle": 52,
+          "candidate": 1
+        },
+        "relations": {
+          "adjacent": 10861,
+          "unresolved": 3230,
+          "intersecting": 68
+        }
+      }
+    },
+    "attribution": {
+      "with_curvature_disabled_my_code_is_bit_identical_to_the_merge": {
+        "doubleT_obstacle": {
+          "adjacent": 11113,
+          "unresolved": 3128,
+          "intersecting": 64,
+          "statuses": "identical"
+        },
+        "roundT_doubleT": {
+          "adjacent": 12327,
+          "unresolved": 2734,
+          "statuses": "identical"
+        }
+      },
+      "sole_mover": "the curvature continuation; the corridor crop returns 24 of the 126 relations it moved on the stationary recording and nothing on the curved one",
+      "reader_overlap_and_uncertainty_reporting": "changed no classification at all"
+    },
+    "reading": "unresolved was never 0 at the merge state on these recordings, and no artifact in the repository records unresolved = 0 (all results/ and build/ JSONs searched; the morev branch's own docs state the warning load is not eliminated). What is 0 is frames declaring the path clear (0 of 2488). Today's only measurable effect is a relabelling of ~3.3% of object relations on the stationary recording from adjacent to unresolved, which puts them in the hazard list - the conservative direction - while frame statuses are unchanged or marginally better (8 -> 7 unresolved frames).",
+    "why_that_recording_cannot_score_the_change": "the forward-prediction test needs the platform to travel over ground a later frame re-measures; on doubleT_obstacle it yields 0 qualifying frame pairs at 20/30/50 m and 1 at 40 m (0.032 vs 0.040 m), so the new continuation is unvalidatable there. Its evidence is the curved recording (2.4-5.2x) and the arc panel (12 -> 16 of 24 cases).",
+    "trade_off_stated": "more objects carry the conservative unresolved label on the stationary recording, i.e. a heavier per-object hazard load for no frame-level change; accepted because the label is the safe side and the alternative (keeping the noisier two-point tangent) is the less accurate centre-line where it can be validated"
   }
 }
