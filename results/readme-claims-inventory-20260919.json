@@ -1,0 +1,17 @@
+{
+  "date": "2026-09-19",
+  "scope": "Triage of the README's quantified claims against the recorded artifacts",
+  "method": "every number-with-unit in the README, matched against the text of every results/*.json; a claim whose number appears nowhere is listed for a human to check. String matching is triage, not proof: an artifact may store a different precision, and a claim may be backed by a build/ artifact that is local-only by design.",
+  "counts": {
+    "quantified_claims": 82,
+    "found_in_results": 80,
+    "not_found": 2
+  },
+  "not_found_examples": [
+    "126.7 ms",
+    "142.0 ms"
+  ],
+  "why_this_exists": "three passes found claims whose evidence was missing or mis-attributed - the on-track aggregates with no artifact at all, three runtime figures compared against the wrong configuration, and a stale script path. This inventory makes the class visible in one place instead of one defect per pass.",
+  "scope_limit": "the regex required a unit (ms, m, %, frames, scans), so unitless aggregates are outside it - including the very claim that motivated the inventory, the on-track counts 11,115 -> 381 -> 15, which have no artifact in the repository and are being re-measured. A clean result here means the unit-bearing claims are backed, not that every claim is.",
+  "outcome": "80 of 82 unit-bearing claims carry a number that appears in a results file, and the two that do not are this check's own false positives: 126.7 and 142.0 are the README's rounding of 126.658 and 141.962, verified exactly against the artifact."
+}
