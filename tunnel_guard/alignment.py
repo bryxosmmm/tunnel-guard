@@ -38,6 +38,7 @@ class Trace:
     counts: np.ndarray
     weight: float = 1.0
     label: str = "surface"
+    sample_weights: np.ndarray | None = None      # per-sample weights, overriding `weight`
 
     @property
     def span(self) -> float:
@@ -170,6 +171,17 @@ def fit_alignment(traces: list[Trace], rail_xy: np.ndarray | None, config: dict)
                      reason="fitted")
 
 
+def axis_trace(axis: "CrossSectionAxis", weight_scale: float = 1.0) -> Trace | None:
+    """The measured cross-section centres as one weighted trace for fit_spline (1/sigma^2 weighting)."""
+    if not axis.valid or len(axis.samples) < 4:
+        return None
+    stations = np.array([sample.station_m for sample in axis.samples])
+    laterals = np.array([sample.lateral_m for sample in axis.samples])
+    sigmas = np.array([max(sample.sigma_m, 1e-3) for sample in axis.samples])
+    return Trace(stations, laterals, np.array([sample.points for sample in axis.samples]),
+                 sample_weights=weight_scale / sigmas**2, label="axis")
+
+
 def _hat_basis(knots: np.ndarray, x) -> np.ndarray:
     """Linear hat basis over the knots; outside the knot range the end values extend flat."""
     x = np.atleast_1d(np.asarray(x, dtype=float))
@@ -249,7 +261,8 @@ def fit_spline(traces: list[Trace], rail_xy: np.ndarray | None, config: dict,
         design = np.column_stack((np.ones(len(trace.x)), trace.x, basis))   # a_s, b_s, f
         blocks.append(design)
         targets.append(trace.y)
-        weights.append(np.full(len(trace.x), trace.weight))
+        weights.append(trace.sample_weights if trace.sample_weights is not None
+                       else np.full(len(trace.x), trace.weight))
     # soft constraints: f at x=0 is zero, and its slope at the first interval matches the anchor
     constraint_design = np.zeros((2, 2 + len(knots)))
     constraint_design[0, 2] = 1.0
@@ -308,3 +321,145 @@ def fit_spline(traces: list[Trace], rail_xy: np.ndarray | None, config: dict,
                            residual_m=float(np.sqrt(variance)),
                            spans_m=[float(t.span) for t in sorted(pool, key=lambda t: -t.span)],
                            reason="fitted")
+
+
+@dataclass
+class AxisSample:
+    station_m: float
+    lateral_m: float
+    height_m: float
+    sigma_m: float
+    points: int
+    radius_m: float
+
+
+@dataclass
+class CrossSectionAxis:
+    """Alignment as a sequence of measured cross-section centres (no functional form)."""
+    valid: bool
+    samples: list[AxisSample] = field(default_factory=list)
+    breaks: list[float] = field(default_factory=list)
+    rail_offset_median_m: float = float("nan")
+    rail_offset_spread_m: float = float("inf")
+    reason: str = "not_fitted"
+
+    @property
+    def furthest_m(self) -> float:
+        return self.samples[-1].station_m if self.samples else 0.0
+
+    def run_from(self, station_m: float) -> list[AxisSample]:
+        """Samples in the continuous run containing this station (section changes break runs)."""
+        run: list[AxisSample] = []
+        for sample in self.samples:
+            if sample.station_m < station_m:
+                continue
+            if run and any(abs(sample.station_m - b) < 1e-6 for b in self.breaks):
+                return run
+            run.append(sample)
+        return run
+
+
+def cross_section_axis(points: np.ndarray, rail_anchors: np.ndarray, config: dict) -> CrossSectionAxis:
+    """Alignment from robust circle fits to perpendicular slabs of the scan.
+
+    Bootstrap frame: a line through the near-field rail anchors (the only absolute centre available),
+    then a slab every `alignment_station_m` along it. Each slab's lining points are fitted with a
+    circle under a Huber loss - the bore's cross-section - and its centre is an axis sample. The
+    primitive matters: a slab averages over azimuth and height, so an attachment is a minority of the
+    samples and is down-weighted, whereas the earlier per-bin Cartesian trace followed whichever
+    cluster was nearest and could not be fitted by any shared function.
+
+    Only the axis *shape* is taken from the bore; the absolute offset stays with the rails, because a
+    constant bore-versus-track offset cancels in the shape and would otherwise be invented as signal.
+    """
+    if len(rail_anchors) < 3:
+        return CrossSectionAxis(False, reason="fewer than three rail anchors")
+    cfg = config
+    near = rail_anchors[rail_anchors[:, 0] <= float(cfg.get("alignment_bootstrap_range_m", 20.0))]
+    if len(near) < 3:
+        near = rail_anchors[:3]
+    heading = float(np.polyfit(near[:, 0], near[:, 1], 1)[0])
+    along = np.array([1.0, heading]) / np.hypot(1.0, heading)
+    lateral_dir = np.array([-along[1], along[0]])
+    bed_z = float(cfg.get("alignment_bed_z_m", -1.32))
+    station_step = float(cfg.get("alignment_station_m", 5.0))
+    half_width = float(cfg.get("alignment_slab_half_m", 0.6))
+    max_station = float(cfg.get("alignment_max_range_m", 260.0))
+    min_points = int(cfg.get("alignment_min_slab_points", 15))
+    max_sigma = float(cfg.get("alignment_max_slab_sigma_m", 0.15))
+
+    xy = points[:, :2]
+    along_coord = xy @ along
+    lateral = xy @ lateral_dir
+    height = points[:, 2]
+
+    samples: list[AxisSample] = []
+    station = station_step
+    while station <= max_station:
+        slab = (np.abs(along_coord - station) <= half_width) & (np.abs(lateral) <= 8.0) \
+            & (height >= bed_z - 0.4) & (height <= bed_z + 6.0)
+        if slab.sum() >= min_points:
+            centre, radius, sigma = _robust_circle(lateral[slab], height[slab])
+            if centre is not None and sigma <= max_sigma and 1.5 <= radius <= 12.0:
+                samples.append(AxisSample(station, float(centre[0]), float(centre[1]),
+                                          float(sigma), int(slab.sum()), float(radius)))
+        station += station_step
+    if len(samples) < 4:
+        return CrossSectionAxis(False, reason=f"only {len(samples)} usable slabs")
+
+    # A section change is a step that departs from the local trend, not the along-track drift a
+    # curve produces (at 5 m stations on R = 1000 m the centre legitimately moves ~0.75 m), so the
+    # second difference is what is tested: a straight or curved run has a smooth one.
+    breaks = []
+    lateral_values = np.array([s.lateral_m for s in samples])
+    sigmas = np.array([s.sigma_m for s in samples])
+    for index in range(1, len(samples) - 1):
+        second = lateral_values[index - 1] - 2 * lateral_values[index] + lateral_values[index + 1]
+        allowed = max(0.20, 6.0 * max(sigmas[index - 1], sigmas[index], sigmas[index + 1]))
+        if abs(second) > allowed:
+            breaks.append(samples[index].station_m)
+    rail_interp = np.interp([s.station_m for s in samples],
+                            rail_anchors[:, 0] * np.hypot(1.0, heading) + rail_anchors[:, 1] * heading / np.hypot(1.0, heading),
+                            rail_anchors[:, 1])
+    offsets = rail_interp - np.array([s.lateral_m for s in samples])
+    return CrossSectionAxis(True, samples=samples, breaks=breaks,
+                            rail_offset_median_m=float(np.median(offsets)),
+                            rail_offset_spread_m=float(np.percentile(np.abs(offsets - np.median(offsets)), 90)),
+                            reason="fitted")
+
+
+def _robust_circle(lateral: np.ndarray, height: np.ndarray, iterations: int = 6):
+    """Kasa algebraic circle fit with Huber reweighting.
+
+    Returns (centre, radius, sigma_centre) where sigma_centre is the *linearised* standard error of
+    the fitted centre, not the residual scatter divided by sqrt(n). At long range a slab sees a
+    nearly straight arc, which a circle can fit with small residuals while its centre is barely
+    determined; the covariance of the normal equations sees that conditioning, the residual does not.
+    """
+    x, y = np.asarray(lateral, float), np.asarray(height, float)
+    if len(x) < 6:
+        return None, 0.0, float("inf")
+    weight = np.ones(len(x))
+    centre = np.array([float(np.median(x)), float(np.median(y))])
+    radius = float(np.median(np.hypot(x - centre[0], y - centre[1])))
+    sigma_centre = float("inf")
+    for _ in range(iterations):
+        design = np.column_stack((2 * x, 2 * y, np.ones(len(x))))
+        target = x**2 + y**2
+        weighted = design * weight[:, None]
+        normal = design.T @ weighted
+        solution, *_ = np.linalg.lstsq(weighted, weight * target, rcond=None)
+        residual = weight * (target - design @ solution)
+        dof = max(1, int(weight.sum() * 3 / 3) - 3)
+        scatter = float((residual**2).sum() / max(weight.sum(), 1e-9))
+        try:
+            covariance = np.linalg.inv(normal) * scatter / max(dof, 1)
+            sigma_centre = float(np.sqrt(max(np.linalg.eigvalsh(covariance[:2, :2]).max(), 0.0)))
+        except np.linalg.LinAlgError:
+            sigma_centre = float("inf")
+        centre = solution[:2]
+        radius = float(np.sqrt(max(solution[2] + centre @ centre, 0.0)))
+        geometric = np.hypot(x - centre[0], y - centre[1]) - radius
+        scale = 1.4826 * np.median(np.abs(geometric - np.median(geometric))) + 1e-6
+        weight = np.clip(1.5 * scale / np.maximum(np.abs(geometric), 1e-9), 0.0, 1.0)
+    return centre, radius, sigma_centre
