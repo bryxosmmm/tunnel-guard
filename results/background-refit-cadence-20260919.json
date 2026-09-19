@@ -36,5 +36,18 @@
     "frames_per_arm": 438,
     "criterion": "event recall, matched IoU, precision and zero negative episodes must match the off arm's",
     "decision_it_authorises": "setting background_refit_travel_m: 1.0 in configs/detector-native.json, i.e. turning the measured 15-27 per cent runtime win into the shipped default"
+  },
+  "gate_result_and_enablement": {
+    "gate": "prefixed A/B on the identical case list and seed, first 3 frames per case, 438 frames per arm. Every metric identical: tp 182, fn 106, fp 40, precision 0.8198, event recall 0.7917, matched IoU 0.8114, distance MAE 0.00087 m, negative episode rate 0.0, and recall by range unchanged from 10 to 300 m. Wall time per arm 124.4 s -> 103.0 s, i.e. 17 per cent on a run that includes the first frames where nothing can be reused.",
+    "enabled_in_the_shipped_recipe": {
+      "background_refit_travel_m": 1.0,
+      "infrastructure_continuity": "enabled - the object-chain filter, whose own gate was byte-identical on the full 1460-frame panel; the shipped recipe had never carried it, which is now closed"
+    },
+    "shipped_recipe_measured": {
+      "roundT_doubleT": "130.7 -> 114.4 ms (12 per cent faster), statuses identical",
+      "doubleT_obstacle": "143.4 -> 105.9 ms (26 per cent faster), statuses identical, labelled obstacle preserved 52 of 52",
+      "objects": "roundT 15041 -> 13486, doubleT 14159 -> 15200 with unresolved 1754 -> 2133: relations shift slightly because a fresher model segments context slightly differently, while every frame decision is unchanged"
+    },
+    "what_this_changes_for_the_case": "runtime is a scored criterion (latency, frame rate, real-time stability) and the demo plays a bag in real time; a quarter of the frame time back is the difference between about 8 Hz and the real-time regime on the stand's eight cores"
   }
 }
