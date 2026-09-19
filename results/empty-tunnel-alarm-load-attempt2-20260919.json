@@ -170,5 +170,18 @@
     },
     "verdict": "avenue closed by measurement, not by opinion. The far-field lateral frame is not obtainable in a single pass from this sensor by cross-section fitting, and map-based localization needs a prior map of the route.",
     "what_this_completes": "fifth independent measurement of the same limit: rails vanish by 90 m, the bed band is empty beyond 70 m, a carried bore offset is biased about 1 m, six estimators failed, and now partial-arc circle fits are ill-conditioned and unmeasurable beyond 80 m. The far-field lateral frame is a sensor property on this route, not a modelling gap."
+  },
+  "eighth_attempt_geometric_feature_classification": {
+    "research": "the field separates a tunnel's own structures from its content by local geometric feature classification: the eigenvalues of the local covariance give planar (lining, wall, duct), linear (cable, rail) or compact (object) evidence, with the normal giving the surface orientation. Sources: ISPRS 2015 robust planar and linear feature classification, ISPRS 2020 planar polygon detection, ISPRS 2021 detection of railway-related infrastructures, semantic segmentation of tunnel ground/lining/wiring/rails (ISPRS 2020), tunnel secondary lining segmentation by roughness and features.",
+    "implementation": "eigen-decomposition of the covariance of each track's ACCUMULATED, ego-motion compensated support - which needs several observations and never a good lateral frame - scoped to candidates that do not intersect the certified corridor, so a planar object genuinely on the path stays a hazard",
+    "measured": {
+      "objects_reclassified": "128 at planarity <= 0.08, with no change to any frame status",
+      "threshold_sweep": "0.15 and 0.30 both leave the statuses unchanged on both recordings, with the labelled obstacle preserved 52 of 52",
+      "remaining_after": "980 confirmed hazards of which 856 carry at least the 8 accumulated voxels the test needs, so the blocker is the planarity criterion, not the point floor",
+      "cost": "within noise (132 vs 134 ms, 145 vs 147 ms)"
+    },
+    "why_it_fails": "the accumulated world-frame evidence of those far structures is not planar: with a handful of returns per scan and imperfect registration it is smeared, so the shape test sees no surface. The test is sound; the evidence it must judge is degraded.",
+    "verdict": "reverted: no frame decision changed, so nothing ships",
+    "cumulative_statement": "six independent approaches have now failed to separate the tunnel's far-field surfaces from objects within a single pass on this sensor: the lateral frame (five separate measurements), the track-relative profile model, per-station circle fitting, sparse candidate admission, and now shape-based feature classification. The far returns are too few and the registration too imperfect for geometry to decide. The remaining options are structural, not algorithmic: a prior map from another pass, or an explicit decision about what an unclassifiable far return should mean in the output contract."
   }
 }
