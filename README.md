@@ -88,6 +88,19 @@ an empty tunnel at metro speed (1.5 m/frame) produced 70k false dynamic labels i
 numbers: `results/hmm-mos-probe-20260918.json`; recipes: `configs/hmm-mos-probe-*.json` and
 `tunnel_guard/hmm_mos_probe.py`. Nothing in the pipeline was changed by this review.
 
+## Reader overlap in the offline runner
+
+The bag reader (decompression plus PointCloud2 decode) ran between frames: 38.6 ms p50 on
+`doubleT_obstacle`, 12.8 ms on `doubleT_platform`. One bounded producer thread now reads ahead by one
+scan while inference runs. On the same 30-frame protocol with the same recipe,
+`read_and_process` p50 falls 164.7 → **126.7 ms** and 118.8 → **105.2 ms**, and p95 185.2 → 142.0 ms,
+with every compared field identical (status, nearest distance, each object's track id and distance, 60
+frames). Inference is untouched (125.6 → 126.5 / 105.5 → 104.7 ms).
+
+This removes the reader from the critical path; it does **not** shorten the age of a decision, and
+inference at ~126 ms per frame still exceeds the 100 ms input period, so 10 Hz per frame is not met.
+Recorded result: `results/reader-overlap-20260919.json`.
+
 ## Team work
 
 See [next iteration assignments](docs/TEAM_TASKS.md): reviewed episodes, sensor/time evidence, Ubuntu/RViz validation, and oriented evaluation. Use separate branches from `experiments/morev`.
@@ -250,6 +263,13 @@ Boxes describe observed support, not inferred full object volume. Distance is th
 - `confirmed` describes the object; `intersection_confirmed` separately describes its current envelope intrusion. Immediate confirmation uses interior support; weak intrusion requires distinct recent interior observations. See [intersection evidence](docs/INTERSECTION_EVIDENCE.md) for real-data diagnosis, fields and tradeoffs. RViz uses red for confirmed intrusion and orange for confirmed objects with unresolved/pending intrusion.
 - `coordinate_frame=tunnel_guard_local` identifies the transformed current-scan coordinates. `sensor_frame` is source metadata. No global TF or verified vehicle extrinsics are implied.
 - `processing_s`, `read_and_process_s` and optional `visualization_s` use monotonic timing; summary includes ingestion/drop counts and visualization time. `range_observability` reports support, not free-space coverage.
+- The runner reads and decodes the next scan on one producer thread while the detector processes the
+  current one: `prefetch_depth` in the experiment config, default 1, bounded to keep one unprocessed
+  scan in memory. With overlap, `read_and_process_s` is the cost of one loop iteration and
+  `ingestion_s` is the consumer's block on that thread, **not** the age of a decision — a scan still
+  waits for the scan ahead of it. `prefetch_depth: 0` restores inline reading. No measurement and no
+  decision changes either way; measured evidence and the equivalence check are in
+  `results/reader-overlap-20260919.json` (`configs/perf-prefetch-on.json`).
 
 ## View actual results in RViz2
 

@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
+import queue
+import threading
 import time
 
 import numpy as np
@@ -26,6 +28,56 @@ class Scan:
     skipped_duplicate_scans: int = 0
     deserialize_s: float = 0.0
     decode_s: float = 0.0
+
+
+def prefetch(iterable, depth: int = 1):
+    """Consume `iterable` on one producer thread, at most `depth` items ahead.
+
+    Reading a bag costs decompression and decoding that do not depend on the detector, so
+    a consumer that computes is idle while the next scan is prepared. This runs the same
+    iteration the caller would have run, one thread earlier and bounded: order, duplicate
+    skipping, subsampling and the value of every yielded item are unchanged, and
+    StopIteration or an exception surfaces at the `next()` call that would have raised it.
+
+    Bounded depth is deliberate. Depth 1 keeps one unprocessed scan in memory and limits
+    how far the producer may run ahead of the consumer, so a slow consumer cannot build an
+    unbounded queue of stale scans. It overlaps work; it does not make the consumer fast.
+    Closing the consumer stops the producer, so a long-lived process cannot leak threads.
+    """
+    if depth < 1:
+        return iter(iterable)
+    items: queue.Queue = queue.Queue(maxsize=depth)
+    done, stop = object(), threading.Event()
+
+    def produce():
+        try:
+            for item in iterable:
+                while not stop.is_set():
+                    try:
+                        items.put(item, timeout=0.05)
+                        break
+                    except queue.Full:
+                        continue
+                else:
+                    return
+        except Exception as error:  # delivered to the consumer, never swallowed
+            if not stop.is_set():
+                items.put(error)
+        finally:
+            if not stop.is_set():
+                items.put(done)
+
+    threading.Thread(target=produce, daemon=True, name="iter_bag_prefetch").start()
+    try:
+        while True:
+            item = items.get()
+            if item is done:
+                return
+            if isinstance(item, BaseException):
+                raise item
+            yield item
+    finally:
+        stop.set()
 
 
 def decode_cloud(message, rotation: np.ndarray, translation: np.ndarray):

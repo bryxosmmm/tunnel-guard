@@ -1,4 +1,9 @@
-"""Run the configured detector against bags; preserve evidence, not inferred labels."""
+"""Run the configured detector against bags; preserve evidence, not inferred labels.
+
+`prefetch_depth` in the experiment config (default 1) reads and decodes the next scan on one
+producer thread while the detector processes the current one. It changes no measurement and no
+decision; it removes the reader from the per-frame critical path. See `io.prefetch` and
+`summary.latency_scope`."""
 from __future__ import annotations
 
 import argparse
@@ -18,7 +23,7 @@ import time
 import numpy as np
 
 from .detector import Detector, load_config
-from .io import iter_bag
+from .io import iter_bag, prefetch
 
 
 def digest(path: Path) -> str:
@@ -72,9 +77,11 @@ def capture_native_sources(destination: Path) -> dict:
     return hashes
 
 
-def summarize(rows: list[dict]) -> dict:
+def summarize(rows: list[dict], prefetch_depth: int = 0) -> dict:
     processing = np.asarray([r["processing_s"] for r in rows])
     e2e = np.asarray([r["read_and_process_s"] for r in rows])
+    ingestion = np.asarray([r["ingestion_s"] for r in rows])
+    inference = np.asarray([r["inference_s"] for r in rows])
     counts = Counter(r["status"] for r in rows)
     duration = rows[-1]["timestamp_s"] - rows[0]["timestamp_s"] if len(rows) > 1 else 0.0
     alarms = []
@@ -96,6 +103,13 @@ def summarize(rows: list[dict]) -> dict:
             "motion_valid_frames": sum(r.get("motion", {}).get("valid", False) for r in rows),
             "processing_ms": {name: float(np.quantile(processing, q) * 1000) for name, q in (("p50", .5), ("p95", .95), ("p99", .99))},
             "read_and_process_ms": {name: float(np.quantile(e2e, q) * 1000) for name, q in (("p50", .5), ("p95", .95), ("p99", .99))},
+            "inference_ms": {name: float(np.quantile(inference, q) * 1000) for name, q in (("p50", .5), ("p95", .95), ("p99", .99))},
+            "ingestion_wait_ms": {name: float(np.quantile(ingestion, q) * 1000) for name, q in (("p50", .5), ("p95", .95), ("p99", .99))},
+            # With prefetch_depth > 0 the scan is read and decoded on a producer thread, so
+            # ingestion_wait_ms is the consumer's block on that thread, not the cost of
+            # reading. read_and_process_ms then measures loop cost per frame, not the age of
+            # a decision; full-bag wall_s / frames is the throughput that overlap buys.
+            "prefetch_depth": prefetch_depth,
             "alarm_episodes_unlabelled": alarms,
             "accuracy": None, "accuracy_validity": "No ground truth implied by bag name or alarm count"}
 
@@ -149,8 +163,11 @@ def main():
         start = time.perf_counter()
         ingestion = {}
         diagnostic_frames = set(experiment.get("diagnostic_frames", []))
-        iterator = iter_bag(bag, config, every=experiment["every"], max_frames=experiment["max_frames"],
-                            topic=entry.get("topic"), diagnostics=ingestion)
+        prefetch_depth = int(experiment.get("prefetch_depth", 1))
+        iterator = prefetch(iter_bag(bag, config, every=experiment["every"],
+                                     max_frames=experiment["max_frames"],
+                                     topic=entry.get("topic"), diagnostics=ingestion),
+                            depth=prefetch_depth)
         from contextlib import nullcontext
         from .visualization import ResultBag
         visual = (ResultBag(output / f"{bag.name}_rviz", config,
@@ -177,7 +194,7 @@ def main():
                            source_scan_id=f"{scan.topic}:{scan.frame_id}:{scan.measurement_timestamp_ns}",
                            skipped_duplicate_scans=scan.skipped_duplicate_scans,
                            deserialize_s=scan.deserialize_s, decode_s=scan.decode_s,
-                           ingestion_s=ingestion_s,
+                           ingestion_s=ingestion_s, inference_s=inference_s,
                            read_and_process_s=time.perf_counter() - frame_start)
                 if scan.index in diagnostic_frames:
                     diagnostic_start = time.perf_counter()
@@ -197,6 +214,7 @@ def main():
                 iteration_s = time.perf_counter() - frame_start
                 timing_stream.write(json.dumps({
                     "frame": scan.index, "measurement_timestamp_ns": scan.measurement_timestamp_ns,
+                    "prefetch_depth": prefetch_depth,
                     "ingestion_s": ingestion_s, "deserialize_s": scan.deserialize_s,
                     "decode_s": scan.decode_s, "inference_s": inference_s,
                     "visualization_s": row.get("visualization_s", 0),
@@ -208,7 +226,8 @@ def main():
                 # Keep only fields used by summarize(), not every track history
                 # and covariance from the entire recording.
                 rows.append({key: row[key] for key in (
-                    "frame", "timestamp_s", "status", "processing_s", "read_and_process_s")}
+                    "frame", "timestamp_s", "status", "processing_s", "read_and_process_s",
+                    "ingestion_s", "inference_s")}
                     | {"geometry": {"valid": row.get("geometry", {}).get("valid", False)},
                        "motion": {"valid": row.get("motion", {}).get("valid", False)},
                        "diagnostic_write_s": row.get("diagnostic_write_s", 0),
@@ -219,7 +238,8 @@ def main():
                     print(f"{bag.name}: {len(rows)} frames, {row['status']}, nearest={row['nearest_obstacle_m']}", flush=True)
         if not rows:
             raise ValueError(f"No scans processed from {bag}")
-        summary = summarize(rows) | {"bag": bag.name, "split": entry["split"], "wall_s": time.perf_counter() - start,
+        summary = summarize(rows, prefetch_depth) | {"bag": bag.name, "split": entry["split"],
+                                                     "wall_s": time.perf_counter() - start,
                                     "ingestion": ingestion,
                                     "process_peak_rss_bytes": resource.getrusage(resource.RUSAGE_SELF).ru_maxrss * (1 if sys.platform == "darwin" else 1024),
                                     "diagnostic_write_total_s": sum(r.get("diagnostic_write_s", 0) for r in rows),
@@ -230,7 +250,11 @@ def main():
         summary["latency_scope"] = (
             "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/"
             "RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log "
-            "write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age.")
+            "write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. "
+            "With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one "
+            "producer thread while inference runs on this one, so read_and_process_ms is the cost of "
+            "one loop iteration, not the age of a decision: a scan still waits for the scan ahead of "
+            "it to finish. Wall_s / frames is the throughput that overlap buys.")
         summaries.append(summary)
         write_json(output / "summary.json", summaries)
         print(json.dumps({k: summary[k] for k in ("bag", "frames", "status_frames", "processing_ms", "wall_s")}), flush=True)

@@ -1,0 +1,88 @@
+{
+  "date": "2026-09-19",
+  "revision": "c8af153",
+  "scope": "Reader overlap for the offline runner: identical decisions, reader off the per-frame critical path.",
+  "protocol": {
+    "config": "configs/perf-prefetch-on.json",
+    "detector_config": "configs/detector-native.json",
+    "bags": "doubleT_obstacle, doubleT_platform",
+    "frames_per_bag": 30,
+    "machine": "Apple M4 (same session, no other load)",
+    "posts": "uv run",
+    "baseline_run": "build/merge-morev-verify-20260919/verify-native (plain runner, prefetch_depth 0)",
+    "new_run": "build/prefetch-on (prefetch_depth 1)"
+  },
+  "metric_scope": "With prefetch_depth > 0 the next scan is read and decoded on one producer thread, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Ingestion_wait_ms becomes the consumer's block on the reader. Wall_s / frames is the throughput that overlap buys.",
+  "per_bag": {
+    "doubleT_obstacle": {
+      "frames": 30,
+      "processing_ms": {
+        "baseline_p50": 125.5916454998669,
+        "baseline_p95": 146.58202240002532,
+        "new_p50": 126.46695800003727,
+        "new_p95": 141.7850686000292
+      },
+      "read_and_process_ms": {
+        "baseline_p50": 164.73650000000362,
+        "baseline_p95": 185.16836249993952,
+        "new_p50": 126.65847900007066,
+        "new_p95": 141.96239579994193,
+        "saved_p50": 38.07802099993296
+      },
+      "ingestion_ms": {
+        "baseline_p50": 38.613583500023196,
+        "new_p50": 0.009583000064594671
+      },
+      "baseline_summary_processing_ms_p95": 146.58202240002532,
+      "baseline_summary_read_and_process_ms": {
+        "p50": 164.73650000000362,
+        "p95": 185.16836249993952,
+        "p99": 1687.5854260699016
+      }
+    },
+    "doubleT_platform": {
+      "frames": 30,
+      "processing_ms": {
+        "baseline_p50": 105.51925000004303,
+        "baseline_p95": 128.3719920000294,
+        "new_p50": 104.74991649994081,
+        "new_p95": 129.42317064980668
+      },
+      "read_and_process_ms": {
+        "baseline_p50": 118.82672900003399,
+        "baseline_p95": 146.15926060001811,
+        "new_p50": 105.17999950002377,
+        "new_p95": 137.92567920008875,
+        "saved_p50": 13.646729500010224
+      },
+      "ingestion_ms": {
+        "baseline_p50": 12.761250000039581,
+        "new_p50": 0.009000000090964022
+      },
+      "baseline_summary_processing_ms_p95": 128.37199200002942,
+      "baseline_summary_read_and_process_ms": {
+        "p50": 118.82672900003399,
+        "p95": 146.15926060001811,
+        "p99": 182.27436574996094
+      }
+    }
+  },
+  "decision_equivalence": {
+    "doubleT_obstacle": {
+      "frames_compared": 30,
+      "frames_differing": 0,
+      "fields": "status, nearest_obstacle_m, every object track_id/distance_m"
+    },
+    "doubleT_platform": {
+      "frames_compared": 30,
+      "frames_differing": 0,
+      "fields": "status, nearest_obstacle_m, every object track_id/distance_m"
+    }
+  },
+  "not_claimed": [
+    "Decision age unchanged: a scan still waits for the scan ahead of it; only loop cost fell.",
+    "Target-hardware throughput unverified (development Mac, 8 cores, one reader thread).",
+    "Live ROS/DDS path unchanged; it logs decode and callback-to-result separately.",
+    "Inference is still above the 100 ms input period, so 10 Hz per frame is not met."
+  ]
+}
