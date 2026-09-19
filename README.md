@@ -267,6 +267,14 @@ stays byte-identical. The far field is an information limit, with six strategies
 their own numbers. Everything, including what is *not* established, is in
 [docs/CURVED_CORRIDOR_AND_RANGE.md](docs/CURVED_CORRIDOR_AND_RANGE.md).
 
+### The alarm decision this leaves
+
+Whether unmeasurable far-field evidence should read as an alarm is a decision, not a defect: six approaches failed to
+separate the tunnel's own far surfaces from objects on this data. Both sides are measured - 211 hazard-class objects over
+1460 panel frames under an event-scored convention, `unresolved_obstacle` on 59 of 60 frames under a status-scored one - and
+the two ways to demote it each cost the 100 m detection tier. The three options, their measured costs and a recommendation
+are in [docs/FAR_FIELD_ALARM_DECISION.md](docs/FAR_FIELD_ALARM_DECISION.md).
+
 ## What the corridor can and cannot reach (2026-09-19)
 
 Measured, not assumed. The **bed** is sampled to 65-105 m (13-18 anchors per frame - the floor is wide), so

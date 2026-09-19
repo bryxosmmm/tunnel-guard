@@ -1,0 +1,12 @@
+{
+  "date": "2026-09-19",
+  "scope": "The last detection-side question, written as a decision with both sides measured",
+  "convention_a_events_or_objects": "211 hazard-class objects over 1460 panel frames, about 0.14 per frame, empty-scene alarm episodes 0.0",
+  "convention_b_frame_status": "unresolved_obstacle on 59 of 60 frames of roundT_doubleT",
+  "demotion_cost_measured": {
+    "uncertified_path_demoted": "an injected object at 100 m stopped being reported",
+    "contour_intrusion_only": "100 m reported no_obstacle_observed on every frame with the object present"
+  },
+  "recommendation": "keep the current reporting: every object carries its distance, its own lateral uncertainty and now the frame's certified range, so an event-scored evaluation sees a low false-alarm load while a status-scored one sees honesty about an unmeasurable path - and no detection is lost, which matters because the case weights misses and detection distance alongside false alarms",
+  "artifact": "docs/FAR_FIELD_ALARM_DECISION.md, linked from the README"
+}
