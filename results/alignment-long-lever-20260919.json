@@ -390,5 +390,51 @@
     "caveats": [
       "single recording for the far rows; the fine ordering at 40-60 m has n = 13-20 and is not separable between the shipped and surface models there"
     ]
+  },
+  "temporal_history_estimate": {
+    "hypothesis": "the alignment is smooth along arc length and the train accumulates rail measurements over its whole driven stretch (250 m here), so curvature change along the route - invisible to a single 40 m scan - might be recoverable from history and extrapolated forward",
+    "method": "tunnel_guard.history_probe: rail centre-line samples from frames up to the current one, transformed into the current sensor frame through the recorded poses, fitted with a cubic and evaluated at the look-ahead; strictly causal, validated against later frames' rails",
+    "abs_error_median_m": {
+      "60 m": {
+        "n": 17,
+        "window_shipped": 0.174,
+        "history_60_frames": 1.084,
+        "history_120_frames": 3.004,
+        "history_200_frames": 4.84
+      },
+      "100 m": {
+        "n": 15,
+        "window_shipped": 1.218,
+        "history_60_frames": 3.841,
+        "history_120_frames": 11.892,
+        "history_200_frames": 17.09
+      },
+      "150 m": {
+        "n": 7,
+        "window_shipped": 5.237,
+        "history_60_frames": 12.324,
+        "history_120_frames": 36.685,
+        "history_200_frames": 40.038
+      },
+      "200 m": {
+        "n": 7,
+        "window_shipped": 10.0,
+        "history_60_frames": 76.085,
+        "history_120_frames": 46.58,
+        "history_200_frames": 46.58
+      }
+    },
+    "conclusion": "Worse than the shipped single-scan model at every range and every history length. These routes are sequences of independent curves, straights and junctions (roundT/squareT/pressureGate), so the alignment already driven does not determine the alignment ahead - the same reason a single-scan quadratic fails, only stronger because more history means more irrelevant geometry."
+  },
+  "information_limit": {
+    "statement": "On this sensor and these routes the future lateral alignment is an *information* limit, not an estimation limit: the only signal that reaches 200 m is the tunnel lining, which is biased against the track centre by ~1 m with drifts; the track's own signature dies at 40-90 m; and the alignment's future curvature is not a function of anything measured (independent curves and junctions). No estimator can extract information the sensor never captured.",
+    "strategies_tested_and_rejected": [
+      "per-scan quadratic from the anchor window (shipped: best, but a 40 m lever)",
+      "shared-curvature quadratic over surface traces plus rails (wins at 100 m, worse by 120 m)",
+      "penalized spline with per-surface offsets (cannot fit the traces: 1.7-4.5 m residual with no penalty)",
+      "robust circle fits to perpendicular slabs / calibrated bore axis (1.9-8.3 m at every range)",
+      "uncertainty propagation from the fit covariance (over-confident 1.6-8x; honest bound exceeds the tunnel width)",
+      "cumulative temporal rail history (worse at every range; past alignment does not determine future alignment)"
+    ]
   }
 }
