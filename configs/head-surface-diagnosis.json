@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-head-surface-experimental.json",
+  "output": "build/head-surface-diagnosis",
+  "every": 1,
+  "max_frames": 147,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Log why surface fitting loses sections without changing numeric decisions",
+  "criterion": "Compare identical scan IDs, range input counts, statuses, temporal histories and local support; no independent field accuracy"
+}

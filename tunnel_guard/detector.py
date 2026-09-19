@@ -69,6 +69,21 @@ def load_config(path: str | Path) -> dict:
         raise ValueError("Unknown rail_pair_continuity")
     if config.get("rail_frame_mode", "bed") not in ("bed", "local_3d"):
         raise ValueError("Unknown rail_frame_mode")
+    if config.get("rail_head_estimator", "upper_linear") not in ("upper_linear", "joint_robust", "joint_surface"):
+        raise ValueError("Unknown rail_head_estimator")
+    if config.get("rail_head_anchor", "requested") not in ("requested", "surface_measured"):
+        raise ValueError("Unknown rail_head_anchor")
+    if config.get("rail_head_anchor") == "surface_measured" and config.get("rail_head_estimator") != "joint_surface":
+        raise ValueError("surface_measured requires joint_surface")
+    if config.get("rail_head_estimator") in ("joint_robust", "joint_surface"):
+        fit = config.get("rail_head_fit", {})
+        for key in ("bin_m", "max_condition", "noise_floor_m", "huber_scale", "uncertainty_floor_m"):
+            if key not in fit or not np.isfinite(fit[key]) or fit[key] <= 0:
+                raise ValueError(f"rail_head_fit.{key} must be positive and finite")
+        if type(fit.get("iterations")) is not int or fit["iterations"] < 1:
+            raise ValueError("rail_head_fit.iterations must be a positive integer")
+        if config["rail_head_estimator"] == "joint_surface" and (not np.isfinite(fit.get("surface_band_m", np.nan)) or fit["surface_band_m"] <= 0):
+            raise ValueError("rail_head_fit.surface_band_m must be positive and finite")
     if config.get("rail_anchor_support", "window") not in ("window", "bracketed", "measured"):
         raise ValueError("Unknown rail_anchor_support")
     validate_mounting_config(config)

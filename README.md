@@ -18,6 +18,8 @@ The [3D track and clearance literature review](docs/TRACK_GEOMETRY_LITERATURE_20
 
 [The first 3D geometry iteration](docs/TRACK_LOCAL3D_ITERATION.md) now enforces the configured heading bound at actual rail-anchor locations in the default Python/native recipes. An opt-in `configs/detector-local3d-experimental.json` estimates local head heights and tilted cross-sections shared by classification, viewer and RViz. Real replay and ray-cast curve/grade/cant experiments are recorded; height bias and unresolved alarms prevent promotion of the 3D mode.
 
+[Rail-head surface fitting experiments](docs/RAIL_HEAD_SURFACE_20260919.md) separate a dominant observed surface from mixed rail strips and fit both sides jointly, with optional relocation into their common measured support. The explicit experimental recipes retain failed alternatives and compare coverage as well as height; ambiguous far surfaces still prevent promotion to the default detector.
+
 See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and ROS2 launch commands, and [iteration evidence](docs/GOAL_ITERATION.md) for all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
 
 ## Native acceleration and calibration experiment
