@@ -111,6 +111,14 @@ the `2 d^3 Cov(a,b)` cross term whose sign makes it grow fastest with distance. 
 panel and the corrected metric definitions are in
 [docs/REVIEW_RESPONSE_20260919.md](docs/REVIEW_RESPONSE_20260919.md).
 
+### Input topic
+
+The node subscribes to `/lidar_points` by default. Our own recordings do not share one topic: `doubleT_obstacle`
+publishes on `/sensing/lidar/hesai128/pointcloud`, while the tunnel recordings and the extended run use `/lidar_points`.
+Run with `input_topic:=<the bag's topic>` when they differ - `ros2 bag info <bag>` prints it. If nothing arrives within
+`input_timeout_s`, the node degrades to `unavailable` and now logs an error naming the configured topic, the point-cloud
+topics that are actually present, and the parameter to restart with, so the cause is visible rather than silent.
+
 ## Demonstration path, checked statically (2026-09-19)
 
 `rviz/tunnel_guard.rviz` and the node were consistent on topics - the config listens to `/perception/points_display` and

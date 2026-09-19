@@ -111,6 +111,18 @@ class PerceptionNode(Node):
     def watchdog(self):
         if not self.silent and time.monotonic() - self.last_received > self.timeout:
             self.silent = True
+            # Say WHY nothing arrived. A bag whose point-cloud topic differs from `input_topic` otherwise
+            # looks like a broken detector: the most common cause is a mismatched topic, and our own
+            # recordings do not share one - one of them publishes on
+            # /sensing/lidar/hesai128/pointcloud while the default is /lidar_points - so the available
+            # point-cloud topics are named here instead of leaving the operator to guess.
+            available = [name for name, kinds in self.get_topic_names_and_types()
+                         if "sensor_msgs/msg/PointCloud2" in kinds]
+            self.get_logger().error(
+                f"No cloud on {self.get_parameter('input_topic').value!r} for "
+                f"{self.timeout:g} s. Point-cloud topics currently available: {available or 'none'}. "
+                "Restart with input_topic:=<one of those>."
+            )
             self.detector = Detector(self.config)
             # Keep the acquisition watermark: silence does not turn an old
             # measurement into new evidence. A new epoch requires a restart.
