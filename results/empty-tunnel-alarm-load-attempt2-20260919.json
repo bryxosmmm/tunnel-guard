@@ -80,5 +80,17 @@
       "object-chain continuity at the boundary with anisotropy and recurrence: safe but cleared 5 of 60 frames for about 10 percent more processing"
     ]
   },
-  "final_state": "two changes committed at 211b507 and verified; the close-range class is characterised and its cheap fixes disproved or rejected; the remaining work is a tunnel-structure model with the gate stated above"
+  "final_state": "committed at 211b507 and verified byte-identical on the full 1460-frame panel (709/251/176, recall 0.8021, IoU 0.8223, zero negative alarms): spurious objects halved with every confirmed obstacle frame kept. Three variants for the close-range class are measured and rejected, each recorded with the check that killed it. The remaining work is a tunnel-structure model at the object level, with the gate stated.",
+  "fourth_variant_rejected_status_level_demotion": {
+    "rule": "hazards_require_inside_contour: only an object inside the reference contour is a hazard; boundary-ambiguous and uncertified-path objects stay in the output as candidates",
+    "what_it_fixed": "the empty tunnel: roundT_doubleT went from 59 unresolved_obstacle frames to 60 of 60 no_obstacle_observed, and the labelled recording kept all 52 obstacle frames with its noise frames dropping 7 -> 1",
+    "what_it_broke": "injected objects at 100 m: the object is still detected and still in the output (panel event_recall 1.0), but the frame status becomes no_obstacle_observed on every frame - the system reports a clear path while an object is present, at exactly the range the case scores as 'good'",
+    "measured": {
+      "10 m": "statuses obstacle (with some candidate frames)",
+      "40 m": "statuses obstacle",
+      "100 m": "statuses no_obstacle_observed on all frames"
+    },
+    "why_it_is_wrong": "status-level demotion trades false alarms for missed detections. The empty-tunnel false alarms must be removed at the OBJECT level - by not creating objects from the tunnel's own structures - not by softening what the frame status means.",
+    "verdict": "rejected: it reported a clear path at 100 m while an object was there"
+  }
 }
