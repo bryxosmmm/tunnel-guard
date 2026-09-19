@@ -1,7 +1,7 @@
 FROM ros:humble-ros-base-jammy
 ENV DEBIAN_FRONTEND=noninteractive PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3-pip libgl1 libgomp1 ros-humble-rviz2 \
+    python3-pip libgl1 libgomp1 ros-humble-rviz2 ros-humble-tf2-ros \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /opt/tunnel-guard
 COPY docker/constraints.txt ./docker/constraints.txt
@@ -12,7 +12,8 @@ COPY cpp ./cpp
 COPY tunnel_guard ./tunnel_guard
 RUN python3 -m pip install --upgrade packaging==24.2 \
     && python3 -m pip install --no-build-isolation --no-deps . \
-    && python3 -c "from tunnel_guard import _native"
+    && python3 -c "from tunnel_guard import _native" \
+    && python3 -c "import tunnel_guard.ros_node"
 COPY configs ./configs
 COPY rviz ./rviz
 COPY launch ./launch

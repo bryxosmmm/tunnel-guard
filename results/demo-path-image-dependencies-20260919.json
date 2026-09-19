@@ -1,0 +1,8 @@
+{
+  "date": "2026-09-19",
+  "scope": "The demo path, part three: image dependencies against what the node imports",
+  "finding": "the Dockerfile installed python3-pip, libgl1, libgomp1 and ros-humble-rviz2 on top of ros:humble-ros-base-jammy, and relied on the base image for geometry_msgs and tf2_ros. The node imports both, and this pass added the tf2_ros import for the fixed frame, so the dependency is now declared explicitly rather than inherited: ros-humble-tf2-ros.",
+  "second_finding": "the build smoke-check verified the native extension but not the ROS-side imports, so a missing ROS dependency would have surfaced at demonstration time rather than build time. The build now also imports tunnel_guard.ros_node, which fails the image build if any import is unavailable.",
+  "why_it_matters": "a container that builds but whose node cannot import is indistinguishable from a working one until someone plays a bag in front of the judges",
+  "verification_status": "static change to the Dockerfile; not built here (no daemon on the development machine)"
+}
