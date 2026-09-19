@@ -430,7 +430,11 @@ uv run python -m tunnel_guard.sustech --config configs/annotation-export.json
 
 ### Objects inside the clearance envelope
 
-`tunnel_guard/on_track.py` finds intrusions the way the detector should: only returns that actually fall inside the GOST contour are clustered, and a cluster is dropped when it is a face of a large surface, or when its lateral/vertical profile runs continuously or repeats along the tunnel — cable runs, linings, trays and posts. Over the six recordings that is **11,115 in-envelope clusters → 381 events → 15 candidates**, against 335–347 boxes per frame from the detector.
+`tunnel_guard/on_track.py` finds intrusions the way the detector should: only returns that actually fall inside the GOST contour are clustered, and a cluster is dropped when it is a face of a large surface, or when its lateral/vertical profile runs continuously or repeats along the tunnel — cable runs, linings, trays and posts. Over the six recordings that is **11,115 in-envelope clusters → 381 events → 15 candidates**, against 335–347 boxes per
+frame from the detector. **Evidence status:** those three aggregates have no artifact in this repository - the run they
+came from wrote to `build/`, which is local-only, and `results/` held no summary. A re-measurement with the same command
+is outstanding: a partial run measured `doubleT_platform` at 1030 clusters, 16 events and 0 candidates, which is
+consistent with the aggregate but does not confirm it. Treat the three numbers as unverified until that run is recorded.
 
 ```sh
 uv run python -m tunnel_guard.on_track \

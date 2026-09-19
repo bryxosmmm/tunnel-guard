@@ -1,0 +1,16 @@
+{
+  "date": "2026-09-19",
+  "scope": "Evidence status of the on_track aggregates quoted in the README",
+  "claim": "11,115 in-envelope clusters -> 381 events -> 15 candidates over the six recordings",
+  "status": "UNVERIFIED in this repository: the run wrote to build/, which is local-only, and results/ held no summary. The README now says so in place rather than presenting the numbers as measured.",
+  "partial_measurement": {
+    "doubleT_platform": {
+      "clusters": 1030,
+      "events": 16,
+      "candidates": 0
+    },
+    "reading": "consistent with the aggregate's shape but not a confirmation of it"
+  },
+  "outstanding": "the full six-recording re-measurement (2488 scans) was launched twice and left to run; on a machine shared with other users it advanced through one recording in the time available, so it is recorded as outstanding with its command rather than reported as done.",
+  "why_not_just_delete_the_claim": "the claim is useful - it is the probe's whole result - and deleting it would lose information. Marking its evidence status is the honest option, and it is the difference between a number someone can check and one they cannot."
+}
