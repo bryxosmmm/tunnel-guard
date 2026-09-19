@@ -1,0 +1,12 @@
+{
+  "date": "2026-09-19",
+  "scope": "The demo path, part four: the display-integrity rules the case names explicitly",
+  "checked": {
+    "stale_markers": "clean: every marker is published with a 0.3 s lifetime AND each published set begins with a DELETEALL marker (action=3, namespace 'clear'), so a vanished object is cleared by the next publication and by expiry - the case's rule about eternal markers of disappeared objects is satisfied twice over",
+    "one_marker_per_point": "clean: points travel as a PointCloud2 with a display cap (display_max_points 50000); markers carry the corridor and objects, not individual points",
+    "headless": "clean: RViz is launched only when the rviz argument is true, so the detector runs without a display",
+    "timestamps": "clean: each result row is written with the measurement timestamp, and the node's fixed frame change keeps message stamps on the same clock"
+  },
+  "verification_status": "static read of tunnel_guard/visualization.py and tunnel_guard/ros_node.py; not exercised here (no ROS 2, no Docker daemon)",
+  "note": "four passes of auditing this path found four defects and this clean result; the defects were the fixed frame, the input topic, the undeclared tf2 dependency and the build check that did not import the node - every one of them invisible to detection metrics and each capable of costing demonstration marks"
+}
