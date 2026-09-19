@@ -88,6 +88,25 @@ an empty tunnel at metro speed (1.5 m/frame) produced 70k false dynamic labels i
 numbers: `results/hmm-mos-probe-20260918.json`; recipes: `configs/hmm-mos-probe-*.json` and
 `tunnel_guard/hmm_mos_probe.py`. Nothing in the pipeline was changed by this review.
 
+## What the corridor can and cannot reach (2026-09-19)
+
+Measured, not assumed. The **bed** is sampled to 65-105 m (13-18 anchors per frame - the floor is wide), so
+heights above the running surface are known far out; inside its 15 m gate the linear bed extrapolation errs by
+<=0.02 m even where the vertical curvature is R_v ~ 7 km. The **lateral** track centre is the binding unknown:
+rail returns collapse 1995 -> 105 -> 17 -> 0 per 20 m bin from 10 m to 90 m, and the tunnel bore is a biased
+proxy - robust circle fits to perpendicular slabs (16-23 slabs to 105-165 m, conditioned centre sigma
+0.003-0.011 m) sit about a metre off the track centre, and calibrating that bias on the rails still predicts
+only 1.32 m at 100 m.
+
+The corridor's reach is therefore set by an uncertainty budget, `path_max_uncertainty_m` (0.4 m), which the
+existing heuristic sigma reaches at 33.7 m past the last anchor - a ~74 m horizon, where the measured centre
+error is 0.72 m, 47% of the 1.535 m half-width. `path_max_extrapolation_m` does not bind: raising it 25 -> 45 m
+changed no classification at all. Raising the *budget* to 0.7 m would reach 86 m but was measured and rejected:
+it turns two frames of `roundT_doubleT` into certified obstacles (intersecting 12 -> 20) in a band where the
+centre is uncertain by ~1.0 m, for no measured gain. Fitted-curvature sigma propagated from the anchor window is
+over-confident by 1.6x at 50-60 m and 4-8x at 80-150 m, so the heuristic term is the calibrated model.
+Full evidence: `results/alignment-long-lever-20260919.json`, `build/uncertainty-calibration.json`.
+
 ## Reference corridor follows the curve
 
 The reference contour used to continue past the last measured rail anchor along a straight tangent

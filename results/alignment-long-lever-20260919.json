@@ -178,5 +178,111 @@
       "an external alignment source (survey, previous passes, GNSS/IMU-fused map) - i.e. a track database rather than a per-scan estimate, or",
       "a vehicle model that bounds where the vehicle may be within the observed tunnel envelope, converting the unmeasured track into a bounded swept-volume claim instead of a centre-line claim."
     ]
+  },
+  "uncertainty_calibration": {
+    "method": "tunnel_guard.uncertainty_probe: claimed sigma_path vs measured centre error, label-free pair test",
+    "measured_error_vs_extrapolation_m": {
+      "10": [
+        0.187,
+        0.17
+      ],
+      "20": [
+        0.158,
+        0.34
+      ],
+      "40": [
+        0.721,
+        0.86
+      ],
+      "60": [
+        1.527,
+        1.62
+      ],
+      "80": [
+        3.502,
+        2.62
+      ],
+      "110": [
+        4.794,
+        4.57
+      ],
+      "columns": "[measured |error|, existing heuristic sigma 0.06+0.008r+0.0003r^2]"
+    },
+    "ratio_and_coverage": {
+      "50 m": [
+        1.58,
+        0.11
+      ],
+      "60 m": [
+        1.58,
+        0.25
+      ],
+      "80 m": [
+        4.21,
+        0.14
+      ],
+      "100 m": [
+        6.17,
+        0.29
+      ],
+      "120 m": [
+        8.16,
+        0.2
+      ],
+      "150 m": [
+        5.78,
+        0.0
+      ],
+      "columns": "[measured/claimed, fraction of samples within claimed]"
+    },
+    "finding": "The fit-covariance sigma propagated by _continuation is over-confident by 1.6x at 50-60 m and 4-8x at 80-150 m, because model error (the quadratic not holding as the alignment changes) dominates statistical error. The existing heuristic term 0.06+0.008r+0.0003r^2 tracks the measured error within 0.46-1.34x over 10-110 m of extrapolation, so it is the better-calibrated model and is what both backends already use."
+  },
+  "horizon_policy": {
+    "binding_knob": "path_max_uncertainty_m = 0.4 (not path_max_extrapolation_m; raising that gate 25 -> 45 changed nothing)",
+    "current_horizon_m": 74,
+    "measured_error_at_horizon_m": 0.72,
+    "half_width_share": 0.47,
+    "alternative_measured": {
+      "budget_m": 0.7,
+      "horizon_m": 86,
+      "measured_error_there_m": 1.0,
+      "effect_roundT_doubleT": {
+        "status": "{98 unresolved, 1 obstacle, 1 candidate} -> {96, 3, 1}",
+        "path_relation": "intersecting 12 -> 20",
+        "note": "two frames become certified obstacles in a band where the centre is uncertain by ~1.0 m (65% of the half-width)"
+      },
+      "effect_doubleT_obstacle": {
+        "status": "unchanged",
+        "path_relation": "intersecting 122 -> 130"
+      },
+      "decision": "rejected: it manufactures certified claims where the alignment is least certain, for no measured gain"
+    }
+  },
+  "vertical_alignment": {
+    "bed_anchors_per_frame": "13-18, extending to 65-105 m (the floor is wide, so it is sampled far beyond the rails' 40 m)",
+    "vertical_curvature_1_per_m": [
+      2.7e-06,
+      0.00014
+    ],
+    "implied_R_v_m": [
+      7200,
+      365000
+    ],
+    "linear_vs_curved_bed_extrapolation_m": {
+      "+30 m": [
+        0.014,
+        0.201
+      ],
+      "+60 m": [
+        0.016,
+        0.378
+      ],
+      "+100 m": [
+        0.014,
+        0.862
+      ]
+    },
+    "verdict": "Inside its own 15 m gate (ground_max_extrapolation_m) the linear bed extrapolation errs by <=0.02 m, so the corridor's vertical placement is sound: heights are referenced to a surface measured to 65-105 m. The binding unknown at range is lateral, not vertical.",
+    "scoring_implication": "Range is measured directly and height above the running surface is known to ~100 m, so far-field presence and height are usable; only the lateral track relation is unmodelled beyond the 74 m horizon."
   }
 }
