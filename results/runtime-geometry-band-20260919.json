@@ -30,5 +30,23 @@
   "also_measured": {
     "chain_filter_row_matching": "np.unique over the cloud alone (72568 rows) is 21.9 ms, and the committed chain filter stacks every object's support on top of the cloud before that call - worth replacing with the object metadata it already carries (centre, extent, bbox), which gives the same cross-section position without the stack",
     "association": "10.1 ms for the assignment over roughly 200 tracks x 200 objects; the field's standard fix is a spatial gate that decomposes the assignment into small independent subproblems"
+  },
+  "corrected_attribution": {
+    "what_i_expected": "the rail window loop and its 2-D np.unique were the cost, so a lateral band would cut it",
+    "what_measurement_shows": {
+      "rail_eligible_points": "1443 of 72590 - the rail estimator already works on a tiny subset",
+      "rail_window_loop": "sort 0.02 ms, searchsorted across 17 windows 0.07 ms, 2-D np.unique 1.11 ms in total",
+      "ground_over_all_points": "0.56 ms",
+      "so_the_loop_is_not_the_cost": "the band hypothesis is disproved: there is nothing meaningful to save by banding the rail estimator's input, and the 4 m band it uses is deliberate - it must see both tracks to choose the correct rail pair, which is why 2.5 m moved an anchor 3.6 cm on the curve"
+    },
+    "where_the_55_ms_actually_is": {
+      "refine_rail_pair": "about 13.7 ms per construction, 8 calls",
+      "normal_statistics / normal_covariances": "about 7.3 ms - and it feeds background.py, whose surface normals drive background removal, so it is decision-relevant and cannot simply be moved off the critical path",
+      "robust_plane": "about 4.3 ms",
+      "rail window loop": "about 1.5 ms",
+      "ground evaluation": "about 0.6 ms",
+      "still_unattributed": "roughly 28 ms of the constructor, most plausibly the TunnelBackground construction over all 72590 points, which the next profile must measure directly"
+    },
+    "next_step": "profile TunnelBackground's construction; that is where the remaining geometry time is, and unlike the rail band it has not been ruled out"
   }
 }
