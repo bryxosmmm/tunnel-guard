@@ -168,3 +168,143 @@ def fit_alignment(traces: list[Trace], rail_xy: np.ndarray | None, config: dict)
                      longest_span_m=float(max(spans)), residual_m=float(np.sqrt(variance)),
                      spans_m=[float(s) for s in sorted(spans, reverse=True)],
                      reason="fitted")
+
+
+def _hat_basis(knots: np.ndarray, x) -> np.ndarray:
+    """Linear hat basis over the knots; outside the knot range the end values extend flat."""
+    x = np.atleast_1d(np.asarray(x, dtype=float))
+    index = np.clip(np.searchsorted(knots, x, side="right") - 1, 0, len(knots) - 2)
+    span = knots[index + 1] - knots[index]
+    weight = np.clip((x - knots[index]) / span, 0.0, 1.0)
+    basis = np.zeros((len(x), len(knots)))
+    basis[np.arange(len(x)), index] = 1.0 - weight
+    basis[np.arange(len(x)), index + 1] = weight
+    return basis
+
+@dataclass
+class SplineAlignment:
+    """Alignment as a function, fitted from every surface at once with a smoothness prior."""
+    valid: bool
+    knots: np.ndarray = field(default_factory=lambda: np.empty(0))
+    values: np.ndarray = field(default_factory=lambda: np.empty(0))
+    covariance: np.ndarray = field(default_factory=lambda: np.empty((0, 0)))
+    lam: float = 0.0
+    surfaces: int = 0
+    residual_m: float = float("inf")
+    spans_m: list[float] = field(default_factory=list)
+    reason: str = "not_fitted"
+
+    def _basis(self, x):
+        return _hat_basis(self.knots, x)
+
+    def predict(self, x) -> np.ndarray:
+        return self._basis(x) @ self.values
+        index = np.clip(np.searchsorted(knots, x, side="right") - 1, 0, len(knots) - 2)
+        span = knots[index + 1] - knots[index]
+        weight = np.clip((x - knots[index]) / span, 0.0, 1.0)
+        basis = np.zeros((len(x), len(knots)))
+        basis[np.arange(len(x)), index] = 1.0 - weight
+        basis[np.arange(len(x)), index + 1] = weight
+        return basis
+
+    def sigma(self, x) -> np.ndarray:
+        basis = self._basis(x)
+        return np.sqrt(np.maximum(np.einsum("ij,jk,ik->i", basis, self.covariance, basis), 0.0))
+
+    def horizon_m(self, budget_m: float) -> float:
+        """Furthest knot whose posterior uncertainty is still inside the corridor budget."""
+        if not self.valid:
+            return 0.0
+        inside = np.flatnonzero(self.sigma(self.knots) <= budget_m)
+        return float(self.knots[inside.max()]) if len(inside) else 0.0
+
+
+def fit_spline(traces: list[Trace], rail_xy: np.ndarray | None, config: dict,
+               knot_m: float | None = None, budget_m: float = 0.5,
+               lambdas: np.ndarray | None = None) -> SplineAlignment:
+    """Joint penalized-spline alignment: y_s(x) = a_s + b_s x + f(x), f smooth, f(0)=0.
+
+    Every extruded surface shares f and keeps its own (a_s, b_s); the rails enter as a tightly
+    weighted surface so the near field stays anchored, and f is pinned at the origin with the
+    measured heading. The curvature is *not* assumed constant - the second-difference penalty lets
+    f follow a changing alignment, which a single quadratic provably cannot (measured 20-38 m at
+    200-250 m). The posterior covariance yields the range over which the corridor may be modelled.
+    """
+    pool = [t for t in traces if t.span >= float(config.get("alignment_min_span_m", 40.0))]
+    if rail_xy is not None and len(rail_xy) >= 4:
+        pool.append(Trace(rail_xy[:, 0], rail_xy[:, 1], np.full(len(rail_xy), 100),
+                          weight=float(config.get("alignment_rail_weight", 4.0)), label="rails"))
+    if len(pool) < 2:
+        return SplineAlignment(False, reason=f"only {len(pool)} usable traces")
+    knot_m = float(knot_m or config.get("alignment_knot_m", 10.0))
+    end = max(float(t.x.max()) for t in pool)
+    knots = np.arange(0.0, end + knot_m, knot_m)
+    # heading anchor from the rails (or the longest trace) fixes f'(0); f(0) = 0 fixes the level.
+    anchor = next((t for t in pool if t.label == "rails"), max(pool, key=lambda t: t.span))
+    slope0 = float(np.polyfit(anchor.x, anchor.y, 1)[0])
+
+    blocks, targets, weights = [], [], []
+    for trace in pool:
+        basis = _hat_basis(knots, trace.x)
+        design = np.column_stack((np.ones(len(trace.x)), trace.x, basis))   # a_s, b_s, f
+        blocks.append(design)
+        targets.append(trace.y)
+        weights.append(np.full(len(trace.x), trace.weight))
+    # soft constraints: f at x=0 is zero, and its slope at the first interval matches the anchor
+    constraint_design = np.zeros((2, 2 + len(knots)))
+    constraint_design[0, 2] = 1.0
+    constraint_design[1, 2] = -1.0 / knot_m
+    constraint_design[1, 3] = 1.0 / knot_m
+    constraint_targets = np.array([0.0, slope0])
+    constraint_weight = float(config.get("alignment_anchor_weight", 50.0))
+    blocks.append(constraint_design)
+    targets.append(constraint_targets)
+    weights.append(np.full(len(constraint_targets), constraint_weight))
+    design = np.vstack(blocks)
+    target = np.concatenate(targets)
+    weight = np.concatenate(weights)
+
+    penalty = np.zeros((design.shape[1], design.shape[1]))
+    for k in range(len(knots) - 2):
+        row = np.zeros(design.shape[1])
+        row[2 + k] = 1.0
+        row[2 + k + 1] = -2.0
+        row[2 + k + 2] = 1.0
+        penalty += np.outer(row, row)
+
+    weighted = design * weight[:, None]
+    normal = design.T @ weighted
+    rhs = design.T @ (weight * target)
+    if lambdas is None:
+        lambdas = np.logspace(-6, 8, 29)
+    # Smooth as much as the data allows: take the largest penalty whose weighted residual still
+    # reaches the measured noise floor. Adaptive GCV mis-weights the per-surface nuisance blocks and
+    # was measured to over-smooth (residual 1.7-4.2 m, i.e. an almost straight alignment).
+    floor = float(config.get("alignment_noise_floor_m", 0.10))
+    total_weight = float(weight.sum())
+    best = None
+    for lam in sorted(lambdas, reverse=True):
+        matrix = normal + lam * penalty
+        try:
+            solution = np.linalg.solve(matrix, rhs)
+        except np.linalg.LinAlgError:
+            continue
+        residual = target - design @ solution
+        scatter = float((weight * residual**2).sum())
+        rms = float(np.sqrt(scatter / total_weight))
+        if rms <= floor:
+            best = (rms, lam, solution, matrix, scatter)
+            break
+        best = (rms, lam, solution, matrix, scatter)      # keep the last as the fallback
+    if best is None:
+        return SplineAlignment(False, reason="no solvable penalty")
+    _, lam, solution, matrix, scatter = best
+    dof = max(1, design.shape[0] - len(knots))
+    variance = scatter / dof
+    covariance_full = np.linalg.inv(matrix) * variance
+    values = solution[2:]
+    return SplineAlignment(True, knots=knots, values=values,
+                           covariance=covariance_full[2:, 2:], lam=float(lam), surfaces=len(pool),
+                           residual_m=float(np.sqrt(variance)),
+                           spans_m=[float(t.span) for t in sorted(pool, key=lambda t: -t.span)],
+                           reason="fitted")

@@ -76,6 +76,49 @@
   "not_claimed": [
     "No corridor widening, no threshold change, no recipe selects the estimator.",
     "The 200-250 m rows rest on one sample each; they bound the model, they do not calibrate it.",
-    "Surface availability (5/11 frames) would have to be fixed before any promotion."
-  ]
+    "Surface availability (5/11 frames) would have to be fixed before any promotion.",
+    "No estimator in this module is used by the detector; the spline was measured unfit and left unselected."
+  ],
+  "model_class_experiments": {
+    "single_quadratic_shared_curvature": {
+      "residual_m": [
+        0.065,
+        0.088
+      ],
+      "signature": "fits well, wrong function class beyond ~100 m",
+      "forward_error_m": {
+        "60": 0.602,
+        "100": 0.523,
+        "200": 21.302,
+        "250": 38.155
+      }
+    },
+    "penalized_spline_shared_function": {
+      "why_tried": "a single quadratic cannot follow an alignment whose curvature changes; a spline with a second-difference penalty can, in principle, and its posterior covariance gives the horizon",
+      "measured": {
+        "residual_m": [
+          1.676,
+          4.481
+        ],
+        "lambda_selected": "1e-6 (penalty essentially removed)",
+        "sigma_at_200_m": [
+          19.8,
+          100.6
+        ],
+        "horizon_0p5m": 0
+      },
+      "verdict": "Unfit even with maximum flexibility, so the failure is not the alignment model but the trace extraction below it: per-bin Cartesian clustering follows the nearest cluster, so a 'surface' hops between wall, cable tray, floor junction and far bore as the bin slides, and no shared function can absorb that. Residuals of metres are the symptom."
+    }
+  },
+  "diagnosis": {
+    "representation": "The scan is a 2D angular grid. Clustering points in Cartesian space and chaining them longitudinally is the wrong primitive for a tunnel filled with attachments.",
+    "correct_primitive": "Range image: per azimuth column the elevation profile is a cross-section. Tunnel alignment and convergence are extracted by matching/tracking consecutive cross-section profiles (correlation of profiles, not points), which is robust to attachments because an attachment perturbs a few profile samples, not the profile's centre.",
+    "design": [
+      "form the range image from the scan's ring/azimuth structure",
+      "per column, extract the cross-section profile and its centre by correlation with the neighbouring columns",
+      "track centres along the tunnel into an alignment state (position, heading, curvature), filtered across scans",
+      "project the corridor from that state and set the horizon from its covariance",
+      "acceptance: the same forward-prediction test, <=0.5 m at 100 m and <=1 m at 200-300 m"
+    ]
+  }
 }
