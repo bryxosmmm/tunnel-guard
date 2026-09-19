@@ -124,5 +124,20 @@
     },
     "conclusion": "the ambiguity is geometric, not an uncertainty artefact. The structure sits 4 cm outside the widest part of the contour against about 9 cm of combined knowledge, so any tightening that clears it would also clear a genuine object at the corridor edge. No further cheap avenue exists on the detection side.",
     "what_remains": "knowing that this structure is the walkway - the object-level tunnel-structure model - or the earlier two avenues: an external alignment, and the delivery path verified on a Docker host"
+  },
+  "sixth_attempt_tunnel_profile_model": {
+    "research": "the clearance-inspection and tunnel-modelling literature builds a track-relative frame (station, lateral, height), models the normal cross-section along the axis, and treats deviations from it as objects; the case's own hint is the same idea. Sources consulted: railway tunnel clearance inspection by mobile laser scanning (PMC5621173), rail-area extraction from references parallel to the rails (PMC11314673), Senstar/Blickfeld subway LiDAR deployment (marketing, no method), and the tunnel cross-section extraction line (IAARC, ISPRS, IOP)",
+    "implementation": "one pass over the context cloud: group points by (lateral, height) cells of 0.4 m, count the DISTINCT station bins of 1 m inside each cell, and call a cell part of the tunnel's profile when it is occupied at >= 12 stations spanning >= 15 m. A candidate whose support lies mostly in profile cells is the tunnel, not an object. No temporal window, no map, no earlier pass.",
+    "results": {
+      "objects_reclassified": "13344 on roundT_doubleT",
+      "boundary_class": "346 -> 29 objects (the walkway/duct class: gone)",
+      "far_class": "unchanged: 699 confirmed hazards remain at median 122 m",
+      "labelled_recording": "doubleT_obstacle unchanged: obstacle 52 of 52 preserved",
+      "frame_statuses": "unchanged on both recordings - the wall is now driven only by the far class",
+      "cost": "processing p50 137 -> 156 ms, about +14 percent"
+    },
+    "why_the_far_class_survives": "beyond the corridor horizon the lateral coordinate is our own extrapolation and is wrong by metres, so the tunnel's far surfaces drift across cells instead of forming a stable profile - the model is sound but the frame it works in is corrupted out there. Lowering the thresholds to 4 stations and a 10 m span changed nothing, which confirms the frame, not the threshold, is the limit.",
+    "verdict": "reverted: it is the right mechanism and it removes the infrastructure classes without touching a single real detection, but it costs 14 percent and changes no frame decision, because the remaining driver is the far class that needs a trustworthy lateral frame first",
+    "what_this_leaves": "the empty-tunnel wall is now attributable to exactly one class - the tunnel's own surfaces at 90-164 m, placed by an extrapolated centre. Fixing that needs the far-field lateral frame (external alignment, or a centre estimated from something that survives at range), and then this profile model removes the rest."
   }
 }
