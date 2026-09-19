@@ -1,0 +1,14 @@
+{
+  "date": "2026-09-19",
+  "scope": "The RViz demonstration path, checked statically",
+  "defect": "rviz/tunnel_guard.rviz sets Fixed Frame: tunnel_guard_local, and the node published no TF at all - no TransformStamped, no broadcaster. RViz would come up with a missing fixed frame and render nothing, which is the failure the case warns about when it says the fixed frame must come from a frame that exists.",
+  "what_did_match": "the topics are consistent: the config listens to /perception/points_display and /perception/debug_markers, and the node publishes exactly those plus /perception/status.",
+  "fix": "the node now publishes an identity static transform from tunnel_guard_local to whatever frame the incoming clouds declare, once per source frame, through tf2_ros.StaticTransformBroadcaster. The frame is real rather than invented: it is the sensor frame the node's outputs are already expressed in. Mounting and extrinsics remain unverified, as the README states, so this names the frame instead of claiming a calibration.",
+  "verification_status": "the file parses and the change is standard tf2 usage, but it CANNOT be exercised here: this machine has no ROS 2 and no Docker daemon. It must be confirmed in the container before the demonstration, and the README already carries that caveat for the ROS path.",
+  "still_unverified": [
+    "docker build and run",
+    "ros2 bag play against the node",
+    "the RViz window itself",
+    "tf2_ros availability in the image (expected from ros:humble-ros-base, not checked here)"
+  ]
+}

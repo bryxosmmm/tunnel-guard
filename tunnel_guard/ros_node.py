@@ -11,8 +11,10 @@ import rclpy
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 from rclpy.serialization import deserialize_message
+from geometry_msgs.msg import TransformStamped
 from sensor_msgs.msg import PointCloud2
 from std_msgs.msg import String
+from tf2_ros import StaticTransformBroadcaster
 from visualization_msgs.msg import MarkerArray
 
 from .detector import Detector, load_config
@@ -38,6 +40,14 @@ class PerceptionNode(Node):
             self.get_parameter("display_max_points").value,
             presentation="live_detector",
         )
+        # The RViz configuration's fixed frame is `tunnel_guard_local`, and nothing published it: a
+        # demonstration would come up with a missing fixed frame and show nothing at all. The frame is
+        # real, not invented - it is the sensor frame of this node's own outputs - so it is published as
+        # an identity transform to whatever frame the incoming clouds declare, once per source frame.
+        # Mounting and extrinsics remain unverified, as the README says; this names the frame the messages
+        # are already expressed in rather than claiming a calibration.
+        self.static_broadcaster = StaticTransformBroadcaster(self)
+        self.broadcast_frames: set = set()
         self.rotation = np.asarray(self.config["sensor_rotation"])
         self.translation = np.asarray(self.config["sensor_translation"])
         self.kinds = {
@@ -142,6 +152,14 @@ class PerceptionNode(Node):
             self.silent = False
             row = self.detector.process(points, ns * 1e-9, times)
             self.last_stamp, self.source_frame = ns, message.header.frame_id
+            if message.header.frame_id and message.header.frame_id not in self.broadcast_frames:
+                transform = TransformStamped()
+                transform.header.stamp = self.get_clock().now().to_msg()
+                transform.header.frame_id = "tunnel_guard_local"
+                transform.child_frame_id = message.header.frame_id
+                transform.transform.rotation.w = 1.0
+                self.static_broadcaster.sendTransform(transform)
+                self.broadcast_frames.add(message.header.frame_id)
             self.processed += 1
             row.update(
                 measurement_timestamp_ns=ns,

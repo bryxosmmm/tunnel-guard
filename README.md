@@ -111,6 +111,16 @@ the `2 d^3 Cov(a,b)` cross term whose sign makes it grow fastest with distance. 
 panel and the corrected metric definitions are in
 [docs/REVIEW_RESPONSE_20260919.md](docs/REVIEW_RESPONSE_20260919.md).
 
+## Demonstration path, checked statically (2026-09-19)
+
+`rviz/tunnel_guard.rviz` and the node were consistent on topics - the config listens to `/perception/points_display` and
+`/perception/debug_markers`, which the node publishes - but the config's fixed frame, `tunnel_guard_local`, was published
+by nothing, so RViz would come up with a missing fixed frame and render nothing. The node now publishes an identity
+static transform from `tunnel_guard_local` to the frame the incoming clouds declare, once per source frame: the frame is
+the sensor frame its outputs are already expressed in, not an invented one, and mounting and extrinsics stay unverified.
+This change is standard tf2 usage but is **not exercised here** - no ROS 2 and no Docker daemon on the development
+machine - so it must be confirmed inside the container before the demonstration.
+
 ## Where the frame time goes (2026-09-19)
 
 Measured on `doubleT_obstacle`, per-frame medians, before the two shipped runtime changes:
