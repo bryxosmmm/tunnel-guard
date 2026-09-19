@@ -96,11 +96,14 @@ def main() -> None:
             if len(geometry.rail_anchors) >= 3:
                 continuations[frame] = (geometry._continuation(-1), old[frame]._continuation(-1)
                                         if len(old[frame].rail_anchors) >= 3 else None)
-        travel = max((np.linalg.norm(poses[b][:3, 3] - poses[a][:3, 3])
-                      for a, b in zip(sorted(continuations), sorted(continuations)[1:])), default=0.0)
+        order = sorted(continuations)
+        steps = [np.linalg.norm(poses[b][:3, 3] - poses[a][:3, 3]) for a, b in zip(order, order[1:])]
+        # Total travel is what bounds the look-ahead this recording can label; the per-frame step is
+        # what the crawl looks like. Reporting one as the other would misread the whole measurement.
+        travel = float(np.linalg.norm(poses[order[-1]][:3, 3] - poses[order[0]][:3, 3])) if order else 0.0
         travels.append(travel)
         print(f"  {path.stem}: {len(points_by_frame)} frames, {len(continuations)} with an anchor chain, "
-              f"travel {travel:.1f} m", flush=True)
+              f"step median {np.median(steps):.2f} m, total travel {travel:.1f} m", flush=True)
         for frame, (edge_new, edge_old) in continuations.items():
             seen += 1
             radius, _ = fitted_radius(new[frame].rail_anchors)
@@ -137,8 +140,8 @@ def main() -> None:
     finite = [r for r in radii if np.isfinite(r)]
     print(f"  recordings {recordings}, frames {seen}, curved (<= {args.radius_max:g} m) {curved}")
     if travels:
-        print(f"  travel per recording: median {np.median(travels):.1f} m, stationary stretches "
-              f"{sum(1 for t in travels if t < args.min_travel_m)}/{len(travels)}")
+        print(f"  total travel per recording: median {np.median(travels):.1f} m, minimum {min(travels):.1f} m, "
+              f"maximum {max(travels):.1f} m; pair candidates need {args.min_travel_m:g} m between frames")
     if finite:
         print(f"  radius quartiles: p25 {np.percentile(finite, 25):.0f} m, median {np.median(finite):.0f} m, "
               f"p75 {np.percentile(finite, 75):.0f} m, min {min(finite):.0f} m")
