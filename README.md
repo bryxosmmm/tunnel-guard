@@ -119,6 +119,52 @@ Run with `input_topic:=<the bag's topic>` when they differ - `ros2 bag info <bag
 `input_timeout_s`, the node degrades to `unavailable` and now logs an error naming the configured topic, the point-cloud
 topics that are actually present, and the parameter to restart with, so the cause is visible rather than silent.
 
+## Running it in the container (2026-09-19)
+
+The submission requires build and run instructions for the container, and the README carried none: it documented the
+offline runner and the ROS adapter separately, but never the sequence an evaluator actually performs. That is now here,
+together with the one requirement that is easy to miss.
+
+```sh
+# 1. build (the image installs rviz2 and tf2, builds the native extension and imports the node, so a missing
+#    dependency fails the build rather than the demonstration)
+docker build -t tunnel-guard .
+
+# 2. run the detector. --network host is REQUIRED: the node discovers ROS 2 traffic over DDS on the host
+#    network, so without it `ros2 bag play` on the host is invisible to the container and nothing arrives.
+docker run --rm -it --network host tunnel-guard
+
+# 3. on the host, find the bag's point-cloud topic and play it (topics differ between recordings:
+#    the tunnel recordings use /lidar_points, doubleT_obstacle uses /sensing/lidar/hesai128/pointcloud)
+ros2 bag info <bag>
+ros2 bag play <bag>
+```
+
+If the bag's topic differs from the node's default, run the node with the override - inside the container, or through the
+launch file, which exposes the same parameters:
+
+```sh
+python3 -m tunnel_guard.ros_node --ros-args -p input_topic:=/sensing/lidar/hesai128/pointcloud
+ros2 launch /opt/tunnel-guard/launch/tunnel_guard.launch.py input_topic:=/sensing/lidar/hesai128/pointcloud rviz:=true
+```
+
+`rviz:=true` starts RViz inside the container with `rviz/tunnel_guard.rviz`, which shows measured points, the reference
+envelope, candidates, confirmed intrusions and their distances. For a machine without a display, run `rviz2` on the host
+instead: it subscribes to the same `/perception/...` topics over the shared DDS network. Use slow replay
+(`ros2 bag play -r 0.3 <bag>`) for a complete evaluation: the queue is depth 1 and the offline frame time is above the
+10 Hz stream rate, so fast replay drops scans by design rather than silently.
+
+Without ROS at all, the same detector runs offline and writes per-frame JSON with the measurement timestamp:
+
+```sh
+uv run python -m tunnel_guard.run --experiment configs/<recipe>.json
+```
+
+**What is verified and what is not:** the container path has been exercised only for a ten-scan replay under emulation,
+and the changes of 2026-09-19 in it - the published fixed frame, the input-topic error message, the declared tf2
+dependency and the build-time node import - are standard usage that this development machine cannot execute, because it
+has no ROS 2 and no Docker daemon. They must be confirmed inside the container before the demonstration.
+
 ## Demonstration path, checked statically (2026-09-19)
 
 `rviz/tunnel_guard.rviz` and the node were consistent on topics - the config listens to `/perception/points_display` and

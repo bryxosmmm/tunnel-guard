@@ -1,0 +1,8 @@
+{
+  "date": "2026-09-19",
+  "scope": "The demo path, part five: the container instructions the submission requires",
+  "finding": "the README documented the offline runner and the ROS adapter separately but never the sequence an evaluator performs - docker build, docker run, ros2 bag play, see the result - and carried no DDS or networking guidance. The case lists those instructions among the required documentation and names that flow in its ease-of-run criterion.",
+  "the_requirement_easy_to_miss": "the container needs --network host: ROS 2 discovery happens over the host network, so without it ros2 bag play on the host is invisible to the container and the node simply receives nothing - the same silent-failure shape as the input-topic defect, and one an evaluator would experience as 'it does not work'",
+  "written": "a container section with the build, the run with host networking, how to find and play the bag, the topic override for the bag that differs, running RViz inside the container or on the host, slow replay for a complete evaluation because the queue is depth 1 and the frame time is above the stream rate, the offline alternative, and an explicit statement of what is and is not verified",
+  "verification_status": "documentation; the commands are not executed here (no ROS 2, no Docker daemon)"
+}
