@@ -170,6 +170,29 @@ is the curved recording (2.4–5.2×) and the arc panel (12 → 16 of 24 cases).
   the IoU panels, and is not used as acceptance evidence. 24 cases, one arc radius, stationary sensor, ideal
   surfaces with the measured beam pattern.
 
+## The empty-tunnel alarm load, and one fix that failed (2026-09-19)
+
+`CASE.md` says most provided recordings will be an empty tunnel, so the false-alarm count is where the
+score is. On our own recordings the frame status is `unresolved_obstacle` on 59 of 60 frames of
+`roundT_doubleT` and 365 of 389 of the extended sample. The cause is measured: 46 unresolved objects per
+frame, median size 0.21 x 0.18 x 0.23 m at median lateral +1.39 m - right at the 1.535 m envelope
+boundary - and 58 percent of them in longitudinal chains. One frame's chain runs at x = 3.8, 8.5, 11.9,
+15.7, 17.8, 20.6, 22.6, 25.3 m at lateral +1.44..+1.51 m and height 0.42..0.52 m. That is the tunnel's
+own duct or walkway edge, fragmented into per-scan "objects" along the corridor boundary.
+
+The obvious fix - treat a structure that continues far beyond a cluster on both sides as infrastructure -
+was implemented, measured and **reverted**. On `doubleT_obstacle`, the recording that carries the labelled
+real obstacle, confirmed-obstacle frames fell from 52 to 50: it removed real detections while leaving the
+alarm wall on the tunnel recording untouched, at +19 percent processing cost (154 -> 183 ms). The reason is
+structural: a cross-section bucket shares the wall behind a candidate with the candidate itself, so any
+object in front of a wall inherits the duct's span. No threshold that still catches the duct separates
+them. Details: `results/empty-tunnel-alarm-load-20260919.json`.
+
+What would work is judging continuity from the candidate's **own** support, or modelling the tunnel
+cross-section per station and treating returns explained by that profile as the normal tunnel. Either way
+the gate is the check that rejected this attempt: the labelled obstacle recording keeps its confirmed
+frames, and the tunnel recording's alarm load falls.
+
 ## Artifacts
 
 - `tunnel_guard/geometry.py` (`_continuation`, `path`), `cpp/kernels.cpp` (mirror), `tunnel_guard/detector.py`
