@@ -64,5 +64,21 @@
     "verdict": "rejected: safe but weak - 8 percent of frames cleared for about 10 percent more processing, on a system already at 6 Hz. Same standard as the first attempt.",
     "next": "the same class needs a discriminator that clears most of the 5.5 objects per frame rather than a few, or the close-range boundary case needs the contour itself to be re-examined: the envelope half-width at 0.42 m height may simply be narrower than the tunnel's real walkway clearance on this route, in which case the correct fix is the reference contour, not a filter"
   },
-  "state": "two changes committed at 211b507 with their gates; the boundary-structure extension reverted and recorded here"
+  "state": "two changes committed at 211b507 with their gates; the boundary-structure extension reverted and recorded here",
+  "hypothesis_for_the_close_range_class_disproved": {
+    "hypothesis": "the walkway edge survives because in-gauge returns are protected from background removal (context keeps everything inside `observed & nominal_overlap`), so unprotecting them or letting the background model see them would remove the alarms at no cost",
+    "measured_on_frame_3_of_roundT_doubleT": {
+      "walkway_band_points": 1101,
+      "observed": 1072,
+      "in_gauge_nominal_overlap": 10,
+      "background_model_verdict_on_those_points": "0 of 1101 explained by a fitted surface"
+    },
+    "conclusion": "the cheap fix does not exist: the protection rule touches 10 of 1101 points, and the background model already declines to call the walkway background. The walkway reaches the candidate stage because it is an in-scope structure that the fitted surfaces do not represent.",
+    "what_this_leaves": "the close-range boundary class needs a model of the tunnel's own structures - either fitted surfaces extended to the walkway and duct profiles, or an explicit per-route cross-section profile - and it must clear the gate already established: the labelled obstacle recording keeps every confirmed frame (52 of 52), inserted objects at 20/40/60 m keep reporting obstacle, and the targeted panel keeps event_recall 1.0 with empty scenes silent.",
+    "rejected_alternatives_for_the_same_class": [
+      "cross-section buckets of raw points: removed real detections, alarm load unchanged (results/empty-tunnel-alarm-load-20260919.json)",
+      "object-chain continuity at the boundary with anisotropy and recurrence: safe but cleared 5 of 60 frames for about 10 percent more processing"
+    ]
+  },
+  "final_state": "two changes committed at 211b507 and verified; the close-range class is characterised and its cheap fixes disproved or rejected; the remaining work is a tunnel-structure model with the gate stated above"
 }
