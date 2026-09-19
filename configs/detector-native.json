@@ -251,5 +251,7 @@
   },
   "rail_center_estimator": "paired_line",
   "rail_anchor_support": "measured",
-  "rail_pair_continuity": "relocated"
+  "rail_pair_continuity": "relocated",
+  "path_curve_window_m": 30.0,
+  "path_curvature_significance": 4.0
 }

@@ -225,7 +225,8 @@ def classify_geometry(points: np.ndarray, geometry, module=None):
         config["ground_max_extrapolation_m"], config["path_max_extrapolation_m"],
         config["rail_half_width_m"], config["rail_vertical_margin_m"], config["min_running_height_m"],
         config["cluster_context_margin_m"], config["segmentation_context_half_width_m"],
-        config["envelope_margin_m"], config["rail_max_heading"])
+        config["envelope_margin_m"], config["rail_max_heading"],
+        config.get("path_curve_window_m", 30.0), config.get("path_curvature_significance", 4.0))
     return tuple(np.frombuffer(payload[index], dtype=np.uint8).astype(bool) if index in (0, 1, 3, 4, 5)
                  else np.frombuffer(payload[index], dtype=np.float64) for index in range(6))
 

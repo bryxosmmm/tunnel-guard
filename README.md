@@ -88,6 +88,43 @@ an empty tunnel at metro speed (1.5 m/frame) produced 70k false dynamic labels i
 numbers: `results/hmm-mos-probe-20260918.json`; recipes: `configs/hmm-mos-probe-*.json` and
 `tunnel_guard/hmm_mos_probe.py`. Nothing in the pipeline was changed by this review.
 
+## Reference corridor follows the curve
+
+The reference contour used to continue past the last measured rail anchor along a straight tangent
+whose slope was clipped at `rail_max_heading`, modelled for `path_max_extrapolation_m` beyond the
+nearest anchor. Rails here are supported to a median 40 m, so the contour had a modelled horizon near
+65 m — and inside it the true track leaves a straight line quadratically. Measured against what later
+frames of `roundT_doubleT` see over the same ground, that continuation was 0.20 m off at 40 m, 0.47 m
+at 50 m and 1.02 m at 60 m (p90 1.41 m), against a corridor half-width of 1.535 m.
+
+`TrackGeometry._continuation` and its native mirror now continue along a local quadratic fitted to the
+anchors inside `path_curve_window_m`, expressed in the edge anchor's frame so the centre-line stays
+continuous there, with the curvature shrunk to zero unless it exceeds `path_curvature_significance`
+standard errors (default 4), and the extrapolation uncertainty taken from the fit covariance in
+quadrature with the previous base term. Inside the anchor span the corridor is bit-identical to before;
+the model only acts beyond it. Forward-prediction error becomes **0.045 / 0.136 / 0.203 m** at 40 / 50 / 60 m.
+Both backends stay identical (20/20 geometry arrays, 29/29 kernel checks), and 60-frame prefixes of
+`roundT_doubleT` and `doubleT_obstacle` keep their statuses; the object set moves slightly
+(14,305 → 14,014 on the straight recording, intersecting observations 64 → 70), which no available
+label can adjudicate. `path_curve_window_m: 0` reproduces the previous continuation exactly.
+
+The gate is not cosmetic. On the measured-pattern panel, whose rails are straight by construction, a
+weaker 2-sigma gate bends the corridor off a geometry the old model already had exactly right:
+precision 0.8011 -> 0.7647, tp 709 -> 702, fp 176 -> 216, and empty scenes start alarming
+(negative-episode rate 0 -> 0.08). At 4 sigma the same panel is byte-identical to the baseline
+(709/251/176, precision 0.8011, zero empty-scene alarms) while the real-curve prediction gain above is
+kept, so 4 is the shipped default and `path_curvature_significance` is the knob to loosen deliberately.
+Both panel runs are retained as evidence. Straight recordings are still not bit-identical — the fitted
+slope replaces the noisy two-point tangent even where curvature is shrunk, which moves one frame of 60
+from `unresolved_obstacle` to `candidate` on `doubleT_obstacle`.
+
+This does **not** extend the modelled horizon: beyond anchors + 25 m the corridor is still `unknown`,
+which is why the scored 100–300 m band needs a long-lever estimate. Walls and ceiling do return to
+120–207 m on the curved recording, but per-bin medians of those returns are not an axis — they jump
+5–9 m with platform edges — so that estimator has to be built on surface strips and validated with the
+same forward-prediction test before it is allowed to widen the corridor. Evidence:
+`results/curve-continuation-20260919.json`.
+
 ## Reader overlap in the offline runner
 
 The bag reader (decompression plus PointCloud2 decode) ran between frames: 38.6 ms p50 on

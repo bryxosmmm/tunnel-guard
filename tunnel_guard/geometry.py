@@ -461,19 +461,90 @@ class TrackGeometry:
             best[chosen] = distance[chosen]
         return values, np.isfinite(best)
 
+    def _continuation(self, edge: int) -> tuple[float, float, float, float, float, float]:
+        """Local quadratic continuation of the measured centre-line past an anchor edge.
+
+        The rails are measured over roughly 40 m, which is too short to resolve the alignment by
+        a straight tangent: on a curve the true centre-line leaves it quadratically, and at 60 m
+        that departure (2-4 m on R = 500-1000 m) dwarfs the 1.5 m corridor half-width. The
+        continuation is therefore fitted, not assumed:
+
+        * the fit is expressed in the edge anchor's own frame (t = (x - x_edge)/window,
+          v = y - y_edge), so the curve passes through the measured edge point and ``center(x)``
+          stays continuous where it replaces the interpolation;
+        * the curvature is shrunk to zero unless the window supports it (|b| beyond its own
+          standard error), because a short lever cannot distinguish a gentle curve from noise and
+          inventing one would bend a straight tunnel;
+        * the fit's own covariance is returned so the caller can propagate the extrapolation
+          error instead of inventing an uncertainty.
+
+        Returns ``(x_edge, y_edge, slope, curvature, slope_sigma, curvature_sigma)``.
+        """
+        cfg = self.config
+        a = self.rail_anchors
+        window = float(cfg.get("path_curve_window_m", 30.0))
+        if edge == 0:
+            selected = a[a[:, 0] <= a[0, 0] + window]
+            x_edge, y_edge = float(selected[0, 0]), float(selected[0, 1])
+        else:
+            selected = a[a[:, 0] >= a[-1, 0] - window]
+            x_edge, y_edge = float(selected[-1, 0]), float(selected[-1, 1])
+        if len(selected) < 3 or window <= 0:
+            if len(a) >= 2:
+                other = 1 if edge == 0 else -2
+                raw = (a[edge, 1] - a[other, 1]) / (a[edge, 0] - a[other, 0])
+            else:
+                raw = 0.0
+            return x_edge, y_edge, float(np.clip(raw, -cfg["rail_max_heading"], cfg["rail_max_heading"])), 0.0, 0.0, 0.0
+        t = (selected[:, 0] - x_edge) / window
+        v = selected[:, 1] - y_edge
+        s11 = s12 = s22 = b1 = b2 = 0.0
+        for t_i, v_i in zip(t, v):                        # same summation order as the C++ kernel
+            tt, ttt, tttt = t_i * t_i, t_i * t_i * t_i, t_i * t_i * t_i * t_i
+            s11 += tt
+            s12 += ttt
+            s22 += tttt
+            b1 += t_i * v_i
+            b2 += tt * v_i
+        determinant = s11 * s22 - s12 * s12
+        if determinant <= 0.0:
+            return x_edge, y_edge, 0.0, 0.0, 0.0, 0.0
+        slope_scaled = (b1 * s22 - b2 * s12) / determinant
+        curvature_scaled = (s11 * b2 - s12 * b1) / determinant
+        residual_square = 0.0
+        for t_i, v_i in zip(t, v):
+            residual = v_i - (slope_scaled * t_i + curvature_scaled * t_i * t_i)
+            residual_square += residual * residual
+        dof = len(selected) - 2
+        variance = residual_square / dof if dof > 0 else 0.0
+        slope_sigma = np.sqrt(max(variance * s22 / determinant, 0.0)) / window
+        curvature_sigma = np.sqrt(max(variance * s11 / determinant, 0.0)) / (window * window)
+        if abs(curvature_scaled) < cfg.get("path_curvature_significance", 4.0) * curvature_sigma * window * window:
+            curvature_scaled = 0.0
+        slope = float(np.clip(slope_scaled / window, -cfg["rail_max_heading"], cfg["rail_max_heading"]))
+        return x_edge, y_edge, slope, float(curvature_scaled / (window * window)), float(slope_sigma), float(curvature_sigma)
+
     def path(self, x: np.ndarray) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
         if len(self.rail_anchors) < 2:
             return np.zeros(len(x)), np.full(len(x), self.config["rail_gauge_m"]), np.full(len(x), np.inf)
+        cfg = self.config
         a = self.rail_anchors
         center = np.interp(x, a[:, 0], a[:, 1])
-        # Endpoint tangent extrapolation; uncertainty grows with unsupported distance.
-        for edge, other, mask in [(0, 1, x < a[0, 0]), (-1, -2, x > a[-1, 0])]:
-            slope = np.clip((a[edge, 1] - a[other, 1]) / (a[edge, 0] - a[other, 0]),
-                            -self.config["rail_max_heading"], self.config["rail_max_heading"])
-            center[mask] = a[edge, 1] + slope * (x[mask] - a[edge, 0])
         nearest = nearest_anchor_distance(x, a[:, 0])
         uncertainty = 0.06 + 0.008 * nearest + 0.0003 * nearest**2
-        uncertainty[nearest > self.config["path_max_extrapolation_m"]] = np.inf
+        # Beyond the measured anchors, continue along the fitted local curvature instead of a
+        # straight tangent, and propagate that fit's error into the path uncertainty. Where the
+        # anchors do not support a curvature the fit returns zero and this reduces to the
+        # previous straight continuation.
+        for edge, mask in [(0, x < a[0, 0]), (-1, x > a[-1, 0])]:
+            if not mask.any():
+                continue
+            x_edge, y_edge, slope, curvature, slope_sigma, curvature_sigma = self._continuation(edge)
+            distance = x[mask] - x_edge
+            center[mask] = y_edge + slope * distance + curvature * distance * distance
+            extension = np.sqrt((distance * slope_sigma) ** 2 + (distance * distance * curvature_sigma) ** 2)
+            uncertainty[mask] = np.sqrt(uncertainty[mask] ** 2 + extension**2)
+        uncertainty[nearest > cfg["path_max_extrapolation_m"]] = np.inf
         return center, np.interp(x, a[:, 0], a[:, 2]), uncertainty
 
     def classify(self, points: np.ndarray, *, remove_background: bool = True,
