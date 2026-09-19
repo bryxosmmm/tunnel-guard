@@ -28,7 +28,7 @@
   },
   "not_shipped": "no code change: the band as tested changes a rail anchor by 3.6 cm on the curve, which is decision-affecting, so it needs the corridor-aware form and the full gate (1460-frame panel identity, both recordings' statuses, labelled obstacle preserved) before it can be committed",
   "also_measured": {
-    "chain_filter_row_matching": "np.unique over the cloud alone (72568 rows) is 21.9 ms, and the committed chain filter stacks every object's support on top of the cloud before that call - worth replacing with the object metadata it already carries (centre, extent, bbox), which gives the same cross-section position without the stack",
+    "chain_filter_row_matching": "CORRECTED: the committed chain filter does NOT stack rows or call np.unique - it works per object on its own support (ground and path per object, then a cross-section and along-track comparison). The 21.9 ms np.unique belonged to the REVERTED profile model, and the earlier note attributing it to the chain filter was wrong. What the committed version does pay is one ground() and one path() call per object, about 250 per frame, which could be batched into two calls with identical per-point values.",
     "association": "10.1 ms for the assignment over roughly 200 tracks x 200 objects; the field's standard fix is a spatial gate that decomposes the assignment into small independent subproblems"
   },
   "corrected_attribution": {
