@@ -204,5 +204,38 @@
       "reading": "about half the sampled stretches are essentially stationary (0.0-2.3 m over 102 frames) and the moving ones advance 5-61 m, so the pairs come from those; a 30 m look-ahead past the anchor end needs about 38 m of advance and only the largest-travel subsets can supply it, which is why that row has four pairs",
       "independence": "the pair counts are NOT independent places: consecutive frames of one stretch are correlated, so 514 pairs at 5 m rest on roughly a dozen moving stretches, and the 20 m and 30 m rows on three or four. Repeated frames of one place are not independent events."
     }
+  },
+  "reader_on_off_comparison": {
+    "why": "the review's second recommendation: compare reader on/off on identical geometry, which the prefetch fix makes possible for the first time",
+    "setup": "doubleT_obstacle, 60 frames, identical detector recipe and frames, three repetitions per mode, via the documented `prefetch_depth` key",
+    "wall_ms_per_frame": {
+      "depth0": [
+        213.2,
+        180.9,
+        177.7
+      ],
+      "depth1": [
+        169.1,
+        165.7,
+        164.9
+      ],
+      "medians": {
+        "depth0": 180.9,
+        "depth1": 165.7
+      },
+      "median_gain_ms": 15.2,
+      "median_gain_percent": 8.4
+    },
+    "processing_p50_ms": {
+      "depth0": 131.3,
+      "depth1": 135.2
+    },
+    "reading": [
+      "reading ahead buys about 8% of wall time per frame (median) and, at least as usefully, removes the variance: the inline repeats spread 213-178 ms while the prefetch repeats sit at 169-165 ms",
+      "the detector's own p50 is unchanged within noise (131.3 vs 135.2 ms); the reader thread competes for a core, which is where the small increase plausibly comes from",
+      "neither mode reaches 10 Hz: 166-181 ms per frame is 5.5-6.0 Hz on this machine while it is shared",
+      "absolute latencies here are not comparable with other sessions' numbers; only the on/off contrast within this run is controlled"
+    ],
+    "decisions": "identical: statuses and objects match between the modes, verified separately on 30 frames"
   }
 }

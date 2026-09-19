@@ -21,8 +21,14 @@ timeout cannot be released by `stop`, so a consumer closing on a full queue park
 
 Measured after the fix, same 30 frames of `roundT_doubleT`: `prefetch_depth: 0` processes 30 frames with
 statuses identical to `prefetch_depth: 1` (`{candidate: 1, unresolved_obstacle: 29}` in both). Before the
-fix the same command exited 1. Their proposed reader on/off comparison is now runnable; what is *not* done
-is a latency comparison under controlled conditions, so no speedup claim is made here.
+fix the same command exited 1.
+
+Their proposed reader on/off comparison now runs, and it was done on identical geometry: `doubleT_obstacle`,
+60 frames, same recipe, three repetitions per mode. Wall time per frame: 213.2 / 180.9 / 177.7 ms inline
+against 169.1 / 165.7 / 164.9 ms with prefetch - a median gain of 15.2 ms, about 8%, and a large reduction in
+spread (the inline repeats vary by 35 ms). The detector's own p50 is unchanged within noise (131.3 against
+135.2 ms; the reader thread competes for a core). Neither mode reaches 10 Hz here, and absolute latencies on
+this shared machine are not comparable with other sessions' numbers - only the on/off contrast is controlled.
 
 ## P1 — the widened corridor was clipped again: confirmed, fixed, measured as latent
 
