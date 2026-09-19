@@ -26,5 +26,15 @@
     "reading": "distance-based reuse beats frame-count reuse (111.1 vs 119.2 on the tunnel recording) because it refits on demand, and it is the criterion with a physical meaning"
   },
   "trade_off_stated": "a stale model can mis-remove the bed on a grade: at 1 m of travel and the measured 0.5 per cent bed pitch the offset error is about 5 mm, against the 25 mm fit distance, so the 1.0 m limit keeps a margin; at 2 m it is 10 mm and the metrics did not change either, but the smaller limit is the one with room to spare",
-  "pending_gate": "the full 1460-frame measured-pattern panel with the 1.0 m limit: it must hold event recall 0.8021, matched IoU 0.8223 and zero negative episodes, and the recordings must keep the labelled obstacle at 52 of 52"
+  "pending_gate": "the full 1460-frame measured-pattern panel with the 1.0 m limit: it must hold event recall 0.8021, matched IoU 0.8223 and zero negative episodes, and the recordings must keep the labelled obstacle at 52 of 52",
+  "gate_in_flight": {
+    "why_a_prefixed_gate": "the full 1460-frame panel was cancelled at 790 frames on a loaded machine. Subsetting the case grid is invalid - it shifts the seeds, the mistake recorded in results/sparse-range-recall-20260919.json - so the gate keeps the identical case list and seed and takes only the FIRST THREE frames per case, which are a prefix of the same seeded frame stream.",
+    "arms": {
+      "off": "build/stress-gate-off (background_refit_travel_m 0.0)",
+      "on": "build/stress-gate-on (1.0 m)"
+    },
+    "frames_per_arm": 438,
+    "criterion": "event recall, matched IoU, precision and zero negative episodes must match the off arm's",
+    "decision_it_authorises": "setting background_refit_travel_m: 1.0 in configs/detector-native.json, i.e. turning the measured 15-27 per cent runtime win into the shipped default"
+  }
 }
