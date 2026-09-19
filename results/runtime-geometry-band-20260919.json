@@ -48,5 +48,15 @@
       "still_unattributed": "roughly 28 ms of the constructor, most plausibly the TunnelBackground construction over all 72590 points, which the next profile must measure directly"
     },
     "next_step": "profile TunnelBackground's construction; that is where the remaining geometry time is, and unlike the rail band it has not been ruled out"
+  },
+  "background_model_is_the_frame": {
+    "measured": "TunnelBackground construction is 40.3 ms on 72590 points, 33 per cent of a 123 ms frame - larger than the geometry estimators it sits inside",
+    "structure": "about 22 overlapping windows of 30 m with 3 planes each and 120 RANSAC iterations per plane, rebuilt from scratch on every frame",
+    "no_duplicate_to_share": "its normals come from its own voxelised sample (voxel 0.1 m) with its own radius and neighbour parameters, so they are not the same computation as TrackGeometry's and cannot simply be handed over",
+    "why_it_can_be_cached": "the surfaces it models - lining, walls, ducts - do not change between consecutive frames at the same station. Both the field's background-modelling practice and the earlier research on this problem describe the same design: a PERSISTENT INFRASTRUCTURE MAP updated slowly, kept separate from SHORT-TERM OCCUPANCY",
+    "the_safe_form": "cache the fitted planes for stations BEHIND the train in world coordinates and re-project them into the current sensor frame, fitting fresh planes only ahead. Nothing ahead is ever cached before it has been observed, which removes the known failure mode of a stationary obstacle being absorbed into the background - the exact risk the level-crossing background-modelling work warns about",
+    "expected_win": "most of the 40 ms after the first frames of a run, i.e. the largest single runtime win available in this system",
+    "verification_plan": "plane caches change the model by design, so the panel cannot be byte-identical; the gate is the panel's metrics (event recall 0.8021, matched IoU 0.8223, zero negative episodes), both recordings' statuses with the labelled obstacle preserved 52 of 52, and a measured frame time before and after",
+    "not_attempted": "no code written: the cache is a real feature, and a half-verified version of it would be worse than none"
   }
 }
