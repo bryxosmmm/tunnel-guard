@@ -89,6 +89,22 @@ def voxel_unique_at(config: dict, reductive_size: float | None) -> bool:
     return size == reductive_size
 
 
+def _far_field_bound(distance_m: float, geometry: TrackGeometry, config: dict) -> float:
+    """Measured-error bound on the corridor's lateral centre beyond the last rail anchor.
+
+    Calibrated on real curves (see results/alignment-long-lever-20260919.json): the extrapolated
+    centre's absolute error is 0.19 / 0.72 / 1.53 / 4.79 m at 10 / 40 / 60 / 110 m past the last
+    anchor, i.e. coefficient * d^2 with coefficient 4.1e-4 m^-1. Reported per object so a far-field
+    detection carries its own uncertainty instead of an implicit claim; zero inside the measured span.
+    """
+    anchors = geometry.rail_anchors
+    if len(anchors) == 0:
+        return 0.0
+    past = max(0.0, distance_m - float(anchors[-1, 0]))
+    coefficient = float(config.get("far_field_bound_coefficient", 4.1e-4))
+    return coefficient * past * past
+
+
 def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict,
                        diagnostics: dict | None = None, arrays: dict | None = None,
                        *, reduced_on_grid_m: float | None = None,
@@ -552,6 +568,10 @@ class Detector:
             health_reasons.append("deskew_disabled_unverified_timing")
         elif not len(point_times):
             health_reasons.append("deskew_timestamps_unavailable")
+        # One place for both backends: the native component path builds its own records, so the
+        # far-field lateral bound is attached here rather than inside either builder.
+        for obj in objects:
+            obj["far_field_lateral_bound_m"] = _far_field_bound(obj["distance_m"], geometry, self.config)
         return result | {"status": status, "reason": geometry.reason, "objects": objects,
                          "health": "unavailable" if not geometry.valid else ("degraded" if health_reasons else "normal"),
                          "health_reasons": health_reasons,

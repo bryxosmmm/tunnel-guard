@@ -284,5 +284,37 @@
     },
     "verdict": "Inside its own 15 m gate (ground_max_extrapolation_m) the linear bed extrapolation errs by <=0.02 m, so the corridor's vertical placement is sound: heights are referenced to a surface measured to 65-105 m. The binding unknown at range is lateral, not vertical.",
     "scoring_implication": "Range is measured directly and height above the running surface is known to ~100 m, so far-field presence and height are usable; only the lateral track relation is unmodelled beyond the 74 m horizon."
+  },
+  "far_field_reporting": {
+    "field": "far_field_lateral_bound_m on every object record (tunnel_guard.detector._far_field_bound)",
+    "model": "coefficient * d^2 with d = distance past the last measured rail anchor, coefficient 4.1e-4 m^-1 (config far_field_bound_coefficient)",
+    "provenance": "calibrated from the label-free pair test: 0.19/0.72/1.53/4.79 m measured absolute error at 10/40/60/110 m of extrapolation",
+    "purpose": "a far-field detection carries its own uncertainty instead of an implicit claim; an object whose lateral track relation is uncertain by more than the 1.535 m half-width cannot be certified as clear or as an intrusion, and downstream can see that per object",
+    "verification": {
+      "frames": 200,
+      "recordings": [
+        "roundT_doubleT",
+        "doubleT_obstacle"
+      ],
+      "status_identical": true,
+      "nearest_identical": true,
+      "objects_identical": true,
+      "objects_with_bound": {
+        "roundT_doubleT": [
+          7001,
+          15041
+        ],
+        "doubleT_obstacle": [
+          6986,
+          14169
+        ],
+        "median_m": 0.19,
+        "max_m": [
+          10.6,
+          12.2
+        ]
+      }
+    },
+    "not_claimed": "reporting only: no decision, threshold or status changed, verified on 200 frames"
   }
 }
