@@ -191,8 +191,18 @@
       "the deep look-aheads are thin: 83 pairs at 20 m and 4 at 30 m, because 30 m past the anchor end needs about 38 m of advance and a subset carries at most ~33 m of travel",
       "both models are compared at the same point on the same pairs, but the reference frame's own rail estimate carries error that is common to both and is not separated here",
       "the vehicle crawls in these stretches (net travel 2-33 m per 102-frame subset) and some subsets barely move; the pairs come from the stretches that travel",
-      "this is a continuation-accuracy measurement, not a detection metric: no recall or precision claim follows from it"
+      "this is a continuation-accuracy measurement, not a detection metric: no recall or precision claim follows from it",
+      "pair counts are not independent samples; the deep rows rest on three or four stretches"
     ],
-    "reproduces": "uv run python -m tunnel_guard.extended_subset --bag data/new_data --indices 0 9 ... --group 2 --out data/extended_pairs && uv run python -m tunnel_guard.run --experiment <25 pairs> && uv run python -m tunnel_guard.curve_audit --run build/extended-pairs-run --bags data/extended_pairs --lookahead 5 10 20 30 --min-travel-m 8"
+    "reproduces": "uv run python -m tunnel_guard.extended_subset --bag data/new_data --indices 0 9 ... --group 2 --out data/extended_pairs && uv run python -m tunnel_guard.run --experiment <25 pairs> && uv run python -m tunnel_guard.curve_audit --run build/extended-pairs-run --bags data/extended_pairs --lookahead 5 10 20 30 --min-travel-m 8",
+    "travel": {
+      "total_per_subset_m": {
+        "median": 6.6,
+        "min": 0.0,
+        "max": 61.2
+      },
+      "reading": "about half the sampled stretches are essentially stationary (0.0-2.3 m over 102 frames) and the moving ones advance 5-61 m, so the pairs come from those; a 30 m look-ahead past the anchor end needs about 38 m of advance and only the largest-travel subsets can supply it, which is why that row has four pairs",
+      "independence": "the pair counts are NOT independent places: consecutive frames of one stretch are correlated, so 514 pairs at 5 m rest on roughly a dozen moving stretches, and the 20 m and 30 m rows on three or four. Repeated frames of one place are not independent events."
+    }
   }
 }

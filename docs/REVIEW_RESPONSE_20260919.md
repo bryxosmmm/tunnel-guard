@@ -122,6 +122,12 @@ candidate-level metric; it is superseded by this table.
   | 20 m | 83 | **0.247 m** | 0.664 m | 2.7x |
   | 30 m | 4 | 0.450 m | 1.302 m | 2.9x |
 
+  Two limits belong next to that table. **The pair counts are not independent places:** consecutive frames of
+  one stretch are correlated, so the 514 pairs at 5 m rest on about a dozen moving stretches and the 20 m and
+  30 m rows on three or four. And **the sample is half stationary:** total travel per 102-frame subset has a
+  median of 6.6 m (range 0–61.2 m), because these stretches include stops, so the deep rows are bounded by
+  travel rather than by method.
+
   The gain grows with distance, which is the curvature signature rather than a slope-only improvement, and it
   holds on radii down to 138 m. Stated plainly: the deep rows are thin (83 pairs at 20 m, 4 at 30 m, because
   30 m past the anchor end needs ~38 m of advance and a subset carries at most ~33 m); the reference frame's
