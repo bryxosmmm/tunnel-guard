@@ -84,5 +84,101 @@
     "Target-hardware throughput unverified (development Mac, 8 cores, one reader thread).",
     "Live ROS/DDS path unchanged; it logs decode and callback-to-result separately.",
     "Inference is still above the 100 ms input period, so 10 Hz per frame is not met."
-  ]
+  ],
+  "synthetic_panel_certification": {
+    "why": "The change is not on this path: tunnel_guard.stress drives Detector.process directly and never opens a bag, so identical counts are expected rather than lucky.",
+    "config": "configs/stress-measured-pattern-20260919.json",
+    "run": "build/stress-measured-pattern-20260919 (db17888), baseline build/merge-morev-verify-20260919/panel-merged-measured (c8af153)",
+    "metrics": {
+      "evaluated_frames": {
+        "c8af153": 1460,
+        "db17888": 1460
+      },
+      "tp": {
+        "c8af153": 709,
+        "db17888": 709
+      },
+      "fn": {
+        "c8af153": 251,
+        "db17888": 251
+      },
+      "fp_exhaustive_only": {
+        "c8af153": 176,
+        "db17888": 176
+      },
+      "precision_exhaustive_only": {
+        "c8af153": 0.8011299435028248,
+        "db17888": 0.8011299435028248
+      },
+      "recall_exhaustive_only": {
+        "c8af153": 0.7385416666666667,
+        "db17888": 0.7385416666666667
+      },
+      "event_recall": {
+        "c8af153": 0.8020833333333334,
+        "db17888": 0.8020833333333334
+      },
+      "matched_mean_3d_iou": {
+        "c8af153": 0.8223217046829834,
+        "db17888": 0.8223217046829834
+      },
+      "distance_mae_m": {
+        "c8af153": 0.001113788444493176,
+        "db17888": 0.001113788444493176
+      },
+      "negative_episode_rate": {
+        "c8af153": 0.0,
+        "db17888": 0.0
+      }
+    },
+    "all_metrics_equal": true,
+    "per_range_tp_fn_fp_equal": true,
+    "per_range": {
+      "10": [
+        115,
+        5,
+        85
+      ],
+      "20": [
+        115,
+        5,
+        37
+      ],
+      "40": [
+        116,
+        4,
+        0
+      ],
+      "60": [
+        116,
+        4,
+        0
+      ],
+      "100": [
+        105,
+        15,
+        4
+      ],
+      "150": [
+        72,
+        48,
+        6
+      ],
+      "200": [
+        60,
+        60,
+        12
+      ],
+      "300": [
+        10,
+        110,
+        32
+      ],
+      "empty": [
+        0,
+        0,
+        0
+      ]
+    }
+  }
 }
