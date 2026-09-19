@@ -80,7 +80,7 @@
       "object-chain continuity at the boundary with anisotropy and recurrence: safe but cleared 5 of 60 frames for about 10 percent more processing"
     ]
   },
-  "final_state": "committed: the object-chain filter; corrected: the certified-path suppression is opt-in, because with it on an object at 100 m was reported as a clear path. The empty-tunnel alarm load therefore remains, and it can only be removed at the object level by modelling the tunnel's own structures - characterised, with three rejected variants recorded and the gate stated.",
+  "final_state": "five variants measured for the close-range class: the chain filter shipped, four rejected or disproved, each with the check that killed it (results/empty-tunnel-alarm-load-20260919.json and this file). The remaining detection-side work is the tunnel-structure model; the remaining delivery-side work needs a Docker host.",
   "fourth_variant_rejected_status_level_demotion": {
     "rule": "hazards_require_inside_contour: only an object inside the reference contour is a hazard; boundary-ambiguous and uncertified-path objects stay in the output as candidates",
     "what_it_fixed": "the empty tunnel: roundT_doubleT went from 59 unresolved_obstacle frames to 60 of 60 no_obstacle_observed, and the labelled recording kept all 52 obstacle frames with its noise frames dropping 7 -> 1",
@@ -103,5 +103,26 @@
       "roundT_doubleT": "candidate 1, unresolved_obstacle 59 - the empty-tunnel load is back, which is the honest state: the false alarms cannot be removed by suppressing a class that also carries real detections"
     },
     "what_remains_committed": "the object-chain continuity filter only. It is verified byte-identical on the full 1460-frame panel and cuts spurious objects by half without touching any confirmed frame."
+  },
+  "fifth_variant_disproved_uncertainty_driven_ambiguity": {
+    "hypothesis": "the walkway is only 'possibly inside' because the bed-height uncertainty pushes the height band across the 13 cm contour step at 0.44 m, so tightening that uncertainty would clear the class with no semantic change",
+    "measured_on_frame_3_of_roundT_doubleT": {
+      "walkway_band_points": 1015,
+      "bed_height_uncertainty_m": {
+        "median": 0.06,
+        "p90": 0.069,
+        "budget": 0.15
+      },
+      "path_uncertainty_m": 0.08,
+      "walkway_lateral_m": 1.49,
+      "contour_half_width_at_its_height_m": 1.45,
+      "height_band_m": [
+        0.41,
+        0.53
+      ],
+      "crosses_the_step": true
+    },
+    "conclusion": "the ambiguity is geometric, not an uncertainty artefact. The structure sits 4 cm outside the widest part of the contour against about 9 cm of combined knowledge, so any tightening that clears it would also clear a genuine object at the corridor edge. No further cheap avenue exists on the detection side.",
+    "what_remains": "knowing that this structure is the walkway - the object-level tunnel-structure model - or the earlier two avenues: an external alignment, and the delivery path verified on a Docker host"
   }
 }
