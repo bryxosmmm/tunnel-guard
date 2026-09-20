@@ -90,15 +90,66 @@ def read_frame(bag: Path, index: int, config: dict) -> dict:
                     "points": points[valid][keep] @ rotation.T + translation,
                     "ring": ring[keep], "intensity": np.asarray(intensity, dtype=float)[keep],
                     "time_s": np.asarray(time_s, dtype=float)[keep], "duplicates": duplicates,
-                    "invalid": int((~valid).sum())}
+                    "invalid": int((~valid).sum()), "rotation": rotation}
     raise IndexError(f"{bag} has no frame {index}")
 
 
 def sensor_pattern(frame: dict) -> dict:
-    """The frame reduced to its sampling pattern: one entry per measured shot."""
+    """The frame reduced to its sampling pattern: one entry per measured shot, plus the shots that
+    were emitted but returned nothing.
+
+    A recording contains only the slots that returned. The sensor emitted far more: on these scans
+    a third to two thirds of the emission grid is empty, and an empty slot means there was no
+    surface in it, not that the sensor cannot see there. Painting an inserted object only onto
+    returned slots therefore hides the object's body wherever the empty tunnel returned nothing -
+    mid-height at range, which is exactly where a standing object is. The emitted-but-empty slots
+    are reconstructed on the sensor's own lattice so an object can occupy them, bounded by the
+    longest range the recording demonstrably returned from in the same frame.
+    """
     ranges = np.linalg.norm(frame["points"], axis=1)
-    return {"points": frame["points"], "ranges": ranges, "directions": frame["points"] / ranges[:, None],
-            "intensity": frame["intensity"], "time_s": frame["time_s"]}
+    pattern = {"points": frame["points"], "ranges": ranges, "directions": frame["points"] / ranges[:, None],
+               "intensity": frame["intensity"], "time_s": frame["time_s"],
+               "empty_directions": np.empty((0, 3)), "empty_time_s": np.empty(0),
+               "slots_observed": int(len(ranges))}
+    ring = frame.get("ring")
+    if ring is None or not len(ranges):
+        return pattern
+    # Elevation ladder in the frame the detector works in: the measured median elevation of each
+    # ring, which is what the driver's fixed table produces, measured rather than assumed.
+    elevation = np.arctan2(frame["points"][:, 2], np.hypot(frame["points"][:, 0], frame["points"][:, 1]))
+    azimuth = np.arctan2(frame["points"][:, 1], frame["points"][:, 0])
+    ladder, occupied = {}, {}
+    for value in np.unique(ring):
+        member = ring == value
+        ladder[int(value)] = float(np.median(elevation[member]))
+        occupied[int(value)] = azimuth[member]
+    step = float(np.median(np.diff(np.unique(np.round(azimuth, 6)))))
+    if not np.isfinite(step) or step <= 0:
+        return pattern
+    # The lattice spans the azimuth sector this scan covered, at the measured step.
+    lo, hi = float(azimuth.min()), float(azimuth.max())
+    grid = np.arange(lo, hi + step * 0.5, step)
+    directions, times = [], []
+    median_time = float(np.median(frame["time_s"])) if len(frame["time_s"]) else 0.0
+    for value, height in ladder.items():
+        seen = np.zeros(len(grid), dtype=bool)
+        index = np.round((occupied[value] - lo) / step).astype(np.int64)
+        valid = (index >= 0) & (index < len(grid))
+        seen[index[valid]] = True
+        missing = grid[~seen]
+        if not len(missing):
+            continue
+        cos_h = np.cos(height)
+        directions.append(np.column_stack((cos_h * np.cos(missing), cos_h * np.sin(missing),
+                                           np.full(len(missing), np.sin(height)))))
+        times.append(np.full(len(missing), median_time))
+    if directions:
+        # The ladder and the azimuth grid were measured in the frame the detector works in, so the
+        # directions are reconstructed directly in that frame; no second rotation is applied.
+        pattern["empty_directions"] = np.vstack(directions)
+        pattern["empty_time_s"] = np.concatenate(times)
+        pattern["slots_emitted_estimated"] = int(len(pattern["empty_directions"]) + len(ranges))
+    return pattern
 
 
 def bed_height(pattern: dict, pose: np.ndarray, along_m: float, lateral_m: float) -> float:
@@ -140,7 +191,17 @@ def ray_box(directions: np.ndarray, origin: np.ndarray, minimum: np.ndarray, max
 
 def insert(pattern: dict, target_world: dict | None, pose: np.ndarray, rng: np.random.Generator,
            jitter_m: float, object_intensity: float, empty_slots_return: bool = False) -> dict:
-    """Merge an object into a recorded frame, with the occlusion it would cause."""
+    """Merge an object into a recorded frame, with the occlusion it would cause.
+
+    Two kinds of slot can carry the object. A slot the recording returned from is replaced when the
+    object stands in front of the recorded surface. A slot the sensor emitted but returned nothing
+    from becomes a slot with a surface in it, which is what an object standing in an empty tunnel
+    actually produces - but only where the sensor demonstrably can return, meaning at a range no
+    longer than the longest this frame returned from, and at an intensity no higher than the
+    recording's own upper decile. That second rule is off unless the recipe asks for it, and a panel
+    that leaves it off is the pessimistic bound: it measures how much of the object the empty
+    tunnel's own returns happen to expose, not how much of it the sensor could see.
+    """
     points, intensity = pattern["points"].copy(), pattern["intensity"].copy()
     labelled = np.zeros(len(points), dtype=bool)
     along = np.full(len(points), np.inf)  # no object: no ray reaches one
@@ -160,24 +221,41 @@ def insert(pattern: dict, target_world: dict | None, pose: np.ndarray, rng: np.r
             points[occluded] = pattern["directions"][occluded] * reached[:, None]
             intensity[occluded] = object_intensity
             labelled[occluded] = True
-    if empty_slots_return:
-        # A slot the recording left empty becomes a slot with a surface in it. The
-        # sensor demonstrably returns from those ranges in this frame, and the
-        # object is assumed no brighter than the recording's own upper decile.
-        longest = float(np.max(pattern["ranges"]))
-        reachable = ~np.isfinite(pattern["ranges"]) & np.isfinite(along) & (along <= longest) & ~labelled
-        if reachable.any():
-            reached = along[reachable] + rng.normal(0.0, jitter_m, int(reachable.sum()))
-            points[reachable] = pattern["directions"][reachable] * reached[:, None]
-            intensity[reachable] = object_intensity
-            labelled[reachable] = True
+        if empty_slots_return and len(pattern["empty_directions"]):
+            low, high = np.asarray(target_world["bbox_min"]), np.asarray(target_world["bbox_max"])
+            centre, radius = 0.5 * (low + high), 0.5 * float(np.linalg.norm(high - low))
+            empty_world = pattern["empty_directions"] @ rotation.T
+            to_centre = centre - origin
+            # A ray can only meet the object if the box centre lies within its bounding sphere of
+            # the ray: one vectorised test replaces an exact slab test over every emitted slot,
+            # which was the whole cost of this rule.
+            projection = empty_world @ to_centre
+            perpendicular = np.linalg.norm(to_centre - projection[:, None] * empty_world, axis=1)
+            candidate = np.flatnonzero((projection > 0) & (perpendicular <= radius))
+            empty_along = np.full(len(empty_world), np.inf)
+            if len(candidate):
+                empty_along[candidate] = ray_box(empty_world[candidate], origin, low, high)
+            longest = float(np.max(pattern["ranges"])) if len(pattern["ranges"]) else np.inf
+            reachable = np.isfinite(empty_along) & (empty_along <= longest)
+            if reachable.any():
+                hits += int(reachable.sum())
+                reached = empty_along[reachable] + rng.normal(0.0, jitter_m, int(reachable.sum()))
+                points = np.vstack((points, pattern["empty_directions"][reachable] * reached[:, None]))
+                intensity = np.concatenate((intensity, np.full(int(reachable.sum()), object_intensity)))
+                times_extra = pattern["empty_time_s"][reachable]
+                pattern = dict(pattern, time_s=np.concatenate((pattern["time_s"], times_extra)))
+                labelled = np.concatenate((labelled, np.ones(int(reachable.sum()), dtype=bool)))
     label = None
     if labelled.any():
         support = points[labelled]
         low, high = support.min(axis=0), support.max(axis=0)
         label = {"bbox_min": low.tolist(), "bbox_max": np.maximum(high, low + 1e-3).tolist()}
     return {"points": points, "intensity": intensity, "time_s": pattern["time_s"], "labelled": labelled,
-            "rays_hitting_object": hits, "returns_from_object": int(labelled.sum()), "label": label}
+            "rays_hitting_object": hits, "returns_from_object": int(labelled.sum()), "label": label,
+            # The object's own measured returns. The bounding box of these spans volume the sensor
+            # never observed, so a box-only score cannot tell "reported, boxed differently" from
+            # "not reported"; the points can.
+            "labelled_points": points[labelled]}
 
 
 def cases(config: dict):
@@ -232,7 +310,7 @@ def run_case(case: dict, stress: dict, detector_config: dict, index: int, source
     detector = Detector(detector_config)
     target = world_target(case, sources[0]["pose"], sources[0]["pattern"],
                           stress["object_rest_height_m"], sources[0]["anchors"])  # placed once, on the track
-    rows, labels, statistics = [], [], []
+    rows, labels, statistics, inserted = [], [], [], []
     for position, source in enumerate(sources):
         pose, stamp = source["pose"], source["stamp_s"]
         merged = insert(source["pattern"], target, pose, rng, stress["object_range_noise_m"],
@@ -242,6 +320,10 @@ def run_case(case: dict, stress: dict, detector_config: dict, index: int, source
         row = detector.process(merged["points"], stamp, normalised)
         row.update(frame=position, bag=f"case_{index:03d}")
         rows.append(row)
+        if len(merged["labelled_points"]):
+            # Truth at the level the sensor actually resolved: the object's own returns.
+            inserted.append({"case": index, "frame": position,
+                             "points": np.asarray(merged["labelled_points"], dtype=float).round(4).tolist()})
         truth = []
         if case.get("hazard", False):
             if merged["label"] is not None:
@@ -262,7 +344,7 @@ def run_case(case: dict, stress: dict, detector_config: dict, index: int, source
                            "returns_from_object": merged["returns_from_object"],
                            "detections": len(row["objects"]), "status": row["status"],
                            "nearest_obstacle_m": row["nearest_obstacle_m"]})
-    return rows, labels, statistics
+    return rows, labels, statistics, inserted
 
 
 def main():
@@ -308,16 +390,20 @@ def main():
                 "empty_slots_return_object": bool(stress.get("empty_slots_return_object", False)),
                 "longest_demonstrated_range_m": float(max(np.max(s["pattern"]["ranges"]) for s in sources)),
                 "object_intensity": stress["object_intensity"]})
-    predictions, annotations, records = {}, [], []
+    predictions, annotations, records, inserted_rows = {}, [], [], []
     started = time.perf_counter()
     with (output / "predictions.jsonl").open("x") as stream:
         for index, case in enumerate(cases(stress)):
-            rows, labels, statistics = run_case(case, stress, detector_config, index, sources)
+            rows, labels, statistics, inserted = run_case(case, stress, detector_config, index, sources)
             for row in rows:
                 predictions[(row["bag"], row["frame"])] = row
                 stream.write(json.dumps(row, allow_nan=False) + "\n")
             annotations.extend(labels)
             records.extend(statistics)
+            inserted_rows.extend(inserted)
+    with (output / "inserted.jsonl").open("x") as stream:
+        for record in inserted_rows:
+            stream.write(json.dumps(record, allow_nan=False) + "\n")
     panel = {"label_status": "synthetic_exact", "prediction_scope": "collision_hazards",
              "minimum_iou": stress["minimum_iou"], "box_semantics": "observed_support", "frames": annotations}
     score = evaluate_frames(predictions, panel)
