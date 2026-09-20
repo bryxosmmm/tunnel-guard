@@ -263,6 +263,7 @@ def main() -> None:
             "counts": {"injected": len(records), "with_returns": len(with_points),
                        "point_detected": len(point_hits), "strict_detected": len(detected)},
         },
+        "by_range_m": summarise(by_range),
         "by_size_m": summarise(by_size),
         "by_lateral_m": summarise(by_lateral),
         "nuisance": {

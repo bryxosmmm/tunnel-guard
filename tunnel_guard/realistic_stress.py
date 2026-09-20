@@ -123,19 +123,33 @@ def sensor_pattern(frame: dict) -> dict:
         member = ring == value
         ladder[int(value)] = float(np.median(elevation[member]))
         occupied[int(value)] = azimuth[member]
-    step = float(np.median(np.diff(np.unique(np.round(azimuth, 6)))))
+    # Each ring samples azimuth on its own comb and the rings' combs are interleaved, so the step has
+    # to be measured: the modal gap between consecutive returns is one emission step, gaps of twice
+    # or three times that are emissions that returned nothing, and a handful of zero gaps are
+    # duplicate azimuths. A minimum would be degenerate on those duplicates and a median of a
+    # sparsely returning ring's gaps would collapse the lattice onto the observations.
+    pooled = np.concatenate([np.diff(np.sort(occupied[value])) for value in ladder]) if ladder else np.empty(0)
+    pooled = pooled[pooled > 1e-6]
+    if not len(pooled):
+        return pattern
+    binned = np.round(pooled / 1e-5).astype(np.int64)
+    values, counts = np.unique(binned, return_counts=True)
+    step = float(values[int(counts.argmax())]) * 1e-5
     if not np.isfinite(step) or step <= 0:
         return pattern
-    # The lattice spans the azimuth sector this scan covered, at the measured step.
-    lo, hi = float(azimuth.min()), float(azimuth.max())
-    grid = np.arange(lo, hi + step * 0.5, step)
     directions, times = [], []
     median_time = float(np.median(frame["time_s"])) if len(frame["time_s"]) else 0.0
     for value, height in ladder.items():
-        seen = np.zeros(len(grid), dtype=bool)
-        index = np.round((occupied[value] - lo) / step).astype(np.int64)
-        valid = (index >= 0) & (index < len(grid))
-        seen[index[valid]] = True
+        observed = np.sort(occupied[value])
+        if len(observed) < 2:
+            continue
+        count = int(np.floor((observed[-1] - observed[0]) / step)) + 1
+        if count < 2 or count > 65536:
+            continue
+        grid = observed[0] + step * np.arange(count)
+        index = np.clip(np.round((observed - observed[0]) / step).astype(np.int64), 0, count - 1)
+        seen = np.zeros(count, dtype=bool)
+        seen[index] = True
         missing = grid[~seen]
         if not len(missing):
             continue
