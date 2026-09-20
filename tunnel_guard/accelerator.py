@@ -257,6 +257,7 @@ def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncert
     (ids, offsets, members, reasons, relations, distance_codes, relation_reasons, bbox_min, bbox_max,
      centres, extents, height_spans, witnesses, distances, support_points, nearest_cluster,
      nearest_supported, nearest_unresolved, support_counts, dense_counts, envelope_counts,
+     uncertain_counts,
      boundary_counts, immediate, interior_dense, interior_heights, intersection_immediate) = payload
 
     def integers(block):
@@ -278,7 +279,8 @@ def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncert
     nearest_cluster, nearest_supported = reals(nearest_cluster), reals(nearest_supported)
     nearest_unresolved = reals(nearest_unresolved)
     support_counts, dense_counts = integers(support_counts), integers(dense_counts)
-    envelope_counts, boundary_counts = integers(envelope_counts), integers(boundary_counts)
+    envelope_counts, uncertain_counts = integers(envelope_counts), integers(uncertain_counts)
+    boundary_counts = integers(boundary_counts)
     interior_dense, interior_heights = integers(interior_dense), reals(interior_heights)
     immediate, intersection_immediate = flags(immediate), flags(intersection_immediate)
     objects, rows, rejected = [], [], {}
@@ -306,6 +308,7 @@ def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncert
             "support_voxels": int(support_counts[row]),
             "density_core_voxels": int(dense_counts[row]),
             "in_envelope_voxels": int(envelope_counts[row]),
+            "uncertain_voxels": int(uncertain_counts[row]),
             "_support_points": cloud[members[begin:end]],
             "boundary_uncertain_voxels": int(boundary_counts[row]),
             "path_relation_reason": RELATION_REASONS[int(relation_reasons[row])],

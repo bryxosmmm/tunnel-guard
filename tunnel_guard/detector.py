@@ -183,8 +183,12 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
             # two, yet it is the only evidence that exists about a far object the sensor sampled with
             # a single ray. Its admission therefore rests entirely on support: the size and extent
             # floors apply only to components that have more than one voxel.
+            # Admission rests on envelope support: the count required is the component's own
+            # evidence, capped by weak_min_voxels so a component is never asked for more voxels than
+            # it contains. CERTIFICATION is the separate question and `Detector.process` still
+            # demands the full weak_min_voxels support before a candidate may claim a hazard.
             singleton = len(indices) < 2
-            support_floor = 1 if singleton else config["weak_min_voxels"]
+            support_floor = min(config["weak_min_voxels"], len(indices))
             if not singleton and len(indices) < config["weak_min_voxels"]:
                 rejected["below_weak_min_voxels"] += 1
                 if arrays is not None:
@@ -233,6 +237,7 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                             "path_relation": "intersecting" if intersects else ("unresolved" if unresolved else "adjacent"),
                             "support_voxels": len(indices), "density_core_voxels": dense_count,
                             "in_envelope_voxels": len(inside), "_support_points": q,
+                            "uncertain_voxels": int(np.count_nonzero(uncertain_support[indices])),
                             "boundary_uncertain_voxels": int(np.count_nonzero(boundary[indices])),
                             "path_relation_reason": ("inside_heuristic_path_and_ground_interval" if intersects else
                                 ("envelope_boundary_uncertainty" if unresolved and np.any(boundary[indices]) else
@@ -478,12 +483,14 @@ class Detector:
             obj, key, hits = record["obj"], record["key"], record["hits"]
             recent_interior = record["recent_interior"]
             state, covariance, track = record["state"], record["covariance"], record["track"]
-            # A candidate admitted on the support of a single voxel says an object may be there; a
-            # single return in the current scan cannot certify a hazard. Confirmation therefore
-            # requires the normal support floor, so such a candidate stays in the output as an
-            # unresolved object without being able to set the status.
+            # ADMISSION vs CERTIFICATION: `weak_min_voxels` decides what a component needs to be
+            # REPORTED at all; `certification_min_support_voxels` is the count of supporting voxels a
+            # candidate needs to CLAIM a hazard. The support count, not the component's size, is what
+            # matters: a 4-voxel component whose only supporting voxel is one of them offers exactly
+            # one voxel of evidence, and certification on that is what the singletons surfaced.
             confirmed = (obj["immediate"]
-                         or (int(obj["support_voxels"]) >= cfg["weak_min_voxels"]
+                         or (int(obj["uncertain_voxels"]) >= cfg.get("certification_min_support_voxels",
+                                                                     cfg["weak_min_voxels"])
                              and hits >= cfg["confirmation_hits"]
                              and int(record["count"]) >= cfg["evidence_min_points"]))
             intersection_confirmed = (confirmed and obj["path_relation"] == "intersecting"

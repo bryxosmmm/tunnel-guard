@@ -1342,7 +1342,7 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
     Arena& scratch = arena();
     std::vector<int64_t> label_rows, offsets_out, member_rows, reason_codes, relations,
         distance_codes, relation_reasons, support_counts, dense_counts, envelope_counts,
-        boundary_counts, support_points, interior_dense;
+        uncertain_counts, boundary_counts, support_points, interior_dense;
     std::vector<double> bbox_min, bbox_max, centres, extents, height_spans, witnesses, distances,
         nearest_cluster, nearest_supported, nearest_unresolved, interior_heights;
     std::vector<uint8_t> immediate_flags, intersection_flags;
@@ -1423,7 +1423,9 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
             // a single ray. Its admission rests entirely on support, so the size and extent floors
             // below apply only to components with more than one voxel.
             const bool singleton = static_cast<int>(length) < 2;
-            const int support_floor = singleton ? 1 : weak_min_voxels;
+            // The count required is the component's own evidence, capped by weak_min_voxels:
+            // certification separately demands the full weak_min_voxels support in the tracker.
+            const int support_floor = std::min<int>(weak_min_voxels, static_cast<int>(length));
             // The gate also selects the support witnesses, so it must run for a singleton: otherwise
             // an admitted singleton would report an infinite unresolved witness.
             if (singleton || (static_cast<int>(length) >= weak_min_voxels && largest >= min_extent)) {
@@ -1463,6 +1465,7 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
                 support_counts.push_back(static_cast<int64_t>(length));
                 dense_counts.push_back(dense_count);
                 envelope_counts.push_back(inside);
+                uncertain_counts.push_back(uncertain_count);
                 boundary_counts.push_back(boundary_count);
                 immediate_flags.push_back(0);
                 interior_dense.push_back(0);
@@ -1499,6 +1502,7 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
             support_counts.push_back(static_cast<int64_t>(length));
             dense_counts.push_back(dense_count);
             envelope_counts.push_back(inside);
+            uncertain_counts.push_back(uncertain_count);
             boundary_counts.push_back(boundary_count);
             immediate_flags.push_back(
                 (dense_count >= immediate_min_voxels && extents[3 * row + 2] >= immediate_min_height) ? 1 : 0);
@@ -1540,6 +1544,7 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
         {support_counts.data(), support_counts.size() * sizeof(int64_t)},
         {dense_counts.data(), dense_counts.size() * sizeof(int64_t)},
         {envelope_counts.data(), envelope_counts.size() * sizeof(int64_t)},
+        {uncertain_counts.data(), uncertain_counts.size() * sizeof(int64_t)},
         {boundary_counts.data(), boundary_counts.size() * sizeof(int64_t)},
         {immediate_flags.data(), immediate_flags.size()},
         {interior_dense.data(), interior_dense.size() * sizeof(int64_t)},
