@@ -205,7 +205,8 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
             # The INTERSECTION claim keeps its own threshold: one voxel inside the contour reports a
             # candidate whose support is unresolved, not a certified intrusion. Only admission uses
             # the lower support floor.
-            intersects = len(inside) >= config["weak_min_voxels"]
+            intersects = len(inside) >= config.get("claim_min_support_voxels",
+                                                    config["weak_min_voxels"])
             unresolved = np.count_nonzero(uncertain_support[indices]) >= support_floor
             dense_count = int(np.count_nonzero(density_core[indices]))
             if not intersects and not unresolved and dense_count == 0:
@@ -492,7 +493,7 @@ class Detector:
             # matters: a 4-voxel component whose only supporting voxel is one of them offers exactly
             # one voxel of evidence, and certification on that is what the singletons surfaced.
             confirmed = (obj["immediate"]
-                         or (int(obj["uncertain_voxels"]) >= cfg.get("certification_min_support_voxels",
+                         or (int(obj["uncertain_voxels"]) >= cfg.get("claim_min_support_voxels",
                                                                      cfg["weak_min_voxels"])
                              and hits >= cfg["confirmation_hits"]
                              and int(record["count"]) >= cfg["evidence_min_points"]))

@@ -99,7 +99,7 @@
   "density_min_far": 3,
   "density_reference_range_m": 20.0,
   "weak_min_voxels": 1,
-  "certification_min_support_voxels": 2,
+  "claim_min_support_voxels": 2,
   "evidence_window_s": 0.5,
   "evidence_min_points": 3,
   "tracking_position_sigma_m": 0.15,

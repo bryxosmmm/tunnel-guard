@@ -1308,12 +1308,12 @@ PyObject* select_crop_voxels(PyObject*, PyObject* args) {
 PyObject* cluster_components(PyObject*, PyObject* args) {
     PyObject *cloud_object, *labels_object, *core_object, *boundary_object, *dense_object,
         *heights_object, *uncertain_object;
-    int weak_min_voxels, immediate_min_voxels, envelope_support_mode;
+    int weak_min_voxels, immediate_min_voxels, envelope_support_mode, claim_min_support;
     double min_extent, immediate_min_height;
-    if (!PyArg_ParseTuple(args, "OOOOOOOiiddi", &cloud_object, &labels_object, &core_object,
+    if (!PyArg_ParseTuple(args, "OOOOOOOiiddii", &cloud_object, &labels_object, &core_object,
                           &boundary_object, &dense_object, &heights_object, &uncertain_object,
                           &weak_min_voxels, &immediate_min_voxels, &min_extent,
-                          &immediate_min_height, &envelope_support_mode)) return nullptr;
+                          &immediate_min_height, &envelope_support_mode, &claim_min_support)) return nullptr;
     Buffer cloud(cloud_object);
     Buffer labels(labels_object);
     Buffer core(core_object);
@@ -1451,7 +1451,7 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
             // The INTERSECTION claim keeps its own threshold: one voxel inside the contour reports a
             // candidate whose support is unresolved, not a certified intrusion. Only admission uses
             // the lower support floor.
-            const bool intersects = inside >= weak_min_voxels;
+            const bool intersects = inside >= claim_min_support;
             const bool unresolved = uncertain_count >= support_floor;
             int reason = 0;
             if (!singleton && static_cast<int>(length) < weak_min_voxels) reason = 1;

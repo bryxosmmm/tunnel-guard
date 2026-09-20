@@ -253,7 +253,8 @@ def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncert
         np.ascontiguousarray(heights), np.ascontiguousarray(uncertain_support),
         int(config["weak_min_voxels"]), int(config["immediate_min_voxels"]),
         float(config["cluster_min_extent_m"]), float(config["immediate_min_height_m"]),
-        1 if config.get("obstacle_distance_mode", "cluster_min_x") == "envelope_support_min_x" else 0)
+        1 if config.get("obstacle_distance_mode", "cluster_min_x") == "envelope_support_min_x" else 0,
+        int(config.get("claim_min_support_voxels", config["weak_min_voxels"])))
     (ids, offsets, members, reasons, relations, distance_codes, relation_reasons, bbox_min, bbox_max,
      centres, extents, height_spans, witnesses, distances, support_points, nearest_cluster,
      nearest_supported, nearest_unresolved, support_counts, dense_counts, envelope_counts,
