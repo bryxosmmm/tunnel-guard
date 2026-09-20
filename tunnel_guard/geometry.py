@@ -651,23 +651,46 @@ class TrackGeometry:
         result = (core, context, height, observed, nominal_overlap)
         return result + (boundary,) if include_boundary else result
 
-    def certified_range_m(self) -> float | None:
-        """How far ahead the corridor itself is certified, in metres.
+    def supported_range_m(self) -> float | None:
+        """How far ahead this frame's own evidence supports the corridor, in metres.
 
-        The path's uncertainty grows with distance from the nearest measured anchor and the horizon policy stops
-        certification when it exceeds `path_max_uncertainty_m`. Objects beyond that range are reported with their
-        distance and their own uncertainty, but their relation to the swept path is not established - so a consumer
-        needs the range, not only the objects, to read a frame honestly. One coarse evaluation, reporting only.
+        The value describes the evidence, not a sensor specification, and it does not certify that
+        the corridor is clear: it states how far the reported centre-line and bed can be read from
+        what was measured here. A station counts as supported only when the path uncertainty is
+        within `path_max_uncertainty_m`, the bed uncertainty is within `ground_max_uncertainty_m`,
+        and - in `local_3d` frame mode - the station lies inside a measured frame segment, because
+        the basis itself exists only there. The two uncertainties grow with distance from their
+        nearest measured anchor, so support ends where either policy stops holding.
+
+        The reported value is the far end of the CONTIGUOUS run that starts at the first supported
+        station and ends at the last supported station before the first unsupported one: an island
+        of support beyond a gap does not extend it, since a consumer reading that island would
+        still have to cross the gap. Evaluated on a 0.5 m grid from `min_forward_m`, reporting only.
         """
         if not self.valid:
             return None
-        grid = np.arange(float(self.config["min_forward_m"]), float(self.config["max_range_m"]), 1.0)
+        grid = np.arange(float(self.config["min_forward_m"]), float(self.config["max_range_m"]), 0.5)
         if not len(grid):
             return None
-        _, _, uncertainty = self.path(grid)
-        certified = grid[np.isfinite(uncertainty)
-                         & (uncertainty <= self.config["path_max_uncertainty_m"])]
-        return float(certified.max()) if len(certified) else 0.0
+        stations = np.column_stack((grid, np.zeros(len(grid)), np.zeros(len(grid))))
+        _, bed_uncertainty = self.ground(stations)
+        _, _, path_uncertainty = self.path(grid)
+        supported = (np.isfinite(path_uncertainty) & (path_uncertainty <= self.config["path_max_uncertainty_m"])
+                     & np.isfinite(bed_uncertainty) & (bed_uncertainty <= self.config["ground_max_uncertainty_m"]))
+        if self.config.get("rail_frame_mode", "bed") == "local_3d":
+            # A centre-line station projected onto a measured segment has 0 <= along <= length
+            # exactly when its station lies within that segment's longitudinal hull.
+            inside = np.zeros(len(grid), dtype=bool)
+            for a, b, _, _, _, _, _ in self.frame_segments():
+                inside |= (grid >= min(a[0], b[0])) & (grid <= max(a[0], b[0]))
+            supported &= inside
+        run = np.flatnonzero(supported)
+        if not len(run):
+            return 0.0
+        first = int(run[0])
+        gap = np.flatnonzero(~supported[first:])
+        last = first + int(gap[0]) - 1 if len(gap) else len(grid) - 1
+        return float(grid[last])
 
     def describe(self) -> dict:
         return {"valid": self.valid, "reason": self.reason, "ground_quality": self.ground_quality,

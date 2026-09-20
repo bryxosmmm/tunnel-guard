@@ -88,18 +88,33 @@ an empty tunnel at metro speed (1.5 m/frame) produced 70k false dynamic labels i
 numbers: `results/hmm-mos-probe-20260918.json`; recipes: `configs/hmm-mos-probe-*.json` and
 `tunnel_guard/hmm_mos_probe.py`. Nothing in the pipeline was changed by this review.
 
-## The input crop follows the track too (2026-09-19)
+## The input crop: a corridor-following window was tried, measured, and removed (2026-09-20)
 
-The detector cropped its input to a fixed 8 m lateral window in the *sensor* frame, so on a curve the track
-itself left that window and both the returns and the rail anchors that estimate the curve were discarded
-before classification: on the R=300 m arc panel an object standing on the track centre at 20-100 m was
-absent from the objects list entirely. The window now follows the previous frame's remembered corridor and
-is gated on that offset, so a straight run keeps the original crop exactly. Verified: the fixed
-measured-pattern panel is **byte-identical** (709/251/176, precision 0.8011, zero empty-scene alarms) and
-100-frame prefixes of both real recordings keep identical statuses; the R=300 m arc reports the on-track
-object as `obstacle` from the first frame with history. Cost **+4-6 ms/frame** (127.1 -> 133.6,
-139.1 -> 143.3 p50), measured under contention and to be re-measured idle;
-`corridor_crop_threshold_m` disables it at the cost of curves.
+The detector crops its input to a fixed 8 m lateral window in the *sensor* frame. The concern was that on a curve
+the track itself leaves that window, so both the returns and the rail anchors that estimate the curve would be
+discarded before classification. A corridor-following window — following the previous frame's remembered
+centre-line, gated on its offset so a straight run kept the original crop — was implemented on 2026-09-19, then
+silently disabled the same day when an unrelated commit about background-refit cadence deleted the state that
+drives the gate while leaving the readers in place. **The README claimed a shipped, measured behaviour for a day
+after it had stopped running.**
+
+On 2026-09-20 the state was restored and the mechanism was measured on three instruments, off versus on:
+
+| instrument | result |
+|---|---|
+| extended curved run, 5 splits, 255 frames | the gate engaged on **143 frames**; objects **+2.93 %**, confirmed hazards **+10.16 %** (3761 -> 4143), **zero frame status changes** |
+| the two sourcecraft recordings | statuses essentially unchanged (one frame on `roundT_doubleT` moved `no_obstacle_observed` -> `unresolved_obstacle`); objects +0.55 % and +1.2 %; the measured-intrusion class `inside_heuristic_path_and_ground_interval` **unchanged** at 223 -> 223 and 45 -> 45 |
+| analytic R=300 m arc, 120 cases | matched detections unchanged at **20 of 120** frames; unmatched hazards 5736 -> 5758 |
+
+Cost 1–3 % per frame. The mechanism follows the previous frame's *extrapolated* centre-line, which is the least
+reliable quantity this detector has on a curve, and the returns it adds arrive as ambiguous rather than as
+intrusions. A numeric gate cannot robustly disable such a thing and leaving it silently dead is worse, so the
+mechanism, its state and the `corridor_crop_threshold_m` key were **removed**. The fixed band is used
+unconditionally, and removing it reproduced the crop-off replay on every decision field of all 402 frames.
+Record: `results/corridor-crop-removed-20260920.json`. The earlier claim above this section — that the R=300 m
+arc reported the on-track object as `obstacle` because of the crop — was **not reproducible** by us and is
+withdrawn; the arc scene generates on the order of 4700 unmatched hazards per 120 frames, so it cannot resolve
+this question either way.
 
 ## Review response (2026-09-19)
 

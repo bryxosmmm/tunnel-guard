@@ -301,9 +301,6 @@ class Detector:
         self.odometry = self._new_odometry()
         self.previous_source = None
         self.previous_pose = np.eye(4)
-        self.previous_centre = None
-        self.previous_offset_m = None
-        self.previous_max_x = None
         self.cached_background = None
         self.background_frame_count = 0
         self.background_fit_pose = np.zeros(3)
@@ -365,19 +362,6 @@ class Detector:
                         "overlap": overlap, "median_residual_m": median}
         self.previous_source, self.previous_pose = source.copy(), pose
         return frame, pose, quality
-
-
-    def _corridor_offset(self, x: np.ndarray) -> np.ndarray:
-        """Previous frame's corridor centre at these along-track coordinates (0 where unknown)."""
-        if self.previous_centre is None:
-            return np.zeros(len(x))
-        anchors, slope, curvature, x_edge = self.previous_centre
-        offset = np.interp(x, anchors[:, 0], anchors[:, 1])
-        beyond = x > x_edge
-        if beyond.any():
-            distance = x[beyond] - x_edge
-            offset[beyond] = anchors[-1, 1] + slope * distance + curvature * distance * distance
-        return offset
 
 
     def _associate(self, objects: list[dict], pose: np.ndarray, stamp: float, motion_valid: bool):
@@ -525,9 +509,6 @@ class Detector:
             self.odometry = self._new_odometry()
             self.previous_source = None
             self.previous_pose = np.eye(4)
-            self.previous_centre = None
-            self.previous_offset_m = None
-            self.previous_max_x = None
             self.tracks.clear()
         self.last_timestamp = timestamp_s
         self.frame_number += 1
@@ -568,36 +549,22 @@ class Detector:
         frame, pose, motion = self._motion(points, point_times)
         self.display_points = frame
         motion_s = time.perf_counter() - motion_started
-        # Crop around the track, not around the sensor axis. On a curve the track leaves a fixed
-        # lateral window: at 100 m on R = 300 m the centre-line is 7.98 m off axis and the rails are
-        # gone by 40 m, so a sensor-frame window of context_half_width_m both discards the returns the
-        # corridor must classify and truncates the very anchors that estimate the curve (measured on
-        # the analytic arc panel: an object on the track at 100 m produced zero detections). The window
-        # therefore follows the previous frame's corridor, shifted by its measured offset from the
-        # axis; with no history, or on the first frame of a bag, the base window applies unchanged.
+        # Fixed band around the sensor axis: a corridor-following window (the previous frame's
+        # extrapolated centre) added ambiguous hazards without changing any frame decision, so the
+        # base window is used unconditionally.
         base_half = float(self.config["context_half_width_m"])
-        # The widened path costs 3.7-6.3 ms/frame (mask, interpolation, copy) and buys nothing where the
-        # track is already inside the base window, which is every frame of the straight recordings. It is
-        # therefore gated on the previous frame's corridor offset, remembered as a scalar, so straight
-        # stretches keep the original crop bit for bit.
-        engage = self.previous_offset_m is not None and self.previous_offset_m > float(
-            self.config.get("corridor_crop_threshold_m", 0.5))
-        offset = self._corridor_offset(frame[:, 0]) if engage else np.zeros(len(frame))
-        half = base_half + np.abs(offset)
-        crop = (frame[:, 0] >= self.config["min_forward_m"]) & (np.abs(frame[:, 1] - offset) < half)
+        crop = (frame[:, 0] >= self.config["min_forward_m"]) & (np.abs(frame[:, 1]) < base_half)
         # Crop and reduce in one pass: the cropped copy is never materialised, and
         # the native kernel partitions by the leading key axis so each slice is
-        # deduplicated and sorted in cache. The kernel is handed the widened half-width
-        # together with the already-masked cloud, so its partition stays exact.
+        # deduplicated and sorted in cache. The kernel is handed the masked cloud with a
+        # half-width that covers it, so its partition stays exact.
         accelerator_module = self.native_kernels if self.config.get("voxel_backend", "numpy") == "cpp" else None
         # The kernel returns indices into the array it is given and re-clips laterally, so it is handed
-        # the already corridor-aware subset with a half-width that cannot clip it again.
+        # the already-masked subset with a half-width that cannot clip it again.
         subset = frame[crop]
-        # The kernel applies its own symmetric lateral limit, and the mask is not symmetric:
-        # it keeps |y - offset| < base + |offset|, which at base 8 and offset 10 reaches y = 28
-        # while |y| < base + max|offset| = 18 clipped that back. The limit is therefore read off
-        # the masked subset itself, plus one voxel to clear the strict inequality, so the pass
-        # cannot drop a point the mask kept, and the grid stays as tight as the data allows.
+        # The kernel applies its own symmetric lateral limit, so the limit is read off the masked
+        # subset itself plus one voxel, which clears the strict inequality and keeps the grid as
+        # tight as the data allows without dropping a point the mask kept.
         reach = (max(abs(float(subset[:, 1].min())), abs(float(subset[:, 1].max())))
                  + self.config["geometry_voxel_m"]) if len(subset) else base_half
         reduced = subset[accelerator.crop_voxels(subset, self.config["min_forward_m"], reach,
@@ -725,7 +692,7 @@ class Detector:
         for obj in objects:
             obj["far_field_lateral_bound_m"] = _far_field_bound(obj["distance_m"], geometry, self.config)
         return result | {"status": status, "reason": geometry.reason,
-                         "certified_range_m": geometry.certified_range_m(), "objects": objects,
+                         "supported_range_m": geometry.supported_range_m(), "objects": objects,
                          "health": "unavailable" if not geometry.valid else ("degraded" if health_reasons else "normal"),
                          "health_reasons": health_reasons,
                          "nearest_obstacle_m": min((o["distance_m"] for o in confirmed), default=None),
