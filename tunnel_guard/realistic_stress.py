@@ -326,15 +326,21 @@ def run_case(case: dict, stress: dict, detector_config: dict, index: int, source
         row = detector.process(merged["points"], stamp, normalised)
         row.update(frame=position, bag=f"case_{index:03d}")
         rows.append(row)
-        if len(merged["labelled_points"]):
-            # Truth at the level the sensor actually resolved: the object's own returns.
-            inserted.append({"case": index, "frame": position,
-                             "points": np.asarray(merged["labelled_points"], dtype=float).round(4).tolist()})
+        # Truth at the level the sensor actually resolved: the object's own returns. Recorded at the
+        # precision the detector itself saw: rounding them to 0.1 mm while the detector's box is the
+        # exact bbox of those same returns left 4 of 7 returns testing as outside their own box by
+        # <=5e-5 m, which scored a box identical to the label as a miss.
+        recorded = (np.asarray(merged["labelled_points"], dtype=float)
+                    if len(merged["labelled_points"]) else None)
+        if recorded is not None:
+            inserted.append({"case": index, "frame": position, "points": recorded.tolist()})
         truth = []
         if case.get("hazard", False):
-            if merged["label"] is not None:
-                truth = [{"event_id": "inserted_object", "bbox_min": merged["label"]["bbox_min"],
-                          "bbox_max": merged["label"]["bbox_max"]}]
+            if recorded is not None:
+                low = recorded.min(axis=0)
+                high = np.maximum(recorded.max(axis=0), low + 1e-3)
+                truth = [{"event_id": "inserted_object", "bbox_min": low.tolist(),
+                          "bbox_max": high.tolist()}]
             else:
                 # Present in the world but not measured in this frame: a miss.
                 rotation = pose[:3, :3]
