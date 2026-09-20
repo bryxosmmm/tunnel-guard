@@ -1,0 +1,265 @@
+{
+  "seed": 20260915,
+  "sensor_rotation": [
+    [
+      0.0,
+      -1.0,
+      0.0
+    ],
+    [
+      1.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "sensor_translation": [
+    0.0,
+    0.0,
+    0.0
+  ],
+  "min_range_m": 1.0,
+  "max_range_m": 220.0,
+  "min_forward_m": 2.0,
+  "context_half_width_m": 8.0,
+  "geometry_voxel_m": 0.05,
+  "ground_fit_range_m": [
+    2.0,
+    25.0
+  ],
+  "ground_fit_half_width_m": 2.0,
+  "ground_sensor_height_bounds_m": [
+    0.6,
+    3.5
+  ],
+  "ground_max_slopes": [
+    0.15,
+    0.3
+  ],
+  "ground_ransac_trials": 180,
+  "ground_inlier_m": 0.065,
+  "ground_min_support": 60,
+  "ground_min_fraction": 0.25,
+  "ground_segment_m": 5.0,
+  "ground_local_window_m": 12.0,
+  "ground_max_extrapolation_m": 15.0,
+  "ground_max_uncertainty_m": 0.15,
+  "rail_gauge_m": 1.52,
+  "rail_gauge_tolerance_m": 0.15,
+  "rail_height_bounds_m": [
+    0.1,
+    0.3
+  ],
+  "rail_bin_m": 0.03,
+  "rail_window_m": 10.0,
+  "rail_window_growth": 0.35,
+  "rail_max_window_m": 35.0,
+  "rail_min_span_m": 2.0,
+  "rail_min_longitudinal_bins": 4,
+  "rail_half_width_m": 0.13,
+  "rail_max_heading": 0.12,
+  "path_max_extrapolation_m": 25.0,
+  "path_max_uncertainty_m": 0.4,
+  "path_initial_center_bound_m": 0.75,
+  "envelope_margin_m": 0.0,
+  "envelope_calibration": "GOST_23961_80_M_reference_not_vehicle_swept_validation",
+  "cluster_voxel_m": 0.05,
+  "cluster_max_radius_m": 0.75,
+  "cluster_min_extent_m": 0.08,
+  "cluster_context_margin_m": 0.6,
+  "immediate_min_voxels": 30,
+  "immediate_min_height_m": 0.5,
+  "confirmation_hits": 2,
+  "confirmation_window": 3,
+  "track_max_gap_s": 0.35,
+  "odometry_voxel_m": 0.35,
+  "odometry_max_iterations": 60,
+  "odometry_threads": 4,
+  "odometry_max_residual_m": 0.3,
+  "odometry_min_overlap": 0.45,
+  "frame_max_gap_s": 0.5,
+  "range_bins_m": [
+    2.0,
+    10.0,
+    20.0,
+    40.0,
+    60.0,
+    100.0,
+    150.0,
+    220.0
+  ],
+  "segmentation_method": "density",
+  "density_radius_m": 0.12,
+  "density_angular_radius_rad": 0.0035,
+  "density_min_near": 8,
+  "density_min_far": 3,
+  "density_reference_range_m": 20.0,
+  "weak_min_voxels": 2,
+  "evidence_window_s": 0.5,
+  "evidence_min_points": 3,
+  "tracking_position_sigma_m": 0.15,
+  "tracking_acceleration_sigma_mps2": 2.0,
+  "tracking_mahalanobis_gate": 14.16,
+  "tracking_extent_log_gate": 2.5,
+  "tracking_pose_sigma_m": 0.1,
+  "min_running_height_m": 0.015,
+  "segmentation_context_half_width_m": 3.0,
+  "envelope_source": "GOST 23961-80 figures 6 and 7, https://engenegr.ru/gost-23961-80. Upper contour exact piecewise segments; lower contour horizontally filled conservatively, omitting wheel recesses. Mirrors and contact-collector extensions excluded. No actual vehicle/curve dynamic validation.",
+  "odometry_min_normal_eigenvalue": 0.01,
+  "sensor_profile_verified": false,
+  "travel_objects": {
+    "vert_scan": 128,
+    "horz_scan": 3600,
+    "min_range": 1.0,
+    "max_range": 220.0,
+    "min_vert_angle": -30.0,
+    "max_vert_angle": 20.0,
+    "horz_merge_thres": 0.4,
+    "vert_merge_thres": 0.5,
+    "vert_scan_size": 3,
+    "horz_scan_size": 5,
+    "horz_extension_size": 5,
+    "horz_skip_size": 5,
+    "downsample": 1,
+    "min_cluster_size": 4,
+    "max_cluster_size": 30000,
+    "seed": 20260915
+  },
+  "hdbscan": {
+    "min_cluster_size": 8,
+    "min_samples": 4,
+    "cluster_selection_method": "eom",
+    "core_dist_n_jobs": 1
+  },
+  "envelope_segments_m": [
+    [
+      0.05,
+      0.085,
+      1.15,
+      1.15
+    ],
+    [
+      0.085,
+      0.44,
+      1.32,
+      1.32
+    ],
+    [
+      0.44,
+      0.74,
+      1.45,
+      1.45
+    ],
+    [
+      0.74,
+      1.15,
+      1.435,
+      1.435
+    ],
+    [
+      1.15,
+      3.26,
+      1.46,
+      1.535
+    ],
+    [
+      3.26,
+      3.6,
+      1.535,
+      1.235
+    ],
+    [
+      3.6,
+      3.675,
+      1.235,
+      1.01
+    ],
+    [
+      3.675,
+      3.7,
+      1.01,
+      0.7
+    ]
+  ],
+  "density_vertical_scale": 0.5,
+  "rail_vertical_margin_m": 0.04,
+  "background": {
+    "enabled": true,
+    "voxel_m": 0.1,
+    "window_m": 30.0,
+    "planes_per_window": 3,
+    "min_support": 40,
+    "fit_distance_m": 0.025,
+    "remove_distance_m": 0.025,
+    "ransac_iterations": 120,
+    "ransac_probability": 0.999,
+    "max_longitudinal_normal": 0.2,
+    "min_cross_normal": 0.75,
+    "min_longitudinal_span_m": 8.0,
+    "min_transverse_span_m": 1.0,
+    "strip_m": 10.0,
+    "min_strip_support": 3,
+    "min_strip_span_m": 0.5,
+    "support_margin_m": 0.3,
+    "min_seed_height_m": 0.3,
+    "normal_radius_m": 0.2,
+    "normal_max_neighbors": 30,
+    "normal_min_neighbors": 6,
+    "normal_min_variance_m2": 0.0001,
+    "normal_planarity_ratio": 0.2,
+    "normal_alignment_cos": 0.8,
+    "protrusion_depth_m": 0.06,
+    "protection_radius_m": 0.35,
+    "ransac_threads": 1
+  },
+  "deskew_enabled": false,
+  "query_workers": -1,
+  "native_kernels": true,
+  "deskew_policy": "Disabled until acquisition span versus scan period and prior deskew provenance are verified. KISS-ICP normalizes the supplied point-time range to one full previous motion increment.",
+  "voxel_backend": "cpp",
+  "installation_reference": {
+    "source": "user_report_2026-09-17",
+    "statement": "\u041b\u0438\u0434\u0430\u0440 (\u043d\u0443\u043b\u0435\u0432\u0430\u044f \u0442\u043e\u0447\u043a\u0430 \u0435\u0433\u043e \u043e\u0442\u0441\u0447\u0451\u0442\u0430) \u0441\u0442\u043e\u0438\u0442 \u043d\u0430 \u0443\u0440\u043e\u0432\u043d\u0435 1075\u043c\u043c \u043e\u0442 \u0443\u0440\u043e\u0432\u043d\u044f \u0433\u043e\u043b\u043e\u0432\u043a\u0438 \u0440\u0435\u043b\u044c\u0441\u043e\u0432, \u0440\u043e\u0432\u043d\u043e \u043f\u043e\u0441\u0435\u0440\u0435\u0434\u0438\u043d\u0435 \u043c\u0435\u0436\u0434\u0443 \u043d\u0438\u043c\u0438. \u041d\u0430 \u043f\u0443\u0441\u0442\u043e\u043c \u0432\u0430\u0433\u043e\u043d\u0435 \u0431\u0435\u0437 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f.",
+    "height_above_railheads_m": 1.075,
+    "lateral_offset_from_track_center_m": 0.0,
+    "condition": "empty_stationary_wagon",
+    "recording_applicability_verified": false,
+    "measurement_uncertainty_m": null,
+    "height_direction_definition": "reported above railheads; gravity vertical versus track-plane normal unspecified",
+    "vehicle_front_offset_m": null,
+    "mounting_angles_deg": null,
+    "vehicle_extrinsics_verified": false
+  },
+  "mounting_observer": {
+    "fit_range_m": [
+      5.0,
+      20.0
+    ],
+    "bin_m": 1.0,
+    "min_points_per_side_bin": 5,
+    "min_upper_points_per_side_bin": 2,
+    "upper_support_quantile": 0.75,
+    "min_paired_bins": 6,
+    "min_span_m": 8.0,
+    "max_fit_residual_m": 0.08,
+    "reference_height_band_m": 0.1,
+    "reference_lateral_band_m": 0.15
+  },
+  "rail_center_estimator": "paired_line",
+  "rail_anchor_support": "measured",
+  "rail_pair_continuity": "relocated",
+  "path_curve_window_m": 30.0,
+  "path_curvature_significance": 4.0,
+  "background_refit_travel_m": 1.0,
+  "infrastructure_continuity": {
+    "enabled": true,
+    "cross_section_tolerance_m": 0.3,
+    "minimum_length_m": 12.0,
+    "reach_m": 12.0,
+    "minimum_members": 4
+  }
+}

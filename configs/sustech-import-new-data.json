@@ -1,0 +1,11 @@
+{
+  "detector_config": "configs/detector.json",
+  "output": "build/sustech-import-new-data",
+  "bags": [
+    {
+      "path": "data/new_data",
+      "split": "development"
+    }
+  ],
+  "note": "Scene import only. tunnel_guard.sustech_import reads detector_config and bags; it runs no detector and computes no metric, so this plan intentionally has no hypothesis/every/seed keys. The scene is written to SUSTechPOINTS/data/<bag directory name>, frame 00000N.pcd being bag message index N. This bag is a rosbag2 split recording: one topic /lidar_points, 11271 messages, 221 sqlite3 splits of 51 messages each, 2026-09-17T11:02:06Z-11:22:06Z."
+}
