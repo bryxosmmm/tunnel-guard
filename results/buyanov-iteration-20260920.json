@@ -1,0 +1,5066 @@
+{
+  "branch": "experiments/buyanov",
+  "base_revision": "592814ebc28dd04102b600b004c281e58b7b021e",
+  "scope": "diagnostic evidence; detector thresholds, association and reference contour unchanged",
+  "extraction": {
+    "coverage": "contiguous prefix, NOT full bag",
+    "archive": "/Users/pbuyanov/Downloads/\u0434\u0430\u0442\u0430\u0441\u0435\u0442/new_data.zst",
+    "archive_bytes": 17078961996,
+    "archive_mtime_ns": 1789898791299153282,
+    "original_metadata_sha256": "7118a5a216d252e8b0ec6e7174e255e06b590164285649f950d8839ebfa9d91f",
+    "original_messages": 11271,
+    "original_segments": 221,
+    "extracted_segments": 20,
+    "extracted_messages": 1020,
+    "source_frame_interval": [
+      0,
+      1019
+    ],
+    "files": [
+      {
+        "name": "new_data_17.db3",
+        "bytes": 407789568,
+        "sha256": "c62550f87d8619dc9d7f68f02e7e523c9c0da4623a145d5ef66d7fc57f84f986"
+      },
+      {
+        "name": "new_data_13.db3",
+        "bytes": 407789568,
+        "sha256": "40b6052412326c85aa5ed77db2f7a970cc123a13b394536ac187f614b28547f4"
+      },
+      {
+        "name": "new_data_15.db3",
+        "bytes": 407789568,
+        "sha256": "669af19b614b284a35f8279bf31f2ac5202aa91dfa0a22025f25bc814338deb7"
+      },
+      {
+        "name": "new_data_19.db3",
+        "bytes": 407789568,
+        "sha256": "bfc91a8831c3620fdad2c86ff9a524093f0dbcb939a54108bcb256860a631953"
+      },
+      {
+        "name": "new_data_12.db3",
+        "bytes": 407789568,
+        "sha256": "3c312da5d3a1bf70713c5c77b789ae3a85a5c35d01c4a156303143da81c11206"
+      },
+      {
+        "name": "new_data_6.db3",
+        "bytes": 407789568,
+        "sha256": "4ca0a065c0ef9f56e3ca3d3a306ef70f37c3b664f8585297e19e1f086922676d"
+      },
+      {
+        "name": "new_data_7.db3",
+        "bytes": 407789568,
+        "sha256": "0789213d00c60eb61a01054eea811a2a9c17962c4378ff4d5cc7e9629ed7588a"
+      },
+      {
+        "name": "new_data_2.db3",
+        "bytes": 407789568,
+        "sha256": "270d4a689fbdbf761c8e0bd522a9da77cfb894f99672e165255f77247d2fce46"
+      },
+      {
+        "name": "new_data_3.db3",
+        "bytes": 407789568,
+        "sha256": "9f9e8309b287440a4189cf1a7c762044fa620d0178ecd8a6dd8d7643f7839345"
+      },
+      {
+        "name": "new_data_1.db3",
+        "bytes": 407789568,
+        "sha256": "43b9269f0515031d9b441d7c78d62da0647aee5e35f53d4c96410f1f55616d65"
+      },
+      {
+        "name": "new_data_8.db3",
+        "bytes": 407789568,
+        "sha256": "c884ed9543786c155c7a9ad491ce115420045de217ca1a6333d46536e92d7510"
+      },
+      {
+        "name": "new_data_18.db3",
+        "bytes": 407789568,
+        "sha256": "35353595fecd1794020d11aecd0d38b001988a7f8ff811b0f0fe06be5575bc0a"
+      },
+      {
+        "name": "new_data_11.db3",
+        "bytes": 407789568,
+        "sha256": "9e60a6054e07b086e0e00b97c2e18aeeb489cdf910a13c5393286fe53fcaaf64"
+      },
+      {
+        "name": "new_data_4.db3",
+        "bytes": 407789568,
+        "sha256": "cbecb6df479b0489b8e195998c8d507ca7e7f0df4783f9700f2361a595536a5f"
+      },
+      {
+        "name": "new_data_0.db3",
+        "bytes": 407789568,
+        "sha256": "1212c4c722d53c26b389ce416a13680f8e6c269180ebe0aba15616a05ca58e53"
+      },
+      {
+        "name": "new_data_14.db3",
+        "bytes": 407789568,
+        "sha256": "100d184cb0b71a685e2bd02edad2d6a7d3c2baa721da5c91f6c78a426d597d8e"
+      },
+      {
+        "name": "new_data_9.db3",
+        "bytes": 407789568,
+        "sha256": "022c0b6bf6740adbb6d00d69cd83e0bec9617a7febd5dd955c9ea547ed880f59"
+      },
+      {
+        "name": "new_data_16.db3",
+        "bytes": 407789568,
+        "sha256": "7264979525b6ad85e913d452b740a43f296428dd55493e9f369ff05100ec2747"
+      },
+      {
+        "name": "new_data_5.db3",
+        "bytes": 407789568,
+        "sha256": "62ce1ea8ab05e0828392ce8d5f68145e130fcc1f73b9f864efc097e1d7bd6b68"
+      },
+      {
+        "name": "new_data_10.db3",
+        "bytes": 407789568,
+        "sha256": "6569fbbc5d3aa3e20322e7389809167a6dc8edaf189cd2e207eefc6b30ee4526"
+      }
+    ]
+  },
+  "panels": {
+    "old-final": {
+      "run": "build/buyanov-20260920-old-final",
+      "manifest_sha256": "5a533b719841ba264dc4b2d0fb00ade5a5c67f3378a179b19ded64a28259c380",
+      "predictions_sha256": {
+        "doubleT_obstacle.jsonl": "6137c0cec7facf49a438b16958576a7863572c3e6bda205802a6a6d7e5d24ee7",
+        "doubleT_platform.jsonl": "971d0f3b2c344447fea0137a2a365ec707f84c01eb576e7dd34a73f5f8e0b2bc",
+        "roundT_doubleT.jsonl": "9b15e6d04c310457520bea220a66b19907c1eb74f4528513fd34d4c35903f0b7",
+        "roundT_pressureGate_roundT.jsonl": "dc1e87c6b971298fb154e44616c7fba91e175ed3dd0b8e4840285f4e01d0ff3d",
+        "roundT_squareT_pressureGate_squareT.jsonl": "d1afec5406605c3f8c97e60181bfac5f7d4338a5c3a9f424d68b85ed231ae07d",
+        "squareT_platform_squareT_switch.jsonl": "36e59c24d5989270afce06ec5132b9758000174303632419cd5b8547456606d7"
+      },
+      "panel": {
+        "frames": 180,
+        "sequences": 6,
+        "status_frames": {
+          "obstacle": 112,
+          "unresolved_obstacle": 45,
+          "candidate": 14,
+          "no_obstacle_observed": 9
+        },
+        "geometry_valid_frames": 180,
+        "geometry_reasons": {
+          "supported_geometry": 180
+        },
+        "processing_ms": {
+          "count": 180,
+          "min": 453.24354199692607,
+          "p50": 789.3315620603971,
+          "p95": 1693.2114097464357,
+          "max": 6119.45466697216
+        },
+        "acquisition_delta_s": {
+          "count": 174,
+          "min": 0.09997904300689697,
+          "p50": 0.10000193119049072,
+          "p95": 0.10001981258392334,
+          "max": 0.10003006458282471
+        },
+        "duplicate_acquisition_deltas": 0,
+        "backward_acquisition_deltas": 0,
+        "source_messages_reported_in_ingestion": 180,
+        "observations": {
+          "frame_observation_status": {
+            "confirmed_obstacle": 112,
+            "unresolved_obstacle": 45,
+            "candidate": 14,
+            "no_obstacle_observed": 9
+          },
+          "object_observation_status": {
+            "observed_structure": 32032,
+            "candidate": 5989,
+            "confirmed_obstacle": 439,
+            "unresolved_obstacle": 1161
+          },
+          "candidate_observations": 39621,
+          "confirmed_object_observations": 33632,
+          "path_horizon_m": {
+            "count": 180,
+            "min": 47.0,
+            "p50": 57.0,
+            "p95": 62.0,
+            "max": 67.0
+          },
+          "gauge_inner_m": {
+            "count": 180,
+            "min": 1.4521494409185722,
+            "p50": 1.474643281446078,
+            "p95": 1.4874195505904646,
+            "max": 1.4960604980905832
+          },
+          "rail_head_height_above_bed_m": {
+            "count": 180,
+            "min": 0.19780255961937435,
+            "p50": 0.21585029127945854,
+            "p95": 0.22333110420970148,
+            "max": 0.23812592027524127
+          },
+          "ground_fit_median_residual_m": {
+            "count": 180,
+            "min": 0.016319437317088292,
+            "p50": 0.025179530142614925,
+            "p95": 0.028947321951786186,
+            "max": 0.03132566419108673
+          },
+          "nearest_obstacle_sensor_x_m": {
+            "count": 157,
+            "min": 2.003539800643921,
+            "p50": 46.02754592895508,
+            "p95": 109.3607666015625,
+            "max": 145.43997192382812
+          },
+          "cluster_support_min_x_m": {
+            "count": 39621,
+            "min": 2.000004529953003,
+            "p50": 36.50896072387695,
+            "p95": 111.35045623779297,
+            "max": 208.27664184570312
+          },
+          "distance_support_x_m": {
+            "count": 39621,
+            "min": 2.000004529953003,
+            "p50": 36.50896072387695,
+            "p95": 111.35045623779297,
+            "max": 208.27664184570312
+          },
+          "supported_envelope_min_x_m": {
+            "count": 940,
+            "min": 2.0376040935516357,
+            "p50": 43.894535064697266,
+            "p95": 57.70942077636718,
+            "max": 66.32321166992188
+          },
+          "unresolved_envelope_min_x_m": {
+            "count": 1828,
+            "min": 48.98515319824219,
+            "p50": 112.12541961669922,
+            "p95": 188.48735885620115,
+            "max": 208.6293487548828
+          },
+          "tracking": {
+            "diagnosed_frames": 180,
+            "births": 4910,
+            "diagnostic_processing_ms": {
+              "count": 180,
+              "min": 0.007208087481558323,
+              "p50": 23.248374520335346,
+              "p95": 65.12540895491833,
+              "max": 116.72283301595598
+            },
+            "gap_reset_frames": 0,
+            "removed_track_observations": 3220,
+            "hypotheses_by_cause": {
+              "new_object_or_unrelated_neighbor": 16718,
+              "merge": 750,
+              "split": 93,
+              "occlusion_or_missed_segmentation": 6244,
+              "fragmentation_or_occlusion": 30
+            },
+            "different_id_hypotheses": 17591,
+            "verified_identity_switches": null
+          },
+          "range_observability": [
+            {
+              "range_m": [
+                2.0,
+                10.0
+              ],
+              "frames": 180,
+              "returns": 4602917,
+              "returns_before_geometry_voxel": 25957742,
+              "geometry_supported_returns": 4602917
+            },
+            {
+              "range_m": [
+                10.0,
+                20.0
+              ],
+              "frames": 180,
+              "returns": 2456341,
+              "returns_before_geometry_voxel": 5694999,
+              "geometry_supported_returns": 2456341
+            },
+            {
+              "range_m": [
+                20.0,
+                40.0
+              ],
+              "frames": 180,
+              "returns": 1195577,
+              "returns_before_geometry_voxel": 2191881,
+              "geometry_supported_returns": 1195577
+            },
+            {
+              "range_m": [
+                40.0,
+                60.0
+              ],
+              "frames": 180,
+              "returns": 278618,
+              "returns_before_geometry_voxel": 450167,
+              "geometry_supported_returns": 257527
+            },
+            {
+              "range_m": [
+                60.0,
+                100.0
+              ],
+              "frames": 180,
+              "returns": 157465,
+              "returns_before_geometry_voxel": 236867,
+              "geometry_supported_returns": 6171
+            },
+            {
+              "range_m": [
+                100.0,
+                150.0
+              ],
+              "frames": 180,
+              "returns": 44267,
+              "returns_before_geometry_voxel": 62200,
+              "geometry_supported_returns": 0
+            },
+            {
+              "range_m": [
+                150.0,
+                220.0
+              ],
+              "frames": 180,
+              "returns": 16376,
+              "returns_before_geometry_voxel": 25050,
+              "geometry_supported_returns": 0
+            }
+          ],
+          "uncertainty_by_range": [
+            {
+              "x_m": 2.0,
+              "frames_with_profile": 180,
+              "geometry_supported_frames": 180,
+              "path_sigma_m": {
+                "count": 180,
+                "min": 0.12,
+                "p50": 0.12,
+                "p95": 0.12,
+                "max": 0.12
+              },
+              "ground_sigma_m": {
+                "count": 180,
+                "min": 0.045088781700865554,
+                "p50": 0.06401019933899954,
+                "p95": 0.07657425404772425,
+                "max": 0.08137220831005545
+              }
+            },
+            {
+              "x_m": 10.0,
+              "frames_with_profile": 180,
+              "geometry_supported_frames": 180,
+              "path_sigma_m": {
+                "count": 180,
+                "min": 0.06,
+                "p50": 0.06,
+                "p95": 0.06,
+                "max": 0.06
+              },
+              "ground_sigma_m": {
+                "count": 180,
+                "min": 0.031295295430279,
+                "p50": 0.04433935955760365,
+                "p95": 0.05367197176357895,
+                "max": 0.05688710087836562
+              }
+            },
+            {
+              "x_m": 20.0,
+              "frames_with_profile": 180,
+              "geometry_supported_frames": 180,
+              "path_sigma_m": {
+                "count": 180,
+                "min": 0.06,
+                "p50": 0.06,
+                "p95": 0.06,
+                "max": 0.06
+              },
+              "ground_sigma_m": {
+                "count": 180,
+                "min": 0.03557352962016262,
+                "p50": 0.04999064262106036,
+                "p95": 0.05829187394931141,
+                "max": 0.06925477480624502
+              }
+            },
+            {
+              "x_m": 40.0,
+              "frames_with_profile": 180,
+              "geometry_supported_frames": 180,
+              "path_sigma_m": {
+                "count": 180,
+                "min": 0.06,
+                "p50": 0.06,
+                "p95": 0.16,
+                "max": 0.26
+              },
+              "ground_sigma_m": {
+                "count": 180,
+                "min": 0.03160805626923189,
+                "p50": 0.05528839137987651,
+                "p95": 0.07012690023518912,
+                "max": 0.08465252982415342
+              }
+            },
+            {
+              "x_m": 60.0,
+              "frames_with_profile": 180,
+              "geometry_supported_frames": 75,
+              "path_sigma_m": {
+                "count": 178,
+                "min": 0.26,
+                "p50": 0.46,
+                "p95": 0.4750000000000006,
+                "max": 0.56
+              },
+              "ground_sigma_m": {
+                "count": 180,
+                "min": 0.015,
+                "p50": 0.06028455229157565,
+                "p95": 0.07811323039127652,
+                "max": 0.10435438052457391
+              }
+            },
+            {
+              "x_m": 100.0,
+              "frames_with_profile": 180,
+              "geometry_supported_frames": 0,
+              "path_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "ground_sigma_m": {
+                "count": 23,
+                "min": 0.015,
+                "p50": 0.135,
+                "p95": 0.19413988714878494,
+                "max": 0.2238237790399248
+              }
+            },
+            {
+              "x_m": 150.0,
+              "frames_with_profile": 180,
+              "geometry_supported_frames": 0,
+              "path_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "ground_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            {
+              "x_m": 220.0,
+              "frames_with_profile": 180,
+              "geometry_supported_frames": 0,
+              "path_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "ground_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              }
+            }
+          ],
+          "note": "Object counts are correlated frame observations. Alarm counts are unlabeled observations, not false positives. no_obstacle_observed never asserts a clear route. Distances are sensor-frame x, not bumper or along-track distance."
+        }
+      },
+      "comparison": {
+        "shared_frames": 180,
+        "before_only_frames": 0,
+        "after_only_frames": 0,
+        "status_different_frames": 0,
+        "object_decision_different_frames": 0,
+        "nearest_distance_exactly_different_frames": 0,
+        "support_and_confirmation_different_frames_ignoring_ids": 0,
+        "confirmed_hazard_geometry_different_frames_ignoring_ids": 0,
+        "max_pose_matrix_element_abs_delta": 7.105427357601002e-15,
+        "first_status_differences": [],
+        "first_object_differences": [],
+        "first_support_differences": [],
+        "before_shared_processing_ms": {
+          "count": 180,
+          "min": 443.16779100336134,
+          "p50": 698.2502079918049,
+          "p95": 1143.3016875351314,
+          "max": 1287.9818750079721
+        },
+        "after_shared_processing_ms": {
+          "count": 180,
+          "min": 453.24354199692607,
+          "p50": 789.3315620603971,
+          "p95": 1693.2114097464357,
+          "max": 6119.45466697216
+        },
+        "note": "Exact output comparison on shared (bag, frame), not a test suite or physical identity score. Support multisets compare bounds, relation and confirmation without IDs; numeric track IDs across runs do not establish correspondence. Timing is an uncontrolled single-run measurement."
+      }
+    },
+    "new-final": {
+      "run": "build/buyanov-20260920-new-diagnostics",
+      "manifest_sha256": "7655bbe703a8e72e75f8ec2be9ee0d680426d285ce18335acaba502134726e5e",
+      "predictions_sha256": {
+        "new_data.jsonl": "58e6d71ba95289310381527172e8d8f100914577b62c0f1026e0af875e672b82"
+      },
+      "panel": {
+        "frames": 1020,
+        "sequences": 1,
+        "status_frames": {
+          "candidate": 14,
+          "obstacle": 521,
+          "unresolved_obstacle": 466,
+          "no_obstacle_observed": 19
+        },
+        "geometry_valid_frames": 1020,
+        "geometry_reasons": {
+          "supported_geometry": 1020
+        },
+        "processing_ms": {
+          "count": 1020,
+          "min": 410.9813750255853,
+          "p50": 858.4736669436097,
+          "p95": 1478.944495896576,
+          "max": 4129.693125025369
+        },
+        "acquisition_delta_s": {
+          "count": 1019,
+          "min": 0.09995710849761963,
+          "p50": 0.10000002384185791,
+          "p95": 0.10001599788665771,
+          "max": 0.10002601146697998
+        },
+        "duplicate_acquisition_deltas": 0,
+        "backward_acquisition_deltas": 0,
+        "source_messages_reported_in_ingestion": 1020,
+        "observations": {
+          "frame_observation_status": {
+            "candidate": 14,
+            "confirmed_obstacle": 521,
+            "unresolved_obstacle": 466,
+            "no_obstacle_observed": 19
+          },
+          "object_observation_status": {
+            "candidate": 23536,
+            "observed_structure": 189455,
+            "confirmed_obstacle": 2863,
+            "unresolved_obstacle": 22585
+          },
+          "candidate_observations": 238439,
+          "confirmed_object_observations": 214903,
+          "path_horizon_m": {
+            "count": 1020,
+            "min": 37.0,
+            "p50": 57.0,
+            "p95": 62.0,
+            "max": 72.0
+          },
+          "gauge_inner_m": {
+            "count": 1020,
+            "min": 1.4281881190258936,
+            "p50": 1.4731071107622058,
+            "p95": 1.5116458790262535,
+            "max": 1.57288116441043
+          },
+          "rail_head_height_above_bed_m": {
+            "count": 1020,
+            "min": 0.16173728049217348,
+            "p50": 0.2115613648022336,
+            "p95": 0.2300638077258182,
+            "max": 0.24118048080691934
+          },
+          "ground_fit_median_residual_m": {
+            "count": 1020,
+            "min": 0.013834749345660646,
+            "p50": 0.024770429635225355,
+            "p95": 0.030130605488629312,
+            "max": 0.03658602024822022
+          },
+          "nearest_obstacle_sensor_x_m": {
+            "count": 987,
+            "min": 2.0000507831573486,
+            "p50": 53.15951156616211,
+            "p95": 148.76329498291014,
+            "max": 207.68740844726562
+          },
+          "cluster_support_min_x_m": {
+            "count": 238439,
+            "min": 2.000000238418579,
+            "p50": 39.679176330566406,
+            "p95": 105.02547302246091,
+            "max": 209.1338348388672
+          },
+          "distance_support_x_m": {
+            "count": 238439,
+            "min": 2.000000238418579,
+            "p50": 39.679176330566406,
+            "p95": 105.02547302246091,
+            "max": 209.1338348388672
+          },
+          "supported_envelope_min_x_m": {
+            "count": 4625,
+            "min": 2.0010480880737305,
+            "p50": 44.16355895996094,
+            "p95": 57.38984298706055,
+            "max": 69.76033020019531
+          },
+          "unresolved_envelope_min_x_m": {
+            "count": 26469,
+            "min": 42.150691986083984,
+            "p50": 83.65937042236328,
+            "p95": 155.99673461914062,
+            "max": 209.1338348388672
+          },
+          "tracking": {
+            "diagnosed_frames": 1020,
+            "births": 15269,
+            "diagnostic_processing_ms": {
+              "count": 1020,
+              "min": 0.6856250111013651,
+              "p50": 44.430270965676755,
+              "p95": 101.86902913847007,
+              "max": 690.2953329263255
+            },
+            "gap_reset_frames": 0,
+            "removed_track_observations": 14940,
+            "hypotheses_by_cause": {
+              "new_object_or_unrelated_neighbor": 96282,
+              "merge": 8234,
+              "split": 404,
+              "occlusion_or_missed_segmentation": 37304,
+              "fragmentation_or_occlusion": 353
+            },
+            "different_id_hypotheses": 105273,
+            "verified_identity_switches": null
+          },
+          "range_observability": [
+            {
+              "range_m": [
+                2.0,
+                10.0
+              ],
+              "frames": 1020,
+              "returns": 24359130,
+              "returns_before_geometry_voxel": 146337975,
+              "geometry_supported_returns": 24359130
+            },
+            {
+              "range_m": [
+                10.0,
+                20.0
+              ],
+              "frames": 1020,
+              "returns": 11844112,
+              "returns_before_geometry_voxel": 26849025,
+              "geometry_supported_returns": 11844112
+            },
+            {
+              "range_m": [
+                20.0,
+                40.0
+              ],
+              "frames": 1020,
+              "returns": 5071444,
+              "returns_before_geometry_voxel": 9237704,
+              "geometry_supported_returns": 5071220
+            },
+            {
+              "range_m": [
+                40.0,
+                60.0
+              ],
+              "frames": 1020,
+              "returns": 1248394,
+              "returns_before_geometry_voxel": 2007288,
+              "geometry_supported_returns": 1056594
+            },
+            {
+              "range_m": [
+                60.0,
+                100.0
+              ],
+              "frames": 1020,
+              "returns": 787130,
+              "returns_before_geometry_voxel": 1277955,
+              "geometry_supported_returns": 16414
+            },
+            {
+              "range_m": [
+                100.0,
+                150.0
+              ],
+              "frames": 1020,
+              "returns": 160870,
+              "returns_before_geometry_voxel": 271819,
+              "geometry_supported_returns": 0
+            },
+            {
+              "range_m": [
+                150.0,
+                220.0
+              ],
+              "frames": 1020,
+              "returns": 29228,
+              "returns_before_geometry_voxel": 51965,
+              "geometry_supported_returns": 0
+            }
+          ],
+          "uncertainty_by_range": [
+            {
+              "x_m": 2.0,
+              "frames_with_profile": 1020,
+              "geometry_supported_frames": 1020,
+              "path_sigma_m": {
+                "count": 1020,
+                "min": 0.12,
+                "p50": 0.12,
+                "p95": 0.12,
+                "max": 0.12
+              },
+              "ground_sigma_m": {
+                "count": 1020,
+                "min": 0.03973276115872211,
+                "p50": 0.06438854108223471,
+                "p95": 0.08708335336663667,
+                "max": 0.10546257853549817
+              }
+            },
+            {
+              "x_m": 10.0,
+              "frames_with_profile": 1020,
+              "geometry_supported_frames": 1020,
+              "path_sigma_m": {
+                "count": 1020,
+                "min": 0.06,
+                "p50": 0.06,
+                "p95": 0.06,
+                "max": 0.16
+              },
+              "ground_sigma_m": {
+                "count": 1020,
+                "min": 0.024384602591500187,
+                "p50": 0.04528134721360787,
+                "p95": 0.0667275133008439,
+                "max": 0.08042427502754278
+              }
+            },
+            {
+              "x_m": 20.0,
+              "frames_with_profile": 1020,
+              "geometry_supported_frames": 1020,
+              "path_sigma_m": {
+                "count": 1020,
+                "min": 0.06,
+                "p50": 0.06,
+                "p95": 0.06,
+                "max": 0.06
+              },
+              "ground_sigma_m": {
+                "count": 1020,
+                "min": 0.028870883653505524,
+                "p50": 0.05328141622574038,
+                "p95": 0.07190577983697097,
+                "max": 0.09992346394076089
+              }
+            },
+            {
+              "x_m": 40.0,
+              "frames_with_profile": 1020,
+              "geometry_supported_frames": 1019,
+              "path_sigma_m": {
+                "count": 1020,
+                "min": 0.06,
+                "p50": 0.06,
+                "p95": 0.16,
+                "max": 0.46
+              },
+              "ground_sigma_m": {
+                "count": 1020,
+                "min": 0.03277617351473809,
+                "p50": 0.059944369470138516,
+                "p95": 0.08113861301361656,
+                "max": 0.11962620063817178
+              }
+            },
+            {
+              "x_m": 60.0,
+              "frames_with_profile": 1020,
+              "geometry_supported_frames": 167,
+              "path_sigma_m": {
+                "count": 975,
+                "min": 0.16,
+                "p50": 0.46,
+                "p95": 0.56,
+                "max": 0.56
+              },
+              "ground_sigma_m": {
+                "count": 1020,
+                "min": 0.015,
+                "p50": 0.07065213336662071,
+                "p95": 0.16066378422685537,
+                "max": 0.20903848839105243
+              }
+            },
+            {
+              "x_m": 100.0,
+              "frames_with_profile": 1020,
+              "geometry_supported_frames": 0,
+              "path_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "ground_sigma_m": {
+                "count": 49,
+                "min": 0.01734402137980523,
+                "p50": 0.15988516923564053,
+                "p95": 0.23438946375198658,
+                "max": 0.2595683854809667
+              }
+            },
+            {
+              "x_m": 150.0,
+              "frames_with_profile": 1020,
+              "geometry_supported_frames": 0,
+              "path_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "ground_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            {
+              "x_m": 220.0,
+              "frames_with_profile": 1020,
+              "geometry_supported_frames": 0,
+              "path_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "ground_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              }
+            }
+          ],
+          "note": "Object counts are correlated frame observations. Alarm counts are unlabeled observations, not false positives. no_obstacle_observed never asserts a clear route. Distances are sensor-frame x, not bumper or along-track distance."
+        }
+      },
+      "comparison": {
+        "shared_frames": 30,
+        "before_only_frames": 0,
+        "after_only_frames": 990,
+        "status_different_frames": 0,
+        "object_decision_different_frames": 24,
+        "nearest_distance_exactly_different_frames": 0,
+        "support_and_confirmation_different_frames_ignoring_ids": 9,
+        "confirmed_hazard_geometry_different_frames_ignoring_ids": 1,
+        "max_pose_matrix_element_abs_delta": 3.1086244689504383e-15,
+        "first_status_differences": [],
+        "first_object_differences": [
+          [
+            "new_data",
+            6
+          ],
+          [
+            "new_data",
+            7
+          ],
+          [
+            "new_data",
+            8
+          ],
+          [
+            "new_data",
+            9
+          ],
+          [
+            "new_data",
+            10
+          ],
+          [
+            "new_data",
+            11
+          ],
+          [
+            "new_data",
+            12
+          ],
+          [
+            "new_data",
+            13
+          ],
+          [
+            "new_data",
+            14
+          ],
+          [
+            "new_data",
+            15
+          ]
+        ],
+        "first_support_differences": [
+          [
+            "new_data",
+            6
+          ],
+          [
+            "new_data",
+            12
+          ],
+          [
+            "new_data",
+            14
+          ],
+          [
+            "new_data",
+            15
+          ],
+          [
+            "new_data",
+            17
+          ],
+          [
+            "new_data",
+            18
+          ],
+          [
+            "new_data",
+            19
+          ],
+          [
+            "new_data",
+            20
+          ],
+          [
+            "new_data",
+            24
+          ]
+        ],
+        "before_shared_processing_ms": {
+          "count": 30,
+          "min": 657.4270420242101,
+          "p50": 908.8319789734669,
+          "p95": 1117.6462353265376,
+          "max": 1168.4888750314713
+        },
+        "after_shared_processing_ms": {
+          "count": 30,
+          "min": 617.9732079617679,
+          "p50": 712.9335624631494,
+          "p95": 852.305974875344,
+          "max": 942.4645419931039
+        },
+        "note": "Exact output comparison on shared (bag, frame), not a test suite or physical identity score. Support multisets compare bounds, relation and confirmation without IDs; numeric track IDs across runs do not establish correspondence. Timing is an uncontrolled single-run measurement."
+      }
+    },
+    "synthetic-final": {
+      "run": "build/buyanov-20260920-synthetic",
+      "manifest_sha256": "fa2e2ce0034c96c9b1a6db75404b6f9d5427ffb4ffc0423e9a71043f0be0f91f",
+      "predictions_sha256": {
+        "predictions.jsonl": "7fdd2fcf5860d7f8c565f1f8ecb42d6fab8cf21bc4065c3dbc9ac7e0789c342d"
+      },
+      "panel": {
+        "frames": 330,
+        "sequences": 110,
+        "status_frames": {
+          "no_obstacle_observed": 127,
+          "candidate": 33,
+          "obstacle": 128,
+          "unresolved_obstacle": 42
+        },
+        "geometry_valid_frames": 330,
+        "geometry_reasons": {
+          "supported_geometry": 330
+        },
+        "processing_ms": {
+          "count": 330,
+          "min": 326.4411659911275,
+          "p50": 372.9027705267072,
+          "p95": 408.4810085070785,
+          "max": 447.51920795533806
+        },
+        "acquisition_delta_s": {
+          "count": 220,
+          "min": 0.1,
+          "p50": 0.1,
+          "p95": 0.1,
+          "max": 0.1
+        },
+        "duplicate_acquisition_deltas": 0,
+        "backward_acquisition_deltas": 0,
+        "source_messages_reported_in_ingestion": null,
+        "observations": {
+          "frame_observation_status": {
+            "no_obstacle_observed": 127,
+            "candidate": 33,
+            "confirmed_obstacle": 128,
+            "unresolved_obstacle": 42
+          },
+          "object_observation_status": {
+            "candidate": 3098,
+            "observed_structure": 4963,
+            "confirmed_obstacle": 141,
+            "unresolved_obstacle": 42
+          },
+          "candidate_observations": 8244,
+          "confirmed_object_observations": 5146,
+          "path_horizon_m": {
+            "count": 330,
+            "min": 37.0,
+            "p50": 72.0,
+            "p95": 77.0,
+            "max": 82.0
+          },
+          "gauge_inner_m": {
+            "count": 330,
+            "min": 1.4242783618154098,
+            "p50": 1.4481598793942383,
+            "p95": 1.4491385020402567,
+            "max": 1.449518082841398
+          },
+          "rail_head_height_above_bed_m": {
+            "count": 330,
+            "min": 0.19975161137747025,
+            "p50": 0.20037180067814886,
+            "p95": 0.20096792046281892,
+            "max": 0.20185862312780437
+          },
+          "ground_fit_median_residual_m": {
+            "count": 330,
+            "min": 0.0029701270288844395,
+            "p50": 0.0032670807549957104,
+            "p95": 0.00351515378428412,
+            "max": 0.0037705502092095777
+          },
+          "nearest_obstacle_sensor_x_m": {
+            "count": 170,
+            "min": 8.946592779167727,
+            "p50": 39.96215434426048,
+            "p95": 149.48825750848337,
+            "max": 149.98642244456235
+          },
+          "cluster_support_min_x_m": {
+            "count": 8244,
+            "min": 6.959566454656113,
+            "p50": 27.01420973271115,
+            "p95": 48.84564224334472,
+            "max": 150.05992237989466
+          },
+          "distance_support_x_m": {
+            "count": 8244,
+            "min": 6.959566454656113,
+            "p50": 27.01420973271115,
+            "p95": 48.84564224334472,
+            "max": 150.05992237989466
+          },
+          "supported_envelope_min_x_m": {
+            "count": 174,
+            "min": 8.946592779167727,
+            "p50": 19.96954194569672,
+            "p95": 59.97447371522135,
+            "max": 59.99039253626316
+          },
+          "unresolved_envelope_min_x_m": {
+            "count": 59,
+            "min": 98.96530969576477,
+            "p50": 99.98340037710337,
+            "p95": 149.98436802453446,
+            "max": 149.9875718026332
+          },
+          "tracking": {
+            "diagnosed_frames": 330,
+            "births": 3153,
+            "diagnostic_processing_ms": {
+              "count": 330,
+              "min": 0.004249974153935909,
+              "p50": 0.42012456106022,
+              "p95": 0.9400703245773911,
+              "max": 7.1862919721752405
+            },
+            "gap_reset_frames": 0,
+            "removed_track_observations": 0,
+            "hypotheses_by_cause": {
+              "new_object_or_unrelated_neighbor": 1043,
+              "occlusion_or_missed_segmentation": 191,
+              "split": 11,
+              "merge": 3
+            },
+            "different_id_hypotheses": 1057,
+            "verified_identity_switches": null
+          },
+          "range_observability": [
+            {
+              "range_m": [
+                2.0,
+                10.0
+              ],
+              "frames": 330,
+              "returns": 11519515,
+              "returns_before_geometry_voxel": 24482007,
+              "geometry_supported_returns": 11519515
+            },
+            {
+              "range_m": [
+                10.0,
+                20.0
+              ],
+              "frames": 330,
+              "returns": 4905954,
+              "returns_before_geometry_voxel": 5738131,
+              "geometry_supported_returns": 4905954
+            },
+            {
+              "range_m": [
+                20.0,
+                40.0
+              ],
+              "frames": 330,
+              "returns": 2193446,
+              "returns_before_geometry_voxel": 2269039,
+              "geometry_supported_returns": 2187679
+            },
+            {
+              "range_m": [
+                40.0,
+                60.0
+              ],
+              "frames": 330,
+              "returns": 682088,
+              "returns_before_geometry_voxel": 682088,
+              "geometry_supported_returns": 647024
+            },
+            {
+              "range_m": [
+                60.0,
+                100.0
+              ],
+              "frames": 330,
+              "returns": 431947,
+              "returns_before_geometry_voxel": 431947,
+              "geometry_supported_returns": 191607
+            },
+            {
+              "range_m": [
+                100.0,
+                150.0
+              ],
+              "frames": 330,
+              "returns": 134939,
+              "returns_before_geometry_voxel": 134939,
+              "geometry_supported_returns": 0
+            },
+            {
+              "range_m": [
+                150.0,
+                220.0
+              ],
+              "frames": 330,
+              "returns": 54473,
+              "returns_before_geometry_voxel": 54473,
+              "geometry_supported_returns": 0
+            }
+          ],
+          "uncertainty_by_range": [
+            {
+              "x_m": 2.0,
+              "frames_with_profile": 330,
+              "geometry_supported_frames": 330,
+              "path_sigma_m": {
+                "count": 330,
+                "min": 0.12,
+                "p50": 0.12,
+                "p95": 0.12,
+                "max": 0.12
+              },
+              "ground_sigma_m": {
+                "count": 330,
+                "min": 0.039,
+                "p50": 0.039,
+                "p95": 0.039,
+                "max": 0.039
+              }
+            },
+            {
+              "x_m": 10.0,
+              "frames_with_profile": 330,
+              "geometry_supported_frames": 330,
+              "path_sigma_m": {
+                "count": 330,
+                "min": 0.06,
+                "p50": 0.06,
+                "p95": 0.06,
+                "max": 0.06
+              },
+              "ground_sigma_m": {
+                "count": 330,
+                "min": 0.015,
+                "p50": 0.015,
+                "p95": 0.015,
+                "max": 0.015
+              }
+            },
+            {
+              "x_m": 20.0,
+              "frames_with_profile": 330,
+              "geometry_supported_frames": 330,
+              "path_sigma_m": {
+                "count": 330,
+                "min": 0.06,
+                "p50": 0.06,
+                "p95": 0.06,
+                "max": 0.26
+              },
+              "ground_sigma_m": {
+                "count": 330,
+                "min": 0.015,
+                "p50": 0.015,
+                "p95": 0.015,
+                "max": 0.015
+              }
+            },
+            {
+              "x_m": 40.0,
+              "frames_with_profile": 330,
+              "geometry_supported_frames": 320,
+              "path_sigma_m": {
+                "count": 330,
+                "min": 0.06,
+                "p50": 0.06,
+                "p95": 0.36,
+                "max": 0.46
+              },
+              "ground_sigma_m": {
+                "count": 330,
+                "min": 0.015,
+                "p50": 0.015,
+                "p95": 0.015,
+                "max": 0.015
+              }
+            },
+            {
+              "x_m": 60.0,
+              "frames_with_profile": 330,
+              "geometry_supported_frames": 302,
+              "path_sigma_m": {
+                "count": 312,
+                "min": 0.06,
+                "p50": 0.16,
+                "p95": 0.36,
+                "max": 0.56
+              },
+              "ground_sigma_m": {
+                "count": 330,
+                "min": 0.015,
+                "p50": 0.015,
+                "p95": 0.015,
+                "max": 0.095
+              }
+            },
+            {
+              "x_m": 100.0,
+              "frames_with_profile": 330,
+              "geometry_supported_frames": 0,
+              "path_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "ground_sigma_m": {
+                "count": 311,
+                "min": 0.015,
+                "p50": 0.015,
+                "p95": 0.095,
+                "max": 0.135
+              }
+            },
+            {
+              "x_m": 150.0,
+              "frames_with_profile": 330,
+              "geometry_supported_frames": 0,
+              "path_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "ground_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              }
+            },
+            {
+              "x_m": 220.0,
+              "frames_with_profile": 330,
+              "geometry_supported_frames": 0,
+              "path_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              },
+              "ground_sigma_m": {
+                "count": 0,
+                "min": null,
+                "p50": null,
+                "p95": null,
+                "max": null
+              }
+            }
+          ],
+          "note": "Object counts are correlated frame observations. Alarm counts are unlabeled observations, not false positives. no_obstacle_observed never asserts a clear route. Distances are sensor-frame x, not bumper or along-track distance."
+        }
+      },
+      "comparison": {
+        "shared_frames": 330,
+        "before_only_frames": 0,
+        "after_only_frames": 0,
+        "status_different_frames": 0,
+        "object_decision_different_frames": 0,
+        "nearest_distance_exactly_different_frames": 0,
+        "support_and_confirmation_different_frames_ignoring_ids": 0,
+        "confirmed_hazard_geometry_different_frames_ignoring_ids": 0,
+        "max_pose_matrix_element_abs_delta": 1.9827889330414905e-15,
+        "first_status_differences": [],
+        "first_object_differences": [],
+        "first_support_differences": [],
+        "before_shared_processing_ms": {
+          "count": 330,
+          "min": 335.39337501861155,
+          "p50": 379.42912557628006,
+          "p95": 420.71546222432517,
+          "max": 468.43108406756073
+        },
+        "after_shared_processing_ms": {
+          "count": 330,
+          "min": 326.4411659911275,
+          "p50": 372.9027705267072,
+          "p95": 408.4810085070785,
+          "max": 447.51920795533806
+        },
+        "note": "Exact output comparison on shared (bag, frame), not a test suite or physical identity score. Support multisets compare bounds, relation and confirmation without IDs; numeric track IDs across runs do not establish correspondence. Timing is an uncontrolled single-run measurement."
+      }
+    }
+  },
+  "old_sequences": {
+    "doubleT_obstacle": {
+      "frames": 30,
+      "sequences": 1,
+      "status_frames": {
+        "obstacle": 30
+      },
+      "geometry_valid_frames": 30,
+      "geometry_reasons": {
+        "supported_geometry": 30
+      },
+      "processing_ms": {
+        "count": 30,
+        "min": 995.5440839985386,
+        "p50": 1464.2292284988798,
+        "p95": 2044.5519268629137,
+        "max": 6119.45466697216
+      },
+      "acquisition_delta_s": {
+        "count": 29,
+        "min": 0.0999840497970581,
+        "p50": 0.10000717639923096,
+        "p95": 0.10002744197845459,
+        "max": 0.10003006458282471
+      },
+      "duplicate_acquisition_deltas": 0,
+      "backward_acquisition_deltas": 0,
+      "source_messages_reported_in_ingestion": null,
+      "observations": {
+        "frame_observation_status": {
+          "confirmed_obstacle": 30
+        },
+        "object_observation_status": {
+          "observed_structure": 4868,
+          "candidate": 833,
+          "confirmed_obstacle": 235,
+          "unresolved_obstacle": 534
+        },
+        "candidate_observations": 6470,
+        "confirmed_object_observations": 5637,
+        "path_horizon_m": {
+          "count": 30,
+          "min": 47.0,
+          "p50": 57.0,
+          "p95": 62.0,
+          "max": 62.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4590924878787994,
+          "p50": 1.4853673487012111,
+          "p95": 1.4905451383827542,
+          "max": 1.4960604980905832
+        },
+        "rail_head_height_above_bed_m": {
+          "count": 30,
+          "min": 0.2130083522987433,
+          "p50": 0.21692409287681597,
+          "p95": 0.22020702976821702,
+          "max": 0.22136863430522608
+        },
+        "ground_fit_median_residual_m": {
+          "count": 30,
+          "min": 0.02178356103909662,
+          "p50": 0.022945134492891595,
+          "p95": 0.023735096606263995,
+          "max": 0.024264778673211085
+        },
+        "nearest_obstacle_sensor_x_m": {
+          "count": 30,
+          "min": 2.003539800643921,
+          "p50": 13.065074920654297,
+          "p95": 37.170221710205055,
+          "max": 45.59716033935547
+        },
+        "cluster_support_min_x_m": {
+          "count": 6470,
+          "min": 2.0002613067626953,
+          "p50": 39.036643981933594,
+          "p95": 127.48693237304613,
+          "max": 206.23826599121094
+        },
+        "distance_support_x_m": {
+          "count": 6470,
+          "min": 2.0002613067626953,
+          "p50": 39.036643981933594,
+          "p95": 127.48693237304613,
+          "max": 206.23826599121094
+        },
+        "supported_envelope_min_x_m": {
+          "count": 333,
+          "min": 2.0376040935516357,
+          "p50": 36.5503044128418,
+          "p95": 56.35355072021484,
+          "max": 61.57884216308594
+        },
+        "unresolved_envelope_min_x_m": {
+          "count": 832,
+          "min": 48.98515319824219,
+          "p50": 100.89364624023438,
+          "p95": 188.06080322265626,
+          "max": 206.23826599121094
+        },
+        "tracking": {
+          "diagnosed_frames": 30,
+          "births": 661,
+          "diagnostic_processing_ms": {
+            "count": 30,
+            "min": 3.655332955531776,
+            "p50": 14.950020471587777,
+            "p95": 26.306156330974762,
+            "max": 95.87341593578458
+          },
+          "gap_reset_frames": 0,
+          "removed_track_observations": 360,
+          "hypotheses_by_cause": {
+            "new_object_or_unrelated_neighbor": 2680,
+            "merge": 117,
+            "split": 11,
+            "occlusion_or_missed_segmentation": 1058
+          },
+          "different_id_hypotheses": 2808,
+          "verified_identity_switches": null
+        },
+        "range_observability": [
+          {
+            "range_m": [
+              2.0,
+              10.0
+            ],
+            "frames": 30,
+            "returns": 1074372,
+            "returns_before_geometry_voxel": 4874302,
+            "geometry_supported_returns": 1074372
+          },
+          {
+            "range_m": [
+              10.0,
+              20.0
+            ],
+            "frames": 30,
+            "returns": 578398,
+            "returns_before_geometry_voxel": 1302863,
+            "geometry_supported_returns": 578398
+          },
+          {
+            "range_m": [
+              20.0,
+              40.0
+            ],
+            "frames": 30,
+            "returns": 361014,
+            "returns_before_geometry_voxel": 659524,
+            "geometry_supported_returns": 361014
+          },
+          {
+            "range_m": [
+              40.0,
+              60.0
+            ],
+            "frames": 30,
+            "returns": 88454,
+            "returns_before_geometry_voxel": 144778,
+            "geometry_supported_returns": 78127
+          },
+          {
+            "range_m": [
+              60.0,
+              100.0
+            ],
+            "frames": 30,
+            "returns": 52153,
+            "returns_before_geometry_voxel": 79471,
+            "geometry_supported_returns": 898
+          },
+          {
+            "range_m": [
+              100.0,
+              150.0
+            ],
+            "frames": 30,
+            "returns": 18072,
+            "returns_before_geometry_voxel": 22814,
+            "geometry_supported_returns": 0
+          },
+          {
+            "range_m": [
+              150.0,
+              220.0
+            ],
+            "frames": 30,
+            "returns": 5221,
+            "returns_before_geometry_voxel": 6311,
+            "geometry_supported_returns": 0
+          }
+        ],
+        "uncertainty_by_range": [
+          {
+            "x_m": 2.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.12,
+              "p50": 0.12,
+              "p95": 0.12,
+              "max": 0.12
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.060700189931099637,
+              "p50": 0.061723613869086175,
+              "p95": 0.062331987895168285,
+              "max": 0.06250425887230385
+            }
+          },
+          {
+            "x_m": 10.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.03826561506533218,
+              "p50": 0.039063249352426895,
+              "p95": 0.040280636588661344,
+              "max": 0.04038026103720492
+            }
+          },
+          {
+            "x_m": 20.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.04534891289221754,
+              "p50": 0.046661805741068055,
+              "p95": 0.04739031425850552,
+              "max": 0.047416785081154204
+            }
+          },
+          {
+            "x_m": 40.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.21499999999999972,
+              "max": 0.26
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.03818570156215724,
+              "p50": 0.042120784431652694,
+              "p95": 0.04580172494043348,
+              "max": 0.0466522199479964
+            }
+          },
+          {
+            "x_m": 60.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 7,
+            "path_sigma_m": {
+              "count": 28,
+              "min": 0.36,
+              "p50": 0.46,
+              "p95": 0.56,
+              "max": 0.56
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.048658218826264185,
+              "p50": 0.062238996914971416,
+              "p95": 0.070680756490963,
+              "max": 0.07593707704255206
+            }
+          },
+          {
+            "x_m": 100.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            }
+          },
+          {
+            "x_m": 150.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            }
+          },
+          {
+            "x_m": 220.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            }
+          }
+        ],
+        "note": "Object counts are correlated frame observations. Alarm counts are unlabeled observations, not false positives. no_obstacle_observed never asserts a clear route. Distances are sensor-frame x, not bumper or along-track distance."
+      }
+    },
+    "doubleT_platform": {
+      "frames": 30,
+      "sequences": 1,
+      "status_frames": {
+        "unresolved_obstacle": 1,
+        "obstacle": 28,
+        "candidate": 1
+      },
+      "geometry_valid_frames": 30,
+      "geometry_reasons": {
+        "supported_geometry": 30
+      },
+      "processing_ms": {
+        "count": 30,
+        "min": 604.2603329988196,
+        "p50": 806.9858330418356,
+        "p95": 1002.3033267061692,
+        "max": 1053.207666031085
+      },
+      "acquisition_delta_s": {
+        "count": 29,
+        "min": 0.09997987747192383,
+        "p50": 0.10000097751617432,
+        "p95": 0.10001561641693116,
+        "max": 0.10001981258392334
+      },
+      "duplicate_acquisition_deltas": 0,
+      "backward_acquisition_deltas": 0,
+      "source_messages_reported_in_ingestion": null,
+      "observations": {
+        "frame_observation_status": {
+          "unresolved_obstacle": 1,
+          "confirmed_obstacle": 28,
+          "candidate": 1
+        },
+        "object_observation_status": {
+          "observed_structure": 2945,
+          "candidate": 1620,
+          "unresolved_obstacle": 44,
+          "confirmed_obstacle": 90
+        },
+        "candidate_observations": 4699,
+        "confirmed_object_observations": 3079,
+        "path_horizon_m": {
+          "count": 30,
+          "min": 52.0,
+          "p50": 59.5,
+          "p95": 64.74999999999999,
+          "max": 67.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4620341706275939,
+          "p50": 1.475338956026675,
+          "p95": 1.4873085106645294,
+          "max": 1.487782468295221
+        },
+        "rail_head_height_above_bed_m": {
+          "count": 30,
+          "min": 0.19780255961937435,
+          "p50": 0.21276471832305793,
+          "p95": 0.23462777529585846,
+          "max": 0.23812592027524127
+        },
+        "ground_fit_median_residual_m": {
+          "count": 30,
+          "min": 0.016319437317088292,
+          "p50": 0.02634921380541666,
+          "p95": 0.02992413127811847,
+          "max": 0.03027195401979821
+        },
+        "nearest_obstacle_sensor_x_m": {
+          "count": 29,
+          "min": 9.908784866333008,
+          "p50": 33.274993896484375,
+          "p95": 50.99129943847655,
+          "max": 52.7242317199707
+        },
+        "cluster_support_min_x_m": {
+          "count": 4699,
+          "min": 2.000159978866577,
+          "p50": 31.218265533447266,
+          "p95": 134.84088745117185,
+          "max": 208.27664184570312
+        },
+        "distance_support_x_m": {
+          "count": 4699,
+          "min": 2.000159978866577,
+          "p50": 31.218265533447266,
+          "p95": 134.84088745117185,
+          "max": 208.27664184570312
+        },
+        "supported_envelope_min_x_m": {
+          "count": 267,
+          "min": 13.030766487121582,
+          "p50": 40.92631149291992,
+          "p95": 56.45936813354492,
+          "max": 64.80108642578125
+        },
+        "unresolved_envelope_min_x_m": {
+          "count": 122,
+          "min": 52.86764144897461,
+          "p50": 142.38927459716797,
+          "p95": 201.47553329467772,
+          "max": 208.6293487548828
+        },
+        "tracking": {
+          "diagnosed_frames": 30,
+          "births": 1612,
+          "diagnostic_processing_ms": {
+            "count": 30,
+            "min": 0.007208087481558323,
+            "p50": 32.240583503153175,
+            "p95": 60.837206622818485,
+            "max": 72.00308400206268
+          },
+          "gap_reset_frames": 0,
+          "removed_track_observations": 1510,
+          "hypotheses_by_cause": {
+            "fragmentation_or_occlusion": 15,
+            "new_object_or_unrelated_neighbor": 3036,
+            "split": 28,
+            "occlusion_or_missed_segmentation": 726,
+            "merge": 104
+          },
+          "different_id_hypotheses": 3183,
+          "verified_identity_switches": null
+        },
+        "range_observability": [
+          {
+            "range_m": [
+              2.0,
+              10.0
+            ],
+            "frames": 30,
+            "returns": 726018,
+            "returns_before_geometry_voxel": 3628441,
+            "geometry_supported_returns": 726018
+          },
+          {
+            "range_m": [
+              10.0,
+              20.0
+            ],
+            "frames": 30,
+            "returns": 550684,
+            "returns_before_geometry_voxel": 1325900,
+            "geometry_supported_returns": 550684
+          },
+          {
+            "range_m": [
+              20.0,
+              40.0
+            ],
+            "frames": 30,
+            "returns": 253187,
+            "returns_before_geometry_voxel": 470108,
+            "geometry_supported_returns": 253187
+          },
+          {
+            "range_m": [
+              40.0,
+              60.0
+            ],
+            "frames": 30,
+            "returns": 52702,
+            "returns_before_geometry_voxel": 89614,
+            "geometry_supported_returns": 49582
+          },
+          {
+            "range_m": [
+              60.0,
+              100.0
+            ],
+            "frames": 30,
+            "returns": 18547,
+            "returns_before_geometry_voxel": 27487,
+            "geometry_supported_returns": 1415
+          },
+          {
+            "range_m": [
+              100.0,
+              150.0
+            ],
+            "frames": 30,
+            "returns": 10005,
+            "returns_before_geometry_voxel": 13881,
+            "geometry_supported_returns": 0
+          },
+          {
+            "range_m": [
+              150.0,
+              220.0
+            ],
+            "frames": 30,
+            "returns": 7671,
+            "returns_before_geometry_voxel": 12532,
+            "geometry_supported_returns": 0
+          }
+        ],
+        "uncertainty_by_range": [
+          {
+            "x_m": 2.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.12,
+              "p50": 0.12,
+              "p95": 0.12,
+              "max": 0.12
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.04816949131489708,
+              "p50": 0.06815057147316074,
+              "p95": 0.07975081380979251,
+              "max": 0.08137220831005545
+            }
+          },
+          {
+            "x_m": 10.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.03337485037864031,
+              "p50": 0.04600385528322937,
+              "p95": 0.05319175377735687,
+              "max": 0.05375715643793697
+            }
+          },
+          {
+            "x_m": 20.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.03557352962016262,
+              "p50": 0.04999064262106036,
+              "p95": 0.06769700795851812,
+              "max": 0.06925477480624502
+            }
+          },
+          {
+            "x_m": 40.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.11499999999999971,
+              "max": 0.16
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.04902043482000233,
+              "p50": 0.06535064577971036,
+              "p95": 0.08065924596938978,
+              "max": 0.08465252982415342
+            }
+          },
+          {
+            "x_m": 60.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 15,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.26,
+              "p50": 0.41000000000000003,
+              "p95": 0.5149999999999998,
+              "max": 0.56
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.041567402070996406,
+              "p50": 0.064585361346407,
+              "p95": 0.09069661709925102,
+              "max": 0.10435438052457391
+            }
+          },
+          {
+            "x_m": 100.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 1,
+              "min": 0.14336910009838388,
+              "p50": 0.14336910009838388,
+              "p95": 0.14336910009838388,
+              "max": 0.14336910009838388
+            }
+          },
+          {
+            "x_m": 150.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            }
+          },
+          {
+            "x_m": 220.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            }
+          }
+        ],
+        "note": "Object counts are correlated frame observations. Alarm counts are unlabeled observations, not false positives. no_obstacle_observed never asserts a clear route. Distances are sensor-frame x, not bumper or along-track distance."
+      }
+    },
+    "roundT_doubleT": {
+      "frames": 30,
+      "sequences": 1,
+      "status_frames": {
+        "candidate": 1,
+        "obstacle": 18,
+        "unresolved_obstacle": 11
+      },
+      "geometry_valid_frames": 30,
+      "geometry_reasons": {
+        "supported_geometry": 30
+      },
+      "processing_ms": {
+        "count": 30,
+        "min": 656.5924999304116,
+        "p50": 903.4370835288428,
+        "p95": 1505.729662650264,
+        "max": 1810.0600420730188
+      },
+      "acquisition_delta_s": {
+        "count": 29,
+        "min": 0.09999287128448486,
+        "p50": 0.10000002384185791,
+        "p95": 0.10001018047332763,
+        "max": 0.10001516342163086
+      },
+      "duplicate_acquisition_deltas": 0,
+      "backward_acquisition_deltas": 0,
+      "source_messages_reported_in_ingestion": null,
+      "observations": {
+        "frame_observation_status": {
+          "candidate": 1,
+          "confirmed_obstacle": 18,
+          "unresolved_obstacle": 11
+        },
+        "object_observation_status": {
+          "observed_structure": 6099,
+          "candidate": 867,
+          "confirmed_obstacle": 37,
+          "unresolved_obstacle": 319
+        },
+        "candidate_observations": 7322,
+        "confirmed_object_observations": 6455,
+        "path_horizon_m": {
+          "count": 30,
+          "min": 57.0,
+          "p50": 57.0,
+          "p95": 62.0,
+          "max": 62.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4585906979441643,
+          "p50": 1.4730882833647239,
+          "p95": 1.4843986147699804,
+          "max": 1.486245906692715
+        },
+        "rail_head_height_above_bed_m": {
+          "count": 30,
+          "min": 0.2056444727399457,
+          "p50": 0.20984574514248722,
+          "p95": 0.21931689120764056,
+          "max": 0.22182404404117181
+        },
+        "ground_fit_median_residual_m": {
+          "count": 30,
+          "min": 0.02189900652921528,
+          "p50": 0.026078985538781796,
+          "p95": 0.02857642298556316,
+          "max": 0.028943235389940813
+        },
+        "nearest_obstacle_sensor_x_m": {
+          "count": 29,
+          "min": 28.71968650817871,
+          "p50": 49.27676773071289,
+          "p95": 101.19096069335937,
+          "max": 108.16065979003906
+        },
+        "cluster_support_min_x_m": {
+          "count": 7322,
+          "min": 2.0000789165496826,
+          "p50": 38.16247749328613,
+          "p95": 123.98894424438475,
+          "max": 205.0525360107422
+        },
+        "distance_support_x_m": {
+          "count": 7322,
+          "min": 2.0000789165496826,
+          "p50": 38.16247749328613,
+          "p95": 123.98894424438475,
+          "max": 205.0525360107422
+        },
+        "supported_envelope_min_x_m": {
+          "count": 105,
+          "min": 26.02741241455078,
+          "p50": 43.848819732666016,
+          "p95": 56.09257049560547,
+          "max": 60.300575256347656
+        },
+        "unresolved_envelope_min_x_m": {
+          "count": 445,
+          "min": 57.355865478515625,
+          "p50": 124.97811889648438,
+          "p95": 186.72350158691407,
+          "max": 205.0525360107422
+        },
+        "tracking": {
+          "diagnosed_frames": 30,
+          "births": 619,
+          "diagnostic_processing_ms": {
+            "count": 30,
+            "min": 0.010917079634964466,
+            "p50": 30.82660451764241,
+            "p95": 51.48837497108615,
+            "max": 64.93958400096744
+          },
+          "gap_reset_frames": 0,
+          "removed_track_observations": 277,
+          "hypotheses_by_cause": {
+            "new_object_or_unrelated_neighbor": 2637,
+            "merge": 107,
+            "occlusion_or_missed_segmentation": 1171,
+            "split": 11,
+            "fragmentation_or_occlusion": 3
+          },
+          "different_id_hypotheses": 2758,
+          "verified_identity_switches": null
+        },
+        "range_observability": [
+          {
+            "range_m": [
+              2.0,
+              10.0
+            ],
+            "frames": 30,
+            "returns": 721259,
+            "returns_before_geometry_voxel": 4418641,
+            "geometry_supported_returns": 721259
+          },
+          {
+            "range_m": [
+              10.0,
+              20.0
+            ],
+            "frames": 30,
+            "returns": 358162,
+            "returns_before_geometry_voxel": 809063,
+            "geometry_supported_returns": 358162
+          },
+          {
+            "range_m": [
+              20.0,
+              40.0
+            ],
+            "frames": 30,
+            "returns": 148160,
+            "returns_before_geometry_voxel": 274775,
+            "geometry_supported_returns": 148160
+          },
+          {
+            "range_m": [
+              40.0,
+              60.0
+            ],
+            "frames": 30,
+            "returns": 34373,
+            "returns_before_geometry_voxel": 56218,
+            "geometry_supported_returns": 32378
+          },
+          {
+            "range_m": [
+              60.0,
+              100.0
+            ],
+            "frames": 30,
+            "returns": 17204,
+            "returns_before_geometry_voxel": 26991,
+            "geometry_supported_returns": 617
+          },
+          {
+            "range_m": [
+              100.0,
+              150.0
+            ],
+            "frames": 30,
+            "returns": 4566,
+            "returns_before_geometry_voxel": 6973,
+            "geometry_supported_returns": 0
+          },
+          {
+            "range_m": [
+              150.0,
+              220.0
+            ],
+            "frames": 30,
+            "returns": 1316,
+            "returns_before_geometry_voxel": 2413,
+            "geometry_supported_returns": 0
+          }
+        ],
+        "uncertainty_by_range": [
+          {
+            "x_m": 2.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.12,
+              "p50": 0.12,
+              "p95": 0.12,
+              "max": 0.12
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.06130036883488097,
+              "p50": 0.06518613142324559,
+              "p95": 0.07092927781382559,
+              "max": 0.07231448798213946
+            }
+          },
+          {
+            "x_m": 10.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.041093586861015725,
+              "p50": 0.04444593520847341,
+              "p95": 0.047529732533557474,
+              "max": 0.04863075566122694
+            }
+          },
+          {
+            "x_m": 20.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.04036465141765198,
+              "p50": 0.047316005208400805,
+              "p95": 0.050613097532319046,
+              "max": 0.05321601719200065
+            }
+          },
+          {
+            "x_m": 40.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.042818318885843906,
+              "p50": 0.05399811090867857,
+              "p95": 0.059202839632799785,
+              "max": 0.06576484812864718
+            }
+          },
+          {
+            "x_m": 60.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 10,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.36,
+              "p50": 0.46,
+              "p95": 0.46,
+              "max": 0.46
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.03789377726663814,
+              "p50": 0.050547139417068516,
+              "p95": 0.05976449964049202,
+              "max": 0.06215626018832705
+            }
+          },
+          {
+            "x_m": 100.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 1,
+              "min": 0.1838277904883964,
+              "p50": 0.1838277904883964,
+              "p95": 0.1838277904883964,
+              "max": 0.1838277904883964
+            }
+          },
+          {
+            "x_m": 150.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            }
+          },
+          {
+            "x_m": 220.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            }
+          }
+        ],
+        "note": "Object counts are correlated frame observations. Alarm counts are unlabeled observations, not false positives. no_obstacle_observed never asserts a clear route. Distances are sensor-frame x, not bumper or along-track distance."
+      }
+    },
+    "roundT_pressureGate_roundT": {
+      "frames": 30,
+      "sequences": 1,
+      "status_frames": {
+        "candidate": 3,
+        "obstacle": 20,
+        "unresolved_obstacle": 7
+      },
+      "geometry_valid_frames": 30,
+      "geometry_reasons": {
+        "supported_geometry": 30
+      },
+      "processing_ms": {
+        "count": 30,
+        "min": 574.7479579877108,
+        "p50": 779.5587494620122,
+        "p95": 997.5247415946797,
+        "max": 1112.293167039752
+      },
+      "acquisition_delta_s": {
+        "count": 29,
+        "min": 0.09997904300689697,
+        "p50": 0.10000085830688477,
+        "p95": 0.10002369880676269,
+        "max": 0.10002684593200684
+      },
+      "duplicate_acquisition_deltas": 0,
+      "backward_acquisition_deltas": 0,
+      "source_messages_reported_in_ingestion": null,
+      "observations": {
+        "frame_observation_status": {
+          "candidate": 3,
+          "confirmed_obstacle": 20,
+          "unresolved_obstacle": 7
+        },
+        "object_observation_status": {
+          "candidate": 977,
+          "observed_structure": 4690,
+          "confirmed_obstacle": 37,
+          "unresolved_obstacle": 70
+        },
+        "candidate_observations": 5774,
+        "confirmed_object_observations": 4797,
+        "path_horizon_m": {
+          "count": 30,
+          "min": 57.0,
+          "p50": 62.0,
+          "p95": 67.0,
+          "max": 67.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4644182386994362,
+          "p50": 1.474074044054563,
+          "p95": 1.4814297461519403,
+          "max": 1.485933078239992
+        },
+        "rail_head_height_above_bed_m": {
+          "count": 30,
+          "min": 0.20511610839678257,
+          "p50": 0.21855048076067984,
+          "p95": 0.22266777886755834,
+          "max": 0.22330181429596124
+        },
+        "ground_fit_median_residual_m": {
+          "count": 30,
+          "min": 0.01785059975886849,
+          "p50": 0.02501121414481733,
+          "p95": 0.02936915989025383,
+          "max": 0.029980741816252654
+        },
+        "nearest_obstacle_sensor_x_m": {
+          "count": 27,
+          "min": 28.135534286499023,
+          "p50": 48.40825653076172,
+          "p95": 134.52819213867187,
+          "max": 145.43997192382812
+        },
+        "cluster_support_min_x_m": {
+          "count": 5774,
+          "min": 2.000080108642578,
+          "p50": 35.326276779174805,
+          "p95": 100.46176605224602,
+          "max": 202.3248291015625
+        },
+        "distance_support_x_m": {
+          "count": 5774,
+          "min": 2.000080108642578,
+          "p50": 35.326276779174805,
+          "p95": 100.46176605224602,
+          "max": 202.3248291015625
+        },
+        "supported_envelope_min_x_m": {
+          "count": 114,
+          "min": 24.189455032348633,
+          "p50": 47.89336013793945,
+          "p95": 59.03725910186767,
+          "max": 63.521461486816406
+        },
+        "unresolved_envelope_min_x_m": {
+          "count": 162,
+          "min": 57.60371780395508,
+          "p50": 136.95379638671875,
+          "p95": 188.4779846191406,
+          "max": 202.3248291015625
+        },
+        "tracking": {
+          "diagnosed_frames": 30,
+          "births": 770,
+          "diagnostic_processing_ms": {
+            "count": 30,
+            "min": 0.01158309169113636,
+            "p50": 40.830957994330674,
+            "p95": 89.25815435359249,
+            "max": 116.72283301595598
+          },
+          "gap_reset_frames": 0,
+          "removed_track_observations": 491,
+          "hypotheses_by_cause": {
+            "new_object_or_unrelated_neighbor": 3179,
+            "merge": 147,
+            "split": 20,
+            "occlusion_or_missed_segmentation": 1032,
+            "fragmentation_or_occlusion": 6
+          },
+          "different_id_hypotheses": 3352,
+          "verified_identity_switches": null
+        },
+        "range_observability": [
+          {
+            "range_m": [
+              2.0,
+              10.0
+            ],
+            "frames": 30,
+            "returns": 717618,
+            "returns_before_geometry_voxel": 4414743,
+            "geometry_supported_returns": 717618
+          },
+          {
+            "range_m": [
+              10.0,
+              20.0
+            ],
+            "frames": 30,
+            "returns": 331834,
+            "returns_before_geometry_voxel": 761296,
+            "geometry_supported_returns": 331834
+          },
+          {
+            "range_m": [
+              20.0,
+              40.0
+            ],
+            "frames": 30,
+            "returns": 146614,
+            "returns_before_geometry_voxel": 263382,
+            "geometry_supported_returns": 146614
+          },
+          {
+            "range_m": [
+              40.0,
+              60.0
+            ],
+            "frames": 30,
+            "returns": 33361,
+            "returns_before_geometry_voxel": 50658,
+            "geometry_supported_returns": 32365
+          },
+          {
+            "range_m": [
+              60.0,
+              100.0
+            ],
+            "frames": 30,
+            "returns": 21448,
+            "returns_before_geometry_voxel": 33202,
+            "geometry_supported_returns": 1750
+          },
+          {
+            "range_m": [
+              100.0,
+              150.0
+            ],
+            "frames": 30,
+            "returns": 3295,
+            "returns_before_geometry_voxel": 5467,
+            "geometry_supported_returns": 0
+          },
+          {
+            "range_m": [
+              150.0,
+              220.0
+            ],
+            "frames": 30,
+            "returns": 728,
+            "returns_before_geometry_voxel": 1296,
+            "geometry_supported_returns": 0
+          }
+        ],
+        "uncertainty_by_range": [
+          {
+            "x_m": 2.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.12,
+              "p50": 0.12,
+              "p95": 0.12,
+              "max": 0.12
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.045088781700865554,
+              "p50": 0.06385941651738727,
+              "p95": 0.07574699968914515,
+              "max": 0.07733581381159119
+            }
+          },
+          {
+            "x_m": 10.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.031295295430279,
+              "p50": 0.04415281189416258,
+              "p95": 0.056153629653614826,
+              "max": 0.05688710087836562
+            }
+          },
+          {
+            "x_m": 20.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.03715204906851708,
+              "p50": 0.04717196160651205,
+              "p95": 0.057894569250359226,
+              "max": 0.05854519148453205
+            }
+          },
+          {
+            "x_m": 40.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.03160805626923189,
+              "p50": 0.04954852139640891,
+              "p95": 0.059548611905020116,
+              "max": 0.06429015403237362
+            }
+          },
+          {
+            "x_m": 60.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 22,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.26,
+              "p50": 0.36,
+              "p95": 0.46,
+              "max": 0.46
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.015,
+              "p50": 0.05691302704449051,
+              "p95": 0.08032427511425172,
+              "max": 0.08626403864630829
+            }
+          },
+          {
+            "x_m": 100.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 14,
+              "min": 0.015,
+              "p50": 0.09925931024312822,
+              "p95": 0.13606577357812707,
+              "max": 0.13757213889911626
+            }
+          },
+          {
+            "x_m": 150.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            }
+          },
+          {
+            "x_m": 220.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            }
+          }
+        ],
+        "note": "Object counts are correlated frame observations. Alarm counts are unlabeled observations, not false positives. no_obstacle_observed never asserts a clear route. Distances are sensor-frame x, not bumper or along-track distance."
+      }
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "frames": 30,
+      "sequences": 1,
+      "status_frames": {
+        "candidate": 4,
+        "obstacle": 14,
+        "unresolved_obstacle": 12
+      },
+      "geometry_valid_frames": 30,
+      "geometry_reasons": {
+        "supported_geometry": 30
+      },
+      "processing_ms": {
+        "count": 30,
+        "min": 650.384166976437,
+        "p50": 715.4596250038594,
+        "p95": 849.943414167501,
+        "max": 892.6558340899646
+      },
+      "acquisition_delta_s": {
+        "count": 29,
+        "min": 0.09997987747192383,
+        "p50": 0.10000085830688477,
+        "p95": 0.10001513957977295,
+        "max": 0.10001814365386963
+      },
+      "duplicate_acquisition_deltas": 0,
+      "backward_acquisition_deltas": 0,
+      "source_messages_reported_in_ingestion": null,
+      "observations": {
+        "frame_observation_status": {
+          "candidate": 4,
+          "confirmed_obstacle": 14,
+          "unresolved_obstacle": 12
+        },
+        "object_observation_status": {
+          "observed_structure": 7588,
+          "candidate": 795,
+          "confirmed_obstacle": 33,
+          "unresolved_obstacle": 108
+        },
+        "candidate_observations": 8524,
+        "confirmed_object_observations": 7729,
+        "path_horizon_m": {
+          "count": 30,
+          "min": 57.0,
+          "p50": 57.0,
+          "p95": 62.0,
+          "max": 62.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4521494409185722,
+          "p50": 1.4677501194966291,
+          "p95": 1.4788160763345914,
+          "max": 1.4812336111068727
+        },
+        "rail_head_height_above_bed_m": {
+          "count": 30,
+          "min": 0.20981232309261139,
+          "p50": 0.21385614671747477,
+          "p95": 0.21721093318381485,
+          "max": 0.21742089361209427
+        },
+        "ground_fit_median_residual_m": {
+          "count": 30,
+          "min": 0.022592354668159786,
+          "p50": 0.025442070817524698,
+          "p95": 0.027612722546073793,
+          "max": 0.028659124450900908
+        },
+        "nearest_obstacle_sensor_x_m": {
+          "count": 26,
+          "min": 36.573081970214844,
+          "p50": 55.96234703063965,
+          "p95": 111.69649124145508,
+          "max": 112.5364761352539
+        },
+        "cluster_support_min_x_m": {
+          "count": 8524,
+          "min": 2.000004529953003,
+          "p50": 37.38204002380371,
+          "p95": 96.17946205139158,
+          "max": 205.48304748535156
+        },
+        "distance_support_x_m": {
+          "count": 8524,
+          "min": 2.000004529953003,
+          "p50": 37.38204002380371,
+          "p95": 96.17946205139158,
+          "max": 205.48304748535156
+        },
+        "supported_envelope_min_x_m": {
+          "count": 91,
+          "min": 21.842514038085938,
+          "p50": 49.69037628173828,
+          "p95": 58.396358489990234,
+          "max": 60.94157028198242
+        },
+        "unresolved_envelope_min_x_m": {
+          "count": 148,
+          "min": 57.326045989990234,
+          "p50": 126.3364372253418,
+          "p95": 177.84606552124023,
+          "max": 205.48304748535156
+        },
+        "tracking": {
+          "diagnosed_frames": 30,
+          "births": 590,
+          "diagnostic_processing_ms": {
+            "count": 30,
+            "min": 0.010082963854074478,
+            "p50": 19.67933349078521,
+            "p95": 27.016916032880545,
+            "max": 38.263041991740465
+          },
+          "gap_reset_frames": 0,
+          "removed_track_observations": 230,
+          "hypotheses_by_cause": {
+            "split": 7,
+            "new_object_or_unrelated_neighbor": 2292,
+            "merge": 168,
+            "occlusion_or_missed_segmentation": 1121
+          },
+          "different_id_hypotheses": 2467,
+          "verified_identity_switches": null
+        },
+        "range_observability": [
+          {
+            "range_m": [
+              2.0,
+              10.0
+            ],
+            "frames": 30,
+            "returns": 697388,
+            "returns_before_geometry_voxel": 4435286,
+            "geometry_supported_returns": 697388
+          },
+          {
+            "range_m": [
+              10.0,
+              20.0
+            ],
+            "frames": 30,
+            "returns": 330061,
+            "returns_before_geometry_voxel": 798626,
+            "geometry_supported_returns": 330061
+          },
+          {
+            "range_m": [
+              20.0,
+              40.0
+            ],
+            "frames": 30,
+            "returns": 146176,
+            "returns_before_geometry_voxel": 272630,
+            "geometry_supported_returns": 146176
+          },
+          {
+            "range_m": [
+              40.0,
+              60.0
+            ],
+            "frames": 30,
+            "returns": 35539,
+            "returns_before_geometry_voxel": 56801,
+            "geometry_supported_returns": 33349
+          },
+          {
+            "range_m": [
+              60.0,
+              100.0
+            ],
+            "frames": 30,
+            "returns": 22025,
+            "returns_before_geometry_voxel": 33463,
+            "geometry_supported_returns": 607
+          },
+          {
+            "range_m": [
+              100.0,
+              150.0
+            ],
+            "frames": 30,
+            "returns": 3579,
+            "returns_before_geometry_voxel": 5999,
+            "geometry_supported_returns": 0
+          },
+          {
+            "range_m": [
+              150.0,
+              220.0
+            ],
+            "frames": 30,
+            "returns": 1191,
+            "returns_before_geometry_voxel": 2125,
+            "geometry_supported_returns": 0
+          }
+        ],
+        "uncertainty_by_range": [
+          {
+            "x_m": 2.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.12,
+              "p50": 0.12,
+              "p95": 0.12,
+              "max": 0.12
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.057287681453890626,
+              "p50": 0.061368331380396636,
+              "p95": 0.06480777228836082,
+              "max": 0.06656900703171761
+            }
+          },
+          {
+            "x_m": 10.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.03895870708342359,
+              "p50": 0.04396484569732759,
+              "p95": 0.04592295464906865,
+              "max": 0.04704540732481062
+            }
+          },
+          {
+            "x_m": 20.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.050593706328534105,
+              "p50": 0.05453723355134565,
+              "p95": 0.05762572263196622,
+              "max": 0.06056221445461432
+            }
+          },
+          {
+            "x_m": 40.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.05148486641474878,
+              "p50": 0.06226038909506071,
+              "p95": 0.06893913088514984,
+              "max": 0.070118771007319
+            }
+          },
+          {
+            "x_m": 60.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 10,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.36,
+              "p50": 0.46,
+              "p95": 0.46,
+              "max": 0.46
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.05154381486774039,
+              "p50": 0.06555125595514154,
+              "p95": 0.075696786033216,
+              "max": 0.07809464575926861
+            }
+          },
+          {
+            "x_m": 100.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 4,
+              "min": 0.15636454429967264,
+              "p50": 0.17649508311199705,
+              "p95": 0.1852855273285288,
+              "max": 0.18639751608846722
+            }
+          },
+          {
+            "x_m": 150.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            }
+          },
+          {
+            "x_m": 220.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            }
+          }
+        ],
+        "note": "Object counts are correlated frame observations. Alarm counts are unlabeled observations, not false positives. no_obstacle_observed never asserts a clear route. Distances are sensor-frame x, not bumper or along-track distance."
+      }
+    },
+    "squareT_platform_squareT_switch": {
+      "frames": 30,
+      "sequences": 1,
+      "status_frames": {
+        "candidate": 5,
+        "unresolved_obstacle": 14,
+        "no_obstacle_observed": 9,
+        "obstacle": 2
+      },
+      "geometry_valid_frames": 30,
+      "geometry_reasons": {
+        "supported_geometry": 30
+      },
+      "processing_ms": {
+        "count": 30,
+        "min": 453.24354199692607,
+        "p50": 589.8689794703387,
+        "p95": 794.9747875682077,
+        "max": 854.7345829429105
+      },
+      "acquisition_delta_s": {
+        "count": 29,
+        "min": 0.09999704360961914,
+        "p50": 0.10000419616699219,
+        "p95": 0.10001099109649658,
+        "max": 0.10001111030578613
+      },
+      "duplicate_acquisition_deltas": 0,
+      "backward_acquisition_deltas": 0,
+      "source_messages_reported_in_ingestion": null,
+      "observations": {
+        "frame_observation_status": {
+          "candidate": 5,
+          "unresolved_obstacle": 14,
+          "no_obstacle_observed": 9,
+          "confirmed_obstacle": 2
+        },
+        "object_observation_status": {
+          "observed_structure": 5842,
+          "candidate": 897,
+          "unresolved_obstacle": 86,
+          "confirmed_obstacle": 7
+        },
+        "candidate_observations": 6832,
+        "confirmed_object_observations": 5935,
+        "path_horizon_m": {
+          "count": 30,
+          "min": 52.0,
+          "p50": 57.0,
+          "p95": 62.0,
+          "max": 67.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4593289050703597,
+          "p50": 1.473716788862316,
+          "p95": 1.4788636483103037,
+          "max": 1.4870034613247407
+        },
+        "rail_head_height_above_bed_m": {
+          "count": 30,
+          "min": 0.21287754842035672,
+          "p50": 0.2174192395008654,
+          "p95": 0.2211228345182548,
+          "max": 0.22157662603305361
+        },
+        "ground_fit_median_residual_m": {
+          "count": 30,
+          "min": 0.02098559247618137,
+          "p50": 0.025691723299749447,
+          "p95": 0.027332291185535137,
+          "max": 0.03132566419108673
+        },
+        "nearest_obstacle_sensor_x_m": {
+          "count": 16,
+          "min": 50.76710510253906,
+          "p50": 92.61306762695312,
+          "p95": 113.85258483886719,
+          "max": 126.63018798828125
+        },
+        "cluster_support_min_x_m": {
+          "count": 6832,
+          "min": 2.0000271797180176,
+          "p50": 35.7076358795166,
+          "p95": 98.86183776855468,
+          "max": 200.65768432617188
+        },
+        "distance_support_x_m": {
+          "count": 6832,
+          "min": 2.0000271797180176,
+          "p50": 35.7076358795166,
+          "p95": 98.86183776855468,
+          "max": 200.65768432617188
+        },
+        "supported_envelope_min_x_m": {
+          "count": 30,
+          "min": 23.0518798828125,
+          "p50": 52.58602714538574,
+          "p95": 62.88384552001953,
+          "max": 66.32321166992188
+        },
+        "unresolved_envelope_min_x_m": {
+          "count": 119,
+          "min": 57.455448150634766,
+          "p50": 93.04170227050781,
+          "p95": 126.96005096435545,
+          "max": 142.6616668701172
+        },
+        "tracking": {
+          "diagnosed_frames": 30,
+          "births": 658,
+          "diagnostic_processing_ms": {
+            "count": 30,
+            "min": 0.010832911357283592,
+            "p50": 21.743958990555257,
+            "p95": 29.650029487675056,
+            "max": 32.10575005505234
+          },
+          "gap_reset_frames": 0,
+          "removed_track_observations": 352,
+          "hypotheses_by_cause": {
+            "new_object_or_unrelated_neighbor": 2894,
+            "split": 16,
+            "merge": 107,
+            "occlusion_or_missed_segmentation": 1136,
+            "fragmentation_or_occlusion": 6
+          },
+          "different_id_hypotheses": 3023,
+          "verified_identity_switches": null
+        },
+        "range_observability": [
+          {
+            "range_m": [
+              2.0,
+              10.0
+            ],
+            "frames": 30,
+            "returns": 666262,
+            "returns_before_geometry_voxel": 4186329,
+            "geometry_supported_returns": 666262
+          },
+          {
+            "range_m": [
+              10.0,
+              20.0
+            ],
+            "frames": 30,
+            "returns": 307202,
+            "returns_before_geometry_voxel": 697251,
+            "geometry_supported_returns": 307202
+          },
+          {
+            "range_m": [
+              20.0,
+              40.0
+            ],
+            "frames": 30,
+            "returns": 140426,
+            "returns_before_geometry_voxel": 251462,
+            "geometry_supported_returns": 140426
+          },
+          {
+            "range_m": [
+              40.0,
+              60.0
+            ],
+            "frames": 30,
+            "returns": 34189,
+            "returns_before_geometry_voxel": 52098,
+            "geometry_supported_returns": 31726
+          },
+          {
+            "range_m": [
+              60.0,
+              100.0
+            ],
+            "frames": 30,
+            "returns": 26088,
+            "returns_before_geometry_voxel": 36253,
+            "geometry_supported_returns": 884
+          },
+          {
+            "range_m": [
+              100.0,
+              150.0
+            ],
+            "frames": 30,
+            "returns": 4750,
+            "returns_before_geometry_voxel": 7066,
+            "geometry_supported_returns": 0
+          },
+          {
+            "range_m": [
+              150.0,
+              220.0
+            ],
+            "frames": 30,
+            "returns": 249,
+            "returns_before_geometry_voxel": 373,
+            "geometry_supported_returns": 0
+          }
+        ],
+        "uncertainty_by_range": [
+          {
+            "x_m": 2.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.12,
+              "p50": 0.12,
+              "p95": 0.12,
+              "max": 0.12
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.06035652424602666,
+              "p50": 0.0688474915611414,
+              "p95": 0.07712706852568552,
+              "max": 0.07777074904845088
+            }
+          },
+          {
+            "x_m": 10.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.04161761945432012,
+              "p50": 0.048742089616261114,
+              "p95": 0.05374738290265569,
+              "max": 0.05588433739071206
+            }
+          },
+          {
+            "x_m": 20.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.06
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.046046142786660464,
+              "p50": 0.05334796299301188,
+              "p95": 0.05706681995497345,
+              "max": 0.057835565214444065
+            }
+          },
+          {
+            "x_m": 40.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 30,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.06,
+              "p50": 0.06,
+              "p95": 0.06,
+              "max": 0.16
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.03285644133800076,
+              "p50": 0.058722720405904746,
+              "p95": 0.06692567783512424,
+              "max": 0.06703792562962216
+            }
+          },
+          {
+            "x_m": 60.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 11,
+            "path_sigma_m": {
+              "count": 30,
+              "min": 0.26,
+              "p50": 0.46,
+              "p95": 0.46,
+              "max": 0.56
+            },
+            "ground_sigma_m": {
+              "count": 30,
+              "min": 0.024549954958624474,
+              "p50": 0.06261956974290345,
+              "p95": 0.0802438846516228,
+              "max": 0.08713797387423486
+            }
+          },
+          {
+            "x_m": 100.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 3,
+              "min": 0.18603229072467758,
+              "p50": 0.19500015059993137,
+              "p95": 0.22094141619592544,
+              "max": 0.2238237790399248
+            }
+          },
+          {
+            "x_m": 150.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            }
+          },
+          {
+            "x_m": 220.0,
+            "frames_with_profile": 30,
+            "geometry_supported_frames": 0,
+            "path_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "ground_sigma_m": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            }
+          }
+        ],
+        "note": "Object counts are correlated frame observations. Alarm counts are unlabeled observations, not false positives. no_obstacle_observed never asserts a clear route. Distances are sensor-frame x, not bumper or along-track distance."
+      }
+    }
+  },
+  "inspection": {
+    "doubleT_obstacle": {
+      "summary": {
+        "frames": 30,
+        "first_measurement_ns": 946687297199933052,
+        "last_measurement_ns": 946687300100116968,
+        "acquisition_span_s": 2.900183916,
+        "delta_s": {
+          "count": 29,
+          "min": 0.09998405,
+          "p50": 0.100007058,
+          "p95": 0.1000273702,
+          "max": 0.100030065
+        },
+        "median_period_hz": 9.999294249811848,
+        "messages_per_acquisition_span_hz": 9.99936584711409,
+        "duplicate_timestamps": 0,
+        "backward_timestamps": 0,
+        "gap_rule": {
+          "detector_reset_s": 0.5,
+          "irregular_above_median_multiplier": 1.5
+        },
+        "timestamp_discontinuities": [],
+        "geometry_valid_frames": 30,
+        "frame_ids": [
+          "lidar_livox"
+        ],
+        "path_horizon_m": {
+          "count": 30,
+          "min": 47.0,
+          "p50": 57.0,
+          "p95": 62.0,
+          "max": 62.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4590924878787994,
+          "p50": 1.4853673487012111,
+          "p95": 1.4905451383827542,
+          "max": 1.4960604980905832
+        }
+      },
+      "source": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+      "first_message": {
+        "frame_id": "lidar_livox",
+        "point_step": 26,
+        "fields": [
+          {
+            "name": "x",
+            "offset": 0,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "y",
+            "offset": 4,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "z",
+            "offset": 8,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "intensity",
+            "offset": 12,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "ring",
+            "offset": 16,
+            "datatype": 4,
+            "count": 1
+          },
+          {
+            "name": "timestamp",
+            "offset": 18,
+            "datatype": 8,
+            "count": 1
+          }
+        ],
+        "width": 921600,
+        "height": 1,
+        "valid_points": 346808,
+        "invalid_points": 574792,
+        "inferred_scan_duration_s": 0.06805706024169922,
+        "timestamp_fields": [
+          "timestamp"
+        ],
+        "return_fields": []
+      }
+    },
+    "doubleT_platform": {
+      "summary": {
+        "frames": 30,
+        "first_measurement_ns": 946693350333430052,
+        "last_measurement_ns": 946693353233448029,
+        "acquisition_span_s": 2.900017977,
+        "delta_s": {
+          "count": 29,
+          "min": 0.099979997,
+          "p50": 0.100000978,
+          "p95": 0.1000156164,
+          "max": 0.100019932
+        },
+        "median_period_hz": 9.999902200956475,
+        "messages_per_acquisition_span_hz": 9.999938010729096,
+        "duplicate_timestamps": 0,
+        "backward_timestamps": 0,
+        "gap_rule": {
+          "detector_reset_s": 0.5,
+          "irregular_above_median_multiplier": 1.5
+        },
+        "timestamp_discontinuities": [],
+        "geometry_valid_frames": 30,
+        "frame_ids": [
+          "hesai_lidar"
+        ],
+        "path_horizon_m": {
+          "count": 30,
+          "min": 52.0,
+          "p50": 59.5,
+          "p95": 64.74999999999999,
+          "max": 67.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4620341706275939,
+          "p50": 1.475338956026675,
+          "p95": 1.4873085106645294,
+          "max": 1.487782468295221
+        }
+      },
+      "source": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+      "first_message": {
+        "frame_id": "hesai_lidar",
+        "point_step": 26,
+        "fields": [
+          {
+            "name": "x",
+            "offset": 0,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "y",
+            "offset": 4,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "z",
+            "offset": 8,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "intensity",
+            "offset": 12,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "ring",
+            "offset": 16,
+            "datatype": 4,
+            "count": 1
+          },
+          {
+            "name": "timestamp",
+            "offset": 18,
+            "datatype": 8,
+            "count": 1
+          }
+        ],
+        "width": 307200,
+        "height": 1,
+        "valid_points": 185638,
+        "invalid_points": 121562,
+        "inferred_scan_duration_s": 0.03205597400665283,
+        "timestamp_fields": [
+          "timestamp"
+        ],
+        "return_fields": []
+      }
+    },
+    "new_data": {
+      "summary": {
+        "frames": 30,
+        "first_measurement_ns": 946686689233376980,
+        "last_measurement_ns": 946686692133442044,
+        "acquisition_span_s": 2.900065064,
+        "delta_s": {
+          "count": 29,
+          "min": 0.099988937,
+          "p50": 0.100003004,
+          "p95": 0.100013971,
+          "max": 0.100013971
+        },
+        "median_period_hz": 9.999699609023745,
+        "messages_per_acquisition_span_hz": 9.999775646412877,
+        "duplicate_timestamps": 0,
+        "backward_timestamps": 0,
+        "gap_rule": {
+          "detector_reset_s": 0.5,
+          "irregular_above_median_multiplier": 1.5
+        },
+        "timestamp_discontinuities": [],
+        "geometry_valid_frames": 30,
+        "frame_ids": [
+          "hesai_lidar"
+        ],
+        "path_horizon_m": {
+          "count": 30,
+          "min": 52.0,
+          "p50": 57.0,
+          "p95": 62.0,
+          "max": 62.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4495083681784788,
+          "p50": 1.4622149541617868,
+          "p95": 1.4669984168047097,
+          "max": 1.4747188713644954
+        }
+      },
+      "source": "992a09d5c21753977a2a50a69367f0b34e1dd27cdac793c16165b829d92b900d",
+      "first_message": {
+        "frame_id": "hesai_lidar",
+        "point_step": 26,
+        "fields": [
+          {
+            "name": "x",
+            "offset": 0,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "y",
+            "offset": 4,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "z",
+            "offset": 8,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "intensity",
+            "offset": 12,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "ring",
+            "offset": 16,
+            "datatype": 4,
+            "count": 1
+          },
+          {
+            "name": "timestamp",
+            "offset": 18,
+            "datatype": 8,
+            "count": 1
+          }
+        ],
+        "width": 307200,
+        "height": 1,
+        "valid_points": 159162,
+        "invalid_points": 148038,
+        "inferred_scan_duration_s": 0.03194308280944824,
+        "timestamp_fields": [
+          "timestamp"
+        ],
+        "return_fields": []
+      }
+    },
+    "roundT_doubleT": {
+      "summary": {
+        "frames": 30,
+        "first_measurement_ns": 946692931633399963,
+        "last_measurement_ns": 946692934533426046,
+        "acquisition_span_s": 2.900026083,
+        "delta_s": {
+          "count": 29,
+          "min": 0.09999299,
+          "p50": 0.100000024,
+          "p95": 0.1000102282,
+          "max": 0.100015045
+        },
+        "median_period_hz": 9.999997600000576,
+        "messages_per_acquisition_span_hz": 9.999910059429627,
+        "duplicate_timestamps": 0,
+        "backward_timestamps": 0,
+        "gap_rule": {
+          "detector_reset_s": 0.5,
+          "irregular_above_median_multiplier": 1.5
+        },
+        "timestamp_discontinuities": [],
+        "geometry_valid_frames": 30,
+        "frame_ids": [
+          "hesai_lidar"
+        ],
+        "path_horizon_m": {
+          "count": 30,
+          "min": 57.0,
+          "p50": 57.0,
+          "p95": 62.0,
+          "max": 62.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4585906979441643,
+          "p50": 1.4730882833647239,
+          "p95": 1.4843986147699804,
+          "max": 1.486245906692715
+        }
+      },
+      "source": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d",
+      "first_message": {
+        "frame_id": "hesai_lidar",
+        "point_step": 26,
+        "fields": [
+          {
+            "name": "x",
+            "offset": 0,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "y",
+            "offset": 4,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "z",
+            "offset": 8,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "intensity",
+            "offset": 12,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "ring",
+            "offset": 16,
+            "datatype": 4,
+            "count": 1
+          },
+          {
+            "name": "timestamp",
+            "offset": 18,
+            "datatype": 8,
+            "count": 1
+          }
+        ],
+        "width": 307200,
+        "height": 1,
+        "valid_points": 189502,
+        "invalid_points": 117698,
+        "inferred_scan_duration_s": 0.03206193447113037,
+        "timestamp_fields": [
+          "timestamp"
+        ],
+        "return_fields": []
+      }
+    },
+    "roundT_pressureGate_roundT": {
+      "summary": {
+        "frames": 30,
+        "first_measurement_ns": 946692902433449030,
+        "last_measurement_ns": 946692905333462954,
+        "acquisition_span_s": 2.900013924,
+        "delta_s": {
+          "count": 29,
+          "min": 0.099978924,
+          "p50": 0.100000978,
+          "p95": 0.1000236276,
+          "max": 0.100026965
+        },
+        "median_period_hz": 9.999902200956475,
+        "messages_per_acquisition_span_hz": 9.999951986437427,
+        "duplicate_timestamps": 0,
+        "backward_timestamps": 0,
+        "gap_rule": {
+          "detector_reset_s": 0.5,
+          "irregular_above_median_multiplier": 1.5
+        },
+        "timestamp_discontinuities": [],
+        "geometry_valid_frames": 30,
+        "frame_ids": [
+          "hesai_lidar"
+        ],
+        "path_horizon_m": {
+          "count": 30,
+          "min": 57.0,
+          "p50": 62.0,
+          "p95": 67.0,
+          "max": 67.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4644182386994362,
+          "p50": 1.474074044054563,
+          "p95": 1.4814297461519403,
+          "max": 1.485933078239992
+        }
+      },
+      "source": "bec21b5aa0581936678824b5cb43043dfe99c7b1eb468c3dddf8e25554b703c1",
+      "first_message": {
+        "frame_id": "hesai_lidar",
+        "point_step": 26,
+        "fields": [
+          {
+            "name": "x",
+            "offset": 0,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "y",
+            "offset": 4,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "z",
+            "offset": 8,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "intensity",
+            "offset": 12,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "ring",
+            "offset": 16,
+            "datatype": 4,
+            "count": 1
+          },
+          {
+            "name": "timestamp",
+            "offset": 18,
+            "datatype": 8,
+            "count": 1
+          }
+        ],
+        "width": 307200,
+        "height": 1,
+        "valid_points": 189864,
+        "invalid_points": 117336,
+        "inferred_scan_duration_s": 0.03205704689025879,
+        "timestamp_fields": [
+          "timestamp"
+        ],
+        "return_fields": []
+      }
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "summary": {
+        "frames": 30,
+        "first_measurement_ns": 946692690533414006,
+        "last_measurement_ns": 946692693433393002,
+        "acquisition_span_s": 2.899978996,
+        "delta_s": {
+          "count": 29,
+          "min": 0.099979996,
+          "p50": 0.100000978,
+          "p95": 0.1000151872,
+          "max": 0.100018025
+        },
+        "median_period_hz": 9.999902200956475,
+        "messages_per_acquisition_span_hz": 10.000072428110785,
+        "duplicate_timestamps": 0,
+        "backward_timestamps": 0,
+        "gap_rule": {
+          "detector_reset_s": 0.5,
+          "irregular_above_median_multiplier": 1.5
+        },
+        "timestamp_discontinuities": [],
+        "geometry_valid_frames": 30,
+        "frame_ids": [
+          "hesai_lidar"
+        ],
+        "path_horizon_m": {
+          "count": 30,
+          "min": 57.0,
+          "p50": 57.0,
+          "p95": 62.0,
+          "max": 62.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4521494409185722,
+          "p50": 1.4677501194966291,
+          "p95": 1.4788160763345914,
+          "max": 1.4812336111068727
+        }
+      },
+      "source": "9e9cedccc7a02337cd1f1020efebe22a4684c3598b2f7b5562b5fd044eafa616",
+      "first_message": {
+        "frame_id": "hesai_lidar",
+        "point_step": 26,
+        "fields": [
+          {
+            "name": "x",
+            "offset": 0,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "y",
+            "offset": 4,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "z",
+            "offset": 8,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "intensity",
+            "offset": 12,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "ring",
+            "offset": 16,
+            "datatype": 4,
+            "count": 1
+          },
+          {
+            "name": "timestamp",
+            "offset": 18,
+            "datatype": 8,
+            "count": 1
+          }
+        ],
+        "width": 307200,
+        "height": 1,
+        "valid_points": 185070,
+        "invalid_points": 122130,
+        "inferred_scan_duration_s": 0.03200399875640869,
+        "timestamp_fields": [
+          "timestamp"
+        ],
+        "return_fields": []
+      }
+    },
+    "squareT_platform_squareT_switch": {
+      "summary": {
+        "frames": 30,
+        "first_measurement_ns": 946692771733356953,
+        "last_measurement_ns": 946692774633476019,
+        "acquisition_span_s": 2.900119066,
+        "delta_s": {
+          "count": 29,
+          "min": 0.099996924,
+          "p50": 0.100004077,
+          "p95": 0.100010991,
+          "max": 0.10001111
+        },
+        "median_period_hz": 9.999592316621252,
+        "messages_per_acquisition_span_hz": 9.999589444442487,
+        "duplicate_timestamps": 0,
+        "backward_timestamps": 0,
+        "gap_rule": {
+          "detector_reset_s": 0.5,
+          "irregular_above_median_multiplier": 1.5
+        },
+        "timestamp_discontinuities": [],
+        "geometry_valid_frames": 30,
+        "frame_ids": [
+          "hesai_lidar"
+        ],
+        "path_horizon_m": {
+          "count": 30,
+          "min": 52.0,
+          "p50": 57.0,
+          "p95": 62.0,
+          "max": 67.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4593289050703597,
+          "p50": 1.473716788862316,
+          "p95": 1.4788636483103037,
+          "max": 1.4870034613247407
+        }
+      },
+      "source": "46b6f276a63bca7642a091e11d78416951bc952e7889d940c0b43309b7060553",
+      "first_message": {
+        "frame_id": "hesai_lidar",
+        "point_step": 26,
+        "fields": [
+          {
+            "name": "x",
+            "offset": 0,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "y",
+            "offset": 4,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "z",
+            "offset": 8,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "intensity",
+            "offset": 12,
+            "datatype": 7,
+            "count": 1
+          },
+          {
+            "name": "ring",
+            "offset": 16,
+            "datatype": 4,
+            "count": 1
+          },
+          {
+            "name": "timestamp",
+            "offset": 18,
+            "datatype": 8,
+            "count": 1
+          }
+        ],
+        "width": 307200,
+        "height": 1,
+        "valid_points": 181792,
+        "invalid_points": 125408,
+        "inferred_scan_duration_s": 0.032000064849853516,
+        "timestamp_fields": [
+          "timestamp"
+        ],
+        "return_fields": []
+      }
+    }
+  },
+  "synthetic_metrics": {
+    "before": {
+      "label_status": "synthetic_exact",
+      "prediction_scope": "collision_hazards",
+      "annotation_origins": {
+        "unspecified": 216
+      },
+      "box_semantics": "unspecified",
+      "minimum_3d_iou": 0.1,
+      "evaluated_frames": 330,
+      "missing_frames": [],
+      "exhaustive_frames": 330,
+      "tp": 162,
+      "fn": 54,
+      "fp_exhaustive_only": 21,
+      "annotated_object_recall": 0.75,
+      "precision_exhaustive_only": 0.8852459016393442,
+      "recall_exhaustive_only": 0.75,
+      "f1_exhaustive_only": 0.8120300751879699,
+      "event_recall": 0.9027777777777778,
+      "distance_mae_m": 0.0003614190176008837,
+      "matched_mean_3d_iou": 0.8457163476499894,
+      "validity_warnings": [
+        "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+      ],
+      "negative_episode_rate": 0.0,
+      "range_results": [
+        {
+          "range_m": 10.0,
+          "cases": 12,
+          "event_recall": 1.0,
+          "invisible_cases": 0
+        },
+        {
+          "range_m": 20.0,
+          "cases": 12,
+          "event_recall": 1.0,
+          "invisible_cases": 0
+        },
+        {
+          "range_m": 40.0,
+          "cases": 12,
+          "event_recall": 1.0,
+          "invisible_cases": 0
+        },
+        {
+          "range_m": 60.0,
+          "cases": 12,
+          "event_recall": 1.0,
+          "invisible_cases": 0
+        },
+        {
+          "range_m": 100.0,
+          "cases": 12,
+          "event_recall": 0.8333333333333334,
+          "invisible_cases": 0
+        },
+        {
+          "range_m": 150.0,
+          "cases": 12,
+          "event_recall": 0.5833333333333334,
+          "invisible_cases": 1
+        }
+      ],
+      "wall_s": 170.2675955001032,
+      "pass_criterion": false,
+      "note": "Analytic opaque box ray casting with a declared generic 128-beam pattern, range noise, dropout, and motion. Not a Hesai sensor reproduction and not evidence of real 100\u2013150m recall. Off-path cases score collision alarms, not adjacent-object reporting. Localization IoU uses visible support, not amodal boxes."
+    },
+    "after": {
+      "label_status": "synthetic_exact",
+      "prediction_scope": "collision_hazards",
+      "annotation_origins": {
+        "unspecified": 216
+      },
+      "box_semantics": "unspecified",
+      "minimum_3d_iou": 0.1,
+      "evaluated_frames": 330,
+      "missing_frames": [],
+      "exhaustive_frames": 330,
+      "tp": 162,
+      "fn": 54,
+      "fp_exhaustive_only": 21,
+      "annotated_object_recall": 0.75,
+      "precision_exhaustive_only": 0.8852459016393442,
+      "recall_exhaustive_only": 0.75,
+      "f1_exhaustive_only": 0.8120300751879699,
+      "event_recall": 0.9027777777777778,
+      "distance_mae_m": 0.0003614190176008837,
+      "matched_mean_3d_iou": 0.8457163476499894,
+      "validity_warnings": [
+        "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+      ],
+      "negative_episode_rate": 0.0,
+      "range_results": [
+        {
+          "range_m": 10.0,
+          "cases": 12,
+          "event_recall": 1.0,
+          "invisible_cases": 0
+        },
+        {
+          "range_m": 20.0,
+          "cases": 12,
+          "event_recall": 1.0,
+          "invisible_cases": 0
+        },
+        {
+          "range_m": 40.0,
+          "cases": 12,
+          "event_recall": 1.0,
+          "invisible_cases": 0
+        },
+        {
+          "range_m": 60.0,
+          "cases": 12,
+          "event_recall": 1.0,
+          "invisible_cases": 0
+        },
+        {
+          "range_m": 100.0,
+          "cases": 12,
+          "event_recall": 0.8333333333333334,
+          "invisible_cases": 0
+        },
+        {
+          "range_m": 150.0,
+          "cases": 12,
+          "event_recall": 0.5833333333333334,
+          "invisible_cases": 1
+        }
+      ],
+      "wall_s": 166.2946686670184,
+      "pass_criterion": false,
+      "note": "Analytic opaque box ray casting with a declared generic 128-beam pattern, range noise, dropout, and motion. Not a Hesai sensor reproduction and not evidence of real 100\u2013150m recall. Off-path cases score collision alarms, not adjacent-object reporting. Localization IoU uses visible support, not amodal boxes."
+    }
+  },
+  "baseline_repeat": {
+    "run": "build/buyanov-20260920-new-baseline",
+    "predictions_sha256": {
+      "new_data.jsonl": "9a8bde98d6ae9df323126d0375e6decc2db7ffd4a0bed8731a9823189f34f6a3"
+    },
+    "panel": {
+      "frames": 30,
+      "sequences": 1,
+      "status_frames": {
+        "candidate": 1,
+        "obstacle": 7,
+        "unresolved_obstacle": 22
+      },
+      "geometry_valid_frames": 30,
+      "geometry_reasons": {
+        "supported_geometry": 30
+      },
+      "processing_ms": {
+        "count": 30,
+        "min": 657.4270420242101,
+        "p50": 908.8319789734669,
+        "p95": 1117.6462353265376,
+        "max": 1168.4888750314713
+      },
+      "acquisition_delta_s": {
+        "count": 29,
+        "min": 0.09998905658721924,
+        "p50": 0.10000288486480713,
+        "p95": 0.10001397132873535,
+        "max": 0.10001397132873535
+      },
+      "duplicate_acquisition_deltas": 0,
+      "backward_acquisition_deltas": 0,
+      "source_messages_reported_in_ingestion": 30,
+      "observations": {
+        "frame_observation_status": {
+          "candidate": 1,
+          "confirmed_obstacle": 7,
+          "unresolved_obstacle": 22
+        },
+        "object_observation_status": {
+          "candidate": 850,
+          "observed_structure": 4791,
+          "confirmed_obstacle": 12,
+          "unresolved_obstacle": 222
+        },
+        "candidate_observations": 5875,
+        "confirmed_object_observations": 5025,
+        "path_horizon_m": {
+          "count": 30,
+          "min": 52.0,
+          "p50": 57.0,
+          "p95": 62.0,
+          "max": 62.0
+        },
+        "gauge_inner_m": {
+          "count": 30,
+          "min": 1.4495083681784788,
+          "p50": 1.4622149541617868,
+          "p95": 1.4669984168047097,
+          "max": 1.4747188713644954
+        },
+        "rail_head_height_above_bed_m": {
+          "count": 30,
+          "min": 0.20387310325626587,
+          "p50": 0.20996727063919252,
+          "p95": 0.21641672257952432,
+          "max": 0.21810364026477563
+        },
+        "ground_fit_median_residual_m": {
+          "count": 30,
+          "min": 0.017671811901865953,
+          "p50": 0.019375334570542524,
+          "p95": 0.0212441936815159,
+          "max": 0.021852531934505315
+        },
+        "nearest_obstacle_sensor_x_m": {
+          "count": 29,
+          "min": 37.04960632324219,
+          "p50": 70.159912109375,
+          "p95": 158.42454833984374,
+          "max": 162.3907470703125
+        },
+        "cluster_support_min_x_m": {
+          "count": 5875,
+          "min": 2.0000205039978027,
+          "p50": 35.717262268066406,
+          "p95": 146.42798461914066,
+          "max": 203.4298858642578
+        },
+        "distance_support_x_m": {
+          "count": 5875,
+          "min": 2.0000205039978027,
+          "p50": 35.717262268066406,
+          "p95": 146.42798461914066,
+          "max": 203.4298858642578
+        },
+        "supported_envelope_min_x_m": {
+          "count": 35,
+          "min": 37.04960632324219,
+          "p50": 42.317588806152344,
+          "p95": 55.80167808532715,
+          "max": 56.58883285522461
+        },
+        "unresolved_envelope_min_x_m": {
+          "count": 284,
+          "min": 57.05248260498047,
+          "p50": 162.25098419189453,
+          "p95": 201.90729827880858,
+          "max": 203.53456115722656
+        },
+        "tracking": {
+          "diagnosed_frames": 0,
+          "births": null,
+          "diagnostic_processing_ms": {
+            "count": 0,
+            "min": null,
+            "p50": null,
+            "p95": null,
+            "max": null
+          },
+          "gap_reset_frames": 0,
+          "removed_track_observations": null,
+          "hypotheses_by_cause": {},
+          "different_id_hypotheses": null,
+          "verified_identity_switches": null
+        },
+        "range_observability": [
+          {
+            "range_m": [
+              2.0,
+              10.0
+            ],
+            "frames": 30,
+            "returns": 651113,
+            "returns_before_geometry_voxel": 3673039,
+            "geometry_supported_returns": 651113
+          },
+          {
+            "range_m": [
+              10.0,
+              20.0
+            ],
+            "frames": 30,
+            "returns": 313756,
+            "returns_before_geometry_voxel": 727195,
+            "geometry_supported_returns": 313756
+          },
+          {
+            "range_m": [
+              20.0,
+              40.0
+            ],
+            "frames": 30,
+            "returns": 129641,
+            "returns_before_geometry_voxel": 230901,
+            "geometry_supported_returns": 129641
+          },
+          {
+            "range_m": [
+              40.0,
+              60.0
+            ],
+            "frames": 30,
+            "returns": 29296,
+            "returns_before_geometry_voxel": 42976,
+            "geometry_supported_returns": 27302
+          },
+          {
+            "range_m": [
+              60.0,
+              100.0
+            ],
+            "frames": 30,
+            "returns": 35211,
+            "returns_before_geometry_voxel": 54697,
+            "geometry_supported_returns": 162
+          },
+          {
+            "range_m": [
+              100.0,
+              150.0
+            ],
+            "frames": 30,
+            "returns": 6091,
+            "returns_before_geometry_voxel": 8836,
+            "geometry_supported_returns": 0
+          },
+          {
+            "range_m": [
+              150.0,
+              220.0
+            ],
+            "frames": 30,
+            "returns": 2535,
+            "returns_before_geometry_voxel": 4682,
+            "geometry_supported_returns": 0
+          }
+        ],
+        "uncertainty_by_range": [],
+        "note": "Object counts are correlated frame observations. Alarm counts are unlabeled observations, not false positives. no_obstacle_observed never asserts a clear route. Distances are sensor-frame x, not bumper or along-track distance."
+      }
+    },
+    "sequences": {
+      "new_data": {
+        "frames": 30,
+        "sequences": 1,
+        "status_frames": {
+          "candidate": 1,
+          "obstacle": 7,
+          "unresolved_obstacle": 22
+        },
+        "geometry_valid_frames": 30,
+        "geometry_reasons": {
+          "supported_geometry": 30
+        },
+        "processing_ms": {
+          "count": 30,
+          "min": 657.4270420242101,
+          "p50": 908.8319789734669,
+          "p95": 1117.6462353265376,
+          "max": 1168.4888750314713
+        },
+        "acquisition_delta_s": {
+          "count": 29,
+          "min": 0.09998905658721924,
+          "p50": 0.10000288486480713,
+          "p95": 0.10001397132873535,
+          "max": 0.10001397132873535
+        },
+        "duplicate_acquisition_deltas": 0,
+        "backward_acquisition_deltas": 0,
+        "source_messages_reported_in_ingestion": null,
+        "observations": {
+          "frame_observation_status": {
+            "candidate": 1,
+            "confirmed_obstacle": 7,
+            "unresolved_obstacle": 22
+          },
+          "object_observation_status": {
+            "candidate": 850,
+            "observed_structure": 4791,
+            "confirmed_obstacle": 12,
+            "unresolved_obstacle": 222
+          },
+          "candidate_observations": 5875,
+          "confirmed_object_observations": 5025,
+          "path_horizon_m": {
+            "count": 30,
+            "min": 52.0,
+            "p50": 57.0,
+            "p95": 62.0,
+            "max": 62.0
+          },
+          "gauge_inner_m": {
+            "count": 30,
+            "min": 1.4495083681784788,
+            "p50": 1.4622149541617868,
+            "p95": 1.4669984168047097,
+            "max": 1.4747188713644954
+          },
+          "rail_head_height_above_bed_m": {
+            "count": 30,
+            "min": 0.20387310325626587,
+            "p50": 0.20996727063919252,
+            "p95": 0.21641672257952432,
+            "max": 0.21810364026477563
+          },
+          "ground_fit_median_residual_m": {
+            "count": 30,
+            "min": 0.017671811901865953,
+            "p50": 0.019375334570542524,
+            "p95": 0.0212441936815159,
+            "max": 0.021852531934505315
+          },
+          "nearest_obstacle_sensor_x_m": {
+            "count": 29,
+            "min": 37.04960632324219,
+            "p50": 70.159912109375,
+            "p95": 158.42454833984374,
+            "max": 162.3907470703125
+          },
+          "cluster_support_min_x_m": {
+            "count": 5875,
+            "min": 2.0000205039978027,
+            "p50": 35.717262268066406,
+            "p95": 146.42798461914066,
+            "max": 203.4298858642578
+          },
+          "distance_support_x_m": {
+            "count": 5875,
+            "min": 2.0000205039978027,
+            "p50": 35.717262268066406,
+            "p95": 146.42798461914066,
+            "max": 203.4298858642578
+          },
+          "supported_envelope_min_x_m": {
+            "count": 35,
+            "min": 37.04960632324219,
+            "p50": 42.317588806152344,
+            "p95": 55.80167808532715,
+            "max": 56.58883285522461
+          },
+          "unresolved_envelope_min_x_m": {
+            "count": 284,
+            "min": 57.05248260498047,
+            "p50": 162.25098419189453,
+            "p95": 201.90729827880858,
+            "max": 203.53456115722656
+          },
+          "tracking": {
+            "diagnosed_frames": 0,
+            "births": null,
+            "diagnostic_processing_ms": {
+              "count": 0,
+              "min": null,
+              "p50": null,
+              "p95": null,
+              "max": null
+            },
+            "gap_reset_frames": 0,
+            "removed_track_observations": null,
+            "hypotheses_by_cause": {},
+            "different_id_hypotheses": null,
+            "verified_identity_switches": null
+          },
+          "range_observability": [
+            {
+              "range_m": [
+                2.0,
+                10.0
+              ],
+              "frames": 30,
+              "returns": 651113,
+              "returns_before_geometry_voxel": 3673039,
+              "geometry_supported_returns": 651113
+            },
+            {
+              "range_m": [
+                10.0,
+                20.0
+              ],
+              "frames": 30,
+              "returns": 313756,
+              "returns_before_geometry_voxel": 727195,
+              "geometry_supported_returns": 313756
+            },
+            {
+              "range_m": [
+                20.0,
+                40.0
+              ],
+              "frames": 30,
+              "returns": 129641,
+              "returns_before_geometry_voxel": 230901,
+              "geometry_supported_returns": 129641
+            },
+            {
+              "range_m": [
+                40.0,
+                60.0
+              ],
+              "frames": 30,
+              "returns": 29296,
+              "returns_before_geometry_voxel": 42976,
+              "geometry_supported_returns": 27302
+            },
+            {
+              "range_m": [
+                60.0,
+                100.0
+              ],
+              "frames": 30,
+              "returns": 35211,
+              "returns_before_geometry_voxel": 54697,
+              "geometry_supported_returns": 162
+            },
+            {
+              "range_m": [
+                100.0,
+                150.0
+              ],
+              "frames": 30,
+              "returns": 6091,
+              "returns_before_geometry_voxel": 8836,
+              "geometry_supported_returns": 0
+            },
+            {
+              "range_m": [
+                150.0,
+                220.0
+              ],
+              "frames": 30,
+              "returns": 2535,
+              "returns_before_geometry_voxel": 4682,
+              "geometry_supported_returns": 0
+            }
+          ],
+          "uncertainty_by_range": [],
+          "note": "Object counts are correlated frame observations. Alarm counts are unlabeled observations, not false positives. no_obstacle_observed never asserts a clear route. Distances are sensor-frame x, not bumper or along-track distance."
+        }
+      }
+    },
+    "ingestion": {
+      "new_data": {
+        "source_messages": 30,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 30
+      }
+    },
+    "manifest_sha256": "0d4af776bbe7e70b352092dbbf6e8ce7838c47302a2f68a97cb0b7ebd00de62c",
+    "compare_to": "build/buyanov-20260920-new-baseline",
+    "comparison": {
+      "shared_frames": 30,
+      "before_only_frames": 0,
+      "after_only_frames": 0,
+      "status_different_frames": 0,
+      "object_decision_different_frames": 0,
+      "nearest_distance_exactly_different_frames": 0,
+      "support_and_confirmation_different_frames_ignoring_ids": 0,
+      "confirmed_hazard_geometry_different_frames_ignoring_ids": 0,
+      "max_pose_matrix_element_abs_delta": 0.0,
+      "first_status_differences": [],
+      "first_object_differences": [],
+      "first_support_differences": [],
+      "before_shared_processing_ms": {
+        "count": 30,
+        "min": 657.4270420242101,
+        "p50": 908.8319789734669,
+        "p95": 1117.6462353265376,
+        "max": 1168.4888750314713
+      },
+      "after_shared_processing_ms": {
+        "count": 30,
+        "min": 657.4270420242101,
+        "p50": 908.8319789734669,
+        "p95": 1117.6462353265376,
+        "max": 1168.4888750314713
+      },
+      "note": "Exact output comparison on shared (bag, frame), not a test suite or physical identity score. Support multisets compare bounds, relation and confirmation without IDs; numeric track IDs across runs do not establish correspondence. Timing is an uncontrolled single-run measurement."
+    },
+    "accuracy_validity": "No precision/recall from these summaries. Synthetic label metrics belong to their separate evaluator. Real alarm counts are unlabeled observations."
+  },
+  "new_hazard_differences": [
+    {
+      "frame": 20,
+      "before_only": [
+        {
+          "bbox_min": [
+            151.40597534179688,
+            -2.5005171298980713,
+            1.1548314094543457
+          ],
+          "bbox_max": [
+            151.51882934570312,
+            1.7283388376235962,
+            1.1556856632232666
+          ],
+          "component_id": 168,
+          "cluster_nearest_x_m": 151.40597534179688,
+          "supported_envelope_nearest_x_m": null,
+          "unresolved_envelope_nearest_x_m": 151.41018676757812,
+          "center": [
+            151.46240234375,
+            -0.38608914613723755,
+            1.1552585363388062
+          ],
+          "extent_m": [
+            0.11285400390625,
+            4.2288559675216675,
+            0.0008542537689208984
+          ],
+          "distance_m": 151.40597534179688,
+          "distance_method": "cluster_min_x",
+          "distance_support_point": [
+            151.40597534179688,
+            -1.707189917564392,
+            1.1548620462417603
+          ],
+          "distance_support_points": 15,
+          "path_relation": "unresolved",
+          "support_voxels": 15,
+          "density_core_voxels": 14,
+          "in_envelope_voxels": 0,
+          "height_above_bed_m": [
+            3.8420855576473496,
+            3.853973927897594
+          ],
+          "immediate": false,
+          "track_id": 189,
+          "hits": 2,
+          "confirmed": true,
+          "accumulated_support_voxels": 41,
+          "last_observed_s": 946686691.2334411,
+          "evidence_timestamps_s": [
+            946686690.8334291,
+            946686690.9334351,
+            946686691.1334411,
+            946686691.2334411
+          ],
+          "covariance_kind": "heuristic_not_calibrated",
+          "velocity_world_mps": [
+            -0.008539039813154958,
+            -0.4163431506532209,
+            -0.008992114917278618
+          ],
+          "position_covariance_m2": [
+            [
+              0.10181677991216077,
+              0.0010926463854244526,
+              -0.0010368694530503673
+            ],
+            [
+              0.001092646385424453,
+              0.019018406036398188,
+              -0.00010660260876761749
+            ],
+            [
+              -0.0010368694530503673,
+              -0.00010660260876761738,
+              0.017973763252498304
+            ]
+          ],
+          "confirmation": "temporal_evidence",
+          "track_age_s": 2.0000640153884888
+        }
+      ],
+      "after_only": []
+    }
+  ],
+  "environment": {
+    "python": "3.12.14 (main, Aug 12 2026, 13:57:54) [Clang 17.0.0 (clang-1700.6.4.2)]",
+    "platform": "macOS-15.7.4-arm64-arm-64bit",
+    "machine": "arm64",
+    "cpu_count": 10,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "rosbags": "0.11.5",
+      "kiss-icp": "1.3.0",
+      "open3d": "0.19.0",
+      "travel-seg": null,
+      "hdbscan": null,
+      "pypatchworkpp": null
+    }
+  },
+  "limitations": [
+    "New recording coverage is only frames 0-1019 of 11271, not the complete 20-minute bag.",
+    "No independent exhaustive real labels: no real precision, recall, false-positive rate or verified identity-switch count.",
+    "Nearest-pair hypotheses can recur and do not establish physical identity or causality.",
+    "Path horizon covers lateral support; ground support, visibility and sweep validation remain separate.",
+    "Unverified sensor extrinsics, return/timing provenance, gauge and cant; deskew and longitudinal extension remain off.",
+    "Synthetic results cannot establish field safety and the 0.95 event-recall criterion still applies.",
+    "Processing times are single uncontrolled offline runs; baseline old run overlapped archive inspection; later runs sequential.",
+    "Distances measure sensor-frame x of observed support, not bumper or integrated along-track distance."
+  ],
+  "track_examples": {
+    "selection": "Post-hoc maximum minimum directed support-overlap per hypothesized cause in old panel; review aids, not labelled events.",
+    "examples": {
+      "new_object_or_unrelated_neighbor": {
+        "selection_overlap": 0.0,
+        "bag": "roundT_pressureGate_roundT",
+        "event": {
+          "old_track_id": 2,
+          "old_last_observed_s": 946692902.4334491,
+          "timestamp_s": 946692902.5334511,
+          "temporal_gap_s": 0.10000193119049072,
+          "missing_processed_frames": 0,
+          "spatial_gap_m": 0.5725849942981026,
+          "association_mahalanobis_squared": 4.450147771987801,
+          "extent_log_distance": 1.3740960948013567,
+          "rejected_by": [],
+          "old_assigned_elsewhere": false,
+          "predicted_position_sigma_m": [
+            0.1805557918395679,
+            0.1805557918395679,
+            0.1805557918395679
+          ],
+          "innovation_sigma_m": [
+            0.6956042680283622,
+            0.269670528064216,
+            0.28207338520278186
+          ],
+          "bbox_iou_world_predicted_support": 0.0,
+          "old_support_overlap_fraction": 0.0,
+          "new_support_overlap_fraction": 0.0,
+          "support_overlap_tolerance_m": 0.05,
+          "possible_cause": "new_object_or_unrelated_neighbor",
+          "identity_verified": false,
+          "new_track_id": 10,
+          "frame": 1,
+          "measurement_timestamp_ns": 946692902533450961
+        }
+      },
+      "merge": {
+        "selection_overlap": 0.5454545454545454,
+        "bag": "doubleT_obstacle",
+        "event": {
+          "old_track_id": 487,
+          "old_last_observed_s": 946687299.1001102,
+          "timestamp_s": 946687299.2000952,
+          "temporal_gap_s": 0.09998500347137451,
+          "missing_processed_frames": 0,
+          "spatial_gap_m": 0.14348220610776624,
+          "association_mahalanobis_squared": 0.14552270228376452,
+          "extent_log_distance": 0.3589614258969237,
+          "rejected_by": [],
+          "old_assigned_elsewhere": false,
+          "predicted_position_sigma_m": [
+            0.44716483846797506,
+            0.19883292099877503,
+            0.1861410008288641
+          ],
+          "innovation_sigma_m": [
+            1.0184511253401876,
+            0.2959018392348184,
+            0.2729199135191403
+          ],
+          "bbox_iou_world_predicted_support": 0.13491813160869584,
+          "old_support_overlap_fraction": 0.5714285714285714,
+          "new_support_overlap_fraction": 0.5454545454545454,
+          "support_overlap_tolerance_m": 0.05,
+          "possible_cause": "merge",
+          "identity_verified": false,
+          "new_track_id": 366,
+          "frame": 20,
+          "measurement_timestamp_ns": 946687299200095057
+        }
+      },
+      "split": {
+        "selection_overlap": 0.4375,
+        "bag": "roundT_doubleT",
+        "event": {
+          "old_track_id": 6,
+          "old_last_observed_s": 946692932.433469,
+          "timestamp_s": 946692932.633471,
+          "temporal_gap_s": 0.20000195503234863,
+          "missing_processed_frames": 1,
+          "spatial_gap_m": 0.19064591762782399,
+          "association_mahalanobis_squared": 0.026864579092034213,
+          "extent_log_distance": 0.20033201057692784,
+          "rejected_by": [],
+          "old_assigned_elsewhere": true,
+          "predicted_position_sigma_m": [
+            0.6186656204804399,
+            0.19700613867020558,
+            0.20760180474385123
+          ],
+          "innovation_sigma_m": [
+            1.185187688315186,
+            0.28125332541862413,
+            0.2997155100399947
+          ],
+          "bbox_iou_world_predicted_support": 0.37948811620172196,
+          "old_support_overlap_fraction": 0.4375,
+          "new_support_overlap_fraction": 0.6153846153846154,
+          "support_overlap_tolerance_m": 0.05,
+          "possible_cause": "split",
+          "identity_verified": false,
+          "new_track_id": 387,
+          "frame": 10,
+          "measurement_timestamp_ns": 946692932633471012
+        }
+      },
+      "occlusion_or_missed_segmentation": {
+        "selection_overlap": 1.0,
+        "bag": "doubleT_obstacle",
+        "event": {
+          "old_track_id": 17,
+          "old_last_observed_s": 946687297.1999332,
+          "timestamp_s": 946687297.399942,
+          "temporal_gap_s": 0.20000886917114258,
+          "missing_processed_frames": 1,
+          "spatial_gap_m": 0.012774866734245632,
+          "association_mahalanobis_squared": 0.00022202512301667453,
+          "extent_log_distance": 0.050678324945622355,
+          "rejected_by": [],
+          "old_assigned_elsewhere": false,
+          "predicted_position_sigma_m": [
+            0.2531873448248851,
+            0.2531873448248851,
+            0.2531873448248851
+          ],
+          "innovation_sigma_m": [
+            0.9854174717854076,
+            0.33635944554514474,
+            0.3224666490230277
+          ],
+          "bbox_iou_world_predicted_support": 0.8447735834867095,
+          "old_support_overlap_fraction": 1.0,
+          "new_support_overlap_fraction": 1.0,
+          "support_overlap_tolerance_m": 0.05,
+          "possible_cause": "occlusion_or_missed_segmentation",
+          "identity_verified": false,
+          "new_track_id": 17,
+          "frame": 2,
+          "measurement_timestamp_ns": 946687297399942040
+        }
+      },
+      "fragmentation_or_occlusion": {
+        "selection_overlap": 0.3081761006289308,
+        "bag": "doubleT_platform",
+        "event": {
+          "old_track_id": 1,
+          "old_last_observed_s": 946693350.33343,
+          "timestamp_s": 946693350.4334282,
+          "temporal_gap_s": 0.0999981164932251,
+          "missing_processed_frames": 0,
+          "spatial_gap_m": 1.878910751959733,
+          "association_mahalanobis_squared": 15.912850929040932,
+          "extent_log_distance": 0.4791331848206058,
+          "rejected_by": [
+            "mahalanobis_gate"
+          ],
+          "old_assigned_elsewhere": false,
+          "predicted_position_sigma_m": [
+            0.18055363681847666,
+            0.18055363681847666,
+            0.18055363681847666
+          ],
+          "innovation_sigma_m": [
+            0.47258056475447724,
+            0.27797926739918905,
+            0.27505827854158826
+          ],
+          "bbox_iou_world_predicted_support": 0.5375237328728834,
+          "old_support_overlap_fraction": 0.3081761006289308,
+          "new_support_overlap_fraction": 0.43047752808988765,
+          "support_overlap_tolerance_m": 0.05,
+          "possible_cause": "fragmentation_or_occlusion",
+          "identity_verified": false,
+          "new_track_id": 169,
+          "frame": 1,
+          "measurement_timestamp_ns": 946693350433428049
+        }
+      }
+    }
+  }
+}

@@ -5,6 +5,8 @@ import argparse
 import functools
 import itertools
 import json
+import subprocess
+import sys
 import os
 from pathlib import Path
 import time
@@ -88,8 +90,12 @@ def run_case(case: dict, stress: dict, detector_config: dict, index: int):
     for frame in range(stress["frames_per_case"]):
         origin_x = case["step_m"] * frame
         cloud, visible = scene_scan(stress, rays, origin_x, obj, rng)
-        row = detector.process(cloud, frame * stress["frame_period_s"])
+        row = detector.process(cloud, frame * stress["frame_period_s"],
+                               capture_association=stress.get("association_diagnostics", False))
         row.update(frame=frame, bag=f"case_{index:03d}")
+        if "tracking_diagnostics" in row:
+            for event in row["tracking_diagnostics"]["events"]:
+                event["frame"] = frame
         rows.append(row)
         visible_counts.append(int(visible.sum()))
         truth = []
@@ -132,7 +138,12 @@ def main():
     source_dir.mkdir(parents=True)
     for source in Path(__file__).parent.glob("*.py"):
         (source_dir / source.name).write_bytes(source.read_bytes())
-    write_json(output / "manifest.json", environment() | {"config_sha256": digest(Path(stress["detector_config"]))})
+    manifest = environment() | {"config_sha256": digest(Path(stress["detector_config"])),
+        "command": sys.argv, "started_unix_s": time.time(),
+        "git_revision": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
+        "git_status": subprocess.check_output(["git", "status", "--porcelain=v1"], text=True)}
+    write_json(output / "manifest.json", manifest)
+    (output / "working-tree.patch").write_bytes(subprocess.check_output(["git", "diff", "HEAD", "--", "tunnel_guard", "configs"]))
     case_list = list(cases(stress))
     workers = max(1, min(args.workers, len(case_list)))
     predictions, annotations, records = {}, [], []
@@ -172,6 +183,8 @@ def main():
     write_json(output / "annotations.json", panel)
     write_json(output / "cases.json", records)
     write_json(output / "metrics.json", score)
+    manifest["finished_unix_s"] = time.time()
+    write_json(output / "manifest.json", manifest)
     print(json.dumps({k: v for k, v in score.items() if k not in ("frames", "events")}, indent=2))
 
 

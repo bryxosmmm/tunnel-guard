@@ -107,7 +107,8 @@ def run_bag(output: Path, config: dict, experiment: dict, entry: dict) -> dict:
             except StopIteration:
                 break
             row = detector.process(scan.points, scan.timestamp_s, scan.point_times,
-                                   capture_diagnostics=scan.index in diagnostic_frames)
+                                   capture_diagnostics=scan.index in diagnostic_frames,
+                                   capture_association=experiment.get("association_diagnostics", False))
             row.update(frame=scan.index, bag=bag.name, raw_points=scan.raw_points,
                        invalid_points=scan.invalid_points, sensor_frame=scan.frame_id,
                        topic=scan.topic, scan_duration_s=scan.scan_duration_s,
@@ -116,6 +117,9 @@ def run_bag(output: Path, config: dict, experiment: dict, entry: dict) -> dict:
                        source_scan_id=f"{scan.topic}:{scan.frame_id}:{scan.measurement_timestamp_ns}",
                        skipped_duplicate_scans=scan.skipped_duplicate_scans,
                        read_and_process_s=time.perf_counter() - frame_start)
+            if "tracking_diagnostics" in row:
+                for event in row["tracking_diagnostics"]["events"]:
+                    event.update(frame=scan.index, measurement_timestamp_ns=scan.measurement_timestamp_ns)
             if scan.index in diagnostic_frames:
                 diagnostic_start = time.perf_counter()
                 folder = output / "diagnostics"
@@ -135,7 +139,9 @@ def run_bag(output: Path, config: dict, experiment: dict, entry: dict) -> dict:
                 print(f"{bag.name}: {len(rows)} frames, {row['status']}, nearest={row['nearest_obstacle_m']}", flush=True)
     if not rows:
         raise ValueError(f"No scans processed from {bag}")
-    return summarize(rows) | {"bag": bag.name, "split": entry["split"], "wall_s": time.perf_counter() - start,
+    from .diagnostics import summarize_observations
+    return summarize(rows) | {"observations": summarize_observations(rows),
+                              "bag": bag.name, "split": entry["split"], "wall_s": time.perf_counter() - start,
                               "ingestion": ingestion,
                               # Peak RSS of this process; with --workers > 1 it is the
                               # worker's peak, not the run's.
@@ -148,6 +154,7 @@ def run_bag(output: Path, config: dict, experiment: dict, entry: dict) -> dict:
 def bag_entry(entry: dict) -> dict:
     bag = Path(entry["path"])
     return entry | {"metadata_sha256": digest(bag / "metadata.yaml"),
+                    "extraction": json.loads((bag / "extraction.json").read_text()) if (bag / "extraction.json").is_file() else None,
                     "files": [{"name": str(p.name), "bytes": p.stat().st_size, "mtime_ns": p.stat().st_mtime_ns}
                               for p in sorted(bag.glob("*.db3"))]}
 

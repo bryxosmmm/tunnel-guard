@@ -132,6 +132,7 @@ class TrackGeometry:
         self.ground_anchors = np.empty((0, 3))
         self.rail_anchors = np.empty((0, 4))
         self.rail_head_anchors = np.empty((0, 3))
+        self.rail_fit_diagnostics = []
         self.rail_sigma = np.empty(0)
         self.rail_gauge_inner = np.empty(0)
         self.gauge_convention_conflict = False
@@ -167,8 +168,11 @@ class TrackGeometry:
         return bool(lo <= self.rail_head_height_m <= hi)
 
     def _path_horizon(self) -> float | None:
-        """End of the contiguous supported region: the certified range of the
-        envelope is a property of the evidence, not a sensor specification."""
+        """End of the first interval passing the heuristic lateral-path bound.
+
+        This excludes ground uncertainty, visibility and swept-envelope validation;
+        it is neither a certified clearance horizon nor a detection-range claim.
+        """
         if len(self.rail_anchors) < 2:
             return None
         x = np.arange(self.config["min_forward_m"], self.config["max_range_m"], 0.5)
@@ -369,6 +373,16 @@ class TrackGeometry:
              left_half, right_half, disagreement) = pairs[0]
             rail_mask = np.abs(np.abs(lateral - center) - gauge_center / 2) < cfg["rail_half_width_m"]
             bed, _ = self.ground(q[rail_mask])
+            # Diagnostic samples only; these do not feed fitting or acceptance.
+            head_samples = {"x_m": float(x)}
+            for side, position in (("left", left_center), ("right", right_center)):
+                selected = np.abs(lateral - position) <= band_half
+                side_points = q[selected]
+                side_bed, _ = self.ground(side_points)
+                head_samples[side] = {"points": len(side_points),
+                    "height_above_bed_p80_m": float(np.quantile(side_points[:, 2] - side_bed, .8)) if len(side_points) else None,
+                    "lateral_median_abs_residual_m": float(np.median(np.abs(lateral[selected] - position))) if len(side_points) else None}
+            self.rail_fit_diagnostics.append(head_samples)
             anchors.append((float(x), center, gauge_center, support))
             heads.append(float(np.quantile(q[rail_mask, 2] - bed, 0.8)))
             sigmas.append(max(0.01, 0.25 * (left_half + right_half) / np.sqrt(max(1, support))))
@@ -529,10 +543,21 @@ class TrackGeometry:
         return core, context, height, observed, nominal_overlap
 
     def describe(self) -> dict:
+        samples = np.asarray(self.config["range_bins_m"], dtype=float)
+        centers, _, path_sigma = self.path(samples)
+        _, ground_sigma = self.ground(np.column_stack((samples, centers, np.zeros(len(samples)))))
+        uncertainty = [{"x_m": float(x), "path_sigma_m": float(p) if np.isfinite(p) else None,
+                        "ground_sigma_m": float(g) if np.isfinite(g) else None,
+                        "geometry_supported": bool(self.valid and p <= self.config["path_max_uncertainty_m"]
+                                                   and g <= self.config["ground_max_uncertainty_m"])}
+                       for x, p, g in zip(samples, path_sigma, ground_sigma)]
         return {"valid": self.valid, "reason": self.reason, "ground_quality": self.ground_quality,
                 "ground_plane": None if self.plane is None else self.plane.tolist(),
                 "rail_head_height_m": self.rail_head_height_m,
                 "rail_head_anchors": self.rail_head_anchors.tolist(),
+                "rail_fit_diagnostics": self.rail_fit_diagnostics,
+                "uncertainty_by_range": uncertainty,
+                "evidence_note": "Rail heights/residuals sample returns near inferred rail centres above fitted bed; gauge uses visible bands plus assumed head width. Uncertainty is heuristic, null means unsupported. path_horizon_m covers lateral support only; ground support is separate. No surveyed gauge, cant, extrinsics or swept envelope validation.",
                 "rail_sigmas_m": self.rail_sigma.tolist(),
                 "gauge_inner_median_m": (float(np.median(self.rail_gauge_inner))
                                          if len(self.rail_gauge_inner) else None),

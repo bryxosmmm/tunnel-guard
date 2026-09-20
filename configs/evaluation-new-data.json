@@ -1,0 +1,19 @@
+{
+  "hypothesis": "Observability and association evidence can expose geometry limits and track fragmentation without changing detector decisions.",
+  "success_criterion": "Inspect both sources with explicit evidence scope; preserve status, geometry and association decisions on the fixed real prefix. Identity switches remain hypotheses without independent labels.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "every": 1,
+  "max_frames": 1020,
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/new_data",
+      "topic": "/lidar_points",
+      "split": "unlabeled_contiguous_prefix_not_ground_truth"
+    }
+  ],
+  "output": "build/buyanov-20260920-new-diagnostics",
+  "association_diagnostics": true,
+  "coverage_note": "First 20 of 221 original SQLite segments extracted separately due to disk capacity. One continuous bag, frames 0-1019, not 20 independent experiments. Original has 11271 messages. Source and derived metadata plus segment hashes retained in data/new_data."
+}

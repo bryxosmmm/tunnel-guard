@@ -6,6 +6,10 @@ Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 
 
 The current review, real-data comparison and limitations are in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). The latest iteration processed two real 30-frame prefixes. Historical results below are separate evidence.
 
+## Sensor and tracking diagnostics
+
+See [the Buyanov iteration](docs/BUYANOV_ITERATION.md) for bounded sensor/geometry inspection, optional association diagnostics, and separate observations on the old bags and the new unlabeled recording. `configs/evaluation-new-data.json` processes one continuous 1,020-message prefix; the local dataset is explicitly marked as a partial extraction. Track-ID hypotheses are not verified object identities or false positives.
+
 ## Review of new annotations
 
 See [annotation review](docs/ANNOTATION_REVIEW.md) and [sensor evidence](docs/SENSOR_PROFILE.md). The new person panel contains one manual anchor and 35 detector-propagated boxes. Raw-cloud review and a fresh 201-frame run are complete; the panel is not accepted as independent ground truth. Original oriented label files are now included; their AABB conversion reproduces all 36 exported boxes exactly. The author reports reviewing all propagated positions. The box convention and oriented evaluation remain to be resolved.

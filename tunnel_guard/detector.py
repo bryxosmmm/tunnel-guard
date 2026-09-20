@@ -222,11 +222,14 @@ class Detector:
         self.previous_source, self.previous_pose = source.copy(), pose
         return frame, pose, quality
 
-    def _associate(self, objects: list[dict], pose: np.ndarray, stamp: float, motion_valid: bool):
+    def _associate(self, objects: list[dict], pose: np.ndarray, stamp: float, motion_valid: bool,
+                   capture_association: bool = False):
         cfg = self.config
+        prior_ids = set(self.tracks)
         if not motion_valid:
             self.tracks.clear()
         self.tracks = {key: t for key, t in self.tracks.items() if stamp - t["stamp"] <= cfg["track_max_gap_s"]}
+        removed_ids = sorted(prior_ids - self.tracks.keys())
         ids = list(self.tracks)
         world = np.array([o["center"] for o in objects], dtype=float).reshape(-1, 3)
         world = world @ pose[:3, :3].T + pose[:3, 3]
@@ -258,6 +261,15 @@ class Detector:
             for row, column in zip(rows, columns):
                 if column < len(world) and cost[row, column] < 1e6:
                     matched[int(column)] = ids[row]
+        diagnostics = None
+        if capture_association:
+            diagnostics_started = time.perf_counter()
+            from .diagnostics import association_evidence
+            diagnostics = association_evidence(objects, self.tracks, predicted, matched, world, pose,
+                                               measurement_cov, cfg, stamp, self.frame_number)
+            diagnostics.update(removed_track_ids=removed_ids,
+                               removal_reason="motion_invalid" if not motion_valid else "track_max_gap",
+                               processing_s=time.perf_counter() - diagnostics_started)
         for index, obj in enumerate(objects):
             key = matched.get(index)
             if key is None:
@@ -297,9 +309,13 @@ class Detector:
                        velocity_world_mps=state[3:].tolist(), position_covariance_m2=covariance[:3, :3].tolist(),
                        confirmation="immediate_geometry" if obj["immediate"] else ("temporal_evidence" if confirmed else "pending"),
                        track_age_s=stamp - track["first_stamp"])
+        if diagnostics is not None:
+            for event in diagnostics["events"]:
+                event["new_track_id"] = objects[event.pop("object_index")]["track_id"]
+        return diagnostics
 
     def process(self, points: np.ndarray, timestamp_s: float, point_times: np.ndarray | None = None,
-                *, capture_diagnostics: bool = False) -> dict:
+                *, capture_diagnostics: bool = False, capture_association: bool = False) -> dict:
         started = time.perf_counter()
         points = np.asarray(points, dtype=np.float64)
         if points.ndim != 2 or points.shape[1] != 3 or not np.isfinite(timestamp_s):
@@ -313,6 +329,7 @@ class Detector:
             raise ValueError("point_times must be empty or match the number of points")
         if len(point_times) and (not np.isfinite(point_times).all() or point_times.min() < 0 or point_times.max() > 1):
             raise ValueError("point_times must be finite and normalized to [0, 1]")
+        reset_track_ids = sorted(self.tracks) if reset and capture_association else []
         if reset:
             self.odometry = self._new_odometry()
             self.previous_source = None
@@ -347,6 +364,10 @@ class Detector:
                   "pipeline": pipeline,
                   "envelope_calibration": self.config["envelope_calibration"]}
         if len(points) < self.config["ground_min_support"]:
+            if capture_association:
+                result["tracking_diagnostics"] = {"state": "not_run", "births": 0, "events": [],
+                    "removed_track_ids": sorted(self.tracks), "removal_reason": "insufficient_returns",
+                    "gap_reset_track_ids": reset_track_ids}
             self.tracks.clear()
             self.previous_source = None
             self.odometry = self._new_odometry()
@@ -366,7 +387,10 @@ class Detector:
                                      self.diagnostic_arrays if capture_diagnostics else None) if geometry.valid else []
         if not geometry.valid:
             pipeline["segmentation"]["reason"] = geometry.reason
-        self._associate(objects, pose, timestamp_s, motion["valid"])
+        tracking = self._associate(objects, pose, timestamp_s, motion["valid"], capture_association)
+        if tracking is not None:
+            tracking["gap_reset_track_ids"] = reset_track_ids
+            result["tracking_diagnostics"] = tracking
         pipeline["association"] = {"state": "ran", "candidates": len(objects),
                                    "confirmed": sum(o["confirmed"] for o in objects),
                                    "history_cleared_for_motion": not motion["valid"]}
