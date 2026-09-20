@@ -27,6 +27,8 @@ rm -rf "$RUN" "$REPORT" "$GATE_RUN"
 import json, sys
 from collections import Counter
 
+import numpy as np
+
 report = json.load(open(sys.argv[1]))
 recall = report["recall"]
 counts = recall["counts"]
@@ -45,9 +47,11 @@ rows = [
     ("injection_free_frames_claiming_hazard", nuisance["frames_claiming_an_obstacle"]),
     ("unexplained_hazard_objects", nuisance["unexplained_hazard_objects_on_injected_frames"]),
 ]
-# Real-recording gate. The strict obstacle count and the any-hazard count are reported separately:
-# the rejected floor change moved 14 frames from obstacle to unresolved_obstacle, so a sum of the
-# two would have hidden exactly the cost this gate exists to catch.
+# Real-recording gate. The strict obstacle count alone was too blunt: it fell 171 -> 157 under a
+# change that left every annotated frame still reporting a hazard and IMPROVED the annotated
+# object's localisation on 35 of 36 frames, because it counts a confidence downgrade
+# (obstacle -> unresolved_obstacle) as a lost detection. The gate therefore measures the annotated
+# obstacle directly, and reports the strict count alongside it rather than gating on it.
 for bag in ("doubleT_obstacle", "roundT_doubleT"):
     statuses, objects = Counter(), 0
     with open(f"{sys.argv[2]}/{bag}.jsonl") as stream:
@@ -59,6 +63,50 @@ for bag in ("doubleT_obstacle", "roundT_doubleT"):
     rows.append((f"{bag}_any_hazard_frames",
                  statuses["obstacle"] + statuses["unresolved_obstacle"]))
     rows.append((f"{bag}_objects", objects))
+
+
+
+def overlap(first, second):
+    inter = 1.0
+    for axis in range(3):
+        low = max(first["bbox_min"][axis], second["bbox_min"][axis])
+        high = min(first["bbox_max"][axis], second["bbox_max"][axis])
+        inter *= max(0.0, high - low)
+    if inter <= 0:
+        return 0.0
+    va = float(np.prod([first["bbox_max"][a] - first["bbox_min"][a] for a in range(3)]))
+    vb = float(np.prod([second["bbox_max"][a] - second["bbox_min"][a] for a in range(3)]))
+    union = va + vb - inter
+    return inter / union if union > 0 else 0.0
+
+
+try:
+    annotations = json.load(open("annotations/doubleT-obstacle-person.json"))
+except FileNotFoundError:
+    annotations = None
+if annotations is not None:
+    labelled = {f["frame"]: f["objects"][0] for f in annotations["frames"]}
+    rows_by_frame = {}
+    with open(f"{sys.argv[2]}/doubleT_obstacle.jsonl") as stream:
+        for line in stream:
+            row = json.loads(line)
+            rows_by_frame[row["frame"]] = row
+    hazards, claimed, overlaps = 0, 0, []
+    for frame_index, truth in labelled.items():
+        row = rows_by_frame.get(frame_index)
+        if row is None:
+            continue
+        if row["status"] in ("obstacle", "unresolved_obstacle"):
+            claimed += 1
+        hazard_objects = [o for o in row["objects"]
+                          if o["confirmed"] and o["path_relation"] in ("intersecting", "unresolved")]
+        if hazard_objects:
+            hazards += 1
+        overlaps.append(max((overlap(o, truth) for o in hazard_objects), default=0.0))
+    rows.append(("annotated_frames", len(labelled)))
+    rows.append(("annotated_frames_claiming_hazard", claimed))
+    rows.append(("annotated_frames_with_confirmed_hazard_object", hazards))
+    rows.append(("annotated_median_best_iou", round(float(sorted(overlaps)[len(overlaps) // 2]), 4)))
 
 for name, value in rows:
     if value is None:

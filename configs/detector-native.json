@@ -106,7 +106,7 @@
   "tracking_mahalanobis_gate": 14.16,
   "tracking_extent_log_gate": 2.5,
   "tracking_pose_sigma_m": 0.1,
-  "min_running_height_m": 0.015,
+  "min_running_height_m": -0.2,
   "segmentation_context_half_width_m": 3.0,
   "envelope_source": "GOST 23961-80 figures 6 and 7, https://engenegr.ru/gost-23961-80. Upper contour exact piecewise segments; lower contour horizontally filled conservatively, omitting wheel recesses. Mirrors and contact-collector extensions excluded. No actual vehicle/curve dynamic validation.",
   "odometry_min_normal_eigenvalue": 0.01,
