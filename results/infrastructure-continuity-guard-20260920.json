@@ -1,0 +1,85 @@
+{
+  "date": "2026-09-20",
+  "scope": "One detector change landed, one rejected, both on measurements from this repository",
+  "change_landed": {
+    "name": "infrastructure_continuity_guard",
+    "file": "tunnel_guard/detector.py",
+    "location": "cluster_candidates, inside the infrastructure-continuity demotion block",
+    "rule": "A candidate whose path_relation is already `intersecting` is never relabelled `adjacent`/`longitudinally_continuous_structure`. Chain construction, thresholds, member/reach gates, ordering and every demotion field are unchanged; only `unresolved` and `adjacent` candidates are still demoted.",
+    "why": "Repetition of a cross-section position along the scan is evidence about the corridor structure, not about whether this candidate's own support lies inside the swept contour. Overwriting a measured interior intersection with `adjacent` erases a measured corridor intrusion.",
+    "defect_measured_before_the_fix": {
+      "method": "counted confirmed objects carrying at least weak_min_voxels core (inside-envelope) voxels that nevertheless carried path_relation_reason=longitudinally_continuous_structure",
+      "doubleT_obstacle": "30 object-observations on 21 frames",
+      "roundT_doubleT": "21 object-observations on 13 frames",
+      "artifact": "build/metrics-real-replay-20260920 (pre-change production replay)"
+    },
+    "effect_measured_after_the_fix": {
+      "demoted_objects_that_held_inside_envelope_support": "30 -> 0 (doubleT_obstacle), 21 -> 0 (roundT_doubleT)",
+      "objects_per_frame": "unchanged on both recordings",
+      "frames_with_changed_object_count": "0",
+      "status_change": "doubleT_obstacle frame 171 unresolved_obstacle -> obstacle; obstacle frames 170 -> 171 of 201, unresolved 29 -> 28. roundT_doubleT unchanged (195 unresolved, 4 obstacle, 1 candidate, 1 no_obstacle_observed)",
+      "newly_intersection_confirmed_object_observations": {
+        "doubleT_obstacle": 4,
+        "roundT_doubleT": 0
+      },
+      "restored_geometry_verified": "frame 32 track 160 lateral -1.067 m at 0.23-0.37 m height; frame 113 track 1795 lateral +1.292 m at 0.23-0.42 m; frame 135 track 1849 lateral -1.306 m at 0.17-0.35 m; reference contour half-width 1.32 m in all three, so all three were measured inside the contour",
+      "panel_1460_frames": "byte-identical to the pre-change baseline on the shipped build: tp 699, fn 261, fp_exhaustive_only 153, event_recall 0.78125, annotated_object_recall 0.728125, matched_mean_3d_iou 0.8205, distance_mae_m 0.00113, negative_episode_rate 0.02, recall_by_range unchanged (1.00 to 100 m, 0.667 at 150 m, 0.583 at 200 m, 0 at 300 m)",
+      "cost": "no measurable added work. Same-state back-to-back A/B (the guard module swapped out and restored between runs on one machine state): processing p50 146.03 -> 145.47 ms on doubleT_obstacle and 120.17 -> 119.92 ms on roundT_doubleT; wall 31.13 -> 31.22 s and 25.57 -> 25.58 s. The change is one comparison per candidate. A 140.9 ms p50 recorded for the pre-change artifact earlier in the session, and the 145.5-146.0 ms seen in every later run including two identical-code controls, are separated by more than any plausible effect of the change and reflect machine state, not the edit.",
+      "artifacts": {
+        "real": "build/guard-real-final-20260920",
+        "panel": "build/guard-panel-20260920",
+        "determinism_control": "build/guard-real-repeat-20260920",
+        "timing_ab": {
+          "baseline": "build/timing-ab-baseline-20260920",
+          "guard": "build/timing-ab-guard-20260920",
+          "method": "tunnel_guard/detector.py replaced with the frozen baseline copy, run, restored under try/finally, re-run; both runs sequential on an otherwise idle machine; module sha256 verified after restore"
+        }
+      }
+    },
+    "verification_chain": {
+      "native_identity": "after the sparse revert the extension was rebuilt and its sha256 equals the shipped binary byte-for-byte (308415f276f4a079f1db44e5affa5775a6db586b7cd818420b9a8a2fa053204d)",
+      "disabled_path_identity": "every decision field (status, object count, bboxes, distances, relations, reasons, confirmation flags, track ids, support counts, immediacy) identical to the pre-change replay on all 402 frames; only the additive sparse_support key differed while the experiment existed",
+      "determinism_control": "the identical configuration run twice differs in float pose/velocity/covariance at up to 1.1e-13 but has zero differing decision fields on every frame, so residual float differences are inherent threaded float noise and not attributable to the change",
+      "panel_provenance_audit": "the previously quoted \"shipped full panel\" numbers were produced with a different recipe (350 m input ceiling, different rail estimator, hazard_requires_certified_path true, seed 20260917) than the current production recipe; results/metrics-blockers-20260920.json holds the current-recipe panel"
+    },
+    "stated_trade_off": "The restored intrusions sit at the contour edge (1.29-1.31 m against a 1.32 m half-width) and are plausibly the tunnel walkway or a cable tray rather than a fallen object. The choice taken is to report measured interior support and let the frame status carry the uncertainty, because suppressing measured interior support is the failure mode that hides real obstacles. Whether the GOST reference contour is correct for this vehicle and route remains a separate, already-documented open issue, not resolved by this change."
+  },
+  "change_rejected": {
+    "name": "sparse_candidate_admission (envelope-supported components below weak_min_voxels or cluster_min_extent_m, admitted and confirmed by repeated observation)",
+    "why_it_was_attractive": "at 150 m a 0.3 m target box yields two returns; the height gate removes one and the surviving singleton was rejected before tracking, so the target was never reported. With the feature the target tracked and confirmed after three scans at 149.99 m.",
+    "measured_rejection": {
+      "panel_1460_frames": "tp 699 -> 699, fn 261 -> 261, fp_exhaustive_only 153 -> 160, event_recall 0.78125 -> 0.78125, annotated_object_recall 0.728125 -> 0.728125; i.e. seven additional false positives and no true positive",
+      "why_no_recall_gain": "a singleton prediction has a degenerate zero-volume box while the panel truth pads the same support to 1 mm, so the recovered detection cannot reach IoU 0.1. The instrument cannot register the benefit it was supposed to show.",
+      "real_recordings": "objects +14.7% / +13.0%; confirmed unsupported_nominal_envelope observations 3914 -> 8410 (+115%) and 2471 -> 5139 (+108%); hazard objects per frame median 22 -> 27 and 15 -> 21; close-range (<20 m) hazard count unchanged; object counts per frame changed on 0 frames",
+      "interaction": "it also amplified the continuity defect it perturbed (demoted objects that held inside-envelope support 30 -> 37), and on roundT_doubleT frame 200 the nearest confirmed hazard moved from 2.028 m to 7.397 m"
+    },
+    "verdict": "rejected and fully reverted: no true positive anywhere on the fixed instrument, a measured precision cost, roughly doubled far-field ambiguous hazard load on real data, a permanent native ABI and Python/native parity burden, and amplification of an existing failure mode. Recorded so it is not re-treaded.",
+    "what_would_change_the_answer": "a labelling convention for sparse support that scores detection separately from box overlap, or a trustworthy lateral frame at 150-200 m that separates a real object from the tunnel's own surfaces there."
+  },
+  "unchanged_blockers": {
+    "near_field_boundary_ambiguity": "roundT_doubleT still reports unresolved_obstacle on 195 of 201 frames with a median nearest confirmed hazard of 2.008 m, driven by envelope_boundary_uncertainty. In the inspected frames the nearest component had zero core and zero nominal-overlap points; only the uncertainty-expanded boundary intersects it. No defensible fix exists without a verified reference contour or vehicle swept volume: tightening uncertainty by the ~4 cm that decides this class would equally hide a genuine object at the corridor edge.",
+    "far_field_unsupported_envelope": "the reference contour is not meaningful beyond the certified range (57-67 m measured), so the tunnel's own surfaces there are reported as unresolved hazards. Five earlier independent measurements and one controlled synthetic case (off-track target at 200 m alarming on 2 frames) establish the mechanism; no single-pass fix was found.",
+    "range_ceiling": "production input ceiling is 220 m; 300 m targets are discarded at the first range gate, and 4 of 12 synthetic 300 m cases have no target returns in any frame, so a larger software ceiling would not by itself establish hardware detection range",
+    "latency": "processing p50 146.0 ms (doubleT_obstacle) and 120.4 ms (roundT_doubleT) on this workstation against an approximately 100 ms scan period; profile p50s were TrackGeometry.__init__ 37.9 ms (background fit 20.4 ms), cluster_candidates 32.0 ms, Detector._motion 25.7 ms, Detector._associate 12.1 ms, density_labels 9.7 ms, decode 25.7 ms",
+    "delivery": "docker client 29.2.1 is present but no daemon is reachable on this machine, so docker build -> run -> ros2 bag play -> result remains unverified"
+  },
+  "limitations": [
+    "No competition scoring weights or competitor results, so no first-place claim is possible from this evidence.",
+    "Synthetic panel results are not field accuracy; the real recordings carry no exhaustive negative labels, so alarm occupancy is not a false-positive rate.",
+    "The single annotated real event is provisional: one manual anchor plus 35 detector-track-propagated labels over frames 165-200, nonexhaustive, path intersection unverified, and box semantics unspecified. It scores 0 of 36 frames at the existing 0.25 IoU threshold while a confirmed component is present in all 36, so it measures the annotation convention as much as the detector.",
+    "Restored intrusions were verified against our own reference contour, which is itself unverified as a vehicle swept volume.",
+    "DeepSeek workers wrote all code; Main reviewed every edit, rebuilt the native extension, ran every experiment, and verified the numbers reported here."
+  ],
+  "artifacts": {
+    "diagnosis": "results/metrics-blockers-20260920.json",
+    "pre_change_real_replay": "build/metrics-real-replay-20260920",
+    "pre_change_panel": "build/metrics-production-panel-20260920",
+    "post_change_real_replay": "build/guard-real-final-20260920",
+    "post_change_panel": "build/guard-panel-20260920",
+    "determinism_control": "build/guard-real-repeat-20260920",
+    "target_stage_trace": "build/metrics-indexed-diagnosis-20260920/target-trace.json",
+    "metric_attribution": "build/metrics-diagnosis-20260920"
+  },
+  "production_config_sha256": "69c1be77262c4bcd0585a8f0efa0e807d8ed22524eba99abd6e0bd21ca2a6624",
+  "detector_sha256": "e7a7293fad49716349869f79aad0cc5662acb687fd336dcb12a43a9abcc27d8e"
+}

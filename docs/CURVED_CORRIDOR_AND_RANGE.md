@@ -193,6 +193,17 @@ cross-section per station and treating returns explained by that profile as the 
 the gate is the check that rejected this attempt: the labelled obstacle recording keeps its confirmed
 frames, and the tunnel recording's alarm load falls.
 
+The first of those two was taken up on 2026-09-20, at the point where it can be decided from one scan
+rather than from shape: a candidate whose own support holds at least `weak_min_voxels` core voxels
+**inside** the contour is no longer demoted by the chain, whatever repeats beside it. That is not the
+tunnel-structure model, and it does not reduce the alarm wall - the tunnel's boundary class is
+`unresolved` and is still demoted. It removes the opposite failure, which the 52-of-52 frame check could
+not see: 30 objects on 21 frames of `doubleT_obstacle`, and 21 on 13 frames of `roundT_doubleT`, were
+measured inside the swept contour and were being relabelled `adjacent` because a chain shared their
+cross-section position. Object counts are unchanged on every frame, one frame recovers `obstacle` status,
+and the 1460-frame panel is identical on every metric. See
+`results/infrastructure-continuity-guard-20260920.json`.
+
 ## Artifacts
 
 - `tunnel_guard/geometry.py` (`_continuation`, `path`), `cpp/kernels.cpp` (mirror), `tunnel_guard/detector.py`

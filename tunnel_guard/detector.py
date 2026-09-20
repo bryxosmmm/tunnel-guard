@@ -278,6 +278,15 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                 continue
             if lo > placed[index]["lo"] - margin or hi < placed[index]["hi"] + margin:
                 continue
+            # Measured: on the labelled obstacle recording 30 candidates on 21 frames (21 on 13 frames
+            # on the tunnel recording) hold at least weak_min_voxels core voxels inside the envelope,
+            # i.e. measured corridor intrusions, and were relabelled here only because a long chain
+            # happened to share their cross-section position. Repetition along the scan is evidence
+            # about the corridor's structure, not about whether this candidate's own support lies
+            # inside the swept contour, so an already-`intersecting` relation and its measured reason
+            # are never overwritten; only `unresolved` and `adjacent` candidates are demoted.
+            if obj["path_relation"] == "intersecting":
+                continue
             obj["path_relation"] = "adjacent"
             obj["path_relation_reason"] = "longitudinally_continuous_structure"
             obj["structure_along_track_m"] = [lo, hi]

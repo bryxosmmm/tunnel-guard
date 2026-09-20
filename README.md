@@ -221,13 +221,35 @@ an anchor 3.6 cm) and a decomposition of the gated assignment (identical output,
 Both are in `configs/detector-native.json`, the recipe the ROS container defaults to, and both were enabled only after
 their own gate.
 
-**The tunnel's own structures leave the hazard list.** A duct, cable tray or walkway edge reaches one scan as a chain
-of small fragments at one cross-section position, repeated along the whole scan, and a fallen object is one cluster at
-its own position. The chain is built from the candidate objects themselves, each placed by its own support, so nothing
-inherits a neighbouring structure's span; a candidate whose position recurs beyond it both fore and aft is the tunnel,
-not an object. Measured: unresolved objects 2757 -> 1323 on `roundT_doubleT` and 3231 -> 1754 on `doubleT_obstacle`,
-with every confirmed obstacle frame preserved (52 of 52) and the full 1460-frame measured-pattern panel byte-identical
+**The tunnel's own structures leave the hazard list, but never a measured intrusion.** A duct, cable tray or walkway
+edge reaches one scan as a chain of small fragments at one cross-section position, repeated along the whole scan, and a
+fallen object is one cluster at its own position. The chain is built from the candidate objects themselves, each placed
+by its own support, so nothing inherits a neighbouring structure's span; a candidate whose position recurs beyond it
+both fore and aft is the tunnel, not an object. Measured: unresolved objects 2757 -> 1323 on `roundT_doubleT` and
+3231 -> 1754 on `doubleT_obstacle`, and the full 1460-frame measured-pattern panel net-identical
 (709/251/176, event recall 0.8021, matched IoU 0.8223, zero empty-scene alarms). Recipe key `infrastructure_continuity`.
+
+That gate looked safe because 52 of 52 labelled obstacle frame statuses survived it, and that check was too weak:
+in 2026-09-20 the chain was measured to be *erasing* judgements rather than structures. On the labelled obstacle
+recording 30 objects on 21 frames, and on the tunnel recording 21 on 13 frames, held at least `weak_min_voxels` core
+voxels **inside** the swept contour - a measured corridor intrusion - and were relabelled `adjacent` and
+`longitudinally_continuous_structure` only because a long chain happened to share their cross-section position. A frame
+status survives that: the frame was already `obstacle` for another object. A candidate whose own support lies inside
+the contour is therefore no longer demoted whatever repeats beside it; `unresolved` and `adjacent` candidates are still
+demoted, because for them repetition is the evidence that distinguishes structure from an object.
+Result: demoted-while-inside 30 -> 0 and 21 -> 0, object counts unchanged on every frame of both recordings, one frame
+(`doubleT_obstacle` 171) recovered from `unresolved_obstacle` to `obstacle`, the 1460-frame panel byte-identical on
+every metric, and no measurable cost: in a back-to-back A/B with the module swapped and restored on one machine state,
+processing p50 was 146.03 -> 145.47 ms on `doubleT_obstacle` and 120.17 -> 119.92 ms on `roundT_doubleT`.
+The restored objects sit at the contour edge (lateral 1.29-1.31 m against a 1.32 m
+half-width) and are plausibly the walkway itself; they are reported because a reference contour that is not validated
+as a vehicle swept volume cannot justify discarding measured interior support. Details and artifacts:
+`results/infrastructure-continuity-guard-20260920.json`.
+
+The panel figures quoted above come from the recipe in use on 2026-09-19 (350 m input ceiling, histogram rail centre,
+`hazard_requires_certified_path` on); the current production recipe on the same 1460 cases and labels scores
+699/261/153, event recall 0.78125, matched IoU 0.8205, and `results/metrics-blockers-20260920.json` audits the
+difference. Comparing a change against the older artifact therefore compares two recipes, not one.
 
 **The background model CAN refit by distance travelled instead of every frame - opt-in, and off by default.** It claims points from the tunnel's own
 longitudinal surfaces — lining, walls, ducts, bed — and those run parallel to travel, so their plane equations in the

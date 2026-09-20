@@ -1,0 +1,9 @@
+{
+  "hypothesis": "Some far-field misses are caused by preprocessing/candidate rejection while others are degenerate visible-support IoU, not absence of detection.",
+  "criterion": "For unchanged indexed synthetic cases trace actual target returns through saved detector stage arrays and report candidate geometry, confirmation and IoU without changing labels or thresholds.",
+  "seed": 20260917,
+  "scene_config": "configs/metrics-production-panel-20260920.json",
+  "detector_config": "configs/detector-metrics-diagnosis-20260920.json",
+  "case_indices": [92, 98, 110, 112, 130],
+  "output": "build/metrics-indexed-diagnosis-20260920"
+}
