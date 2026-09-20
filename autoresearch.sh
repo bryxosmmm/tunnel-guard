@@ -45,7 +45,9 @@ rows = [
     ("injection_free_frames_claiming_hazard", nuisance["frames_claiming_an_obstacle"]),
     ("unexplained_hazard_objects", nuisance["unexplained_hazard_objects_on_injected_frames"]),
 ]
-# Real-recording gate.
+# Real-recording gate. The strict obstacle count and the any-hazard count are reported separately:
+# the rejected floor change moved 14 frames from obstacle to unresolved_obstacle, so a sum of the
+# two would have hidden exactly the cost this gate exists to catch.
 for bag in ("doubleT_obstacle", "roundT_doubleT"):
     statuses, objects = Counter(), 0
     with open(f"{sys.argv[2]}/{bag}.jsonl") as stream:
@@ -53,7 +55,8 @@ for bag in ("doubleT_obstacle", "roundT_doubleT"):
             row = json.loads(line)
             statuses[row["status"]] += 1
             objects += len(row["objects"])
-    rows.append((f"{bag}_obstacle_frames",
+    rows.append((f"{bag}_strict_obstacle_frames", statuses["obstacle"]))
+    rows.append((f"{bag}_any_hazard_frames",
                  statuses["obstacle"] + statuses["unresolved_obstacle"]))
     rows.append((f"{bag}_objects", objects))
 
