@@ -274,8 +274,7 @@ def load_poses(run: Path, bag: str) -> dict:
     return poses
 
 
-def world_target(case: dict, pose: np.ndarray, geometry, height_m: float,
-                 anchors: np.ndarray) -> dict | None:
+def world_target(case: dict, pose: np.ndarray, geometry, height_m: float) -> dict | None:
     """Place the object on the recorded track, at the requested distance along it.
 
     A straight line from the sensor leaves the tunnel on any curve: at 100 m it is
@@ -283,33 +282,36 @@ def world_target(case: dict, pose: np.ndarray, geometry, height_m: float,
     rather than being seen down the track. The fitted rail chain is where the track
     actually goes, so the object is placed on that centreline and offset from it.
 
-    The floor is the one the detector itself believes in, read from the same frame's geometry, so a
-    result cannot be a placement error: a hand-rolled percentile of local heights put an object's
-    lower half below the modelled bed, and the segmentation floor then hid most of a small object.
-    Where the detector's bed is not supported at that station the case is left unsupported.
+    Both the centre-line and the floor come from the detector's own geometry for the same frame, so a
+    result cannot be a disagreement between the injector and the classifier about where the track is:
+    an interpolated anchor chain clamps beyond its last anchor while the classifier extrapolates the
+    fitted slope and curvature, and at 150 m those two centres differ by metres, which put a
+    centre-line object 2.85 m off the corridor and out of the envelope. Where either is unsupported at
+    that station the case is left unsupported instead of being scored.
     """
     if case["range_m"] is None:
         return None
     dx, dy, dz = case["dimensions_m"]
     along_m, lateral_m = case["range_m"], case["lateral_m"]
-    centre_lateral = float(np.interp(along_m, anchors[:, 0], anchors[:, 1])) if len(anchors) >= 2 else 0.0
-    target_lateral = centre_lateral + lateral_m
+    centre, _, _ = geometry.path(np.array([along_m]))
+    target_lateral = float(centre[0]) + lateral_m
     bed, _ = geometry.ground(np.array([[along_m, target_lateral, 0.0]]))
-    if not np.isfinite(bed[0]):
+    if not np.isfinite(bed[0]) or not np.isfinite(centre[0]):
         return None
     forward = pose[:3, :3] @ np.array([1.0, 0.0, 0.0])
     lateral = pose[:3, :3] @ np.array([0.0, 1.0, 0.0])
     up = pose[:3, :3] @ np.array([0.0, 0.0, 1.0])
-    centre = pose[:3, 3] + pose[:3, :3] @ np.array([along_m, target_lateral, bed[0] + height_m + dz / 2])
-    return {"bbox_min": (centre - forward * dx / 2 - lateral * dy / 2 - up * dz / 2).tolist(),
-            "bbox_max": (centre + forward * dx / 2 + lateral * dy / 2 + up * dz / 2).tolist()}
+    centre_world = pose[:3, 3] + pose[:3, :3] @ np.array([along_m, target_lateral,
+                                                          bed[0] + height_m + dz / 2])
+    return {"bbox_min": (centre_world - forward * dx / 2 - lateral * dy / 2 - up * dz / 2).tolist(),
+            "bbox_max": (centre_world + forward * dx / 2 + lateral * dy / 2 + up * dz / 2).tolist()}
 
 
 def run_case(case: dict, stress: dict, detector_config: dict, index: int, sources: list[dict]):
     rng = np.random.default_rng(np.random.SeedSequence([stress["seed"], index]))
     detector = Detector(detector_config)
     target = world_target(case, sources[0]["pose"], sources[0]["geometry"],
-                          stress["object_rest_height_m"], sources[0]["anchors"])  # placed once, on the track
+                          stress["object_rest_height_m"])  # placed once, on the track
     if target is None and case.get("range_m") is not None:
         # No floor was observed at that station, so the object cannot be placed on the track there.
         # Reporting it as an unsupported case keeps a placement failure out of the miss count.
