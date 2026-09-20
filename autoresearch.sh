@@ -12,13 +12,21 @@ PY=".venv/bin/python"
 EXPERIMENT="configs/realistic-autoresearch-20260920.json"
 RUN="build/autoresearch-panel"
 REPORT="build/autoresearch-report.json"
+GATE_EXPERIMENT="configs/real-gate-20260920.json"
+GATE_RUN="build/autoresearch-real"
 
-rm -rf "$RUN" "$REPORT"
+rm -rf "$RUN" "$REPORT" "$GATE_RUN"
 "$PY" -m tunnel_guard.realistic_stress --experiment "$EXPERIMENT" >/dev/null
 "$PY" -m tunnel_guard.realistic_report --run "$RUN" --output "$REPORT" >/dev/null
+# The synthetic panel cannot see what a change costs on real clutter. This replay is the gate: a
+# change that lowers the obstacle-frame count on the labelled recording is rejected whatever the
+# panel says, so the number has to be in the same METRIC stream as the panel's own.
+"$PY" -m tunnel_guard.run --experiment "$GATE_EXPERIMENT" >/dev/null
 
-"$PY" - "$REPORT" <<'PY'
+"$PY" - "$REPORT" "$GATE_RUN" <<'PY'
 import json, sys
+from collections import Counter
+
 report = json.load(open(sys.argv[1]))
 recall = report["recall"]
 counts = recall["counts"]
@@ -37,8 +45,20 @@ rows = [
     ("injection_free_frames_claiming_hazard", nuisance["frames_claiming_an_obstacle"]),
     ("unexplained_hazard_objects", nuisance["unexplained_hazard_objects_on_injected_frames"]),
 ]
+# Real-recording gate.
+for bag in ("doubleT_obstacle", "roundT_doubleT"):
+    statuses, objects = Counter(), 0
+    with open(f"{sys.argv[2]}/{bag}.jsonl") as stream:
+        for line in stream:
+            row = json.loads(line)
+            statuses[row["status"]] += 1
+            objects += len(row["objects"])
+    rows.append((f"{bag}_obstacle_frames",
+                 statuses["obstacle"] + statuses["unresolved_obstacle"]))
+    rows.append((f"{bag}_objects", objects))
+
 for name, value in rows:
     if value is None:
-        raise SystemExit(f"METRIC {name} is None: the panel did not produce it")
+        raise SystemExit(f"METRIC {name} is None: the run did not produce it")
     print(f"METRIC {name}={value}")
 PY
