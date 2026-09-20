@@ -1,0 +1,96 @@
+{
+  "date": "2026-09-21",
+  "base_revision": "8ac5077",
+  "scope": "Real-detector replay after rebasing the optimization onto the updated gerasimov branch. The removed corridor-following mechanism remains removed; supported_range_m retains upstream semantics.",
+  "bags": [
+    {
+      "bag": "doubleT_obstacle",
+      "frames": 30,
+      "report": "build/perf-100ms-rebased-doubleT_obstacle/report.json",
+      "report_sha256": "a0443642667f8de6be49fedde69f881d8fc3242bc6227b46916f88b24780d6f3",
+      "changed_frames_by_field": {},
+      "supported_range_changed_frames": [],
+      "measurement_identity_errors": [],
+      "largest_compared_float_difference": 2.6978419498391304e-14,
+      "runs": [
+        {
+          "repeat": 0,
+          "backend": "before",
+          "voxel_backend": "cpp",
+          "order": [
+            "before",
+            "after"
+          ],
+          "frames": 30,
+          "elapsed_s": 6.7436188731808215,
+          "processing_ms": {
+            "p50": 224.20668753329664,
+            "p95": 247.34511877759354
+          }
+        },
+        {
+          "repeat": 0,
+          "backend": "after",
+          "voxel_backend": "cpp",
+          "order": [
+            "before",
+            "after"
+          ],
+          "frames": 30,
+          "elapsed_s": 5.762110123992898,
+          "processing_ms": {
+            "p50": 186.58637447515503,
+            "p95": 222.2672277886886
+          }
+        }
+      ]
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frames": 30,
+      "report": "build/perf-100ms-rebased-roundT_doubleT/report.json",
+      "report_sha256": "94ac30c50d2e82f16ec7573ae9407e9e8b8d5ee447e9a6e271f1630bf52e96e4",
+      "changed_frames_by_field": {},
+      "supported_range_changed_frames": [],
+      "measurement_identity_errors": [],
+      "largest_compared_float_difference": 7.505107646466058e-14,
+      "runs": [
+        {
+          "repeat": 0,
+          "backend": "before",
+          "voxel_backend": "cpp",
+          "order": [
+            "before",
+            "after"
+          ],
+          "frames": 30,
+          "elapsed_s": 5.603818043135107,
+          "processing_ms": {
+            "p50": 184.0206665219739,
+            "p95": 217.32846651575528
+          }
+        },
+        {
+          "repeat": 0,
+          "backend": "after",
+          "voxel_backend": "cpp",
+          "order": [
+            "before",
+            "after"
+          ],
+          "frames": 30,
+          "elapsed_s": 4.475318999378942,
+          "processing_ms": {
+            "p50": 147.30166649678722,
+            "p95": 173.55101268622093
+          }
+        }
+      ]
+    }
+  ],
+  "limitations": [
+    "One before/after pair of 30 real scans per recording; additional integration evidence, not a new full-corpus timing claim.",
+    "No automated tests were created or run.",
+    "Original 402-frame and repeated timing evidence remains in runtime-100ms-m1pro-20260920.json."
+  ]
+}

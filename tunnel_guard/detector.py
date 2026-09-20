@@ -89,34 +89,20 @@ def voxel_unique_at(config: dict, reductive_size: float | None) -> bool:
     return size == reductive_size
 
 
-def _far_field_bound(distance_m: float, geometry: TrackGeometry, config: dict) -> float | None:
-    """The path uncertainty the classifier itself used at that distance, reported per object.
-
-    Reporting the same sigma keeps the stated uncertainty and the decision consistent by
-    construction: inside the modelled horizon it is the small calibrated value (measured centre error
-    / claimed sigma was 0.46-1.34 over 10-110 m of extrapolation in
-    results/alignment-long-lever-20260919.json), and beyond the horizon it is not bounded at all -
-    reported as None rather than as an invented finite number, because there the corridor is not used
-    for any decision and a numeric bound would imply knowledge that does not exist.
-    """
-    if len(geometry.rail_anchors) < 2:
-        return None
-    uncertainty = float(geometry.path(np.array([distance_m]))[2][0])
-    return uncertainty if np.isfinite(uncertainty) else None
-
-
 def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict,
                        diagnostics: dict | None = None, arrays: dict | None = None,
                        *, reduced_on_grid_m: float | None = None,
-                       classification_out: list | None = None) -> list[dict]:
-    classification = geometry.classify(points)
+                       classification_out: list | None = None,
+                       precomputed_classification: tuple | None = None) -> list[dict]:
+    classification = geometry.classify(points, include_boundary=True, precomputed=precomputed_classification)
     if classification_out is not None:
         # The caller needs the same classification for its range bins; the two
         # are identical because the inputs are, and background removal only
         # touches `context`.
-        classification_out.append(classification)
-    _, context, _, _, _ = classification
-    if voxel_unique_at(config, reduced_on_grid_m):
+        classification_out.append(classification[:5])
+    _, context, _, _, _, _ = classification
+    already_reduced = voxel_unique_at(config, reduced_on_grid_m)
+    if already_reduced:
         # The context cloud is already one point per cluster voxel in key order,
         # so the reduction below would only reproduce the same rows in the same
         # order; filtering keeps it identical without the sort.
@@ -131,8 +117,14 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                       cluster_points=cloud)
     if not len(cloud):
         return []
-    core, _, heights, observed, nominal_overlap, boundary = geometry.classify(
-        cloud, remove_background=False, include_boundary=True)
+    if already_reduced:
+        # Only context is changed by the background mask; the remaining five
+        # pointwise results already refer to these exact representatives.
+        core, heights, observed, nominal_overlap, boundary = (
+            classification[i][context] for i in (0, 2, 3, 4, 5))
+    else:
+        core, _, heights, observed, nominal_overlap, boundary = geometry.classify(
+            cloud, remove_background=False, include_boundary=True)
     # Mixed evidence (one interior + one boundary return) must not disappear
     # merely because neither subset separately reaches weak_min_voxels.
     uncertain_support = core | (~observed & nominal_overlap) | boundary
@@ -255,14 +247,20 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
         minimum_length = float(continuity.get("minimum_length_m", 12.0))
         margin = float(continuity.get("reach_m", 12.0))
         minimum_members = int(continuity.get("minimum_members", 4))
-        placed = []
-        for obj in objects:
-            support = obj["_support_points"]
-            ground_z, _ = geometry.ground(support)
-            centre, _, _ = geometry.path(support[:, 0])
-            placed.append({"lateral": float(np.median(support[:, 1] - centre)),
-                           "height": float(np.median(support[:, 2] - ground_z)),
-                           "lo": float(support[:, 0].min()), "hi": float(support[:, 0].max())})
+        # Ground/path are pointwise functions of this scan's fixed anchors.
+        # Evaluate them once over the same support, then retain each object's
+        # own median. This avoids refitting the continuation per component.
+        sizes = [len(obj["_support_points"]) for obj in objects]
+        offsets = np.r_[0, np.cumsum(sizes)]
+        support = np.concatenate([obj["_support_points"] for obj in objects])
+        ground_z, _ = geometry.ground(support)
+        centre, _, _ = geometry.path(support[:, 0])
+        lateral = support[:, 1] - centre
+        height = support[:, 2] - ground_z
+        placed = [{"lateral": float(np.median(lateral[lo:hi])),
+                   "height": float(np.median(height[lo:hi])),
+                   "lo": obj["bbox_min"][0], "hi": obj["bbox_max"][0]}
+                  for obj, lo, hi in zip(objects, offsets[:-1], offsets[1:])]
         lateral_of = np.asarray([entry["lateral"] for entry in placed])
         height_of = np.asarray([entry["height"] for entry in placed])
         for index, obj in enumerate(objects):
@@ -408,9 +406,13 @@ class Detector:
             inverse = np.linalg.inv(covariances + measurement_cov)
             residual = world[None, :, :] - positions[:, None, :]
             mahalanobis = np.einsum("tni,tij,tnj->tn", residual, inverse, residual)
-            shape = np.linalg.norm(np.log(extents[None, :, :] / track_extents[:, None, :]), axis=2)
-            allowed = (mahalanobis <= cfg["tracking_mahalanobis_gate"]) & (shape <= cfg["tracking_extent_log_gate"])
-            cost[allowed] = mahalanobis[allowed] + shape[allowed]
+            # Shape cannot rescue a pair rejected by the position gate. Evaluate
+            # its three logarithms only for pairs that can actually be matched.
+            ti, oi = np.nonzero(mahalanobis <= cfg["tracking_mahalanobis_gate"])
+            shape = np.linalg.norm(np.log(extents[oi] / track_extents[ti]), axis=1)
+            allowed = shape <= cfg["tracking_extent_log_gate"]
+            ti, oi = ti[allowed], oi[allowed]
+            cost[ti, oi] = mahalanobis[ti, oi] + shape[allowed]
             # Add unmatched assignments: an impossible pair cannot steal a valid match.
             padded = np.column_stack((cost, np.full((len(ids), len(ids)), cfg["tracking_mahalanobis_gate"] + cfg["tracking_extent_log_gate"] + 1)))
             rows, columns = linear_sum_assignment(padded)
@@ -418,6 +420,9 @@ class Detector:
                 if column < len(world) and cost[row, column] < 1e6:
                     matched[int(column)] = ids[row]
         pending: list[dict] = []
+        observation = np.zeros((3, 6))
+        observation[:, :3] = np.eye(3)
+        state_identity = np.eye(6)
         for index, obj in enumerate(objects):
             key = matched.get(index)
             if key is None:
@@ -432,9 +437,7 @@ class Detector:
                 state, covariance = predicted[key]
                 gain = covariance[:, :3] @ np.linalg.inv(covariance[:3, :3] + measurement_cov)
                 state += gain @ (world[index] - state[:3])
-                observation = np.zeros((3, 6))
-                observation[:, :3] = np.eye(3)
-                factor = np.eye(6) - gain @ observation
+                factor = state_identity - gain @ observation
                 covariance = factor @ covariance @ factor.T + gain @ measurement_cov @ gain.T
             track = self.tracks[key]
             support = obj.pop("_support_points")
@@ -554,21 +557,12 @@ class Detector:
         # base window is used unconditionally.
         base_half = float(self.config["context_half_width_m"])
         crop = (frame[:, 0] >= self.config["min_forward_m"]) & (np.abs(frame[:, 1]) < base_half)
-        # Crop and reduce in one pass: the cropped copy is never materialised, and
-        # the native kernel partitions by the leading key axis so each slice is
-        # deduplicated and sorted in cache. The kernel is handed the masked cloud with a
-        # half-width that covers it, so its partition stays exact.
+        # The reducer applies this same fixed-band predicate before selecting
+        # voxel representatives. Pass the full frame to avoid a cropped copy;
+        # first-measurement selection and lexicographic voxel order are preserved.
         accelerator_module = self.native_kernels if self.config.get("voxel_backend", "numpy") == "cpp" else None
-        # The kernel returns indices into the array it is given and re-clips laterally, so it is handed
-        # the already-masked subset with a half-width that cannot clip it again.
-        subset = frame[crop]
-        # The kernel applies its own symmetric lateral limit, so the limit is read off the masked
-        # subset itself plus one voxel, which clears the strict inequality and keeps the grid as
-        # tight as the data allows without dropping a point the mask kept.
-        reach = (max(abs(float(subset[:, 1].min())), abs(float(subset[:, 1].max())))
-                 + self.config["geometry_voxel_m"]) if len(subset) else base_half
-        reduced = subset[accelerator.crop_voxels(subset, self.config["min_forward_m"], reach,
-                                                 self.config["geometry_voxel_m"], accelerator_module)]
+        reduced = frame[accelerator.crop_voxels(frame, self.config["min_forward_m"], base_half,
+                                               self.config["geometry_voxel_m"], accelerator_module)]
         if capture_diagnostics:
             self.diagnostic_arrays.update(registered_points=frame, cropped_points=frame[crop], geometry_voxel_points=reduced)
         # The criterion is DISTANCE TRAVELLED, not frames: the model's validity is a spatial property, so a
@@ -607,7 +601,8 @@ class Detector:
         objects = cluster_candidates(reduced, geometry, self.config, pipeline["segmentation"],
                                      self.diagnostic_arrays if capture_diagnostics else None,
                                      reduced_on_grid_m=self.config["geometry_voxel_m"],
-                                     classification_out=carried) if geometry.valid else []
+                                     classification_out=carried,
+                                     precomputed_classification=geometry.initial_classification) if geometry.valid else []
         if not geometry.valid:
             pipeline["segmentation"]["reason"] = geometry.reason
         self._associate(objects, pose, timestamp_s, motion["valid"])
@@ -689,8 +684,9 @@ class Detector:
             health_reasons.append("deskew_timestamps_unavailable")
         # One place for both backends: the native component path builds its own records, so the
         # far-field lateral bound is attached here rather than inside either builder.
-        for obj in objects:
-            obj["far_field_lateral_bound_m"] = _far_field_bound(obj["distance_m"], geometry, self.config)
+        bounds = geometry.path(np.asarray([obj["distance_m"] for obj in objects]))[2]
+        for obj, bound in zip(objects, bounds):
+            obj["far_field_lateral_bound_m"] = float(bound) if np.isfinite(bound) else None
         return result | {"status": status, "reason": geometry.reason,
                          "supported_range_m": geometry.supported_range_m(), "objects": objects,
                          "health": "unavailable" if not geometry.valid else ("degraded" if health_reasons else "normal"),

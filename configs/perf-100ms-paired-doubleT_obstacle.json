@@ -1,0 +1,9 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "baseline_source": "build/perf-100ms-before/source/tunnel_guard",
+  "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+  "frames": 30,
+  "repetitions": 3,
+  "output": "build/perf-100ms-paired-doubleT_obstacle"
+}

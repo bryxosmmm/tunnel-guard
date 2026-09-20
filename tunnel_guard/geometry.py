@@ -132,6 +132,7 @@ def refine_rail_pair(q, x, center, gauge, slope, cfg):
     center when support is asymmetric. Retain the configured strip width; never
     force installation height or use another acquisition.
     """
+    native = accelerator.native(cfg)
     for _ in range(2):
         representatives, sides = [], []
         for side in (-1, 1):
@@ -140,9 +141,15 @@ def refine_rail_pair(q, x, center, gauge, slope, cfg):
             if len(head) < 2 or np.ptp(head[:, 0]) < cfg["rail_min_span_m"]:
                 return None
             keys = np.floor(head[:, 0] / .30).astype(np.int64)
-            for key in np.unique(keys):
-                representatives.append(np.median(head[keys == key, :2], axis=0))
-                sides.append(side)
+            if native is not None:
+                medians = np.frombuffer(native.rail_bin_medians(np.ascontiguousarray(head), keys),
+                                        dtype=np.float64).reshape(-1, 2)
+                representatives.extend(medians)
+                sides.extend([side] * len(medians))
+            else:
+                for key in np.unique(keys):
+                    representatives.append(np.median(head[keys == key, :2], axis=0))
+                    sides.append(side)
         a = np.asarray(representatives)
         design = np.column_stack((a[:, 0] - x, np.ones(len(a)), np.asarray(sides) / 2))
         fit, _, rank, _ = np.linalg.lstsq(design, a[:, 1], rcond=None)
@@ -160,6 +167,7 @@ class TrackGeometry:
     def __init__(self, points: np.ndarray, config: dict):
         self.config = config
         self.background = None
+        self.initial_classification = None
         self.plane, self.ground_quality = robust_plane(points, config)
         self.ground_anchors = np.empty((0, 3))
         self.rail_anchors = np.empty((0, 4))
@@ -187,8 +195,6 @@ class TrackGeometry:
 
     def _ground_profile(self, points: np.ndarray):
         cfg = self.config
-        residual = points[:, 2] - (points[:, :2] @ self.plane[:2] + self.plane[2])
-        lateral_ok = np.abs(points[:, 1]) < cfg["ground_fit_half_width_m"]
         anchors = []
         previous = 0.0
         half = cfg["ground_local_window_m"] / 2
@@ -201,6 +207,8 @@ class TrackGeometry:
                                                  cfg["ground_max_slopes"][0], native)
             self.ground_anchors = anchors.reshape(-1, 3)
             return
+        residual = points[:, 2] - (points[:, :2] @ self.plane[:2] + self.plane[2])
+        lateral_ok = np.abs(points[:, 1]) < cfg["ground_fit_half_width_m"]
         # Sorting once makes each longitudinal window a contiguous slice of the
         # same measurements; the original inequalities are then applied to the
         # slice, so the selected set, its median and its spread are unchanged.
@@ -564,18 +572,23 @@ class TrackGeometry:
         return center, np.interp(x, a[:, 0], a[:, 2]), uncertainty
 
     def classify(self, points: np.ndarray, *, remove_background: bool = True,
-                 include_boundary: bool = False, ground: tuple | None = None):
+                 include_boundary: bool = False, ground: tuple | None = None,
+                 precomputed: tuple | None = None):
         """Classify support; optionally expose uncertain envelope intersections.
 
         The interval uses the existing heuristic path uncertainty, not calibrated
         probability or a guarantee about the physical vehicle envelope. A caller
         that already fitted the bed for the same array may pass it in; the
-        returned values are those of the identical fit.
+        returned values are those of the identical fit. ``precomputed`` must
+        contain all six pointwise results for these exact points and geometry;
+        it is used only within the current scan, never from a cached background.
         """
         cfg = self.config
-        native = accelerator.classify_geometry(points, self, accelerator.native(cfg))
+        native = precomputed if precomputed is not None else accelerator.classify_geometry(points, self, accelerator.native(cfg))
         if native is not None:
             core, context, height, observed, nominal_overlap, boundary = native
+            if precomputed is not None:
+                context = context.copy()
             if remove_background and self.background is not None:
                 # Only segmentation context consumes the background decision and
                 # protected returns can never be removed, so the frozen model is

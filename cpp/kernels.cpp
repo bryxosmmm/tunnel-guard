@@ -2119,7 +2119,56 @@ PyObject* range_summary(PyObject*, PyObject* args) {
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
 }
 
+// Median x/y for each longitudinal rail bin, in ascending key order.
+// Keep the fit and its rank/acceptance checks in NumPy; only replace the
+// repeated whole-head masks and tiny Python median calls.
+PyObject* rail_bin_medians(PyObject*, PyObject* args) {
+    PyObject *point_object, *key_object;
+    if (!PyArg_ParseTuple(args, "OO", &point_object, &key_object)) return nullptr;
+    Buffer points(point_object), keys(key_object);
+    if (!points.ok() || !keys.ok()) return nullptr;
+    if (!points.points() || !keys.integers() || points.rows() != keys.rows()) {
+        PyErr_SetString(PyExc_ValueError, "expected float64 (N,3) and int64 (N,) rail bins");
+        return nullptr;
+    }
+    try {
+        auto& order = workspace.i0;
+        auto& values = workspace.d0;
+        auto& result = workspace.d1;
+        {
+            ReleaseGIL released;
+            const auto n = points.rows();
+            const auto* key = keys.int64s();
+            const auto* data = points.doubles();
+            order.resize(n);
+            for (Py_ssize_t i = 0; i < n; ++i) order[i] = i;
+            std::sort(order.begin(), order.end(), [key](int64_t a, int64_t b) {
+                return key[a] < key[b] || (key[a] == key[b] && a < b);
+            });
+            result.clear();
+            for (Py_ssize_t begin = 0; begin < n;) {
+                auto end = begin + 1;
+                while (end < n && key[order[end]] == key[order[begin]]) ++end;
+                const auto count = end - begin;
+                values.resize(count);
+                for (int axis = 0; axis < 2; ++axis) {
+                    for (Py_ssize_t i = 0; i < count; ++i)
+                        values[i] = data[3 * order[begin + i] + axis];
+                    std::nth_element(values.begin(), values.begin() + count / 2, values.end());
+                    const double upper = values[count / 2];
+                    result.push_back(count % 2 ? upper :
+                        (upper + *std::max_element(values.begin(), values.begin() + count / 2)) / 2.0);
+                }
+                begin = end;
+            }
+        }
+        return bytes_of(result.data(), result.size() * sizeof(double));
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+}
+
 static PyMethodDef methods[] = {
+    {"rail_bin_medians", rail_bin_medians, METH_VARARGS,
+     "Median x/y of each rail bin in ascending key order."},
     {"voxel_indices", voxel_indices, METH_VARARGS,
      "First measurement indices, lexicographic voxel order."},
     {"voxel_count", voxel_count, METH_VARARGS,
