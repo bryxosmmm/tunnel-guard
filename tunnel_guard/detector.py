@@ -202,7 +202,10 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                 if arrays is not None:
                     components.append({"component_id": int(label), "reason": "below_min_extent", "points": len(indices)})
                 continue
-            intersects = len(inside) >= support_floor
+            # The INTERSECTION claim keeps its own threshold: one voxel inside the contour reports a
+            # candidate whose support is unresolved, not a certified intrusion. Only admission uses
+            # the lower support floor.
+            intersects = len(inside) >= config["weak_min_voxels"]
             unresolved = np.count_nonzero(uncertain_support[indices]) >= support_floor
             dense_count = int(np.count_nonzero(density_core[indices]))
             if not intersects and not unresolved and dense_count == 0:

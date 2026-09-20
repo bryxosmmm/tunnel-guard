@@ -1448,7 +1448,10 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
                     if (on_boundary[i]) ++boundary_count;
                 }
             }
-            const bool intersects = inside >= support_floor;
+            // The INTERSECTION claim keeps its own threshold: one voxel inside the contour reports a
+            // candidate whose support is unresolved, not a certified intrusion. Only admission uses
+            // the lower support floor.
+            const bool intersects = inside >= weak_min_voxels;
             const bool unresolved = uncertain_count >= support_floor;
             int reason = 0;
             if (!singleton && static_cast<int>(length) < weak_min_voxels) reason = 1;
