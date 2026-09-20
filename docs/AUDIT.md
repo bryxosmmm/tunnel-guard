@@ -24,7 +24,7 @@ AGENTS.md запрещает создавать и запускать автом
 | Семантика / ML | Классификатора нет; unknown object не подавляется по классу. |
 | Оценка | Реальный CLI, matching IoU. Только один из пяти предварительно размеченных кадров попал в выбранные префиксы. |
 | Viewer | Ранее отсутствовал; теперь ROS 2 result bag, RViz-конфиг, реальные облака/маркеры и локальный PNG-обзор. Запись и CDR readback проверены; GUI RViz не запускался. |
-| ROS node / deployment | Live subscriber, очереди ROS, Dockerfile отсутствуют; Docker daemon на машине недоступен. Нельзя считать выполненным стендовый deployment. |
+| ROS node / deployment | Live `PointCloud2` subscriber, result/alert/cloud/marker publishers, `ament_python` package and root Dockerfile are now present (`docs/ROS2.md`). Docker daemon, Humble runtime, QoS compatibility and target-host latency remain unverified on this machine. |
 
 ## Приоритетные findings
 

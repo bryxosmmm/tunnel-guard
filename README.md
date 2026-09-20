@@ -2,7 +2,7 @@
 
 Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 PointCloud2 bags directly; no ROS installation, Docker, or pretrained weights required for the default pipeline.
 
-**Research baseline, not a validated collision-warning system.** Recall, infrastructure alarms, generalization, and runtime remain unresolved. `CASE.md` contains the original requirements. Recorded RViz2 result export is implemented; target Ubuntu/Humble deployment and the RViz GUI remain unverified.
+**Research baseline, not a validated collision-warning system.** Recall, infrastructure alarms, generalization, and runtime remain unresolved. `CASE.md` contains the original requirements. A live ROS 2 Humble adapter and root Dockerfile are now included; target-host latency, QoS compatibility and the RViz GUI remain unverified. See [docs/ROS2.md](docs/ROS2.md).
 
 The current review, real-data comparison and limitations are in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). The latest iteration processed two real 30-frame prefixes. Historical results below are separate evidence.
 
@@ -24,7 +24,7 @@ See [next iteration assignments](docs/TEAM_TASKS.md): reviewed episodes, sensor/
 
 ## Quick start
 
-Python 3.11+; Python 3.13.5 was used for the latest audit (older results used 3.12). Install [uv](https://docs.astral.sh/uv/), then:
+Python 3.10+; Python 3.13.5 was used for the latest audit (older results used 3.12). Install [uv](https://docs.astral.sh/uv/), then:
 
 ```sh
 uv sync --locked
@@ -139,6 +139,7 @@ Nothing except scene directories may live under `SUSTechPOINTS/data/`: `scene_re
 | `tunnel_guard/run.py` | Reproducible bag runner |
 | `tunnel_guard/inspect_bag.py` | Bounded layout, acquisition-clock and density inspection |
 | `tunnel_guard/visualization.py` | Actual PointCloud2 / MarkerArray / status export for RViz2 replay |
+| `tunnel_guard/ros_node.py` | Live ROS 2 PointCloud2 subscriber and result publishers |
 | `tunnel_guard/evaluate.py` | One-to-one IoU matching and annotation validity |
 | `tunnel_guard/stress.py` | Occlusion-aware synthetic ray-cast evaluation |
 | `tunnel_guard/annotate.py` | Extract raw frames for annotation review |
@@ -148,6 +149,7 @@ Nothing except scene directories may live under `SUSTechPOINTS/data/`: `scene_re
 | `patches/` | Modifications applied to the pinned SUSTechPOINTS revision |
 | `configs/detector.json` | Default detector recipe; no bag-specific branches |
 | `results/` | Small recorded result summaries; full artifacts remain local |
+| `Dockerfile`, `ros2_ws/` | ROS 2 Humble image and `ament_python` package |
 
 Pipeline: validated points → KISS-ICP pose (optional deskew) → local bed and rails → supported tunnel-surface rejection → density-core segmentation → rail-relative clearance classification → temporal state and spatial evidence.
 

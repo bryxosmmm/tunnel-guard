@@ -1,0 +1,13 @@
+.git
+.gitignore
+.venv
+build
+data
+archive
+SUSTechPOINTS/data
+SUSTechPOINTS/.venv
+__pycache__
+*.pyc
+*.db3
+*.zst
+*.bag

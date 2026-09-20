@@ -1,0 +1,47 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+Visualization Manager:
+  Class: ""
+  Global Options:
+    Fixed Frame: tunnel_guard_local
+    Frame Rate: 20
+    Background Color: 24; 27; 32
+  Displays:
+    - Class: rviz_default_plugins/PointCloud2
+      Name: Live measured points
+      Enabled: true
+      Topic:
+        Value: /tunnel_guard/points
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Depth: 1
+      Size (m): 0.025
+      Style: Points
+      Color Transformer: FlatColor
+      Color: 160; 165; 170
+      Decay Time: 0
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Live objects and quality
+      Enabled: true
+      Marker Topic:
+        Value: /tunnel_guard/markers
+        Reliability Policy: Reliable
+        Durability Policy: Volatile
+        History Policy: Keep Last
+        Depth: 1
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 30
+      Pitch: 0.35
+      Yaw: 3.14159
+      Focal Point:
+        X: 20
+        Y: 0
+        Z: 0
+    Saved: ~
+Window Geometry:
+  Width: 1400
+  Height: 900

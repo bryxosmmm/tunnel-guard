@@ -102,7 +102,7 @@ project_root="$PWD"
 docker info --format '{{.ServerVersion}}'
 ```
 
-До нахождения/распаковки архива запуск `evaluation-quality.json` и сохранённого baseline завершался FileNotFoundError — ранние неудачные логи сохранены. Docker info сообщил отсутствие daemon/socket; `ros2` не найден. GUI/Ubuntu/Humble, Docker build, четыре остальных проезда, полный исходный panel, synthetic stress, optional published backends и видео не проверялись. После появления данных короткий baseline и текущая итерация действительно выполнены, а не заменены синтетикой.
+До нахождения/распаковки архива запуск `evaluation-quality.json` и сохранённого baseline завершался FileNotFoundError — ранние неудачные логи сохранены. Docker info сообщил отсутствие daemon/socket; `ros2` не найден. Исходники live ROS 2 узла и Dockerfile теперь добавлены, но Docker build, GUI/Ubuntu/Humble, четыре остальных проезда, полный исходный panel, synthetic stress, optional published backends и видео не проверялись. После появления данных короткий baseline и текущая итерация действительно выполнены, а не заменены синтетикой.
 
 Одноразовые read-only Python-команды дополнительно использовались для просмотра timestamps/rings, CDR readback, сравнения JSONL и ручной подачи того же реального скана. Их численные выводы включены в `results/audit-20260915.json`. Автоматического pass/fail test runner нет.
 
