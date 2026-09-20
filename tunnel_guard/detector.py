@@ -179,7 +179,13 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                 continue
             indices = order[start:stop]
             inside = indices[core[indices]]
-            if len(indices) < config["weak_min_voxels"]:
+            # A component reduced to one voxel has zero extent and cannot reach a support floor of
+            # two, yet it is the only evidence that exists about a far object the sensor sampled with
+            # a single ray. Its admission therefore rests entirely on support: the size and extent
+            # floors apply only to components that have more than one voxel.
+            singleton = len(indices) < 2
+            support_floor = 1 if singleton else config["weak_min_voxels"]
+            if not singleton and len(indices) < config["weak_min_voxels"]:
                 rejected["below_weak_min_voxels"] += 1
                 if arrays is not None:
                     components.append({"component_id": int(label), "reason": "below_weak_min_voxels", "points": len(indices)})
@@ -187,13 +193,13 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
             q = cloud[indices]
             minimum, maximum = q.min(axis=0), q.max(axis=0)
             extent = maximum - minimum
-            if extent.max() < config["cluster_min_extent_m"]:
+            if not singleton and extent.max() < config["cluster_min_extent_m"]:
                 rejected["below_min_extent"] += 1
                 if arrays is not None:
                     components.append({"component_id": int(label), "reason": "below_min_extent", "points": len(indices)})
                 continue
-            intersects = len(inside) >= config["weak_min_voxels"]
-            unresolved = np.count_nonzero(uncertain_support[indices]) >= config["weak_min_voxels"]
+            intersects = len(inside) >= support_floor
+            unresolved = np.count_nonzero(uncertain_support[indices]) >= support_floor
             dense_count = int(np.count_nonzero(density_core[indices]))
             if not intersects and not unresolved and dense_count == 0:
                 rejected["weak_without_envelope_support"] += 1

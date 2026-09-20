@@ -1418,7 +1418,15 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
             int64_t interior_dense_count = 0;
             double interior_low = HUGE_VAL, interior_high = -HUGE_VAL;
             double supported_x = HUGE_VAL, unresolved_x = HUGE_VAL;
-            if (static_cast<int>(length) >= weak_min_voxels && largest >= min_extent) {
+            // A component reduced to one voxel has zero extent and cannot reach a support floor of
+            // two, yet it is the only evidence that exists about a far object the sensor sampled with
+            // a single ray. Its admission rests entirely on support, so the size and extent floors
+            // below apply only to components with more than one voxel.
+            const bool singleton = static_cast<int>(length) < 2;
+            const int support_floor = singleton ? 1 : weak_min_voxels;
+            // The gate also selects the support witnesses, so it must run for a singleton: otherwise
+            // an admitted singleton would report an infinite unresolved witness.
+            if (singleton || (static_cast<int>(length) >= weak_min_voxels && largest >= min_extent)) {
                 for (size_t slot = 0; slot < length; ++slot) {
                     const int64_t i = members[static_cast<size_t>(begin) + slot];
                     if (in_core[i]) {
@@ -1438,11 +1446,11 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
                     if (on_boundary[i]) ++boundary_count;
                 }
             }
-            const bool intersects = inside >= weak_min_voxels;
-            const bool unresolved = uncertain_count >= weak_min_voxels;
+            const bool intersects = inside >= support_floor;
+            const bool unresolved = uncertain_count >= support_floor;
             int reason = 0;
-            if (static_cast<int>(length) < weak_min_voxels) reason = 1;
-            else if (largest < min_extent) reason = 2;
+            if (!singleton && static_cast<int>(length) < weak_min_voxels) reason = 1;
+            else if (!singleton && largest < min_extent) reason = 2;
             else if (!intersects && !unresolved && dense_count == 0) reason = 3;
             reason_codes.push_back(reason);
             if (reason != 0) {
