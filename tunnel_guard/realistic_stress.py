@@ -45,6 +45,7 @@ from rosbags.typesys import Stores, get_typestore
 
 from .detector import Detector, load_config
 from .evaluate import evaluate_frames
+from .geometry import TrackGeometry, voxel_representatives
 from .run import digest, environment, write_json
 
 POINT_FIELDS = ("x", "y", "z", "intensity", "ring", "timestamp")
@@ -166,27 +167,6 @@ def sensor_pattern(frame: dict) -> dict:
     return pattern
 
 
-def bed_height(pattern: dict, pose: np.ndarray, along_m: float, lateral_m: float) -> float:
-    """Local bed height where the object is to stand, from the recording itself.
-
-    A band average over tens of metres is not the ground under the object: the
-    track has grade and the bed is not flat, and an object placed a few
-    centimetres below the local surface is occluded by it and never measured.
-    The lower returns inside the object's own footprint are the local ground.
-    """
-    points = pattern["points"]
-    forward = pose[:3, :3] @ np.array([1.0, 0.0, 0.0])
-    lateral = pose[:3, :3] @ np.array([0.0, 1.0, 0.0])
-    up = pose[:3, :3] @ np.array([0.0, 0.0, 1.0])
-    local = points - pose[:3, 3]
-    u, v, w = local @ forward, local @ lateral, local @ up
-    for window, spread in ((1.5, 1.2), (4.0, 2.0), (10.0, 3.0)):
-        near = (np.abs(u - along_m) < window) & (np.abs(v - lateral_m) < spread)
-        if int(near.sum()) >= 8:
-            return float(np.percentile(w[near], 10))
-    return float(np.percentile(w, 10))
-
-
 def ray_box(directions: np.ndarray, origin: np.ndarray, minimum: np.ndarray, maximum: np.ndarray) -> np.ndarray:
     """First entry parameter of each ray into an axis-aligned box; inf when missed."""
     parallel = np.abs(directions) < 1e-12
@@ -294,7 +274,7 @@ def load_poses(run: Path, bag: str) -> dict:
     return poses
 
 
-def world_target(case: dict, pose: np.ndarray, pattern: dict, height_m: float,
+def world_target(case: dict, pose: np.ndarray, geometry, height_m: float,
                  anchors: np.ndarray) -> dict | None:
     """Place the object on the recorded track, at the requested distance along it.
 
@@ -302,19 +282,25 @@ def world_target(case: dict, pose: np.ndarray, pattern: dict, height_m: float,
     already inside the lining, and an object placed there is occluded by the wall
     rather than being seen down the track. The fitted rail chain is where the track
     actually goes, so the object is placed on that centreline and offset from it.
+
+    The floor is the one the detector itself believes in, read from the same frame's geometry, so a
+    result cannot be a placement error: a hand-rolled percentile of local heights put an object's
+    lower half below the modelled bed, and the segmentation floor then hid most of a small object.
+    Where the detector's bed is not supported at that station the case is left unsupported.
     """
     if case["range_m"] is None:
         return None
     dx, dy, dz = case["dimensions_m"]
     along_m, lateral_m = case["range_m"], case["lateral_m"]
     centre_lateral = float(np.interp(along_m, anchors[:, 0], anchors[:, 1])) if len(anchors) >= 2 else 0.0
+    target_lateral = centre_lateral + lateral_m
+    bed, _ = geometry.ground(np.array([[along_m, target_lateral, 0.0]]))
+    if not np.isfinite(bed[0]):
+        return None
     forward = pose[:3, :3] @ np.array([1.0, 0.0, 0.0])
     lateral = pose[:3, :3] @ np.array([0.0, 1.0, 0.0])
     up = pose[:3, :3] @ np.array([0.0, 0.0, 1.0])
-    bed = bed_height(pattern, pose, along_m, centre_lateral + lateral_m)
-    sensor_point = np.array([along_m, centre_lateral + lateral_m, 0.0])
-    centre = pose[:3, 3] + pose[:3, :3] @ sensor_point
-    centre = centre + up * (pose[:3, 3] @ up + bed + height_m + dz / 2 - float(centre @ up))
+    centre = pose[:3, 3] + pose[:3, :3] @ np.array([along_m, target_lateral, bed[0] + height_m + dz / 2])
     return {"bbox_min": (centre - forward * dx / 2 - lateral * dy / 2 - up * dz / 2).tolist(),
             "bbox_max": (centre + forward * dx / 2 + lateral * dy / 2 + up * dz / 2).tolist()}
 
@@ -322,8 +308,12 @@ def world_target(case: dict, pose: np.ndarray, pattern: dict, height_m: float,
 def run_case(case: dict, stress: dict, detector_config: dict, index: int, sources: list[dict]):
     rng = np.random.default_rng(np.random.SeedSequence([stress["seed"], index]))
     detector = Detector(detector_config)
-    target = world_target(case, sources[0]["pose"], sources[0]["pattern"],
+    target = world_target(case, sources[0]["pose"], sources[0]["geometry"],
                           stress["object_rest_height_m"], sources[0]["anchors"])  # placed once, on the track
+    if target is None and case.get("range_m") is not None:
+        # No floor was observed at that station, so the object cannot be placed on the track there.
+        # Reporting it as an unsupported case keeps a placement failure out of the miss count.
+        return [], [], [], [], False
     rows, labels, statistics, inserted = [], [], [], []
     for position, source in enumerate(sources):
         pose, stamp = source["pose"], source["stamp_s"]
@@ -358,7 +348,7 @@ def run_case(case: dict, stress: dict, detector_config: dict, index: int, source
                            "returns_from_object": merged["returns_from_object"],
                            "detections": len(row["objects"]), "status": row["status"],
                            "nearest_obstacle_m": row["nearest_obstacle_m"]})
-    return rows, labels, statistics, inserted
+    return rows, labels, statistics, inserted, True
 
 
 def main():
@@ -391,9 +381,16 @@ def main():
     sources, profile = [], []
     for frame_index in chosen:
         frame = read_frame(bag, frame_index, detector_config)
+        # The same reduction the detector applies, so the geometry the object is placed on is the
+        # geometry the detector will use for that frame.
+        cloud = frame["points"]
+        crop = ((cloud[:, 0] >= detector_config["min_forward_m"])
+                & (np.abs(cloud[:, 1]) < detector_config["context_half_width_m"]))
+        reduced = voxel_representatives(cloud[crop], detector_config["geometry_voxel_m"])
+        geometry = TrackGeometry(reduced, detector_config)
         sources.append({"frame_index": frame_index, "pattern": sensor_pattern(frame),
                         "pose": poses[frame_index][0], "stamp_s": frame["stamp_s"],
-                        "anchors": poses[frame_index][2]})
+                        "anchors": poses[frame_index][2], "geometry": geometry})
         profile.append({"frame": frame_index, "returns": len(frame["points"]),
                         "duplicates_dropped": frame["duplicates"], "invalid": frame["invalid"],
                         "slots": frame["slots"]})
@@ -405,16 +402,27 @@ def main():
                 "longest_demonstrated_range_m": float(max(np.max(s["pattern"]["ranges"]) for s in sources)),
                 "object_intensity": stress["object_intensity"]})
     predictions, annotations, records, inserted_rows = {}, [], [], []
+    unsupported_cases = []
     started = time.perf_counter()
     with (output / "predictions.jsonl").open("x") as stream:
         for index, case in enumerate(cases(stress)):
-            rows, labels, statistics, inserted = run_case(case, stress, detector_config, index, sources)
+            rows, labels, statistics, inserted, supported = run_case(case, stress, detector_config,
+                                                                     index, sources)
+            if not supported:
+                unsupported_cases.append({"case": index, "range_m": case["range_m"],
+                                          "lateral_m": case["lateral_m"]})
+                continue
             for row in rows:
                 predictions[(row["bag"], row["frame"])] = row
                 stream.write(json.dumps(row, allow_nan=False) + "\n")
             annotations.extend(labels)
             records.extend(statistics)
             inserted_rows.extend(inserted)
+    write_json(output / "unsupported_cases.json",
+               {"count": len(unsupported_cases), "cases": unsupported_cases,
+                "reason": ("No floor was observed at the station the object needed to stand on, so the "
+                           "object was not placed and the case is not scored. Scored objects are "
+                           "reported as objects.injected by realistic_report.")})
     with (output / "inserted.jsonl").open("x") as stream:
         for record in inserted_rows:
             stream.write(json.dumps(record, allow_nan=False) + "\n")
