@@ -478,8 +478,14 @@ class Detector:
             obj, key, hits = record["obj"], record["key"], record["hits"]
             recent_interior = record["recent_interior"]
             state, covariance, track = record["state"], record["covariance"], record["track"]
-            confirmed = obj["immediate"] or (hits >= cfg["confirmation_hits"]
-                                             and int(record["count"]) >= cfg["evidence_min_points"])
+            # A candidate admitted on the support of a single voxel says an object may be there; a
+            # single return in the current scan cannot certify a hazard. Confirmation therefore
+            # requires the normal support floor, so such a candidate stays in the output as an
+            # unresolved object without being able to set the status.
+            confirmed = (obj["immediate"]
+                         or (int(obj["support_voxels"]) >= cfg["weak_min_voxels"]
+                             and hits >= cfg["confirmation_hits"]
+                             and int(record["count"]) >= cfg["evidence_min_points"]))
             intersection_confirmed = (confirmed and obj["path_relation"] == "intersecting"
                                       and (obj["intersection_immediate"] or len(recent_interior) >= cfg["confirmation_hits"]))
             obj.update(track_id=key, hits=hits, confirmed=bool(confirmed),
