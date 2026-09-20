@@ -1,0 +1,15 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/all-we-know-docker-smoke",
+  "every": 1,
+  "max_frames": 1,
+  "visualization": false,
+  "display_max_points": 50000,
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_nonexhaustive"}
+  ],
+  "hypothesis": "The frozen project environment can execute the actual detector inside the Ubuntu 22.04 / ROS 2 Humble image.",
+  "criterion": "Build the image and process one real PointCloud2 scan into an immutable result directory without installing anything on the host.",
+  "validity": "Container execution smoke only; it does not measure obstacle accuracy or target-hardware latency."
+}

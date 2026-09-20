@@ -491,7 +491,13 @@ class TrackGeometry:
         uncertainty[nearest > cfg["path_max_extrapolation_m"]] = np.inf
         return center, np.interp(x, a[:, 0], a[:, 2]), uncertainty
 
-    def classify(self, points: np.ndarray, *, remove_background: bool = True):
+    def classify_with_coordinates(self, points: np.ndarray, *, remove_background: bool = True):
+        """Classify returns and expose the measured rail-relative cross-section.
+
+        ``running_height`` and ``lateral`` are point-support coordinates in the
+        local rail frame.  They are not an amodal object pose and remain subject
+        to the reported path uncertainty.
+        """
         cfg = self.config
         z, ground_uncertainty = self.ground(points)
         center, gauge, path_uncertainty = self.path(points[:, 0])
@@ -526,11 +532,21 @@ class TrackGeometry:
         if remove_background and self.background is not None:
             background = self.background.mask(points, observed & nominal_overlap)
             context &= ~background
-        return core, context, height, observed, nominal_overlap
+        return (core, context, height, observed, nominal_overlap,
+                running_height, lateral, path_uncertainty)
+
+    def classify(self, points: np.ndarray, *, remove_background: bool = True):
+        return self.classify_with_coordinates(
+            points, remove_background=remove_background
+        )[:5]
 
     def describe(self) -> dict:
+        sensor_height = (None if self.plane is None else
+                         float(-self.plane[2] / np.sqrt(1 + np.sum(self.plane[:2] ** 2))))
         return {"valid": self.valid, "reason": self.reason, "ground_quality": self.ground_quality,
                 "ground_plane": None if self.plane is None else self.plane.tolist(),
+                "estimated_sensor_height_from_local_bed_m": sensor_height,
+                "sensor_height_semantics": "perpendicular origin-to-local-bed estimate, not surveyed extrinsics",
                 "rail_head_height_m": self.rail_head_height_m,
                 "rail_head_anchors": self.rail_head_anchors.tolist(),
                 "rail_sigmas_m": self.rail_sigma.tolist(),

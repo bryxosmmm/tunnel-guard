@@ -18,9 +18,6 @@ from tools import check_labels  as check
 
 #sys.path.append(os.path.join(BASE_DIR, './algos'))
 #import algos.rotation as rotation
-from algos import pre_annotate
-
-
 #sys.path.append(os.path.join(BASE_DIR, '../tracking'))
 #import algos.trajectory as trajectory
 
@@ -138,20 +135,20 @@ class Root(object):
     @cherrypy.expose    
     @cherrypy.tools.json_out()
     def predict_rotation(self):
-      cl = cherrypy.request.headers['Content-Length']
-      rawbody = cherrypy.request.body.readline().decode('UTF-8')
-      
-      data = json.loads(rawbody)
-      
-      return {"angle": pre_annotate.predict_yaw(data["points"])}
-      #return {}
+      raise cherrypy.HTTPError(
+          503,
+          "Rotation prediction is unavailable in viewer-only mode; "
+          "TensorFlow and the optional model are not installed."
+      )
 
     
     @cherrypy.expose    
     @cherrypy.tools.json_out()
     def auto_annotate(self, scene, frame):
-      print("auto annotate ", scene, frame)
-      return pre_annotate.annotate_file('./data/{}/lidar/{}.pcd'.format(scene,frame))
+      raise cherrypy.HTTPError(
+          503,
+          "Auto annotation is unavailable in viewer-only mode."
+      )
       
 
 

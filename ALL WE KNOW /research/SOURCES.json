@@ -1,0 +1,54 @@
+{
+  "captured_at": "2026-09-19",
+  "policy": "Primary papers and authors' repositories only; all downloads remain inside this project directory.",
+  "papers": [
+    {
+      "file": "papers/2017-tunnel-clearance-point-cloud.pdf",
+      "title": "Railway Tunnel Clearance Inspection Method Based on 3D Point Cloud from Mobile Laser Scanning",
+      "doi": "10.3390/s17092055",
+      "source_url": "https://mdpi-res.com/d_attachment/sensors/sensors-17-02055/article_deploy/sensors-17-02055-v2.pdf",
+      "sha256": "299b208d8bb2aff19fc249cd0f3939430e3fe5b83ee76095cfe19b00cd899a05",
+      "license": "CC BY 4.0"
+    },
+    {
+      "file": "papers/2024-railway-obstacle-detection.pdf",
+      "title": "A Novel High-Precision Railway Obstacle Detection Algorithm Based on 3D LiDAR",
+      "doi": "10.3390/s24103148",
+      "source_url": "https://mdpi-res.com/d_attachment/sensors/sensors-24-03148/article_deploy/sensors-24-03148.pdf",
+      "sha256": "fa972c882960517e7ef0a20d8f9771272809b32c4191e98735df2b93ea5e8967",
+      "license": "CC BY 4.0"
+    },
+    {
+      "file": "papers/2025-deterministic-railway-obstacle-data-fusion.pdf",
+      "title": "Deterministic LiDAR-Based Obstacle Detection in Railways Using Data Fusion",
+      "doi": "10.3390/app15063118",
+      "source_url": "https://mdpi-res.com/d_attachment/applsci/applsci-15-03118/article_deploy/applsci-15-03118.pdf",
+      "sha256": "0a8b5abaab3076e93fdd1f478347af8dd13f95859bf48c81e39b08d25d03e469",
+      "license": "CC BY 4.0"
+    },
+    {
+      "file": "papers/2025-freedom-conservative-free-space.pdf",
+      "title": "FreeDOM: Online Dynamic Object Removal Framework for Static Map Construction Based on Conservative Free Space Estimation",
+      "doi": "10.1109/LRA.2025.3560881",
+      "source_url": "https://arxiv.org/pdf/2504.11073",
+      "sha256": "e1fd2e3c8c4a31f17f42e283b5c22c11274f4717302f5c576b14807d2dc4f861",
+      "license": "See the paper record; the associated source code is MIT"
+    },
+    {
+      "file": "papers/2026-railway-alignment-uav-lidar.pdf",
+      "title": "Efficient Extraction and Specification-Compliant Optimization of Railway Alignment Parameters from UAV LiDAR Point Clouds",
+      "doi": "10.5194/isprs-annals-XI-2-2026-101-2026",
+      "source_url": "https://isprs-annals.copernicus.org/articles/XI-2-2026/101/2026/isprs-annals-XI-2-2026-101-2026.pdf",
+      "sha256": "29ff48878011b06b3c60240d49ff1517177da396107ca11de603a98c6f77a445",
+      "license": "CC BY 4.0"
+    }
+  ],
+  "repositories": [
+    {
+      "path": "code/FreeDOM",
+      "url": "https://github.com/LC-Robotics/FreeDOM",
+      "revision": "dcfd5690cafddf121a80bd8ea477807d9656748e",
+      "license": "MIT"
+    }
+  ]
+}

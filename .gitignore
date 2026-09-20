@@ -4,6 +4,7 @@
 /materials/
 /build/
 /dist/
+/tmp/
 /.local-research/
 
 # Vendored annotation tool: source is tracked, runtime state is not.
@@ -17,7 +18,9 @@
 /.direnv/
 /.uv-cache/
 /.venv/
-/scripts/
+/scripts/*
+!/scripts/run_experiment.py
+!/scripts/visualize_metrics.py
 /experiments/
 .env
 .env.*

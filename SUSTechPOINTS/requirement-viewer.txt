@@ -1,0 +1,4 @@
+cherrypy
+jinja2
+cheroot != 8.4.4
+numpy>=1.26,<3

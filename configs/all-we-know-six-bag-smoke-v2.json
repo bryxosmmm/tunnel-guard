@@ -1,0 +1,20 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/all-we-know-six-bag-smoke-v2",
+  "every": 25,
+  "max_frames": 8,
+  "visualization": false,
+  "display_max_points": 50000,
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_nonexhaustive"},
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_platform", "split": "development_unlabelled"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT", "split": "development_unlabelled"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT", "split": "development_unlabelled"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT", "split": "development_unlabelled"},
+    {"path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch", "split": "development_unlabelled"}
+  ],
+  "hypothesis": "The exact segmentation optimization remains stable across all supplied tunnel geometries and sensor-recording variants.",
+  "criterion": "Process eight evenly sampled scans from every supplied recording without a crash and retain supported geometry on at least 95 percent of the 48 emitted scans.",
+  "validity": "This checks execution and geometry coverage only. Bag names are not labels, so alarm counts are not false-positive or recall measurements."
+}

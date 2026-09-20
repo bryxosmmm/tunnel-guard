@@ -1,0 +1,114 @@
+{
+  "date": "2026-09-19",
+  "claim_scope": "real-data execution, exact-output optimization, geometry coverage; not obstacle accuracy",
+  "knowledge_sources": {
+    "transcript": "ALL WE KNOW /All We Know.md",
+    "requirements_pdf": "ALL WE KNOW /ТЗ/5. ДепТранспорта.pdf",
+    "sensor_manual_pdf": "ALL WE KNOW /описание лидара.pdf",
+    "moving_event_paper_pdf": "ALL WE KNOW /статья.pdf",
+    "m_detector": {
+      "path": "ALL WE KNOW /third_party/M-detector",
+      "revision": "0645dabe307a99f3b59a5a3d3007acfdcad1a39f",
+      "license": "GPL-2.0; README additionally limits free use to academic use"
+    },
+    "hmm_mos": {
+      "path": "ALL WE KNOW /third_party/HMM-MOS",
+      "revision": "3f625031d135b2bbe4297125da11facdaba8ca81",
+      "license": "MIT"
+    },
+    "internet_research_manifest": "ALL WE KNOW /research/SOURCES.json",
+    "freedom": {
+      "path": "ALL WE KNOW /research/code/FreeDOM",
+      "revision": "dcfd5690cafddf121a80bd8ea477807d9656748e",
+      "license": "MIT",
+      "integration": "deferred: dynamic free-space evidence requires independently credible poses and does not cover static obstacles"
+    }
+  },
+  "exact_optimization_panel": {
+    "recipe_before": "configs/all-we-know-baseline-smoke.json",
+    "recipe_after": "configs/all-we-know-optimized-smoke.json",
+    "frames": 18,
+    "semantic_json_fields_equal_excluding_timings": true,
+    "objects_before": 3462,
+    "objects_after": 3462,
+    "confirmed_before": 340,
+    "confirmed_after": 340,
+    "combined_processing_p50_ms_before": 637.2714375029318,
+    "combined_processing_p50_ms_after": 427.364562463481,
+    "combined_p50_reduction_percent": 32.9,
+    "profile_peak_rss_gib_before": 1.685,
+    "profile_peak_rss_gib_after": 0.536,
+    "per_bag": {
+      "doubleT_obstacle": {"p50_ms_before": 912.1155840111896, "p50_ms_after": 502.2054590517655},
+      "doubleT_platform": {"p50_ms_before": 321.55995804350823, "p50_ms_after": 264.0891670016572}
+    }
+  },
+  "six_bag_smoke": {
+    "recipe": "configs/all-we-know-six-bag-smoke-v2.json",
+    "frames": 48,
+    "geometry_valid_frames": 48,
+    "criterion_met": true,
+    "combined_processing_p50_ms": 329.426312004216,
+    "combined_processing_p95_ms": 535.7945829164237,
+    "accuracy": null,
+    "accuracy_validity": "No exhaustive labels; alarm counts are detector outputs, not false positives"
+  },
+  "final_config_and_height_smoke": {
+    "recipe": "configs/all-we-know-final-smoke.json",
+    "frames": 6,
+    "geometry_valid_frames": 6,
+    "finite_height_estimates": 6,
+    "estimated_sensor_height_range_m": [1.305, 1.720],
+    "criterion_met": true
+  },
+  "rail_relative_output_and_reuse_panel": {
+    "run_before": "build/research-iteration-baseline-20260919",
+    "run_after": "build/research-iteration-optimized-20260919",
+    "frames": 18,
+    "semantic_json_fields_equal_excluding_timings_and_new_diagnostics": true,
+    "enriched_objects": 3462,
+    "objects_with_finite_path_uncertainty": 2514,
+    "post_change_six_bag_smoke": {
+      "run": "build/research-final-six-bag-20260919",
+      "frames": 6,
+      "geometry_valid_frames": 6,
+      "objects": 1360,
+      "objects_with_rail_relative_support": 1360
+    },
+    "removed_reclassification_p50_ms": 4.486,
+    "removed_reclassification_p95_ms": 5.252,
+    "per_bag_removed_reclassification_p50_ms": {
+      "doubleT_obstacle": 5.197,
+      "doubleT_platform": 2.822
+    },
+    "performance_interpretation": "isolated real-frame profiling only; end-to-end percentage withheld because warm-cache and I/O variation dominated the small change"
+  },
+  "full_clearance_candidate_review": {
+    "bag": "doubleT_obstacle",
+    "frames": 201,
+    "in_envelope_clusters": 882,
+    "temporal_events": 51,
+    "review_candidates": 4,
+    "candidates": [
+      {"frames": [61, 71], "observed_frames": 7, "minimum_distance_m": 14.09},
+      {"frames": [47, 57], "observed_frames": 6, "minimum_distance_m": 14.16},
+      {"frames": [133, 137], "observed_frames": 4, "minimum_distance_m": 34.07},
+      {"frames": [1, 30], "observed_frames": 19, "minimum_distance_m": 55.43}
+    ],
+    "accuracy": null,
+    "interpretation": "Candidates have measured support inside the reference contour and pass structural heuristics; they are not human-verified hazards"
+  },
+  "failed_plan_retained": {
+    "recipe": "configs/all-we-know-six-bag-smoke.json",
+    "reason": "every=50 left fewer than eight emitted scans in three shorter recordings",
+    "frames_observed": 40,
+    "geometry_valid_frames": 40
+  },
+  "remaining_acceptance_gaps": [
+    "No target i7-9700E benchmark and current local processing exceeds 100 ms frame period",
+    "No exhaustive real positive/negative labels",
+    "No surveyed extrinsics, exact correction file, return mode, driver timing, or prior deskew provenance",
+    "No verified multi-branch path model through switches",
+    "Docker image not built locally because no Docker engine is present"
+  ]
+}

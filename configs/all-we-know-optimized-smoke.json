@@ -1,0 +1,22 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/all-we-know-optimized-smoke",
+  "every": 25,
+  "max_frames": 9,
+  "visualization": false,
+  "display_max_points": 50000,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_nonexhaustive_profile_panel"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_unlabelled_profile_panel"
+    }
+  ],
+  "hypothesis": "Radius-bucketed exact neighbor construction removes near-field over-query without changing the segmentation graph or detector outputs.",
+  "criterion": "Preserve statuses, geometry validity, object fields and distances on all 18 frames while reducing median processing time by at least 20 percent on the same machine.",
+  "validity": "This is a deterministic engineering smoke panel, not an accuracy panel. The platform recording is unlabelled and the obstacle labels are nonexhaustive."
+}

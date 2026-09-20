@@ -64,6 +64,31 @@ def load_config(path: str | Path) -> dict:
         raise ValueError("rail_support_symmetry_min must be in (0, 1]")
     if not 0 <= config["min_range_m"] < config["max_range_m"]:
         raise ValueError("Invalid sensor range bounds")
+    for name in ("ground_fit_range_m", "ground_sensor_height_bounds_m", "rail_height_bounds_m"):
+        values = config.get(name)
+        if (not isinstance(values, list) or len(values) != 2
+                or not np.isfinite(values).all() or values[0] < 0 or values[0] >= values[1]):
+            raise ValueError(f"{name} must be two increasing non-negative values")
+    slopes = config.get("ground_max_slopes")
+    if (not isinstance(slopes, list) or len(slopes) != 2
+            or not np.isfinite(slopes).all() or np.any(np.asarray(slopes) <= 0)):
+        raise ValueError("ground_max_slopes must contain two positive finite values")
+    bins = np.asarray(config.get("range_bins_m"), dtype=float)
+    if bins.ndim != 1 or len(bins) < 2 or not np.isfinite(bins).all() or np.any(np.diff(bins) <= 0):
+        raise ValueError("range_bins_m must be a strictly increasing finite sequence")
+    if bins[0] < config["min_forward_m"] or bins[-1] > config["max_range_m"]:
+        raise ValueError("range_bins_m must stay inside configured forward processing range")
+    if config.get("segmentation_method") not in ("density", "hdbscan", "travel"):
+        raise ValueError("segmentation_method must be density, hdbscan, or travel")
+    for name in ("density_min_near", "density_min_far", "weak_min_voxels",
+                 "immediate_min_voxels", "evidence_min_points"):
+        value = config.get(name)
+        if isinstance(value, bool) or not isinstance(value, int) or value < 1:
+            raise ValueError(f"{name} must be a positive integer")
+    if config["density_min_near"] < config["density_min_far"]:
+        raise ValueError("density_min_near must not be smaller than density_min_far")
+    if not isinstance(config.get("sensor_profile_verified"), bool):
+        raise ValueError("sensor_profile_verified must be boolean")
     if not isinstance(config.get("deskew_enabled", False), bool):
         raise ValueError("deskew_enabled must be boolean")
     if config.get("obstacle_distance_mode", "cluster_min_x") not in ("cluster_min_x", "envelope_support_min_x"):
@@ -72,8 +97,10 @@ def load_config(path: str | Path) -> dict:
 
 
 def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict,
-                       diagnostics: dict | None = None, arrays: dict | None = None) -> list[dict]:
-    _, context, _, _, _ = geometry.classify(points)
+                       diagnostics: dict | None = None, arrays: dict | None = None,
+                       classification: tuple[np.ndarray, ...] | None = None) -> list[dict]:
+    classified = geometry.classify(points) if classification is None else classification
+    _, context, _, _, _ = classified
     cloud = voxel_representatives(points[context], config["cluster_voxel_m"])
     if diagnostics is not None:
         diagnostics.update(state="ran", context_points=int(context.sum()), cluster_points=len(cloud), rejected={})
@@ -83,7 +110,10 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                       cluster_points=cloud)
     if not len(cloud):
         return []
-    core, _, heights, observed, nominal_overlap = geometry.classify(cloud, remove_background=False)
+    (core, _, heights, observed, nominal_overlap, running_height,
+     rail_lateral, path_uncertainty) = geometry.classify_with_coordinates(
+         cloud, remove_background=False
+     )
     method = config["segmentation_method"]
     if method == "density":
         labels, density_core = density_labels(cloud, config)
@@ -134,6 +164,7 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                 distance_points = q[~observed[indices] & nominal_overlap[indices]]
                 distance_method = "unresolved_nominal_envelope_min_x"
         witness = distance_points[np.argmin(distance_points[:, 0])]
+        finite_path_uncertainty = path_uncertainty[indices][np.isfinite(path_uncertainty[indices])]
         objects.append({"bbox_min": minimum.tolist(), "bbox_max": maximum.tolist(),
                         "component_id": int(label),
                         "cluster_nearest_x_m": float(np.min(q[:, 0])),
@@ -146,6 +177,16 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                         "support_voxels": len(indices), "density_core_voxels": dense_count,
                         "in_envelope_voxels": len(inside), "_support_points": q,
                         "height_above_bed_m": [float(heights[indices].min()), float(heights[indices].max())],
+                        "rail_relative_support": {
+                            "lateral_median_m": float(np.median(rail_lateral[indices])),
+                            "running_height_m": [float(running_height[indices].min()),
+                                                 float(running_height[indices].max())],
+                            "path_uncertainty_m": (
+                                float(np.median(finite_path_uncertainty))
+                                if len(finite_path_uncertainty) else None
+                            ),
+                            "semantics": "observed point support in the local rail frame, not an amodal object pose",
+                        },
                         "immediate": bool(instant)})
         if arrays is not None:
             components.append({"component_id": int(label), "reason": "accepted", "points": len(indices)})
@@ -362,8 +403,12 @@ class Detector:
             self.diagnostic_arrays.update(registered_points=frame, cropped_points=frame[crop], geometry_voxel_points=reduced)
         geometry = TrackGeometry(reduced, self.config)
         pipeline["geometry"] = {"state": "ran", "valid": geometry.valid, "reason": geometry.reason}
-        objects = cluster_candidates(reduced, geometry, self.config, pipeline["segmentation"],
-                                     self.diagnostic_arrays if capture_diagnostics else None) if geometry.valid else []
+        classification = geometry.classify(reduced) if geometry.valid else None
+        objects = cluster_candidates(
+            reduced, geometry, self.config, pipeline["segmentation"],
+            self.diagnostic_arrays if capture_diagnostics else None,
+            classification=classification,
+        ) if geometry.valid else []
         if not geometry.valid:
             pipeline["segmentation"]["reason"] = geometry.reason
         self._associate(objects, pose, timestamp_s, motion["valid"])
@@ -376,7 +421,8 @@ class Detector:
         status = ("obstacle" if certain else ("unresolved_obstacle" if confirmed else
                   ("candidate" if hazards else ("no_obstacle_observed" if geometry.valid else "unknown"))))
         bins = []
-        _, _, _, observed, _ = geometry.classify(reduced, remove_background=False)
+        observed = (classification[3] if classification is not None
+                    else geometry.classify(reduced, remove_background=False)[3])
         for lo, hi in zip(self.config["range_bins_m"][:-1], self.config["range_bins_m"][1:]):
             mask = (reduced[:, 0] >= lo) & (reduced[:, 0] < hi)
             raw_mask = (frame[:, 0] >= lo) & (frame[:, 0] < hi) & crop

@@ -1,0 +1,9 @@
+[submodule "ALL WE KNOW /third_party/HMM-MOS"]
+	path = ALL WE KNOW /third_party/HMM-MOS
+	url = https://github.com/vb44/HMM-MOS.git
+[submodule "ALL WE KNOW /third_party/M-detector"]
+	path = ALL WE KNOW /third_party/M-detector
+	url = https://github.com/hku-mars/M-detector.git
+[submodule "ALL WE KNOW /research/code/FreeDOM"]
+	path = ALL WE KNOW /research/code/FreeDOM
+	url = https://github.com/LC-Robotics/FreeDOM.git

@@ -1,0 +1,21 @@
+.git
+.codex
+.direnv
+.local-research
+.omp
+.third_party
+.uv-cache
+.uv-python
+.venv*
+ALL WE KNOW*
+SUSTechPOINTS
+archive
+build
+data
+dist
+materials
+tmp
+__pycache__
+*.pyc
+*.egg-info
+.DS_Store
