@@ -612,8 +612,12 @@ class TrackGeometry:
         width = segment[:, 2] + fraction * (segment[:, 3] - segment[:, 2]) + cfg["envelope_margin_m"]
         observed = ((ground_uncertainty <= cfg["ground_max_uncertainty_m"])
                     & (path_uncertainty <= cfg["path_max_uncertainty_m"]) & frame_supported)
-        # Remove only the measured rail-head band, not all points near a rail.
-        on_rail = (observed & (np.abs(np.abs(lateral) - gauge / 2) < cfg["rail_half_width_m"] + path_uncertainty)
+        # Remove only the measured rail-head band, not all points near a rail. The point's lateral
+        # and the rail's assumed gauge/2 are both measured from the SAME estimated centre, so the
+        # centre's error cancels in their difference; adding the path uncertainty here counted that
+        # error a second time and widened the band to ~0.48 m at 60 m, which deleted every return of
+        # an object standing 0.22 m from the rail below 0.26 m above the bed.
+        on_rail = (observed & (np.abs(np.abs(lateral) - gauge / 2) < cfg["rail_half_width_m"])
                    & (running_height <= cfg["rail_vertical_margin_m"]))
         # Propagate existing bed-height error through BOTH coordinates. A height
         # error can also cross a step in the reference contour's half-width.

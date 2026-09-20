@@ -934,8 +934,11 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
             const bool ground_ok = ground_uncertainty[index] <= ground_max_uncertainty;
             const bool path_ok = path_uncertainty[index] <= path_max_uncertainty;
             observed[index] = (ground_ok && path_ok) ? 1 : 0;
+            // The point's lateral and the rail's assumed gauge/2 are both measured from the same
+            // estimated centre, so the centre's error cancels in their difference: adding
+            // path_uncertainty here counted it twice and widened the band to ~0.48 m at 60 m.
             const bool on_rail = observed[index]
-                && (std::abs(std::abs(lateral_value) - gauge[index] / 2.0) < rail_half_width + path_uncertainty[index])
+                && (std::abs(std::abs(lateral_value) - gauge[index] / 2.0) < rail_half_width)
                 && (running_height <= rail_vertical_margin);
             // The bed-height error is propagated through both coordinates, so a
             // height error that crosses a step in the reference contour's width is
