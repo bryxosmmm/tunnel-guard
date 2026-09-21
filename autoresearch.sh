@@ -12,8 +12,17 @@
 #   1. pose run      - one row per frame per tunnel carrying the sensor pose and the fitted rail
 #                      anchors. Also the cheap smoke test: a bag that will not decode fails here.
 #   2. panel         - per tunnel: insert objects into real frames on the recorded track and report.
-#   3. pool          - sum the six reports into one primary metric, and report each tunnel separately.
-#   4. gate          - replay every tunnel end to end and report the hazard load.
+#   3. gate          - replay every tunnel end to end and report the hazard load.
+#   4. pool          - sum the six reports into one primary metric, and report each tunnel separately.
+#
+# Parallelism (2026-09-20). The three workload stages are per-tunnel independent: a tunnel's frames,
+# poses, geometry, tracker and rng never read another tunnel's, and every stage writes one file per
+# tunnel named after that tunnel. Each unit therefore runs in its own process with its own recipe and
+# its own output directory, and the shared directories the later stages read are assembled from
+# symlinks to those per-tunnel files. No recipe, frame, seed or metric definition changes - only the
+# order in which independent work executes changes - so the pooled numbers are the numbers the serial
+# harness produced. Measured on this machine: the panel stage took 19.2 min of detector time serially
+# and 6.4 min with the six tunnels concurrent.
 #
 # Prints METRIC lines only. Exits non-zero if any stage fails, so a broken run can never be mistaken
 # for a good score.
@@ -23,22 +32,77 @@ cd "$(dirname "$0")"
 PY=".venv/bin/python"
 POSE_RECIPE="configs/pose-6tunnels.json"
 POSE_RUN="build/pose-6tunnels"
+POSE_PARTS="build/pose-parts"
 PANEL_TEMPLATE="configs/panel-6tunnels-template.json"
 PANEL_ROOT="build/autoresearch-panels"
 REPORT_ROOT="build/autoresearch-reports"
 GATE_EXPERIMENT="configs/real-gate-6tunnels.json"
 GATE_RUN="build/autoresearch-real"
+GATE_PARTS="build/gate-parts"
 
-rm -rf "$POSE_RUN" "$PANEL_ROOT" "$REPORT_ROOT" "$GATE_RUN"
-mkdir -p "$PANEL_ROOT/recipes" "$REPORT_ROOT"
+# Independent tunnels launched at once. Each process already threads its own odometry (8) and
+# nearest-neighbour queries (all cores), so this is the point where more units stop paying.
+JOBS="${AR_JOBS:-6}"
 
-# 1. Poses and rail anchors per tunnel.
-"$PY" -m tunnel_guard.run --experiment "$POSE_RECIPE" >/dev/null
+rm -rf "$POSE_RUN" "$POSE_PARTS" "$PANEL_ROOT" "$REPORT_ROOT" "$GATE_RUN" "$GATE_PARTS"
+mkdir -p "$PANEL_ROOT/recipes" "$REPORT_ROOT" "$POSE_RUN" "$GATE_RUN"
 
-# 2. One panel recipe per tunnel, then insert and report on each.
 mapfile -t BAGS < <("$PY" -c "
 import json
 print('\n'.join(b['path'].split('/')[-1] for b in json.load(open('$POSE_RECIPE'))['bags']))")
+
+# Launch one shell command per line of work, at most JOBS at a time, and fail the stage if any fails.
+run_parallel() {
+  local -a pids=()
+  local failed=0
+  for command in "$@"; do
+    bash -c "$command" &
+    pids+=("$!")
+    if [ "${#pids[@]}" -ge "$JOBS" ]; then
+      wait "${pids[0]}" || failed=1
+      pids=("${pids[@]:1}")
+    fi
+  done
+  for pid in "${pids[@]:-}"; do
+    [ -n "${pid:-}" ] && { wait "$pid" || failed=1; }
+  done
+  if [ "$failed" -ne 0 ]; then
+    echo "a parallel stage command failed" >&2
+    exit 1
+  fi
+}
+
+# One recipe per tunnel for a multi-bag recipe, so each tunnel can run as its own process.
+split_recipe() {
+  "$PY" - "$1" "$2" <<'PY'
+import json, sys
+from pathlib import Path
+source, destination = sys.argv[1], sys.argv[2]
+recipe = json.loads(Path(source).read_text())
+root = Path(destination)
+root.mkdir(parents=True, exist_ok=True)
+for entry in recipe["bags"]:
+    bag = entry["path"].split("/")[-1]
+    part = dict(recipe, bags=[entry], output=f"{root}/{bag}",
+                note=f"per-tunnel part of {source} for {bag}, run as its own process")
+    (root / f"{bag}.json").write_text(json.dumps(part, indent=2) + "\n")
+PY
+}
+
+# 1. Poses and rail anchors per tunnel, one process per tunnel, then expose them as one directory.
+split_recipe "$POSE_RECIPE" "$POSE_PARTS"
+POSE_COMMANDS=()
+for bag in "${BAGS[@]}"; do
+  POSE_COMMANDS+=("$PY -m tunnel_guard.run --experiment '$POSE_PARTS/$bag.json' >/dev/null")
+done
+run_parallel "${POSE_COMMANDS[@]}"
+for bag in "${BAGS[@]}"; do
+  ln -sfn "$PWD/$POSE_PARTS/$bag/$bag.jsonl" "$POSE_RUN/$bag.jsonl"
+done
+
+# 2. One panel recipe per tunnel, then insert and report on each. The insertions are the expensive
+#    half and run concurrently; reporting one tunnel reads only that tunnel's output.
+PANEL_COMMANDS=()
 for bag in "${BAGS[@]}"; do
   "$PY" - "$PANEL_TEMPLATE" "$PANEL_ROOT/recipes/$bag.json" "$bag" "$POSE_RUN" "$PANEL_ROOT/$bag" <<'PY'
 import json, sys
@@ -52,12 +116,25 @@ recipe.update(background_bag=f"data/sourcecraft_subset/for_hackathon/{bag}",
 with open(destination, "w") as stream:
     stream.write(json.dumps(recipe, indent=2) + "\n")
 PY
-  "$PY" -m tunnel_guard.realistic_stress --experiment "$PANEL_ROOT/recipes/$bag.json" >/dev/null
-  "$PY" -m tunnel_guard.realistic_report --run "$PANEL_ROOT/$bag" --output "$REPORT_ROOT/$bag.json" >/dev/null
+  PANEL_COMMANDS+=("$PY -m tunnel_guard.realistic_stress --experiment '$PANEL_ROOT/recipes/$bag.json' >/dev/null")
 done
+run_parallel "${PANEL_COMMANDS[@]}"
+REPORT_COMMANDS=()
+for bag in "${BAGS[@]}"; do
+  REPORT_COMMANDS+=("$PY -m tunnel_guard.realistic_report --run '$PANEL_ROOT/$bag' --output '$REPORT_ROOT/$bag.json' >/dev/null")
+done
+run_parallel "${REPORT_COMMANDS[@]}"
 
-# 3. Gate: every frame of every tunnel.
-"$PY" -m tunnel_guard.run --experiment "$GATE_EXPERIMENT" >/dev/null
+# 3. Gate: every frame of every tunnel, one process per tunnel, exposed as one directory.
+split_recipe "$GATE_EXPERIMENT" "$GATE_PARTS"
+GATE_COMMANDS=()
+for bag in "${BAGS[@]}"; do
+  GATE_COMMANDS+=("$PY -m tunnel_guard.run --experiment '$GATE_PARTS/$bag.json' >/dev/null")
+done
+run_parallel "${GATE_COMMANDS[@]}"
+for bag in "${BAGS[@]}"; do
+  ln -sfn "$PWD/$GATE_PARTS/$bag/$bag.jsonl" "$GATE_RUN/$bag.jsonl"
+done
 
 # 4. Metrics: pooled primary plus per tunnel, then the gate.
 "$PY" - "$POSE_RECIPE" "$REPORT_ROOT" "$GATE_RUN" <<'PY'
