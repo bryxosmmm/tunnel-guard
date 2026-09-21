@@ -45,6 +45,12 @@ See [small-object review and calibration limits](docs/ENVELOPE_INTERVAL_REVIEW.m
 
 ## Runtime reduction without reducing coverage
 
+The [2026-09-20 M1 Pro optimization](docs/RUNTIME_100MS_M1PRO.md) reduces paired
+detector processing by 16–19%, preserving compared outputs on 402 real frames.
+The resulting cached-scan medians are 183 and 147 ms: **the requested 100 ms/frame
+budget is still not met**. These measurements use the current Mac, not the M4
+used in earlier reports.
+
 See [runtime profile and verification](docs/RUNTIME_CONTEXT_OPTIMIZATION.md). Avoiding unused background queries and repeated component scans preserved compared outputs on all 798 real scans. That pre-integration version measured 315–469 ms on the development Mac. See [native integration](docs/NATIVE_INTEGRATION.md) for current timings and remaining bottlenecks; target-hardware performance is unverified.
 
 ## Decode and complete offline latency

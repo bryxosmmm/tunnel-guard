@@ -25,10 +25,13 @@ class TunnelBackground:
         self.native = accelerator.native(config)
         leveled = points @ self.rotation.T
         # Never learn an obstruction inside supported vehicle clearance as lining.
-        # The same bed fit is reused by classification instead of refitted.
-        bed, ground_uncertainty = geometry.ground(points)
-        _, _, _, supported, overlap = geometry.classify(points, ground=(bed, ground_uncertainty))
-        above_rail = points[:, 2] - bed - geometry.rail_head_height_m
+        # Classification already computes height above this scan's bed. Keep
+        # its pointwise results for segmentation on these same representatives;
+        # only the background context mask remains to be applied there.
+        classification = geometry.classify(points, include_boundary=True)
+        geometry.initial_classification = classification
+        _, _, height, supported, overlap, _ = classification
+        above_rail = height - geometry.rail_head_height_m
         eligible = leveled[~(supported & overlap) & (above_rail >= cfg["min_seed_height_m"])]
         pcd = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(eligible)).voxel_down_sample(cfg["voxel_m"])
         sample = np.asarray(pcd.points)
