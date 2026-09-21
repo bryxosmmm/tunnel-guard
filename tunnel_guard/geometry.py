@@ -641,7 +641,16 @@ class TrackGeometry:
         # Segmentation precedes the collision gate. Do not amputate the feet or
         # head of an object just because only part intersects the envelope.
         segmentation_height = (running_height >= cfg["min_running_height_m"]) & (running_height <= envelope[-1, 1] + cfg["cluster_context_margin_m"])
-        context = segmentation_height & ~on_rail & (np.abs(lateral) <= cfg["segmentation_context_half_width_m"])
+        # The lateral window may only discard a return where the lateral coordinate is measured. Where
+        # the path itself is unsupported that coordinate is our own extrapolation, so it cannot be the
+        # reason a return disappears. Measured: the fitted continuation saturates against the heading
+        # bound on 1.8 per cent of real frames and puts the 100 m centre 14-15 m off, and this 3 m
+        # window then removed every return at range before anything could classify it. The height and
+        # rail tests still apply. Cost of the exemption is bounded: at most 9.8 per cent more context
+        # points, on those frames only, falling to a handful of points on other recordings.
+        lateral_within_window = ((np.abs(lateral) <= cfg["segmentation_context_half_width_m"])
+                                 | (path_uncertainty > cfg["path_max_uncertainty_m"]))
+        context = segmentation_height & ~on_rail & lateral_within_window
         nominal_overlap = ((running_height >= envelope[0, 0]) & (running_height <= envelope[-1, 1])
                            & ~on_rail & (np.abs(lateral) <= width))
         if remove_background and self.background is not None:

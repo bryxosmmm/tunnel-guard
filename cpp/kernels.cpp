@@ -973,8 +973,11 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
             boundary[index] = (observed[index] && !on_rail && !core[index] && possible) ? 1 : 0;
             const bool segmentation = (running_height >= min_running_height)
                 && (running_height <= high_edge + cluster_context_margin);
+            // The lateral window may only discard a return where the lateral coordinate is
+            // measured; where the path itself is unsupported it is our own extrapolation and
+            // cannot be the reason a return disappears. Mirrors TrackGeometry.classify.
             context[index] = (segmentation && !on_rail
-                              && (std::abs(lateral_value) <= segmentation_half_width)) ? 1 : 0;
+                              && (std::abs(lateral_value) <= segmentation_half_width || !path_ok)) ? 1 : 0;
             overlap[index] = ((running_height >= low_edge) && (running_height <= high_edge) && !on_rail
                               && (std::abs(lateral_value) <= half_width)) ? 1 : 0;
         }
