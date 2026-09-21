@@ -257,4 +257,30 @@ for name, value in metrics:
     if value is None:
         raise SystemExit(f"METRIC {name} is None: the run did not produce it")
     print(f"METRIC {name}={value}")
+
+# Nuisance ceilings, frozen at the segment baseline of 2026-09-21. The session goal counts
+# infrastructure and adjacent nuisance detections as errors, so a recall gain bought with a higher
+# nuisance load is not a win - and until now nothing in the harness said so, which is how a run
+# that raised the coverage metric by reporting more objects could be kept while the load grew.
+# The tolerances sit far above the measured noise floor (4 objects in 150156 unexplained, threaded
+# float rounding) and below every trade measured so far, so they block recall-for-nuisance trades
+# without failing on run-to-run jitter. Raising a ceiling is a deliberate act that belongs in a
+# segment bump with its justification written down, never a quiet side effect of a kept run.
+CEILINGS = {
+    "unexplained_hazard_objects": 151138 * 1.002,
+    "gate_objects_doubleT_obstacle": 60371 * 1.01,
+    "gate_objects_doubleT_platform": 105018 * 1.01,
+    "gate_objects_roundT_doubleT": 66509 * 1.01,
+    "gate_objects_roundT_pressureGate_roundT": 91524 * 1.01,
+    "gate_objects_roundT_squareT_pressureGate_squareT": 156938 * 1.01,
+    "gate_objects_squareT_platform_squareT_switch": 256540 * 1.01,
+}
+violations = [(name, value, CEILINGS[name]) for name, value in metrics
+              if name in CEILINGS and value > CEILINGS[name]]
+for name, value, ceiling in violations:
+    print(f"CEILING {name}={value} exceeds {ceiling:.1f} "
+          f"({100.0 * (value / ceiling - 1.0):+.2f}% over)")
+if violations:
+    raise SystemExit(f"nuisance ceiling exceeded on {len(violations)} metric(s): "
+                     + ", ".join(name for name, _, _ in violations))
 PY
