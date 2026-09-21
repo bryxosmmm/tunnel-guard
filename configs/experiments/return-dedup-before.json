@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/return-dedup-before",
+  "every": 1,
+  "max_frames": 60,
+  "prefetch_depth": 0,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT", "split": "development"}
+  ]
+}

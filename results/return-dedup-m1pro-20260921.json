@@ -1,0 +1,1627 @@
+{
+  "decision": "rejected_for_default_use",
+  "hypothesis": "Exact return removal accelerates processing without changing detector decisions.",
+  "acceptance": "Not met: odometry, track identity and confirmations change.",
+  "panel_sha256": "c9e0d2df4ff6abdc4193447fa2aaed8af0a412e7f20f42e72a8250fe7362e5cc",
+  "comparisons": [
+    {
+      "bag": "doubleT_obstacle",
+      "before": "build/return-dedup-before/doubleT_obstacle.jsonl",
+      "after": "build/return-dedup-after/doubleT_obstacle.jsonl",
+      "before_sha256": "a164547ea7f009c5a944dd441e48b311b3f6fb1f82b466851bca184c84643a01",
+      "after_sha256": "708defebaa7d402d24e66549de022428ccda7fb1dc00e52021983c847a0d835f",
+      "before_statistics": {
+        "frames": 60,
+        "status_frames": {
+          "candidate": 1,
+          "unresolved_obstacle": 7,
+          "obstacle": 52
+        },
+        "health_frames": {
+          "degraded": 60
+        },
+        "geometry_valid_frames": 60,
+        "motion_valid_frames": 59,
+        "candidate_observations": 14169,
+        "support_voxel_observations": 1160955,
+        "confirmed_intersection_observations": 65,
+        "candidate_observations_at_least_60m": 3692,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 199.9844164820388,
+          "p95": 246.79988295538342,
+          "p99": 912.0947182609182
+        }
+      },
+      "after_statistics": {
+        "frames": 60,
+        "status_frames": {
+          "candidate": 1,
+          "unresolved_obstacle": 7,
+          "obstacle": 52
+        },
+        "health_frames": {
+          "degraded": 60
+        },
+        "geometry_valid_frames": 60,
+        "motion_valid_frames": 59,
+        "candidate_observations": 14169,
+        "support_voxel_observations": 1160955,
+        "confirmed_intersection_observations": 65,
+        "candidate_observations_at_least_60m": 3692,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 174.03964599361643,
+          "p95": 236.82446077582418,
+          "p99": 792.9034386039674
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {
+        "motion": 60,
+        "range_observability": 60,
+        "objects": 59,
+        "pose": 59,
+        "health_reasons": 4
+      },
+      "first_changed_frames": {
+        "objects": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "motion": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "pose": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "range_observability": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "health_reasons": [
+          15,
+          17,
+          21,
+          45
+        ]
+      },
+      "largest_compared_float_difference": 0.013780925457643756,
+      "latency_ms": {
+        "before": {
+          "decode_s": {
+            "p50": 25.026666466146708,
+            "p95": 31.078977388096973
+          },
+          "processing_s": {
+            "p50": 199.9844164820388,
+            "p95": 246.79988295538342
+          },
+          "motion_s": {
+            "p50": 47.66752099385485,
+            "p95": 56.306263961596414
+          },
+          "read_and_process_s": {
+            "p50": 243.82408347446471,
+            "p95": 291.5552292251959
+          }
+        },
+        "after": {
+          "decode_s": {
+            "p50": 46.60916654393077,
+            "p95": 76.33980629616417
+          },
+          "processing_s": {
+            "p50": 174.03964599361643,
+            "p95": 236.82446077582415
+          },
+          "motion_s": {
+            "p50": 31.73464600695297,
+            "p95": 43.866389669710756
+          },
+          "read_and_process_s": {
+            "p50": 236.53850000118837,
+            "p95": 339.4927232002373
+          }
+        }
+      },
+      "removed_returns": {
+        "total": 10139002,
+        "median_per_frame": 169060.5
+      },
+      "max_pose_translation_difference_m": 0.002887114789776693,
+      "changed_frames_additional": {
+        "supported_range_m": 0,
+        "geometry_points": 0
+      },
+      "changed_frames_object_fields": {
+        "track_id": 59,
+        "confirmed": 51,
+        "intersection_confirmed": 0,
+        "support_voxels": 0
+      },
+      "manifest_sha256": {
+        "before": "2dba12c20635131e3f7fd920b2993851f4478d1640671b3c162fe154aff899a6",
+        "after": "799961d68619f40c468a87ac48c60983fb35dcbcada7d44c3459808b9ae4966a"
+      },
+      "first_scan_kiss_voxelization": {
+        "map": {
+          "before_points": 27658,
+          "after_points": 27658,
+          "same_order": false,
+          "same_point_multiset": true
+        },
+        "registration": {
+          "before_points": 6883,
+          "after_points": 6883,
+          "same_order": false,
+          "same_point_multiset": false
+        }
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "before": "build/return-dedup-before/roundT_doubleT.jsonl",
+      "after": "build/return-dedup-after/roundT_doubleT.jsonl",
+      "before_sha256": "e01f63fa0a3c6c060bd8cca8bf38bfec942b5787e8ddf6540cf46956984eca3d",
+      "after_sha256": "f937cfc89f2637e77721ef201c956740b31c4cbfdccaa026a4547e438a4209bc",
+      "before_statistics": {
+        "frames": 60,
+        "status_frames": {
+          "candidate": 1,
+          "unresolved_obstacle": 59
+        },
+        "health_frames": {
+          "degraded": 60
+        },
+        "geometry_valid_frames": 60,
+        "motion_valid_frames": 59,
+        "candidate_observations": 15041,
+        "support_voxel_observations": 1164483,
+        "confirmed_intersection_observations": 0,
+        "candidate_observations_at_least_60m": 3858,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 164.81983347330242,
+          "p95": 220.46299767098387,
+          "p99": 278.93162663676753
+        }
+      },
+      "after_statistics": {
+        "frames": 60,
+        "status_frames": {
+          "candidate": 1,
+          "unresolved_obstacle": 59
+        },
+        "health_frames": {
+          "degraded": 60
+        },
+        "geometry_valid_frames": 60,
+        "motion_valid_frames": 59,
+        "candidate_observations": 15041,
+        "support_voxel_observations": 1164483,
+        "confirmed_intersection_observations": 0,
+        "candidate_observations_at_least_60m": 3858,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 149.39510449767113,
+          "p95": 170.76842766837217,
+          "p99": 185.67117140511976
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {
+        "motion": 60,
+        "range_observability": 60,
+        "objects": 59,
+        "pose": 59,
+        "health_reasons": 7
+      },
+      "first_changed_frames": {
+        "objects": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "motion": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "pose": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29,
+          30
+        ],
+        "range_observability": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "health_reasons": [
+          5,
+          8,
+          25,
+          30,
+          43,
+          56,
+          57
+        ]
+      },
+      "largest_compared_float_difference": 0.018570380521960084,
+      "latency_ms": {
+        "before": {
+          "decode_s": {
+            "p50": 9.1874580248259,
+            "p95": 10.991193994414061
+          },
+          "processing_s": {
+            "p50": 164.81983347330242,
+            "p95": 220.46299767098387
+          },
+          "motion_s": {
+            "p50": 49.89183304132894,
+            "p95": 85.64036482712254
+          },
+          "read_and_process_s": {
+            "p50": 180.3703960031271,
+            "p95": 237.90595623431724
+          }
+        },
+        "after": {
+          "decode_s": {
+            "p50": 17.797542037442327,
+            "p95": 20.419432985363528
+          },
+          "processing_s": {
+            "p50": 149.39510449767113,
+            "p95": 170.76842766837217
+          },
+          "motion_s": {
+            "p50": 45.568229048512876,
+            "p95": 67.57318336167373
+          },
+          "read_and_process_s": {
+            "p50": 173.0966455070302,
+            "p95": 194.94372638873756
+          }
+        }
+      },
+      "removed_returns": {
+        "total": 5598998,
+        "median_per_frame": 93568.0
+      },
+      "max_pose_translation_difference_m": 5.307535025574285,
+      "changed_frames_additional": {
+        "supported_range_m": 0,
+        "geometry_points": 0
+      },
+      "changed_frames_object_fields": {
+        "track_id": 58,
+        "confirmed": 57,
+        "intersection_confirmed": 0,
+        "support_voxels": 0
+      },
+      "manifest_sha256": {
+        "before": "2dba12c20635131e3f7fd920b2993851f4478d1640671b3c162fe154aff899a6",
+        "after": "799961d68619f40c468a87ac48c60983fb35dcbcada7d44c3459808b9ae4966a"
+      },
+      "first_scan_kiss_voxelization": {
+        "map": {
+          "before_points": 13920,
+          "after_points": 13920,
+          "same_order": false,
+          "same_point_multiset": true
+        },
+        "registration": {
+          "before_points": 3546,
+          "after_points": 3546,
+          "same_order": false,
+          "same_point_multiset": false
+        }
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "before": "build/return-dedup-panel-before/doubleT_platform.jsonl",
+      "after": "build/return-dedup-panel-after/doubleT_platform.jsonl",
+      "before_sha256": "49771c373ee94e1adbadc8bcfd15eda9c9f8ddffa76cbfee64eec83a8ff82366",
+      "after_sha256": "fb91177bee4a1f8255b01f744e3990442fd9d8b63979ddb9bfc292b345ef303e",
+      "before_statistics": {
+        "frames": 30,
+        "status_frames": {
+          "unresolved_obstacle": 30
+        },
+        "health_frames": {
+          "degraded": 30
+        },
+        "geometry_valid_frames": 30,
+        "motion_valid_frames": 23,
+        "candidate_observations": 5028,
+        "support_voxel_observations": 447315,
+        "confirmed_intersection_observations": 0,
+        "candidate_observations_at_least_60m": 884,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 144.25268798368052,
+          "p95": 176.63147918065079,
+          "p99": 831.8492694362074
+        }
+      },
+      "after_statistics": {
+        "frames": 30,
+        "status_frames": {
+          "unresolved_obstacle": 30
+        },
+        "health_frames": {
+          "degraded": 30
+        },
+        "geometry_valid_frames": 30,
+        "motion_valid_frames": 21,
+        "candidate_observations": 5028,
+        "support_voxel_observations": 447315,
+        "confirmed_intersection_observations": 0,
+        "candidate_observations_at_least_60m": 884,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 127.22324999049306,
+          "p95": 145.84319128189236,
+          "p99": 832.6125758094721
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {
+        "motion": 30,
+        "range_observability": 30,
+        "objects": 29,
+        "pose": 29,
+        "nearest_obstacle_m": 2,
+        "health_reasons": 2
+      },
+      "first_changed_frames": {
+        "nearest_obstacle_m": [
+          19,
+          23
+        ],
+        "objects": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "motion": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "pose": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "range_observability": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "health_reasons": [
+          19,
+          23
+        ]
+      },
+      "largest_compared_float_difference": 22.535228490829468,
+      "latency_ms": {
+        "before": {
+          "decode_s": {
+            "p50": 9.119457972701639,
+            "p95": 10.813539545051752
+          },
+          "processing_s": {
+            "p50": 144.25268798368052,
+            "p95": 176.63147918065079
+          },
+          "motion_s": {
+            "p50": 42.55093802930787,
+            "p95": 66.17268744157626
+          },
+          "read_and_process_s": {
+            "p50": 160.52439546911046,
+            "p95": 191.57815417856906
+          }
+        },
+        "after": {
+          "decode_s": {
+            "p50": 18.117853964213282,
+            "p95": 19.906829047249627
+          },
+          "processing_s": {
+            "p50": 127.22324999049306,
+            "p95": 145.84319128189236
+          },
+          "motion_s": {
+            "p50": 30.059603974223137,
+            "p95": 41.39260835945606
+          },
+          "read_and_process_s": {
+            "p50": 151.52285451767966,
+            "p95": 167.9706331633497
+          }
+        }
+      },
+      "removed_returns": {
+        "total": 2733313,
+        "median_per_frame": 91726.0
+      },
+      "max_pose_translation_difference_m": 0.057620294474209376,
+      "changed_frames_additional": {
+        "supported_range_m": 0,
+        "geometry_points": 0
+      },
+      "changed_frames_object_fields": {
+        "track_id": 29,
+        "confirmed": 20,
+        "intersection_confirmed": 0,
+        "support_voxels": 0
+      },
+      "manifest_sha256": {
+        "before": "b40914dd5047261bff3b97142fbde2ee7cbf5f7fc2fde89ac106e94ade0205c7",
+        "after": "a8c9d18e6cc17090da72d4c08c16fb9c0c191b655c329bbb86dc94320a499565"
+      },
+      "first_scan_kiss_voxelization": {
+        "map": {
+          "before_points": 18748,
+          "after_points": 18748,
+          "same_order": false,
+          "same_point_multiset": true
+        },
+        "registration": {
+          "before_points": 4654,
+          "after_points": 4654,
+          "same_order": false,
+          "same_point_multiset": false
+        }
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "before": "build/return-dedup-panel-before/roundT_pressureGate_roundT.jsonl",
+      "after": "build/return-dedup-panel-after/roundT_pressureGate_roundT.jsonl",
+      "before_sha256": "7e467032c3e3d3edb8fa445493dfc4b6fa69f08eb4b6e211febde74ee6dd964b",
+      "after_sha256": "3ac8d712fa7f129f8e6f1c897f58b25ad4c57632155b136939e1abc7ecd2db69",
+      "before_statistics": {
+        "frames": 30,
+        "status_frames": {
+          "unresolved_obstacle": 30
+        },
+        "health_frames": {
+          "degraded": 30
+        },
+        "geometry_valid_frames": 30,
+        "motion_valid_frames": 29,
+        "candidate_observations": 6010,
+        "support_voxel_observations": 611078,
+        "confirmed_intersection_observations": 0,
+        "candidate_observations_at_least_60m": 1129,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 141.4251874666661,
+          "p95": 172.61495376587843,
+          "p99": 192.19692671438682
+        }
+      },
+      "after_statistics": {
+        "frames": 30,
+        "status_frames": {
+          "unresolved_obstacle": 30
+        },
+        "health_frames": {
+          "degraded": 30
+        },
+        "geometry_valid_frames": 30,
+        "motion_valid_frames": 29,
+        "candidate_observations": 6010,
+        "support_voxel_observations": 611078,
+        "confirmed_intersection_observations": 0,
+        "candidate_observations_at_least_60m": 1129,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 134.1057499521412,
+          "p95": 156.3643437519204,
+          "p99": 175.93635997851382
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {
+        "motion": 30,
+        "range_observability": 30,
+        "objects": 29,
+        "pose": 29
+      },
+      "first_changed_frames": {
+        "objects": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "motion": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "pose": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "range_observability": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ]
+      },
+      "largest_compared_float_difference": 0.015614051831124964,
+      "latency_ms": {
+        "before": {
+          "decode_s": {
+            "p50": 9.030937508214265,
+            "p95": 9.903489553835243
+          },
+          "processing_s": {
+            "p50": 141.4251874666661,
+            "p95": 172.61495376587845
+          },
+          "motion_s": {
+            "p50": 39.544375031255186,
+            "p95": 63.01590205403044
+          },
+          "read_and_process_s": {
+            "p50": 157.0535830105655,
+            "p95": 188.39658343349583
+          }
+        },
+        "after": {
+          "decode_s": {
+            "p50": 17.575708450749516,
+            "p95": 22.104473109357055
+          },
+          "processing_s": {
+            "p50": 134.1057499521412,
+            "p95": 156.3643437519204
+          },
+          "motion_s": {
+            "p50": 36.3144789589569,
+            "p95": 53.709216666175045
+          },
+          "read_and_process_s": {
+            "p50": 156.28737496444955,
+            "p95": 186.45736264297736
+          }
+        }
+      },
+      "removed_returns": {
+        "total": 2768191,
+        "median_per_frame": 93055.0
+      },
+      "max_pose_translation_difference_m": 0.03692629191398495,
+      "changed_frames_additional": {
+        "supported_range_m": 0,
+        "geometry_points": 0
+      },
+      "changed_frames_object_fields": {
+        "track_id": 28,
+        "confirmed": 27,
+        "intersection_confirmed": 0,
+        "support_voxels": 0
+      },
+      "manifest_sha256": {
+        "before": "b40914dd5047261bff3b97142fbde2ee7cbf5f7fc2fde89ac106e94ade0205c7",
+        "after": "a8c9d18e6cc17090da72d4c08c16fb9c0c191b655c329bbb86dc94320a499565"
+      },
+      "first_scan_kiss_voxelization": {
+        "map": {
+          "before_points": 13920,
+          "after_points": 13920,
+          "same_order": false,
+          "same_point_multiset": true
+        },
+        "registration": {
+          "before_points": 3376,
+          "after_points": 3376,
+          "same_order": false,
+          "same_point_multiset": false
+        }
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "before": "build/return-dedup-panel-before/roundT_squareT_pressureGate_squareT.jsonl",
+      "after": "build/return-dedup-panel-after/roundT_squareT_pressureGate_squareT.jsonl",
+      "before_sha256": "73f6f99d402dd22536bcd08d0fefa0f8459e1beeb96fb0ea1e7ff84b7c785208",
+      "after_sha256": "a5ed2d8cbafbad64e5fa0991c99f1b8a293e6874c30cde8ec3f1272565cedb44",
+      "before_statistics": {
+        "frames": 30,
+        "status_frames": {
+          "candidate": 1,
+          "unresolved_obstacle": 29
+        },
+        "health_frames": {
+          "degraded": 30
+        },
+        "geometry_valid_frames": 30,
+        "motion_valid_frames": 29,
+        "candidate_observations": 8775,
+        "support_voxel_observations": 634844,
+        "confirmed_intersection_observations": 0,
+        "candidate_observations_at_least_60m": 2072,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 142.32677093241364,
+          "p95": 162.79889389988963,
+          "p99": 177.90351769304834
+        }
+      },
+      "after_statistics": {
+        "frames": 30,
+        "status_frames": {
+          "candidate": 1,
+          "unresolved_obstacle": 29
+        },
+        "health_frames": {
+          "degraded": 30
+        },
+        "geometry_valid_frames": 30,
+        "motion_valid_frames": 29,
+        "candidate_observations": 8775,
+        "support_voxel_observations": 634844,
+        "confirmed_intersection_observations": 0,
+        "candidate_observations_at_least_60m": 2072,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 131.8898749887012,
+          "p95": 164.09649969427844,
+          "p99": 185.7845052005723
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {
+        "motion": 30,
+        "range_observability": 30,
+        "objects": 29,
+        "pose": 29
+      },
+      "first_changed_frames": {
+        "objects": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "motion": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "pose": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "range_observability": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ]
+      },
+      "largest_compared_float_difference": 0.008502038671860612,
+      "latency_ms": {
+        "before": {
+          "decode_s": {
+            "p50": 8.268020406831056,
+            "p95": 9.301439119735731
+          },
+          "processing_s": {
+            "p50": 142.32677093241364,
+            "p95": 162.79889389988963
+          },
+          "motion_s": {
+            "p50": 34.4303329475224,
+            "p95": 43.5075456276536
+          },
+          "read_and_process_s": {
+            "p50": 157.4621454346925,
+            "p95": 188.64105454413215
+          }
+        },
+        "after": {
+          "decode_s": {
+            "p50": 18.23856250848621,
+            "p95": 22.84278747974894
+          },
+          "processing_s": {
+            "p50": 131.8898749887012,
+            "p95": 164.09649969427846
+          },
+          "motion_s": {
+            "p50": 25.94900003168732,
+            "p95": 37.48002047068439
+          },
+          "read_and_process_s": {
+            "p50": 155.69658350432292,
+            "p95": 194.0146793145686
+          }
+        }
+      },
+      "removed_returns": {
+        "total": 2805479,
+        "median_per_frame": 93590.0
+      },
+      "max_pose_translation_difference_m": 0.016596422969940853,
+      "changed_frames_additional": {
+        "supported_range_m": 0,
+        "geometry_points": 0
+      },
+      "changed_frames_object_fields": {
+        "track_id": 28,
+        "confirmed": 24,
+        "intersection_confirmed": 0,
+        "support_voxels": 0
+      },
+      "manifest_sha256": {
+        "before": "b40914dd5047261bff3b97142fbde2ee7cbf5f7fc2fde89ac106e94ade0205c7",
+        "after": "a8c9d18e6cc17090da72d4c08c16fb9c0c191b655c329bbb86dc94320a499565"
+      },
+      "first_scan_kiss_voxelization": {
+        "map": {
+          "before_points": 13683,
+          "after_points": 13683,
+          "same_order": false,
+          "same_point_multiset": true
+        },
+        "registration": {
+          "before_points": 3539,
+          "after_points": 3539,
+          "same_order": false,
+          "same_point_multiset": false
+        }
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "before": "build/return-dedup-panel-before/squareT_platform_squareT_switch.jsonl",
+      "after": "build/return-dedup-panel-after/squareT_platform_squareT_switch.jsonl",
+      "before_sha256": "c5c6289fe5c9b5befb3075e3db218cfee6950b383ddeddc5c4534e9fd4d4cbf5",
+      "after_sha256": "d3fb32298f5d67e54992e2e5e8ca175a429f6d3ff90d4c71445efdcc7da1af15",
+      "before_statistics": {
+        "frames": 30,
+        "status_frames": {
+          "unresolved_obstacle": 30
+        },
+        "health_frames": {
+          "degraded": 30
+        },
+        "geometry_valid_frames": 30,
+        "motion_valid_frames": 29,
+        "candidate_observations": 7072,
+        "support_voxel_observations": 449943,
+        "confirmed_intersection_observations": 0,
+        "candidate_observations_at_least_60m": 1747,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 145.187187474221,
+          "p95": 166.94273125031032,
+          "p99": 176.1340527283028
+        }
+      },
+      "after_statistics": {
+        "frames": 30,
+        "status_frames": {
+          "unresolved_obstacle": 30
+        },
+        "health_frames": {
+          "degraded": 30
+        },
+        "geometry_valid_frames": 30,
+        "motion_valid_frames": 29,
+        "candidate_observations": 7072,
+        "support_voxel_observations": 449943,
+        "confirmed_intersection_observations": 0,
+        "candidate_observations_at_least_60m": 1747,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 135.0411659805104,
+          "p95": 184.87872048863207,
+          "p99": 193.40714283520356
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {
+        "motion": 30,
+        "range_observability": 30,
+        "objects": 29,
+        "pose": 29,
+        "health_reasons": 9
+      },
+      "first_changed_frames": {
+        "objects": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "motion": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "pose": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "range_observability": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17,
+          18,
+          19,
+          20,
+          21,
+          22,
+          23,
+          24,
+          25,
+          26,
+          27,
+          28,
+          29
+        ],
+        "health_reasons": [
+          2,
+          13,
+          14,
+          17,
+          20,
+          23,
+          24,
+          27,
+          28
+        ]
+      },
+      "largest_compared_float_difference": 0.013284789428286703,
+      "latency_ms": {
+        "before": {
+          "decode_s": {
+            "p50": 8.790104009676725,
+            "p95": 10.647417022846637
+          },
+          "processing_s": {
+            "p50": 145.187187474221,
+            "p95": 166.94273125031032
+          },
+          "motion_s": {
+            "p50": 43.732854537665844,
+            "p95": 55.23826859425753
+          },
+          "read_and_process_s": {
+            "p50": 160.05591599969193,
+            "p95": 189.11847295821642
+          }
+        },
+        "after": {
+          "decode_s": {
+            "p50": 19.247395975980908,
+            "p95": 25.391262513585378
+          },
+          "processing_s": {
+            "p50": 135.0411659805104,
+            "p95": 184.87872048863207
+          },
+          "motion_s": {
+            "p50": 33.9978335541673,
+            "p95": 48.603693884797394
+          },
+          "read_and_process_s": {
+            "p50": 165.91343749314547,
+            "p95": 216.02292726165612
+          }
+        }
+      },
+      "removed_returns": {
+        "total": 2666518,
+        "median_per_frame": 89312.5
+      },
+      "max_pose_translation_difference_m": 0.5801117679819146,
+      "changed_frames_additional": {
+        "supported_range_m": 0,
+        "geometry_points": 0
+      },
+      "changed_frames_object_fields": {
+        "track_id": 29,
+        "confirmed": 29,
+        "intersection_confirmed": 0,
+        "support_voxels": 0
+      },
+      "manifest_sha256": {
+        "before": "b40914dd5047261bff3b97142fbde2ee7cbf5f7fc2fde89ac106e94ade0205c7",
+        "after": "a8c9d18e6cc17090da72d4c08c16fb9c0c191b655c329bbb86dc94320a499565"
+      },
+      "first_scan_kiss_voxelization": {
+        "map": {
+          "before_points": 12678,
+          "after_points": 12678,
+          "same_order": false,
+          "same_point_multiset": true
+        },
+        "registration": {
+          "before_points": 3336,
+          "after_points": 3336,
+          "same_order": false,
+          "same_point_multiset": false
+        }
+      }
+    }
+  ],
+  "limitations": [
+    "Development prefixes; no ground-truth trajectory or exhaustive object labels.",
+    "Pose differences establish non-equivalence, not which trajectory is more accurate.",
+    "Single sequential before/after runs; timings are exploratory, not a repeatability claim.",
+    "No automated tests; actual detector replay and original KISS voxelization only.",
+    "Timestamp quantization and emission identity are not verified for other sensors.",
+    "ROS integration was not run on this Mac."
+  ]
+}

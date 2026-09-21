@@ -1,0 +1,303 @@
+{
+  "before": "build/alarm-cause-before",
+  "after": "build/alarm-cause-after",
+  "bags": {
+    "doubleT_obstacle": {
+      "before": {
+        "frames": 201,
+        "status_frames": {
+          "obstacle": 201
+        },
+        "confirmed_observations_by_relation": {
+          "adjacent": 33835,
+          "intersecting": 1950,
+          "unresolved": 2608
+        },
+        "candidate_observations": 43580,
+        "support_voxel_observations": 3850357,
+        "processing_ms": {
+          "p50": 1034.5718750031665,
+          "p95": 1329.9498750129715
+        }
+      },
+      "after": {
+        "frames": 201,
+        "status_frames": {
+          "unresolved_obstacle": 27,
+          "obstacle": 174
+        },
+        "confirmed_observations_by_relation": {
+          "adjacent": 31664,
+          "unresolved": 6998,
+          "intersecting": 634
+        },
+        "candidate_observations": 44515,
+        "support_voxel_observations": 3855603,
+        "processing_ms": {
+          "p50": 1193.4419999597594,
+          "p95": 1781.9302909774706
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_timestamp_mismatches": 0,
+      "status_transitions": {
+        "obstacle -> unresolved_obstacle": 27,
+        "obstacle -> obstacle": 174
+      },
+      "before_sha256": "496a85477cb375713b330519b15479aeb8de8849a03dd987250b2d14395f6a4d",
+      "after_sha256": "ac66072e76d5fb38e827921c37d55460c868a303d66f8c014f45b7e25541a7a6"
+    },
+    "doubleT_platform": {
+      "before": {
+        "frames": 201,
+        "status_frames": {
+          "obstacle": 197,
+          "unresolved_obstacle": 4
+        },
+        "confirmed_observations_by_relation": {
+          "adjacent": 12774,
+          "intersecting": 1034,
+          "unresolved": 3074
+        },
+        "candidate_observations": 31757,
+        "support_voxel_observations": 2239643,
+        "processing_ms": {
+          "p50": 611.6433329880238,
+          "p95": 950.2691670204513
+        }
+      },
+      "after": {
+        "frames": 201,
+        "status_frames": {
+          "unresolved_obstacle": 191,
+          "obstacle": 10
+        },
+        "confirmed_observations_by_relation": {
+          "unresolved": 7667,
+          "adjacent": 10431,
+          "intersecting": 20
+        },
+        "candidate_observations": 34967,
+        "support_voxel_observations": 2275055,
+        "processing_ms": {
+          "p50": 461.47395798470825,
+          "p95": 738.1632500328124
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_timestamp_mismatches": 0,
+      "status_transitions": {
+        "obstacle -> unresolved_obstacle": 187,
+        "obstacle -> obstacle": 10,
+        "unresolved_obstacle -> unresolved_obstacle": 4
+      },
+      "before_sha256": "1bae3358fc00020d8fb2effc8d2df9fa01f109350240ee4af5d16d44b1786500",
+      "after_sha256": "9a07de9dcad019acd204c206129e8ee04d6f48ec638ae1b3b3497d682a7ad908"
+    }
+  },
+  "warning": "Counts are algorithm outputs, not accuracy or false-alarm rates. Timing includes concurrent local work and different visualization settings.",
+  "diagnostic_support": [
+    {
+      "file": "doubleT_obstacle_000000.npz",
+      "stages": {
+        "geometry_voxel_points": {
+          "before": 72647,
+          "after": 72647,
+          "before_points_absent_after": 0
+        },
+        "context_after_background": {
+          "before": 20552,
+          "after": 20552,
+          "before_points_absent_after": 0
+        },
+        "cluster_points": {
+          "before": 20552,
+          "after": 20552,
+          "before_points_absent_after": 0
+        }
+      }
+    },
+    {
+      "file": "doubleT_obstacle_000025.npz",
+      "stages": {
+        "geometry_voxel_points": {
+          "before": 72609,
+          "after": 72609,
+          "before_points_absent_after": 0
+        },
+        "context_after_background": {
+          "before": 22094,
+          "after": 22094,
+          "before_points_absent_after": 0
+        },
+        "cluster_points": {
+          "before": 22094,
+          "after": 22094,
+          "before_points_absent_after": 0
+        }
+      }
+    },
+    {
+      "file": "doubleT_obstacle_000075.npz",
+      "stages": {
+        "geometry_voxel_points": {
+          "before": 72655,
+          "after": 72655,
+          "before_points_absent_after": 0
+        },
+        "context_after_background": {
+          "before": 22002,
+          "after": 22002,
+          "before_points_absent_after": 0
+        },
+        "cluster_points": {
+          "before": 22002,
+          "after": 22002,
+          "before_points_absent_after": 0
+        }
+      }
+    },
+    {
+      "file": "doubleT_obstacle_000181.npz",
+      "stages": {
+        "geometry_voxel_points": {
+          "before": 72168,
+          "after": 72168,
+          "before_points_absent_after": 0
+        },
+        "context_after_background": {
+          "before": 19366,
+          "after": 19366,
+          "before_points_absent_after": 0
+        },
+        "cluster_points": {
+          "before": 19366,
+          "after": 19366,
+          "before_points_absent_after": 0
+        }
+      }
+    },
+    {
+      "file": "doubleT_obstacle_000200.npz",
+      "stages": {
+        "geometry_voxel_points": {
+          "before": 72394,
+          "after": 72394,
+          "before_points_absent_after": 0
+        },
+        "context_after_background": {
+          "before": 21077,
+          "after": 21077,
+          "before_points_absent_after": 0
+        },
+        "cluster_points": {
+          "before": 21077,
+          "after": 21077,
+          "before_points_absent_after": 0
+        }
+      }
+    },
+    {
+      "file": "doubleT_platform_000000.npz",
+      "stages": {
+        "geometry_voxel_points": {
+          "before": 53114,
+          "after": 53114,
+          "before_points_absent_after": 0
+        },
+        "context_after_background": {
+          "before": 15432,
+          "after": 15432,
+          "before_points_absent_after": 0
+        },
+        "cluster_points": {
+          "before": 15432,
+          "after": 15432,
+          "before_points_absent_after": 0
+        }
+      }
+    },
+    {
+      "file": "doubleT_platform_000025.npz",
+      "stages": {
+        "geometry_voxel_points": {
+          "before": 52202,
+          "after": 52202,
+          "before_points_absent_after": 0
+        },
+        "context_after_background": {
+          "before": 15310,
+          "after": 15310,
+          "before_points_absent_after": 0
+        },
+        "cluster_points": {
+          "before": 15310,
+          "after": 15310,
+          "before_points_absent_after": 0
+        }
+      }
+    },
+    {
+      "file": "doubleT_platform_000075.npz",
+      "stages": {
+        "geometry_voxel_points": {
+          "before": 38943,
+          "after": 38943,
+          "before_points_absent_after": 0
+        },
+        "context_after_background": {
+          "before": 11363,
+          "after": 11365,
+          "before_points_absent_after": 0
+        },
+        "cluster_points": {
+          "before": 11363,
+          "after": 11365,
+          "before_points_absent_after": 0
+        }
+      }
+    },
+    {
+      "file": "doubleT_platform_000181.npz",
+      "stages": {
+        "geometry_voxel_points": {
+          "before": 38365,
+          "after": 38365,
+          "before_points_absent_after": 0
+        },
+        "context_after_background": {
+          "before": 10697,
+          "after": 10705,
+          "before_points_absent_after": 0
+        },
+        "cluster_points": {
+          "before": 10697,
+          "after": 10705,
+          "before_points_absent_after": 0
+        }
+      }
+    },
+    {
+      "file": "doubleT_platform_000200.npz",
+      "stages": {
+        "geometry_voxel_points": {
+          "before": 38703,
+          "after": 38703,
+          "before_points_absent_after": 0
+        },
+        "context_after_background": {
+          "before": 13546,
+          "after": 13592,
+          "before_points_absent_after": 0
+        },
+        "cluster_points": {
+          "before": 13546,
+          "after": 13592,
+          "before_points_absent_after": 0
+        }
+      }
+    }
+  ]
+}

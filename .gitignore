@@ -1,6 +1,7 @@
 # Local datasets, recordings, and generated experiment artifacts
 /data/
 /archive/
+/bags.zip
 /materials/
 /build/
 /dist/
@@ -30,3 +31,8 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .ipynb_checkpoints/
+
+# Locally built native accelerator
+*.so
+*.dylib
+*.pyd

@@ -1,0 +1,18 @@
+{
+  "date": "2026-09-19",
+  "scope": "Every command the documentation tells someone to run, checked to resolve",
+  "checked": {
+    "modules": 44,
+    "modules_missing": "none",
+    "paths": 143,
+    "paths_missing": 12
+  },
+  "classification_of_the_12": {
+    "real_defect_fixed": "docs/REVIEW_RESPONSE_20260919.md referenced scripts/bag_subset.py, which this session moved into the package as tunnel_guard.extended_subset",
+    "dataset_paths_the_user_supplies": "data/doubleT_platform, data/for_hackathon and the extended-subset directories exist once the recordings are installed or the sampler is run; the docs say so",
+    "derived_directories_created_on_demand": "data/extended_subset/* and data/extended_full/* come from the sampler or the extraction step the same documents describe",
+    "probe_false_positives": "docs/RUN_AND_REVIEW.md explains that build/goal-data/for_hackathon/ was removed deliberately, and docs/EXTENDED_FIRST_LOOK.md says 'refuses to overwrite metadata/provenance.' in prose - the regex in this probe read both as paths"
+  },
+  "why_not_folded_into_config_audit": "a check with ten false positives per run is noise. The recipe-drift guard stays mechanical because its exclusions are rules (backend keys, historical names); this one needs judgement about datasets and prose, so it is recorded as a recurring manual check with the classification above rather than automated into a passing status nobody would read.",
+  "what_it_confirms": "all 44 modules the documentation names exist, so no documented command points at code that is gone"
+}

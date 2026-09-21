@@ -1,0 +1,686 @@
+{
+  "date": "2026-09-17",
+  "source_base_commit": "c114290",
+  "scope": "C++ voxel acceleration and rejected provisional track-relative calibration; no vehicle calibration claim",
+  "full_comparison": {
+    "panel": "configs/native-comparison-panel.json",
+    "panel_sha256": "581829e08d31be7448198157db8c2c1a7deb83fad0367953cb8ef2424b8be266",
+    "accuracy": null,
+    "limitations": [
+      "Alarm counts on nonexhaustively labelled development recordings are not precision, recall or false-alarm rate.",
+      "Repeated frames and candidates are not independent object events.",
+      "Timing is descriptive; concurrent workloads and visualization settings differ.",
+      "Float comparison uses absolute and relative tolerance 1e-10; discrete decisions and IDs are exact."
+    ],
+    "bags": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/goal-final-real/doubleT_obstacle.jsonl",
+        "after": "build/native-full-real/doubleT_obstacle.jsonl",
+        "before_sha256": "182532eb715d3deea0425f4df5addd88a10cc4036b0c63436a64b0509ba70239",
+        "after_sha256": "38d7fa36cbd527a185f1741461003272804481d2a3455aa25c62ed21867ee8a7",
+        "before_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 60,
+            "obstacle": 141
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44515,
+          "support_voxel_observations": 3855603,
+          "confirmed_intersection_observations": 241,
+          "candidate_observations_at_least_60m": 10656,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 641.0256669623777,
+            "p95": 918.6593330232427,
+            "p99": 1186.174749978818
+          }
+        },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 60,
+            "obstacle": 141
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44515,
+          "support_voxel_observations": 3855603,
+          "confirmed_intersection_observations": 241,
+          "candidate_observations_at_least_60m": 10656,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 517.4371660104953,
+            "p95": 557.9050420201384,
+            "p99": 598.8189170020632
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 4.529709940470639e-14
+      },
+      {
+        "bag": "doubleT_platform",
+        "before": "build/goal-final-real/doubleT_platform.jsonl",
+        "after": "build/native-full-real/doubleT_platform.jsonl",
+        "before_sha256": "b9a824ff0a5d3070bc5e4462438d64e3cddad9019aba535956d7c56caaf03790",
+        "after_sha256": "385aa650c103408a5fc166f5d242e42530317ee2689d61d226e77ea6a8be7a91",
+        "before_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68133,
+          "support_voxel_observations": 4236118,
+          "confirmed_intersection_observations": 266,
+          "candidate_observations_at_least_60m": 22168,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 623.529500036966,
+            "p95": 968.3537086122672,
+            "p99": 1383.1902329996228
+          }
+        },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68133,
+          "support_voxel_observations": 4236118,
+          "confirmed_intersection_observations": 266,
+          "candidate_observations_at_least_60m": 22168,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 323.83308303542435,
+            "p95": 381.0756252380088,
+            "p99": 419.8757365252823
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 6.816769371198461e-14
+      },
+      {
+        "bag": "roundT_doubleT",
+        "before": "build/goal-final-real/roundT_doubleT.jsonl",
+        "after": "build/native-full-real/roundT_doubleT.jsonl",
+        "before_sha256": "d51f5ffe4260644b4abf4f82da91c77d2f5b855370e75148ce87f8b631e62474",
+        "after_sha256": "2883823752d3cbb06651974ebd40409b84aa0caf0b0de5ec4b384fba4c7ad421",
+        "before_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 182,
+            "obstacle": 69
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48776,
+          "support_voxel_observations": 4039076,
+          "confirmed_intersection_observations": 211,
+          "candidate_observations_at_least_60m": 11422,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 604.5736250234768,
+            "p95": 924.4597687647907,
+            "p99": 1105.6936561741175
+          }
+        },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 182,
+            "obstacle": 69
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48776,
+          "support_voxel_observations": 4039076,
+          "confirmed_intersection_observations": 211,
+          "candidate_observations_at_least_60m": 11422,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 407.3524169798475,
+            "p95": 499.18793154647574,
+            "p99": 581.0365275095686
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 3.9890313274781874e-13
+      }
+    ]
+  },
+  "paired_benchmark": {
+    "runs": [
+      {
+        "repeat": 0,
+        "backend": "numpy",
+        "order": [
+          "numpy",
+          "cpp"
+        ],
+        "frames": 20,
+        "elapsed_s": 11.810700294212438,
+        "processing_ms": {
+          "p50": 590.409937518416,
+          "p95": 608.3469479111955
+        }
+      },
+      {
+        "repeat": 0,
+        "backend": "cpp",
+        "order": [
+          "numpy",
+          "cpp"
+        ],
+        "frames": 20,
+        "elapsed_s": 10.110746417951304,
+        "processing_ms": {
+          "p50": 503.75683352467604,
+          "p95": 528.0118190683424
+        }
+      },
+      {
+        "repeat": 1,
+        "backend": "cpp",
+        "order": [
+          "cpp",
+          "numpy"
+        ],
+        "frames": 20,
+        "elapsed_s": 9.949134166992735,
+        "processing_ms": {
+          "p50": 500.4842914931942,
+          "p95": 505.31908961420413
+        }
+      },
+      {
+        "repeat": 1,
+        "backend": "numpy",
+        "order": [
+          "cpp",
+          "numpy"
+        ],
+        "frames": 20,
+        "elapsed_s": 12.088934377185069,
+        "processing_ms": {
+          "p50": 602.46158298105,
+          "p95": 632.0113152760314
+        }
+      },
+      {
+        "repeat": 2,
+        "backend": "numpy",
+        "order": [
+          "numpy",
+          "cpp"
+        ],
+        "frames": 20,
+        "elapsed_s": 12.08916095533641,
+        "processing_ms": {
+          "p50": 602.9314580082428,
+          "p95": 627.9594232386444
+        }
+      },
+      {
+        "repeat": 2,
+        "backend": "cpp",
+        "order": [
+          "numpy",
+          "cpp"
+        ],
+        "frames": 20,
+        "elapsed_s": 10.020266334002372,
+        "processing_ms": {
+          "p50": 503.9342504751403,
+          "p95": 510.4522309906315
+        }
+      }
+    ],
+    "comparisons": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/native-paired-real/0-numpy.jsonl",
+        "after": "build/native-paired-real/0-cpp.jsonl",
+        "before_sha256": "76f696e71aa1b26d32a4bb0a0ba0b3ff900740a2bb6d15a973b8fec5a10505ec",
+        "after_sha256": "4f337bb6122efd9b614e3301ccb0776c6d456849bfdee20512f01bf2107b4847",
+        "before_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4327,
+          "support_voxel_observations": 382230,
+          "confirmed_intersection_observations": 30,
+          "candidate_observations_at_least_60m": 1009,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 589.3373749859165,
+            "p95": 607.2789999860106,
+            "p99": 621.4016999810701
+          }
+        },
+        "after_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4327,
+          "support_voxel_observations": 382230,
+          "confirmed_intersection_observations": 30,
+          "candidate_observations_at_least_60m": 1009,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 502.3455625050701,
+            "p95": 527.4730485572946,
+            "p99": 543.4705097263213
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 5.717648576819556e-15
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/native-paired-real/1-numpy.jsonl",
+        "after": "build/native-paired-real/1-cpp.jsonl",
+        "before_sha256": "79b3cfc02260787c88ed1abbedfa26caab8bc2dfcba826cba35639297fb408d8",
+        "after_sha256": "1b5a794e87c4958d6052ba3a4291ab395c4116b20ec4d3f8e3e71f5a500c9a75",
+        "before_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4327,
+          "support_voxel_observations": 382230,
+          "confirmed_intersection_observations": 30,
+          "candidate_observations_at_least_60m": 1009,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 601.9378749770112,
+            "p95": 631.2616104958579,
+            "p99": 683.3498892979695
+          }
+        },
+        "after_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4327,
+          "support_voxel_observations": 382230,
+          "confirmed_intersection_observations": 30,
+          "candidate_observations_at_least_60m": 1009,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 499.7484789637383,
+            "p95": 504.96865622990293,
+            "p99": 508.43093120551197
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 1.687538997430238e-14
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/native-paired-real/2-numpy.jsonl",
+        "after": "build/native-paired-real/2-cpp.jsonl",
+        "before_sha256": "1fcdc5b12dd9c88826e4f77846f7ff94b0a8c7a620b8cbdf16a7589259f9a23a",
+        "after_sha256": "18ef15bd86cfc5a4b1a3b2d672b75051ccc0bcfe8369caf62b5bc34f6cfb0020",
+        "before_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4327,
+          "support_voxel_observations": 382230,
+          "confirmed_intersection_observations": 30,
+          "candidate_observations_at_least_60m": 1009,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 601.9913124619052,
+            "p95": 627.1710972680013,
+            "p99": 653.1183522549691
+          }
+        },
+        "after_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4327,
+          "support_voxel_observations": 382230,
+          "confirmed_intersection_observations": 30,
+          "candidate_observations_at_least_60m": 1009,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 503.51383301313035,
+            "p95": 509.86513606621884,
+            "p99": 515.1612271915656
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 6.231126725708691e-15
+      }
+    ],
+    "median_of_run_p50_ms": {
+      "numpy": 602.46158298105,
+      "cpp": 503.75683352467604
+    },
+    "p50_speedup": 1.1959372913430444,
+    "limitations": [
+      "Cached prefix of one development recording, not full field latency.",
+      "No bag decoding, rendering or ROS transport in timed region.",
+      "Sequential alternating runs reduce but cannot eliminate machine-load and thermal effects.",
+      "No accuracy conclusion; only output equivalence and cost."
+    ]
+  },
+  "calibration": [
+    {
+      "bag": "doubleT_obstacle",
+      "numerical_stability_accepted": false,
+      "rejection_reasons": [
+        "fit:insufficient_supported_frames",
+        "heldout_before:insufficient_supported_frames"
+      ],
+      "metrics": {
+        "fit": {
+          "accepted_frames": 15,
+          "fraction": 0.75,
+          "max_rotation_deviation_deg": 0.2749577895512354,
+          "height_span_m": 0.004603036506320768,
+          "center_span_m": 0.08250000000000018
+        },
+        "heldout_before": {
+          "accepted_frames": 14,
+          "fraction": 0.7,
+          "max_rotation_deviation_deg": 0.2470106555090193,
+          "height_span_m": 0.00413252347450932,
+          "center_span_m": 0.03750000000000001
+        },
+        "heldout_after": {
+          "accepted_frames": 20,
+          "fraction": 1.0,
+          "max_rotation_deviation_deg": 0.3543986163785136,
+          "height_span_m": 0.005352788469394465,
+          "center_span_m": 0.06000000000000004
+        }
+      },
+      "candidate_xyz_deg": [
+        2.9967360536789993,
+        -0.8461147942350251,
+        1.0396834257973673
+      ],
+      "fit_frames": 20,
+      "heldout_frames": 20,
+      "ingestion": {
+        "source_messages": 40,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 40
+      },
+      "provenance": {
+        "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+        "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+        "files": [
+          {
+            "name": "doubleT_obstacle_0.db3",
+            "size": 4821250048,
+            "mtime_ns": 1788354643000000000
+          }
+        ]
+      },
+      "vehicle_extrinsics_verified": false,
+      "limitations": [
+        "Track-bed normal may differ from railhead/cant plane.",
+        "Track heading and grade cannot identify mounting angles without vehicle pose reference.",
+        "No measured vehicle lever arm, front offset, installation stationarity or time calibration.",
+        "Same geometry estimator is used for fitting and consistency evaluation; no independent accuracy claim.",
+        "Neighbouring frames are correlated; spread is not statistical confidence.",
+        "Candidate is not installed into the detector; rejected candidates are retained for inspection."
+      ]
+    },
+    {
+      "bag": "doubleT_platform",
+      "numerical_stability_accepted": false,
+      "rejection_reasons": [
+        "heldout_before:max_rotation_deviation_deg",
+        "heldout_after:max_rotation_deviation_deg"
+      ],
+      "metrics": {
+        "fit": {
+          "accepted_frames": 20,
+          "fraction": 1.0,
+          "max_rotation_deviation_deg": 0.6596828440354889,
+          "height_span_m": 0.02734304452668268,
+          "center_span_m": 0.03750000000000001
+        },
+        "heldout_before": {
+          "accepted_frames": 20,
+          "fraction": 1.0,
+          "max_rotation_deviation_deg": 1.599031436803693,
+          "height_span_m": 0.053477514329773435,
+          "center_span_m": 0.030000000000000034
+        },
+        "heldout_after": {
+          "accepted_frames": 20,
+          "fraction": 1.0,
+          "max_rotation_deviation_deg": 1.251260227633896,
+          "height_span_m": 0.06006137154063684,
+          "center_span_m": 0.05999999999999997
+        }
+      },
+      "candidate_xyz_deg": [
+        -1.3321442760083297,
+        -0.31031741631454496,
+        0.28309049999081637
+      ],
+      "fit_frames": 20,
+      "heldout_frames": 20,
+      "ingestion": {
+        "source_messages": 40,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 40
+      },
+      "provenance": {
+        "bag": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+        "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+        "files": [
+          {
+            "name": "doubleT_platform_0.db3",
+            "size": 2758447104,
+            "mtime_ns": 1788359747000000000
+          }
+        ]
+      },
+      "vehicle_extrinsics_verified": false,
+      "limitations": [
+        "Track-bed normal may differ from railhead/cant plane.",
+        "Track heading and grade cannot identify mounting angles without vehicle pose reference.",
+        "No measured vehicle lever arm, front offset, installation stationarity or time calibration.",
+        "Same geometry estimator is used for fitting and consistency evaluation; no independent accuracy claim.",
+        "Neighbouring frames are correlated; spread is not statistical confidence.",
+        "Candidate is not installed into the detector; rejected candidates are retained for inspection."
+      ]
+    },
+    {
+      "bag": "roundT_doubleT",
+      "numerical_stability_accepted": false,
+      "rejection_reasons": [
+        "heldout_before:max_rotation_deviation_deg",
+        "heldout_after:max_rotation_deviation_deg"
+      ],
+      "metrics": {
+        "fit": {
+          "accepted_frames": 20,
+          "fraction": 1.0,
+          "max_rotation_deviation_deg": 0.9722102710441444,
+          "height_span_m": 0.01728735505492618,
+          "center_span_m": 0.08250000000000009
+        },
+        "heldout_before": {
+          "accepted_frames": 20,
+          "fraction": 1.0,
+          "max_rotation_deviation_deg": 2.322274890911098,
+          "height_span_m": 0.017863492293407113,
+          "center_span_m": 0.030000000000000002
+        },
+        "heldout_after": {
+          "accepted_frames": 20,
+          "fraction": 1.0,
+          "max_rotation_deviation_deg": 2.0364071136971305,
+          "height_span_m": 0.01692579032803354,
+          "center_span_m": 0.052499999999999984
+        }
+      },
+      "candidate_xyz_deg": [
+        -2.3525106826462756,
+        0.05860160393350509,
+        -0.5265000373803929
+      ],
+      "fit_frames": 20,
+      "heldout_frames": 20,
+      "ingestion": {
+        "source_messages": 40,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 40
+      },
+      "provenance": {
+        "bag": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+        "metadata_sha256": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d",
+        "files": [
+          {
+            "name": "roundT_doubleT_0.db3",
+            "size": 2014867456,
+            "mtime_ns": 1788359084000000000
+          }
+        ]
+      },
+      "vehicle_extrinsics_verified": false,
+      "limitations": [
+        "Track-bed normal may differ from railhead/cant plane.",
+        "Track heading and grade cannot identify mounting angles without vehicle pose reference.",
+        "No measured vehicle lever arm, front offset, installation stationarity or time calibration.",
+        "Same geometry estimator is used for fitting and consistency evaluation; no independent accuracy claim.",
+        "Neighbouring frames are correlated; spread is not statistical confidence.",
+        "Candidate is not installed into the detector; rejected candidates are retained for inspection."
+      ]
+    }
+  ],
+  "profile_seconds": {
+    "numpy_voxel": 1.356,
+    "cpp_voxel": 0.316,
+    "calls_each": 2185,
+    "frames_each": 10
+  },
+  "evidence_sha256": {
+    "build/native-full-real/comparison.json": "01ea5b4fde1b371bb78d3b39c44fd95a0044d39aa9fd012ee1aeb635439d56c1",
+    "build/native-paired-real/report.json": "a943702d85a7987bcc1a3dd96db689ac0543d06589bc072d54fb31ffdc185ebd",
+    "build/calibration-track-real/summary.json": "6ca04779da2e3b89a91ad9383278adca6e38df6190e929a1175de2708a9df623"
+  },
+  "verification": "Actual detector and calibration CLI on real organizer scans. No automated tests or new synthetic data.",
+  "limits": [
+    "Native Linux/ROS build not run; no Docker build.",
+    "Not 10Hz; paired benchmark excludes decoding, display and ROS transport.",
+    "All three calibration prefixes rejected. Vehicle extrinsics, timing and independent detection accuracy remain unverified."
+  ]
+}

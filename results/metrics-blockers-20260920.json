@@ -1,0 +1,200 @@
+{
+  "date": "2026-09-20",
+  "scope": "Measured competition blocker diagnosis; no production detector changes",
+  "commands": [
+    ".venv/bin/python -m tunnel_guard.run --experiment configs/metrics-real-replay-20260920.json",
+    ".venv/bin/python -m tunnel_guard.stress --experiment configs/metrics-production-panel-20260920.json",
+    ".venv/bin/python build/metrics-diagnosis-20260920/trace_targets.py --experiment configs/metrics-indexed-diagnosis-20260920.json",
+    ".venv/bin/python -m tunnel_guard.profile_run --experiment configs/metrics-runtime-profile-20260920.json"
+  ],
+  "production_config_sha256": "69c1be77262c4bcd0585a8f0efa0e807d8ed22524eba99abd6e0bd21ca2a6624",
+  "panel": {
+    "tp": 699,
+    "fn": 261,
+    "fp_exhaustive_only": 153,
+    "event_recall": 0.78125,
+    "annotated_object_recall": 0.728125,
+    "negative_episode_rate": 0.02,
+    "range_results": [
+      {
+        "range_m": 10.0,
+        "cases": 12,
+        "event_recall": 1.0,
+        "invisible_cases": 0
+      },
+      {
+        "range_m": 20.0,
+        "cases": 12,
+        "event_recall": 1.0,
+        "invisible_cases": 0
+      },
+      {
+        "range_m": 40.0,
+        "cases": 12,
+        "event_recall": 1.0,
+        "invisible_cases": 0
+      },
+      {
+        "range_m": 60.0,
+        "cases": 12,
+        "event_recall": 1.0,
+        "invisible_cases": 0
+      },
+      {
+        "range_m": 100.0,
+        "cases": 12,
+        "event_recall": 1.0,
+        "invisible_cases": 0
+      },
+      {
+        "range_m": 150.0,
+        "cases": 12,
+        "event_recall": 0.6666666666666666,
+        "invisible_cases": 0
+      },
+      {
+        "range_m": 200.0,
+        "cases": 12,
+        "event_recall": 0.5833333333333334,
+        "invisible_cases": 0
+      },
+      {
+        "range_m": 300.0,
+        "cases": 12,
+        "event_recall": 0.0,
+        "invisible_cases": 4
+      }
+    ],
+    "pass_criterion": false
+  },
+  "panel_loss_attribution": {
+    "no_target_returns": 44,
+    "no_iou_matched_candidate": 175,
+    "matched_unconfirmed": 42,
+    "matched_confirmed_nonhazard": 0,
+    "scored_matching_disagreement": 0
+  },
+  "priority_order": [
+    {
+      "rank": 1,
+      "blocker": "Near-field boundary ambiguity plus unsupported far-field corridor produce persistent alarms and unusable nearest-hazard distance",
+      "measured": {
+        "roundT_doubleT_frames": 201,
+        "alarm_frames": 199,
+        "nearest_hazard_median_m": 2.0079426765441895,
+        "boundary_reason_frames": 196,
+        "unsupported_nominal_reason_frames": 156,
+        "boundary_only_alarm_frames": 42,
+        "unsupported_only_alarm_frames": 3
+      },
+      "support_inspection": "Frames 3,30,181 nearest components have respectively 302,364,319 points; zero core and zero nominal-overlap points; boundary points 28,42,80. Cross-section plotted from actual retained clouds. Semantic infrastructure interpretation is visual, not exhaustive labels.",
+      "controlled_failure": "Synthetic off-track case 126 at 200 m alarms at frames 7 and 8 as unsupported_nominal_envelope, despite known target outside the physical scene corridor.",
+      "decision": "Correct track-relative clearance estimation/uncertainty discrimination before infrastructure class suppression. Both near and far mechanisms must be addressed to change frame decisions. No safe suppression change established by this investigation.",
+      "tradeoff": "Tightening uncertainty or suppressing unsupported candidates may hide true boundary/far obstacles; do not tune against this nuisance recording alone."
+    },
+    {
+      "rank": 2,
+      "blocker": "Sparse returns are discarded before temporal confirmation",
+      "reproduction": {
+        "case_92_150m": "Two target returns become one at segmentation height gate; remaining component rejected below_weak_min_voxels; no candidates in all ten frames.",
+        "case_98_150m": "Four returns become two; lower support 0.01194-0.01216 m above estimated railhead falls below min_running_height_m=0.015. Truncated target confirms in six frames but fails IoU.",
+        "case_110_200m": "One target return survives all point stages and is rejected below_weak_min_voxels in all ten frames."
+      },
+      "decision": "Investigate joint segmentation-height and sparse component admission/confirmation, not weak_min_voxels alone. Single-point components also face cluster_min_extent_m=0.08; changing only weak_min_voxels cannot address that second gate.",
+      "tradeoff": "Admitting weak returns also admits infrastructure/noise; any implementation must preserve near-negative alarm behavior and fixed-index obstacle evidence."
+    },
+    {
+      "rank": 3,
+      "blocker": "Evaluation contract and provenance obscure actual detection quality",
+      "evidence": {
+        "historical_panel_recipe_differs": [
+          "background",
+          "background_refit_travel_m",
+          "hazard_requires_certified_path",
+          "installation_reference",
+          "max_range_m",
+          "mounting_observer",
+          "native_kernels",
+          "odometry_threads",
+          "path_curvature_significance",
+          "path_curve_window_m",
+          "query_workers",
+          "rail_anchor_support",
+          "rail_center_estimator",
+          "rail_pair_continuity",
+          "range_bins_m",
+          "seed",
+          "voxel_backend"
+        ],
+        "real_annotation_matches_at_existing_iou": 0,
+        "real_annotation_frames": 36,
+        "best_corresponding_components_confirmed_and_adjacent": 36,
+        "best_iou_range": [
+          0.09290366760099661,
+          0.2284041156853804
+        ],
+        "real_annotation_provenance": "One manual anchor, 35 detector-propagated labels, nonexhaustive, full-volume/support convention unspecified, path intersection unverified.",
+        "case_112_200m": "All five target returns survive, target confirms 9/10 frames, IoU 0.00364-0.00921 because truth pads narrow support to 1 mm but prediction retains true measured width.",
+        "fp_metric_correction": "fp_exhaustive_only is per-frame unmatched confirmed-object observations summed over frames, NOT event count. Historical narrative in results/panel-false-positive-anatomy-20260919.json is wrong on this definition."
+      },
+      "decision": "Keep original scores unchanged; separate target-support detection, alarm output and localization evidence. Obtain independent on-track and exhaustive-negative labels before claiming field precision/recall.",
+      "tradeoff": "Correcting evaluation does not itself improve physical detection or justify box padding."
+    },
+    {
+      "rank": 4,
+      "blocker": "Production input ceiling excludes 300 m and measured synthetic sampling has blind cases",
+      "evidence": "max_range_m=220; case130 target returns removed at first range gate. At300 m 4/12 positive cases have no target returns in any frame; all12 fail production localization.",
+      "decision": "Do not sell a raised software ceiling as hardware range evidence. First recover supported 150-200 m targets.",
+      "tradeoff": "Larger range expands compute and uncertain clutter; some sparse/invisible cases remain regardless."
+    },
+    {
+      "rank": 5,
+      "blocker": "Replay latency exceeds approximately100ms input period on this workstation",
+      "processing_p50_ms": {
+        "doubleT_obstacle": 140.90712500001246,
+        "roundT_doubleT": 118.1520410000303
+      },
+      "profile_p50_ms": {
+        "tunnel_guard.io.decode_cloud": 25.717687499763997,
+        "Detector._motion": 25.71177100026034,
+        "tunnel_guard.geometry.robust_plane": 3.6609165001664223,
+        "TrackGeometry.classify": 1.5773335001085798,
+        "tunnel_guard.accelerator.normal_statistics": 3.5554374999264837,
+        "TunnelBackground.__init__": 20.433312500017564,
+        "TrackGeometry.__init__": 37.92322950016569,
+        "TunnelBackground.mask": 5.372207999926104,
+        "tunnel_guard.accelerator.density_graph": 4.7794795002573665,
+        "tunnel_guard.detector.density_labels": 9.653249499933736,
+        "tunnel_guard.detector.cluster_candidates": 31.971813000154725,
+        "Detector._associate": 12.086666499953935,
+        "Detector.process": 124.55450050015315
+      },
+      "decision": "Optimize measured geometry and segmentation work, not ingestion-only speed. Geometry initialization37.9ms includes background20.4ms; candidate clustering32.0ms; motion25.7ms.",
+      "tradeoff": "Inclusive nested stage times must not be summed; diagnostic replay throughput includes artifact writes; timings are not i7-9700E/RTX4070 validation."
+    },
+    {
+      "rank": 6,
+      "blocker": "Required Docker ROS2 end-to-end delivery remains unverified",
+      "evidence": "docker info found client29.2.1 but failed connecting /var/run/docker.sock; no daemon available.",
+      "decision": "Need actual target-compatible Docker/ROS2 replay evidence, not another static command audit."
+    }
+  ],
+  "artifacts": {
+    "real_run": "build/metrics-real-replay-20260920",
+    "production_panel": "build/metrics-production-panel-20260920",
+    "target_trace": "build/metrics-indexed-diagnosis-20260920/target-trace.json",
+    "real_summary": "build/metrics-diagnosis-20260920/real-metrics.json",
+    "panel_attribution": "build/metrics-diagnosis-20260920/production-panel-reviewed.json",
+    "historical_attribution": "build/metrics-diagnosis-20260920/historical-panel-reviewed.json",
+    "profile": "build/metrics-runtime-profile-20260920/wall-profile.json",
+    "support_image": "build/metrics-diagnosis-20260920/real-support-cross-sections.png"
+  },
+  "limitations": [
+    "No competition scoring weights or opponent results: cannot quantify first-place probability.",
+    "Synthetic scenes retain original indexed seeds but do not establish field accuracy.",
+    "Real replay is development data, not a blind holdout.",
+    "199/201 alarm occupancy is NOT independently measured false-positive rate because the recording lacks exhaustive negative labels.",
+    "No production thresholds, boxes, labels or detector source changed.",
+    "DeepSeek wrote two bounded data extraction scripts; Main reviewed, corrected a per-case frame-accounting omission, ran actual experiments and interpreted findings."
+  ]
+}

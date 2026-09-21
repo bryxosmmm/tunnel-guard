@@ -1,0 +1,16 @@
+{
+  "seed": 20260915,
+  "detector_config": "/opt/tunnel-guard/configs/detector.json",
+  "output": "/evidence/offline-fixed",
+  "every": 1,
+  "max_frames": 10,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "/data",
+      "split": "real_prefix_runtime_comparison"
+    }
+  ],
+  "hypothesis": "Same-container offline and ROS adapters should agree on decisions for the same ten unique measurements."
+}

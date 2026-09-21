@@ -13,7 +13,8 @@ from rosbags.typesys import Stores, get_typestore
 
 from .detector import load_config
 from .diagnostics import distribution
-from .geometry import TrackGeometry, voxel_representatives
+# Retain the original Buyanov inspection estimator for comparable historical reports.
+from .geometry_buyanov import TrackGeometry, voxel_representatives
 from .io import decode_cloud
 from .run import bag_entry, digest, environment, write_json
 

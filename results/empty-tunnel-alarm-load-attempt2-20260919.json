@@ -1,0 +1,187 @@
+{
+  "date": "2026-09-19",
+  "scope": "Second attempt at the empty-tunnel alarm load: an object-chain continuity filter and a certified-path hazard rule",
+  "context": "The first attempt (cross-section buckets of raw points) was rejected: it removed real detections and did not move the alarm load - results/empty-tunnel-alarm-load-20260919.json. The cause of its failure named the subject of this attempt: a bucket shares the wall behind a candidate with the candidate itself.",
+  "changes": {
+    "object_chain_continuity": {
+      "idea": "A duct, cable tray or walkway edge reaches one scan as a chain of small fragments at a single cross-section position, repeated along the whole scan; a fallen object is one cluster, or a few, at its own position. The chain is built from the candidate objects themselves, each placed by its OWN support, so nothing inherits a neighbouring structure's span.",
+      "recipe_key": "infrastructure_continuity {enabled, cross_section_tolerance_m 0.3, minimum_length_m 12, reach_m 12, minimum_members 4}",
+      "measured_on_recordings": {
+        "roundT_doubleT": {
+          "unresolved_objects": "2757 -> 1323 (-52%)",
+          "statuses": "unchanged"
+        },
+        "doubleT_obstacle": {
+          "unresolved_objects": "3231 -> 1754 (-46%)",
+          "statuses": "unchanged, confirmed obstacle frames preserved 52 of 52",
+          "intersecting": "68 -> 67"
+        },
+        "dismissed_examples": "chains of 19-39 members spanning 73-140 m at lateral +/-1.8..2.7 m"
+      },
+      "gate_result": "passed: the labelled-obstacle recording keeps every confirmed frame, unlike the rejected first attempt which lost two"
+    },
+    "hazard_requires_certified_path": {
+      "idea": "An object inside the *nominal* envelope where the path itself is not certified is a candidate, not a hazard: beyond the measured anchors the centre is extrapolated and on a drifting section is wrong by metres, so the tunnel's own surfaces appear to be inside the swept path. Such objects stay in the output with their distance and the reason `unsupported_nominal_envelope`.",
+      "recipe_key": "hazard_requires_certified_path: true",
+      "measured": {
+        "class_removed_from_the_hazard_list": "unsupported_nominal_envelope: 977 objects, 766 of them confirmed, on roundT_doubleT",
+        "frame_statuses": "unchanged on both recordings - the wall is now driven by the remaining envelope_boundary_uncertainty class"
+      }
+    }
+  },
+  "safety_checks": {
+    "labelled_obstacle_recording": "doubleT_obstacle statuses identical: candidate 1, unresolved_obstacle 7, obstacle 52",
+    "inserted_objects_in_the_certified_range": "20, 40 and 60 m cases all still report status obstacle with relation intersecting and reason inside_heuristic_path_and_ground_interval",
+    "cost": "processing p50 +7.7 to +7.8 percent (122 -> 131 ms roundT_doubleT, 135 -> 145 ms doubleT_obstacle)"
+  },
+  "what_still_drives_the_wall": {
+    "class": "envelope_boundary_uncertainty: 346 objects, 332 confirmed on roundT_doubleT",
+    "property": "inside the certified range (the boundary mask requires `observed`), straddling the envelope boundary, median own extent 0.33 m",
+    "reading": "the same tunnel infrastructure where it did not form a chain. The next target, and the one that would actually flip the frame status.",
+    "state": "not addressed in this pass"
+  },
+  "pending_gate": "the full 1460-frame panel with both changes, still running on a shared machine at 820 of 1460 frames when this was recorded; it must reproduce event_recall 0.8021, matched IoU 0.8223 and negative_episode_rate 0.0. If it regresses, both changes are reverted.",
+  "not_shipped": "nothing: both changes are committed with the targeted gate, the recording gate and the smoke check",
+  "targeted_panel_gate": {
+    "cases": "the measured-pattern panel restricted to 10 m and 100 m, lateral 0.0, one object size, both sensor steps, plus the two empty scenes",
+    "result": {
+      "event_recall_10m": 1.0,
+      "event_recall_100m": 1.0,
+      "negative_episode_rate": "<= 0.05 (pass_criterion true)",
+      "wall_s": 19.0
+    },
+    "consistency": "the full panel's baseline was already 1.00 at 10-100 m, so the targeted gate reproduces the baseline where the changes could plausibly bite",
+    "artifact": "build/stress-targeted-gate/metrics.json"
+  },
+  "third_attempt_rejected": {
+    "idea": "the residual close-range driver is one solid cluster per scan (a walkway or duct edge passing the sensor: 5.5 per frame, median distance 8 m, lateral +1.49 m, height 0.42 m, 210 voxels, extent 1.1 x 0.27 x 0.36 m), too long to be a chain of fragments",
+    "rule": "anisotropic along the track AND at the corridor boundary AND recurring at least three times along the same scan - the third clause specifically so that a single object, such as a person lying along the track, is never dismissed by shape alone",
+    "measured": {
+      "doubleT_obstacle": "statuses unchanged, confirmed obstacle frames preserved 52 of 52 - the safety gate passed",
+      "roundT_doubleT": "5 of 60 frames moved from unresolved_obstacle to no_obstacle_observed",
+      "cost": "processing p50 131 -> 145 ms on roundT_doubleT and 145 -> 156 ms on doubleT_obstacle, about +10 percent on top of the +8 percent of the two committed changes"
+    },
+    "verdict": "rejected: safe but weak - 8 percent of frames cleared for about 10 percent more processing, on a system already at 6 Hz. Same standard as the first attempt.",
+    "next": "the same class needs a discriminator that clears most of the 5.5 objects per frame rather than a few, or the close-range boundary case needs the contour itself to be re-examined: the envelope half-width at 0.42 m height may simply be narrower than the tunnel's real walkway clearance on this route, in which case the correct fix is the reference contour, not a filter"
+  },
+  "state": "two changes committed at 211b507 with their gates; the boundary-structure extension reverted and recorded here",
+  "hypothesis_for_the_close_range_class_disproved": {
+    "hypothesis": "the walkway edge survives because in-gauge returns are protected from background removal (context keeps everything inside `observed & nominal_overlap`), so unprotecting them or letting the background model see them would remove the alarms at no cost",
+    "measured_on_frame_3_of_roundT_doubleT": {
+      "walkway_band_points": 1101,
+      "observed": 1072,
+      "in_gauge_nominal_overlap": 10,
+      "background_model_verdict_on_those_points": "0 of 1101 explained by a fitted surface"
+    },
+    "conclusion": "the cheap fix does not exist: the protection rule touches 10 of 1101 points, and the background model already declines to call the walkway background. The walkway reaches the candidate stage because it is an in-scope structure that the fitted surfaces do not represent.",
+    "what_this_leaves": "the close-range boundary class needs a model of the tunnel's own structures - either fitted surfaces extended to the walkway and duct profiles, or an explicit per-route cross-section profile - and it must clear the gate already established: the labelled obstacle recording keeps every confirmed frame (52 of 52), inserted objects at 20/40/60 m keep reporting obstacle, and the targeted panel keeps event_recall 1.0 with empty scenes silent.",
+    "rejected_alternatives_for_the_same_class": [
+      "cross-section buckets of raw points: removed real detections, alarm load unchanged (results/empty-tunnel-alarm-load-20260919.json)",
+      "object-chain continuity at the boundary with anisotropy and recurrence: safe but cleared 5 of 60 frames for about 10 percent more processing"
+    ]
+  },
+  "final_state": "five variants measured for the close-range class: the chain filter shipped, four rejected or disproved, each with the check that killed it (results/empty-tunnel-alarm-load-20260919.json and this file). The remaining detection-side work is the tunnel-structure model; the remaining delivery-side work needs a Docker host.",
+  "fourth_variant_rejected_status_level_demotion": {
+    "rule": "hazards_require_inside_contour: only an object inside the reference contour is a hazard; boundary-ambiguous and uncertified-path objects stay in the output as candidates",
+    "what_it_fixed": "the empty tunnel: roundT_doubleT went from 59 unresolved_obstacle frames to 60 of 60 no_obstacle_observed, and the labelled recording kept all 52 obstacle frames with its noise frames dropping 7 -> 1",
+    "what_it_broke": "injected objects at 100 m: the object is still detected and still in the output (panel event_recall 1.0), but the frame status becomes no_obstacle_observed on every frame - the system reports a clear path while an object is present, at exactly the range the case scores as 'good'",
+    "measured": {
+      "10 m": "statuses obstacle (with some candidate frames)",
+      "40 m": "statuses obstacle",
+      "100 m": "statuses no_obstacle_observed on all frames"
+    },
+    "why_it_is_wrong": "status-level demotion trades false alarms for missed detections. The empty-tunnel false alarms must be removed at the OBJECT level - by not creating objects from the tunnel's own structures - not by softening what the frame status means.",
+    "verdict": "rejected: it reported a clear path at 100 m while an object was there"
+  },
+  "correction_of_my_own_committed_default": {
+    "what_was_wrong": "the certified-path hazard rule shipped at 211b507 with default true. Measured this pass: an injected object at 100 m has relation reason `unsupported_nominal_envelope`, so the rule suppressed it and the frame status became `no_obstacle_observed` on every frame - the system reported a clear path while the object was present, at the range the case scores as good.",
+    "how_it_was_found": "checking the status (not the object list) of injected objects at 10, 40 and 100 m under the committed config; the earlier gate had only covered 20, 40 and 60 m",
+    "correction": "the rule is now opt-in (default false), so the class that contains genuine range detections is reported again",
+    "verified_after": {
+      "panel_injected_objects": "10 m -> obstacle; 100 m -> unresolved_obstacle / candidate (was no_obstacle_observed)",
+      "doubleT_obstacle": "unchanged: candidate 1, unresolved_obstacle 7, obstacle 52",
+      "roundT_doubleT": "candidate 1, unresolved_obstacle 59 - the empty-tunnel load is back, which is the honest state: the false alarms cannot be removed by suppressing a class that also carries real detections"
+    },
+    "what_remains_committed": "the object-chain continuity filter only. It is verified byte-identical on the full 1460-frame panel and cuts spurious objects by half without touching any confirmed frame."
+  },
+  "fifth_variant_disproved_uncertainty_driven_ambiguity": {
+    "hypothesis": "the walkway is only 'possibly inside' because the bed-height uncertainty pushes the height band across the 13 cm contour step at 0.44 m, so tightening that uncertainty would clear the class with no semantic change",
+    "measured_on_frame_3_of_roundT_doubleT": {
+      "walkway_band_points": 1015,
+      "bed_height_uncertainty_m": {
+        "median": 0.06,
+        "p90": 0.069,
+        "budget": 0.15
+      },
+      "path_uncertainty_m": 0.08,
+      "walkway_lateral_m": 1.49,
+      "contour_half_width_at_its_height_m": 1.45,
+      "height_band_m": [
+        0.41,
+        0.53
+      ],
+      "crosses_the_step": true
+    },
+    "conclusion": "the ambiguity is geometric, not an uncertainty artefact. The structure sits 4 cm outside the widest part of the contour against about 9 cm of combined knowledge, so any tightening that clears it would also clear a genuine object at the corridor edge. No further cheap avenue exists on the detection side.",
+    "what_remains": "knowing that this structure is the walkway - the object-level tunnel-structure model - or the earlier two avenues: an external alignment, and the delivery path verified on a Docker host"
+  },
+  "sixth_attempt_tunnel_profile_model": {
+    "research": "the clearance-inspection and tunnel-modelling literature builds a track-relative frame (station, lateral, height), models the normal cross-section along the axis, and treats deviations from it as objects; the case's own hint is the same idea. Sources consulted: railway tunnel clearance inspection by mobile laser scanning (PMC5621173), rail-area extraction from references parallel to the rails (PMC11314673), Senstar/Blickfeld subway LiDAR deployment (marketing, no method), and the tunnel cross-section extraction line (IAARC, ISPRS, IOP)",
+    "implementation": "one pass over the context cloud: group points by (lateral, height) cells of 0.4 m, count the DISTINCT station bins of 1 m inside each cell, and call a cell part of the tunnel's profile when it is occupied at >= 12 stations spanning >= 15 m. A candidate whose support lies mostly in profile cells is the tunnel, not an object. No temporal window, no map, no earlier pass.",
+    "results": {
+      "objects_reclassified": "13344 on roundT_doubleT",
+      "boundary_class": "346 -> 29 objects (the walkway/duct class: gone)",
+      "far_class": "unchanged: 699 confirmed hazards remain at median 122 m",
+      "labelled_recording": "doubleT_obstacle unchanged: obstacle 52 of 52 preserved",
+      "frame_statuses": "unchanged on both recordings - the wall is now driven only by the far class",
+      "cost": "processing p50 137 -> 156 ms, about +14 percent"
+    },
+    "why_the_far_class_survives": "beyond the corridor horizon the lateral coordinate is our own extrapolation and is wrong by metres, so the tunnel's far surfaces drift across cells instead of forming a stable profile - the model is sound but the frame it works in is corrupted out there. Lowering the thresholds to 4 stations and a 10 m span changed nothing, which confirms the frame, not the threshold, is the limit.",
+    "verdict": "reverted: it is the right mechanism and it removes the infrastructure classes without touching a single real detection, but it costs 14 percent and changes no frame decision, because the remaining driver is the far class that needs a trustworthy lateral frame first",
+    "what_this_leaves": "the empty-tunnel wall is now attributable to exactly one class - the tunnel's own surfaces at 90-164 m, placed by an extrapolated centre. Fixing that needs the far-field lateral frame (external alignment, or a centre estimated from something that survives at range), and then this profile model removes the rest."
+  },
+  "seventh_avenue_researched_and_disproved": {
+    "problem": "the far-field lateral frame: the last class (the tunnel's own surfaces at 90-164 m) is placed by an extrapolated centre",
+    "how_the_field_solves_it": {
+      "map_based_localization": "Daoust & Barfoot, 'Infrastructure-Free Mapping and Localization for Tunnel-Based Rail Applications Using 2D Lidar' (UTIAS, 2017; MASC thesis, and the IEEE IV 2016 paper): sliding-window RQE scan matching with WALL REMOVAL, mapping and localizing relative to a map. Needs a prior map of the route; the organizers' bags are unseen single passes.",
+      "cross_section_fitting": "the clearance-inspection line (railway tunnel clearance by mobile laser scanning, PMC5621173; tunnel cross-section extraction, IAARC/ISPRS/IOP; Taubin ellipse and least-squares circle fitting for lining analysis) fits the tunnel cross-section and uses its axis as the lateral reference, per station rather than as a carried constant.",
+      "profile_models": "modelling the normal cross-section along the axis and calling deviations objects (attempt six, works only where the frame is trustworthy)"
+    },
+    "premise_tested_on_our_data": {
+      "method": "Taubin circle fit in the cross-section plane to raw returns within a 2 m slab at 40/80/120/160 m, centres compared with the rail-derived centre at 20 m, over six consecutive frames",
+      "40_m": {
+        "points": "330-545",
+        "radius_m": "2.51-2.59",
+        "centre_offset_m": "+0.51 -> +0.24 over five frames"
+      },
+      "80_m": {
+        "points": "46-90",
+        "radius_m": "2.45-2.62",
+        "centre_offset_m": "+1.77 -> +1.06, about 0.7 m of drift"
+      },
+      "120_m": {
+        "points": "8-52",
+        "centre_offset_m": "+1.83 to +2.19"
+      },
+      "160_m": {
+        "points": "2-8"
+      },
+      "conclusion": "the radius is well determined but the centre is not: a partial, sparse arc leaves its centre ill-conditioned along the arc, and beyond 80 m there are too few returns to fit at all. The field's per-station fit cannot give a trustworthy lateral frame at range on this sensor."
+    },
+    "verdict": "avenue closed by measurement, not by opinion. The far-field lateral frame is not obtainable in a single pass from this sensor by cross-section fitting, and map-based localization needs a prior map of the route.",
+    "what_this_completes": "fifth independent measurement of the same limit: rails vanish by 90 m, the bed band is empty beyond 70 m, a carried bore offset is biased about 1 m, six estimators failed, and now partial-arc circle fits are ill-conditioned and unmeasurable beyond 80 m. The far-field lateral frame is a sensor property on this route, not a modelling gap."
+  },
+  "eighth_attempt_geometric_feature_classification": {
+    "research": "the field separates a tunnel's own structures from its content by local geometric feature classification: the eigenvalues of the local covariance give planar (lining, wall, duct), linear (cable, rail) or compact (object) evidence, with the normal giving the surface orientation. Sources: ISPRS 2015 robust planar and linear feature classification, ISPRS 2020 planar polygon detection, ISPRS 2021 detection of railway-related infrastructures, semantic segmentation of tunnel ground/lining/wiring/rails (ISPRS 2020), tunnel secondary lining segmentation by roughness and features.",
+    "implementation": "eigen-decomposition of the covariance of each track's ACCUMULATED, ego-motion compensated support - which needs several observations and never a good lateral frame - scoped to candidates that do not intersect the certified corridor, so a planar object genuinely on the path stays a hazard",
+    "measured": {
+      "objects_reclassified": "128 at planarity <= 0.08, with no change to any frame status",
+      "threshold_sweep": "0.15 and 0.30 both leave the statuses unchanged on both recordings, with the labelled obstacle preserved 52 of 52",
+      "remaining_after": "980 confirmed hazards of which 856 carry at least the 8 accumulated voxels the test needs, so the blocker is the planarity criterion, not the point floor",
+      "cost": "within noise (132 vs 134 ms, 145 vs 147 ms)"
+    },
+    "why_it_fails": "the accumulated world-frame evidence of those far structures is not planar: with a handful of returns per scan and imperfect registration it is smeared, so the shape test sees no surface. The test is sound; the evidence it must judge is degraded.",
+    "verdict": "reverted: no frame decision changed, so nothing ships",
+    "cumulative_statement": "six independent approaches have now failed to separate the tunnel's far-field surfaces from objects within a single pass on this sensor: the lateral frame (five separate measurements), the track-relative profile model, per-station circle fitting, sparse candidate admission, and now shape-based feature classification. The far returns are too few and the registration too imperfect for geometry to decide. The remaining options are structural, not algorithmic: a prior map from another pass, or an explicit decision about what an unclassifiable far return should mean in the output contract."
+  }
+}

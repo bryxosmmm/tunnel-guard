@@ -1,0 +1,162 @@
+{
+  "date": "2026-09-20",
+  "scope": "Sensor, clock and mounting facts re-measured on OUR production recipe, from all six development recordings",
+  "tool": {
+    "path": "tunnel_guard/sensor_profile.py",
+    "origin": "taken from origin/experiments/dolgov (Nikita Dolgov), reviewed by us before adoption",
+    "why_adopted": "it measures the cross-recording questions our own inspect_bag cannot: capture configuration, clock behaviour over a whole recording, return multiplicity and mounting in the frame the detector works in"
+  },
+  "command": "python -m tunnel_guard.sensor_profile --config configs/detector-native.json --output build/sensor-profile-20260920.json --bag <six recordings>",
+  "config": {
+    "path": "configs/detector-native.json",
+    "sha256": "69c1be77262c4bcd0585a8f0efa0e807d8ed22524eba99abd6e0bd21ca2a6624"
+  },
+  "artifact": "build/sensor-profile-20260920.json",
+  "confirmed_on_our_recipe": {
+    "two_capture_configurations": {
+      "doubleT_obstacle": {
+        "topic": "/sensing/lidar/hesai128/pointcloud",
+        "frame_id": "lidar_livox",
+        "slots": "1x921600",
+        "emissions": 460800,
+        "slots_per_emission": {
+          "2": 460800
+        },
+        "azimuth_coverage_deg": 237.2,
+        "messages": 201,
+        "largest_header_gap_s": 0.399947,
+        "point_span_over_header_period": 1.0,
+        "sensor_height_above_bed_m": 1.726,
+        "bed_roll_deg": -2.945,
+        "track_heading_deg": -1.605
+      },
+      "the_other_five": {
+        "doubleT_platform": {
+          "topic": "/lidar_points",
+          "frame_id": "hesai_lidar",
+          "slots": "1x307200",
+          "emissions": 153600,
+          "slots_per_emission": {
+            "2": 153600
+          },
+          "azimuth_coverage_deg": 99.9,
+          "messages": 345,
+          "largest_header_gap_s": 0.100024,
+          "point_span_over_header_period": 0.333,
+          "sensor_height_above_bed_m": 1.313,
+          "bed_roll_deg": 0.408,
+          "track_heading_deg": -0.248
+        },
+        "roundT_doubleT": {
+          "topic": "/lidar_points",
+          "frame_id": "hesai_lidar",
+          "slots": "1x307200",
+          "emissions": 153600,
+          "slots_per_emission": {
+            "2": 153600
+          },
+          "azimuth_coverage_deg": 99.9,
+          "messages": 252,
+          "largest_header_gap_s": 0.100018,
+          "point_span_over_header_period": 0.333,
+          "sensor_height_above_bed_m": 1.32,
+          "bed_roll_deg": 0.36,
+          "track_heading_deg": -0.519
+        },
+        "roundT_pressureGate_roundT": {
+          "topic": "/lidar_points",
+          "frame_id": "hesai_lidar",
+          "slots": "1x307200",
+          "emissions": 153600,
+          "slots_per_emission": {
+            "2": 153600
+          },
+          "azimuth_coverage_deg": 99.9,
+          "messages": 268,
+          "largest_header_gap_s": 0.100027,
+          "point_span_over_header_period": 0.333,
+          "sensor_height_above_bed_m": 1.32,
+          "bed_roll_deg": 0.1,
+          "track_heading_deg": -0.283
+        },
+        "roundT_squareT_pressureGate_squareT": {
+          "topic": "/lidar_points",
+          "frame_id": "hesai_lidar",
+          "slots": "1x307200",
+          "emissions": 153600,
+          "slots_per_emission": {
+            "2": 153600
+          },
+          "azimuth_coverage_deg": 97.8,
+          "messages": 545,
+          "largest_header_gap_s": 1.099941,
+          "point_span_over_header_period": 0.333,
+          "sensor_height_above_bed_m": 1.326,
+          "bed_roll_deg": 0.625,
+          "track_heading_deg": -0.282
+        },
+        "squareT_platform_squareT_switch": {
+          "topic": "/lidar_points",
+          "frame_id": "hesai_lidar",
+          "slots": "1x307200",
+          "emissions": 153600,
+          "slots_per_emission": {
+            "2": 153600
+          },
+          "azimuth_coverage_deg": 99.8,
+          "messages": 877,
+          "largest_header_gap_s": 0.700093,
+          "point_span_over_header_period": 0.333,
+          "sensor_height_above_bed_m": 1.307,
+          "bed_roll_deg": -0.132,
+          "track_heading_deg": -0.263
+        }
+      },
+      "reading": "doubleT_obstacle is a 360 deg capture on /sensing/lidar/hesai128/pointcloud under frame_id lidar_livox, whose point-time span equals the full 0.100 s frame period; the other five are 120 deg sector captures on /lidar_points under frame_id hesai_lidar whose span is one third of the period. One sensor_rotation and a zero sensor_translation are applied to both."
+    },
+    "independent_reproduction_of_the_mounting_split": "our run reproduces the earlier cross-branch measurement to the precision it reported: sensor height above the bed 1.726 m on doubleT_obstacle against 1.307-1.326 m on the other five, and bed roll -2.945 deg against -0.132..+0.625 deg. doubleT_obstacle is 0.41 m higher and about 3.3 deg different in roll.",
+    "dual_return_multiplexing": "exactly 2 slots per emission on every recording with no exception: 460800 emissions over 921600 slots on doubleT_obstacle, 153600 emissions over 307200 slots on each of the other five",
+    "frame_gaps": "largest header gap 1.099941 s on roundT_squareT_pressureGate_squareT, 0.700093 s on squareT_platform_squareT_switch and 0.399947 s on doubleT_obstacle, against our track_max_gap_s 0.35 s and frame_max_gap_s 0.5 s",
+    "point_timestamps": "header equals the start of the acquisition (header minus first point p50 0.000 s, header minus last point p50 -0.0999/-0.0333 s) and the bag record time sits in a different epoch, about 8.4e8 s away"
+  },
+  "second_measurement_dual_return_consequence": {
+    "method": "build/adopt-20260920/dual_return_impact.py, which pairs the two slots of every (ring, point-timestamp) emission and measures their separation in the frame the detector reduces in",
+    "roundT_doubleT": {
+      "emission_pairs": 474528,
+      "same_05cm_voxel": 467326,
+      "split": 7202,
+      "same_voxel_share": 0.9848,
+      "separation_p50_m": 0.0,
+      "separation_p90_m": 0.0
+    },
+    "doubleT_obstacle": {
+      "emission_pairs": 866630,
+      "same_05cm_voxel": 848151,
+      "split": 18479,
+      "same_voxel_share": 0.9787,
+      "separation_p50_m": 0.0,
+      "separation_p90_m": 0.0
+    },
+    "single_scan_detail": {
+      "valid_slots": 189502,
+      "emission_pairs": 94751,
+      "zero_separation_pairs": 93715,
+      "zero_separation_share": 0.9891,
+      "identical_intensity_within_those_pairs": "93713 of 93715",
+      "valid_slots_that_are_a_duplicate_copy": 187430
+    },
+    "conclusion": "The second slot is almost always the same measurement written twice: identical xyz AND identical intensity in 99.9 per cent of the zero-separation pairs. It is NOT an extra independent ray. Our decision path is largely insulated because the 0.05 m removal voxel merges 98 per cent of the pairs already; the residual 1-2 per cent are genuinely distinct returns from one emission and are legitimately kept."
+  },
+  "what_this_changes_in_our_conclusions": [
+    "Any published number of the form \"the recording contains N returns\" is about twice the number of independent measurements. The shape of our earlier range and walkway-band statements survives, the magnitudes do not; raw_points, input_valid_points and range_observability returns_before_geometry_voxel all count duplicated slots.",
+    "The labelled obstacle recording is the outlier capture configuration of the six. Labels, localization metrics and the continuity-guard status change all lean on it, while the other five are a different sector, a different frame label, a different point-time span and a different mounting. This did not invalidate those results but it does bound them.",
+    "Tracking breaks on the recorded gaps: 1.10 s and 0.70 s exceed track_max_gap_s 0.35 s, and the 1.10 s gap also exceeds frame_max_gap_s 0.5 s, which resets odometry and clears the tracker. Per-frame event counts on those stretches are understated.",
+    "Deskew must stay off, now for a second measured reason as well as the provenance one: on the five sector recordings the acquisition span is one third of the frame period, and KISS-ICP stretches the supplied normalised range over a full inter-frame increment, so enabling it would over-correct by about three times.",
+    "A dual-return sensor is not a reason to add a return-index field: our decoder reads only x, y, z and a timestamp, which is sufficient because the duplicate slot carries no new information and the reduction removes it."
+  ],
+  "limits": [
+    "The duplication share is measured on 5-8 scans per recording, not all of them; the pairing rule is exact but the sampling is not exhaustive.",
+    "This is a measurement of these six recordings and does not establish sensor model, calibration provenance or hardware detection range.",
+    "Nothing in this record changed the detector. It changes what our documents may claim."
+  ]
+}

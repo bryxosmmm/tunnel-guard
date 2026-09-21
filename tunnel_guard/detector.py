@@ -12,7 +12,9 @@ from kiss_icp.kiss_icp import KissICP
 from scipy.optimize import linear_sum_assignment
 from scipy.spatial import cKDTree
 
+from . import accelerator
 from .geometry import TrackGeometry, voxel_representatives
+from .mounting import observe_mounting, validate_mounting_config
 from .segmentation import density_labels, published_labels
 
 
@@ -27,7 +29,7 @@ def load_config(path: str | Path) -> dict:
     if translation.shape != (3,) or not np.isfinite(translation).all():
         raise ValueError("sensor_translation must contain three finite metres")
     envelope = np.asarray(config["envelope_segments_m"])
-    if (envelope.ndim != 2 or envelope.shape[1] != 4 or len(envelope) < 2
+    if (envelope.ndim != 2 or envelope.shape[1] != 4 or len(envelope) < 1
             or not np.isfinite(envelope).all() or np.any(envelope[:, 2:] <= 0)
             or np.any(envelope[:, 1] <= envelope[:, 0])
             or not np.allclose(envelope[1:, 0], envelope[:-1, 1])):
@@ -66,15 +68,72 @@ def load_config(path: str | Path) -> dict:
         raise ValueError("Invalid sensor range bounds")
     if not isinstance(config.get("deskew_enabled", False), bool):
         raise ValueError("deskew_enabled must be boolean")
+    if not isinstance(config.get("deduplicate_returns", False), bool):
+        raise ValueError("deduplicate_returns must be boolean")
+    if config.get("voxel_backend", "numpy") not in ("numpy", "cpp"):
+        raise ValueError("voxel_backend must be numpy or cpp")
+    if config.get("voxel_backend") == "cpp":
+        from . import _native  # Fail explicitly when the selected accelerator is unavailable.
+    ransac_threads = config.get("background", {}).get("ransac_threads", 1)
+    if type(ransac_threads) is not int or ransac_threads < 1:
+        raise ValueError("background.ransac_threads must be a positive integer")
+    query_workers = config.get("query_workers", -1)
+    if type(query_workers) is not int or (query_workers < 1 and query_workers != -1):
+        raise ValueError("query_workers must be -1 (all cores) or a positive integer")
+    if not isinstance(config.get("native_kernels", False), bool):
+        raise ValueError("native_kernels must be boolean")
+    if config.get("native_kernels", False):
+        from . import _native  # Fail explicitly when the selected kernels are unavailable.
     if config.get("obstacle_distance_mode", "cluster_min_x") not in ("cluster_min_x", "envelope_support_min_x"):
         raise ValueError("Unknown obstacle_distance_mode")
+    if config.get("rail_center_estimator", "histogram") not in ("histogram", "paired_line"):
+        raise ValueError("Unknown rail_center_estimator")
+    if config.get("rail_initial_heading", "zero") not in ("zero", "fitted"):
+        raise ValueError("Unknown rail_initial_heading")
+    if config.get("rail_pair_continuity", "window") not in ("window", "relocated"):
+        raise ValueError("Unknown rail_pair_continuity")
+    if config.get("rail_frame_mode", "bed") not in ("bed", "local_3d"):
+        raise ValueError("Unknown rail_frame_mode")
+    if config.get("rail_anchor_support", "window") not in ("window", "bracketed", "measured"):
+        raise ValueError("Unknown rail_anchor_support")
+    validate_mounting_config(config)
     return config
 
 
+def voxel_unique_at(config: dict, reductive_size: float | None) -> bool:
+    """Skip reduction only on the identical grid, preserving key order.
+
+    A coarser grid may imply uniqueness, but its lexicographic order need not
+    match the finer grid. That order affects cluster labels and track IDs.
+    """
+    if reductive_size is None:
+        return False
+    size = config["cluster_voxel_m"]
+    if not (size > 0 and reductive_size > 0):
+        return False
+    return size == reductive_size
+
+
 def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict,
-                       diagnostics: dict | None = None, arrays: dict | None = None) -> list[dict]:
-    _, context, _, _, _ = geometry.classify(points)
-    cloud = voxel_representatives(points[context], config["cluster_voxel_m"])
+                       diagnostics: dict | None = None, arrays: dict | None = None,
+                       *, reduced_on_grid_m: float | None = None,
+                       classification_out: list | None = None,
+                       precomputed_classification: tuple | None = None) -> list[dict]:
+    classification = geometry.classify(points, include_boundary=True, precomputed=precomputed_classification)
+    if classification_out is not None:
+        # The caller needs the same classification for its range bins; the two
+        # are identical because the inputs are, and background removal only
+        # touches `context`.
+        classification_out.append(classification[:5])
+    _, context, _, _, _, _ = classification
+    already_reduced = voxel_unique_at(config, reduced_on_grid_m)
+    if already_reduced:
+        # The context cloud is already one point per cluster voxel in key order,
+        # so the reduction below would only reproduce the same rows in the same
+        # order; filtering keeps it identical without the sort.
+        cloud = points[context]
+    else:
+        cloud = voxel_representatives(points[context], config["cluster_voxel_m"], config.get("voxel_backend", "numpy"))
     if diagnostics is not None:
         diagnostics.update(state="ran", context_points=int(context.sum()), cluster_points=len(cloud), rejected={})
     if arrays is not None:
@@ -83,7 +142,20 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                       cluster_points=cloud)
     if not len(cloud):
         return []
-    core, _, heights, observed, nominal_overlap = geometry.classify(cloud, remove_background=False)
+    if already_reduced:
+        # Only context is changed by the background mask; the remaining five
+        # pointwise results already refer to these exact representatives.
+        core, heights, observed, nominal_overlap, boundary = (
+            classification[i][context] for i in (0, 2, 3, 4, 5))
+    else:
+        core, _, heights, observed, nominal_overlap, boundary = geometry.classify(
+            cloud, remove_background=False, include_boundary=True)
+    # Mixed evidence (one interior + one boundary return) must not disappear
+    # merely because neither subset separately reaches weak_min_voxels.
+    uncertain_support = core | (~observed & nominal_overlap) | boundary
+    # See the object-chain test at the end of this function: `infrastructure_continuity` in the recipe.
+    continuity = config.get("infrastructure_continuity", {})
+    continuity_enabled = bool(continuity.get("enabled", False))
     method = config["segmentation_method"]
     if method == "density":
         labels, density_core = density_labels(cloud, config)
@@ -95,74 +167,166 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     components = []
     if arrays is not None:
         arrays.update(cluster_labels=labels, cluster_core=core, cluster_observed=observed,
-                      cluster_nominal_overlap=nominal_overlap)
-    for label in np.unique(labels):
-        if label < 0:
-            continue
-        indices = np.flatnonzero(labels == label)
-        inside = indices[core[indices]]
-        if len(indices) < config["weak_min_voxels"]:
-            rejected["below_weak_min_voxels"] += 1
-            if arrays is not None:
-                components.append({"component_id": int(label), "reason": "below_weak_min_voxels", "points": len(indices)})
-            continue
-        q = cloud[indices]
-        minimum, maximum = q.min(axis=0), q.max(axis=0)
-        extent = maximum - minimum
-        if extent.max() < config["cluster_min_extent_m"]:
-            rejected["below_min_extent"] += 1
-            if arrays is not None:
-                components.append({"component_id": int(label), "reason": "below_min_extent", "points": len(indices)})
-            continue
-        intersects = len(inside) >= config["weak_min_voxels"]
-        unresolved = np.count_nonzero(~observed[indices] & nominal_overlap[indices]) >= config["weak_min_voxels"]
-        dense_count = int(np.count_nonzero(density_core[indices]))
-        if not intersects and not unresolved and dense_count == 0:
-            rejected["weak_without_envelope_support"] += 1
-            if arrays is not None:
-                components.append({"component_id": int(label), "reason": "weak_without_envelope_support", "points": len(indices)})
-            continue
-        instant = (dense_count >= config["immediate_min_voxels"]
-                   and extent[2] >= config["immediate_min_height_m"])
-        distance_points = q
-        distance_method = "cluster_min_x"
-        if config.get("obstacle_distance_mode", "cluster_min_x") == "envelope_support_min_x":
-            if intersects:
-                distance_points = cloud[inside]
-                distance_method = "supported_envelope_min_x"
-            elif unresolved:
-                distance_points = q[~observed[indices] & nominal_overlap[indices]]
-                distance_method = "unresolved_nominal_envelope_min_x"
-        witness = distance_points[np.argmin(distance_points[:, 0])]
-        objects.append({"bbox_min": minimum.tolist(), "bbox_max": maximum.tolist(),
-                        "component_id": int(label),
-                        "cluster_nearest_x_m": float(np.min(q[:, 0])),
-                        "supported_envelope_nearest_x_m": float(np.min(cloud[inside, 0])) if len(inside) else None,
-                        "unresolved_envelope_nearest_x_m": float(np.min(q[~observed[indices] & nominal_overlap[indices], 0])) if unresolved else None,
-                        "center": ((minimum + maximum) / 2).tolist(), "extent_m": extent.tolist(),
-                        "distance_m": float(witness[0]), "distance_method": distance_method,
-                        "distance_support_point": witness.tolist(), "distance_support_points": len(distance_points),
-                        "path_relation": "intersecting" if intersects else ("unresolved" if unresolved else "adjacent"),
-                        "support_voxels": len(indices), "density_core_voxels": dense_count,
-                        "in_envelope_voxels": len(inside), "_support_points": q,
-                        "height_above_bed_m": [float(heights[indices].min()), float(heights[indices].max())],
-                        "immediate": bool(instant)})
+                      cluster_nominal_overlap=nominal_overlap, cluster_boundary_uncertain=boundary)
+    native = accelerator.native(config)
+    if native is not None and len(cloud):
+        # One native call groups the cloud by component and computes every
+        # statistic; the dictionaries are assembled here, where they cost under a
+        # millisecond, in the original field order.
+        objects, rejected_counts, rows = accelerator.cluster_objects(
+            cloud, labels, core, boundary, density_core, heights, uncertain_support, config, native)
+        rejected.update(rejected_counts)
         if arrays is not None:
-            components.append({"component_id": int(label), "reason": "accepted", "points": len(indices)})
+            components = rows
+            diagnostics["components"] = components
+        if diagnostics is not None:
+            diagnostics.update(rejected=dict(rejected), accepted=len(objects),
+                               noise_points=int(np.count_nonzero(labels < 0)))
+    else:
+        order = np.argsort(labels, kind="stable")
+        # One stable grouping replaces a full labels==label scan per component.
+        # Stable order preserves original point order within every cluster, hence
+        # witness selection, box ties and temporal evidence ordering stay unchanged.
+        sorted_labels = labels[order]
+        starts = np.r_[0, np.flatnonzero(np.diff(sorted_labels)) + 1]
+        stops = np.r_[starts[1:], len(order)]
+        for start, stop in zip(starts, stops):
+            label = sorted_labels[start]
+            if label < 0:
+                continue
+            indices = order[start:stop]
+            inside = indices[core[indices]]
+            if len(indices) < config["weak_min_voxels"]:
+                rejected["below_weak_min_voxels"] += 1
+                if arrays is not None:
+                    components.append({"component_id": int(label), "reason": "below_weak_min_voxels", "points": len(indices)})
+                continue
+            q = cloud[indices]
+            minimum, maximum = q.min(axis=0), q.max(axis=0)
+            extent = maximum - minimum
+            if extent.max() < config["cluster_min_extent_m"]:
+                rejected["below_min_extent"] += 1
+                if arrays is not None:
+                    components.append({"component_id": int(label), "reason": "below_min_extent", "points": len(indices)})
+                continue
+            intersects = len(inside) >= config["weak_min_voxels"]
+            unresolved = np.count_nonzero(uncertain_support[indices]) >= config["weak_min_voxels"]
+            dense_count = int(np.count_nonzero(density_core[indices]))
+            if not intersects and not unresolved and dense_count == 0:
+                rejected["weak_without_envelope_support"] += 1
+                if arrays is not None:
+                    components.append({"component_id": int(label), "reason": "weak_without_envelope_support", "points": len(indices)})
+                continue
+            instant = (dense_count >= config["immediate_min_voxels"]
+                       and extent[2] >= config["immediate_min_height_m"])
+            interior_dense_count = int(np.count_nonzero(density_core[inside]))
+            interior_height = float(np.ptp(cloud[inside, 2])) if len(inside) else 0.
+            intersection_immediate = (interior_dense_count >= config["immediate_min_voxels"]
+                                      and interior_height >= config["immediate_min_height_m"])
+            distance_points = q
+            distance_method = "cluster_min_x"
+            if config.get("obstacle_distance_mode", "cluster_min_x") == "envelope_support_min_x":
+                if intersects:
+                    distance_points = cloud[inside]
+                    distance_method = "supported_envelope_min_x"
+                elif unresolved:
+                    distance_points = q[uncertain_support[indices]]
+                    distance_method = "unresolved_envelope_evidence_min_x"
+            witness = distance_points[np.argmin(distance_points[:, 0])]
+            objects.append({"bbox_min": minimum.tolist(), "bbox_max": maximum.tolist(),
+                            "component_id": int(label),
+                            "cluster_nearest_x_m": float(np.min(q[:, 0])),
+                            "supported_envelope_nearest_x_m": float(np.min(cloud[inside, 0])) if len(inside) else None,
+                            "unresolved_envelope_nearest_x_m": float(np.min(q[uncertain_support[indices], 0])) if unresolved else None,
+                            "center": ((minimum + maximum) / 2).tolist(), "extent_m": extent.tolist(),
+                            "distance_m": float(witness[0]), "distance_method": distance_method,
+                            "distance_support_point": witness.tolist(), "distance_support_points": len(distance_points),
+                            "path_relation": "intersecting" if intersects else ("unresolved" if unresolved else "adjacent"),
+                            "support_voxels": len(indices), "density_core_voxels": dense_count,
+                            "in_envelope_voxels": len(inside), "_support_points": q,
+                            "boundary_uncertain_voxels": int(np.count_nonzero(boundary[indices])),
+                            "path_relation_reason": ("inside_heuristic_path_and_ground_interval" if intersects else
+                                ("envelope_boundary_uncertainty" if unresolved and np.any(boundary[indices]) else
+                                 ("unsupported_nominal_envelope" if unresolved else "outside_envelope_evidence"))),
+                            "height_above_bed_m": [float(heights[indices].min()), float(heights[indices].max())],
+                            "immediate": bool(instant),
+                            "interior_density_core_voxels": interior_dense_count,
+                            "interior_height_span_m": interior_height,
+                            "intersection_immediate": bool(intersection_immediate)})
+            if arrays is not None:
+                components.append({"component_id": int(label), "reason": "accepted", "points": len(indices)})
     if diagnostics is not None:
-        diagnostics.update(rejected=dict(rejected), accepted=len(objects), noise_points=int(np.count_nonzero(labels < 0)))
+        diagnostics.update(rejected=dict(rejected), accepted=len(objects),
+                           noise_points=int(np.count_nonzero(labels < 0)))
         if arrays is not None:
             diagnostics["components"] = components
+    if continuity_enabled and len(objects) > 1:
+        # A tunnel's own duct, cable tray or walkway edge reaches a single scan as a chain of small
+        # fragments at one cross-section position, repeated along the whole scan; a fallen object is one
+        # cluster, or a few, at its own position. The chain is built from the candidates themselves, each
+        # placed by its OWN support. An earlier version bucketed raw points and let an object standing in
+        # front of a wall inherit the wall's span, which dismissed real detections - hence the change of
+        # subject. A candidate is infrastructure only when other candidates at its own cross-section
+        # position continue well beyond it on both sides. Current scan only.
+        tol = float(continuity.get("cross_section_tolerance_m", 0.3))
+        minimum_length = float(continuity.get("minimum_length_m", 12.0))
+        margin = float(continuity.get("reach_m", 12.0))
+        minimum_members = int(continuity.get("minimum_members", 4))
+        # Ground/path are pointwise functions of this scan's fixed anchors.
+        # Evaluate them once over the same support, then retain each object's
+        # own median. This avoids refitting the continuation per component.
+        sizes = [len(obj["_support_points"]) for obj in objects]
+        offsets = np.r_[0, np.cumsum(sizes)]
+        support = np.concatenate([obj["_support_points"] for obj in objects])
+        ground_z, _ = geometry.ground(support)
+        centre, _, _ = geometry.path(support[:, 0])
+        lateral = support[:, 1] - centre
+        height = support[:, 2] - ground_z
+        placed = [{"lateral": float(np.median(lateral[lo:hi])),
+                   "height": float(np.median(height[lo:hi])),
+                   "lo": obj["bbox_min"][0], "hi": obj["bbox_max"][0]}
+                  for obj, lo, hi in zip(objects, offsets[:-1], offsets[1:])]
+        lateral_of = np.asarray([entry["lateral"] for entry in placed])
+        height_of = np.asarray([entry["height"] for entry in placed])
+        for index, obj in enumerate(objects):
+            same = ((np.abs(lateral_of - lateral_of[index]) <= tol)
+                    & (np.abs(height_of - height_of[index]) <= tol))
+            same[index] = False
+            if np.count_nonzero(same) < minimum_members:
+                continue
+            members = np.flatnonzero(same)
+            lo = min(placed[i]["lo"] for i in members)
+            hi = max(placed[i]["hi"] for i in members)
+            if hi - lo < minimum_length:
+                continue
+            if lo > placed[index]["lo"] - margin or hi < placed[index]["hi"] + margin:
+                continue
+            # Measured: on the labelled obstacle recording 30 candidates on 21 frames (21 on 13 frames
+            # on the tunnel recording) hold at least weak_min_voxels core voxels inside the envelope,
+            # i.e. measured corridor intrusions, and were relabelled here only because a long chain
+            # happened to share their cross-section position. Repetition along the scan is evidence
+            # about the corridor's structure, not about whether this candidate's own support lies
+            # inside the swept contour, so an already-`intersecting` relation and its measured reason
+            # are never overwritten; only `unresolved` and `adjacent` candidates are demoted.
+            if obj["path_relation"] == "intersecting":
+                continue
+            obj["path_relation"] = "adjacent"
+            obj["path_relation_reason"] = "longitudinally_continuous_structure"
+            obj["structure_along_track_m"] = [lo, hi]
+            obj["structure_members"] = int(len(members))
     # Keep association order independent of the selected distance definition.
     return sorted(objects, key=lambda o: o["cluster_nearest_x_m"])
 
-
 class Detector:
     def __init__(self, config: dict):
+        self.native_kernels = accelerator.native(config)
         self.config = config
         self.odometry = self._new_odometry()
         self.previous_source = None
         self.previous_pose = np.eye(4)
+        self.cached_background = None
+        self.background_frame_count = 0
+        self.background_fit_pose = np.zeros(3)
         self.last_timestamp = None
         self.tracks: dict[int, dict] = {}
         self.next_id = 1
@@ -234,27 +398,48 @@ class Detector:
         world = np.array([o["center"] for o in objects], dtype=float).reshape(-1, 3)
         world = world @ pose[:3, :3].T + pose[:3, 3]
         measurement_cov = np.eye(3) * cfg["tracking_position_sigma_m"]**2 + self.motion_translation_covariance
+        # Prediction and the association cost are the same per-track arithmetic as
+        # before, batched over tracks: the Python loop around these small matrices
+        # cost more than the matrices themselves. Each batched operation still
+        # dispatches one BLAS/LAPACK call per matrix, so the values are those of the
+        # unbatched form.
         predicted = {}
-        for key in ids:
-            t = self.tracks[key]
-            dt = stamp - t["stamp"]
-            transition = np.eye(6)
-            transition[:3, 3:] = np.eye(3) * dt
-            noise_map = np.vstack((np.eye(3) * dt**2 / 2, np.eye(3) * dt))
-            covariance = transition @ t["covariance"] @ transition.T + noise_map @ noise_map.T * cfg["tracking_acceleration_sigma_mps2"]**2
-            predicted[key] = (transition @ t["state"], covariance)
+        if ids:
+            states = np.stack([self.tracks[key]["state"] for key in ids])
+            covariances = np.stack([self.tracks[key]["covariance"] for key in ids])
+            gaps = np.asarray([stamp - self.tracks[key]["stamp"] for key in ids])
+            identity = np.eye(6)
+            shift = np.zeros((6, 6))
+            shift[:3, 3:] = np.eye(3)
+            transitions = identity[None] + shift[None] * gaps[:, None, None]
+            # Built as the original expression and multiplied per matrix, so the
+            # batched call dispatches the same BLAS routine on the same operands.
+            noise_maps = np.zeros((len(ids), 6, 3))
+            noise_maps[:, :3, :3] = np.eye(3)[None] * (gaps**2 / 2.0)[:, None, None]
+            noise_maps[:, 3:, :3] = np.eye(3)[None] * gaps[:, None, None]
+            noise = (noise_maps @ np.transpose(noise_maps, (0, 2, 1))) * cfg["tracking_acceleration_sigma_mps2"]**2
+            advanced = transitions @ covariances @ np.transpose(transitions, (0, 2, 1)) + noise
+            for row, key in enumerate(ids):
+                # Kept per track: a matrix-vector product is a different BLAS
+                # routine than the batched matrix-matrix form.
+                predicted[key] = (transitions[row] @ states[row], advanced[row])
         matched = {}
         if ids and len(world):
             cost = np.full((len(ids), len(world)), 1e6)
             extents = np.asarray([o["extent_m"] for o in objects]) + .1
-            for row, key in enumerate(ids):
-                state, covariance = predicted[key]
-                inverse = np.linalg.inv(covariance[:3, :3] + measurement_cov)
-                residual = world - state[:3]
-                mahalanobis = np.einsum("ni,ij,nj->n", residual, inverse, residual)
-                shape = np.linalg.norm(np.log(extents / (self.tracks[key]["extent"] + .1)), axis=1)
-                allowed = (mahalanobis <= cfg["tracking_mahalanobis_gate"]) & (shape <= cfg["tracking_extent_log_gate"])
-                cost[row, allowed] = mahalanobis[allowed] + shape[allowed]
+            track_extents = np.asarray([self.tracks[key]["extent"] for key in ids]) + .1
+            positions = np.stack([predicted[key][0][:3] for key in ids])
+            covariances = np.stack([predicted[key][1][:3, :3] for key in ids])
+            inverse = np.linalg.inv(covariances + measurement_cov)
+            residual = world[None, :, :] - positions[:, None, :]
+            mahalanobis = np.einsum("tni,tij,tnj->tn", residual, inverse, residual)
+            # Shape cannot rescue a pair rejected by the position gate. Evaluate
+            # its three logarithms only for pairs that can actually be matched.
+            ti, oi = np.nonzero(mahalanobis <= cfg["tracking_mahalanobis_gate"])
+            shape = np.linalg.norm(np.log(extents[oi] / track_extents[ti]), axis=1)
+            allowed = shape <= cfg["tracking_extent_log_gate"]
+            ti, oi = ti[allowed], oi[allowed]
+            cost[ti, oi] = mahalanobis[ti, oi] + shape[allowed]
             # Add unmatched assignments: an impossible pair cannot steal a valid match.
             padded = np.column_stack((cost, np.full((len(ids), len(ids)), cfg["tracking_mahalanobis_gate"] + cfg["tracking_extent_log_gate"] + 1)))
             rows, columns = linear_sum_assignment(padded)
@@ -270,6 +455,10 @@ class Detector:
             diagnostics.update(removed_track_ids=removed_ids,
                                removal_reason="motion_invalid" if not motion_valid else "track_max_gap",
                                processing_s=time.perf_counter() - diagnostics_started)
+        pending: list[dict] = []
+        observation = np.zeros((3, 6))
+        observation[:, :3] = np.eye(3)
+        state_identity = np.eye(6)
         for index, obj in enumerate(objects):
             key = matched.get(index)
             if key is None:
@@ -278,14 +467,13 @@ class Detector:
                 state = np.concatenate((world[index], np.zeros(3)))
                 covariance = np.diag([cfg["tracking_position_sigma_m"]**2] * 3 + [1.] * 3)
                 self.tracks[key] = {"history": deque(maxlen=cfg["confirmation_window"]), "first_stamp": stamp,
+                                    "intersection_history": deque(maxlen=cfg["confirmation_window"]),
                                     "evidence": deque(), "state": state, "covariance": covariance}
             else:
                 state, covariance = predicted[key]
                 gain = covariance[:, :3] @ np.linalg.inv(covariance[:3, :3] + measurement_cov)
                 state += gain @ (world[index] - state[:3])
-                observation = np.zeros((3, 6))
-                observation[:, :3] = np.eye(3)
-                factor = np.eye(6) - gain @ observation
+                factor = state_identity - gain @ observation
                 covariance = factor @ covariance @ factor.T + gain @ measurement_cov @ gain.T
             track = self.tracks[key]
             support = obj.pop("_support_points")
@@ -296,13 +484,44 @@ class Detector:
             track["evidence"].append((stamp, support_world - world[index]))
             while track["evidence"] and stamp - track["evidence"][0][0] > cfg["evidence_window_s"]:
                 track["evidence"].popleft()
-            evidence = voxel_representatives(np.vstack([e[1] for e in track["evidence"]]), cfg["cluster_voxel_m"])
             if not track["history"] or track["history"][-1] != self.frame_number:
                 track["history"].append(self.frame_number)
             hits = sum(f > self.frame_number - cfg["confirmation_window"] for f in track["history"])
-            confirmed = obj["immediate"] or (hits >= cfg["confirmation_hits"] and len(evidence) >= cfg["evidence_min_points"])
+            # Object persistence cannot confirm a new path intrusion. Count only
+            # current-scan interior evidence, once per strictly increasing scan.
+            interior_history = track["intersection_history"]
+            if obj["path_relation"] == "intersecting" and (not interior_history or interior_history[-1][0] != self.frame_number):
+                interior_history.append((self.frame_number, stamp))
+            recent_interior = [(f, s) for f, s in interior_history
+                               if f > self.frame_number - cfg["confirmation_window"]]
             track.update(state=state, covariance=covariance, stamp=stamp, extent=np.asarray(obj["extent_m"]))
-            obj.update(track_id=key, hits=hits, confirmed=bool(confirmed), accumulated_support_voxels=len(evidence),
+            # Accumulated support is the one quantity that needs its own call per
+            # track; the stacks are counted together after this loop, so the field
+            # writes below keep their original order.
+            pending.append({"obj": obj, "key": key, "hits": hits, "recent_interior": recent_interior,
+                            "state": state, "covariance": covariance, "track": track,
+                            "evidence": np.vstack([e[1] for e in track["evidence"]])})
+        # One native call counts every track's accumulated evidence, instead of
+        # one call per track: the same distinct-voxel count, same per-track value.
+        counts = accelerator.voxel_counts([record["evidence"] for record in pending],
+                                          cfg["cluster_voxel_m"], self.native_kernels)
+        for record, count in zip(pending, counts):
+            record["count"] = int(count)
+        for record in pending:
+            obj, key, hits = record["obj"], record["key"], record["hits"]
+            recent_interior = record["recent_interior"]
+            state, covariance, track = record["state"], record["covariance"], record["track"]
+            confirmed = obj["immediate"] or (hits >= cfg["confirmation_hits"]
+                                             and int(record["count"]) >= cfg["evidence_min_points"])
+            intersection_confirmed = (confirmed and obj["path_relation"] == "intersecting"
+                                      and (obj["intersection_immediate"] or len(recent_interior) >= cfg["confirmation_hits"]))
+            obj.update(track_id=key, hits=hits, confirmed=bool(confirmed),
+                       accumulated_support_voxels=int(record["count"]),
+                       intersection_confirmed=bool(intersection_confirmed),
+                       intersection_hits=len(recent_interior),
+                       intersection_evidence_timestamps_s=[s for _, s in recent_interior],
+                       intersection_confirmation=("immediate_interior_geometry" if intersection_confirmed and obj["intersection_immediate"]
+                                                  else "temporal_interior_evidence" if intersection_confirmed else "pending"),
                        last_observed_s=stamp,
                        evidence_timestamps_s=[e[0] for e in track["evidence"]],
                        covariance_kind="heuristic_not_calibrated",
@@ -341,9 +560,11 @@ class Detector:
         self.diagnostic_arrays = {"decoded_points": points} if capture_diagnostics else {}
         pipeline = {"geometry": {"state": "not_run"}, "segmentation": {"state": "not_run"},
                     "association": {"state": "not_run"}}
-        finite = np.isfinite(points).all(axis=1)
-        radii = np.linalg.norm(points, axis=1)
-        keep = finite & (radii >= self.config["min_range_m"]) & (radii <= self.config["max_range_m"])
+        # A non-finite coordinate always yields a non-finite radius, which fails
+        # one of the range bounds, so an explicit finite test would drop exactly
+        # the same rows. Measurements are decoded as float64 triples.
+        keep = accelerator.range_indices(points, self.config["min_range_m"], self.config["max_range_m"],
+                                         self.native_kernels)
         points = points[keep]
         if capture_diagnostics:
             self.diagnostic_arrays["range_points"] = points
@@ -376,15 +597,57 @@ class Detector:
         frame, pose, motion = self._motion(points, point_times)
         self.display_points = frame
         motion_s = time.perf_counter() - motion_started
-        crop = ((frame[:, 0] >= self.config["min_forward_m"])
-                & (np.abs(frame[:, 1]) < self.config["context_half_width_m"]))
-        reduced = voxel_representatives(frame[crop], self.config["geometry_voxel_m"])
+        # Fixed band around the sensor axis: a corridor-following window (the previous frame's
+        # extrapolated centre) added ambiguous hazards without changing any frame decision, so the
+        # base window is used unconditionally.
+        base_half = float(self.config["context_half_width_m"])
+        crop = (frame[:, 0] >= self.config["min_forward_m"]) & (np.abs(frame[:, 1]) < base_half)
+        # The reducer applies this same fixed-band predicate before selecting
+        # voxel representatives. Pass the full frame to avoid a cropped copy;
+        # first-measurement selection and lexicographic voxel order are preserved.
+        accelerator_module = self.native_kernels if self.config.get("voxel_backend", "numpy") == "cpp" else None
+        reduced = frame[accelerator.crop_voxels(frame, self.config["min_forward_m"], base_half,
+                                               self.config["geometry_voxel_m"], accelerator_module)]
         if capture_diagnostics:
             self.diagnostic_arrays.update(registered_points=frame, cropped_points=frame[crop], geometry_voxel_points=reduced)
-        geometry = TrackGeometry(reduced, self.config)
+        # The criterion is DISTANCE TRAVELLED, not frames: the model's validity is a spatial property, so a
+        # stopped train needs no refit and a fast one needs refits sooner. Travel is measured on the pose
+        # the odometry already produced, so it costs nothing to evaluate.
+        travel_limit = float(self.config.get("background_refit_travel_m", 0.0))
+        cadence = int(self.config.get("background_refit_every_frames", 1))
+        if travel_limit > 0.0:
+            here = np.asarray(pose, dtype=float)[:3, 3]
+            refit_due = (self.cached_background is None
+                         or float(np.linalg.norm(here - self.background_fit_pose)) >= travel_limit)
+            if refit_due:
+                self.background_fit_pose = here
+        elif cadence > 1:
+            self.background_frame_count += 1
+            refit_due = (self.background_frame_count % cadence) == 1
+        else:
+            refit_due = True
+        reuse = (not refit_due) and self.cached_background is not None
+        # Skipping the CONSTRUCTION is what saves the time; disabling it and attaching the cached model
+        # afterwards would still pay the 40 ms and throw the result away.
+        geometry_config = (dict(self.config, background=dict(self.config["background"], enabled=False))
+                           if reuse else self.config)
+        geometry = TrackGeometry(reduced, geometry_config)
+        if reuse and geometry.valid:
+            geometry.background = self.cached_background
+        elif refit_due:
+            self.cached_background = geometry.background
+        mounting_started = time.perf_counter()
+        mounting = observe_mounting(reduced, geometry, self.config)
+        mounting_s = time.perf_counter() - mounting_started
+        if mounting is not None:
+            result.update(mounting=mounting, mounting_observation_s=mounting_s)
         pipeline["geometry"] = {"state": "ran", "valid": geometry.valid, "reason": geometry.reason}
+        carried: list = []
         objects = cluster_candidates(reduced, geometry, self.config, pipeline["segmentation"],
-                                     self.diagnostic_arrays if capture_diagnostics else None) if geometry.valid else []
+                                     self.diagnostic_arrays if capture_diagnostics else None,
+                                     reduced_on_grid_m=self.config["geometry_voxel_m"],
+                                     classification_out=carried,
+                                     precomputed_classification=geometry.initial_classification) if geometry.valid else []
         if not geometry.valid:
             pipeline["segmentation"]["reason"] = geometry.reason
         tracking = self._associate(objects, pose, timestamp_s, motion["valid"], capture_association)
@@ -394,20 +657,67 @@ class Detector:
         pipeline["association"] = {"state": "ran", "candidates": len(objects),
                                    "confirmed": sum(o["confirmed"] for o in objects),
                                    "history_cleared_for_motion": not motion["valid"]}
-        hazards = [o for o in objects if o["path_relation"] in ("intersecting", "unresolved")]
+        # A hazard needs certified evidence. `unsupported_nominal_envelope` means the object lies inside
+        # the *nominal* envelope where the path itself is not certified - beyond the measured anchors the
+        # centre is extrapolated and, on a curved or drifting section, is wrong by metres, so the tunnel's
+        # own surfaces appear to be inside the swept path. Counting that as a hazard turns our own
+        # uncertainty into an alarm on nearly every frame of an empty tunnel, which is the scenario the
+        # case is mostly scored on. Such objects stay in the output with their distance and this reason,
+        # and the perception-not-certified fact is reported through health instead.
+        # Default FALSE, and that default was earned: with it on, an injected object at 100 m - whose
+        # relation is `unsupported_nominal_envelope` because the path is not certified out there - stopped
+        # being reported and the frame said no_obstacle_observed while the object was present. Suppressing
+        # a class that contains genuine range detections buys false-alarm reduction with missed detections,
+        # which is the wrong side of the trade for a system that must never call an uncertain path clear.
+        # The empty-tunnel alarm load has to be removed at the object level instead. Opt in explicitly.
+        require_certified = bool(self.config.get("hazard_requires_certified_path", False))
+
+        def is_hazard(obj: dict) -> bool:
+            if obj["path_relation"] == "intersecting":
+                return True
+            if obj["path_relation"] != "unresolved":
+                return False
+            if not require_certified:
+                return True
+            # `unsupported_nominal_envelope`: inside the *nominal* envelope where the path itself is not
+            # certified. Beyond the measured anchors the centre is extrapolated and on a drifting section
+            # is wrong by metres, so the tunnel's own surfaces appear to be inside the swept path;
+            # counting that as a hazard turns our uncertainty into an alarm on nearly every frame of an
+            # empty tunnel. Such objects stay in the output with their distance and this reason.
+            return obj["path_relation_reason"] != "unsupported_nominal_envelope"
+
+        hazards = [o for o in objects if is_hazard(o)]
         confirmed = [o for o in hazards if o["confirmed"]]
-        certain = [o for o in confirmed if o["path_relation"] == "intersecting"]
+        certain = [o for o in confirmed if o["intersection_confirmed"]]
         status = ("obstacle" if certain else ("unresolved_obstacle" if confirmed else
                   ("candidate" if hazards else ("no_obstacle_observed" if geometry.valid else "unknown"))))
         bins = []
-        _, _, _, observed, _ = geometry.classify(reduced, remove_background=False)
-        for lo, hi in zip(self.config["range_bins_m"][:-1], self.config["range_bins_m"][1:]):
-            mask = (reduced[:, 0] >= lo) & (reduced[:, 0] < hi)
-            raw_mask = (frame[:, 0] >= lo) & (frame[:, 0] < hi) & crop
-            bins.append({"range_m": [lo, hi], "returns": int(mask.sum()),
-                         "returns_before_geometry_voxel": int(raw_mask.sum()),
-                         "geometry_supported_returns": int(np.count_nonzero(mask & observed))})
+        # Reuse the classification the cluster stage already computed for exactly
+        # this array instead of classifying it a second time.
+        classification = carried[0] if carried else geometry.classify(reduced, remove_background=False)
+        _, _, _, observed, _ = classification
+        edges = self.config["range_bins_m"]
+        if self.native_kernels is not None:
+            counts = accelerator.range_summary(reduced, frame, crop, observed,
+                                               np.column_stack((edges[:-1], edges[1:])), self.native_kernels)
+            for index, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
+                bins.append({"range_m": [lo, hi], "returns": int(counts[index, 0]),
+                             "returns_before_geometry_voxel": int(counts[index, 1]),
+                             "geometry_supported_returns": int(counts[index, 2])})
+        else:
+            for lo, hi in zip(edges[:-1], edges[1:]):
+                mask = (reduced[:, 0] >= lo) & (reduced[:, 0] < hi)
+                raw_mask = (frame[:, 0] >= lo) & (frame[:, 0] < hi) & crop
+                bins.append({"range_m": [lo, hi], "returns": int(mask.sum()),
+                             "returns_before_geometry_voxel": int(raw_mask.sum()),
+                             "geometry_supported_returns": int(np.count_nonzero(mask & observed))})
         health_reasons = []
+        if self.config.get("rail_frame_mode", "bed") == "local_3d":
+            health_reasons.append("experimental_local_rail_frames")
+            if not geometry.frame_segments():
+                health_reasons.append("local_rail_frames_unavailable")
+                if status == "no_obstacle_observed":
+                    status = "unknown"
         if not geometry.valid:
             health_reasons.append(geometry.reason)
         if not motion["valid"]:
@@ -420,7 +730,13 @@ class Detector:
             health_reasons.append("deskew_disabled_unverified_timing")
         elif not len(point_times):
             health_reasons.append("deskew_timestamps_unavailable")
-        return result | {"status": status, "reason": geometry.reason, "objects": objects,
+        # One place for both backends: the native component path builds its own records, so the
+        # far-field lateral bound is attached here rather than inside either builder.
+        bounds = geometry.path(np.asarray([obj["distance_m"] for obj in objects]))[2]
+        for obj, bound in zip(objects, bounds):
+            obj["far_field_lateral_bound_m"] = float(bound) if np.isfinite(bound) else None
+        return result | {"status": status, "reason": geometry.reason,
+                         "supported_range_m": geometry.supported_range_m(), "objects": objects,
                          "health": "unavailable" if not geometry.valid else ("degraded" if health_reasons else "normal"),
                          "health_reasons": health_reasons,
                          "nearest_obstacle_m": min((o["distance_m"] for o in confirmed), default=None),

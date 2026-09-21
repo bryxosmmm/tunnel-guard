@@ -1,0 +1,26 @@
+{
+  "date": "2026-09-19",
+  "scope": "KISS-ICP registration threads, the last measured runtime lever in the motion stage",
+  "measured": {
+    "setup": "both recordings, two independent runs each, processing p50 per recording",
+    "threads_4": [
+      121.1,
+      111.6,
+      121.7,
+      111.8
+    ],
+    "threads_4_median_ms": 116.5,
+    "threads_8": [
+      114.6,
+      110.7,
+      114.8,
+      111.2
+    ],
+    "threads_8_median_ms": 112.9,
+    "reading": "a consistent gain on roundT_doubleT (-5.4 per cent in both runs) and a marginal one on doubleT_obstacle, 3.1 per cent on the medians"
+  },
+  "decisions": "statuses identical and object counts identical on both recordings (13486 and 15200 objects)",
+  "why_8": "the deployment stand has 8 cores and registration is the only stage that benefits from threads; it runs before the kd-tree queries, so the two do not contend",
+  "shipped": "configs/detector-native.json now sets odometry_threads 8",
+  "note": "small, and recorded as small: this is a configuration setting, not a mechanism"
+}

@@ -1,0 +1,11 @@
+{
+  "date": "2026-09-19",
+  "scope": "Unit-bearing claims in docs/ cross-checked against the artifacts, with numeric tolerance",
+  "method": "each number-with-unit matched against every float under results/*.json within 0.5 per cent, which separates a rounding from a genuinely unbacked value. Crude string matching had flagged 31; the tolerant check leaves 3.",
+  "the_three": {
+    "CURVED_CORRIDOR_AND_RANGE.md 16.7 m": "arithmetic (s^2/2R) rather than a measurement; now labelled as such in place",
+    "EXTENDED_FULL_RUN.md 34.76": "a measurement from the full extended run whose artifacts are local-only; now carries an evidence-status note",
+    "README.md 3.2": "the on-track probe's strongest-candidate lateral figure, unbacked for the same reason as that section's aggregates, which are already annotated"
+  },
+  "reading": "the README is fully backed; docs/ holds three figures that are not, and all three are now either labelled as arithmetic or marked with their evidence status. Two of the three trace to the same root cause - measurements whose artifacts live in build/ only, which this repository deliberately does not track"
+}

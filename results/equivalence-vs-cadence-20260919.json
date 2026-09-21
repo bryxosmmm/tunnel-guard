@@ -1,0 +1,12 @@
+{
+  "date": "2026-09-19",
+  "scope": "The backend-equivalence guarantee versus the background refit cadence",
+  "first_finding": "the NumPy reference recipe and the shipping native recipe had drifted apart: three behavioural keys differed - background_refit_travel_m (present only in the native recipe), odometry_threads (4 versus 8) and infrastructure_continuity (enabled only in the native one) - so the equivalence check was comparing two different recipes. The reference recipe is now synced, keeping only the intended backend keys (native_kernels, voxel_backend).",
+  "second_finding": "with the recipes aligned the check still failed, and disabling background_refit_travel_m in BOTH recipes restores it: cadence on gives 0 of 8 arrays identical, cadence off gives 20 of 20. The cause is the reuse itself - a model built by one backend is cached and reused on later frames, so the two implementations stop returning identical arrays. Without the cadence every model is built fresh and the backends agree.",
+  "decision": "background_refit_travel_m is 0.0 in the shipped recipe: opt-in again. A quarter of the frame time is not worth silently voiding the guarantee that the two implementations agree, and that guarantee is what lets the NumPy recipe stand as a reference. The mechanism and its measurements stay in the tree, so it can be turned on with one number - and if it is, the equivalence check will show exactly what was given up.",
+  "evidence": {
+    "recipes_synced_cadence_off": "20/20 recorded arrays identical, 0 failures, 24/24 kernel checks",
+    "cadence_on": "0/8 identical, 8 failures"
+  },
+  "correction": "the README's shipped-behaviour section, the end-to-end confirmation paragraph and the runtime table all described the cadence as shipped and quoted the 114.4/105.9 ms figures measured with it; all three are corrected to the opt-in status and the figures that hold without it."
+}

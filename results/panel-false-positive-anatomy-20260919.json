@@ -1,0 +1,21 @@
+{
+  "date": "2026-09-19",
+  "scope": "What the panel's false-positive count actually consists of",
+  "correction_of_my_own_reading": "I have been quoting fp_exhaustive_only = 176 as though it were per-frame false alarms. It is an event-level count, and the object-level picture is different: over 1460 frame-rows there are 31,700 objects not matching a label, of which 27,588 are ADJACENT - outside the corridor and correctly not hazards (16,507 of them labelled by the object-chain filter, working as designed). Counting only the hazard classes leaves 211 objects, about 0.14 per frame.",
+  "the_211_hazard_class_objects": {
+    "by_reason": {
+      "inside_heuristic_path_and_ground_interval": 143,
+      "unsupported_nominal_envelope": 68
+    },
+    "confirmed": {
+      "true": 173,
+      "false": 38
+    },
+    "distance": "median 20 m, p10 8 m, p90 300 m",
+    "height": "median 1.05 m",
+    "support": "median 16 voxels"
+  },
+  "what_the_143_are": "they concentrate on one case: an inserted 0.3 m box at 10.2 m, reported with 11-13 voxels and confirmed, on every frame of that case. The object IS reported; its box simply does not overlap the label at IoU >= 0.1, because the label is the visible support of a 0.3 m box (three or four returns) and the predicted box differs by more than the object is wide.",
+  "reading": "the panel's false positives are dominated by box-convention mismatch on very small supports, the same limitation already recorded for this panel, not by spurious alarms on empty scenes - those are zero. So there is no precision defect to fix here; the honest number for the case is the empty-scene alarm rate, which is 0.0, and the far-field candidates that carry their own uncertainty.",
+  "why_it_matters": "a scorer reading fp_exhaustive_only as a per-frame false-alarm rate would be wrong by two orders of magnitude, and I was one step away from reporting it that way myself"
+}

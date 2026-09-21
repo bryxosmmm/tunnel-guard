@@ -1,0 +1,19 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/integrated-native-prefix",
+  "every": 1,
+  "max_frames": 3,
+  "visualization": false,
+  "diagnostic_frames": [
+    0
+  ],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Merged native kernels preserve current interval-envelope detector outputs",
+  "criterion": "All compared outputs match runtime-context-real within 1e-10, including every sparse/far candidate and temporal evidence"
+}

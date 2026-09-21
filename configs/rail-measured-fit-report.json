@@ -1,0 +1,24 @@
+{
+  "before_config": "configs/detector-rail-baseline.json",
+  "after_config": "configs/detector-rail-measured.json",
+  "output": "build/rail-measured-fit-report",
+  "split_bin_m": 0.3,
+  "range_m": [
+    5,
+    25
+  ],
+  "selection_half_width_m": 0.13,
+  "clouds": [
+    "build/integrated-native-real/diagnostics/doubleT_obstacle_000000.npz",
+    "build/integrated-native-real/diagnostics/doubleT_obstacle_000100.npz",
+    "build/integrated-native-real/diagnostics/doubleT_obstacle_000200.npz",
+    "build/integrated-native-real/diagnostics/doubleT_platform_000000.npz",
+    "build/integrated-native-real/diagnostics/doubleT_platform_000100.npz",
+    "build/integrated-native-real/diagnostics/doubleT_platform_000200.npz",
+    "build/integrated-native-real/diagnostics/roundT_doubleT_000000.npz",
+    "build/integrated-native-real/diagnostics/roundT_doubleT_000100.npz",
+    "build/integrated-native-real/diagnostics/roundT_doubleT_000200.npz"
+  ],
+  "hypothesis": "Refining paired longitudinal support reduces histogram center bias on withheld spatial bins",
+  "criterion": "Lower median residual on a majority of saved real frames without hiding failed fits; not proof of independent rail identity"
+}

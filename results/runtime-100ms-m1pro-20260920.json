@@ -1,0 +1,431 @@
+{
+  "date": "2026-09-20",
+  "branch": "experiments/gerasimov",
+  "baseline_revision": "0371f20d88492ed283a81003afc33f3e48f14bc2",
+  "objective": "100 ms/frame detector processing on the current Mac",
+  "target_met": false,
+  "machine": {
+    "cpu": "Apple M1 Pro",
+    "cpu_count": 10,
+    "platform": "macOS-15.7.4-arm64-arm-64bit",
+    "python": "3.12.14 (main, Aug 12 2026, 13:57:54) [Clang 17.0.0 (clang-1700.6.4.2)]",
+    "low_power_mode": false,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "rosbags": "0.11.5",
+      "kiss-icp": "1.3.0",
+      "open3d": "0.19.0",
+      "travel-seg": null,
+      "hdbscan": null,
+      "pypatchworkpp": null
+    }
+  },
+  "detector_config": "configs/detector-native.json",
+  "config_sha256": "69c1be77262c4bcd0585a8f0efa0e807d8ed22524eba99abd6e0bd21ca2a6624",
+  "native_accelerator": {
+    "binary_sha256": "5960a9e5625fe249d089d2c44a285030aa3db244978da346003d0af1fdc91b07",
+    "module": "tunnel_guard._native",
+    "backend": "cpp",
+    "sources_sha256": {
+      "cpp/kernels.cpp": "3589c0a5629d81d6acfe45434e460d352b6e7db7d0078feb2b4db71849133d35",
+      "cpp/voxel.cpp": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+      "cpp/native.h": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+      "setup.py": "c6264d49cc69a6ea9052ddb27a7363229eca2e887f4eab77beafc31745200b59",
+      "MANIFEST.in": "33c4c37a2f87322b865aa3de40223f5a1d3a0aebf1c220aa0d266bf1366d6910"
+    }
+  },
+  "source_sha256": {
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/accelerator.py": "893973568cdb3e53c70c7f1bc0f61f8bc0d1f9b08b7cda9ad7a0831848bf672a",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/alignment.py": "37019d4fa19e6186d89a1f8392d60eeadaf7b706eb602e91850d2fb86870fb08",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/alignment_probe.py": "15d69909fd6978047a92163f0b17dc31d027c14e09d029da28d65eeffac70551",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/assess_track_scenes.py": "57e44a32f451a308998759f4d346543780c37195d98f2e13d875c588e19a3033",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/background.py": "f544633283784ab9d13998809cdb04279c216dd20daf4f6c32b02c4168fe5e3d",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/background_repro.py": "816dbc51d7bb91afc6709d6435f2de966244167dc2d3dfce87b0c6496ca2f43c",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/calibrate.py": "5ba977914f5f3da207454434c7111225d83dac6667c53bf9719326b691750f8c",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/check_geometry_kernels.py": "9042e872ae3f245b127576f5d0531c387ef086389e39a2fcf1173754a3442b71",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/check_kernels.py": "79788a196bb9573600c1f17e78bd9d670b0c779d4d47c4c9e0f86ff86e1dacfb",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/compare_alarm_runs.py": "ce39621d4cea9ee07617f882f1d1f7035f006f16b252b74c2b5f63d2f1ad36d0",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/config_audit.py": "62e8c38b0a1b2cf04f55eb093c9ac7ebafc4af4dbd312531db58f6a09f6c532a",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/curve_audit.py": "1326d9adab148558ba5b3607390a3609a0705f18e12375f5652effdc2a0d2381",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/curved_stress.py": "0bcada82de0d22b9d50feef464635c334ef57cd7883f461fe1ea27a676a2a078",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/decode_benchmark.py": "2d86ea1438c6fcb5365455fd2a0de9cd116c22544b13dfe5db89f220ef0d579f",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/detector.py": "4edeb10282e90fe29675724878afed7c82e37dcb4039a3cbb993ad504bb9157a",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/episode_report.py": "dc932d8a30294a887e7a143e852c1e2c9d7a95e46aea72f341d780a33d584501",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/evaluate.py": "79f870c370a8b76b867b8a173af517e10116e7220a1c21af3aa859088ff5a574",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/expansion_report.py": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/extended_subset.py": "feaf7c41ab3ccd9b9d0497128353c7b36eedbd33aff8f46c2cae8193da9279ce",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/geometry.py": "96103e83a392e092161635f5316883d005378a938daa3caa05e5fafa238d482c",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/history_probe.py": "723311b1aee8248d2b18a72ac22e28b66b6df47dff16904ea87483b86cd1e3bf",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/hmm_mos_probe.py": "2f4c5a9f47ecedcb40457a5c64f3d606965a1db5178dacd85839d4df5070547f",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/injection_experiment.py": "9887b6985e3e90de90c0505c4cca787f05703d7bd9f487041e84b89a8b5841c1",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/inspect_bag.py": "ccb30abe90954ab9e7862bcc914b9803ff538c5e4dd4695c97f189d04b766374",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/inspect_recording_headers.py": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/intrusion_audit.py": "e04ec075a2cc9ddcf6d844e6ddfda6657e275b562ec6de7728f11732c7cdcf84",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/io.py": "16a4410d0d19637d0cdac9b30a43c810d381d2e35feeef25cd63c41b40bc4a87",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/motion_audit.py": "d2d49f0bcff1af6bb7ba97c6d7047c59f6ab4605bb485cfac61e6f298c94a8c7",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/motion_scenarios.py": "2d928846e973b163471f3293ba1af4ae79fdede55159b5c515cb8c2f6cc0d897",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/mounting.py": "568b2716fafef9775d18e1105c0d1365aff1b32409d6cfcf82f22840bab33a2c",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/mounting_replay.py": "f49091816ecf0854869c30bdf0ebaf1d19f836058ff1f0dd6ec8a1d6756d1731",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/mounting_report.py": "c7547ee3d650de0f35f4d5a86ab855b0db1214e4860bada9082619c0fb44e41f",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/native_benchmark.py": "0adedf2f3de2bf5c698426c748d0ca2c98193110b7b710d4c182061c950b83d5",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/on_track.py": "52ac512affd2102a788a8e1eb98db05259212d7c1ef55f821cc57ea6b067d07b",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/panel_report.py": "f5fbf5612985fa008b580bb7446f445c5017d1170a04a7180b73b4e7dc38c505",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/plot_track_geometry.py": "b19aee7b6846a74b38cc9bec7ba0158443f473168b4fb6a18fe95014b6716113",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/prepare_segment.py": "154f5d0772d56473e82704d217723132c292efa0681d5df32f8bf6b1c355cf7a",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/profile_run.py": "5ad54b41e5a681182281d0714017c06c628fbb65deada92a5e4cd04127a956fb",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/rail_fit_report.py": "3bae4132006f5b72b7620be0e13fb76aebd413bfcce733c1d2c6738542f6bb44",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/rail_geometry_audit.py": "4314dd497098bee51d574daa0ca01089d46791c49102ca9a14fea5aaf127e044",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/realistic_stress.py": "15c7fe4724879f4f1eb043bf6b3bae96fc926ad5a10ad2ebc4d1fc011d8d0840",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/render_alarm_cases.py": "95b510a7143f7250ec718749ed654e95c225f1b5a9ce20aa054f3b0df9cd0cc7",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/render_annotation_review.py": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/review_remaining_alerts.py": "0fe5e93952e1a275a81b2b04d203ebe899fe4d1e304ef7d347e026cc87d4448b",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/review_viewer.py": "eb8b7c1de7591c7a1324184d29be20ef9adb58d7a2033d1335bcfcf92cf9297e",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/ros_node.py": "d4c0f9b3538c18b1144b424401b8cfcc9c819a9b686605beece9442f9fb8873c",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/run.py": "23961c6f77b4ee0414b98ec0eb0e867fb18f4e69056d7d197c337640bf8d8164",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/segmentation.py": "9e545b80d3e253309210f79745154fb83c5d0a30931d38fca4551eefd2635789",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/surface_evaluate.py": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/sustech.py": "103e7c167550022a86f37973a11dabfc476d0acdfc9eb1ca08212b6f4c615392",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/sustech_import.py": "adba80ec5aa9bfa31d8ec3321ed5f2d3ef97c55a77db7c0bd2addc7fb0f84700",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/trace_analysis.py": "eb1c1617b8666166d1d96864b79d541592c3a6784b8a6007ab69b3714d748c4c",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/track_scene_experiment.py": "a9b8f1445020f436b65470996b73f5df462b1973c3ca1520627fa4095343ae2d",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/uncertainty_probe.py": "6c80e43d3e47a0b85257afef40f3e6931228f5dfbfa03fa5a4ce3a2ef1df488e",
+    "/Users/pbuyanov/Projects/tunnel-guard/tunnel_guard/visualization.py": "e6e87154cab65e2b8aa4563c0d9445d056c6e1172702da3e63ed95e446c395e0"
+  },
+  "changes": [
+    "Batch per-object ground/path evaluation and far-field bounds.",
+    "Compute the current scan geometry classification once, then reuse its exact point subsets.",
+    "Group rail-bin medians natively; preserve NumPy least-squares and acceptance checks.",
+    "Skip association shape costs for pairs rejected by the unchanged position gate.",
+    "Avoid the intermediate cloud crop and unused ground arrays."
+  ],
+  "full_replay": [
+    {
+      "bag": "doubleT_obstacle",
+      "frames": 201,
+      "before_processing_ms": {
+        "p50": 237.38225002307445,
+        "p95": 266.2359159439802,
+        "p99": 288.5314169107005
+      },
+      "after_processing_ms": {
+        "p50": 206.49479096755385,
+        "p95": 223.41804206371307,
+        "p99": 253.84925003163517
+      },
+      "after_mean_ms": 211.8584643864068,
+      "after_max_ms": 1041.3115420378745,
+      "after_over_100ms_frames": 201,
+      "p50_reduction_percent": 13.011696979246857,
+      "comparison": {
+        "before_sha256": "895597b76c36f471d3f52fb9336865361810a1093de35a2ebba4e77509500ed0",
+        "after_sha256": "f4a1d16c95a339988af987bdcd42ef2c89eb59f38e1158b3f15f72e7322054fb",
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "largest_compared_float_difference": 7.265412230172963e-14
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frames": 201,
+      "before_processing_ms": {
+        "p50": 188.72733402531594,
+        "p95": 231.8805829854682,
+        "p99": 246.44524999894202
+      },
+      "after_processing_ms": {
+        "p50": 162.70154202356935,
+        "p95": 196.3804999832064,
+        "p99": 202.92791596148163
+      },
+      "after_mean_ms": 165.88280037443954,
+      "after_max_ms": 222.71837492007762,
+      "after_over_100ms_frames": 201,
+      "p50_reduction_percent": 13.790155059497366,
+      "comparison": {
+        "before_sha256": "5c5f1d42e297f69efc48fe5789c1883c181d15e4bd65390c57f54cb93d8c1074",
+        "after_sha256": "4632b3de24f43df9076c40809dd25687724c338eb7cc81d7d7a9a019e3ec8d71",
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "largest_compared_float_difference": 2.533528942194607e-13
+      }
+    }
+  ],
+  "paired_cached_scans": [
+    {
+      "bag": "doubleT_obstacle",
+      "report": "build/perf-100ms-paired-doubleT_obstacle/report.json",
+      "report_sha256": "e748b0e4d57b6f06947e2932ebba0d2f726374ac54bb5e6757a71da6d534c572",
+      "frames_per_run": 30,
+      "repetitions": 3,
+      "median_of_run_p50_ms": {
+        "before": 216.26743744127452,
+        "after": 182.59002052946016
+      },
+      "p50_reduction_percent": 15.572116315919803,
+      "runs": [
+        {
+          "repeat": 0,
+          "backend": "before",
+          "voxel_backend": "cpp",
+          "order": [
+            "before",
+            "after"
+          ],
+          "frames": 30,
+          "elapsed_s": 6.536509082885459,
+          "processing_ms": {
+            "p50": 215.39631293853745,
+            "p95": 236.6250019462313
+          }
+        },
+        {
+          "repeat": 0,
+          "backend": "after",
+          "voxel_backend": "cpp",
+          "order": [
+            "before",
+            "after"
+          ],
+          "frames": 30,
+          "elapsed_s": 5.520382915856317,
+          "processing_ms": {
+            "p50": 182.59002052946016,
+            "p95": 203.9847107138484
+          }
+        },
+        {
+          "repeat": 1,
+          "backend": "after",
+          "voxel_backend": "cpp",
+          "order": [
+            "after",
+            "before"
+          ],
+          "frames": 30,
+          "elapsed_s": 5.4792358302511275,
+          "processing_ms": {
+            "p50": 181.86631245771423,
+            "p95": 189.81169582693835
+          }
+        },
+        {
+          "repeat": 1,
+          "backend": "before",
+          "voxel_backend": "cpp",
+          "order": [
+            "after",
+            "before"
+          ],
+          "frames": 30,
+          "elapsed_s": 6.552997874096036,
+          "processing_ms": {
+            "p50": 217.65479148598388,
+            "p95": 236.06767673627468
+          }
+        },
+        {
+          "repeat": 2,
+          "backend": "before",
+          "voxel_backend": "cpp",
+          "order": [
+            "before",
+            "after"
+          ],
+          "frames": 30,
+          "elapsed_s": 6.527288330486044,
+          "processing_ms": {
+            "p50": 216.26743744127452,
+            "p95": 237.1219812659546
+          }
+        },
+        {
+          "repeat": 2,
+          "backend": "after",
+          "voxel_backend": "cpp",
+          "order": [
+            "before",
+            "after"
+          ],
+          "frames": 30,
+          "elapsed_s": 5.5264263327699155,
+          "processing_ms": {
+            "p50": 183.25118743814528,
+            "p95": 189.56152283935808
+          }
+        }
+      ],
+      "changed_frames_by_field": [
+        {},
+        {},
+        {}
+      ]
+    },
+    {
+      "bag": "roundT_doubleT",
+      "report": "build/perf-100ms-paired-roundT_doubleT/report.json",
+      "report_sha256": "504d1a39b9c14204cbeb8430a4b96b0dc7f40e72ee756f64ab94ea0d0d810e8c",
+      "frames_per_run": 30,
+      "repetitions": 3,
+      "median_of_run_p50_ms": {
+        "before": 180.1847499446012,
+        "after": 146.54116646852344
+      },
+      "p50_reduction_percent": 18.6717152735854,
+      "runs": [
+        {
+          "repeat": 0,
+          "backend": "before",
+          "voxel_backend": "cpp",
+          "order": [
+            "before",
+            "after"
+          ],
+          "frames": 30,
+          "elapsed_s": 5.500911080162041,
+          "processing_ms": {
+            "p50": 181.4827710040845,
+            "p95": 213.43530596932393
+          }
+        },
+        {
+          "repeat": 0,
+          "backend": "after",
+          "voxel_backend": "cpp",
+          "order": [
+            "before",
+            "after"
+          ],
+          "frames": 30,
+          "elapsed_s": 4.496766415191814,
+          "processing_ms": {
+            "p50": 146.54116646852344,
+            "p95": 172.28001861367375
+          }
+        },
+        {
+          "repeat": 1,
+          "backend": "after",
+          "voxel_backend": "cpp",
+          "order": [
+            "after",
+            "before"
+          ],
+          "frames": 30,
+          "elapsed_s": 4.530349125969224,
+          "processing_ms": {
+            "p50": 146.72439597779885,
+            "p95": 180.32080810517073
+          }
+        },
+        {
+          "repeat": 1,
+          "backend": "before",
+          "voxel_backend": "cpp",
+          "order": [
+            "after",
+            "before"
+          ],
+          "frames": 30,
+          "elapsed_s": 5.497113667195663,
+          "processing_ms": {
+            "p50": 179.53085398767143,
+            "p95": 205.06649343296885
+          }
+        },
+        {
+          "repeat": 2,
+          "backend": "before",
+          "voxel_backend": "cpp",
+          "order": [
+            "before",
+            "after"
+          ],
+          "frames": 30,
+          "elapsed_s": 5.531242331955582,
+          "processing_ms": {
+            "p50": 180.1847499446012,
+            "p95": 212.6165000081528
+          }
+        },
+        {
+          "repeat": 2,
+          "backend": "after",
+          "voxel_backend": "cpp",
+          "order": [
+            "before",
+            "after"
+          ],
+          "frames": 30,
+          "elapsed_s": 4.353555169771425,
+          "processing_ms": {
+            "p50": 141.15383347962052,
+            "p95": 169.60328585118987
+          }
+        }
+      ],
+      "changed_frames_by_field": [
+        {},
+        {},
+        {}
+      ]
+    }
+  ],
+  "limitations": [
+    "100 ms/frame was not achieved: all 402 final replay frames exceeded the budget.",
+    "This Apple M1 Pro is not the Apple M4 used in earlier repository timing reports.",
+    "Paired timings exclude decoding, serialization and display; replay processing includes reader contention.",
+    "First replay frame includes lazy library initialization; paired measurements load libraries before timing.",
+    "No threshold, coverage, refit cadence, return sampling or seed change.",
+    "Output agreement on development recordings does not establish field safety or accuracy.",
+    "Comparisons cover output support counts and witnesses, not a hash of every internal support array.",
+    "Floating comparisons use absolute and relative tolerance 1e-10; discrete decisions and IDs are exact.",
+    "No automated tests or synthetic experiments were created or run."
+  ],
+  "final_inclusive_profile_mean_ms_per_frame": {
+    "tunnel_guard.io.decode_cloud": 23.462580610066652,
+    "Detector._motion": 45.21776386536658,
+    "tunnel_guard.geometry.robust_plane": 5.713120851820956,
+    "TrackGeometry.classify": 7.099870860110968,
+    "tunnel_guard.accelerator.normal_statistics": 8.536294366543492,
+    "TunnelBackground.__init__": 64.74873342861731,
+    "TrackGeometry.__init__": 78.39619866960372,
+    "TunnelBackground.mask": 3.0186235594252744,
+    "tunnel_guard.accelerator.density_graph": 8.372211130335927,
+    "tunnel_guard.detector.density_labels": 19.878475065343082,
+    "tunnel_guard.detector.cluster_candidates": 34.63614310215538,
+    "Detector._associate": 13.448797271121293,
+    "Detector.process": 193.71277639099085
+  },
+  "profile_limitation": "Inclusive nested costs must not be summed. Serial reading, 30 obstacle scans; profiling overhead applies.",
+  "python_fallback": {
+    "frames": 3,
+    "report": "build/perf-100ms-python/report.json",
+    "changed_frames_by_field": {}
+  },
+  "rejected_thread_tuning": {
+    "note": "Same 30 real obstacle scans, query_workers=1; no improvement over production 8 threads.",
+    "processing_p50_ms": {
+      "1": 222.86699950927868,
+      "2": 211.34454204002395,
+      "4": 206.3794580171816,
+      "8": 201.13320800010115
+    }
+  },
+  "artifacts": {
+    "baseline": "build/perf-100ms-before",
+    "optimized": "build/perf-100ms-after",
+    "comparison": "build/perf-100ms-after/comparison.json",
+    "final_profile": "build/perf-100ms-profile-final",
+    "intermediate_and_failed_experiments": "build/perf-100ms-investigation"
+  }
+}

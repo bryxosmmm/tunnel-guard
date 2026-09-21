@@ -1,0 +1,241 @@
+{
+  "date": "2026-09-19",
+  "scope": "Response to the corridor and performance review of origin/experiments/gerasimov 5587685",
+  "review": {
+    "branch": "origin/experiments/morev",
+    "commit": "8eb332c",
+    "document": "docs/REVIEW_GERASIMOV_20260919.md",
+    "reviewed_revision": "5587685",
+    "response_document": "docs/REVIEW_RESPONSE_20260919.md"
+  },
+  "findings_and_outcomes": {
+    "P1_prefetch_off_returns_empty": {
+      "verdict": "confirmed in code and reproduced by the reviewer",
+      "cause": "prefetch is a generator; `return iter(iterable)` yielded nothing, so prefetch_depth 0 raised 'No scans processed'",
+      "fix": "tunnel_guard/io.py: yield from iterable, and one stop-aware publish helper for item, exception and end marker",
+      "evidence": {
+        "before": "exit code 1, ValueError: No scans processed",
+        "after": "30 frames processed with prefetch_depth 0; statuses identical to prefetch_depth 1: {candidate: 1, unresolved_obstacle: 29}",
+        "artifact": "build/perf-prefetch-{off,on}-fixed/"
+      }
+    },
+    "P1_corridor_crop_reclipped": {
+      "verdict": "confirmed as a latent defect, fixed, measured as inactive on the current data",
+      "cause": "mask keeps |y - offset(x)| < base + |offset(x)|; the kernel re-applies the symmetric |y| < base + max|offset|",
+      "fix": "tunnel_guard/detector.py: the kernel's limit is read off the masked subset (largest |y| plus one voxel), so it cannot drop a point the mask kept",
+      "evidence": {
+        "geometry_points_per_frame": "identical on both recordings and on the arc panel: 0 frames differ (median 43268 roundT_doubleT, 72611 doubleT_obstacle)",
+        "why_it_did_not_bite": "the corridor's offset grows monotonically along the frame here, so base + max|offset| was always the looser bound; the defect would bite on a frame whose corridor bends back toward the axis or whose far extent is small"
+      }
+    },
+    "P1_continuation_covariance_incomplete": {
+      "verdict": "confirmed; missing 2 d^3 Cov(a,b)",
+      "cause": "only the two diagonal terms of the prediction variance were propagated; the one-sided fit has s12 < 0, so the omitted cross term is positive and grows fastest with distance",
+      "fix": "geometry.py::_continuation returns the covariance and path() carries the full quadratic form; cpp/kernels.cpp mirrors it with the same summation order and clamps at zero",
+      "evidence": {
+        "backend_equivalence": "20/20 geometry arrays identical, 24/24 kernel checks passed",
+        "decision_effect": "one object on doubleT_obstacle moves adjacent -> unresolved (10861 -> 10860 adjacent, 3230 -> 3231 unresolved); roundT_doubleT unchanged; statuses unchanged on both",
+        "artifact": "build/perf-review-after/ against a worktree of 5587685"
+      },
+      "stated_limits": "overlapping windows, edge-anchor error and model error remain outside this bound, so it is not called calibrated; measured coverage of the propagated sigma is 0.11-0.29 at 50-150 m, which is why the horizon uses the heuristic term"
+    },
+    "P2_arc_panel_side_case_moved_size": {
+      "verdict": "confirmed",
+      "cause": "object_on_arc added lateral_m to a half-extent, so the box grew while its centre stayed on the arc",
+      "fix": "the centre is translated along the local normal and the box keeps its dimensions",
+      "evidence": {
+        "corrected_panel": {
+          "cases": 24,
+          "scene": "R = 300 m arc, 0.8 x 0.8 x 1.0 m object at 40/60/100/150 m, lateral 0.0 and 0.6 m, three frames each",
+          "old_straight_continuation_old_crop": {
+            "candidate": 9,
+            "confirmed_intersecting": 5,
+            "one_to_one_tp": 3,
+            "unmatched": 502
+          },
+          "corridor_crop_only": {
+            "candidate": 9,
+            "confirmed_intersecting": 5,
+            "one_to_one_tp": 3,
+            "unmatched": 486
+          },
+          "curvature_only": {
+            "candidate": 12,
+            "confirmed_intersecting": 6,
+            "one_to_one_tp": 6,
+            "unmatched": 74
+          },
+          "shipped": {
+            "candidate": 14,
+            "confirmed_intersecting": 6,
+            "one_to_one_tp": 6,
+            "unmatched": 74
+          },
+          "artifact": "build/arc2-{old,crop,curve,shipped}/metrics.json"
+        },
+        "superseded": "the earlier 12 -> 16 of 24 'object reported' figure came from the mis-placed panel and a candidate-level metric"
+      }
+    },
+    "P2_metric_labels": {
+      "verdict": "confirmed",
+      "fix": "object_reported relabelled as candidate presence; object_confirmed_intersecting added (the operator-facing decision); union_coverage relabelled as a box-grid measure, not support points"
+    },
+    "P2_reader_shutdown_race": {
+      "verdict": "confirmed by reading",
+      "fix": "all puts route through the stop-aware publish helper, so a full queue with a closed consumer can no longer park the producer"
+    },
+    "accepted_criticisms_not_yet_actioned": {
+      "estimator_failure_is_not_impossibility": "accepted; the far-field section now reads as six strategies that failed here, and names a learned section-conditioned bore offset (teammate's branch: 0.026 m median at 25-40 m, grouped by recording, not wired in) and a prior-pass or survey alignment as avenues this work did not exhaust",
+      "horizontal_only": "these changes are lateral geometry; the rail-head height bias the reviewer found and a full local_3d check remain unaddressed here",
+      "no_universal_speedup": "the reviewer's 90-frame runs show this branch slower in median processing on all three recordings and better in wall time per frame on two; consistent with my own numbers, and 10 Hz is not reached",
+      "curvature_unvalidated_on_real_turns": "resolved: measured on the extended recording, see curvature_on_real_turns"
+    }
+  },
+  "trade_offs_stated": [
+    "the covariance fix enlarges the corridor's uncertainty, which moves objects to the conservative side (measured: one object on one recording)",
+    "the panel's candidate metric is not a hazard metric; the confirmed column is reported alongside it",
+    "limiting the kernel by the masked subset makes the voxel grid as wide as the data rather than a fixed base + max|offset|; no extra allocation, and no point loss",
+    "no latency claim is made for the prefetch fix: the reader on/off comparison is now runnable but was not run under controlled conditions"
+  ],
+  "not_verified": [
+    "the crop fix's effect on a frame whose corridor bends back toward the axis (latent case, not present in the current recordings)",
+    "any precision or recall claim on real data: there is no exhaustive annotation of the panels or the recordings",
+    "the deep look-aheads on real curves are thin (83 pairs at 20 m, 4 at 30 m); extending them needs subsets with more travel, not a new method"
+  ],
+  "regression_verification": {
+    "measured_pattern_panel_1460_frames": {
+      "tp": 709,
+      "fn": 251,
+      "fp_exhaustive_only": 176,
+      "precision_exhaustive_only": 0.8011299435028248,
+      "event_recall": 0.8020833333333334,
+      "matched_mean_3d_iou": 0.8223217046829834,
+      "distance_mae_m": 0.001113788444493176,
+      "negative_episode_rate": 0.0,
+      "verdict": "byte-identical to the pre-fix baseline on every metric; wall time 415 -> 430 s is load",
+      "artifact": "build/stress-measured-pattern-review-fix/metrics.json"
+    },
+    "panel_declared_criterion": {
+      "event_recall_min": 0.95,
+      "measured": 0.8021,
+      "passed": false,
+      "note": "not met before these fixes either; reported as the standing gap, not as a regression"
+    },
+    "backend_equivalence": {
+      "geometry_arrays": "20/20 identical",
+      "kernel_checks": "24/24 passed"
+    },
+    "recordings_60_frames_each": {
+      "roundT_doubleT": {
+        "statuses": "identical",
+        "relations": "identical"
+      },
+      "doubleT_obstacle": {
+        "statuses": "identical",
+        "relations": "one object adjacent -> unresolved (10861 -> 10860 adjacent, 3230 -> 3231 unresolved)"
+      }
+    },
+    "prefetch_off_vs_on_30_frames": {
+      "statuses": "identical ({candidate: 1, unresolved_obstacle: 29})",
+      "note": "depth 0 exited 1 with 'No scans processed' before the fix"
+    },
+    "arc_panel_24_cases": {
+      "candidate": "9 -> 14",
+      "confirmed_intersecting": "5 -> 6",
+      "one_to_one_tp": "3 -> 6",
+      "unmatched": "502 -> 74"
+    }
+  },
+  "curvature_on_real_turns": {
+    "why": "the review's outstanding item: the fitted continuation was validated where the track is nearly straight, and six failed estimators on the old corpus are not evidence about curved track",
+    "recording": "data/new_data, the extended 20-minute run (11271 scans), sampled as 25 subsets of two consecutive splits each (102 frames), indices 0,9,...,216, chosen spread across the run",
+    "method": "tunnel_guard.curve_audit: keep frames whose own anchor chain is curved, take a look-ahead point on each model's centre-line 5/10/20/30 m past the anchor end, carry it into a later frame that has driven over the same ground, and compare with the rails that frame measures there. The reference is the sensor's own later measurement; nothing is hand-annotated. Candidates are chosen by travel (>= 8 m between frames), not by index adjacency, because the vehicle crawls.",
+    "frame_population": {
+      "frames": 2546,
+      "curved_radius_le_800m": 541,
+      "radius_quartiles_m": {
+        "p25": 1123,
+        "median": 5015,
+        "p75": 25006,
+        "min": 138
+      }
+    },
+    "median_abs_error_m": {
+      "5m_past_anchor_end": {
+        "pairs": 514,
+        "curvature_model": 0.044,
+        "tangent_model": 0.074,
+        "ratio": 1.7
+      },
+      "10m": {
+        "pairs": 352,
+        "curvature_model": 0.09,
+        "tangent_model": 0.198,
+        "ratio": 2.2
+      },
+      "20m": {
+        "pairs": 83,
+        "curvature_model": 0.247,
+        "tangent_model": 0.664,
+        "ratio": 2.7
+      },
+      "30m": {
+        "pairs": 4,
+        "curvature_model": 0.45,
+        "tangent_model": 1.302,
+        "ratio": 2.9
+      }
+    },
+    "verdict": "the curvature continuation is closer to what a later frame measures, at every look-ahead tested, on real curved track for the first time including radii down to 138 m; the gain grows with distance, which is the curvature signature rather than a slope-only improvement",
+    "caveats": [
+      "the deep look-aheads are thin: 83 pairs at 20 m and 4 at 30 m, because 30 m past the anchor end needs about 38 m of advance and a subset carries at most ~33 m of travel",
+      "both models are compared at the same point on the same pairs, but the reference frame's own rail estimate carries error that is common to both and is not separated here",
+      "the vehicle crawls in these stretches (net travel 2-33 m per 102-frame subset) and some subsets barely move; the pairs come from the stretches that travel",
+      "this is a continuation-accuracy measurement, not a detection metric: no recall or precision claim follows from it",
+      "pair counts are not independent samples; the deep rows rest on three or four stretches"
+    ],
+    "reproduces": "uv run python -m tunnel_guard.extended_subset --bag data/new_data --indices 0 9 ... --group 2 --out data/extended_pairs && uv run python -m tunnel_guard.run --experiment <25 pairs> && uv run python -m tunnel_guard.curve_audit --run build/extended-pairs-run --bags data/extended_pairs --lookahead 5 10 20 30 --min-travel-m 8",
+    "travel": {
+      "total_per_subset_m": {
+        "median": 6.6,
+        "min": 0.0,
+        "max": 61.2
+      },
+      "reading": "about half the sampled stretches are essentially stationary (0.0-2.3 m over 102 frames) and the moving ones advance 5-61 m, so the pairs come from those; a 30 m look-ahead past the anchor end needs about 38 m of advance and only the largest-travel subsets can supply it, which is why that row has four pairs",
+      "independence": "the pair counts are NOT independent places: consecutive frames of one stretch are correlated, so 514 pairs at 5 m rest on roughly a dozen moving stretches, and the 20 m and 30 m rows on three or four. Repeated frames of one place are not independent events."
+    }
+  },
+  "reader_on_off_comparison": {
+    "why": "the review's second recommendation: compare reader on/off on identical geometry, which the prefetch fix makes possible for the first time",
+    "setup": "doubleT_obstacle, 60 frames, identical detector recipe and frames, three repetitions per mode, via the documented `prefetch_depth` key",
+    "wall_ms_per_frame": {
+      "depth0": [
+        213.2,
+        180.9,
+        177.7
+      ],
+      "depth1": [
+        169.1,
+        165.7,
+        164.9
+      ],
+      "medians": {
+        "depth0": 180.9,
+        "depth1": 165.7
+      },
+      "median_gain_ms": 15.2,
+      "median_gain_percent": 8.4
+    },
+    "processing_p50_ms": {
+      "depth0": 131.3,
+      "depth1": 135.2
+    },
+    "reading": [
+      "reading ahead buys about 8% of wall time per frame (median) and, at least as usefully, removes the variance: the inline repeats spread 213-178 ms while the prefetch repeats sit at 169-165 ms",
+      "the detector's own p50 is unchanged within noise (131.3 vs 135.2 ms); the reader thread competes for a core, which is where the small increase plausibly comes from",
+      "neither mode reaches 10 Hz: 166-181 ms per frame is 5.5-6.0 Hz on this machine while it is shared",
+      "absolute latencies here are not comparable with other sessions' numbers; only the on/off contrast within this run is controlled"
+    ],
+    "decisions": "identical: statuses and objects match between the modes, verified separately on 30 frames"
+  }
+}

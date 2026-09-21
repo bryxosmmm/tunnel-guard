@@ -1,0 +1,2813 @@
+{
+  "baseline_commit": "36de7b4",
+  "selected_policy": {
+    "rail_center_estimator": "paired_line",
+    "rail_anchor_support": "measured"
+  },
+  "comparison": {
+    "panel": "configs/rail-measured-panel.json",
+    "panel_sha256": "f907d38c7c6e15272c83202382835b67e763888255fc9c8e6a2ddf4cd8ad0af1",
+    "accuracy": null,
+    "limitations": [
+      "Alarm counts on nonexhaustively labelled development recordings are not precision, recall or false-alarm rate.",
+      "Repeated frames and candidates are not independent object events.",
+      "Timing is descriptive; concurrent workloads and visualization settings differ.",
+      "Float comparison uses absolute and relative tolerance 1e-10; discrete decisions and IDs are exact."
+    ],
+    "bags": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/mounting-real/doubleT_obstacle.jsonl",
+        "after": "build/rail-measured-real/doubleT_obstacle.jsonl",
+        "before_sha256": "85a6b9e9357c0ee7061ea6bdaa06ed287a8b607c0d7b979f9cc895c511daa901",
+        "after_sha256": "0324e4a84c1c89aeef98ab36b1539bb1d3f7f368d7dbed16f8080ae04489626a",
+        "before_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 82,
+            "obstacle": 119
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44603,
+          "support_voxel_observations": 3856178,
+          "confirmed_intersection_observations": 203,
+          "candidate_observations_at_least_60m": 10665,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 149.43370898254216,
+            "p95": 188.60391702037305,
+            "p99": 268.8924999674782
+          }
+        },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 43,
+            "obstacle": 158
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 48599,
+          "support_voxel_observations": 3899446,
+          "confirmed_intersection_observations": 176,
+          "candidate_observations_at_least_60m": 13092,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 150.6385839311406,
+            "p95": 185.11612503789365,
+            "p99": 223.94362499471754
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "nearest_obstacle_m": 1,
+          "objects": 201,
+          "geometry": 201,
+          "range_observability": 149,
+          "status": 61
+        },
+        "first_changed_frames": {
+          "status": [
+            3,
+            4,
+            7,
+            8,
+            14,
+            32,
+            36,
+            51,
+            59,
+            60,
+            75,
+            76,
+            86,
+            87,
+            88,
+            89,
+            91,
+            92,
+            94,
+            97,
+            108,
+            109,
+            111,
+            113,
+            116,
+            118,
+            122,
+            123,
+            125,
+            127
+          ],
+          "nearest_obstacle_m": [
+            0
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            2,
+            3,
+            4,
+            6,
+            7,
+            8,
+            9,
+            10,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            23,
+            24,
+            27,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            42
+          ]
+        },
+        "largest_compared_float_difference": 11.675186157226562
+      },
+      {
+        "bag": "doubleT_platform",
+        "before": "build/mounting-real/doubleT_platform.jsonl",
+        "after": "build/rail-measured-real/doubleT_platform.jsonl",
+        "before_sha256": "d2c35e3a0ca8ba6dededbc0ac0f3a20a9cd26ed22c25b5c1d01f1d75525ea0eb",
+        "after_sha256": "4988d080bc6fe501e5d8c430ad2eac5972bd1abb4d53121d8f7e9d643bfae117",
+        "before_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68321,
+          "support_voxel_observations": 4237359,
+          "confirmed_intersection_observations": 255,
+          "candidate_observations_at_least_60m": 22191,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 116.20791698805988,
+            "p95": 160.9232333838009,
+            "p99": 196.41454848228025
+          }
+        },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 279,
+            "obstacle": 66
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68087,
+          "support_voxel_observations": 4236136,
+          "confirmed_intersection_observations": 231,
+          "candidate_observations_at_least_60m": 21893,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 122.47545795980841,
+            "p95": 173.17715038079768,
+            "p99": 256.48518352769327
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 345,
+          "geometry": 345,
+          "nearest_obstacle_m": 71,
+          "range_observability": 203,
+          "status": 81
+        },
+        "first_changed_frames": {
+          "status": [
+            98,
+            200,
+            201,
+            202,
+            203,
+            204,
+            208,
+            209,
+            211,
+            212,
+            216,
+            217,
+            219,
+            221,
+            222,
+            223,
+            224,
+            225,
+            226,
+            227,
+            229,
+            230,
+            235,
+            236,
+            237,
+            238,
+            245,
+            246,
+            249,
+            250
+          ],
+          "nearest_obstacle_m": [
+            1,
+            21,
+            25,
+            27,
+            28,
+            29,
+            33,
+            34,
+            36,
+            46,
+            47,
+            52,
+            55,
+            66,
+            69,
+            76,
+            78,
+            89,
+            90,
+            92,
+            105,
+            107,
+            112,
+            123,
+            140,
+            156,
+            177,
+            182,
+            191,
+            192
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            2,
+            3,
+            6,
+            8,
+            9,
+            10,
+            12,
+            13,
+            15,
+            18,
+            19,
+            20,
+            21,
+            25,
+            26,
+            29,
+            30,
+            31,
+            33,
+            34,
+            35,
+            36,
+            38,
+            40,
+            41,
+            43,
+            44,
+            46,
+            49,
+            53
+          ]
+        },
+        "largest_compared_float_difference": 5.356134414672852
+      },
+      {
+        "bag": "roundT_doubleT",
+        "before": "build/mounting-real/roundT_doubleT.jsonl",
+        "after": "build/rail-measured-real/roundT_doubleT.jsonl",
+        "before_sha256": "3a07e0c452224415b116200676163f2a535e014e33225d8cec8f82d89ed33b34",
+        "after_sha256": "d2b7a498899f00a34e27d0400c0e20be93012ce291ad06b3e0c9f0d98a9a6580",
+        "before_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 187,
+            "obstacle": 64
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48953,
+          "support_voxel_observations": 4039823,
+          "confirmed_intersection_observations": 191,
+          "candidate_observations_at_least_60m": 11435,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 137.15779199264944,
+            "p95": 223.40414389327634,
+            "p99": 319.45820314576866
+          }
+        },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 207,
+            "obstacle": 44
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48175,
+          "support_voxel_observations": 4071997,
+          "confirmed_intersection_observations": 82,
+          "candidate_observations_at_least_60m": 10943,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 138.0001869983971,
+            "p95": 201.51727534830562,
+            "p99": 269.8422720108648
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 252,
+          "geometry": 252,
+          "range_observability": 157,
+          "nearest_obstacle_m": 44,
+          "status": 64
+        },
+        "first_changed_frames": {
+          "status": [
+            78,
+            79,
+            80,
+            82,
+            85,
+            87,
+            88,
+            89,
+            90,
+            92,
+            93,
+            94,
+            95,
+            96,
+            99,
+            103,
+            106,
+            110,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120,
+            123,
+            124,
+            126,
+            130
+          ],
+          "nearest_obstacle_m": [
+            68,
+            85,
+            95,
+            97,
+            101,
+            106,
+            109,
+            110,
+            112,
+            118,
+            119,
+            120,
+            124,
+            125,
+            126,
+            127,
+            129,
+            134,
+            135,
+            136,
+            137,
+            153,
+            154,
+            156,
+            158,
+            159,
+            161,
+            166,
+            169,
+            170
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            1,
+            2,
+            3,
+            7,
+            8,
+            10,
+            13,
+            14,
+            17,
+            20,
+            21,
+            22,
+            24,
+            26,
+            29,
+            30,
+            31,
+            33,
+            34,
+            39,
+            40,
+            42,
+            44,
+            45,
+            55,
+            60,
+            65,
+            67,
+            69
+          ]
+        },
+        "largest_compared_float_difference": 17.232097148895264
+      }
+    ]
+  },
+  "spatial_evaluation": {
+    "records": [
+      {
+        "source": "build/integrated-native-real/diagnostics/doubleT_obstacle_000000.npz",
+        "source_sha256": "e936dee3a24a8069128bf20c4ad1c2112e160fc45c08c3c9513774a6841d886b",
+        "valid": true,
+        "fit_points": 35877,
+        "withheld_points": 36770,
+        "shared_evaluation_points": 129,
+        "before": {
+          "median_m": 0.1058633279800415,
+          "p90_m": 0.3649574750661849,
+          "within_half_width": 51
+        },
+        "after": {
+          "median_m": 0.02502498533995301,
+          "p90_m": 0.0701194727640008,
+          "within_half_width": 113
+        }
+      },
+      {
+        "source": "build/integrated-native-real/diagnostics/doubleT_obstacle_000100.npz",
+        "source_sha256": "4f42fa2bd093657019c38962ca23bbb8e3c3c0aa75ee801f444d88b889246f94",
+        "valid": true,
+        "fit_points": 35840,
+        "withheld_points": 36693,
+        "shared_evaluation_points": 128,
+        "before": {
+          "median_m": 0.05549139499664313,
+          "p90_m": 0.12410267839431759,
+          "within_half_width": 77
+        },
+        "after": {
+          "median_m": 0.026552507623248622,
+          "p90_m": 0.06200502922966193,
+          "within_half_width": 116
+        }
+      },
+      {
+        "source": "build/integrated-native-real/diagnostics/doubleT_obstacle_000200.npz",
+        "source_sha256": "29a32a0de6eca66409c03aeb25f79e2d92049055cc31fafdfe8e407c0948a3fd",
+        "valid": true,
+        "fit_points": 35755,
+        "withheld_points": 36639,
+        "shared_evaluation_points": 129,
+        "before": {
+          "median_m": 0.049910087585449237,
+          "p90_m": 0.12049797773361215,
+          "within_half_width": 82
+        },
+        "after": {
+          "median_m": 0.023180859746824933,
+          "p90_m": 0.063204561583838,
+          "within_half_width": 116
+        }
+      },
+      {
+        "source": "build/integrated-native-real/diagnostics/doubleT_platform_000000.npz",
+        "source_sha256": "88a7e148d8b3e5b308b6846ea4f4c5e19da47ddd72bcc7fd0c6e81c0c895d4f5",
+        "valid": true,
+        "fit_points": 26791,
+        "withheld_points": 26323,
+        "shared_evaluation_points": 168,
+        "before": {
+          "median_m": 0.01984338307380673,
+          "p90_m": 0.04695266737937938,
+          "within_half_width": 162
+        },
+        "after": {
+          "median_m": 0.017365832800491032,
+          "p90_m": 0.05063358392052733,
+          "within_half_width": 162
+        }
+      },
+      {
+        "source": "build/integrated-native-real/diagnostics/doubleT_platform_000100.npz",
+        "source_sha256": "b5a05a2d79ade33f9d840ebd0705886156c58692799f59b534c8f37bfd32a7f4",
+        "valid": true,
+        "fit_points": 19053,
+        "withheld_points": 18038,
+        "shared_evaluation_points": 162,
+        "before": {
+          "median_m": 0.02365592122077942,
+          "p90_m": 0.055858362054824855,
+          "within_half_width": 153
+        },
+        "after": {
+          "median_m": 0.019417245988239462,
+          "p90_m": 0.05383062040667572,
+          "within_half_width": 155
+        }
+      },
+      {
+        "source": "build/integrated-native-real/diagnostics/doubleT_platform_000200.npz",
+        "source_sha256": "25d9370ff4f7d362a7d898c4060da9374e3dc9eebc3b152f07c27ccbbc4d06b8",
+        "valid": true,
+        "fit_points": 18651,
+        "withheld_points": 20052,
+        "shared_evaluation_points": 168,
+        "before": {
+          "median_m": 0.02372822928428653,
+          "p90_m": 0.05363279905319209,
+          "within_half_width": 164
+        },
+        "after": {
+          "median_m": 0.020256266435933146,
+          "p90_m": 0.04319600660711772,
+          "within_half_width": 165
+        }
+      },
+      {
+        "source": "build/integrated-native-real/diagnostics/roundT_doubleT_000000.npz",
+        "source_sha256": "ca4f8154ff654816a7d27a016008ed665f78d7acad23195c9500a3addbf6570e",
+        "valid": true,
+        "fit_points": 21271,
+        "withheld_points": 21808,
+        "shared_evaluation_points": 204,
+        "before": {
+          "median_m": 0.028516803383827227,
+          "p90_m": 0.06900856370925906,
+          "within_half_width": 181
+        },
+        "after": {
+          "median_m": 0.016918539210911243,
+          "p90_m": 0.05172340930480932,
+          "within_half_width": 192
+        }
+      },
+      {
+        "source": "build/integrated-native-real/diagnostics/roundT_doubleT_000100.npz",
+        "source_sha256": "f4874b37d99a5eb3fa3c1416fc0cbd029a470315d77b8a8dec9fd8ad8011ea2e",
+        "valid": true,
+        "fit_points": 23101,
+        "withheld_points": 22817,
+        "shared_evaluation_points": 215,
+        "before": {
+          "median_m": 0.030839832305908255,
+          "p90_m": 0.07476890568733205,
+          "within_half_width": 182
+        },
+        "after": {
+          "median_m": 0.03124093371291692,
+          "p90_m": 0.07245365227144934,
+          "within_half_width": 179
+        }
+      },
+      {
+        "source": "build/integrated-native-real/diagnostics/roundT_doubleT_000200.npz",
+        "source_sha256": "3460b6de0bd70b7f3905fc9475e88069afc6bdfa900195c8ce89d8df0d87effc",
+        "valid": true,
+        "fit_points": 29420,
+        "withheld_points": 29549,
+        "shared_evaluation_points": 153,
+        "before": {
+          "median_m": 0.11215728759765631,
+          "p90_m": 0.2546923751831055,
+          "within_half_width": 58
+        },
+        "after": {
+          "median_m": 0.060284435586704266,
+          "p90_m": 0.11387925029395467,
+          "within_half_width": 80
+        }
+      }
+    ],
+    "limitations": [
+      "Real spatially withheld returns, not independent surveyed rail labels.",
+      "Shared selection uses both fitted paths and baseline bed; measures geometric fit only.",
+      "Existing recordings are development data; no precision or collision-safety claim."
+    ]
+  },
+  "retention": [
+    {
+      "bag": "doubleT_obstacle",
+      "frames": 201,
+      "geometry_valid_frames": 201,
+      "anchors": 1563,
+      "unbracketed_anchors": 0,
+      "relocated_anchors": 54,
+      "far_baseline_observations": 10665,
+      "far_matched_iou_at_least_half": 7700,
+      "far_unmatched_count": 2965,
+      "far_unmatched_examples": [
+        {
+          "frame": 0,
+          "bbox_min": [
+            61.54379653930664,
+            -3.4548065662384033,
+            -2.515608549118042
+          ],
+          "bbox_max": [
+            61.575767517089844,
+            -3.1505191326141357,
+            -2.1337802410125732
+          ],
+          "support_voxels": 4,
+          "best_iou": 0.0013930236981745394
+        },
+        {
+          "frame": 0,
+          "bbox_min": [
+            61.88612747192383,
+            0.4061043858528137,
+            0.8872628211975098
+          ],
+          "bbox_max": [
+            62.0698356628418,
+            0.44095373153686523,
+            1.4356950521469116
+          ],
+          "support_voxels": 4,
+          "best_iou": 0.1041724408819372
+        },
+        {
+          "frame": 0,
+          "bbox_min": [
+            63.9736328125,
+            -0.12219443917274475,
+            1.352319598197937
+          ],
+          "bbox_max": [
+            64.21754455566406,
+            0.10158001631498337,
+            1.3574762344360352
+          ],
+          "support_voxels": 3,
+          "best_iou": 0.0
+        },
+        {
+          "frame": 0,
+          "bbox_min": [
+            81.85689544677734,
+            -3.168003559112549,
+            1.173713207244873
+          ],
+          "bbox_max": [
+            81.87972259521484,
+            -2.881359100341797,
+            1.1741143465042114
+          ],
+          "support_voxels": 3,
+          "best_iou": 0.0
+        },
+        {
+          "frame": 0,
+          "bbox_min": [
+            85.40467834472656,
+            -3.1181790828704834,
+            1.0470361709594727
+          ],
+          "bbox_max": [
+            85.40999603271484,
+            -2.8197784423828125,
+            1.0471341609954834
+          ],
+          "support_voxels": 3,
+          "best_iou": 0.0
+        }
+      ]
+    },
+    {
+      "bag": "doubleT_platform",
+      "frames": 345,
+      "geometry_valid_frames": 345,
+      "anchors": 2652,
+      "unbracketed_anchors": 0,
+      "relocated_anchors": 129,
+      "far_baseline_observations": 22191,
+      "far_matched_iou_at_least_half": 12797,
+      "far_unmatched_count": 9394,
+      "far_unmatched_examples": [
+        {
+          "frame": 0,
+          "bbox_min": [
+            117.44798278808594,
+            -3.7188820838928223,
+            -0.6229002475738525
+          ],
+          "bbox_max": [
+            117.81092071533203,
+            -3.3996834754943848,
+            0.8972565531730652
+          ],
+          "support_voxels": 10,
+          "best_iou": 0.0
+        },
+        {
+          "frame": 0,
+          "bbox_min": [
+            136.75543212890625,
+            -4.08131217956543,
+            -0.4561501443386078
+          ],
+          "bbox_max": [
+            136.8657684326172,
+            -3.775195360183716,
+            1.0437536239624023
+          ],
+          "support_voxels": 8,
+          "best_iou": 0.0
+        },
+        {
+          "frame": 0,
+          "bbox_min": [
+            151.15573120117188,
+            -4.204392910003662,
+            -0.12147372215986252
+          ],
+          "bbox_max": [
+            151.33604431152344,
+            -3.909780502319336,
+            0.8533948063850403
+          ],
+          "support_voxels": 7,
+          "best_iou": 0.0
+        },
+        {
+          "frame": 1,
+          "bbox_min": [
+            66.59003448486328,
+            1.4924243688583374,
+            -0.35220831632614136
+          ],
+          "bbox_max": [
+            66.7953109741211,
+            1.5065062046051025,
+            -0.05361277982592583
+          ],
+          "support_voxels": 2,
+          "best_iou": 0.0
+        },
+        {
+          "frame": 1,
+          "bbox_min": [
+            70.28668975830078,
+            0.967494785785675,
+            -1.3041404485702515
+          ],
+          "bbox_max": [
+            70.34526824951172,
+            1.0071889162063599,
+            -1.19136643409729
+          ],
+          "support_voxels": 2,
+          "best_iou": 0.0
+        }
+      ]
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frames": 252,
+      "geometry_valid_frames": 252,
+      "anchors": 1878,
+      "unbracketed_anchors": 0,
+      "relocated_anchors": 209,
+      "far_baseline_observations": 11435,
+      "far_matched_iou_at_least_half": 7974,
+      "far_unmatched_count": 3461,
+      "far_unmatched_examples": [
+        {
+          "frame": 0,
+          "bbox_min": [
+            60.23630905151367,
+            -1.00640070438385,
+            0.2134123146533966
+          ],
+          "bbox_max": [
+            60.41196823120117,
+            -0.9268172383308411,
+            1.0039891004562378
+          ],
+          "support_voxels": 4,
+          "best_iou": 0.28474145061197653
+        },
+        {
+          "frame": 0,
+          "bbox_min": [
+            65.20303344726562,
+            -0.8051392436027527,
+            0.49733349680900574
+          ],
+          "bbox_max": [
+            65.34033966064453,
+            -0.6327698826789856,
+            0.9363800883293152
+          ],
+          "support_voxels": 3,
+          "best_iou": 0.33011834900446685
+        },
+        {
+          "frame": 0,
+          "bbox_min": [
+            66.28268432617188,
+            -0.7885820865631104,
+            0.8128803372383118
+          ],
+          "bbox_max": [
+            66.3694839477539,
+            -0.5773103833198547,
+            1.4015194177627563
+          ],
+          "support_voxels": 5,
+          "best_iou": 0.29822460741824985
+        },
+        {
+          "frame": 0,
+          "bbox_min": [
+            87.82743072509766,
+            1.040908694267273,
+            -0.6516488194465637
+          ],
+          "bbox_max": [
+            87.8494644165039,
+            1.1945210695266724,
+            -0.6514708399772644
+          ],
+          "support_voxels": 2,
+          "best_iou": 0.0
+        },
+        {
+          "frame": 0,
+          "bbox_min": [
+            95.54023742675781,
+            1.4946386814117432,
+            -0.5054057836532593
+          ],
+          "bbox_max": [
+            95.56698608398438,
+            1.6610151529312134,
+            -0.5052789449691772
+          ],
+          "support_voxels": 2,
+          "best_iou": 0.0
+        }
+      ]
+    }
+  ],
+  "return_counts": [
+    {
+      "bag": "doubleT_obstacle",
+      "changed_return_count_frames": []
+    },
+    {
+      "bag": "doubleT_platform",
+      "changed_return_count_frames": []
+    },
+    {
+      "bag": "roundT_doubleT",
+      "changed_return_count_frames": []
+    }
+  ],
+  "provisional_before": {
+    "label_status": "provisional_geometry",
+    "prediction_scope": "near_track_objects",
+    "annotation_origins": {
+      "unspecified": 5
+    },
+    "box_semantics": "unspecified",
+    "minimum_3d_iou": 0.25,
+    "evaluated_frames": 5,
+    "missing_frames": [],
+    "exhaustive_frames": 0,
+    "tp": 5,
+    "fn": 0,
+    "fp_exhaustive_only": 0,
+    "annotated_object_recall": 1.0,
+    "precision_exhaustive_only": null,
+    "recall_exhaustive_only": null,
+    "f1_exhaustive_only": null,
+    "event_recall": 1.0,
+    "distance_mae_m": 0.2011451721191392,
+    "matched_mean_3d_iou": 0.2825417566727763,
+    "validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+      "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+    ],
+    "events": {
+      "doubleT_obstacle:upright_structure_17m": {
+        "annotated_frames": 5,
+        "matched_frames": 5,
+        "first_detection_distance_m": 16.6
+      }
+    },
+    "frames": [
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 0,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": [
+          [
+            1,
+            0,
+            0.28562566672680045
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 50,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            38,
+            0,
+            0.28862976328801504
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 100,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            42,
+            0,
+            0.2794295268179076
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 150,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": [
+          [
+            39,
+            0,
+            0.2748436027603294
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 200,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": [
+          [
+            33,
+            0,
+            0.28418022377082913
+          ]
+        ]
+      }
+    ],
+    "annotations_sha256": "8dfe58e0e2723fec56298cd656a99adff992edace2a5ea965eeacd125b7fd8c6",
+    "run": "build/mounting-real"
+  },
+  "provisional_after": {
+    "label_status": "provisional_geometry",
+    "prediction_scope": "near_track_objects",
+    "annotation_origins": {
+      "unspecified": 5
+    },
+    "box_semantics": "unspecified",
+    "minimum_3d_iou": 0.25,
+    "evaluated_frames": 5,
+    "missing_frames": [],
+    "exhaustive_frames": 0,
+    "tp": 5,
+    "fn": 0,
+    "fp_exhaustive_only": 0,
+    "annotated_object_recall": 1.0,
+    "precision_exhaustive_only": null,
+    "recall_exhaustive_only": null,
+    "f1_exhaustive_only": null,
+    "event_recall": 1.0,
+    "distance_mae_m": 0.2011451721191392,
+    "matched_mean_3d_iou": 0.28379836983756557,
+    "validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+      "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+    ],
+    "events": {
+      "doubleT_obstacle:upright_structure_17m": {
+        "annotated_frames": 5,
+        "matched_frames": 5,
+        "first_detection_distance_m": 16.6
+      }
+    },
+    "frames": [
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 0,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": [
+          [
+            1,
+            0,
+            0.28562566672680045
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 50,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            37,
+            0,
+            0.28363331532339287
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 100,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            37,
+            0,
+            0.28438926488241534
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 150,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            33,
+            0,
+            0.2732935018736256
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 200,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": [
+          [
+            40,
+            0,
+            0.2920501003815936
+          ]
+        ]
+      }
+    ],
+    "annotations_sha256": "8dfe58e0e2723fec56298cd656a99adff992edace2a5ea965eeacd125b7fd8c6",
+    "run": "build/rail-measured-real"
+  },
+  "rviz_export": [
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 0,
+      "display_points": 9793,
+      "corridor_vertices": 3904,
+      "rail_policy": "measured"
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 1,
+      "display_points": 9789,
+      "corridor_vertices": 3904,
+      "rail_policy": "measured"
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 2,
+      "display_points": 9792,
+      "corridor_vertices": 3904,
+      "rail_policy": "measured"
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 0,
+      "display_points": 9771,
+      "corridor_vertices": 3904,
+      "rail_policy": "measured"
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 1,
+      "display_points": 9784,
+      "corridor_vertices": 4160,
+      "rail_policy": "measured"
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 2,
+      "display_points": 9790,
+      "corridor_vertices": 4160,
+      "rail_policy": "measured"
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 0,
+      "display_points": 9974,
+      "corridor_vertices": 4160,
+      "rail_policy": "measured"
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 1,
+      "display_points": 9961,
+      "corridor_vertices": 4160,
+      "rail_policy": "measured"
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 2,
+      "display_points": 9972,
+      "corridor_vertices": 4160,
+      "rail_policy": "measured"
+    }
+  ],
+  "browser_inspection": "roundT_doubleT frame 200: actual cloud, corridor, unresolved candidates, distance and degraded state displayed",
+  "rejected_strict_bracketing": {
+    "panel": "configs/rail-supported-panel.json",
+    "panel_sha256": "09d73b8a0fc3e8c59956b19e6dd57a7955a5a23327bac6723809f8088fdcfbfa",
+    "accuracy": null,
+    "limitations": [
+      "Alarm counts on nonexhaustively labelled development recordings are not precision, recall or false-alarm rate.",
+      "Repeated frames and candidates are not independent object events.",
+      "Timing is descriptive; concurrent workloads and visualization settings differ.",
+      "Float comparison uses absolute and relative tolerance 1e-10; discrete decisions and IDs are exact."
+    ],
+    "bags": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/mounting-real/doubleT_obstacle.jsonl",
+        "after": "build/rail-supported-real/doubleT_obstacle.jsonl",
+        "before_sha256": "85a6b9e9357c0ee7061ea6bdaa06ed287a8b607c0d7b979f9cc895c511daa901",
+        "after_sha256": "4469785902aa5f2fc58c459ca722d2456d6460f7bc296c9e38241ddfd080256f",
+        "before_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 82,
+            "obstacle": 119
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44603,
+          "support_voxel_observations": 3856178,
+          "confirmed_intersection_observations": 203,
+          "candidate_observations_at_least_60m": 10665,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 149.43370898254216,
+            "p95": 188.60391702037305,
+            "p99": 268.8924999674782
+          }
+        },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 61,
+            "obstacle": 140
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 47644,
+          "support_voxel_observations": 3882347,
+          "confirmed_intersection_observations": 164,
+          "candidate_observations_at_least_60m": 12647,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 150.68462502676994,
+            "p95": 181.9403750123456,
+            "p99": 206.03649993427098
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "nearest_obstacle_m": 1,
+          "objects": 201,
+          "geometry": 201,
+          "range_observability": 153,
+          "status": 75
+        },
+        "first_changed_frames": {
+          "status": [
+            3,
+            4,
+            7,
+            8,
+            14,
+            26,
+            32,
+            36,
+            39,
+            43,
+            51,
+            59,
+            60,
+            75,
+            76,
+            80,
+            81,
+            87,
+            90,
+            91,
+            92,
+            94,
+            95,
+            99,
+            100,
+            108,
+            109,
+            111,
+            114,
+            116
+          ],
+          "nearest_obstacle_m": [
+            0
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            2,
+            3,
+            4,
+            6,
+            7,
+            8,
+            9,
+            10,
+            14,
+            16,
+            17,
+            18,
+            19,
+            23,
+            24,
+            26,
+            27,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            39,
+            43,
+            44,
+            45
+          ]
+        },
+        "largest_compared_float_difference": 11.675186157226562
+      },
+      {
+        "bag": "doubleT_platform",
+        "before": "build/mounting-real/doubleT_platform.jsonl",
+        "after": "build/rail-supported-real/doubleT_platform.jsonl",
+        "before_sha256": "d2c35e3a0ca8ba6dededbc0ac0f3a20a9cd26ed22c25b5c1d01f1d75525ea0eb",
+        "after_sha256": "8a0662c22b32b0494d5115c7cfc478003cf6a95ce90042a0a4e39c07b28dbef0",
+        "before_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68321,
+          "support_voxel_observations": 4237359,
+          "confirmed_intersection_observations": 255,
+          "candidate_observations_at_least_60m": 22191,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 116.20791698805988,
+            "p95": 160.9232333838009,
+            "p99": 196.41454848228025
+          }
+        },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 323,
+            "obstacle": 22
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 67718,
+          "support_voxel_observations": 4212853,
+          "confirmed_intersection_observations": 32,
+          "candidate_observations_at_least_60m": 21690,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 120.27770804706961,
+            "p95": 179.08598356880253,
+            "p99": 256.5011669974774
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 345,
+          "geometry": 345,
+          "nearest_obstacle_m": 78,
+          "range_observability": 196,
+          "status": 85
+        },
+        "first_changed_frames": {
+          "status": [
+            200,
+            201,
+            202,
+            203,
+            204,
+            208,
+            209,
+            211,
+            212,
+            215,
+            216,
+            217,
+            219,
+            221,
+            222,
+            223,
+            224,
+            225,
+            226,
+            227,
+            228,
+            230,
+            235,
+            236,
+            237,
+            238,
+            240,
+            245,
+            247,
+            248
+          ],
+          "nearest_obstacle_m": [
+            1,
+            21,
+            25,
+            27,
+            28,
+            33,
+            36,
+            46,
+            47,
+            52,
+            55,
+            69,
+            76,
+            78,
+            82,
+            84,
+            88,
+            90,
+            92,
+            95,
+            96,
+            107,
+            112,
+            123,
+            140,
+            156,
+            177,
+            182,
+            191,
+            192
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            2,
+            3,
+            6,
+            7,
+            8,
+            9,
+            10,
+            12,
+            13,
+            14,
+            15,
+            19,
+            21,
+            26,
+            30,
+            31,
+            33,
+            34,
+            35,
+            36,
+            38,
+            40,
+            44,
+            46,
+            49,
+            57,
+            59,
+            61,
+            62,
+            66
+          ]
+        },
+        "largest_compared_float_difference": 5.356134414672852
+      },
+      {
+        "bag": "roundT_doubleT",
+        "before": "build/mounting-real/roundT_doubleT.jsonl",
+        "after": "build/rail-supported-real/roundT_doubleT.jsonl",
+        "before_sha256": "3a07e0c452224415b116200676163f2a535e014e33225d8cec8f82d89ed33b34",
+        "after_sha256": "06d4ea8d1b1e2cb70774cd1e6400d626e7922b266efd4d4be56cfbe502ec6046",
+        "before_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 187,
+            "obstacle": 64
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48953,
+          "support_voxel_observations": 4039823,
+          "confirmed_intersection_observations": 191,
+          "candidate_observations_at_least_60m": 11435,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 137.15779199264944,
+            "p95": 223.40414389327634,
+            "p99": 319.45820314576866
+          }
+        },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 140,
+            "obstacle": 49,
+            "unknown": 62
+          },
+          "health_frames": {
+            "degraded": 190,
+            "unavailable": 62
+          },
+          "geometry_valid_frames": 190,
+          "motion_valid_frames": 251,
+          "candidate_observations": 39598,
+          "support_voxel_observations": 3173170,
+          "confirmed_intersection_observations": 438,
+          "candidate_observations_at_least_60m": 9802,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 127.4476665421389,
+            "p95": 186.7008498695213,
+            "p99": 230.03176017897204
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 252,
+          "geometry": 252,
+          "range_observability": 175,
+          "nearest_obstacle_m": 95,
+          "status": 100,
+          "health": 62,
+          "health_reasons": 62
+        },
+        "first_changed_frames": {
+          "status": [
+            78,
+            80,
+            81,
+            82,
+            84,
+            85,
+            87,
+            88,
+            89,
+            90,
+            91,
+            92,
+            93,
+            94,
+            95,
+            96,
+            97,
+            98,
+            103,
+            104,
+            105,
+            106,
+            107,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115
+          ],
+          "nearest_obstacle_m": [
+            68,
+            95,
+            97,
+            98,
+            101,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120,
+            121,
+            122,
+            123,
+            124,
+            125,
+            126,
+            127,
+            129
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            1,
+            2,
+            3,
+            7,
+            8,
+            13,
+            14,
+            17,
+            20,
+            21,
+            22,
+            24,
+            26,
+            29,
+            30,
+            31,
+            33,
+            34,
+            39,
+            40,
+            44,
+            45,
+            55,
+            60,
+            65,
+            67,
+            69,
+            71,
+            72
+          ],
+          "health": [
+            105,
+            106,
+            107,
+            109,
+            110,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120,
+            121,
+            122,
+            123,
+            129,
+            134,
+            135,
+            136,
+            137,
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            152,
+            153
+          ],
+          "health_reasons": [
+            105,
+            106,
+            107,
+            109,
+            110,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120,
+            121,
+            122,
+            123,
+            129,
+            134,
+            135,
+            136,
+            137,
+            142,
+            143,
+            144,
+            145,
+            146,
+            147,
+            152,
+            153
+          ]
+        },
+        "largest_compared_float_difference": 31.89017391204834
+      }
+    ]
+  },
+  "line_only": {
+    "panel": "configs/rail-line-panel.json",
+    "panel_sha256": "0cc00e7e4934262585ffb91964ae0cdaf7df7965129742e7ccce1be142342a38",
+    "accuracy": null,
+    "limitations": [
+      "Alarm counts on nonexhaustively labelled development recordings are not precision, recall or false-alarm rate.",
+      "Repeated frames and candidates are not independent object events.",
+      "Timing is descriptive; concurrent workloads and visualization settings differ.",
+      "Float comparison uses absolute and relative tolerance 1e-10; discrete decisions and IDs are exact."
+    ],
+    "bags": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/mounting-real/doubleT_obstacle.jsonl",
+        "after": "build/rail-line-real/doubleT_obstacle.jsonl",
+        "before_sha256": "85a6b9e9357c0ee7061ea6bdaa06ed287a8b607c0d7b979f9cc895c511daa901",
+        "after_sha256": "d3b43e5234e2005004c69184b48027a9e2d52286cce703c3ba5e08dad70bfa3c",
+        "before_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 82,
+            "obstacle": 119
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44603,
+          "support_voxel_observations": 3856178,
+          "confirmed_intersection_observations": 203,
+          "candidate_observations_at_least_60m": 10665,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 149.43370898254216,
+            "p95": 188.60391702037305,
+            "p99": 268.8924999674782
+          }
+        },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 40,
+            "obstacle": 161
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 48533,
+          "support_voxel_observations": 3892418,
+          "confirmed_intersection_observations": 180,
+          "candidate_observations_at_least_60m": 13098,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 149.16933292988688,
+            "p95": 176.38566601090133,
+            "p99": 193.4927919646725
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "nearest_obstacle_m": 1,
+          "objects": 201,
+          "geometry": 201,
+          "range_observability": 147,
+          "status": 64
+        },
+        "first_changed_frames": {
+          "status": [
+            3,
+            4,
+            7,
+            8,
+            14,
+            32,
+            36,
+            51,
+            59,
+            60,
+            75,
+            76,
+            80,
+            86,
+            87,
+            88,
+            89,
+            91,
+            92,
+            94,
+            97,
+            108,
+            109,
+            111,
+            113,
+            116,
+            118,
+            122,
+            123,
+            125
+          ],
+          "nearest_obstacle_m": [
+            0
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            2,
+            3,
+            4,
+            6,
+            7,
+            8,
+            9,
+            10,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            23,
+            24,
+            27,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            42
+          ]
+        },
+        "largest_compared_float_difference": 11.675186157226562
+      },
+      {
+        "bag": "doubleT_platform",
+        "before": "build/mounting-real/doubleT_platform.jsonl",
+        "after": "build/rail-line-real/doubleT_platform.jsonl",
+        "before_sha256": "d2c35e3a0ca8ba6dededbc0ac0f3a20a9cd26ed22c25b5c1d01f1d75525ea0eb",
+        "after_sha256": "a3676dd3529e319dc0b11e3683906a5db44b410f6a812237f3c1e244c83d6366",
+        "before_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68321,
+          "support_voxel_observations": 4237359,
+          "confirmed_intersection_observations": 255,
+          "candidate_observations_at_least_60m": 22191,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 116.20791698805988,
+            "p95": 160.9232333838009,
+            "p99": 196.41454848228025
+          }
+        },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 274,
+            "obstacle": 71
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68144,
+          "support_voxel_observations": 4238620,
+          "confirmed_intersection_observations": 312,
+          "candidate_observations_at_least_60m": 22009,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 117.05175007227808,
+            "p95": 162.35675860662016,
+            "p99": 191.2233635364101
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 345,
+          "geometry": 345,
+          "nearest_obstacle_m": 69,
+          "range_observability": 129,
+          "status": 78
+        },
+        "first_changed_frames": {
+          "status": [
+            200,
+            201,
+            202,
+            203,
+            204,
+            208,
+            209,
+            211,
+            212,
+            216,
+            217,
+            219,
+            220,
+            221,
+            222,
+            223,
+            224,
+            225,
+            226,
+            227,
+            229,
+            230,
+            235,
+            236,
+            237,
+            238,
+            245,
+            246,
+            249,
+            250
+          ],
+          "nearest_obstacle_m": [
+            1,
+            21,
+            25,
+            27,
+            28,
+            29,
+            33,
+            36,
+            46,
+            47,
+            52,
+            55,
+            69,
+            76,
+            78,
+            90,
+            105,
+            107,
+            112,
+            123,
+            140,
+            155,
+            156,
+            177,
+            182,
+            191,
+            192,
+            196,
+            197,
+            205
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            2,
+            3,
+            6,
+            8,
+            10,
+            13,
+            15,
+            18,
+            19,
+            20,
+            21,
+            25,
+            26,
+            29,
+            31,
+            33,
+            35,
+            38,
+            40,
+            41,
+            43,
+            44,
+            49,
+            53,
+            54,
+            57,
+            61,
+            63,
+            67,
+            78
+          ]
+        },
+        "largest_compared_float_difference": 5.356134414672852
+      },
+      {
+        "bag": "roundT_doubleT",
+        "before": "build/mounting-real/roundT_doubleT.jsonl",
+        "after": "build/rail-line-real/roundT_doubleT.jsonl",
+        "before_sha256": "3a07e0c452224415b116200676163f2a535e014e33225d8cec8f82d89ed33b34",
+        "after_sha256": "8718874990158b8b1c95c3629d1eb775dab0add801ca702137d29c88bbc67d43",
+        "before_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 187,
+            "obstacle": 64
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48953,
+          "support_voxel_observations": 4039823,
+          "confirmed_intersection_observations": 191,
+          "candidate_observations_at_least_60m": 11435,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 137.15779199264944,
+            "p95": 223.40414389327634,
+            "p99": 319.45820314576866
+          }
+        },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 189,
+            "obstacle": 62
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48559,
+          "support_voxel_observations": 4048438,
+          "confirmed_intersection_observations": 220,
+          "candidate_observations_at_least_60m": 11162,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 137.9654789925553,
+            "p95": 172.80459397588854,
+            "p99": 191.33531616418625
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 252,
+          "geometry": 251,
+          "range_observability": 120,
+          "status": 52,
+          "nearest_obstacle_m": 31
+        },
+        "first_changed_frames": {
+          "status": [
+            78,
+            79,
+            80,
+            82,
+            85,
+            87,
+            88,
+            90,
+            91,
+            92,
+            93,
+            95,
+            97,
+            98,
+            103,
+            104,
+            106,
+            110,
+            124,
+            129,
+            130,
+            131,
+            132,
+            142,
+            146,
+            156,
+            160,
+            162,
+            163,
+            164
+          ],
+          "nearest_obstacle_m": [
+            95,
+            96,
+            97,
+            98,
+            101,
+            106,
+            112,
+            118,
+            120,
+            124,
+            125,
+            126,
+            129,
+            131,
+            134,
+            136,
+            137,
+            154,
+            156,
+            159,
+            161,
+            166,
+            169,
+            173,
+            174,
+            177,
+            180,
+            183,
+            193,
+            200
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            1,
+            3,
+            7,
+            10,
+            13,
+            14,
+            17,
+            20,
+            22,
+            24,
+            26,
+            29,
+            30,
+            31,
+            33,
+            34,
+            39,
+            40,
+            42,
+            44,
+            45,
+            55,
+            60,
+            65,
+            67,
+            69,
+            71,
+            75,
+            80
+          ]
+        },
+        "largest_compared_float_difference": 15.163858413696289
+      }
+    ]
+  },
+  "far_retention_detail_sha256": "cb53089f8cabc01b9c937946857e314c722182f7bea7f52c661817feb4954c37",
+  "calibration_installed": false,
+  "real_obstacle_precision_or_recall_verified": false
+}

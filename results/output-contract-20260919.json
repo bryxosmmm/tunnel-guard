@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-19",
+  "scope": "The frame now states the range it certifies",
+  "why": "CASE.md asks for presence and distance, with confidence as the advanced extra; the system reported objects and each object's own lateral uncertainty but never how far ahead the CORRIDOR itself is certified, which is what makes an unresolved far candidate readable rather than alarming",
+  "implementation": "TrackGeometry.certified_range_m(): the furthest station whose path uncertainty is within the horizon policy, evaluated on a 1 m grid; reporting only",
+  "verified": {
+    "decisions": "statuses and object counts identical on both recordings, so nothing about detection changed",
+    "measured_on_the_recordings": {
+      "roundT_doubleT": {
+        "frames": 60,
+        "min_m": 57.0,
+        "median_m": 62.0,
+        "max_m": 67.0
+      },
+      "doubleT_obstacle": {
+        "frames": 60,
+        "min_m": 56.0,
+        "median_m": 62.0,
+        "max_m": 72.0
+      }
+    }
+  },
+  "reading": "a frame says, in its own output, that it certifies about 60 m here; beyond that, candidates carry their distance and their own uncertainty and are not certified intrusions. That is the honest form of the far-field behaviour the six failed approaches could not remove, and it gives a scorer or an operator the number they need instead of an undifferentiated alarm"
+}

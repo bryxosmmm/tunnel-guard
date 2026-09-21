@@ -1,0 +1,29 @@
+{
+  "bags": [
+    {
+      "bag": "doubleT_obstacle",
+      "before": "build/intersection-evidence-after/doubleT_obstacle.jsonl",
+      "after": "build/goal-after-available/doubleT_obstacle.jsonl"
+    },
+    {
+      "bag": "doubleT_platform",
+      "before": "build/coverage-expansion-real/doubleT_platform.jsonl",
+      "after": "build/goal-after-available/doubleT_platform.jsonl"
+    },
+    {
+      "bag": "roundT_doubleT",
+      "before": "build/coverage-expansion-real/roundT_doubleT.jsonl",
+      "after": "build/goal-after-available/roundT_doubleT.jsonl"
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "before": "build/goal-baseline-gates/roundT_pressureGate_roundT.jsonl",
+      "after": "build/goal-after-available/roundT_pressureGate_roundT.jsonl"
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "before": "build/goal-baseline-gates/roundT_squareT_pressureGate_squareT.jsonl",
+      "after": "build/goal-after-available/roundT_squareT_pressureGate_squareT.jsonl"
+    }
+  ]
+}

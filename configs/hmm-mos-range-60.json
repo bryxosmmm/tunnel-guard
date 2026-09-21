@@ -1,0 +1,29 @@
+{
+  "hypothesis": "Run by the authors' own HMM-MOS implementation on a real recording with the poses our detector already produced: its dynamic labels are a complement to our static-hazard detector, and its range/compute envelope is bounded far below the 100-300 m this project is scored on.",
+  "source": "https://github.com/vb44/HMM-MOS commit 3f625031d135b2bbe4297125da11facdaba8ca81, built unmodified from source",
+  "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+  "recorded_run": "build/perf-cpp-opt-20260917/doubleT_obstacle.jsonl",
+  "detector_config": "configs/detector-native.json",
+  "annotation": "annotations/doubleT-obstacle-person.json",
+  "note": "Range-envelope probe at maxRange=60 m; identical frames and poses as the other range configs.",
+  "first_frame": 0,
+  "last_frame": 20,
+  "range_edges_m": [
+    10,
+    20,
+    40,
+    60
+  ],
+  "hmm_mos_config": {
+    "minRange": 0.5,
+    "maxRange": 60.0,
+    "voxelSize": 0.2,
+    "occupancySigma": 0.2,
+    "beliefThreshold": 0.99,
+    "convSize": 5,
+    "localWindowSize": 5,
+    "globalWindowSize": 300,
+    "minOtsu": 3
+  },
+  "output": "build/hmm-mos-range-60"
+}

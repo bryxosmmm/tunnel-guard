@@ -4,7 +4,66 @@ Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 
 
 **Research baseline, not a validated collision-warning system.** Recall, infrastructure alarms, generalization, and runtime remain unresolved. `CASE.md` contains the original requirements. A live ROS 2 Humble adapter and root Dockerfile are now included; target-host latency, QoS compatibility and the RViz GUI remain unverified. See [docs/ROS2.md](docs/ROS2.md).
 
-The current review, real-data comparison and limitations are in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). The latest iteration processed two real 30-frame prefixes. Historical results below are separate evidence.
+The initial review and its two real 30-frame prefixes are documented in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). Subsequent iterations and historical results below are separate evidence.
+
+## Extended dataset: initial real runs
+
+See [archive inventory and first comparison](docs/EXTENDED_FIRST_LOOK.md): 11,271 clouds in 221 segments, about 84 GiB unpacked. Three fixed segments (153 clouds) were processed by current and previous geometry without tuning. Both fail on the same one frame; no labelled accuracy is established. The initial sample extracted about 1.14 GiB; after disk cleanup, [the complete recording is now extracted and all acquisition headers audited](docs/EXTENDED_FULL_INGEST.md). [Continuous detector inference now covers all 11,271 clouds](docs/EXTENDED_FULL_RUN.md): 11,250 frames with supported geometry, 21 unavailable; median processing 132 ms on this Mac. No labelled accuracy is established.
+
+## Usable runtime and full-corpus iteration
+
+The [Gerasimov/HMM-MOS review and scenario runs](docs/REVIEW_GERASIMOV_20260918.md) add reproducible moving, stopped and appearing-object scenes for the actual detector. A first-rail-heading experiment was replayed on all 11,271 real clouds for geometry and 951 clouds end to end. It remains opt-in: nine geometry failures recovered, one new failure and unresolved path-selection changes. HMM-MOS is not used to suppress stationary obstacles.
+
+The [3D track and clearance literature review](docs/TRACK_GEOMETRY_LITERATURE_20260918.md) maps published rail-pair estimation and local clearance coordinates to the remaining curve, grade and cant limitations. It distinguishes proposed adaptations from implemented and evaluated behavior.
+
+[The first 3D geometry iteration](docs/TRACK_LOCAL3D_ITERATION.md) now enforces the configured heading bound at actual rail-anchor locations in the default Python/native recipes. An opt-in `configs/detector-local3d-experimental.json` estimates local head heights and tilted cross-sections shared by classification, viewer and RViz. Real replay and ray-cast curve/grade/cant experiments are recorded; height bias and unresolved alarms prevent promotion of the 3D mode.
+
+See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and ROS2 launch commands, and [iteration evidence](docs/GOAL_ITERATION.md) for all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
+
+## Native acceleration and calibration experiment
+
+See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md) and the [native integration report](docs/NATIVE_INTEGRATION.md). Native acceleration is integrated with the current interval-envelope policy. Use `configs/detector-native.json`; ROS container defaults select this recipe. The Python recipe remains available as a reference. Historical performance experiments are retained in `results/performance-20260917.json`; they are not evidence for the merged revision. Mounting calibration remains provisional: all three evaluated orientation candidates failed stability gates and were not installed.
+
+## Native kernels follow the corrected contour
+
+The corrected interval semantics above are implemented in **both** paths. The native classification kernel computes the same exact extrema of the piecewise-linear contour width over each point's height interval, in the same order, so the C++ recipe is not a frozen copy of the older rule. Verified two ways: the kernel and object checks compare the two recipes array by array (28/28 kernel checks, 20/20 geometry arrays, 624 and 550 candidate objects with no field mismatch), and the native recipe independently reproduces every corpus count the correction reports — `obstacle` frames 119 / 87 / 64 and 82 / 258 / 187 unresolved, identical to the review's table on 798 real scans. The three labelled panels are unchanged (development 162/54, holdout 159/57, measured 709/251), so the correction removes marginal confirmations in the unlabelled corpus, not in the annotated panels.
+
+Their kernel-equivalence and corpus counts were measured on this branch's pre-merge recipes; the object counts move with the rail-heading and decode changes merged below, while the two-backend agreement is re-checked on the merged build.
+The review's other finding — that the background model was queried for returns whose decision is never consumed — is now applied in both paths as well, and it is what closes the remaining latency gap: only segmentation-context returns that are not protected evidence are queried. No threshold changed.
+
+## Measured rail anchors and corrected path geometry
+
+The default recipes now fit paired rail heading and place anchors within actual measured support. See [implementation, real runs and limitations](docs/RAIL_GEOMETRY.md): 798 valid frames, 6093 supported anchors, improved withheld-point residuals on 8/9 saved clouds. Candidate grouping and alarms change; field accuracy and far-object recall remain unverified. The frozen previous recipe is `configs/detector-rail-baseline.json`.
+
+## Reported 1.075 m mounting reference
+
+See [railhead-support observations and chronological replay](docs/MOUNTING_REFERENCE.md). The reported empty/stationary height has unknown applicability to individual recordings. Direct support estimates are about 1.500 / 1.086 / 1.093 m across three recordings; no calibration is installed. All 798 compared detector outputs are preserved. A frozen-rotation replay on 738 later scans retains failures, including worse support in the round tunnel. The browser and RViz export now show the actual points supporting the estimate.
+
+## Small detections and contour uncertainty
+
+See [small-object review and calibration limits](docs/ENVELOPE_INTERVAL_REVIEW.md). Height uncertainty now propagates through the stepped contour width and both vertical boundaries. On 798 real scans, confirmed intersection observations changed from 718 to 649; small detections and nuisance alarms remain unresolved, and this is not a precision improvement claim. The browser exposes measured box sizes, support counts and exact diagnostic points for selected saved frames.
+
+## Runtime reduction without reducing coverage
+
+The [2026-09-20 M1 Pro optimization](docs/RUNTIME_100MS_M1PRO.md) reduces paired
+detector processing by 16–19%, preserving compared outputs on 402 real frames.
+The resulting cached-scan medians are 183 and 147 ms: **the requested 100 ms/frame
+budget is still not met**. These measurements use the current Mac, not the M4
+used in earlier reports.
+
+See [runtime profile and verification](docs/RUNTIME_CONTEXT_OPTIMIZATION.md). Avoiding unused background queries and repeated component scans preserved compared outputs on all 798 real scans. That pre-integration version measured 315–469 ms on the development Mac. See [native integration](docs/NATIVE_INTEGRATION.md) for current timings and remaining bottlenecks; target-hardware performance is unverified.
+
+## Decode and complete offline latency
+
+See [decoder preservation and latency scope](docs/DECODE_AND_LATENCY.md). Paired
+real-cloud decoding decreased from 11.70 to 7.60 ms; all 174.5 million valid point
+observations and normalized times matched exactly. The complete offline loop
+measures 140–201 ms median across three recordings, including read/decode,
+inference and result serialization. This is not live sensor-to-display latency.
+
+## Coverage expansion and modeled insertions
+
+See [coverage expansion](docs/COVERAGE_EXPANSION.md): complete platform and round-to-double tunnel runs, plus nine controlled cases on actual measured ray directions. Modeled support is traced through processing stages; missing rays, occlusion and candidate rejection are reported separately. Synthetic attribution is not field recall. The production detector is frozen for this experiment; its parameters were not tuned to inserted boxes.
 
 ## Sensor and tracking diagnostics
 
@@ -18,20 +77,333 @@ See [annotation review](docs/ANNOTATION_REVIEW.md) and [sensor evidence](docs/SE
 
 See [NEXT_ITERATION.md](NEXT_ITERATION.md): the complete 201-frame annotated sequence, stage-by-stage point evidence, and an optional envelope-support distance definition. All five provisional observations retained their localization; detection decisions stayed unchanged. This is a correction of distance semantics, not a measured detection-range improvement. The default recipe retains the original cluster-minimum distance; use `configs/iteration-envelope-distance.json` for the new mode.
 
+## Latest alarm-cause correction
+
+See [alarm-cause iteration](docs/ALARM_CAUSE_ITERATION.md). Lateral path uncertainty now
+separates interior evidence from uncertain boundary crossings; unresolved points remain
+candidates and appear orange in RViz. Two fixed structures retain their complete boxes
+while losing unsupported certainty. A real candidate near 56 m remains detected. Across
+402 real frames, definite-alarm frames decrease, but warning-free operation and field
+false-alarm improvement are **not established**.
+
+## External method review
+
+See [HMM-MOS review](docs/HMM_MOS_REVIEW.md): the authors' own implementation of the IJRR moving-object
+segmenter, built unmodified and run on our synthetic measured-pattern tunnel and on three real windows.
+It segments objects that are genuinely moving (real walking person: 95% of its labels inside the one
+hand-authored person box) and produced **0 labels on the static object in four synthetic cases at 15, 30,
+60 and 100 m** - the class this project is scored on - because a state change is only counted for
+occupied<->free transitions. Measured cost 0.22 s/frame and 0.30 GB at 60 m, 0.75 s/frame at 100 m, and
+an empty tunnel at metro speed (1.5 m/frame) produced 70k false dynamic labels in 200 frames. Compact
+numbers: `results/hmm-mos-probe-20260918.json`; recipes: `configs/hmm-mos-probe-*.json` and
+`tunnel_guard/hmm_mos_probe.py`. Nothing in the pipeline was changed by this review.
+
+## The input crop: a corridor-following window was tried, measured, and removed (2026-09-20)
+
+The detector crops its input to a fixed 8 m lateral window in the *sensor* frame. The concern was that on a curve
+the track itself leaves that window, so both the returns and the rail anchors that estimate the curve would be
+discarded before classification. A corridor-following window — following the previous frame's remembered
+centre-line, gated on its offset so a straight run kept the original crop — was implemented on 2026-09-19, then
+silently disabled the same day when an unrelated commit about background-refit cadence deleted the state that
+drives the gate while leaving the readers in place. **The README claimed a shipped, measured behaviour for a day
+after it had stopped running.**
+
+On 2026-09-20 the state was restored and the mechanism was measured on three instruments, off versus on:
+
+| instrument | result |
+|---|---|
+| extended curved run, 5 splits, 255 frames | the gate engaged on **143 frames**; objects **+2.93 %**, confirmed hazards **+10.16 %** (3761 -> 4143), **zero frame status changes** |
+| the two sourcecraft recordings | statuses essentially unchanged (one frame on `roundT_doubleT` moved `no_obstacle_observed` -> `unresolved_obstacle`); objects +0.55 % and +1.2 %; the measured-intrusion class `inside_heuristic_path_and_ground_interval` **unchanged** at 223 -> 223 and 45 -> 45 |
+| analytic R=300 m arc, 120 cases | matched detections unchanged at **20 of 120** frames; unmatched hazards 5736 -> 5758 |
+
+Cost 1–3 % per frame. The mechanism follows the previous frame's *extrapolated* centre-line, which is the least
+reliable quantity this detector has on a curve, and the returns it adds arrive as ambiguous rather than as
+intrusions. A numeric gate cannot robustly disable such a thing and leaving it silently dead is worse, so the
+mechanism, its state and the `corridor_crop_threshold_m` key were **removed**. The fixed band is used
+unconditionally, and removing it reproduced the crop-off replay on every decision field of all 402 frames.
+Record: `results/corridor-crop-removed-20260920.json`. The earlier claim above this section — that the R=300 m
+arc reported the on-track object as `obstacle` because of the crop — was **not reproducible** by us and is
+withdrawn; the arc scene generates on the order of 4700 unmatched hazards per 120 frames, so it cannot resolve
+this question either way.
+
+## Review response (2026-09-19)
+
+A teammate's review of this branch's corridor and performance work (on `origin/experiments/morev`,
+`docs/REVIEW_GERASIMOV_20260919.md`, against `5587685`) found three P1 defects and three P2 ones. All were
+verified against the code and fixed: a generator that made `prefetch_depth: 0` produce an empty run, a
+corridor crop that re-clipped the widened window symmetrically, and a continuation covariance that omitted
+the `2 d^3 Cov(a,b)` cross term whose sign makes it grow fastest with distance. The measurements, the fixed
+panel and the corrected metric definitions are in
+[docs/REVIEW_RESPONSE_20260919.md](docs/REVIEW_RESPONSE_20260919.md).
+
+### Input topic
+
+The node subscribes to `/lidar_points` by default. Our own recordings do not share one topic: `doubleT_obstacle`
+publishes on `/sensing/lidar/hesai128/pointcloud`, while the tunnel recordings and the extended run use `/lidar_points`.
+Run with `input_topic:=<the bag's topic>` when they differ - `ros2 bag info <bag>` prints it. If nothing arrives within
+`input_timeout_s`, the node degrades to `unavailable` and now logs an error naming the configured topic, the point-cloud
+topics that are actually present, and the parameter to restart with, so the cause is visible rather than silent.
+
+### The audit behind those instructions
+
+Every link of the delivery path was checked on 2026-09-19 and five defects were found and fixed - an unpublished fixed
+frame, a mismatched input topic, an undeclared `tf2_ros` dependency, a build check that did not import the node, and the
+absence of these container instructions together with the host-networking requirement. The checks that came back clean,
+the exact commands to run first, and everything that remains unverified are in
+[docs/DELIVERY_PATH_AUDIT.md](docs/DELIVERY_PATH_AUDIT.md).
+
+## Running it in the container (2026-09-19)
+
+The submission requires build and run instructions for the container, and the README carried none: it documented the
+offline runner and the ROS adapter separately, but never the sequence an evaluator actually performs. That is now here,
+together with the one requirement that is easy to miss.
+
+```sh
+# 1. build (the image installs rviz2 and tf2, builds the native extension and imports the node, so a missing
+#    dependency fails the build rather than the demonstration)
+docker build -t tunnel-guard .
+
+# 2. run the detector. --network host is REQUIRED: the node discovers ROS 2 traffic over DDS on the host
+#    network, so without it `ros2 bag play` on the host is invisible to the container and nothing arrives.
+docker run --rm -it --network host tunnel-guard
+
+# 3. on the host, find the bag's point-cloud topic and play it (topics differ between recordings:
+#    the tunnel recordings use /lidar_points, doubleT_obstacle uses /sensing/lidar/hesai128/pointcloud)
+ros2 bag info <bag>
+ros2 bag play <bag>
+```
+
+If the bag's topic differs from the node's default, run the node with the override - inside the container, or through the
+launch file, which exposes the same parameters:
+
+```sh
+python3 -m tunnel_guard.ros_node --ros-args -p input_topic:=/sensing/lidar/hesai128/pointcloud
+ros2 launch /opt/tunnel-guard/launch/tunnel_guard.launch.py input_topic:=/sensing/lidar/hesai128/pointcloud rviz:=true
+```
+
+`rviz:=true` starts RViz inside the container with `rviz/tunnel_guard.rviz`, which shows measured points, the reference
+envelope, candidates, confirmed intrusions and their distances. For a machine without a display, run `rviz2` on the host
+instead: it subscribes to the same `/perception/...` topics over the shared DDS network. Use slow replay
+(`ros2 bag play -r 0.3 <bag>`) for a complete evaluation: the queue is depth 1 and the offline frame time is above the
+10 Hz stream rate, so fast replay drops scans by design rather than silently.
+
+Without ROS at all, the same detector runs offline and writes per-frame JSON with the measurement timestamp:
+
+```sh
+uv run python -m tunnel_guard.run --experiment configs/<recipe>.json
+```
+
+**What is verified and what is not:** the container path has been exercised only for a ten-scan replay under emulation,
+and the changes of 2026-09-19 in it - the published fixed frame, the input-topic error message, the declared tf2
+dependency and the build-time node import - are standard usage that this development machine cannot execute, because it
+has no ROS 2 and no Docker daemon. They must be confirmed inside the container before the demonstration.
+
+## Demonstration path, checked statically (2026-09-19)
+
+`rviz/tunnel_guard.rviz` and the node were consistent on topics - the config listens to `/perception/points_display` and
+`/perception/debug_markers`, which the node publishes - but the config's fixed frame, `tunnel_guard_local`, was published
+by nothing, so RViz would come up with a missing fixed frame and render nothing. The node now publishes an identity
+static transform from `tunnel_guard_local` to the frame the incoming clouds declare, once per source frame: the frame is
+the sensor frame its outputs are already expressed in, not an invented one, and mounting and extrinsics stay unverified.
+This change is standard tf2 usage but is **not exercised here** - no ROS 2 and no Docker daemon on the development
+machine - so it must be confirmed inside the container before the demonstration.
+
+## Where the frame time goes (2026-09-19)
+
+Measured on `doubleT_obstacle`, per-frame medians, before the two shipped runtime changes:
+
+| stage | ms | note |
+|---|---:|---|
+| background model construction | 40.3 | about 22 windows x 3 RANSAC planes; now refitted every metre of travel instead |
+| geometry estimators | 54.7 | of which rail-pair refinement 13.7, surface normals 7.3 (they feed background removal), plane fit 4.3 |
+| candidate clustering | 20.3 | over roughly 21k context points |
+| KISS-ICP motion | 18.1 | registration, now 8 threads |
+| association | 10.1 | per-track bookkeeping, not the assignment (measured by decomposing it) |
+| classification (3 calls) | 8.0 | |
+| input crop and voxel pass | 5.6 | |
+| frame, total | ~123 | |
+
+Per-frame medians, measured configuration by configuration, p50 on each recording:
+
+| configuration | `roundT_doubleT` | `doubleT_obstacle` |
+|---|---:|---:|
+| before the 2026-09-19 changes | 122.2 | 134.7 |
+| + the object-chain filter | 133.6 | 146.8 |
+| + eight registration threads (**shipped**) | **114.6** | **110.7** |
+| + the background refit cadence (opt-in, off) | 114.4 | 105.9 |
+
+So the object-chain filter costs about 9 per cent, the threads return 14 and 25 per cent, and the cadence is worth nothing on
+one recording and 4 per cent on the other - an earlier entry claimed 12 and 26 for it, comparing against a configuration that
+also differed in thread count and in the chain filter, and that claim was wrong. Net of the shipped changes: 6 per cent on the
+tunnel recording and 18 per cent on the station recording. Latency here is offline processing time
+on an Apple M4 while the machine is shared; the deployment stand is an 8-core i7-9700E, so these figures bound the
+shape of the budget rather than the field number. Two runtime ideas were measured and rejected rather than assumed: a
+lateral band for the rail estimator (its 4 m search band is deliberate for rail-pair selection, and narrowing it moved
+an anchor 3.6 cm) and a decomposition of the gated assignment (identical output, no gain).
+
+## Two shipped behaviours measured on 2026-09-19
+
+Both are in `configs/detector-native.json`, the recipe the ROS container defaults to, and both were enabled only after
+their own gate.
+
+**The tunnel's own structures leave the hazard list, but never a measured intrusion.** A duct, cable tray or walkway
+edge reaches one scan as a chain of small fragments at one cross-section position, repeated along the whole scan, and a
+fallen object is one cluster at its own position. The chain is built from the candidate objects themselves, each placed
+by its own support, so nothing inherits a neighbouring structure's span; a candidate whose position recurs beyond it
+both fore and aft is the tunnel, not an object. Measured: unresolved objects 2757 -> 1323 on `roundT_doubleT` and
+3231 -> 1754 on `doubleT_obstacle`, and the full 1460-frame measured-pattern panel net-identical
+(709/251/176, event recall 0.8021, matched IoU 0.8223, zero empty-scene alarms). Recipe key `infrastructure_continuity`.
+
+That gate looked safe because 52 of 52 labelled obstacle frame statuses survived it, and that check was too weak:
+in 2026-09-20 the chain was measured to be *erasing* judgements rather than structures. On the labelled obstacle
+recording 30 objects on 21 frames, and on the tunnel recording 21 on 13 frames, held at least `weak_min_voxels` core
+voxels **inside** the swept contour - a measured corridor intrusion - and were relabelled `adjacent` and
+`longitudinally_continuous_structure` only because a long chain happened to share their cross-section position. A frame
+status survives that: the frame was already `obstacle` for another object. A candidate whose own support lies inside
+the contour is therefore no longer demoted whatever repeats beside it; `unresolved` and `adjacent` candidates are still
+demoted, because for them repetition is the evidence that distinguishes structure from an object.
+Result: demoted-while-inside 30 -> 0 and 21 -> 0, object counts unchanged on every frame of both recordings, one frame
+(`doubleT_obstacle` 171) recovered from `unresolved_obstacle` to `obstacle`, the 1460-frame panel byte-identical on
+every metric, and no measurable cost: in a back-to-back A/B with the module swapped and restored on one machine state,
+processing p50 was 146.03 -> 145.47 ms on `doubleT_obstacle` and 120.17 -> 119.92 ms on `roundT_doubleT`.
+The restored objects sit at the contour edge (lateral 1.29-1.31 m against a 1.32 m
+half-width) and are plausibly the walkway itself; they are reported because a reference contour that is not validated
+as a vehicle swept volume cannot justify discarding measured interior support. Details and artifacts:
+`results/infrastructure-continuity-guard-20260920.json`.
+
+The panel figures quoted above come from the recipe in use on 2026-09-19 (350 m input ceiling, histogram rail centre,
+`hazard_requires_certified_path` on); the current production recipe on the same 1460 cases and labels scores
+699/261/153, event recall 0.78125, matched IoU 0.8205, and `results/metrics-blockers-20260920.json` audits the
+difference. Comparing a change against the older artifact therefore compares two recipes, not one.
+
+**The background model CAN refit by distance travelled instead of every frame - opt-in, and off by default.** It claims points from the tunnel's own
+longitudinal surfaces — lining, walls, ducts, bed — and those run parallel to travel, so their plane equations in the
+sensor frame barely change between frames a fraction of a metre apart. Building it was the largest single cost in a
+frame (40.3 ms of 123 ms, about 22 overlapping windows of three RANSAC planes each), so it is now reused until the
+pose has advanced `background_refit_travel_m` (1 m), which also means a stopped train refits nothing. Measured on the
+shipped recipe: `roundT_doubleT` 130.7 -> 114.4 ms and `doubleT_obstacle` 143.4 -> 105.9 ms, i.e. 12 and 26 per cent,
+with identical frame statuses and the labelled obstacle preserved. **CORRECTED:** measured against the same configuration with
+the key off, the effect is 114.6 -> 114.4 and 110.7 -> 105.9, i.e. nothing and 4 per cent; the 12 and 26 figures compared
+against a configuration that also differed in thread count and in the object-chain filter. With a few per cent at stake the
+case for keeping it off while it voids the backend-equivalence guarantee is stronger, not weaker. Its gate held every metric on an identical-case
+panel run (tp 182, fn 106, fp 40, precision 0.8198, event recall 0.7917, matched IoU 0.8114, zero negative episodes).
+Stated trade-off: staleness mis-places the bed on a grade by about 5 mm per metre of travel against the 25 mm fit
+distance, which is the margin the 1 m limit keeps.
+
+Confirmed end to end on 2026-09-19: the full 1460-frame measured-pattern panel run with the shipped changes returns
+**every metric byte-identical** to the pre-change baseline (tp 709, fn 251, fp 176, precision 0.8011, event recall
+0.8021, matched mean IoU 0.8223, distance MAE 0.00111 m, zero empty-scene alarms, identical recall at every range from
+10 to 300 m) while the panel's wall time falls from 430.4 s to 316.5 s - a quarter of the runtime for no change in what
+the detector decides. The panel's own declared criterion, event recall >= 0.95, remains unmet at 0.802 before and after,
+and is reported here as the standing gap it is.
+
+Both rest on measured limits rather than assumptions: the far-field lateral frame is a sensor property of this route
+(rails vanish by 90 m, the bed band is empty beyond 70 m, partial-arc cross-section fits are ill-conditioned beyond
+80 m), so objects beyond the corridor horizon are reported as unresolved candidates with their distance and their own
+lateral uncertainty, never as a certified clear path. Details, including six approaches measured and rejected for that
+class, are in `results/empty-tunnel-alarm-load-20260919.json`,
+`results/empty-tunnel-alarm-load-attempt2-20260919.json` and `results/background-refit-cadence-20260919.json`.
+
+## Curves: the full investigation
+
+Two defects, not one: the corridor continued straight past the measured rails, and the detector cropped its
+input to a fixed sensor-frame window that on a curve discards the track and its anchors before
+classification. Both are fixed and measured — on curved scenes the shipped configuration reports the object
+in **16 of 24 cases against 12 before**, with **82% fewer spurious objects**, while the straight-rail panel
+stays byte-identical. The far field is an information limit, with six strategies tested and five rejected on
+their own numbers. Everything, including what is *not* established, is in
+[docs/CURVED_CORRIDOR_AND_RANGE.md](docs/CURVED_CORRIDOR_AND_RANGE.md).
+
+### The alarm decision this leaves
+
+Whether unmeasurable far-field evidence should read as an alarm is a decision, not a defect: six approaches failed to
+separate the tunnel's own far surfaces from objects on this data. Both sides are measured - 211 hazard-class objects over
+1460 panel frames under an event-scored convention, `unresolved_obstacle` on 59 of 60 frames under a status-scored one - and
+the two ways to demote it each cost the 100 m detection tier. The three options, their measured costs and a recommendation
+are in [docs/FAR_FIELD_ALARM_DECISION.md](docs/FAR_FIELD_ALARM_DECISION.md).
+
+## What the corridor can and cannot reach (2026-09-19)
+
+Measured, not assumed. The **bed** is sampled to 65-105 m (13-18 anchors per frame - the floor is wide), so
+heights above the running surface are known far out; inside its 15 m gate the linear bed extrapolation errs by
+<=0.02 m even where the vertical curvature is R_v ~ 7 km. The **lateral** track centre is the binding unknown:
+rail returns collapse 1995 -> 105 -> 17 -> 0 per 20 m bin from 10 m to 90 m, and the tunnel bore is a biased
+proxy - robust circle fits to perpendicular slabs (16-23 slabs to 105-165 m, conditioned centre sigma
+0.003-0.011 m) sit about a metre off the track centre, and calibrating that bias on the rails still predicts
+only 1.32 m at 100 m.
+
+The corridor's reach is therefore set by an uncertainty budget, `path_max_uncertainty_m` (0.4 m), which the
+existing heuristic sigma reaches at 33.7 m past the last anchor - a ~74 m horizon, where the measured centre
+error is 0.72 m, 47% of the 1.535 m half-width. `path_max_extrapolation_m` does not bind: raising it 25 -> 45 m
+changed no classification at all. Raising the *budget* to 0.7 m would reach 86 m but was measured and rejected:
+it turns two frames of `roundT_doubleT` into certified obstacles (intersecting 12 -> 20) in a band where the
+centre is uncertain by ~1.0 m, for no measured gain. Fitted-curvature sigma propagated from the anchor window is
+over-confident by 1.6x at 50-60 m and 4-8x at 80-150 m, so the heuristic term is the calibrated model.
+Every object record now carries `far_field_lateral_bound_m`: the path uncertainty the classifier itself used at that object's distance - `sqrt(base^2 + extension^2)` with `base = 0.06 + 0.008r + 0.0003r^2`, calibrated to 0.46-1.34x the measured centre error over 10-110 m of extrapolation - or `null` beyond the modelled horizon, where no bounded claim exists. On 200 real frames this changed no status, no nearest distance and no object identity: 11,904 of 15,041 observations on `roundT_doubleT` carry a finite bound (max 0.45 m) and 3,137 state that their lateral track relation is unknown. A far-field detection therefore states what it does not know instead of implying that an unmeasured corridor is clear. Full evidence: `results/alignment-long-lever-20260919.json`, `build/uncertainty-calibration.json`.
+
+## Reference corridor follows the curve
+
+The reference contour used to continue past the last measured rail anchor along a straight tangent
+whose slope was clipped at `rail_max_heading`, modelled for `path_max_extrapolation_m` beyond the
+nearest anchor. Rails here are supported to a median 40 m, so the contour had a modelled horizon near
+65 m — and inside it the true track leaves a straight line quadratically. Measured against what later
+frames of `roundT_doubleT` see over the same ground, that continuation was 0.20 m off at 40 m, 0.47 m
+at 50 m and 1.02 m at 60 m (p90 1.41 m), against a corridor half-width of 1.535 m.
+
+`TrackGeometry._continuation` and its native mirror now continue along a local quadratic fitted to the
+anchors inside `path_curve_window_m`, expressed in the edge anchor's frame so the centre-line stays
+continuous there, with the curvature shrunk to zero unless it exceeds `path_curvature_significance`
+standard errors (default 4), and the extrapolation uncertainty taken from the fit covariance in
+quadrature with the previous base term. Inside the anchor span the corridor is bit-identical to before;
+the model only acts beyond it. Forward-prediction error becomes **0.045 / 0.136 / 0.203 m** at 40 / 50 / 60 m.
+Both backends stay identical (20/20 geometry arrays, 29/29 kernel checks), and 60-frame prefixes of
+`roundT_doubleT` and `doubleT_obstacle` keep their statuses; the object set moves slightly
+(14,305 → 14,014 on the straight recording, intersecting observations 64 → 70), which no available
+label can adjudicate. `path_curve_window_m: 0` reproduces the previous continuation exactly.
+
+The gate is not cosmetic. On the measured-pattern panel, whose rails are straight by construction, a
+weaker 2-sigma gate bends the corridor off a geometry the old model already had exactly right:
+precision 0.8011 -> 0.7647, tp 709 -> 702, fp 176 -> 216, and empty scenes start alarming
+(negative-episode rate 0 -> 0.08). At 4 sigma the same panel is byte-identical to the baseline
+(709/251/176, precision 0.8011, zero empty-scene alarms) while the real-curve prediction gain above is
+kept, so 4 is the shipped default and `path_curvature_significance` is the knob to loosen deliberately.
+Both panel runs are retained as evidence. Straight recordings are still not bit-identical — the fitted
+slope replaces the noisy two-point tangent even where curvature is shrunk, which moves one frame of 60
+from `unresolved_obstacle` to `candidate` on `doubleT_obstacle`.
+
+This does **not** extend the modelled horizon: beyond anchors + 25 m the corridor is still `unknown`,
+which is why the scored 100–300 m band needs a long-lever estimate. Walls and ceiling do return to
+120–207 m on the curved recording, but per-bin medians of those returns are not an axis — they jump
+5–9 m with platform edges — so that estimator has to be built on surface strips and validated with the
+same forward-prediction test before it is allowed to widen the corridor. Evidence:
+`results/curve-continuation-20260919.json`.
+
+## Reader overlap in the offline runner
+
+The bag reader (decompression plus PointCloud2 decode) ran between frames: 38.6 ms p50 on
+`doubleT_obstacle`, 12.8 ms on `doubleT_platform`. One bounded producer thread now reads ahead by one
+scan while inference runs. On the same 30-frame protocol with the same recipe,
+`read_and_process` p50 falls 164.7 → **126.7 ms** and 118.8 → **105.2 ms**, and p95 185.2 → 142.0 ms,
+with every compared field identical (status, nearest distance, each object's track id and distance, 60
+frames). Inference is untouched (125.6 → 126.5 / 105.5 → 104.7 ms).
+
+This removes the reader from the critical path; it does **not** shorten the age of a decision, and
+inference at ~126 ms per frame still exceeds the 100 ms input period, so 10 Hz per frame is not met.
+Recorded result: `results/reader-overlap-20260919.json`.
+
 ## Team work
 
 See [next iteration assignments](docs/TEAM_TASKS.md): reviewed episodes, sensor/time evidence, Ubuntu/RViz validation, and oriented evaluation. Use separate branches from `experiments/morev`.
 
 ## Quick start
 
-Python 3.10+; Python 3.13.5 was used for the latest audit (older results used 3.12). Install [uv](https://docs.astral.sh/uv/), then:
+Python 3.10+; this iteration used native macOS Python 3.12.8 and container Python 3.10 (Humble). Historical audits used other versions. Install [uv](https://docs.astral.sh/uv/), then:
 
 ```sh
 uv sync --locked
 uv run python -m tunnel_guard.run --experiment configs/evaluation-audit.json
 ```
 Agent policy lives in `AGENTS.md`: no subagents or automated tests. Verify changes through actual detector runs and configured evaluations; the repository intentionally has no test suite.
-
 
 The audit recipe requires the two real bags described below. It processes the first 30 consecutive frames of each and writes JSONL, configuration, source snapshots and RViz result bags to `build/audit-reviewed/`. Set `visualization` to `false` in a copied experiment JSON for headless processing; detector decisions do not depend on the display consumer. No model download is needed at runtime.
 
@@ -105,7 +477,21 @@ uv run python -m tunnel_guard.sustech --config configs/annotation-export.json
 
 ### Objects inside the clearance envelope
 
-`tunnel_guard/on_track.py` finds intrusions the way the detector should: only returns that actually fall inside the GOST contour are clustered, and a cluster is dropped when it is a face of a large surface, or when its lateral/vertical profile runs continuously or repeats along the tunnel — cable runs, linings, trays and posts. Over the six recordings that is **11,115 in-envelope clusters → 381 events → 15 candidates**, against 335–347 boxes per frame from the detector.
+`tunnel_guard/on_track.py` finds intrusions the way the detector should: only returns that actually fall inside the GOST contour are clustered, and a cluster is dropped when it is a face of a large surface, or when its lateral/vertical profile runs continuously or repeats along the tunnel — cable runs, linings, trays and posts. **Evidence status - the aggregate formerly quoted here is NOT reproducible.** It read *11,115 in-envelope clusters → 381 events →
+15 candidates* over the six recordings, with no artifact in this repository, and a re-measurement with the same command does not
+reproduce it. Measured so far, four of six recordings (201 to 877 scans each):
+
+| recording | clusters | events | candidates |
+|---|---:|---:|---:|
+| `roundT_doubleT` | 215 | 17 | 0 |
+| `roundT_pressureGate_roundT` | 177 | 18 | 1 |
+| `squareT_platform_squareT_switch` | 391 | 9 | 0 |
+| `doubleT_platform` | 1030 | 16 | 0 |
+
+That is 1,813 clusters and 60 events across four recordings, so the quoted 11,115 clusters and 381 events are roughly six times
+what the probe produces on this data, and the 15 candidates are not reproduced either (1 measured). The shape of the result holds -
+tens of events and a handful of candidates out of hundreds to thousands of clusters - but the numbers are treated as stale. The two
+remaining recordings are unmeasured; the re-measurement is `results/on-track-counts-20260919.json`.
 
 ```sh
 uv run python -m tunnel_guard.on_track \
@@ -155,6 +541,12 @@ Pipeline: validated points → KISS-ICP pose (optional deskew) → local bed and
 
 **Deskew is disabled in the current recipes.** The observed point-time span differs from the frame period, especially in cropped clouds; KISS-ICP normalizes that span to a full previous motion increment. `deskew_enabled=true` restores the experimental mode, but needs verified timing and prior-deskew provenance. Turning it off leaves motion distortion unresolved. This change is not a claim of higher detection accuracy.
 
+`configs/detector-native-fast.json` is a HISTORICAL recipe from before the 2026-09-19 changes: its recorded numbers belong to that state, and it now differs from the shipped recipe in many more keys than its stated one - `python -m tunnel_guard.config_audit` lists them. Its original purpose was two background plane proposals per window instead of three. That is a behaviour change, so it is kept as a separate recipe: measured on 798 real scans it moves 297 definite alarms to 296 (one frame becomes unresolved) and leaves all three labelled panels unchanged, while `detector-native.json` keeps the original setting and is the integration recipe. Historical pre-kernel comparisons and current interval-policy comparisons must be distinguished.
+
+`native_kernels` (C++ recipe only; the NumPy recipe keeps the reference path) selects the locally built `tunnel_guard._native` kernels: radial range selection, mutual-radius clustering graph, envelope classification, track-bed reference, background patch candidates, protrusion protection, strip membership and the evidence voxel count. `normal_covariances` replaces Open3D's `estimate_normals` plus `estimate_covariances` with one grid pass: neighbours within the radius capped to the nearest `max_nn`, mean-centred covariance over n, and — in the same call — the eigenvalues and the smallest eigenvector by fixed-sweep Jacobi rotations. Three labelled panels (development, seed holdout, measured beam pattern; 2,120 frames) reproduce their recorded tp/fn, event recall and precision exactly with the native kernels. Measured on a real sample: counts identical to the scipy radius count, planarity gate identical on all 31,298 points, normal agreement |dot| = 1.000000000000 on every reliable point and zero alignment differences across all patches — the points whose normals differ are exactly the ones the gate discards.
+
+Native kernels cover voxel selection, neighbour graphs, geometry classification, background masking, component statistics and evidence counting. They use reusable buffers and preserve measurement support on the recorded integration panel. Empirical agreement does not establish identity for all unseen inputs. `query_workers` controls SciPy queries; native kernels also use their own worker threads. Open3D plane proposals remain serial for repeatability. See [integration evidence and limitations](docs/NATIVE_INTEGRATION.md).
+
 Segmentation preserves object portions outside the clearance gate. Dense instances cannot merge through a thin chain of border points. Temporal matching uses velocity, heuristic covariance, shape, and distinct-frame evidence. Missing path support must not turn rail removal into an infinite-width exclusion zone.
 
 Tunnel-background rejection uses Open3D plane fitting and local normals. Only observed longitudinal surface strips are removed; cross-track panels, supported clearance intersections, protruding faces and their attachment edges are protected. No generic sparse-outlier deletion is applied. It is a local planar approximation, not a complete curved-tunnel model.
@@ -163,8 +555,8 @@ Focused verification: the original tilted empty-tunnel wall alert disappears; na
 
 ## Output semantics
 
-- `obstacle`: confirmed structure intersects the configured reference envelope.
-- `unresolved_obstacle`: confirmed nominal intersection with insufficient geometry support; not a proven collision.
+- `obstacle`: intersection with the configured reference envelope has its own confirmation evidence; not a validated collision claim.
+- `unresolved_obstacle`: a confirmed potential hazard has uncertain geometry or insufficient repeated interior evidence.
 - `candidate`: insufficient confirmation evidence.
 - `no_obstacle_observed`: no hazard reported; **does not mean the route is clear**.
 - `unknown`: insufficient geometry or returns.
@@ -174,8 +566,16 @@ Boxes describe observed support, not inferred full object volume. Distance is th
 - `health` (`normal` / `degraded` / `unavailable`) and `health_reasons` are independent of detection status. The current unverified calibration keeps results degraded.
 - `timestamp_s` uses acquisition header time. `measurement_timestamp_ns` and `record_timestamp_ns` preserve both exact clocks; do not interpret their difference as latency.
 - `source_scan_id`, `last_observed_s`, `hits`, and `evidence_timestamps_s` expose the source and temporal evidence. Duplicate acquisition timestamps are skipped by the reader; backwards time or a changed sensor frame stops the run explicitly. A new bag creates a new detector.
+- `confirmed` describes the object; `intersection_confirmed` separately describes its current envelope intrusion. Immediate confirmation uses interior support; weak intrusion requires distinct recent interior observations. See [intersection evidence](docs/INTERSECTION_EVIDENCE.md) for real-data diagnosis, fields and tradeoffs. RViz uses red for confirmed intrusion and orange for confirmed objects with unresolved/pending intrusion.
 - `coordinate_frame=tunnel_guard_local` identifies the transformed current-scan coordinates. `sensor_frame` is source metadata. No global TF or verified vehicle extrinsics are implied.
 - `processing_s`, `read_and_process_s` and optional `visualization_s` use monotonic timing; summary includes ingestion/drop counts and visualization time. `range_observability` reports support, not free-space coverage.
+- The runner reads and decodes the next scan on one producer thread while the detector processes the
+  current one: `prefetch_depth` in the experiment config, default 1, bounded to keep one unprocessed
+  scan in memory. With overlap, `read_and_process_s` is the cost of one loop iteration and
+  `ingestion_s` is the consumer's block on that thread, **not** the age of a decision — a scan still
+  waits for the scan ahead of it. `prefetch_depth: 0` restores inline reading. No measurement and no
+  decision changes either way; measured evidence and the equivalence check are in
+  `results/reader-overlap-20260919.json` (`configs/perf-prefetch-on.json`).
 
 ## View actual results in RViz2
 
@@ -217,7 +617,7 @@ All synthetic panels fail the declared 95% event-recall target. Measured-pattern
 
 Final metro localization: 5/5 unchanged provisional boxes at IoU ≥0.25, mean IoU 0.282; earlier baseline was 2/5. One object sampled five times does not establish generalization.
 
-Full real run: 2,488 frames; 1,579 `obstacle`, 819 `unresolved_obstacle`. These are **not false-positive counts** without exhaustive labels. Per-bag median processing was 294–486 ms on Apple M4: not real-time at the recording rate, and not target Intel performance.
+Full real run: 2,488 frames; 1,579 `obstacle`, 819 `unresolved_obstacle`. These are **not false-positive counts** without exhaustive labels. Per-bag median processing was 294–486 ms on Apple M4 before the latency work; the three re-run recordings measure 99–123 ms with the C++ backend and native kernels afterwards (see `results/performance-20260917.json`): still not real-time at the ~10 Hz recording rate, and not target Intel performance.
 
 Published backend comparisons and height/tilt ground audits are summarized in `results/`. The saved segmentation comparison predates the last support-preservation correction; its original full source/config snapshots are local under `build/`. Running the current comparison recipe evaluates the current code, not that historical snapshot. Paths inside result summaries refer to these intentionally untracked original artifacts.
 

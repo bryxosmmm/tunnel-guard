@@ -1,0 +1,31 @@
+{
+  "date": "2026-09-19",
+  "scope": "How the detector behaves across the extended 20-minute real run with real curves",
+  "why": "the organizers' final data is unseen, so the closest evidence for robustness is the extended recording: 11271 scans, 22 per cent of frames below 800 m radius, sampled as 25 stretches spread across the run",
+  "measured": {
+    "sampled_frames": 1275,
+    "geometry_valid": "1274 of 1275",
+    "statuses": {
+      "unresolved_obstacle": 1226,
+      "obstacle": 34,
+      "candidate": 14,
+      "unknown": 1
+    },
+    "health": "degraded on every frame but one, for the standing reasons: unverified sensor profile and extrinsics, and deskew disabled",
+    "objects_per_frame": {
+      "median": 202,
+      "p90": 252
+    },
+    "nearest_confirmed_object_m": {
+      "frames": 1260,
+      "median": 2.01,
+      "p90": 2.03
+    }
+  },
+  "reading": "geometry is available on almost every frame and the status distribution is the honest far-field one: 1226 of 1275 frames report unresolved_obstacle and only 34 report obstacle, which is the certified-intrusion status. The nearest CONFIRMED object sits a couple of metres ahead on most frames - confirmed means tracked with evidence, not intersecting - so that figure is the tunnel's own nearby structures, not an intrusion count.",
+  "corrections_of_this_probe": [
+    "a first pass printed 'geometry valid 0 of 1275' because it read geometry.state, which does not exist on that field; the correct key is geometry.valid and the answer is 1274 of 1275",
+    "a first pass printed 'confirmed obstacle at exactly 2.0 m on 1260 frames', which was the rounding in the print statement rather than a value at min_forward_m; no object sits exactly at the crop boundary"
+  ],
+  "caveat": "25 sampled stretches, not the whole run; the sample was chosen spread across it rather than consecutive"
+}

@@ -1,0 +1,22 @@
+{
+  "hypothesis": "Remove redundant same-scan geometry, rail-bin medians and impossible association shape costs without changing detection thresholds.",
+  "success_criterion": "100 ms processing per frame on this Mac; report p50, p95, p99, max and budget misses, plus all retained decision differences.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/perf-100ms-after",
+  "every": 1,
+  "max_frames": 201,
+  "prefetch_depth": 1,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development"
+    }
+  ],
+  "visualization": false,
+  "diagnostic_frames": []
+}

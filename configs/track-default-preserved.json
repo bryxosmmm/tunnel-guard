@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-track-baseline.json",
+  "output": "build/track-default-preserved",
+  "every": 1,
+  "max_frames": null,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/extended_subset/new_data_0",
+      "split": "fixed_development_panel"
+    }
+  ],
+  "hypothesis": "Measured-anchor continuity and local rail-head sections",
+  "criterion": "Report lost geometry, candidate retention and support; no field accuracy inferred"
+}

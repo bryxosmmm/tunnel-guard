@@ -1,0 +1,21 @@
+{
+  "seed": 20260915,
+  "detector_config": "detector.json",
+  "output": "../goal-baseline-switch",
+  "every": 1,
+  "max_frames": null,
+  "visualization": false,
+  "diagnostic_frames": [
+    0,
+    100,
+    200
+  ],
+  "bags": [
+    {
+      "path": "../goal-data/for_hackathon/squareT_platform_squareT_switch",
+      "split": "development_previously_inspected_not_blind"
+    }
+  ],
+  "hypothesis": "Freeze production baseline before changes informed by QA; cover complete supplied gate recordings.",
+  "criterion": "Process every scan, retain status, motion, geometry and measured support; report failures without accuracy claims."
+}

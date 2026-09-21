@@ -1,0 +1,22 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/native-after-prefix",
+  "every": 1,
+  "max_frames": 10,
+  "visualization": false,
+  "diagnostic_frames": [
+    0,
+    5,
+    9
+  ],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Final CLI provenance works in a Git checkout and preserves detector/display output after the installed-image fix.",
+  "criterion": "Fixed ten real frames; preserve decisions and measure stage costs before C++ voxelization.",
+  "display_max_points": 10000
+}

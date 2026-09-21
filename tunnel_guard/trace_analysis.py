@@ -68,7 +68,7 @@ def analyze(run: Path, annotations: dict):
     distance_cases = []
     for (bag, frame), row in rows.items():
         for obj in row["objects"]:
-            if obj["confirmed"] and obj["path_relation"] == "intersecting" and obj["supported_envelope_nearest_x_m"] is not None:
+            if obj.get("intersection_confirmed", obj["confirmed"] and obj["path_relation"] == "intersecting") and obj["supported_envelope_nearest_x_m"] is not None:
                 gap = obj["supported_envelope_nearest_x_m"] - obj["cluster_nearest_x_m"]
                 if gap > 1e-6:
                     distance_cases.append({"bag": bag, "frame": frame, "track_id": obj["track_id"],

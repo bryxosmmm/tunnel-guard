@@ -6,9 +6,11 @@ not a reproduction claim. TRAVEL and HDBSCAN backends call released code directl
 from __future__ import annotations
 
 import numpy as np
-from scipy.sparse import coo_matrix
 from scipy.sparse.csgraph import connected_components
 from scipy.spatial import cKDTree
+
+from . import accelerator
+from .geometry import query_workers
 
 
 def density_labels(points: np.ndarray, config: dict) -> tuple[np.ndarray, np.ndarray]:
@@ -24,15 +26,10 @@ def density_labels(points: np.ndarray, config: dict) -> tuple[np.ndarray, np.nda
     radius = np.clip(config["density_radius_m"] + config["density_angular_radius_rad"] * distance,
                      config["density_radius_m"], config["cluster_max_radius_m"])
     metric_points = points * np.array([1., 1., config["density_vertical_scale"]])
-    tree = cKDTree(metric_points)
-    pairs = tree.query_pairs(float(radius.max()), output_type="ndarray")
-    if len(pairs):
-        delta = metric_points[pairs[:, 0]] - metric_points[pairs[:, 1]]
-        pairs = pairs[np.einsum("ij,ij->i", delta, delta) <= np.minimum(radius[pairs[:, 0]], radius[pairs[:, 1]])**2]
-    edge_i = np.concatenate((pairs[:, 0], pairs[:, 1]))
-    edge_j = np.concatenate((pairs[:, 1], pairs[:, 0]))
-    graph = coo_matrix((np.ones(len(edge_i), dtype=np.uint8), (edge_i, edge_j)), shape=(n, n)).tocsr()
-    degree = np.asarray(graph.sum(axis=1)).ravel() + 1
+    # Mutual-radius edges: identical selection in both branches, see accelerator.
+    module = accelerator.native(config)
+    graph, degree = accelerator.density_graph(metric_points, radius, config, module)
+    configured = config.get("query_workers", -1)
     required = np.maximum(config["density_min_far"], np.ceil(config["density_min_near"] *
                           np.minimum(1., (config["density_reference_range_m"] / np.maximum(distance, 1.))**2)))
     core = degree >= required
@@ -40,16 +37,28 @@ def density_labels(points: np.ndarray, config: dict) -> tuple[np.ndarray, np.nda
     core_ids = np.flatnonzero(core)
     count = 0
     if len(core_ids):
-        count, core_labels = connected_components(graph[core_ids][:, core_ids], directed=False)
+        if module is not None:
+            core_labels = accelerator.component_labels(graph, core, module)
+            count = int(core_labels.max()) + 1
+        else:
+            count, core_labels = connected_components(graph[core_ids][:, core_ids], directed=False)
         labels[core_ids] = core_labels
         border_ids = np.flatnonzero(~core)
         if len(border_ids):
-            dd, near = cKDTree(metric_points[core_ids]).query(metric_points[border_ids])
+            dd, near = cKDTree(metric_points[core_ids]).query(
+                metric_points[border_ids], workers=query_workers(len(border_ids), configured))
             accepted = dd <= np.minimum(radius[border_ids], radius[core_ids[near]])
             labels[border_ids[accepted]] = core_labels[near[accepted]]
+    # Only the nodes still unlabelled go on to the weak pass: the border
+    # assignment above may already have claimed some non-core points.
     weak_ids = np.flatnonzero(labels < 0)
     if len(weak_ids):
-        _, weak_labels = connected_components(graph[weak_ids][:, weak_ids], directed=False)
+        if module is not None:
+            weak_mask = np.zeros(len(core), dtype=bool)
+            weak_mask[weak_ids] = True
+            weak_labels = accelerator.component_labels(graph, weak_mask, module)
+        else:
+            _, weak_labels = connected_components(graph[weak_ids][:, weak_ids], directed=False)
         labels[weak_ids] = count + weak_labels
     return labels, core
 

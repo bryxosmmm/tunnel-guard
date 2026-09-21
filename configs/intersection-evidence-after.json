@@ -1,0 +1,28 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/intersection-evidence-after",
+  "every": 1,
+  "max_frames": 201,
+  "visualization": true,
+  "diagnostic_frames": [
+    0,
+    25,
+    75,
+    181,
+    200
+  ],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_unlabelled_alarm_diagnosis"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_unlabelled_alarm_diagnosis"
+    }
+  ],
+  "hypothesis": "Object persistence or density outside the envelope cannot confirm a new weak intrusion.",
+  "criterion": "Preserve all candidate support and object tracks; confirm intersection with strong current interior geometry or distinct recent interior observations. Retain unconfirmed hazards as unresolved. Compare all 402 real frames against 38d1e91 without accuracy claims.",
+  "display_max_points": 30000
+}

@@ -1,0 +1,14 @@
+{
+  "bags": [
+    {
+      "bag": "doubleT_obstacle",
+      "before": "build/perf-100ms-before/doubleT_obstacle.jsonl",
+      "after": "build/perf-100ms-after/doubleT_obstacle.jsonl"
+    },
+    {
+      "bag": "roundT_doubleT",
+      "before": "build/perf-100ms-before/roundT_doubleT.jsonl",
+      "after": "build/perf-100ms-after/roundT_doubleT.jsonl"
+    }
+  ]
+}

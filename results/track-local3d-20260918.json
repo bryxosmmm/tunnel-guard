@@ -1,0 +1,5408 @@
+{
+  "baseline_commit": "da74738",
+  "decision": {
+    "default": "Relocated-anchor continuity enabled in detector.json and detector-native.json",
+    "local3d": "Opt-in: unresolved height bias, coverage and empty-scene alarms"
+  },
+  "full_geometry": {
+    "frames": 11271,
+    "before_valid": 11250,
+    "after_valid": 11248,
+    "unbracketed_anchors": 0,
+    "recovered_frames": [],
+    "regressed_frames": [
+      8489,
+      8555
+    ],
+    "common_probe_max_change_m": {
+      "p50": 0.0,
+      "p95": 0.0,
+      "max": 6.72866781279026
+    },
+    "frames_with_changed_common_probe": 199,
+    "baseline_result_sha256": "02e218ab67eed843719a552979f416663ded16237820e0f898fe495d79f04e64",
+    "limitations": [
+      "Geometry availability and disagreement are not independent rail truth.",
+      "No obstacle detection or temporal association replay in this command."
+    ]
+  },
+  "heading_bound_audit": {
+    "before_violating_frames": 201,
+    "after_violating_frames": 0,
+    "rejected_proposals": 208,
+    "new_unavailable_examples": [
+      {
+        "frame": 8489,
+        "before_anchors": [
+          [
+            5.0,
+            -0.24,
+            1.65,
+            12.0
+          ],
+          [
+            21.271718978881836,
+            -2.5131789446114143,
+            1.3882256775595683,
+            4.0
+          ]
+        ],
+        "after_anchors": [
+          [
+            5.0,
+            -0.24,
+            1.65,
+            12.0
+          ]
+        ],
+        "rejected": [
+          {
+            "window_x_m": 25.0,
+            "anchor_x_m": 21.271718978881836,
+            "reason": "relocated_heading_exceeds_bound"
+          }
+        ]
+      },
+      {
+        "frame": 8555,
+        "before_anchors": [
+          [
+            15.530911445617676,
+            -0.54,
+            1.65,
+            7.0
+          ],
+          [
+            23.759687423706055,
+            -2.355,
+            1.38,
+            5.0
+          ]
+        ],
+        "after_anchors": [
+          [
+            15.530911445617676,
+            -0.54,
+            1.65,
+            7.0
+          ]
+        ],
+        "rejected": [
+          {
+            "window_x_m": 30.0,
+            "anchor_x_m": 23.759687423706055,
+            "reason": "relocated_heading_exceeds_bound"
+          }
+        ]
+      }
+    ]
+  },
+  "continuity_panel": {
+    "panel": "configs/track-continuity-comparison.json",
+    "panel_sha256": "4e4e1244a8f81632d1964126f7b88f2f82d5228445204afa1c153d07feaeebbd",
+    "accuracy": null,
+    "limitations": [
+      "Alarm counts on nonexhaustively labelled development recordings are not precision, recall or false-alarm rate.",
+      "Repeated frames and candidates are not independent object events.",
+      "Timing is descriptive; concurrent workloads and visualization settings differ.",
+      "Float comparison uses absolute and relative tolerance 1e-10; discrete decisions and IDs are exact."
+    ],
+    "bags": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/rail-measured-real/doubleT_obstacle.jsonl",
+        "after": "build/track-continuity-real/doubleT_obstacle.jsonl",
+        "before_sha256": "0324e4a84c1c89aeef98ab36b1539bb1d3f7f368d7dbed16f8080ae04489626a",
+        "after_sha256": "d0343530e21e84fa8a33d8b16cad1a4fd525f9a536cb33daab575e6ffeb2fef9",
+        "before_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 43,
+            "obstacle": 158
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 48599,
+          "support_voxel_observations": 3899446,
+          "confirmed_intersection_observations": 176,
+          "candidate_observations_at_least_60m": 13092,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 150.6385839311406,
+            "p95": 185.11612503789365,
+            "p99": 223.94362499471754
+          }
+        },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 43,
+            "obstacle": 158
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 48599,
+          "support_voxel_observations": 3899446,
+          "confirmed_intersection_observations": 176,
+          "candidate_observations_at_least_60m": 13092,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 196.8073749449104,
+            "p95": 255.38041605614126,
+            "p99": 274.55224993173033
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "geometry": 201
+        },
+        "first_changed_frames": {
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "largest_compared_float_difference": 5.1405060763620725e-14
+      },
+      {
+        "bag": "doubleT_platform",
+        "before": "build/rail-measured-real/doubleT_platform.jsonl",
+        "after": "build/track-continuity-real/doubleT_platform.jsonl",
+        "before_sha256": "4988d080bc6fe501e5d8c430ad2eac5972bd1abb4d53121d8f7e9d643bfae117",
+        "after_sha256": "e75e6b60d375021f309ad04332830bb6b37825bec8e42dda4623fc5710cb6146",
+        "before_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 279,
+            "obstacle": 66
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68087,
+          "support_voxel_observations": 4236136,
+          "confirmed_intersection_observations": 231,
+          "candidate_observations_at_least_60m": 21893,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 122.47545795980841,
+            "p95": 173.17715038079768,
+            "p99": 256.48518352769327
+          }
+        },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 279,
+            "obstacle": 66
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68087,
+          "support_voxel_observations": 4236136,
+          "confirmed_intersection_observations": 231,
+          "candidate_observations_at_least_60m": 21893,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 194.1520409891382,
+            "p95": 309.4983166083694,
+            "p99": 363.7064484832809
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "geometry": 345
+        },
+        "first_changed_frames": {
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "largest_compared_float_difference": 7.435718707426986e-14
+      },
+      {
+        "bag": "roundT_doubleT",
+        "before": "build/rail-measured-real/roundT_doubleT.jsonl",
+        "after": "build/track-continuity-real/roundT_doubleT.jsonl",
+        "before_sha256": "d2b7a498899f00a34e27d0400c0e20be93012ce291ad06b3e0c9f0d98a9a6580",
+        "after_sha256": "987ab0ea7ce0a0394a25d8d9bf68c96b9f9b23282e14a55509fdd37a4e63ae1c",
+        "before_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 207,
+            "obstacle": 44
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48175,
+          "support_voxel_observations": 4071997,
+          "confirmed_intersection_observations": 82,
+          "candidate_observations_at_least_60m": 10943,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 138.0001869983971,
+            "p95": 201.51727534830562,
+            "p99": 269.8422720108648
+          }
+        },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 209,
+            "obstacle": 42
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48269,
+          "support_voxel_observations": 4076404,
+          "confirmed_intersection_observations": 86,
+          "candidate_observations_at_least_60m": 11025,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 215.99168749526143,
+            "p95": 308.6846962105483,
+            "p99": 349.7310116887093
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "geometry": 252,
+          "status": 8,
+          "objects": 154,
+          "range_observability": 6,
+          "nearest_obstacle_m": 2
+        },
+        "first_changed_frames": {
+          "status": [
+            98,
+            99,
+            103,
+            121,
+            122,
+            129,
+            131,
+            145
+          ],
+          "nearest_obstacle_m": [
+            144,
+            153
+          ],
+          "objects": [
+            98,
+            99,
+            100,
+            101,
+            102,
+            103,
+            104,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            111,
+            112,
+            113,
+            114,
+            115,
+            116,
+            117,
+            118,
+            119,
+            120,
+            121,
+            122,
+            123,
+            124,
+            125,
+            126,
+            127
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            98,
+            121,
+            129,
+            134,
+            135,
+            145
+          ]
+        },
+        "largest_compared_float_difference": 8.935598373413086
+      },
+      {
+        "bag": "new_data_0",
+        "before": "build/extended-measured/new_data_0.jsonl",
+        "after": "build/track-continuity-real/new_data_0.jsonl",
+        "before_sha256": "e6d475a693aa29b7f700c7949d353e84ef2dbe2a31bdb6956b58fd45dee5d1ea",
+        "after_sha256": "be62fe3c08fe3114b0b940c378a99f0406930407056c85198486c8fe5a1388e4",
+        "before_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 49,
+            "obstacle": 2
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 10771,
+          "support_voxel_observations": 793026,
+          "confirmed_intersection_observations": 8,
+          "candidate_observations_at_least_60m": 2699,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 119.264250039123,
+            "p95": 180.71420851629227,
+            "p99": 848.1065420201048
+          }
+        },
+        "after_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 51
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 10799,
+          "support_voxel_observations": 794059,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 2771,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 176.93062499165535,
+            "p95": 249.78377053048462,
+            "p99": 280.51933349343017
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "geometry": 51,
+          "status": 2,
+          "objects": 35,
+          "range_observability": 2,
+          "nearest_obstacle_m": 1
+        },
+        "first_changed_frames": {
+          "status": [
+            16,
+            44
+          ],
+          "nearest_obstacle_m": [
+            44
+          ],
+          "objects": [
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            16,
+            44
+          ]
+        },
+        "largest_compared_float_difference": 0.037618398666381836
+      },
+      {
+        "bag": "new_data_100",
+        "before": "build/extended-measured/new_data_100.jsonl",
+        "after": "build/track-continuity-real/new_data_100.jsonl",
+        "before_sha256": "835d7be3dc8bc93de26649c1e314e8438e9adf2ba408d09950d16cda4968b2cc",
+        "after_sha256": "294b8cf98e9ed7579827442ff041fdc40d73e390c7d159eebe2bf24d1d07c05c",
+        "before_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 51
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 8964,
+          "support_voxel_observations": 694451,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 2312,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 191.28158292733133,
+            "p95": 311.2858335371129,
+            "p99": 361.48358351783827
+          }
+        },
+        "after_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 51
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 8964,
+          "support_voxel_observations": 694451,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 2312,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 285.4232080280781,
+            "p95": 539.1658334410749,
+            "p99": 703.1233749585226
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "geometry": 51
+        },
+        "first_changed_frames": {
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "largest_compared_float_difference": 6.17284001691587e-14
+      },
+      {
+        "bag": "new_data_200",
+        "before": "build/extended-measured/new_data_200.jsonl",
+        "after": "build/track-continuity-real/new_data_200.jsonl",
+        "before_sha256": "0a7a5fc26dc83e36046b186ff66f68021406d22e1a6f52dce27b50d5b2e27652",
+        "after_sha256": "2ac413cb1574515fb879fa7984cd11f9b9739ce80c44e5eca6f55099e9cdb316",
+        "before_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 27,
+            "obstacle": 22,
+            "unknown": 1
+          },
+          "health_frames": {
+            "degraded": 50,
+            "unavailable": 1
+          },
+          "geometry_valid_frames": 50,
+          "motion_valid_frames": 49,
+          "candidate_observations": 11328,
+          "support_voxel_observations": 1066051,
+          "confirmed_intersection_observations": 27,
+          "candidate_observations_at_least_60m": 3177,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 142.41370907984674,
+            "p95": 193.54874943383038,
+            "p99": 261.66604150785133
+          }
+        },
+        "after_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 27,
+            "obstacle": 22,
+            "unknown": 1
+          },
+          "health_frames": {
+            "degraded": 50,
+            "unavailable": 1
+          },
+          "geometry_valid_frames": 50,
+          "motion_valid_frames": 49,
+          "candidate_observations": 11328,
+          "support_voxel_observations": 1066051,
+          "confirmed_intersection_observations": 27,
+          "candidate_observations_at_least_60m": 3177,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 303.85304207447916,
+            "p95": 578.4914999967441,
+            "p99": 660.8534580445848
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "geometry": 51
+        },
+        "first_changed_frames": {
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "largest_compared_float_difference": 3.5915714846623814e-14
+      }
+    ]
+  },
+  "local3d_panel": {
+    "panel": "configs/track-local3d-comparison.json",
+    "panel_sha256": "93324d9780419de2352c8de337d0b5d8851610221070c1b561a321b6a2a2bd3f",
+    "accuracy": null,
+    "limitations": [
+      "Alarm counts on nonexhaustively labelled development recordings are not precision, recall or false-alarm rate.",
+      "Repeated frames and candidates are not independent object events.",
+      "Timing is descriptive; concurrent workloads and visualization settings differ.",
+      "Float comparison uses absolute and relative tolerance 1e-10; discrete decisions and IDs are exact."
+    ],
+    "bags": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/rail-measured-real/doubleT_obstacle.jsonl",
+        "after": "build/track-local3d-final-real-supported/doubleT_obstacle.jsonl",
+        "before_sha256": "0324e4a84c1c89aeef98ab36b1539bb1d3f7f368d7dbed16f8080ae04489626a",
+        "after_sha256": "9c950965fced2e8cb6c5a1af70aa8760bd1756684ebcf1242614c4dc73c4362b",
+        "before_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 43,
+            "obstacle": 158
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 48599,
+          "support_voxel_observations": 3899446,
+          "confirmed_intersection_observations": 176,
+          "candidate_observations_at_least_60m": 13092,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 150.6385839311406,
+            "p95": 185.11612503789365,
+            "p99": 223.94362499471754
+          }
+        },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 197,
+            "obstacle": 4
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 48546,
+          "support_voxel_observations": 3885912,
+          "confirmed_intersection_observations": 4,
+          "candidate_observations_at_least_60m": 12957,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 222.25450002588332,
+            "p95": 265.84216696210206,
+            "p99": 311.99208297766745
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "nearest_obstacle_m": 5,
+          "objects": 201,
+          "geometry": 201,
+          "range_observability": 201,
+          "health_reasons": 201,
+          "status": 154
+        },
+        "first_changed_frames": {
+          "status": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            34,
+            35,
+            36,
+            37,
+            38
+          ],
+          "nearest_obstacle_m": [
+            0,
+            11,
+            21,
+            29,
+            165
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "health_reasons": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "largest_compared_float_difference": 11.675186157226562
+      },
+      {
+        "bag": "doubleT_platform",
+        "before": "build/rail-measured-real/doubleT_platform.jsonl",
+        "after": "build/track-local3d-final-real-supported/doubleT_platform.jsonl",
+        "before_sha256": "4988d080bc6fe501e5d8c430ad2eac5972bd1abb4d53121d8f7e9d643bfae117",
+        "after_sha256": "e162e003cbb627ffde1523d73d2ab4a14b5d8d085fcf07c0cea55543a9e3931e",
+        "before_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 279,
+            "obstacle": 66
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68087,
+          "support_voxel_observations": 4236136,
+          "confirmed_intersection_observations": 231,
+          "candidate_observations_at_least_60m": 21893,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 122.47545795980841,
+            "p95": 173.17715038079768,
+            "p99": 256.48518352769327
+          }
+        },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 345
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 69281,
+          "support_voxel_observations": 4266405,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 21796,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 161.101208999753,
+            "p95": 224.72836654633286,
+            "p99": 280.48874998465186
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 345,
+          "geometry": 345,
+          "range_observability": 345,
+          "health_reasons": 345,
+          "nearest_obstacle_m": 87,
+          "status": 66
+        },
+        "first_changed_frames": {
+          "status": [
+            98,
+            228,
+            229,
+            248,
+            262,
+            263,
+            264,
+            266,
+            267,
+            268,
+            270,
+            271,
+            275,
+            276,
+            278,
+            279,
+            283,
+            284,
+            285,
+            287,
+            288,
+            289,
+            290,
+            291,
+            293,
+            295,
+            297,
+            298,
+            299,
+            300
+          ],
+          "nearest_obstacle_m": [
+            1,
+            17,
+            21,
+            22,
+            25,
+            26,
+            27,
+            28,
+            29,
+            31,
+            32,
+            33,
+            34,
+            36,
+            37,
+            55,
+            63,
+            66,
+            69,
+            75,
+            76,
+            78,
+            90,
+            92,
+            94,
+            96,
+            101,
+            105,
+            112,
+            122
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "health_reasons": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "largest_compared_float_difference": 8.69599199295044
+      },
+      {
+        "bag": "roundT_doubleT",
+        "before": "build/rail-measured-real/roundT_doubleT.jsonl",
+        "after": "build/track-local3d-final-real-supported/roundT_doubleT.jsonl",
+        "before_sha256": "d2b7a498899f00a34e27d0400c0e20be93012ce291ad06b3e0c9f0d98a9a6580",
+        "after_sha256": "3d01c117ec4af20ddb1d725fdd8b6fd06f26114710d9ece53baba353a3a0ab9e",
+        "before_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 207,
+            "obstacle": 44
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48175,
+          "support_voxel_observations": 4071997,
+          "confirmed_intersection_observations": 82,
+          "candidate_observations_at_least_60m": 10943,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 138.0001869983971,
+            "p95": 201.51727534830562,
+            "p99": 269.8422720108648
+          }
+        },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "unresolved_obstacle": 252
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 49087,
+          "support_voxel_observations": 4093458,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 10924,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 173.3501044800505,
+            "p95": 211.54827054124326,
+            "p99": 226.1366635235027
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "status": 45,
+          "nearest_obstacle_m": 57,
+          "objects": 252,
+          "geometry": 252,
+          "range_observability": 252,
+          "health_reasons": 252
+        },
+        "first_changed_frames": {
+          "status": [
+            0,
+            79,
+            81,
+            82,
+            83,
+            84,
+            85,
+            86,
+            87,
+            88,
+            89,
+            90,
+            92,
+            93,
+            94,
+            95,
+            96,
+            100,
+            101,
+            102,
+            103,
+            105,
+            106,
+            107,
+            108,
+            109,
+            110,
+            121,
+            122,
+            124
+          ],
+          "nearest_obstacle_m": [
+            0,
+            68,
+            84,
+            85,
+            98,
+            99,
+            103,
+            104,
+            111,
+            112,
+            113,
+            119,
+            120,
+            124,
+            126,
+            127,
+            129,
+            132,
+            133,
+            134,
+            135,
+            136,
+            137,
+            138,
+            144,
+            145,
+            147,
+            152,
+            153,
+            154
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "health_reasons": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "largest_compared_float_difference": 57.83364462852478
+      },
+      {
+        "bag": "new_data_0",
+        "before": "build/extended-measured/new_data_0.jsonl",
+        "after": "build/track-local3d-final-real-supported/new_data_0.jsonl",
+        "before_sha256": "e6d475a693aa29b7f700c7949d353e84ef2dbe2a31bdb6956b58fd45dee5d1ea",
+        "after_sha256": "4efbe6fff11d1dcbccbefbdf62c5d909a8f0467603f0ced82fd7244676fbd805",
+        "before_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 49,
+            "obstacle": 2
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 10771,
+          "support_voxel_observations": 793026,
+          "confirmed_intersection_observations": 8,
+          "candidate_observations_at_least_60m": 2699,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 119.264250039123,
+            "p95": 180.71420851629227,
+            "p99": 848.1065420201048
+          }
+        },
+        "after_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 51
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 13799,
+          "support_voxel_observations": 884408,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 2686,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 148.3416670234874,
+            "p95": 166.79731250042096,
+            "p99": 179.6275625238195
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 51,
+          "geometry": 51,
+          "range_observability": 51,
+          "health_reasons": 51,
+          "nearest_obstacle_m": 27,
+          "status": 2
+        },
+        "first_changed_frames": {
+          "status": [
+            16,
+            44
+          ],
+          "nearest_obstacle_m": [
+            1,
+            15,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            27,
+            29,
+            30,
+            31,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            44,
+            47
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "health_reasons": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "largest_compared_float_difference": 0.018256664276123047
+      },
+      {
+        "bag": "new_data_100",
+        "before": "build/extended-measured/new_data_100.jsonl",
+        "after": "build/track-local3d-final-real-supported/new_data_100.jsonl",
+        "before_sha256": "835d7be3dc8bc93de26649c1e314e8438e9adf2ba408d09950d16cda4968b2cc",
+        "after_sha256": "b85fe589ea3afedb34cab4c58838ab39f77f98d0bbe5db1c797d3489930c2f23",
+        "before_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 51
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 8964,
+          "support_voxel_observations": 694451,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 2312,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 191.28158292733133,
+            "p95": 311.2858335371129,
+            "p99": 361.48358351783827
+          }
+        },
+        "after_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 51
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 9005,
+          "support_voxel_observations": 688958,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 2301,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 189.3692499725148,
+            "p95": 236.06293741613626,
+            "p99": 242.00043792370707
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "nearest_obstacle_m": 4,
+          "objects": 51,
+          "geometry": 51,
+          "range_observability": 51,
+          "health_reasons": 51
+        },
+        "first_changed_frames": {
+          "nearest_obstacle_m": [
+            0,
+            4,
+            7,
+            27
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "health_reasons": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "largest_compared_float_difference": 30.193626403808594
+      },
+      {
+        "bag": "new_data_200",
+        "before": "build/extended-measured/new_data_200.jsonl",
+        "after": "build/track-local3d-final-real-supported/new_data_200.jsonl",
+        "before_sha256": "0a7a5fc26dc83e36046b186ff66f68021406d22e1a6f52dce27b50d5b2e27652",
+        "after_sha256": "d0b02daf3f02c921cf90ba40b4a86bb9bf990d85f255c0fc103a2f54d188ccf9",
+        "before_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 27,
+            "obstacle": 22,
+            "unknown": 1
+          },
+          "health_frames": {
+            "degraded": 50,
+            "unavailable": 1
+          },
+          "geometry_valid_frames": 50,
+          "motion_valid_frames": 49,
+          "candidate_observations": 11328,
+          "support_voxel_observations": 1066051,
+          "confirmed_intersection_observations": 27,
+          "candidate_observations_at_least_60m": 3177,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 142.41370907984674,
+            "p95": 193.54874943383038,
+            "p99": 261.66604150785133
+          }
+        },
+        "after_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 49,
+            "unknown": 1
+          },
+          "health_frames": {
+            "degraded": 50,
+            "unavailable": 1
+          },
+          "geometry_valid_frames": 50,
+          "motion_valid_frames": 49,
+          "candidate_observations": 11552,
+          "support_voxel_observations": 1073539,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 3165,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 178.4543750109151,
+            "p95": 218.26952102128416,
+            "p99": 225.19960399949923
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 50,
+          "geometry": 51,
+          "range_observability": 50,
+          "health_reasons": 51,
+          "nearest_obstacle_m": 21,
+          "status": 22
+        },
+        "first_changed_frames": {
+          "status": [
+            13,
+            14,
+            15,
+            16,
+            18,
+            21,
+            23,
+            25,
+            26,
+            28,
+            30,
+            36,
+            37,
+            38,
+            39,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            49
+          ],
+          "nearest_obstacle_m": [
+            6,
+            11,
+            15,
+            18,
+            22,
+            26,
+            28,
+            30,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            39,
+            40,
+            41,
+            42,
+            43,
+            47,
+            50
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "range_observability": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "health_reasons": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "largest_compared_float_difference": 11.69789981842041
+      }
+    ]
+  },
+  "provisional_evaluation": {
+    "label_status": "provisional_geometry",
+    "prediction_scope": "near_track_objects",
+    "annotation_origins": {
+      "unspecified": 5
+    },
+    "box_semantics": "unspecified",
+    "minimum_3d_iou": 0.25,
+    "evaluated_frames": 5,
+    "missing_frames": [],
+    "exhaustive_frames": 0,
+    "tp": 5,
+    "fn": 0,
+    "fp_exhaustive_only": 0,
+    "annotated_object_recall": 1.0,
+    "precision_exhaustive_only": null,
+    "recall_exhaustive_only": null,
+    "f1_exhaustive_only": null,
+    "event_recall": 1.0,
+    "distance_mae_m": 0.2011451721191392,
+    "matched_mean_3d_iou": 0.2899528557285131,
+    "validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+      "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+    ],
+    "events": {
+      "doubleT_obstacle:upright_structure_17m": {
+        "annotated_frames": 5,
+        "matched_frames": 5,
+        "first_detection_distance_m": 16.6
+      }
+    },
+    "frames": [
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 0,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": [
+          [
+            1,
+            0,
+            0.29106698351000215
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 50,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": [
+          [
+            33,
+            0,
+            0.2924421902168482
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 100,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": [
+          [
+            36,
+            0,
+            0.28829471060006123
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 150,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": [
+          [
+            38,
+            0,
+            0.28024504337075506
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 200,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": [
+          [
+            45,
+            0,
+            0.29771535094489876
+          ]
+        ]
+      }
+    ],
+    "annotations_sha256": "8dfe58e0e2723fec56298cd656a99adff992edace2a5ea965eeacd125b7fd8c6",
+    "run": "build/track-local3d-final-real-supported"
+  },
+  "default_promotion": {
+    "bag": "new_data_0",
+    "before": "build/track-continuity-real/new_data_0.jsonl",
+    "after": "build/track-default-promoted/new_data_0.jsonl",
+    "before_sha256": "be62fe3c08fe3114b0b940c378a99f0406930407056c85198486c8fe5a1388e4",
+    "after_sha256": "fee3bfa999667ca03548088ab770cb44b7a75c6c496c8a373cc05fb096d28ab8",
+    "before_statistics": {
+      "frames": 51,
+      "status_frames": {
+        "unresolved_obstacle": 51
+      },
+      "health_frames": {
+        "degraded": 51
+      },
+      "geometry_valid_frames": 51,
+      "motion_valid_frames": 50,
+      "candidate_observations": 10799,
+      "support_voxel_observations": 794059,
+      "confirmed_intersection_observations": 0,
+      "candidate_observations_at_least_60m": 2771,
+      "histories_with_future_timestamps": 0,
+      "histories_with_duplicate_timestamps": 0,
+      "processing_ms": {
+        "p50": 176.93062499165535,
+        "p95": 249.78377053048462,
+        "p99": 280.51933349343017
+      }
+    },
+    "after_statistics": {
+      "frames": 51,
+      "status_frames": {
+        "unresolved_obstacle": 51
+      },
+      "health_frames": {
+        "degraded": 51
+      },
+      "geometry_valid_frames": 51,
+      "motion_valid_frames": 50,
+      "candidate_observations": 10799,
+      "support_voxel_observations": 794059,
+      "confirmed_intersection_observations": 0,
+      "candidate_observations_at_least_60m": 2771,
+      "histories_with_future_timestamps": 0,
+      "histories_with_duplicate_timestamps": 0,
+      "processing_ms": {
+        "p50": 109.84524991363287,
+        "p95": 128.21812502807006,
+        "p99": 781.9073334685527
+      }
+    },
+    "missing_after": [],
+    "extra_after": [],
+    "measurement_identity_errors": [],
+    "changed_frames_by_field": {
+      "geometry": 51
+    },
+    "first_changed_frames": {
+      "geometry": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29
+      ]
+    },
+    "largest_compared_float_difference": 7.200490204084531e-14,
+    "changed_numeric_geometry_frames": 0
+  },
+  "synthetic_geometry": {
+    "run": "build/track-curves-scenes-supported",
+    "input_sha256": "c32c07294934a16f7d63d54ddda8c153d0e7bd49dbc2aa52ab6b728c384bdfc3",
+    "cases": [
+      {
+        "case": "straight",
+        "frames": 6,
+        "local_supported_length_m": [
+          77.81118780944963,
+          77.81440064322612,
+          61.912673963616506,
+          77.81759406704452,
+          77.81119547703037,
+          61.89284485698106
+        ],
+        "metrics": {
+          "baseline": {
+            "height_errors_m": {
+              "n": 69,
+              "median": 0.0003206131199657847,
+              "max": 0.0008173889270814971
+            },
+            "center_errors_m": {
+              "n": 69,
+              "median": 0.001367860389623542,
+              "max": 0.003621385948769302
+            },
+            "normal_errors_deg": {
+              "n": 69,
+              "median": 0.021437918508452093,
+              "max": 0.024285796520272268
+            },
+            "matched_candidate_frames": 6,
+            "matched_intersection_frames": 6
+          },
+          "continuity": {
+            "height_errors_m": {
+              "n": 69,
+              "median": 0.0003206131199657847,
+              "max": 0.0008173889270814971
+            },
+            "center_errors_m": {
+              "n": 69,
+              "median": 0.001367860389623542,
+              "max": 0.003621385948769302
+            },
+            "normal_errors_deg": {
+              "n": 69,
+              "median": 0.021437918508452093,
+              "max": 0.024285796520272268
+            },
+            "matched_candidate_frames": 6,
+            "matched_intersection_frames": 6
+          },
+          "local3d": {
+            "height_errors_m": {
+              "n": 69,
+              "median": 0.013291956537025307,
+              "max": 0.024388647102258965
+            },
+            "center_errors_m": {
+              "n": 69,
+              "median": 0.013362364389714432,
+              "max": 0.024432750767340205
+            },
+            "normal_errors_deg": {
+              "n": 69,
+              "median": 0.1451003576588267,
+              "max": 0.8252372371849528
+            },
+            "matched_candidate_frames": 6,
+            "matched_intersection_frames": 6
+          }
+        }
+      },
+      {
+        "case": "left_uphill",
+        "frames": 6,
+        "local_supported_length_m": [
+          26.981077500049647,
+          27.00628609632184,
+          26.98585807851072,
+          29.958790793878165,
+          26.994726729729855,
+          32.00975032203864
+        ],
+        "metrics": {
+          "baseline": {
+            "height_errors_m": {
+              "n": 32,
+              "median": 0.01601161195686507,
+              "max": 0.030926038215010054
+            },
+            "center_errors_m": {
+              "n": 32,
+              "median": 0.020644131224809906,
+              "max": 0.06291424225972062
+            },
+            "normal_errors_deg": {
+              "n": 32,
+              "median": 0.40836951559046947,
+              "max": 1.467785936773327
+            },
+            "matched_candidate_frames": 6,
+            "matched_intersection_frames": 6
+          },
+          "continuity": {
+            "height_errors_m": {
+              "n": 32,
+              "median": 0.01596600786145863,
+              "max": 0.03501210142155953
+            },
+            "center_errors_m": {
+              "n": 32,
+              "median": 0.021577150697908692,
+              "max": 0.05955899172627131
+            },
+            "normal_errors_deg": {
+              "n": 32,
+              "median": 0.40836951559046947,
+              "max": 1.467785936773327
+            },
+            "matched_candidate_frames": 6,
+            "matched_intersection_frames": 6
+          },
+          "local3d": {
+            "height_errors_m": {
+              "n": 32,
+              "median": 0.002069829097422371,
+              "max": 0.045826534160673504
+            },
+            "center_errors_m": {
+              "n": 32,
+              "median": 0.015490969543835565,
+              "max": 0.0663897892278479
+            },
+            "normal_errors_deg": {
+              "n": 32,
+              "median": 0.0954945313521367,
+              "max": 1.5790237052835663
+            },
+            "matched_candidate_frames": 6,
+            "matched_intersection_frames": 6
+          }
+        }
+      },
+      {
+        "case": "right_downhill",
+        "frames": 6,
+        "local_supported_length_m": [
+          28.96433782618212,
+          28.97657089189955,
+          28.96164711090664,
+          28.96197312645147,
+          28.984556691204908,
+          28.961854688766905
+        ],
+        "metrics": {
+          "baseline": {
+            "height_errors_m": {
+              "n": 34,
+              "median": 0.00781936794154281,
+              "max": 0.02793280703444445
+            },
+            "center_errors_m": {
+              "n": 34,
+              "median": 0.020443966469450674,
+              "max": 0.03432557656492043
+            },
+            "normal_errors_deg": {
+              "n": 34,
+              "median": 0.5008748605674465,
+              "max": 1.5188156732197369
+            },
+            "matched_candidate_frames": 6,
+            "matched_intersection_frames": 6
+          },
+          "continuity": {
+            "height_errors_m": {
+              "n": 34,
+              "median": 0.00781936794154281,
+              "max": 0.02793280703444445
+            },
+            "center_errors_m": {
+              "n": 34,
+              "median": 0.020443966469450674,
+              "max": 0.03432557656492043
+            },
+            "normal_errors_deg": {
+              "n": 34,
+              "median": 0.5008748605674465,
+              "max": 1.5188156732197369
+            },
+            "matched_candidate_frames": 6,
+            "matched_intersection_frames": 6
+          },
+          "local3d": {
+            "height_errors_m": {
+              "n": 34,
+              "median": 0.02101332344804896,
+              "max": 0.029192162689721135
+            },
+            "center_errors_m": {
+              "n": 34,
+              "median": 0.027108045699914242,
+              "max": 0.03510485985127967
+            },
+            "normal_errors_deg": {
+              "n": 34,
+              "median": 0.372360755915885,
+              "max": 0.592759603134929
+            },
+            "matched_candidate_frames": 6,
+            "matched_intersection_frames": 6
+          }
+        }
+      },
+      {
+        "case": "cant_transition",
+        "frames": 6,
+        "local_supported_length_m": [
+          26.912963840611603,
+          26.91418748158606,
+          26.92071709416402,
+          26.893581256479383,
+          26.89419598738416,
+          56.964223955571754
+        ],
+        "metrics": {
+          "baseline": {
+            "height_errors_m": {
+              "n": 32,
+              "median": 0.008618322296628622,
+              "max": 0.0778829156404428
+            },
+            "center_errors_m": {
+              "n": 32,
+              "median": 0.016473555985443665,
+              "max": 0.3344267888269365
+            },
+            "normal_errors_deg": {
+              "n": 32,
+              "median": 0.7746949908278756,
+              "max": 4.161547690675486
+            },
+            "matched_candidate_frames": 6,
+            "matched_intersection_frames": 6
+          },
+          "continuity": {
+            "height_errors_m": {
+              "n": 32,
+              "median": 0.009950302873287464,
+              "max": 0.0778829156404428
+            },
+            "center_errors_m": {
+              "n": 32,
+              "median": 0.016504569596400766,
+              "max": 0.3344267888269365
+            },
+            "normal_errors_deg": {
+              "n": 32,
+              "median": 0.7746949908278756,
+              "max": 4.161547690675486
+            },
+            "matched_candidate_frames": 6,
+            "matched_intersection_frames": 6
+          },
+          "local3d": {
+            "height_errors_m": {
+              "n": 32,
+              "median": 0.012526197596813726,
+              "max": 0.09549681119479447
+            },
+            "center_errors_m": {
+              "n": 32,
+              "median": 0.019604893254052316,
+              "max": 0.33896189975396074
+            },
+            "normal_errors_deg": {
+              "n": 32,
+              "median": 0.2370613803249303,
+              "max": 1.6795394849872851
+            },
+            "matched_candidate_frames": 6,
+            "matched_intersection_frames": 6
+          }
+        }
+      }
+    ],
+    "scope": "Geometric residuals at local-3D supported segment midpoints in authored scenes only.",
+    "limitations": [
+      "Coverage selected by local-3D estimator, not unbiased route-wide accuracy.",
+      "Other variants skip unavailable geometry; compare sample counts.",
+      "Normals and head centres reference the analytic scene; meshes approximate it with finite segments."
+    ]
+  },
+  "synthetic_scenes": {
+    "track-curves-scenes-supported": {
+      "cases": [
+        {
+          "case": {
+            "id": "straight",
+            "horizontal_curvature": 0,
+            "vertical_curvature": 0,
+            "grade": 0,
+            "cant_gradient_rad_per_m": 0,
+            "object": {
+              "station_m": 20,
+              "lateral_m": 0,
+              "dimensions_m": [
+                0.4,
+                0.5,
+                0.8
+              ]
+            }
+          },
+          "shared_cloud_sequence_sha256": "8ecd462dea0b1362eea4e88add6cba45a5684209483e45b29d7f56a816974007",
+          "records": [
+            {
+              "frame": 0,
+              "detector": "baseline",
+              "visible_object_points": 251,
+              "candidate_iou": 0.2654306715938191,
+              "intersection_iou": 0.2654306715938191,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "continuity",
+              "visible_object_points": 251,
+              "candidate_iou": 0.2654306715938191,
+              "intersection_iou": 0.2654306715938191,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "local3d",
+              "visible_object_points": 251,
+              "candidate_iou": 0.28622987565598706,
+              "intersection_iou": 0.28622987565598706,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 1,
+              "detector": "baseline",
+              "visible_object_points": 249,
+              "candidate_iou": 0.26030625139133645,
+              "intersection_iou": 0.26030625139133645,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "continuity",
+              "visible_object_points": 249,
+              "candidate_iou": 0.26030625139133645,
+              "intersection_iou": 0.26030625139133645,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "local3d",
+              "visible_object_points": 249,
+              "candidate_iou": 0.2800263612798295,
+              "intersection_iou": 0.2800263612798295,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 2,
+              "detector": "baseline",
+              "visible_object_points": 255,
+              "candidate_iou": 0.9092216808267511,
+              "intersection_iou": 0.9092216808267511,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "continuity",
+              "visible_object_points": 255,
+              "candidate_iou": 0.9092216808267511,
+              "intersection_iou": 0.9092216808267511,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "local3d",
+              "visible_object_points": 255,
+              "candidate_iou": 0.9758430527291001,
+              "intersection_iou": 0.9758430527291001,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 10
+            },
+            {
+              "frame": 3,
+              "detector": "baseline",
+              "visible_object_points": 253,
+              "candidate_iou": 0.281848542219145,
+              "intersection_iou": 0.281848542219145,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "continuity",
+              "visible_object_points": 253,
+              "candidate_iou": 0.281848542219145,
+              "intersection_iou": 0.281848542219145,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "local3d",
+              "visible_object_points": 253,
+              "candidate_iou": 0.30349255355180355,
+              "intersection_iou": 0.30349255355180355,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 4,
+              "detector": "baseline",
+              "visible_object_points": 255,
+              "candidate_iou": 0.9234635427522306,
+              "intersection_iou": 0.9234635427522306,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "continuity",
+              "visible_object_points": 255,
+              "candidate_iou": 0.9234635427522306,
+              "intersection_iou": 0.9234635427522306,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "local3d",
+              "visible_object_points": 255,
+              "candidate_iou": 0.9920626967157867,
+              "intersection_iou": 0.9920626967157867,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 5,
+              "detector": "baseline",
+              "visible_object_points": 258,
+              "candidate_iou": 0.2338809815616544,
+              "intersection_iou": 0.2338809815616544,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "continuity",
+              "visible_object_points": 258,
+              "candidate_iou": 0.2338809815616544,
+              "intersection_iou": 0.2338809815616544,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "local3d",
+              "visible_object_points": 258,
+              "candidate_iou": 0.25176311752510544,
+              "intersection_iou": 0.25176311752510544,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 11
+            }
+          ]
+        },
+        {
+          "case": {
+            "id": "left_uphill",
+            "horizontal_curvature": 0.0015,
+            "vertical_curvature": 0.0008,
+            "grade": 0.01,
+            "cant_gradient_rad_per_m": 0.001,
+            "object": {
+              "station_m": 20,
+              "lateral_m": 0,
+              "dimensions_m": [
+                0.4,
+                0.5,
+                0.8
+              ]
+            }
+          },
+          "shared_cloud_sequence_sha256": "5e39e78aea0e4e226c0bd8cb6890ec28bfe4e9b488d1230b2b4f35868e4f7db5",
+          "records": [
+            {
+              "frame": 0,
+              "detector": "baseline",
+              "visible_object_points": 260,
+              "candidate_iou": 0.39234678344086377,
+              "intersection_iou": 0.39234678344086377,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "continuity",
+              "visible_object_points": 260,
+              "candidate_iou": 0.39234678344086377,
+              "intersection_iou": 0.39234678344086377,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "local3d",
+              "visible_object_points": 260,
+              "candidate_iou": 0.39234678344086377,
+              "intersection_iou": 0.39234678344086377,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 1,
+              "detector": "baseline",
+              "visible_object_points": 265,
+              "candidate_iou": 0.40818044795470126,
+              "intersection_iou": 0.40818044795470126,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "continuity",
+              "visible_object_points": 265,
+              "candidate_iou": 0.40818044795470126,
+              "intersection_iou": 0.40818044795470126,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "local3d",
+              "visible_object_points": 265,
+              "candidate_iou": 0.40818044795470126,
+              "intersection_iou": 0.40818044795470126,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 2,
+              "detector": "baseline",
+              "visible_object_points": 261,
+              "candidate_iou": 0.931941043366605,
+              "intersection_iou": 0.931941043366605,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "continuity",
+              "visible_object_points": 261,
+              "candidate_iou": 0.931941043366605,
+              "intersection_iou": 0.931941043366605,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "local3d",
+              "visible_object_points": 261,
+              "candidate_iou": 0.931941043366605,
+              "intersection_iou": 0.931941043366605,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 3,
+              "detector": "baseline",
+              "visible_object_points": 260,
+              "candidate_iou": 0.4064864716318461,
+              "intersection_iou": 0.4064864716318461,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "continuity",
+              "visible_object_points": 260,
+              "candidate_iou": 0.4064864716318461,
+              "intersection_iou": 0.4064864716318461,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "local3d",
+              "visible_object_points": 260,
+              "candidate_iou": 0.4064864716318461,
+              "intersection_iou": 0.4064864716318461,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 6
+            },
+            {
+              "frame": 4,
+              "detector": "baseline",
+              "visible_object_points": 266,
+              "candidate_iou": 0.4248257343916781,
+              "intersection_iou": 0.4248257343916781,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "continuity",
+              "visible_object_points": 266,
+              "candidate_iou": 0.4248257343916781,
+              "intersection_iou": 0.4248257343916781,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "local3d",
+              "visible_object_points": 266,
+              "candidate_iou": 0.4248257343916781,
+              "intersection_iou": 0.4248257343916781,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 5,
+              "detector": "baseline",
+              "visible_object_points": 261,
+              "candidate_iou": 0.41854244095609255,
+              "intersection_iou": 0.41854244095609255,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "continuity",
+              "visible_object_points": 261,
+              "candidate_iou": 0.41854244095609255,
+              "intersection_iou": 0.41854244095609255,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "local3d",
+              "visible_object_points": 261,
+              "candidate_iou": 0.41854244095609255,
+              "intersection_iou": 0.41854244095609255,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 6
+            }
+          ]
+        },
+        {
+          "case": {
+            "id": "right_downhill",
+            "horizontal_curvature": -0.0015,
+            "vertical_curvature": -0.0008,
+            "grade": -0.01,
+            "cant_gradient_rad_per_m": -0.001,
+            "object": {
+              "station_m": 20,
+              "lateral_m": 0,
+              "dimensions_m": [
+                0.4,
+                0.5,
+                0.8
+              ]
+            }
+          },
+          "shared_cloud_sequence_sha256": "cbfe8ad360631f2739ba463a27b8eb41697e080ad295d0174672b297665296e8",
+          "records": [
+            {
+              "frame": 0,
+              "detector": "baseline",
+              "visible_object_points": 253,
+              "candidate_iou": 0.8686728431520149,
+              "intersection_iou": 0.8686728431520149,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "continuity",
+              "visible_object_points": 253,
+              "candidate_iou": 0.8686728431520149,
+              "intersection_iou": 0.8686728431520149,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "local3d",
+              "visible_object_points": 253,
+              "candidate_iou": 0.928533040340618,
+              "intersection_iou": 0.928533040340618,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 1,
+              "detector": "baseline",
+              "visible_object_points": 249,
+              "candidate_iou": 0.8533590007976473,
+              "intersection_iou": 0.8533590007976473,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "continuity",
+              "visible_object_points": 249,
+              "candidate_iou": 0.8533590007976473,
+              "intersection_iou": 0.8533590007976473,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "local3d",
+              "visible_object_points": 249,
+              "candidate_iou": 0.91412528446477,
+              "intersection_iou": 0.91412528446477,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 2,
+              "detector": "baseline",
+              "visible_object_points": 254,
+              "candidate_iou": 0.6131868799993151,
+              "intersection_iou": 0.6131868799993151,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "continuity",
+              "visible_object_points": 254,
+              "candidate_iou": 0.6131868799993151,
+              "intersection_iou": 0.6131868799993151,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "local3d",
+              "visible_object_points": 254,
+              "candidate_iou": 0.6551223388453105,
+              "intersection_iou": 0.6551223388453105,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 6
+            },
+            {
+              "frame": 3,
+              "detector": "baseline",
+              "visible_object_points": 255,
+              "candidate_iou": 0.6387869030284664,
+              "intersection_iou": 0.6387869030284664,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "continuity",
+              "visible_object_points": 255,
+              "candidate_iou": 0.6387869030284664,
+              "intersection_iou": 0.6387869030284664,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "local3d",
+              "visible_object_points": 255,
+              "candidate_iou": 0.6818519981656731,
+              "intersection_iou": 0.6818519981656731,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 6
+            },
+            {
+              "frame": 4,
+              "detector": "baseline",
+              "visible_object_points": 257,
+              "candidate_iou": 0.8963900271601491,
+              "intersection_iou": 0.8963900271601491,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "continuity",
+              "visible_object_points": 257,
+              "candidate_iou": 0.8963900271601491,
+              "intersection_iou": 0.8963900271601491,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "local3d",
+              "visible_object_points": 257,
+              "candidate_iou": 0.9856578090360584,
+              "intersection_iou": 0.9856578090360584,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 6
+            },
+            {
+              "frame": 5,
+              "detector": "baseline",
+              "visible_object_points": 260,
+              "candidate_iou": 0.7568765585283415,
+              "intersection_iou": 0.7568765585283415,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "continuity",
+              "visible_object_points": 260,
+              "candidate_iou": 0.7568765585283415,
+              "intersection_iou": 0.7568765585283415,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "local3d",
+              "visible_object_points": 260,
+              "candidate_iou": 0.8084440253564829,
+              "intersection_iou": 0.8084440253564829,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 6
+            }
+          ]
+        },
+        {
+          "case": {
+            "id": "cant_transition",
+            "horizontal_curvature": 0.001,
+            "vertical_curvature": 0,
+            "grade": 0,
+            "cant_gradient_rad_per_m": 0.002,
+            "object": {
+              "station_m": 20,
+              "lateral_m": 0,
+              "dimensions_m": [
+                0.4,
+                0.5,
+                0.8
+              ]
+            }
+          },
+          "shared_cloud_sequence_sha256": "ed4d49eeab49bdbcf3ca83723b9164395b0ad1fa674cc0798d448df04420a31d",
+          "records": [
+            {
+              "frame": 0,
+              "detector": "baseline",
+              "visible_object_points": 250,
+              "candidate_iou": 0.6841774315336677,
+              "intersection_iou": 0.6841774315336677,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "continuity",
+              "visible_object_points": 250,
+              "candidate_iou": 0.6841774315336677,
+              "intersection_iou": 0.6841774315336677,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "local3d",
+              "visible_object_points": 250,
+              "candidate_iou": 0.7342232735185,
+              "intersection_iou": 0.7342232735185,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 1,
+              "detector": "baseline",
+              "visible_object_points": 251,
+              "candidate_iou": 0.7506917155078261,
+              "intersection_iou": 0.7506917155078261,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "continuity",
+              "visible_object_points": 251,
+              "candidate_iou": 0.7506917155078261,
+              "intersection_iou": 0.7506917155078261,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "local3d",
+              "visible_object_points": 251,
+              "candidate_iou": 0.8045518529983954,
+              "intersection_iou": 0.8045518529983954,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 2,
+              "detector": "baseline",
+              "visible_object_points": 255,
+              "candidate_iou": 0.9207811182078273,
+              "intersection_iou": 0.9207811182078273,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "continuity",
+              "visible_object_points": 255,
+              "candidate_iou": 0.9207811182078273,
+              "intersection_iou": 0.9207811182078273,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "local3d",
+              "visible_object_points": 255,
+              "candidate_iou": 0.989889919119106,
+              "intersection_iou": 0.989889919119106,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 3,
+              "detector": "baseline",
+              "visible_object_points": 250,
+              "candidate_iou": 0.576208903229754,
+              "intersection_iou": 0.576208903229754,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "continuity",
+              "visible_object_points": 250,
+              "candidate_iou": 0.576208903229754,
+              "intersection_iou": 0.576208903229754,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "local3d",
+              "visible_object_points": 250,
+              "candidate_iou": 0.6191976961861578,
+              "intersection_iou": 0.6191976961861578,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 4,
+              "detector": "baseline",
+              "visible_object_points": 255,
+              "candidate_iou": 0.7019865862401395,
+              "intersection_iou": 0.7019865862401395,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "continuity",
+              "visible_object_points": 255,
+              "candidate_iou": 0.7019865862401395,
+              "intersection_iou": 0.7019865862401395,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "local3d",
+              "visible_object_points": 255,
+              "candidate_iou": 0.7532064072073263,
+              "intersection_iou": 0.7532064072073263,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 5,
+              "detector": "baseline",
+              "visible_object_points": 255,
+              "candidate_iou": 0.6743979475927215,
+              "intersection_iou": 0.6743979475927215,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "continuity",
+              "visible_object_points": 255,
+              "candidate_iou": 0.6743979475927215,
+              "intersection_iou": 0.6743979475927215,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "local3d",
+              "visible_object_points": 255,
+              "candidate_iou": 0.7245652996235291,
+              "intersection_iou": 0.7245652996235291,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 7
+            }
+          ]
+        }
+      ],
+      "scope": "Stationary-sensor ray casting of authored piecewise planar tracks; not real drives",
+      "limitations": [
+        "Simplified beam/noise/dropout; no reflectance, multipath, rolling scan or real calibration.",
+        "No moving ego platform; does not validate odometry.",
+        "Visible-support IoU is a diagnostic, not field recall."
+      ]
+    },
+    "track-curves-negative-scenes-supported": {
+      "cases": [
+        {
+          "case": {
+            "id": "straight-empty",
+            "horizontal_curvature": 0,
+            "vertical_curvature": 0,
+            "grade": 0,
+            "cant_gradient_rad_per_m": 0
+          },
+          "shared_cloud_sequence_sha256": "543eb14f07c96c40fa7ad7c31c0b889f78189e680273dc9327e0eb9e6f5470f6",
+          "records": [
+            {
+              "frame": 0,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 1,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 2,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 10
+            },
+            {
+              "frame": 3,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 4,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 5,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 11
+            }
+          ]
+        },
+        {
+          "case": {
+            "id": "straight-adjacent",
+            "horizontal_curvature": 0,
+            "vertical_curvature": 0,
+            "grade": 0,
+            "cant_gradient_rad_per_m": 0,
+            "object": {
+              "station_m": 20,
+              "lateral_m": 2.4,
+              "dimensions_m": [
+                0.4,
+                0.3,
+                0.8
+              ]
+            }
+          },
+          "shared_cloud_sequence_sha256": "b34326d43ceab7bc8730cc6b05a7d86986fa91832e1a917d36b1586bc0312093",
+          "records": [
+            {
+              "frame": 0,
+              "detector": "baseline",
+              "visible_object_points": 169,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "continuity",
+              "visible_object_points": 169,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "local3d",
+              "visible_object_points": 169,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 1,
+              "detector": "baseline",
+              "visible_object_points": 173,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "continuity",
+              "visible_object_points": 173,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "local3d",
+              "visible_object_points": 173,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 2,
+              "detector": "baseline",
+              "visible_object_points": 171,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "continuity",
+              "visible_object_points": 171,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "local3d",
+              "visible_object_points": 171,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 10
+            },
+            {
+              "frame": 3,
+              "detector": "baseline",
+              "visible_object_points": 174,
+              "candidate_iou": 0.9951139857955925,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "continuity",
+              "visible_object_points": 174,
+              "candidate_iou": 0.9951139857955925,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "local3d",
+              "visible_object_points": 174,
+              "candidate_iou": 0.9951139857955925,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 4,
+              "detector": "baseline",
+              "visible_object_points": 164,
+              "candidate_iou": 0.9942502844504284,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "continuity",
+              "visible_object_points": 164,
+              "candidate_iou": 0.9942502844504284,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "local3d",
+              "visible_object_points": 164,
+              "candidate_iou": 0.9942502844504284,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 5,
+              "detector": "baseline",
+              "visible_object_points": 175,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "continuity",
+              "visible_object_points": 175,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "local3d",
+              "visible_object_points": 175,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 11
+            }
+          ]
+        },
+        {
+          "case": {
+            "id": "left_uphill-empty",
+            "horizontal_curvature": 0.0015,
+            "vertical_curvature": 0.0008,
+            "grade": 0.01,
+            "cant_gradient_rad_per_m": 0.001
+          },
+          "shared_cloud_sequence_sha256": "13ef35b66b5d78a009f7f5bd3237aa3f6c03bdb78060c2404f05c1fe5de6facd",
+          "records": [
+            {
+              "frame": 0,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 1,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 2,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 6
+            },
+            {
+              "frame": 3,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 4,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 5,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 5
+            }
+          ]
+        },
+        {
+          "case": {
+            "id": "left_uphill-adjacent",
+            "horizontal_curvature": 0.0015,
+            "vertical_curvature": 0.0008,
+            "grade": 0.01,
+            "cant_gradient_rad_per_m": 0.001,
+            "object": {
+              "station_m": 20,
+              "lateral_m": 2.4,
+              "dimensions_m": [
+                0.4,
+                0.3,
+                0.8
+              ]
+            }
+          },
+          "shared_cloud_sequence_sha256": "1ee3f1da6f30c7e8ebb17ddb79c94c2aee9e011a0d606e09626769a0d63285d6",
+          "records": [
+            {
+              "frame": 0,
+              "detector": "baseline",
+              "visible_object_points": 172,
+              "candidate_iou": 0.3289813210052699,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "continuity",
+              "visible_object_points": 172,
+              "candidate_iou": 0.3289813210052699,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "local3d",
+              "visible_object_points": 172,
+              "candidate_iou": 0.3289813210052699,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 1,
+              "detector": "baseline",
+              "visible_object_points": 165,
+              "candidate_iou": 0.345531482397467,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "continuity",
+              "visible_object_points": 165,
+              "candidate_iou": 0.34517458232474,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "local3d",
+              "visible_object_points": 165,
+              "candidate_iou": 0.33383879426831736,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 2,
+              "detector": "baseline",
+              "visible_object_points": 167,
+              "candidate_iou": 0.37001711463359255,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "continuity",
+              "visible_object_points": 167,
+              "candidate_iou": 0.37001711463359255,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "local3d",
+              "visible_object_points": 167,
+              "candidate_iou": 0.35802829486489973,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 6
+            },
+            {
+              "frame": 3,
+              "detector": "baseline",
+              "visible_object_points": 166,
+              "candidate_iou": 0.3535178239279636,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "continuity",
+              "visible_object_points": 166,
+              "candidate_iou": 0.36548506689402094,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "local3d",
+              "visible_object_points": 166,
+              "candidate_iou": 0.3535178239279636,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 4,
+              "detector": "baseline",
+              "visible_object_points": 169,
+              "candidate_iou": 0.35618612923094584,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "continuity",
+              "visible_object_points": 169,
+              "candidate_iou": 0.35618612923094584,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "local3d",
+              "visible_object_points": 169,
+              "candidate_iou": 0.3420430456619094,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 5
+            },
+            {
+              "frame": 5,
+              "detector": "baseline",
+              "visible_object_points": 172,
+              "candidate_iou": 0.3392159396855981,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "continuity",
+              "visible_object_points": 172,
+              "candidate_iou": 0.3392159396855981,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "local3d",
+              "visible_object_points": 172,
+              "candidate_iou": 0.3268785824961151,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 5
+            }
+          ]
+        },
+        {
+          "case": {
+            "id": "right_downhill-empty",
+            "horizontal_curvature": -0.0015,
+            "vertical_curvature": -0.0008,
+            "grade": -0.01,
+            "cant_gradient_rad_per_m": -0.001
+          },
+          "shared_cloud_sequence_sha256": "d7c15fa981cf3c1af2d40dfaee946ce4a5be633d535a9754a3add9a31842dd1e",
+          "records": [
+            {
+              "frame": 0,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 6
+            },
+            {
+              "frame": 1,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 7
+            },
+            {
+              "frame": 2,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 7
+            },
+            {
+              "frame": 3,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 7
+            },
+            {
+              "frame": 4,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 7
+            },
+            {
+              "frame": 5,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 7
+            }
+          ]
+        },
+        {
+          "case": {
+            "id": "right_downhill-adjacent",
+            "horizontal_curvature": -0.0015,
+            "vertical_curvature": -0.0008,
+            "grade": -0.01,
+            "cant_gradient_rad_per_m": -0.001,
+            "object": {
+              "station_m": 20,
+              "lateral_m": 2.4,
+              "dimensions_m": [
+                0.4,
+                0.3,
+                0.8
+              ]
+            }
+          },
+          "shared_cloud_sequence_sha256": "d6e16194c1c1e356c1b20842ea49df26ba2e075934a234e312ec7355023a3b5d",
+          "records": [
+            {
+              "frame": 0,
+              "detector": "baseline",
+              "visible_object_points": 159,
+              "candidate_iou": 0.41636267802557125,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "continuity",
+              "visible_object_points": 159,
+              "candidate_iou": 0.41636267802557125,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "local3d",
+              "visible_object_points": 159,
+              "candidate_iou": 0.4417109342838222,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 6
+            },
+            {
+              "frame": 1,
+              "detector": "baseline",
+              "visible_object_points": 159,
+              "candidate_iou": 0.3703285255144631,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "continuity",
+              "visible_object_points": 159,
+              "candidate_iou": 0.3703285255144631,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "local3d",
+              "visible_object_points": 159,
+              "candidate_iou": 0.3909567862247961,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 7
+            },
+            {
+              "frame": 2,
+              "detector": "baseline",
+              "visible_object_points": 160,
+              "candidate_iou": 0.37996421343257214,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "continuity",
+              "visible_object_points": 160,
+              "candidate_iou": 0.37996421343257214,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "local3d",
+              "visible_object_points": 160,
+              "candidate_iou": 0.37996421343257214,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 7
+            },
+            {
+              "frame": 3,
+              "detector": "baseline",
+              "visible_object_points": 162,
+              "candidate_iou": 0.3598437785475901,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "continuity",
+              "visible_object_points": 162,
+              "candidate_iou": 0.3598437785475901,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "local3d",
+              "visible_object_points": 162,
+              "candidate_iou": 0.3803296122911333,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 7
+            },
+            {
+              "frame": 4,
+              "detector": "baseline",
+              "visible_object_points": 162,
+              "candidate_iou": 0.3885044117321287,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "continuity",
+              "visible_object_points": 162,
+              "candidate_iou": 0.3885044117321287,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "local3d",
+              "visible_object_points": 162,
+              "candidate_iou": 0.41095337220299455,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 7
+            },
+            {
+              "frame": 5,
+              "detector": "baseline",
+              "visible_object_points": 163,
+              "candidate_iou": 0.37350884138316964,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "continuity",
+              "visible_object_points": 163,
+              "candidate_iou": 0.37350884138316964,
+              "intersection_iou": 0.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "local3d",
+              "visible_object_points": 163,
+              "candidate_iou": 0.39492268799091734,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 7
+            }
+          ]
+        },
+        {
+          "case": {
+            "id": "cant_transition-empty",
+            "horizontal_curvature": 0.001,
+            "vertical_curvature": 0,
+            "grade": 0,
+            "cant_gradient_rad_per_m": 0.002
+          },
+          "shared_cloud_sequence_sha256": "d5b39f39b993f40dfb8965b20e23f8b9ac89e5effa93db50a5fae1e29c924c3c",
+          "records": [
+            {
+              "frame": 0,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 8
+            },
+            {
+              "frame": 1,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 6
+            },
+            {
+              "frame": 2,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 9
+            },
+            {
+              "frame": 3,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 6
+            },
+            {
+              "frame": 4,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 8
+            },
+            {
+              "frame": 5,
+              "detector": "baseline",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "continuity",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "local3d",
+              "visible_object_points": 0,
+              "candidate_iou": null,
+              "intersection_iou": null,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 9
+            }
+          ]
+        },
+        {
+          "case": {
+            "id": "cant_transition-adjacent",
+            "horizontal_curvature": 0.001,
+            "vertical_curvature": 0,
+            "grade": 0,
+            "cant_gradient_rad_per_m": 0.002,
+            "object": {
+              "station_m": 20,
+              "lateral_m": 2.4,
+              "dimensions_m": [
+                0.4,
+                0.3,
+                0.8
+              ]
+            }
+          },
+          "shared_cloud_sequence_sha256": "ba81bc29c468589fa25b4aa9fd1e69a5bcc31144a2edce4e67ab3ff634ff96ad",
+          "records": [
+            {
+              "frame": 0,
+              "detector": "baseline",
+              "visible_object_points": 165,
+              "candidate_iou": 0.9988806533408026,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "continuity",
+              "visible_object_points": 165,
+              "candidate_iou": 0.9988806533408026,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "local3d",
+              "visible_object_points": 165,
+              "candidate_iou": 0.9988806533408026,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 8
+            },
+            {
+              "frame": 1,
+              "detector": "baseline",
+              "visible_object_points": 167,
+              "candidate_iou": 0.9862855292097324,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "continuity",
+              "visible_object_points": 167,
+              "candidate_iou": 0.9862855292097324,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "local3d",
+              "visible_object_points": 167,
+              "candidate_iou": 0.9862855292097324,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 6
+            },
+            {
+              "frame": 2,
+              "detector": "baseline",
+              "visible_object_points": 162,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "continuity",
+              "visible_object_points": 162,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "local3d",
+              "visible_object_points": 162,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 9
+            },
+            {
+              "frame": 3,
+              "detector": "baseline",
+              "visible_object_points": 168,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "continuity",
+              "visible_object_points": 168,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "local3d",
+              "visible_object_points": 168,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "candidate",
+              "local_frame_segments": 6
+            },
+            {
+              "frame": 4,
+              "detector": "baseline",
+              "visible_object_points": 163,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "continuity",
+              "visible_object_points": 163,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "local3d",
+              "visible_object_points": 163,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "no_obstacle_observed",
+              "local_frame_segments": 8
+            },
+            {
+              "frame": 5,
+              "detector": "baseline",
+              "visible_object_points": 173,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "continuity",
+              "visible_object_points": 173,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "local3d",
+              "visible_object_points": 173,
+              "candidate_iou": 1.0,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 9
+            }
+          ]
+        }
+      ],
+      "scope": "Stationary-sensor ray casting of authored piecewise planar tracks; not real drives",
+      "limitations": [
+        "Simplified beam/noise/dropout; no reflectance, multipath, rolling scan or real calibration.",
+        "No moving ego platform; does not validate odometry.",
+        "Visible-support IoU is a diagnostic, not field recall."
+      ]
+    },
+    "track-near-scene": {
+      "cases": [
+        {
+          "case": {
+            "id": "near_3m",
+            "horizontal_curvature": 0,
+            "vertical_curvature": 0,
+            "grade": 0,
+            "cant_gradient_rad_per_m": 0,
+            "object": {
+              "station_m": 3,
+              "lateral_m": 0,
+              "dimensions_m": [
+                0.4,
+                0.5,
+                0.8
+              ]
+            }
+          },
+          "shared_cloud_sequence_sha256": "c8de40d0ac1bf68b81ace6ed155ce9a87129735c14a2c5e2c07261fe93591a61",
+          "records": [
+            {
+              "frame": 0,
+              "detector": "baseline",
+              "visible_object_points": 2536,
+              "candidate_iou": 0.9884460902738927,
+              "intersection_iou": 0.9884460902738927,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "continuity",
+              "visible_object_points": 2536,
+              "candidate_iou": 0.9884460902738927,
+              "intersection_iou": 0.9884460902738927,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 0,
+              "detector": "local3d",
+              "visible_object_points": 2536,
+              "candidate_iou": 0.9884460902738927,
+              "intersection_iou": 0,
+              "geometry_valid": true,
+              "status": "unresolved_obstacle",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 1,
+              "detector": "baseline",
+              "visible_object_points": 2545,
+              "candidate_iou": 0.9675870340345016,
+              "intersection_iou": 0.9675870340345016,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "continuity",
+              "visible_object_points": 2545,
+              "candidate_iou": 0.9675870340345016,
+              "intersection_iou": 0.9675870340345016,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 1,
+              "detector": "local3d",
+              "visible_object_points": 2545,
+              "candidate_iou": 0.9675870340345016,
+              "intersection_iou": 0.9675870340345016,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 2,
+              "detector": "baseline",
+              "visible_object_points": 2543,
+              "candidate_iou": 0.9855094208554306,
+              "intersection_iou": 0.9855094208554306,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "continuity",
+              "visible_object_points": 2543,
+              "candidate_iou": 0.9855094208554306,
+              "intersection_iou": 0.9855094208554306,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 2,
+              "detector": "local3d",
+              "visible_object_points": 2543,
+              "candidate_iou": 0.9855094208554306,
+              "intersection_iou": 0.9855094208554306,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 10
+            },
+            {
+              "frame": 3,
+              "detector": "baseline",
+              "visible_object_points": 2520,
+              "candidate_iou": 1.0,
+              "intersection_iou": 1.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "continuity",
+              "visible_object_points": 2520,
+              "candidate_iou": 1.0,
+              "intersection_iou": 1.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 3,
+              "detector": "local3d",
+              "visible_object_points": 2520,
+              "candidate_iou": 1.0,
+              "intersection_iou": 1.0,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 4,
+              "detector": "baseline",
+              "visible_object_points": 2517,
+              "candidate_iou": 0.9609971255632783,
+              "intersection_iou": 0.9609971255632783,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "continuity",
+              "visible_object_points": 2517,
+              "candidate_iou": 0.9609971255632783,
+              "intersection_iou": 0.9609971255632783,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 4,
+              "detector": "local3d",
+              "visible_object_points": 2517,
+              "candidate_iou": 0.9609971255632783,
+              "intersection_iou": 0.9609971255632783,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 12
+            },
+            {
+              "frame": 5,
+              "detector": "baseline",
+              "visible_object_points": 2531,
+              "candidate_iou": 0.9742022999040751,
+              "intersection_iou": 0.9742022999040751,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "continuity",
+              "visible_object_points": 2531,
+              "candidate_iou": 0.9742022999040751,
+              "intersection_iou": 0.9742022999040751,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 0
+            },
+            {
+              "frame": 5,
+              "detector": "local3d",
+              "visible_object_points": 2531,
+              "candidate_iou": 0.9742022999040751,
+              "intersection_iou": 0.9742022999040751,
+              "geometry_valid": true,
+              "status": "obstacle",
+              "local_frame_segments": 11
+            }
+          ]
+        }
+      ],
+      "scope": "Stationary-sensor ray casting of authored piecewise planar tracks; not real drives",
+      "limitations": [
+        "Simplified beam/noise/dropout; no reflectance, multipath, rolling scan or real calibration.",
+        "No moving ego platform; does not validate odometry.",
+        "Visible-support IoU is a diagnostic, not field recall."
+      ]
+    }
+  },
+  "visualization": {
+    "viewer": "http://127.0.0.1:8771",
+    "frame": 0,
+    "version": 2,
+    "raw_points": 189502,
+    "display_points": 27072,
+    "corridor_vertices": 1536,
+    "rviz_deserialized": {
+      "roundT_doubleT_rviz": {
+        "/perception/points_display": 3,
+        "/perception/debug_markers": 3,
+        "/perception/status": 3
+      },
+      "doubleT_platform_rviz": {
+        "/perception/points_display": 3,
+        "/perception/debug_markers": 3,
+        "/perception/status": 3
+      },
+      "new_data_200_rviz": {
+        "/perception/points_display": 3,
+        "/perception/debug_markers": 3,
+        "/perception/status": 3
+      },
+      "new_data_0_rviz": {
+        "/perception/points_display": 3,
+        "/perception/debug_markers": 3,
+        "/perception/status": 3
+      },
+      "new_data_100_rviz": {
+        "/perception/points_display": 3,
+        "/perception/debug_markers": 3,
+        "/perception/status": 3
+      },
+      "doubleT_obstacle_rviz": {
+        "/perception/points_display": 3,
+        "/perception/debug_markers": 3,
+        "/perception/status": 3
+      }
+    },
+    "gui": "HTTP payload and standalone figure inspected; browser GUI not inspected"
+  },
+  "range_input_count_changed_frames": {
+    "continuity_panel": {
+      "doubleT_obstacle": 0,
+      "doubleT_platform": 0,
+      "roundT_doubleT": 0,
+      "new_data_0": 0,
+      "new_data_100": 0,
+      "new_data_200": 0
+    },
+    "local3d_panel": {
+      "doubleT_obstacle": 0,
+      "doubleT_platform": 0,
+      "roundT_doubleT": 0,
+      "new_data_0": 0,
+      "new_data_100": 0,
+      "new_data_200": 0
+    }
+  },
+  "limitations": [
+    "Full 11271 replay covers continuity geometry only, not local3d or complete obstacle detection.",
+    "No independent real rail labels; provisional object annotations are not field recall.",
+    "Local-frame uncertainty is heuristic, not calibrated extrinsic/association confidence.",
+    "Concurrent run latency is descriptive; no speedup claim.",
+    "Intermediate experiments retained separately; final local_3d frame format is version 2."
+  ],
+  "manifest_sha256": {
+    "build/track-continuity-full-geometry/manifest.json": "8e2e1e96ba5ca2712f44ed1d6e65708fa260d4a7cbc891faf466b6ca3783ac6d",
+    "build/track-continuity-real/manifest.json": "cef4e498adad930d5af6995ef5c1d9a8aa2495a8739547e8525893a6a67f981f",
+    "build/track-local3d-final-real-supported/manifest.json": "4fb588a8663c08d9f8ca572fd0d67946503f7cbe460bdb111cfb21e32d66a761",
+    "build/track-curves-scenes-supported/manifest.json": "f1f1922102719af2e4ffda0e6e93a2749a22c94711de76e308117e925c906162",
+    "build/track-curves-negative-scenes-supported/manifest.json": "f1f1922102719af2e4ffda0e6e93a2749a22c94711de76e308117e925c906162",
+    "build/track-near-scene/manifest.json": "f1f1922102719af2e4ffda0e6e93a2749a22c94711de76e308117e925c906162"
+  }
+}

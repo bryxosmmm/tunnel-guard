@@ -6,7 +6,7 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     return LaunchDescription([
-        DeclareLaunchArgument("config_path", default_value="/opt/tunnel-guard/configs/detector.json"),
+        DeclareLaunchArgument("config_path", default_value="/opt/tunnel-guard/configs/detector-native.json"),
         DeclareLaunchArgument("input_topic", default_value="/lidar_points"),
         Node(
             package="tunnel_guard_ros",
