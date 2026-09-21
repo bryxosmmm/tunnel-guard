@@ -63,7 +63,8 @@ def best_overlap(label: dict, pool: list[dict]) -> tuple[float, dict | None]:
     return max(((float(box_iou(obj, label)), obj) for obj in pool), key=lambda pair: pair[0])
 
 
-def point_coverage(object_points: np.ndarray, objects: list[dict], extent_factor: float) -> dict:
+def point_coverage(object_points: np.ndarray, objects: list[dict], extent_factor: float,
+                   nominal_extent: list[float] | np.ndarray | None = None) -> dict:
     """Fraction of the object's own returns that a comparably sized box contains.
 
     The bounding box of an object's returns spans volume the sensor never observed, so one-to-one
@@ -72,9 +73,18 @@ def point_coverage(object_points: np.ndarray, objects: list[dict], extent_factor
     larger than the object would cover them trivially, so only boxes whose extent stays within
     `extent_factor` of the object's own extent are allowed to count, and the count of objects that
     were rejected for that reason is reported rather than hidden.
+
+    `nominal_extent` is the object's injected dimensions, when the case records them.
     """
     extent = object_points.max(axis=0) - object_points.min(axis=0)
-    limit = np.maximum(extent * extent_factor, 0.05)
+    # At range the sensor sees essentially one face of the object, so its returns form a thin slice
+    # and the limit derived from them alone can be smaller than the object itself, which makes the
+    # rule reject boxes that are merely narrower than the object they contain. The injected
+    # dimensions are known to the instrument, so the limit is taken over the larger of the observed
+    # and nominal extent. This can only ever lift the limit, so it removes thin-slice rejections and
+    # never adds any; containment of the returns is still required below.
+    nominal = np.zeros(3) if nominal_extent is None else np.asarray(nominal_extent, dtype=float)
+    limit = np.maximum(np.maximum(extent, nominal) * extent_factor, 0.05)
     eligible, oversized = [], 0
     for obj in objects:
         if np.all(np.asarray(obj["extent_m"], dtype=float) <= limit):
@@ -99,7 +109,7 @@ def point_coverage(object_points: np.ndarray, objects: list[dict], extent_factor
 
 def classify(label: dict, objects: list[dict], returns_from_object: int, minimum_iou: float,
              object_points: np.ndarray | None = None, extent_factor: float = 3.0,
-             point_threshold: float = 0.6) -> dict:
+             point_threshold: float = 0.6, nominal_extent: list[float] | None = None) -> dict:
     """One outcome per injected object, with the evidence behind it."""
     confirmed = [obj for obj in objects if obj["confirmed"]]
     hazards = [obj for obj in confirmed if obj["path_relation"] in HAZARD_RELATIONS]
@@ -112,7 +122,7 @@ def classify(label: dict, objects: list[dict], returns_from_object: int, minimum
     # labelled region is fully inside something: that is a segmentation outcome, not an absence.
     coverage_any = coverage_of(label, objects)
     points = None if object_points is None or not len(object_points) else \
-        point_coverage(np.asarray(object_points, dtype=float), objects, extent_factor)
+        point_coverage(np.asarray(object_points, dtype=float), objects, extent_factor, nominal_extent)
 
     if returns_from_object == 0:
         kind = "no_returns_from_object"
@@ -213,7 +223,7 @@ def main() -> None:
 
         decision = classify(labels[0], objects, int(case["returns_from_object"]), minimum_iou,
                             inserted.get((case["case"], case["frame"])), args.extent_factor,
-                            args.point_threshold)
+                            args.point_threshold, case.get("dimensions_m"))
         decision.update({"case": case["case"], "frame": case["frame"], "bag": key[0],
                          "status": row["status"], "detections": len(objects),
                          "returns_from_object": int(case["returns_from_object"]),
