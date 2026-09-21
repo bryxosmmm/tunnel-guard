@@ -382,6 +382,8 @@ class TrackGeometry:
     def _fit_head_heights(self, points, x, center, gauge, slope):
         """Local observed head support, not a CAD rail or absolute gravity estimate."""
         cfg = self.config
+        if cfg.get("rail_head_estimator", "upper_linear") in ("joint_robust", "joint_surface"):
+            return self._fit_joint_head_heights(points, x, center, gauge, slope)
         heights, errors = [], []
         for side in (-1, 1):
             lateral = points[:, 1] - center - slope * (points[:, 0] - x)
@@ -404,6 +406,112 @@ class TrackGeometry:
         return [float(x), float(center), float(np.mean(heights)),
                 float(heights[1] - heights[0]), float(gauge), max(errors)]
 
+    def _fit_joint_head_heights(self, points, x, center, gauge, slope):
+        """Fit dominant observed support on both rails, without a rail-profile prior.
+
+        z = height + grade*t + curvature*t² + side*(crosslevel + twist*t).
+        Longitudinal bins carry equal weight on each side. Symmetric Huber residuals
+        avoid the upward order-statistic bias of an upper quantile. This estimates
+        the dominant surface, NOT an unseen railtop when only the web is visible.
+        """
+        cfg = self.config
+        options = cfg["rail_head_fit"]
+        diagnostic = {"estimator": cfg["rail_head_estimator"], "state": "fitting"}
+        if self.rail_support_diagnostics:
+            self.rail_support_diagnostics[-1]["head_fit"] = diagnostic
+        def reject(reason):
+            diagnostic.update(state="unavailable", reason=reason)
+            return None
+        strips, side_values, bin_weights = [], [], []
+        lateral = points[:, 1] - center - slope * (points[:, 0] - x)
+        for side in (-1, 1):
+            head = points[np.abs(lateral - side * gauge / 2) < cfg["rail_half_width_m"] / 2]
+            bins = np.floor(head[:, 0] / options["bin_m"]).astype(np.int64)
+            keys, inverse, counts = np.unique(bins, return_inverse=True, return_counts=True)
+            if (len(keys) < cfg["rail_min_longitudinal_bins"]
+                    or np.ptp(head[:, 0]) < cfg["rail_min_span_m"]
+                    or not head[:, 0].min() <= x <= head[:, 0].max()):
+                return reject("strip_support_does_not_bracket_anchor")
+            strips.append(head)
+            side_values.append(np.full(len(head), side))
+            bin_weights.append(1. / (counts[inverse] * len(keys)))
+        head = np.concatenate(strips)
+        side = np.concatenate(side_values)
+        weight = np.concatenate(bin_weights)
+        scale_x = max(float(np.max(np.abs(head[:, 0] - x))), cfg["rail_min_span_m"])
+        t = (head[:, 0] - x) / scale_x
+        design = np.column_stack((np.ones(len(t)), t, t*t, side, side*t))
+        target = head[:, 2]
+        robust = np.ones(len(head))
+        def weighted_median(values):
+            order = np.argsort(values, kind="stable")
+            return float(values[order[np.searchsorted(np.cumsum(weight[order]), weight.sum()/2)]])
+        for _ in range(options["iterations"]):
+            w = np.sqrt(weight * robust)
+            fit, _, rank, singular = np.linalg.lstsq(design*w[:, None], target*w, rcond=None)
+            if rank < design.shape[1] or singular[0]/singular[-1] > options["max_condition"]:
+                return reject("joint_fit_rank_or_condition")
+            residual = target - design @ fit
+            median = weighted_median(residual)
+            noise = max(1.4826 * weighted_median(np.abs(residual-median)), options["noise_floor_m"])
+            robust = np.minimum(1., options["huber_scale"]*noise / np.maximum(np.abs(residual), 1e-12))
+        selected = np.ones(len(head), dtype=bool)
+        fit_x = float(x)
+        if cfg["rail_head_estimator"] == "joint_surface":
+            # Select the densest residual band on EACH side, not the highest
+            # return. A narrow surface can coexist with a diffuse rail web.
+            # This is a surface hypothesis, not proof it is the physical top.
+            selected[:] = False
+            width = options["surface_band_m"]
+            ranges = []
+            for side_id in (-1, 1):
+                ids = np.flatnonzero(side == side_id)
+                order = ids[np.argsort(residual[ids], kind="stable")]
+                values = residual[order]
+                stop = np.searchsorted(values, values + 2*width, side="right")
+                mass = np.r_[0., np.cumsum(weight[order])]
+                first = int(np.argmax(mass[stop] - mass[:-1]))
+                chosen = order[first:stop[first]]
+                selected[chosen] = True
+                bins = np.unique(np.floor(head[chosen, 0]/options["bin_m"]))
+                low, high = float(head[chosen, 0].min()), float(head[chosen, 0].max())
+                if len(bins) < cfg["rail_min_longitudinal_bins"] or high-low < cfg["rail_min_span_m"]:
+                    return reject("surface_band_support_does_not_bracket_anchor")
+                ranges.append([low, high])
+            low, high = max(r[0] for r in ranges), min(r[1] for r in ranges)
+            if low > high:
+                return reject("surface_bands_have_no_common_support")
+            if cfg.get("rail_head_anchor", "requested") == "surface_measured":
+                fit_x = float(np.clip(x, low, high))
+            elif not low <= x <= high:
+                return reject("surface_band_support_does_not_bracket_anchor")
+            w = np.sqrt(weight[selected])
+            fit, _, rank, singular = np.linalg.lstsq(design[selected]*w[:, None], target[selected]*w, rcond=None)
+            if rank < design.shape[1] or singular[0]/singular[-1] > options["max_condition"]:
+                return reject("surface_fit_rank_or_condition")
+            residual = target - design @ fit
+        # Check every selected surface bin, not just points with a small residual.
+        errors = []
+        for side_id, strip in zip((-1, 1), strips):
+            mask = (side == side_id) & selected
+            bins = np.floor(head[mask, 0] / options["bin_m"]).astype(np.int64)
+            per_bin = [np.median(np.abs(residual[mask][bins == k])) for k in np.unique(bins)]
+            error = float(np.quantile(per_bin, .9))
+            grades = (fit[1] + 2*fit[2]*t[mask] + side_id*fit[4]) / scale_x
+            if error > cfg["ground_inlier_m"] or np.max(np.abs(grades)) > cfg["ground_max_slopes"][0]:
+                return reject("surface_residual_or_grade_exceeds_bound")
+            errors.append(max(error, options["uncertainty_floor_m"]))
+        if cfg["rail_head_estimator"] == "joint_surface" and self.rail_support_diagnostics:
+            self.rail_support_diagnostics[-1].update(head_surface_ranges_m=ranges,
+                head_surface_points=int(selected.sum()), head_strip_points=len(head),
+                head_surface_scope="dominant_observed_band_not_verified_railtop")
+        diagnostic.update(state="available", error_m=max(errors))
+        t_anchor = (fit_x-x)/scale_x
+        diagnostic.update(requested_x_m=float(x), fitted_x_m=fit_x)
+        return [fit_x, float(center+slope*(fit_x-x)),
+                float(fit[0]+fit[1]*t_anchor+fit[2]*t_anchor*t_anchor),
+                float(2*(fit[3]+fit[4]*t_anchor)), float(gauge), max(errors)]
+
     def frame_segments(self):
         """Piecewise local orthonormal bases shared by decisions and rendering.
 
@@ -418,7 +526,7 @@ class TrackGeometry:
             a, b = np.asarray(left), np.asarray(right)
             delta = b[:3] - a[:3]
             length = np.linalg.norm(delta)
-            if length <= 0 or abs(delta[2] / delta[0]) > self.config["ground_max_slopes"][0]:
+            if delta[0] <= 0 or length <= 0 or abs(delta[2] / delta[0]) > self.config["ground_max_slopes"][0]:
                 continue
             tangent = delta / length
             cross = np.array([0., (a[4] + b[4]) / 2, (a[3] + b[3]) / 2])
@@ -433,12 +541,12 @@ class TrackGeometry:
             # returns. Extend only inside BOTH heads' recorded support hulls;
             # otherwise an arbitrary 5 m window centre creates a near blind zone.
             if getattr(self, "rail_frame_version", 1) >= 2 and index == 0 and len(diagnostics) == len(frames):
-                ranges = diagnostics[0]['side_longitudinal_ranges_m']
+                ranges = diagnostics[0].get('head_surface_ranges_m', diagnostics[0]['side_longitudinal_ranges_m'])
                 if all(r is not None for r in ranges):
                     x = min(a[0], max(r[0] for r in ranges))
                     start += tangent * ((x-a[0])/tangent[0])
             if getattr(self, "rail_frame_version", 1) >= 2 and index == len(frames)-2 and len(diagnostics) == len(frames):
-                ranges = diagnostics[-1]['side_longitudinal_ranges_m']
+                ranges = diagnostics[-1].get('head_surface_ranges_m', diagnostics[-1]['side_longitudinal_ranges_m'])
                 if all(r is not None for r in ranges):
                     x = max(b[0], min(r[1] for r in ranges))
                     end += tangent * ((x-b[0])/tangent[0])

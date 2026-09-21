@@ -94,6 +94,7 @@ def main():
     if not records:
         raise ValueError("No PointCloud2 messages found")
     report = {"bag": str(args.bag), "source": bag_entry({"path": str(args.bag)}),
+              "geometry_estimator": "buyanov_legacy_inspection_not_native_detector",
               "config_sha256": digest(args.config), "topics": topics, "frames": records,
               "summary": clock_summary(records, config["frame_max_gap_s"]) | {
                   "geometry_valid_frames": sum(r["geometry"]["valid"] for r in records),

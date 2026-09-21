@@ -103,6 +103,7 @@ def summarize_observations(rows):
             "object_observation_status": dict(Counter(observation_status(o) for o in objects)),
             "candidate_observations": len(objects), "confirmed_object_observations": sum(o["confirmed"] for o in objects),
             "path_horizon_m": distribution(g.get("path_horizon_m") for g in geometry),
+            "supported_range_m": distribution(r.get("supported_range_m") for r in rows),
             "gauge_inner_m": distribution(g.get("gauge_inner_median_m") for g in geometry),
             "rail_head_height_above_bed_m": distribution(g.get("rail_head_height_m") for g in geometry),
             "ground_fit_median_residual_m": distribution(g.get("ground_quality", {}).get("median_residual_m") for g in geometry),

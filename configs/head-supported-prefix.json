@@ -1,0 +1,81 @@
+{
+  "seed": 20260918,
+  "scene_config": "configs/stress-measured-pattern-final.json",
+  "output": "build/head-supported-prefix",
+  "frames": 1,
+  "frame_period_s": 0.1,
+  "mesh_step_m": 0.5,
+  "detectors": {
+    "old_local3d": "configs/detector-local3d-experimental.json",
+    "surface": "configs/detector-head-surface-experimental.json",
+    "local3d": "configs/detector-head-supported-experimental.json"
+  },
+  "cases": [
+    {
+      "id": "straight",
+      "horizontal_curvature": 0,
+      "vertical_curvature": 0,
+      "grade": 0,
+      "cant_gradient_rad_per_m": 0,
+      "object": {
+        "station_m": 20,
+        "lateral_m": 0,
+        "dimensions_m": [
+          0.4,
+          0.5,
+          0.8
+        ]
+      }
+    },
+    {
+      "id": "left_uphill",
+      "horizontal_curvature": 0.0015,
+      "vertical_curvature": 0.0008,
+      "grade": 0.01,
+      "cant_gradient_rad_per_m": 0.001,
+      "object": {
+        "station_m": 20,
+        "lateral_m": 0,
+        "dimensions_m": [
+          0.4,
+          0.5,
+          0.8
+        ]
+      }
+    },
+    {
+      "id": "right_downhill",
+      "horizontal_curvature": -0.0015,
+      "vertical_curvature": -0.0008,
+      "grade": -0.01,
+      "cant_gradient_rad_per_m": -0.001,
+      "object": {
+        "station_m": 20,
+        "lateral_m": 0,
+        "dimensions_m": [
+          0.4,
+          0.5,
+          0.8
+        ]
+      }
+    },
+    {
+      "id": "cant_transition",
+      "horizontal_curvature": 0.001,
+      "vertical_curvature": 0,
+      "grade": 0,
+      "cant_gradient_rad_per_m": 0.002,
+      "object": {
+        "station_m": 20,
+        "lateral_m": 0,
+        "dimensions_m": [
+          0.4,
+          0.5,
+          0.8
+        ]
+      }
+    }
+  ],
+  "hypothesis": "Locate each section within both selected surfaces rather than reject an arbitrary station",
+  "criterion": "Report height and normal errors at shared supported stations plus lost support; no thresholds relaxed after results"
+}

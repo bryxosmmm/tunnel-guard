@@ -1,0 +1,170 @@
+{
+  "provenance": {
+    "reviewed_revision": "3e833bf3f40e5a687480cf8d675b5d6aa8827ec3",
+    "baseline_revision": "55876857db9e5e603a98e0cc6c564ddbcc0b2a69",
+    "note": "Archived source; runner git revision resolves enclosing repo, this records actual source."
+  },
+  "comparison": [
+    {
+      "bag": "doubleT_obstacle",
+      "frames": 30,
+      "mismatched_measurements": 0,
+      "changed_status": 0,
+      "changed_objects": 29,
+      "changed_pose": 29,
+      "future_history": 0,
+      "duplicate_history": 0,
+      "structure_observations": 2928,
+      "structure_with_interior_points": [
+        {
+          "frame": 5,
+          "id": 130,
+          "in_envelope_voxels": 1,
+          "distance_m": 46.28791809082031
+        },
+        {
+          "frame": 23,
+          "id": 130,
+          "in_envelope_voxels": 1,
+          "distance_m": 46.27490234375
+        },
+        {
+          "frame": 24,
+          "id": 154,
+          "in_envelope_voxels": 1,
+          "distance_m": 53.867340087890625
+        },
+        {
+          "frame": 25,
+          "id": 130,
+          "in_envelope_voxels": 1,
+          "distance_m": 46.26692199707031
+        },
+        {
+          "frame": 27,
+          "id": 130,
+          "in_envelope_voxels": 1,
+          "distance_m": 46.31185531616211
+        }
+      ],
+      "off": {
+        "status": {
+          "candidate": 1,
+          "unresolved_obstacle": 7,
+          "obstacle": 22
+        },
+        "processing_p50_ms": 171.29225004464388,
+        "loop_p50_ms": 205.81389602739364,
+        "wall_ms_per_frame": 258.5695569364664
+      },
+      "on": {
+        "status": {
+          "candidate": 1,
+          "unresolved_obstacle": 7,
+          "obstacle": 22
+        },
+        "processing_p50_ms": 178.96245804149657,
+        "loop_p50_ms": 180.19606248708442,
+        "wall_ms_per_frame": 218.7816263991408
+      },
+      "max_pose_abs_difference": 3.3948538424866115e-15,
+      "object_decision_changed_frames": 0
+    },
+    {
+      "bag": "doubleT_platform",
+      "frames": 30,
+      "mismatched_measurements": 0,
+      "changed_status": 0,
+      "changed_objects": 23,
+      "changed_pose": 29,
+      "future_history": 0,
+      "duplicate_history": 0,
+      "structure_observations": 1270,
+      "structure_with_interior_points": [],
+      "off": {
+        "status": {
+          "unresolved_obstacle": 30
+        },
+        "processing_p50_ms": 135.34564600558951,
+        "loop_p50_ms": 149.92802048800513,
+        "wall_ms_per_frame": 155.83798749915636
+      },
+      "on": {
+        "status": {
+          "unresolved_obstacle": 30
+        },
+        "processing_p50_ms": 139.342354494147,
+        "loop_p50_ms": 140.47191652934998,
+        "wall_ms_per_frame": 146.78466249800599
+      },
+      "max_pose_abs_difference": 3.622102617839573e-15,
+      "object_decision_changed_frames": 0
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frames": 30,
+      "mismatched_measurements": 0,
+      "changed_status": 0,
+      "changed_objects": 29,
+      "changed_pose": 29,
+      "future_history": 0,
+      "duplicate_history": 0,
+      "structure_observations": 4237,
+      "structure_with_interior_points": [
+        {
+          "frame": 24,
+          "id": 129,
+          "in_envelope_voxels": 1,
+          "distance_m": 35.89442443847656
+        }
+      ],
+      "off": {
+        "status": {
+          "candidate": 1,
+          "unresolved_obstacle": 29
+        },
+        "processing_p50_ms": 144.47797945467755,
+        "loop_p50_ms": 158.34289597114548,
+        "wall_ms_per_frame": 167.01051806642985
+      },
+      "on": {
+        "status": {
+          "candidate": 1,
+          "unresolved_obstacle": 29
+        },
+        "processing_p50_ms": 147.31481252238154,
+        "loop_p50_ms": 148.72283348813653,
+        "wall_ms_per_frame": 159.96039306822544
+      },
+      "max_pose_abs_difference": 6.9111383282915995e-15,
+      "object_decision_changed_frames": 0
+    }
+  ],
+  "local3d_range": [
+    {
+      "frame": 0,
+      "certified_range_m": 67.0,
+      "last_local_segment_x_m": 48.146663665771484,
+      "local_segments": 8
+    },
+    {
+      "frame": 1,
+      "certified_range_m": 67.0,
+      "last_local_segment_x_m": 20.0,
+      "local_segments": 3
+    },
+    {
+      "frame": 2,
+      "certified_range_m": 66.0,
+      "last_local_segment_x_m": 35.0,
+      "local_segments": 5
+    }
+  ],
+  "previous_findings": "All five addressed in code; prefetch-off additionally verified by actual CLI. No automated tests executed.",
+  "limitations": [
+    "One sequential on/off run per variant, no controlled repeats; wall includes warmup.",
+    "No independent exhaustive ground truth, no accuracy claim.",
+    "ROS unavailable: TF finding from source and configured rotation, not RViz GUI execution.",
+    "Raw pose differences <=7e-15, object decision tuples identical; exact JSON identity not claimed."
+  ]
+}

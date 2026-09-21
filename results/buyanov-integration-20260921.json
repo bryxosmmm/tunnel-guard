@@ -1,0 +1,151 @@
+{
+  "baseline": "4bfe1db native config, dedup disabled",
+  "integration_sources": [
+    "afbac78",
+    "4bfe1db",
+    "b17916b"
+  ],
+  "comparisons": [
+    {
+      "bag": "doubleT_obstacle",
+      "before": "build/morev-review-b17916b/gerasimov/doubleT_obstacle.jsonl",
+      "after": "build/buyanov-integration-20260921-native/doubleT_obstacle.jsonl",
+      "before_sha256": "79592760506adabd5ce3a46c792be3940ee857e18c74dbc554a1121a8e6fbc3d",
+      "after_sha256": "2763387703e81ac1c017e9067d2d4caf751221ef4a719f2e308eb2819fa0fc34",
+      "before_statistics": {
+        "frames": 60,
+        "status_frames": {
+          "candidate": 1,
+          "unresolved_obstacle": 7,
+          "obstacle": 52
+        },
+        "health_frames": {
+          "degraded": 60
+        },
+        "geometry_valid_frames": 60,
+        "motion_valid_frames": 59,
+        "candidate_observations": 14169,
+        "support_voxel_observations": 1160955,
+        "confirmed_intersection_observations": 65,
+        "candidate_observations_at_least_60m": 3692,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 181.61016644444317,
+          "p95": 230.20096499240026,
+          "p99": 650.4778446524837
+        }
+      },
+      "after_statistics": {
+        "frames": 60,
+        "status_frames": {
+          "candidate": 1,
+          "unresolved_obstacle": 7,
+          "obstacle": 52
+        },
+        "health_frames": {
+          "degraded": 60
+        },
+        "geometry_valid_frames": 60,
+        "motion_valid_frames": 59,
+        "candidate_observations": 14169,
+        "support_voxel_observations": 1160955,
+        "confirmed_intersection_observations": 65,
+        "candidate_observations_at_least_60m": 3692,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 207.955936959479,
+          "p95": 275.03214610042045,
+          "p99": 908.5747910337474
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {},
+      "first_changed_frames": {},
+      "largest_compared_float_difference": 3.031255801921873e-14,
+      "supported_range_changed_frames": 0,
+      "diagnostic_prefix_changed_frames": {
+        "status": 0,
+        "objects": 0,
+        "motion": 0,
+        "pose": 0,
+        "geometry": 0
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "before": "build/morev-review-b17916b/gerasimov/roundT_doubleT.jsonl",
+      "after": "build/buyanov-integration-20260921-native/roundT_doubleT.jsonl",
+      "before_sha256": "767c0c84b4958499d8c10dc681e1e2a1233b0887d3775ee4f3fbfc9574b91aed",
+      "after_sha256": "fe4253037799f549919f3080ee7243c75c3d1e0a2d872051130934fb2c5ea303",
+      "before_statistics": {
+        "frames": 60,
+        "status_frames": {
+          "candidate": 1,
+          "unresolved_obstacle": 59
+        },
+        "health_frames": {
+          "degraded": 60
+        },
+        "geometry_valid_frames": 60,
+        "motion_valid_frames": 59,
+        "candidate_observations": 15041,
+        "support_voxel_observations": 1164483,
+        "confirmed_intersection_observations": 0,
+        "candidate_observations_at_least_60m": 3858,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 145.8384584984742,
+          "p95": 180.17125167534684,
+          "p99": 190.10665070498362
+        }
+      },
+      "after_statistics": {
+        "frames": 60,
+        "status_frames": {
+          "candidate": 1,
+          "unresolved_obstacle": 59
+        },
+        "health_frames": {
+          "degraded": 60
+        },
+        "geometry_valid_frames": 60,
+        "motion_valid_frames": 59,
+        "candidate_observations": 15041,
+        "support_voxel_observations": 1164483,
+        "confirmed_intersection_observations": 0,
+        "candidate_observations_at_least_60m": 3858,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 178.33870800677687,
+          "p95": 275.3771896008401,
+          "p99": 339.8749947641043
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {},
+      "first_changed_frames": {},
+      "largest_compared_float_difference": 6.52811138479592e-14,
+      "supported_range_changed_frames": 0,
+      "diagnostic_prefix_changed_frames": {
+        "status": 0,
+        "objects": 0,
+        "motion": 0,
+        "pose": 0,
+        "geometry": 0
+      }
+    }
+  ],
+  "limitations": [
+    "120 distinct real frames; two development prefixes only.",
+    "Parallel diagnostic replay overlapped the end of native replay; timings are not performance evidence.",
+    "Docker build and live ROS not exercised on this Mac."
+  ]
+}

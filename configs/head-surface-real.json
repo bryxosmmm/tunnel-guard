@@ -1,0 +1,37 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-head-surface-experimental.json",
+  "output": "build/head-surface-real",
+  "every": 1,
+  "max_frames": null,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/extended_subset/new_data_0",
+      "split": "fixed_development_panel"
+    },
+    {
+      "path": "data/extended_subset/new_data_100",
+      "split": "fixed_development_panel"
+    },
+    {
+      "path": "data/extended_subset/new_data_200",
+      "split": "fixed_development_panel"
+    }
+  ],
+  "hypothesis": "Joint surface fit improves observed head geometry without discarding cloud returns; quantify coverage changes and candidate retention",
+  "criterion": "Compare identical scan IDs, range input counts, statuses, temporal histories and local support; no independent field accuracy"
+}

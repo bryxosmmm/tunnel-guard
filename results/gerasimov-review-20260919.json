@@ -1,0 +1,209 @@
+{
+  "provenance": {
+    "reviewed_revision": "55876857db9e5e603a98e0cc6c564ddbcc0b2a69",
+    "baseline_revision": "1c7e53afefdf39741482d9054fb0651c1288729b",
+    "note": "Archive source has no own .git; runner git_revision may refer to enclosing baseline repository. This file identifies actual reviewed source."
+  },
+  "prefetch_off": {
+    "exit_code": 1,
+    "frames": 0,
+    "error": "ValueError: No scans processed",
+    "log": "build/review-gerasimov-20260919/prefetch-off.log"
+  },
+  "comparison": [
+    {
+      "bag": "doubleT_obstacle",
+      "frames": 30,
+      "measurement_mismatches": 0,
+      "changed_status_frames": 1,
+      "changed_object_frames": 30,
+      "baseline_status": {
+        "unresolved_obstacle": 8,
+        "obstacle": 22
+      },
+      "head_status": {
+        "candidate": 1,
+        "unresolved_obstacle": 7,
+        "obstacle": 22
+      },
+      "baseline": {
+        "processing_ms": {
+          "p50": 157.5528959510848,
+          "p95": 280.96901222015725,
+          "p99": 1550.5325083259972
+        },
+        "read_and_process_ms": {
+          "p50": 195.2900625183247,
+          "p95": 340.2265395445281,
+          "p99": 1672.3975603748129
+        },
+        "wall_ms_per_frame": 279.4754180358723,
+        "objects": 6980,
+        "intersection_confirmed": 22,
+        "future_history": 0,
+        "duplicate_history": 0
+      },
+      "head": {
+        "processing_ms": {
+          "p50": 174.80872955638915,
+          "p95": 223.49060834967528,
+          "p99": 772.7590588864412
+        },
+        "read_and_process_ms": {
+          "p50": 176.19035398820415,
+          "p95": 224.54178325715475,
+          "p99": 840.1778253447271
+        },
+        "wall_ms_per_frame": 216.50953749970844,
+        "objects": 6903,
+        "intersection_confirmed": 22,
+        "future_history": 0,
+        "duplicate_history": 0
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "frames": 30,
+      "measurement_mismatches": 0,
+      "changed_status_frames": 0,
+      "changed_object_frames": 30,
+      "baseline_status": {
+        "unresolved_obstacle": 30
+      },
+      "head_status": {
+        "unresolved_obstacle": 30
+      },
+      "baseline": {
+        "processing_ms": {
+          "p50": 129.41185454837978,
+          "p95": 197.57879350800067,
+          "p99": 212.29272843687795
+        },
+        "read_and_process_ms": {
+          "p50": 142.78387551894411,
+          "p95": 211.04578548693098,
+          "p99": 227.6420473260805
+        },
+        "wall_ms_per_frame": 155.32005000083396,
+        "objects": 5027,
+        "intersection_confirmed": 0,
+        "future_history": 0,
+        "duplicate_history": 0
+      },
+      "head": {
+        "processing_ms": {
+          "p50": 139.09312500618398,
+          "p95": 180.33249389845875,
+          "p99": 183.99435732630081
+        },
+        "read_and_process_ms": {
+          "p50": 140.2233749977313,
+          "p95": 183.18451670347713,
+          "p99": 185.09348077932373
+        },
+        "wall_ms_per_frame": 148.5192708360652,
+        "objects": 5028,
+        "intersection_confirmed": 0,
+        "future_history": 0,
+        "duplicate_history": 0
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frames": 30,
+      "measurement_mismatches": 0,
+      "changed_status_frames": 0,
+      "changed_object_frames": 30,
+      "baseline_status": {
+        "candidate": 1,
+        "unresolved_obstacle": 29
+      },
+      "head_status": {
+        "candidate": 1,
+        "unresolved_obstacle": 29
+      },
+      "baseline": {
+        "processing_ms": {
+          "p50": 131.75695855170488,
+          "p95": 164.77940873010084,
+          "p99": 166.58961480483413
+        },
+        "read_and_process_ms": {
+          "p50": 145.64639603486285,
+          "p95": 178.0525895417668,
+          "p99": 183.10910904896446
+        },
+        "wall_ms_per_frame": 153.22317636649436,
+        "objects": 7491,
+        "intersection_confirmed": 0,
+        "future_history": 0,
+        "duplicate_history": 0
+      },
+      "head": {
+        "processing_ms": {
+          "p50": 144.83410405227914,
+          "p95": 213.59200449078335,
+          "p99": 235.73448965325952
+        },
+        "read_and_process_ms": {
+          "p50": 146.24891651328653,
+          "p95": 214.7314541740342,
+          "p99": 236.95228911703452
+        },
+        "wall_ms_per_frame": 158.55073333562663,
+        "objects": 7474,
+        "intersection_confirmed": 0,
+        "future_history": 0,
+        "duplicate_history": 0
+      }
+    }
+  ],
+  "limitations": [
+    "Single sequential run per variant, no repeated/counterbalanced performance estimate; startup included in wall time.",
+    "90 real scans per revision, nonexhaustive labels, no accuracy claim.",
+    "Head changes geometry, crop, reporting and reader together; timings do not isolate prefetch.",
+    "No automated tests run. Static findings explicitly distinguished from executed CLI."
+  ],
+  "findings": [
+    {
+      "priority": 1,
+      "file": "tunnel_guard/io.py",
+      "line": 47,
+      "function": "prefetch",
+      "finding": "depth=0 returns an iterator as StopIteration.value instead of yielding it; actual CLI fails without scans",
+      "evidence": "executed CLI, exit 1"
+    },
+    {
+      "priority": 1,
+      "file": "tunnel_guard/detector.py",
+      "line": 543,
+      "function": "Detector.process",
+      "finding": "Second crop half-width base+max(abs(offset)) does not contain first crop offset +/- (base+abs(offset)); needs conservative bound of actual subset or skip second lateral clipping",
+      "evidence": "static interval derivation; no measured lost-point count claimed"
+    },
+    {
+      "priority": 1,
+      "file": "tunnel_guard/geometry.py",
+      "line": 545,
+      "function": "TrackGeometry.path / _continuation",
+      "finding": "Extrapolation variance omits slope-curvature cross covariance; outward one-sided fits have positive missing contribution. C++ mirrors omission.",
+      "evidence": "static least-squares covariance derivation; no calibrated field bound claimed"
+    },
+    {
+      "priority": 2,
+      "file": "tunnel_guard/curved_stress.py",
+      "line": 118,
+      "function": "object_on_arc",
+      "finding": "lateral_m alters half length rather than shifting center in local normal direction",
+      "evidence": "static code; reported center-only panel does not exercise nonzero lateral"
+    },
+    {
+      "priority": 2,
+      "file": "tunnel_guard/io.py",
+      "line": 65,
+      "function": "prefetch.produce",
+      "finding": "Error/sentinel queue.put calls lack timeout/stop handling; consumer exception or early close can leave producer blocked on full queue",
+      "evidence": "static shutdown race; not reproduced by normal completed replay"
+    }
+  ]
+}
