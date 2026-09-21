@@ -1,0 +1,41 @@
+{
+  "detector_config": "configs/detector-native.json",
+  "comparisons": [
+    {
+      "bag": "doubleT_obstacle",
+      "bag_path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "before": "build/return-dedup-before/doubleT_obstacle.jsonl",
+      "after": "build/return-dedup-after/doubleT_obstacle.jsonl"
+    },
+    {
+      "bag": "roundT_doubleT",
+      "bag_path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "before": "build/return-dedup-before/roundT_doubleT.jsonl",
+      "after": "build/return-dedup-after/roundT_doubleT.jsonl"
+    },
+    {
+      "bag": "doubleT_platform",
+      "bag_path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "before": "build/return-dedup-panel-before/doubleT_platform.jsonl",
+      "after": "build/return-dedup-panel-after/doubleT_platform.jsonl"
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "bag_path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "before": "build/return-dedup-panel-before/roundT_pressureGate_roundT.jsonl",
+      "after": "build/return-dedup-panel-after/roundT_pressureGate_roundT.jsonl"
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "bag_path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+      "before": "build/return-dedup-panel-before/roundT_squareT_pressureGate_squareT.jsonl",
+      "after": "build/return-dedup-panel-after/roundT_squareT_pressureGate_squareT.jsonl"
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "bag_path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+      "before": "build/return-dedup-panel-before/squareT_platform_squareT_switch.jsonl",
+      "after": "build/return-dedup-panel-after/squareT_platform_squareT_switch.jsonl"
+    }
+  ]
+}

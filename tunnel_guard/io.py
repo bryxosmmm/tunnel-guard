@@ -28,6 +28,7 @@ class Scan:
     skipped_duplicate_scans: int = 0
     deserialize_s: float = 0.0
     decode_s: float = 0.0
+    duplicate_return_points: int = 0
 
 
 def prefetch(iterable, depth: int = 1):
@@ -91,11 +92,14 @@ def prefetch(iterable, depth: int = 1):
         stop.set()
 
 
-def decode_cloud(message, rotation: np.ndarray, translation: np.ndarray):
+def decode_cloud(message, rotation: np.ndarray, translation: np.ndarray, *,
+                 deduplicate_returns: bool = False):
     """Respect padding, endianness, invalid returns and optional acquisition times.
 
     Point timestamps are normalized within the acquisition, never confused with bag
     record time. Missing/constant timestamps disable deskew rather than invent time.
+    Experimental return deduplication preserves first occurrences and acquisition
+    order, but can change KISS-ICP sampling downstream. It is opt-in for that reason.
     """
     fields = {f.name: f for f in message.fields}
     endian = ">" if message.is_bigendian else "<"
@@ -103,6 +107,15 @@ def decode_cloud(message, rotation: np.ndarray, translation: np.ndarray):
     required = ["x", "y", "z"]
     time_name = next((n for n in ("timestamp", "time", "t") if n in fields), None)
     names = required + ([time_name] if time_name else [])
+    # Missing emission identity leaves the scan intact. Intensity is included so
+    # distinct measured returns at the same quantized XYZ remain distinguishable.
+    dedup_fields = ("ring", "intensity")
+    can_dedup = deduplicate_returns and time_name is not None and all(
+        n in fields and fields[n].count == 1 and fields[n].datatype in types
+        for n in dedup_fields)
+    can_dedup = can_dedup and fields["ring"].datatype in (1, 2, 3, 4, 5, 6)
+    if can_dedup:
+        names += list(dedup_fields)
     for name in names:
         if name not in fields or fields[name].count != 1 or fields[name].datatype not in types:
             raise ValueError(f"Missing or unsupported scalar PointCloud2 field: {name}")
@@ -142,6 +155,21 @@ def decode_cloud(message, rotation: np.ndarray, translation: np.ndarray):
                 duration = 0.0
     if invalid:
         points = points[valid]
+    if can_dedup and times.size:
+        # Stable channel grouping preserves acquisition order within each ring.
+        # Only consecutive identical measurements in that channel are removed;
+        # no spatial tolerance, voxel merging, or assumed return-slot layout.
+        channels = records["ring"].ravel()[valid]
+        order = np.argsort(channels, kind="stable")
+        previous, current = order[:-1], order[1:]
+        same = channels[previous] == channels[current]
+        for name in (time_name, "intensity", "x", "y", "z"):
+            values = records[name].ravel()[valid]
+            same &= values[previous] == values[current]
+        if same.any():
+            keep = np.ones(len(points), dtype=bool)
+            keep[current[same]] = False
+            points, times = points[keep], times[keep]
     # Exact signed axis permutations cover the current mounting recipe. General
     # calibrated rotations keep the matrix product and its arithmetic order.
     axes = np.argmax(np.abs(rotation), axis=1)
@@ -204,10 +232,13 @@ def iter_bag(path: Path, config: dict, *, topic: str | None = None, every: int =
                 stats["subsampled_measurements"] += 1
                 continue
             decode_start = time.perf_counter()
-            points, times, invalid, duration = decode_cloud(message, rotation, translation)
+            points, times, invalid, duration = decode_cloud(
+                message, rotation, translation,
+                deduplicate_returns=config.get("deduplicate_returns", False))
             decode_s = time.perf_counter() - decode_start
             stats["emitted_scans"] += 1
             yield Scan(index, measurement_ns * 1e-9, points, times, message.header.frame_id,
                        connection.topic, message.height * message.width, invalid, duration,
-                       measurement_ns, timestamp_ns, duplicates, deserialize_s, decode_s)
+                       measurement_ns, timestamp_ns, duplicates, deserialize_s, decode_s,
+                       message.height * message.width - invalid - len(points))
             emitted += 1

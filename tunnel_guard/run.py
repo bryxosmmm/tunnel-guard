@@ -187,6 +187,7 @@ def main():
                                        capture_diagnostics=scan.index in diagnostic_frames)
                 inference_s = time.perf_counter() - inference_start
                 row.update(frame=scan.index, bag=bag.name, raw_points=scan.raw_points,
+                           duplicate_return_points=scan.duplicate_return_points,
                            invalid_points=scan.invalid_points, sensor_frame=scan.frame_id,
                            topic=scan.topic, scan_duration_s=scan.scan_duration_s,
                            measurement_timestamp_ns=scan.measurement_timestamp_ns,

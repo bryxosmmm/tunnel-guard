@@ -157,7 +157,8 @@ class PerceptionNode(Node):
                 )
             decode_started = time.monotonic()
             points, times, invalid, duration = decode_cloud(
-                message, self.rotation, self.translation
+                message, self.rotation, self.translation,
+                deduplicate_returns=self.config.get("deduplicate_returns", False)
             )
             decode_s = time.monotonic() - decode_started
             self.last_received = received
@@ -178,6 +179,7 @@ class PerceptionNode(Node):
                 sensor_frame=message.header.frame_id,
                 input_topic=self.get_parameter("input_topic").value,
                 invalid_points=invalid,
+                duplicate_return_points=message.height * message.width - invalid - len(points),
                 scan_duration_s=duration,
                 processed_scans=self.processed,
                 skipped_duplicate_scans=self.duplicates,

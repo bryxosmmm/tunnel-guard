@@ -45,6 +45,8 @@ def load_config(path: str | Path) -> dict:
         raise ValueError("Invalid sensor range bounds")
     if not isinstance(config.get("deskew_enabled", False), bool):
         raise ValueError("deskew_enabled must be boolean")
+    if not isinstance(config.get("deduplicate_returns", False), bool):
+        raise ValueError("deduplicate_returns must be boolean")
     if config.get("voxel_backend", "numpy") not in ("numpy", "cpp"):
         raise ValueError("voxel_backend must be numpy or cpp")
     if config.get("voxel_backend") == "cpp":
