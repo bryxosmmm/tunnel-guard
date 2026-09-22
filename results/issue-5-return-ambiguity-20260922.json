@@ -1,0 +1,49 @@
+{
+  "summary": {
+    "captured_scans": 85,
+    "cluster_stages_executed": 82,
+    "decoded_points": 17191300,
+    "decoded_spanning_groups": 176224,
+    "within_component_spanning_groups": 5443,
+    "affected_object_observations": 348,
+    "affected_confirmed_observations": 0,
+    "affected_intersection_confirmed_observations": 0,
+    "firing_identity": "unknown",
+    "return_multiplicity": "unknown",
+    "interpretation": "Exact ring/time coincidences can span spatial support; these groups are NOT established firings. No deduplication, counterfactual detection or causal confirmation change is claimed."
+  },
+  "manifest": {
+    "inspector_sha256": "7c4ff4a005397d926aa114b040294e3815e665b53616d42b8d042294047057e3",
+    "recipe_sha256": "e6df9e5c037705e932395afa7cfeeca87f31e7150ffbcd3b396843d5114e500d",
+    "runs": [
+      {
+        "path": "build/issue-5-regression-after-20260922",
+        "manifest_sha256": "86dd3232bc2d5e45b0f8dfacc2f6b67f45a79e8f81afb71a80208abfcfdc3572",
+        "detector_sha256": "20c4a89117a6c7ea1c7588b1d476909d93fef26c5bf80cf757c6f044db03a185"
+      },
+      {
+        "path": "build/issue-5-invalid-geometry-after-20260922",
+        "manifest_sha256": "4e9de45e3c805c43603ec9926f708e53830cc0aca60af0fecd72c75a90f4752c",
+        "detector_sha256": "20c4a89117a6c7ea1c7588b1d476909d93fef26c5bf80cf757c6f044db03a185"
+      }
+    ]
+  },
+  "recipe": {
+    "hypothesis": "Exact ring/time coincidences need not collapse to one spatial-support voxel; these coincidences alone cannot establish a physical firing or return multiplicity.",
+    "criterion": "Inspect every saved scan in both declared real replay panels, join component labels to emitted objects, preserve all aggregate counts and report whether groups span support cells. Do not infer firing identity, deduplicate points, change detector decisions, or claim a measured causal alarm effect.",
+    "seed": 20260915,
+    "detector_config": "configs/detector-native.json",
+    "diagnostic_runs": [
+      "build/issue-5-regression-after-20260922",
+      "build/issue-5-invalid-geometry-after-20260922"
+    ],
+    "output": "build/issue-5-return-ambiguity-20260922"
+  },
+  "records": {
+    "path": "results/issue-5-return-ambiguity-records-20260922.json.gz",
+    "sha256": "a4e08d73acaec709aa300039db31730151938f1d82e2655cc48f528281736cc1"
+  },
+  "scope": "85 saved scans, not all2641 raw frames; component groups include rejected components.348 emitted object observations contain spanning groups; none were confirmed. Exact ring/time keys are not verified firing IDs, so no true multi-return count or causal alarm effect is measured.",
+  "acceptance": "Issue5 criterion3 is NOT established. Temporal scan-hit uniqueness holds in the preceding complete replay; spatial/accumulated voxel support is not pulse-independent.",
+  "safe_boundary": "Preserve raw observations and unknown profile status. Do not deduplicate approximate keys, enable deskew, install intensity thresholds, or relabel existing confirmation as pulse-independent. Changing confirmation policy to suppress all unknown-profile data would require a separate explicit recall/false-alarm decision."
+}

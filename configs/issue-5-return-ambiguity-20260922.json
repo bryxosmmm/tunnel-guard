@@ -1,0 +1,11 @@
+{
+  "hypothesis": "Exact ring/time coincidences need not collapse to one spatial-support voxel; these coincidences alone cannot establish a physical firing or return multiplicity.",
+  "criterion": "Inspect every saved scan in both declared real replay panels, join component labels to emitted objects, preserve all aggregate counts and report whether groups span support cells. Do not infer firing identity, deduplicate points, change detector decisions, or claim a measured causal alarm effect.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "diagnostic_runs": [
+    "build/issue-5-regression-after-20260922",
+    "build/issue-5-invalid-geometry-after-20260922"
+  ],
+  "output": "build/issue-5-return-ambiguity-20260922"
+}

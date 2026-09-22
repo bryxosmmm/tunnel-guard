@@ -82,6 +82,8 @@ The recorded layout is one row, little-endian, `point_step` 26, fields
   Existing support counts are voxel representatives from a single scan and confirmation uses
   distinct scans and timestamps, so voxel support is not a count of independent firings.
   Attributes report `return_multiplicity: "unknown"` and never group, deduplicate or average.
+  This does **not** establish issue #5's stronger requirement that multiple returns cannot
+  increase spatial support: different returns can occupy different voxels. See section 9.
 
 ## 4. Time: raw preserved vs normalized
 
@@ -160,18 +162,33 @@ channel into a calibrated material identifier. Both stay in the health caveats.
 
 ## 7. Request to the organizer (one short list)
 
-1. Exact sensor model and firmware version; driver version and configuration.
-2. Angle/firing correction files; firing order and scan period.
-3. Return mode and scan assembly mode; whether the driver already deskews/aggregates or applies
-   hardware filtering before publishing.
-4. Time-field semantics: units, epoch, emission vs reception, per-point vs per-packet, clock
-   source; whether the FLOAT64 `timestamp` is the driver's conversion.
-5. Sensor-to-vehicle mounting transform and the mounting height reference.
+Blocking inputs for issue #5's pulse-independence criterion:
 
-Not requested because we can measure them ourselves: slot/column counts, within-frame time span,
-`ring` set, invalid-return fraction, and the absence of TF/IMU/odometry topics in the bags.
-Intensity repeatability across matched passes would also be self-measurable, but no matched
-passes have been identified yet.
+1. **Recording-to-profile mapping:** a stable device/profile identifier for each recording,
+   exact model/firmware, driver repository revision and effective configuration, including
+   return mode and scan assembly. A topic or `frame_id` string is not device identification.
+2. **A short raw-packet interval synchronized with its published PointCloud2**, plus the
+   device's correction file, or equivalent provenance-preserving packet/block/channel/return
+   identifiers. We need to match published slots to known emissions and return indices,
+   not merely guess from coincident values.
+3. **The timestamp and processing contract:** how packet/block time and channel offsets
+   produce `timestamp`; whether it denotes emission/reception; clock/epoch; and any prior
+   deskew, aggregation, filtering or reordering. Specify how dual returns share time and
+   how distinct emissions remain distinguishable after publication.
+
+These inputs let us validate a firing key against packet provenance on matched real data
+before using it to limit support. If publication has irreversibly merged firing identities,
+the producer must preserve them; more statistics on the same six fields cannot restore them.
+
+Material-labelled observations at known ranges/incidence are needed **only if material
+discrimination is required**. None are available here: intensity is retained, but material
+discrimination is explicitly refused. Cross-pass consistency would not by itself establish
+material labels. Vehicle extrinsics remain a separate deployment requirement, not a
+substitute for firing provenance.
+
+Do not request what the recordings already provide: field layout/dtypes, valid-return
+fractions, observed ring values, timestamp span/resolution, frame intervals or topic inventory.
+Those measurements do not establish emission semantics or independent firings.
 
 ## 8. What was not changed
 
@@ -179,3 +196,58 @@ No timing, deskew, sensor transform, intensity threshold or detector decision wa
 the basis of the manual, the preserved fields or any presumed cross-pass consistency.
 `intensity` and `ring` are reported and inspectable; they are never an input to detection,
 support or temporal confirmation, and no return identity is guessed.
+
+## 9. Return ambiguity audit — issue #5 remains blocked
+
+Recipe `configs/issue-5-return-ambiguity-20260922.json`; evidence
+[`results/issue-5-return-ambiguity-20260922.json`](../results/issue-5-return-ambiguity-20260922.json).
+Executed the real saved-scan inspector over **85 captured scans**, containing **17,191,300
+decoded valid returns**, including all three captured geometry failures. This is the saved
+diagnostic panel, not a new full-2,641-frame return-identity census.
+
+Exact `(ring, raw_time)` groups span distinct 5 cm spatial cells in **176,224 groups**.
+The largest observed group has two members; this is compatible with, but does not prove,
+dual-return operation. Within non-noise cluster components, **5,443** such groups span
+multiple cells (including rejected components). **348 emitted object observations** contain
+at least one spanning group; all 348 are adjacent and unconfirmed. The complete per-scan
+records are retained, compressed, with hashes. No physical firing or true return count is
+assigned to these coincidences, and no causal alarm change is claimed.
+
+The code distinguishes two mechanisms:
+
+- Temporal `hits` admit at most one observation per tracked frame. The preceding full
+  regression panel also measured zero repeated/future evidence timestamps. Multiple
+  points in one scan do not add separate temporal hits.
+- `support_voxels`, `uncertain_voxels`, density support and accumulated voxel cardinality
+  remain **spatial** quantities. They do not group physical emissions. Accumulated support
+  enters the confirmation gate (`Detector._associate`); spatial support also affects
+  admission, path relation and immediate confirmation. Distinct returns from one pulse
+  are therefore not guaranteed to contribute only once.
+
+**Acceptance status:** preservation is verified, but criterion 3 (pulse-independent
+support) is not established. The current data do not identify which observed coincident
+pairs are the same emission. Consequently the audit cannot measure their causal influence
+on confirmation or prove invariance to true multiple returns.
+
+Safe boundary: preserve observations and explicit unknown-profile status; leave deskew and
+intensity-based decisions off. Do not deduplicate approximate keys, invent independent-hit
+counts, or relabel existing confirmations as pulse-independent. Suppressing every
+unknown-profile confirmation would change recall and operator semantics and is not a
+silent fix. The issue remains open, blocked on the three provenance inputs in section 7.
+
+```sh
+.venv-iteration/bin/python -m tunnel_guard.inspect_bag \
+  --experiment configs/issue-5-return-ambiguity-20260922.json
+```
+
+Use a new output path for another run. No generated clouds or automated tests are part
+of this investigation; detector decisions and thresholds are unchanged.
+
+Local storage note: the five issue-5 replay runs' large JSONL outputs were subsequently
+archived losslessly as `.jsonl.gz`. Each archive was decompressed and SHA-256 checked
+before removing its uncompressed original; NPZ diagnostics were left intact. The audit
+above ran before archival. Its current CLI expects `.jsonl`: restore required inputs
+with `gunzip path/to/bag.jsonl.gz` before repeating it, with adequate disk space.
+The local `build/issue-5-lossless-storage-reclamation.jsonl` journal lists all 31 archives,
+original hashes and restoration commands. Archival reclaimed 4,133,430,529 bytes;
+it is not a new detector evaluation.

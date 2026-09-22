@@ -74,6 +74,15 @@ The failed criterion is not waived. See the
 [regression summary](results/issue-5-regression-summary-20260922.json) and
 [full audit](docs/DECODE_AND_LATENCY.md#full-recording-regression-audit--2026-09-22).
 
+**Issue #5 remains open: blocked on firing provenance.** The saved-scan audit covers 85
+scans and 17,191,300 returns. Exact `(ring, raw_time)` coincidences span spatial cells in
+348 emitted object observations, all adjacent and unconfirmed; coincidences are not verified
+physical firings. Temporal frame-hit uniqueness does not guarantee pulse-independent
+spatial support. See the [measured boundary and organizer request](docs/SENSOR_PROFILE.md#7-request-to-the-organizer-one-short-list)
+and [audit evidence](results/issue-5-return-ambiguity-20260922.json).
+Numerical support-count non-repeatability is tracked separately in
+[#9](https://github.com/bryxosmmm/tunnel-guard/issues/9); it is not waived by this investigation.
+
 - **Decoder** (56 messages, 11,760,266 point observations, three alternating repetitions
   each): all four original outputs (XYZ, normalized time, invalid count, duration) are
   byte-identical to the retained baseline — maximum coordinate and time difference 0.0,
