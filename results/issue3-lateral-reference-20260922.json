@@ -1,0 +1,103 @@
+{
+ "date": "2026-09-22",
+ "issue": 3,
+ "branch": "experiments/dolgov",
+ "data": {
+  "block": "new_data segments 100-129, contiguous",
+  "frames": 1530,
+  "seconds": 153,
+  "path_length_m": 284.8,
+  "chord_m": 171.8,
+  "mean_speed_mps": 1.86,
+  "frames_moving_over_5cm": 0.55
+ },
+ "motion_limit": "The extended recording is largely stationary. Across a sample of spread-out segments the travel in five seconds was 9.45, 1.46, 0.13, 0.64, 10.13, 3.60 and 3.19 m, median pair displacement 0.46 m. A pair test that validates a prediction when the train arrives needs travel, so a spread sample cannot support one; a contiguous block can. This is the same wall behind the note in CURVED_CORRIDOR_AND_RANGE.md that a subset carries at most about 33 m of travel.",
+ "continuation_pair_test": {
+  "pairs": 12314,
+  "method": "a predicted centre at range r in frame N is carried through both poses into a later frame and compared against the rails that frame measures at close range; only look-aheads past the last anchor are scored",
+  "median_abs_error_m": {
+   "5_10m": {
+    "n": 894,
+    "tangent": 0.085,
+    "curvature": 0.079,
+    "bore": 2.158
+   },
+   "10_20m": {
+    "n": 1516,
+    "tangent": 0.327,
+    "curvature": 0.296,
+    "bore": 0.465
+   },
+   "20_35m": {
+    "n": 2128,
+    "tangent": 0.771,
+    "curvature": 0.666,
+    "bore": 2.29
+   },
+   "35_60m": {
+    "n": 3836,
+    "tangent": 2.291,
+    "curvature": 1.678,
+    "bore": 2.329
+   },
+   "60_100m": {
+    "n": 3940,
+    "tangent": 5.24,
+    "curvature": 4.264,
+    "bore": 2.43
+   }
+  },
+  "readings": [
+   "curvature beats the tangent at every look-ahead, independently confirming the cross-branch result",
+   "the bore error does not grow with range while extrapolation degrades quadratically, so the bore wins past 60 m; at 2.43 m it still exceeds the 1.535 m corridor half-width"
+  ]
+ },
+ "bore_availability": {
+  "90m": 0.97,
+  "110m": 0.71,
+  "note": "the symmetry search must span at least +-7.5 m; a narrower window clips curved track and pins the fit"
+ },
+ "place_recognition": {
+  "question": "how to tell two passes are the same place without GPS",
+  "ground_truth": "poses say which (frame, range) observations look at the same ground",
+  "negative_section_shape": {
+   "observations": 25071,
+   "descriptor_1": "normalised lateral profile about the section's own axis plus the height distribution",
+   "result": "recognition equals the false-match rate at every threshold: 15 vs 13.9, 25 vs 26.9, 39 vs 49.3 per cent",
+   "descriptor_2": "measured excavation width and height, which are range-invariant by construction",
+   "result_2": "same overlap: 1/1, 2/2, 4/4, 7/7 per cent, and the measured width itself ranges 1.90-9.30 m about a 6.80 m median",
+   "diagnosis": "what a distant lidar sees of a cross-section is decided by range and occlusion, not by the place, so neither the point distribution nor dimensions derived from it identify one"
+  },
+  "positive_intensity": {
+   "bright_returns_per_frame": {
+    "above_131": 176,
+    "saturated_255": 52
+   },
+   "concentration": "median range of the brightest 0.1 per cent is 15 m, p90 65 m",
+   "stations_seen_both_near_and_far": 174,
+   "near_far_correlation": {
+    "pearson": 0.804,
+    "spearman": 0.405
+   },
+   "top_station_overlap": {
+    "top20pct": 0.5,
+    "top10pct": 0.39,
+    "top5pct": 0.33,
+    "chance": [
+     0.2,
+     0.1,
+     0.05
+    ]
+   },
+   "reading": "a station that lights up seen from 10 m also lights up seen from 40 m, which is the viewpoint robustness the section shape lacked. The gap between the Pearson and Spearman figures says a few strong stations carry it, which is what sparse fixed markers would do rather than a smooth field. It also suggests the architecture: recognise the place near, where intensity survives, and let memory supply the far field"
+  }
+ },
+ "open": [
+  "cross-pass matching is untested and untestable on one pass",
+  "distinguishing 'the tunnel is always like this' from 'something is standing here' on a first pass",
+  "what to report on a first pass with no memory",
+  "ring, in-frame time and return multiplicity are still unexamined",
+  "cant is not handled separately"
+ ],
+ "limits": "One contiguous block of 174 m of route carries the place work; 12314 pairs carry the continuation test. Along-track position comes from the detector pose, whose longitudinal axis is the degenerate one, so issue #4 bounds what any of this can claim. No labels are involved anywhere."
+}
