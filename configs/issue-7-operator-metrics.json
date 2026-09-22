@@ -1,0 +1,10 @@
+{
+  "hypothesis": "An explicit operator-review policy can expose unresolved observations and operational alert burden without calling unlabelled alarms false positives or issuing train-control authority.",
+  "criterion": "Account for every frame of the fixed 2641-frame upstream panel; report contiguous alert episodes, alert frames and exposure per minute and estimated kilometre, separate insufficient-travel denominators, retain all unresolved observations and source identities. Unknown age and target latency remain unverified.",
+  "seed": 20260915,
+  "input_run": "../tunnel-guard-issue-5/build/issue-5-regression-before-20260922",
+  "minimum_reporting_distance_m": 10.0,
+  "minimum_reporting_distance_note": "Reporting denominator floor, not a detector threshold or a stationary-train classifier. Short trajectories do not justify a per-km rate.",
+  "output": "build/issue-7-operator-metrics",
+  "bags": ["doubleT_obstacle", "doubleT_platform", "roundT_doubleT", "roundT_pressureGate_roundT", "roundT_squareT_pressureGate_squareT", "squareT_platform_squareT_switch", "new_data_0", "new_data_100", "new_data_200"]
+}

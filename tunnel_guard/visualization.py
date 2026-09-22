@@ -10,6 +10,7 @@ from rosbags.rosbag2 import Writer
 from rosbags.typesys import Stores, get_typestore
 
 from .geometry import TrackGeometry
+from .operator_channel import operator_decision
 
 
 def distance_summary(row: dict) -> dict:
@@ -119,6 +120,8 @@ class ResultMessages:
                  mesh_file=m("visualization_msgs/msg/MeshFile", "", empty), mesh_use_embedded_materials=False)
 
     def build(self, row: dict, points: np.ndarray, timestamp_ns: int, support: dict | None = None):
+        if "decision" not in row:
+            row = row | {"decision": operator_decision(row, self.config)}
         m = self.message
         header = m("std_msgs/msg/Header", m("builtin_interfaces/msg/Time", *divmod(timestamp_ns, 1000000000)),
                    row["coordinate_frame"])
@@ -162,6 +165,10 @@ class ResultMessages:
                 f"Intrusion={distances['confirmed_intersection_m']} m | uncertain={distances['unresolved_confirmed_m']} m\n"
                 f"{row['health']}: {', '.join(row['health_reasons'])}\n"
                 "Reference envelope; observed support only; route clearance unknown")
+        decision = row["decision"]
+        text += (f"\nOperator: {decision['operator_action']} | {decision['reason']}"
+                 f"\nUnresolved: {decision['unresolved']['objects']} | nearest={decision['unresolved']['nearest_m']} m"
+                 f"\nFreshness: {decision['timing']['freshness']} | movement authority NOT ISSUED")
         if mounting:
             measured = mounting.get("height_above_support_plane_m") if mounting["state"] == "observed" else None
             estimate = "unavailable" if measured is None else f"{measured:.3f} m"
