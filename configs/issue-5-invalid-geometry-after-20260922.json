@@ -1,0 +1,32 @@
+{
+  "hypothesis": "All three geometry-invalid frames observed in the original complete panel must retain correct source attributes through stages that actually ran. Empty cluster metadata is not evidence that clustering ran. Supplementary diagnostic coverage only; original full-panel criterion and failures remain unchanged.",
+  "criterion": {
+    "discrete": "All non-timing statuses, objects, IDs, integer support counts, confirmation flags, evidence timestamps and list order must agree; any mismatch is investigated.",
+    "numeric": "Report every unequal numeric leaf; absolute/relative tolerance 1e-9 is declared before replay for continuous floating estimates only. IDs, counters, flags and source timestamps must be exact.",
+    "coverage": "Every emitted unique measurement until EOF from all nine configured bags. Require manifests and ingestion counts; no intersection-of-frames-only acceptance. Report actual state coverage and unsupported cases.",
+    "diagnostics": "All legacy arrays byte-identical; exact original-slot/value/valid-mask alignment for saved diagnostic representative stages.",
+    "resources": "Measure processing/decode/wall and cumulative process peak RSS for sequential same-machine runs; report regressions honestly without asserting field latency or recall."
+  },
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/issue-5-invalid-geometry-after-20260922",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [
+    48,
+    130,
+    249
+  ],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "development"
+    },
+    {
+      "path": "data/extended_subset/new_data_200",
+      "split": "development_extended_segment_not_independent_pass"
+    }
+  ]
+}

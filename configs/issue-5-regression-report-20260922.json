@@ -1,0 +1,43 @@
+{
+  "description": "Fixed comparison recipe for issue #5 / PR #8: does sensor-attribute preservation change any detector decision across the complete nine-bag panel? Streams both runs, records every material mismatch, validates ingestion against the saved read-only SQLite inventory and binds source identity to declared revisions.",
+  "hypothesis": "Sensor-attribute preservation is behavior-neutral across complete real recordings, not only no-obstacle prefixes.",
+  "before": "build/issue-5-regression-before-20260922",
+  "after": "build/issue-5-regression-after-20260922",
+  "output": "results/issue-5-full-regression-20260922.json",
+  "detector_config": "configs/detector-native.json",
+  "input_inventory": "results/issue-5-regression-inputs-20260922.json",
+  "source_binding": "results/issue-5-regression-source-20260922.json",
+  "declared_revisions": {
+    "before": "bc4f73b4f75d83540683716953afb30351839cd6",
+    "after": "555250285d0b12ea2252fc14d5abf0a1a131e3f2"
+  },
+  "atol": 1e-9,
+  "rtol": 1e-9,
+  "tolerance_scope": "Absolute/relative tolerance applies only to continuous floating estimates. Identifiers, counters, booleans, list lengths, dict keys and source/evidence timestamps compare exactly. No tolerance is applied to timestamps.",
+  "excluded_fields": [
+    "processing_s",
+    "motion_s",
+    "mounting_observation_s",
+    "deserialize_s",
+    "decode_s",
+    "ingestion_s",
+    "inference_s",
+    "read_and_process_s",
+    "diagnostic_write_s",
+    "visualization_s"
+  ],
+  "excluded_note": "Only these operational timing fields plus the top-level sensor_attributes summary are excluded. Timing, throughput and RSS are reported, never used to assert a detector decision, field latency or recall. The sensor_attributes summary must remain present with unknown flags and availability counts in strict mode; it carries no detector-promotion flag.",
+  "provenance_note": "Manifest git_revision is reported exactly as captured and is NOT the implementation revision: the baseline ran from an archived bc4f73b snapshot nested inside the fix worktree, so run.git_revision() there reports the enclosing branch. Source identity is the captured source_sha256 hashes bound in results/issue-5-regression-source-20260922.json to the declared revisions. Native kernel source hashes are compared; compiled binary hashes are retained as evidence and are not required to be equal.",
+  "expected_bags": [
+    {"name": "doubleT_obstacle", "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development"},
+    {"name": "doubleT_platform", "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform", "split": "development"},
+    {"name": "roundT_doubleT", "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT", "split": "development"},
+    {"name": "roundT_pressureGate_roundT", "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT", "split": "development"},
+    {"name": "roundT_squareT_pressureGate_squareT", "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT", "split": "development"},
+    {"name": "squareT_platform_squareT_switch", "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch", "split": "development"},
+    {"name": "new_data_0", "path": "data/extended_subset/new_data_0", "split": "development_extended_segment_not_independent_pass"},
+    {"name": "new_data_100", "path": "data/extended_subset/new_data_100", "split": "development_extended_segment_not_independent_pass"},
+    {"name": "new_data_200", "path": "data/extended_subset/new_data_200", "split": "development_extended_segment_not_independent_pass"}
+  ],
+  "panel": "Fixed nine-bag panel of the two issue-5 replay configs: every=1, max_frames=null, EOF, seed 20260915, detector-native.json, odometry_threads 8."
+}

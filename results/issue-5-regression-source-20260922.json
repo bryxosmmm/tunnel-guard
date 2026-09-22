@@ -1,0 +1,1000 @@
+{
+  "declared_upstream_revision": "bc4f73b4f75d83540683716953afb30351839cd6",
+  "declared_submitted_fix_revision": "555250285d0b12ea2252fc14d5abf0a1a131e3f2",
+  "note": "The runner discovers Git from its module directory. The archived baseline lives under the fix checkout, so its observed manifest revision is the enclosing checkout, not an implementation identity. The archive-object/captured-file SHA256 bindings below identify the executed source. Native build-path-dependent binary hashes are retained separately; native source hashes are compared. Reporting-only changes to compare_alarm_runs.py and decode_benchmark.py do not enter detector execution.",
+  "variants": {
+    "upstream": {
+      "observed_manifest_revision": "555250285d0b12ea2252fc14d5abf0a1a131e3f2",
+      "native_accelerator": {
+        "binary_sha256": "e7964c3b177fa3b9556c0581f05a3a4019c530854723027f32ea701c93bd2240",
+        "module": "tunnel_guard._native",
+        "backend": "cpp",
+        "sources_sha256": {
+          "cpp/kernels.cpp": "07e6934a60bb1ab0a4c65d8bddb57e5985f9a6fd46de3f634fa12ee0b6406fbf",
+          "cpp/voxel.cpp": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+          "cpp/native.h": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+          "setup.py": "c6264d49cc69a6ea9052ddb27a7363229eca2e887f4eab77beafc31745200b59",
+          "MANIFEST.in": "33c4c37a2f87322b865aa3de40223f5a1d3a0aebf1c220aa0d266bf1366d6910"
+        }
+      },
+      "files": [
+        {
+          "file": "cpp/kernels.cpp",
+          "commit_object_sha256": "07e6934a60bb1ab0a4c65d8bddb57e5985f9a6fd46de3f634fa12ee0b6406fbf",
+          "captured_sha256": "07e6934a60bb1ab0a4c65d8bddb57e5985f9a6fd46de3f634fa12ee0b6406fbf",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "cpp/native.h",
+          "commit_object_sha256": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+          "captured_sha256": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "cpp/voxel.cpp",
+          "commit_object_sha256": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+          "captured_sha256": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/__init__.py",
+          "commit_object_sha256": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+          "captured_sha256": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/accelerator.py",
+          "commit_object_sha256": "b8a57cadcffc4f83e4e366b02ab7bd8ef20f9ceae60acd0aeec9931630db28c5",
+          "captured_sha256": "b8a57cadcffc4f83e4e366b02ab7bd8ef20f9ceae60acd0aeec9931630db28c5",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/alarm_anatomy.py",
+          "commit_object_sha256": "9579c8830b427b440d3d696dad20a0114a780bc92cf9a2e5205e174a10b21f81",
+          "captured_sha256": "9579c8830b427b440d3d696dad20a0114a780bc92cf9a2e5205e174a10b21f81",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/alignment.py",
+          "commit_object_sha256": "37019d4fa19e6186d89a1f8392d60eeadaf7b706eb602e91850d2fb86870fb08",
+          "captured_sha256": "37019d4fa19e6186d89a1f8392d60eeadaf7b706eb602e91850d2fb86870fb08",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/alignment_probe.py",
+          "commit_object_sha256": "15d69909fd6978047a92163f0b17dc31d027c14e09d029da28d65eeffac70551",
+          "captured_sha256": "15d69909fd6978047a92163f0b17dc31d027c14e09d029da28d65eeffac70551",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/annotate.py",
+          "commit_object_sha256": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+          "captured_sha256": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/assess_track_scenes.py",
+          "commit_object_sha256": "57e44a32f451a308998759f4d346543780c37195d98f2e13d875c588e19a3033",
+          "captured_sha256": "57e44a32f451a308998759f4d346543780c37195d98f2e13d875c588e19a3033",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/background.py",
+          "commit_object_sha256": "bea0e7ffae787bbf17ae06a9c775fc01d66aaac52cc104d82903cc8690dfb27b",
+          "captured_sha256": "bea0e7ffae787bbf17ae06a9c775fc01d66aaac52cc104d82903cc8690dfb27b",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/background_repro.py",
+          "commit_object_sha256": "816dbc51d7bb91afc6709d6435f2de966244167dc2d3dfce87b0c6496ca2f43c",
+          "captured_sha256": "816dbc51d7bb91afc6709d6435f2de966244167dc2d3dfce87b0c6496ca2f43c",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/calibrate.py",
+          "commit_object_sha256": "5ba977914f5f3da207454434c7111225d83dac6667c53bf9719326b691750f8c",
+          "captured_sha256": "5ba977914f5f3da207454434c7111225d83dac6667c53bf9719326b691750f8c",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/check_geometry_kernels.py",
+          "commit_object_sha256": "40f6e22703158118ebca6a880fe658db55dbc6b68ed770254d72eb933b97338d",
+          "captured_sha256": "40f6e22703158118ebca6a880fe658db55dbc6b68ed770254d72eb933b97338d",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/check_kernels.py",
+          "commit_object_sha256": "79788a196bb9573600c1f17e78bd9d670b0c779d4d47c4c9e0f86ff86e1dacfb",
+          "captured_sha256": "79788a196bb9573600c1f17e78bd9d670b0c779d4d47c4c9e0f86ff86e1dacfb",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/compare.py",
+          "commit_object_sha256": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+          "captured_sha256": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/compare_alarm_runs.py",
+          "commit_object_sha256": "ce39621d4cea9ee07617f882f1d1f7035f006f16b252b74c2b5f63d2f1ad36d0",
+          "captured_sha256": "ce39621d4cea9ee07617f882f1d1f7035f006f16b252b74c2b5f63d2f1ad36d0",
+          "matches": true,
+          "reporting_only": true
+        },
+        {
+          "file": "tunnel_guard/config_audit.py",
+          "commit_object_sha256": "68b557b8902365311feb65c76954eb7b8b9f581970610d86dac667dfd9468b1c",
+          "captured_sha256": "68b557b8902365311feb65c76954eb7b8b9f581970610d86dac667dfd9468b1c",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/corridor_report.py",
+          "commit_object_sha256": "d245b7d57fc996faa4315b41f9f9d8775becd7c91968d6fbcfdacb633ccdc4fd",
+          "captured_sha256": "d245b7d57fc996faa4315b41f9f9d8775becd7c91968d6fbcfdacb633ccdc4fd",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/curve_audit.py",
+          "commit_object_sha256": "1326d9adab148558ba5b3607390a3609a0705f18e12375f5652effdc2a0d2381",
+          "captured_sha256": "1326d9adab148558ba5b3607390a3609a0705f18e12375f5652effdc2a0d2381",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/curved_stress.py",
+          "commit_object_sha256": "0bcada82de0d22b9d50feef464635c334ef57cd7883f461fe1ea27a676a2a078",
+          "captured_sha256": "0bcada82de0d22b9d50feef464635c334ef57cd7883f461fe1ea27a676a2a078",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/decode_benchmark.py",
+          "commit_object_sha256": "2d86ea1438c6fcb5365455fd2a0de9cd116c22544b13dfe5db89f220ef0d579f",
+          "captured_sha256": "2d86ea1438c6fcb5365455fd2a0de9cd116c22544b13dfe5db89f220ef0d579f",
+          "matches": true,
+          "reporting_only": true
+        },
+        {
+          "file": "tunnel_guard/detector.py",
+          "commit_object_sha256": "b7e30bf608108240e17b8e8d0c8a52f30a480145b41ae6e690ee19a8def878b3",
+          "captured_sha256": "b7e30bf608108240e17b8e8d0c8a52f30a480145b41ae6e690ee19a8def878b3",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/episode_report.py",
+          "commit_object_sha256": "dc932d8a30294a887e7a143e852c1e2c9d7a95e46aea72f341d780a33d584501",
+          "captured_sha256": "dc932d8a30294a887e7a143e852c1e2c9d7a95e46aea72f341d780a33d584501",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/evaluate.py",
+          "commit_object_sha256": "79f870c370a8b76b867b8a173af517e10116e7220a1c21af3aa859088ff5a574",
+          "captured_sha256": "79f870c370a8b76b867b8a173af517e10116e7220a1c21af3aa859088ff5a574",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/expansion_report.py",
+          "commit_object_sha256": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+          "captured_sha256": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/extended_subset.py",
+          "commit_object_sha256": "feaf7c41ab3ccd9b9d0497128353c7b36eedbd33aff8f46c2cae8193da9279ce",
+          "captured_sha256": "feaf7c41ab3ccd9b9d0497128353c7b36eedbd33aff8f46c2cae8193da9279ce",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/geometry.py",
+          "commit_object_sha256": "df2e11b2ec266827f3fd26b7c7e0248ef0cd35753c3fa14fb7a9364ce777fc86",
+          "captured_sha256": "df2e11b2ec266827f3fd26b7c7e0248ef0cd35753c3fa14fb7a9364ce777fc86",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/ground_audit.py",
+          "commit_object_sha256": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+          "captured_sha256": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/history_probe.py",
+          "commit_object_sha256": "723311b1aee8248d2b18a72ac22e28b66b6df47dff16904ea87483b86cd1e3bf",
+          "captured_sha256": "723311b1aee8248d2b18a72ac22e28b66b6df47dff16904ea87483b86cd1e3bf",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/hmm_mos_probe.py",
+          "commit_object_sha256": "2f4c5a9f47ecedcb40457a5c64f3d606965a1db5178dacd85839d4df5070547f",
+          "captured_sha256": "2f4c5a9f47ecedcb40457a5c64f3d606965a1db5178dacd85839d4df5070547f",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/injection_experiment.py",
+          "commit_object_sha256": "9887b6985e3e90de90c0505c4cca787f05703d7bd9f487041e84b89a8b5841c1",
+          "captured_sha256": "9887b6985e3e90de90c0505c4cca787f05703d7bd9f487041e84b89a8b5841c1",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/inspect_bag.py",
+          "commit_object_sha256": "ccb30abe90954ab9e7862bcc914b9803ff538c5e4dd4695c97f189d04b766374",
+          "captured_sha256": "ccb30abe90954ab9e7862bcc914b9803ff538c5e4dd4695c97f189d04b766374",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/inspect_recording_headers.py",
+          "commit_object_sha256": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+          "captured_sha256": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/intrusion_audit.py",
+          "commit_object_sha256": "e04ec075a2cc9ddcf6d844e6ddfda6657e275b562ec6de7728f11732c7cdcf84",
+          "captured_sha256": "e04ec075a2cc9ddcf6d844e6ddfda6657e275b562ec6de7728f11732c7cdcf84",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/io.py",
+          "commit_object_sha256": "16a4410d0d19637d0cdac9b30a43c810d381d2e35feeef25cd63c41b40bc4a87",
+          "captured_sha256": "16a4410d0d19637d0cdac9b30a43c810d381d2e35feeef25cd63c41b40bc4a87",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/motion_audit.py",
+          "commit_object_sha256": "d2d49f0bcff1af6bb7ba97c6d7047c59f6ab4605bb485cfac61e6f298c94a8c7",
+          "captured_sha256": "d2d49f0bcff1af6bb7ba97c6d7047c59f6ab4605bb485cfac61e6f298c94a8c7",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/motion_scenarios.py",
+          "commit_object_sha256": "2d928846e973b163471f3293ba1af4ae79fdede55159b5c515cb8c2f6cc0d897",
+          "captured_sha256": "2d928846e973b163471f3293ba1af4ae79fdede55159b5c515cb8c2f6cc0d897",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/mounting.py",
+          "commit_object_sha256": "568b2716fafef9775d18e1105c0d1365aff1b32409d6cfcf82f22840bab33a2c",
+          "captured_sha256": "568b2716fafef9775d18e1105c0d1365aff1b32409d6cfcf82f22840bab33a2c",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/mounting_replay.py",
+          "commit_object_sha256": "f49091816ecf0854869c30bdf0ebaf1d19f836058ff1f0dd6ec8a1d6756d1731",
+          "captured_sha256": "f49091816ecf0854869c30bdf0ebaf1d19f836058ff1f0dd6ec8a1d6756d1731",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/mounting_report.py",
+          "commit_object_sha256": "c7547ee3d650de0f35f4d5a86ab855b0db1214e4860bada9082619c0fb44e41f",
+          "captured_sha256": "c7547ee3d650de0f35f4d5a86ab855b0db1214e4860bada9082619c0fb44e41f",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/native_benchmark.py",
+          "commit_object_sha256": "0adedf2f3de2bf5c698426c748d0ca2c98193110b7b710d4c182061c950b83d5",
+          "captured_sha256": "0adedf2f3de2bf5c698426c748d0ca2c98193110b7b710d4c182061c950b83d5",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/on_track.py",
+          "commit_object_sha256": "b5b8f3f2eff1bf8c6d51b7ad47f9591b4f92fb685c9131a183f6ec917b8b70fb",
+          "captured_sha256": "b5b8f3f2eff1bf8c6d51b7ad47f9591b4f92fb685c9131a183f6ec917b8b70fb",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/panel_report.py",
+          "commit_object_sha256": "f5fbf5612985fa008b580bb7446f445c5017d1170a04a7180b73b4e7dc38c505",
+          "captured_sha256": "f5fbf5612985fa008b580bb7446f445c5017d1170a04a7180b73b4e7dc38c505",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/plot_track_geometry.py",
+          "commit_object_sha256": "b19aee7b6846a74b38cc9bec7ba0158443f473168b4fb6a18fe95014b6716113",
+          "captured_sha256": "b19aee7b6846a74b38cc9bec7ba0158443f473168b4fb6a18fe95014b6716113",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/prepare_segment.py",
+          "commit_object_sha256": "154f5d0772d56473e82704d217723132c292efa0681d5df32f8bf6b1c355cf7a",
+          "captured_sha256": "154f5d0772d56473e82704d217723132c292efa0681d5df32f8bf6b1c355cf7a",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/profile_run.py",
+          "commit_object_sha256": "5ad54b41e5a681182281d0714017c06c628fbb65deada92a5e4cd04127a956fb",
+          "captured_sha256": "5ad54b41e5a681182281d0714017c06c628fbb65deada92a5e4cd04127a956fb",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/rail_fit_report.py",
+          "commit_object_sha256": "3bae4132006f5b72b7620be0e13fb76aebd413bfcce733c1d2c6738542f6bb44",
+          "captured_sha256": "3bae4132006f5b72b7620be0e13fb76aebd413bfcce733c1d2c6738542f6bb44",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/rail_geometry_audit.py",
+          "commit_object_sha256": "4314dd497098bee51d574daa0ca01089d46791c49102ca9a14fea5aaf127e044",
+          "captured_sha256": "4314dd497098bee51d574daa0ca01089d46791c49102ca9a14fea5aaf127e044",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/realistic_report.py",
+          "commit_object_sha256": "163806fdb60df8b981187b14e803ff921fdf1a9d14700b0e5ae4d30b0f0989d8",
+          "captured_sha256": "163806fdb60df8b981187b14e803ff921fdf1a9d14700b0e5ae4d30b0f0989d8",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/realistic_stress.py",
+          "commit_object_sha256": "e6468a325619d0a2e54f714fe0a98c03dd8631802ea83d771070fff869f3deac",
+          "captured_sha256": "e6468a325619d0a2e54f714fe0a98c03dd8631802ea83d771070fff869f3deac",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/render_alarm_cases.py",
+          "commit_object_sha256": "95b510a7143f7250ec718749ed654e95c225f1b5a9ce20aa054f3b0df9cd0cc7",
+          "captured_sha256": "95b510a7143f7250ec718749ed654e95c225f1b5a9ce20aa054f3b0df9cd0cc7",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/render_annotation_review.py",
+          "commit_object_sha256": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+          "captured_sha256": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/review_remaining_alerts.py",
+          "commit_object_sha256": "0fe5e93952e1a275a81b2b04d203ebe899fe4d1e304ef7d347e026cc87d4448b",
+          "captured_sha256": "0fe5e93952e1a275a81b2b04d203ebe899fe4d1e304ef7d347e026cc87d4448b",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/review_viewer.py",
+          "commit_object_sha256": "eb8b7c1de7591c7a1324184d29be20ef9adb58d7a2033d1335bcfcf92cf9297e",
+          "captured_sha256": "eb8b7c1de7591c7a1324184d29be20ef9adb58d7a2033d1335bcfcf92cf9297e",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/ros_node.py",
+          "commit_object_sha256": "d4c0f9b3538c18b1144b424401b8cfcc9c819a9b686605beece9442f9fb8873c",
+          "captured_sha256": "d4c0f9b3538c18b1144b424401b8cfcc9c819a9b686605beece9442f9fb8873c",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/run.py",
+          "commit_object_sha256": "23961c6f77b4ee0414b98ec0eb0e867fb18f4e69056d7d197c337640bf8d8164",
+          "captured_sha256": "23961c6f77b4ee0414b98ec0eb0e867fb18f4e69056d7d197c337640bf8d8164",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/segmentation.py",
+          "commit_object_sha256": "9e545b80d3e253309210f79745154fb83c5d0a30931d38fca4551eefd2635789",
+          "captured_sha256": "9e545b80d3e253309210f79745154fb83c5d0a30931d38fca4551eefd2635789",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/sensor_profile.py",
+          "commit_object_sha256": "4ff47460df305986034ba03e45e9c892e3559ccceffff61412c5d1ebadfb3c03",
+          "captured_sha256": "4ff47460df305986034ba03e45e9c892e3559ccceffff61412c5d1ebadfb3c03",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/stress.py",
+          "commit_object_sha256": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+          "captured_sha256": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/structural_view.py",
+          "commit_object_sha256": "667fc9c9d933bbb19ab5f6e77f32b3cd2f34baa5f39eba0bdbf000d1036fd541",
+          "captured_sha256": "667fc9c9d933bbb19ab5f6e77f32b3cd2f34baa5f39eba0bdbf000d1036fd541",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/surface_evaluate.py",
+          "commit_object_sha256": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+          "captured_sha256": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/sustech.py",
+          "commit_object_sha256": "103e7c167550022a86f37973a11dabfc476d0acdfc9eb1ca08212b6f4c615392",
+          "captured_sha256": "103e7c167550022a86f37973a11dabfc476d0acdfc9eb1ca08212b6f4c615392",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/sustech_import.py",
+          "commit_object_sha256": "adba80ec5aa9bfa31d8ec3321ed5f2d3ef97c55a77db7c0bd2addc7fb0f84700",
+          "captured_sha256": "adba80ec5aa9bfa31d8ec3321ed5f2d3ef97c55a77db7c0bd2addc7fb0f84700",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/trace_analysis.py",
+          "commit_object_sha256": "eb1c1617b8666166d1d96864b79d541592c3a6784b8a6007ab69b3714d748c4c",
+          "captured_sha256": "eb1c1617b8666166d1d96864b79d541592c3a6784b8a6007ab69b3714d748c4c",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/track_scene_experiment.py",
+          "commit_object_sha256": "a9b8f1445020f436b65470996b73f5df462b1973c3ca1520627fa4095343ae2d",
+          "captured_sha256": "a9b8f1445020f436b65470996b73f5df462b1973c3ca1520627fa4095343ae2d",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/uncertainty_probe.py",
+          "commit_object_sha256": "6c80e43d3e47a0b85257afef40f3e6931228f5dfbfa03fa5a4ce3a2ef1df488e",
+          "captured_sha256": "6c80e43d3e47a0b85257afef40f3e6931228f5dfbfa03fa5a4ce3a2ef1df488e",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/visualization.py",
+          "commit_object_sha256": "0f2a911cf7cd2d7bd0b833bb903d75044819c8671c892f1ec771e4f1723c7ab1",
+          "captured_sha256": "0f2a911cf7cd2d7bd0b833bb903d75044819c8671c892f1ec771e4f1723c7ab1",
+          "matches": true,
+          "reporting_only": false
+        }
+      ],
+      "production_source_matches_declared_revision": true,
+      "reporting_source_differences": []
+    },
+    "submitted_fix": {
+      "observed_manifest_revision": "555250285d0b12ea2252fc14d5abf0a1a131e3f2",
+      "native_accelerator": {
+        "binary_sha256": "81a367424bfc00cc721111b4d849b8be8540ec0214304fc33725aa95ec31ff51",
+        "module": "tunnel_guard._native",
+        "backend": "cpp",
+        "sources_sha256": {
+          "cpp/kernels.cpp": "07e6934a60bb1ab0a4c65d8bddb57e5985f9a6fd46de3f634fa12ee0b6406fbf",
+          "cpp/voxel.cpp": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+          "cpp/native.h": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+          "setup.py": "c6264d49cc69a6ea9052ddb27a7363229eca2e887f4eab77beafc31745200b59",
+          "MANIFEST.in": "33c4c37a2f87322b865aa3de40223f5a1d3a0aebf1c220aa0d266bf1366d6910"
+        }
+      },
+      "files": [
+        {
+          "file": "cpp/kernels.cpp",
+          "commit_object_sha256": "07e6934a60bb1ab0a4c65d8bddb57e5985f9a6fd46de3f634fa12ee0b6406fbf",
+          "captured_sha256": "07e6934a60bb1ab0a4c65d8bddb57e5985f9a6fd46de3f634fa12ee0b6406fbf",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "cpp/native.h",
+          "commit_object_sha256": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+          "captured_sha256": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "cpp/voxel.cpp",
+          "commit_object_sha256": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+          "captured_sha256": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/__init__.py",
+          "commit_object_sha256": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+          "captured_sha256": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/accelerator.py",
+          "commit_object_sha256": "b8a57cadcffc4f83e4e366b02ab7bd8ef20f9ceae60acd0aeec9931630db28c5",
+          "captured_sha256": "b8a57cadcffc4f83e4e366b02ab7bd8ef20f9ceae60acd0aeec9931630db28c5",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/alarm_anatomy.py",
+          "commit_object_sha256": "9579c8830b427b440d3d696dad20a0114a780bc92cf9a2e5205e174a10b21f81",
+          "captured_sha256": "9579c8830b427b440d3d696dad20a0114a780bc92cf9a2e5205e174a10b21f81",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/alignment.py",
+          "commit_object_sha256": "37019d4fa19e6186d89a1f8392d60eeadaf7b706eb602e91850d2fb86870fb08",
+          "captured_sha256": "37019d4fa19e6186d89a1f8392d60eeadaf7b706eb602e91850d2fb86870fb08",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/alignment_probe.py",
+          "commit_object_sha256": "15d69909fd6978047a92163f0b17dc31d027c14e09d029da28d65eeffac70551",
+          "captured_sha256": "15d69909fd6978047a92163f0b17dc31d027c14e09d029da28d65eeffac70551",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/annotate.py",
+          "commit_object_sha256": "deaff106d74388e3da172762a802019a57a1962cc40c22d7e5dccbde7d606125",
+          "captured_sha256": "deaff106d74388e3da172762a802019a57a1962cc40c22d7e5dccbde7d606125",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/assess_track_scenes.py",
+          "commit_object_sha256": "57e44a32f451a308998759f4d346543780c37195d98f2e13d875c588e19a3033",
+          "captured_sha256": "57e44a32f451a308998759f4d346543780c37195d98f2e13d875c588e19a3033",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/background.py",
+          "commit_object_sha256": "bea0e7ffae787bbf17ae06a9c775fc01d66aaac52cc104d82903cc8690dfb27b",
+          "captured_sha256": "bea0e7ffae787bbf17ae06a9c775fc01d66aaac52cc104d82903cc8690dfb27b",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/background_repro.py",
+          "commit_object_sha256": "2f1a23ce474659084c3de1213519b8946e23338deadd2c50ea630832efc315b6",
+          "captured_sha256": "2f1a23ce474659084c3de1213519b8946e23338deadd2c50ea630832efc315b6",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/calibrate.py",
+          "commit_object_sha256": "5ba977914f5f3da207454434c7111225d83dac6667c53bf9719326b691750f8c",
+          "captured_sha256": "5ba977914f5f3da207454434c7111225d83dac6667c53bf9719326b691750f8c",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/check_geometry_kernels.py",
+          "commit_object_sha256": "40f6e22703158118ebca6a880fe658db55dbc6b68ed770254d72eb933b97338d",
+          "captured_sha256": "40f6e22703158118ebca6a880fe658db55dbc6b68ed770254d72eb933b97338d",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/check_kernels.py",
+          "commit_object_sha256": "79788a196bb9573600c1f17e78bd9d670b0c779d4d47c4c9e0f86ff86e1dacfb",
+          "captured_sha256": "79788a196bb9573600c1f17e78bd9d670b0c779d4d47c4c9e0f86ff86e1dacfb",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/compare.py",
+          "commit_object_sha256": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+          "captured_sha256": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/compare_alarm_runs.py",
+          "commit_object_sha256": "ce39621d4cea9ee07617f882f1d1f7035f006f16b252b74c2b5f63d2f1ad36d0",
+          "captured_sha256": "908980c899485f5dc58feeeb3aaad4833a8c577ae324b469ce721e7f802d4e66",
+          "matches": false,
+          "reporting_only": true
+        },
+        {
+          "file": "tunnel_guard/config_audit.py",
+          "commit_object_sha256": "68b557b8902365311feb65c76954eb7b8b9f581970610d86dac667dfd9468b1c",
+          "captured_sha256": "68b557b8902365311feb65c76954eb7b8b9f581970610d86dac667dfd9468b1c",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/corridor_report.py",
+          "commit_object_sha256": "d245b7d57fc996faa4315b41f9f9d8775becd7c91968d6fbcfdacb633ccdc4fd",
+          "captured_sha256": "d245b7d57fc996faa4315b41f9f9d8775becd7c91968d6fbcfdacb633ccdc4fd",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/curve_audit.py",
+          "commit_object_sha256": "1326d9adab148558ba5b3607390a3609a0705f18e12375f5652effdc2a0d2381",
+          "captured_sha256": "1326d9adab148558ba5b3607390a3609a0705f18e12375f5652effdc2a0d2381",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/curved_stress.py",
+          "commit_object_sha256": "0bcada82de0d22b9d50feef464635c334ef57cd7883f461fe1ea27a676a2a078",
+          "captured_sha256": "0bcada82de0d22b9d50feef464635c334ef57cd7883f461fe1ea27a676a2a078",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/decode_benchmark.py",
+          "commit_object_sha256": "f345d866d7937b9f0033574e6cb68908d65fb2fe9332b98841d82d5a0a615a51",
+          "captured_sha256": "48ce9c42a346db73f4e6827b84c7ce8fe0eb35c221a76d696f2ed81102132de4",
+          "matches": false,
+          "reporting_only": true
+        },
+        {
+          "file": "tunnel_guard/detector.py",
+          "commit_object_sha256": "cba48e320668902a3a4e73c70cb37c1be906d84c44d321fc4b517c7b4ff328a0",
+          "captured_sha256": "cba48e320668902a3a4e73c70cb37c1be906d84c44d321fc4b517c7b4ff328a0",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/episode_report.py",
+          "commit_object_sha256": "dc932d8a30294a887e7a143e852c1e2c9d7a95e46aea72f341d780a33d584501",
+          "captured_sha256": "dc932d8a30294a887e7a143e852c1e2c9d7a95e46aea72f341d780a33d584501",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/evaluate.py",
+          "commit_object_sha256": "79f870c370a8b76b867b8a173af517e10116e7220a1c21af3aa859088ff5a574",
+          "captured_sha256": "79f870c370a8b76b867b8a173af517e10116e7220a1c21af3aa859088ff5a574",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/expansion_report.py",
+          "commit_object_sha256": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+          "captured_sha256": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/extended_subset.py",
+          "commit_object_sha256": "feaf7c41ab3ccd9b9d0497128353c7b36eedbd33aff8f46c2cae8193da9279ce",
+          "captured_sha256": "feaf7c41ab3ccd9b9d0497128353c7b36eedbd33aff8f46c2cae8193da9279ce",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/geometry.py",
+          "commit_object_sha256": "df2e11b2ec266827f3fd26b7c7e0248ef0cd35753c3fa14fb7a9364ce777fc86",
+          "captured_sha256": "df2e11b2ec266827f3fd26b7c7e0248ef0cd35753c3fa14fb7a9364ce777fc86",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/ground_audit.py",
+          "commit_object_sha256": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+          "captured_sha256": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/history_probe.py",
+          "commit_object_sha256": "723311b1aee8248d2b18a72ac22e28b66b6df47dff16904ea87483b86cd1e3bf",
+          "captured_sha256": "723311b1aee8248d2b18a72ac22e28b66b6df47dff16904ea87483b86cd1e3bf",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/hmm_mos_probe.py",
+          "commit_object_sha256": "2f4c5a9f47ecedcb40457a5c64f3d606965a1db5178dacd85839d4df5070547f",
+          "captured_sha256": "2f4c5a9f47ecedcb40457a5c64f3d606965a1db5178dacd85839d4df5070547f",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/injection_experiment.py",
+          "commit_object_sha256": "9887b6985e3e90de90c0505c4cca787f05703d7bd9f487041e84b89a8b5841c1",
+          "captured_sha256": "9887b6985e3e90de90c0505c4cca787f05703d7bd9f487041e84b89a8b5841c1",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/inspect_bag.py",
+          "commit_object_sha256": "18018c587fea64f8e3d35591944809b162fb31d3aab301b5fc708796c3c9700f",
+          "captured_sha256": "18018c587fea64f8e3d35591944809b162fb31d3aab301b5fc708796c3c9700f",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/inspect_recording_headers.py",
+          "commit_object_sha256": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+          "captured_sha256": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/intrusion_audit.py",
+          "commit_object_sha256": "e04ec075a2cc9ddcf6d844e6ddfda6657e275b562ec6de7728f11732c7cdcf84",
+          "captured_sha256": "e04ec075a2cc9ddcf6d844e6ddfda6657e275b562ec6de7728f11732c7cdcf84",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/io.py",
+          "commit_object_sha256": "4d3a86db018ba30bd64f1e25e3b41ee04add5a0efe3576476c8738400456fcd5",
+          "captured_sha256": "4d3a86db018ba30bd64f1e25e3b41ee04add5a0efe3576476c8738400456fcd5",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/motion_audit.py",
+          "commit_object_sha256": "d2d49f0bcff1af6bb7ba97c6d7047c59f6ab4605bb485cfac61e6f298c94a8c7",
+          "captured_sha256": "d2d49f0bcff1af6bb7ba97c6d7047c59f6ab4605bb485cfac61e6f298c94a8c7",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/motion_scenarios.py",
+          "commit_object_sha256": "2d928846e973b163471f3293ba1af4ae79fdede55159b5c515cb8c2f6cc0d897",
+          "captured_sha256": "2d928846e973b163471f3293ba1af4ae79fdede55159b5c515cb8c2f6cc0d897",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/mounting.py",
+          "commit_object_sha256": "568b2716fafef9775d18e1105c0d1365aff1b32409d6cfcf82f22840bab33a2c",
+          "captured_sha256": "568b2716fafef9775d18e1105c0d1365aff1b32409d6cfcf82f22840bab33a2c",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/mounting_replay.py",
+          "commit_object_sha256": "f49091816ecf0854869c30bdf0ebaf1d19f836058ff1f0dd6ec8a1d6756d1731",
+          "captured_sha256": "f49091816ecf0854869c30bdf0ebaf1d19f836058ff1f0dd6ec8a1d6756d1731",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/mounting_report.py",
+          "commit_object_sha256": "c7547ee3d650de0f35f4d5a86ab855b0db1214e4860bada9082619c0fb44e41f",
+          "captured_sha256": "c7547ee3d650de0f35f4d5a86ab855b0db1214e4860bada9082619c0fb44e41f",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/native_benchmark.py",
+          "commit_object_sha256": "0adedf2f3de2bf5c698426c748d0ca2c98193110b7b710d4c182061c950b83d5",
+          "captured_sha256": "0adedf2f3de2bf5c698426c748d0ca2c98193110b7b710d4c182061c950b83d5",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/on_track.py",
+          "commit_object_sha256": "b5b8f3f2eff1bf8c6d51b7ad47f9591b4f92fb685c9131a183f6ec917b8b70fb",
+          "captured_sha256": "b5b8f3f2eff1bf8c6d51b7ad47f9591b4f92fb685c9131a183f6ec917b8b70fb",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/panel_report.py",
+          "commit_object_sha256": "f5fbf5612985fa008b580bb7446f445c5017d1170a04a7180b73b4e7dc38c505",
+          "captured_sha256": "f5fbf5612985fa008b580bb7446f445c5017d1170a04a7180b73b4e7dc38c505",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/plot_track_geometry.py",
+          "commit_object_sha256": "b19aee7b6846a74b38cc9bec7ba0158443f473168b4fb6a18fe95014b6716113",
+          "captured_sha256": "b19aee7b6846a74b38cc9bec7ba0158443f473168b4fb6a18fe95014b6716113",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/prepare_segment.py",
+          "commit_object_sha256": "154f5d0772d56473e82704d217723132c292efa0681d5df32f8bf6b1c355cf7a",
+          "captured_sha256": "154f5d0772d56473e82704d217723132c292efa0681d5df32f8bf6b1c355cf7a",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/profile_run.py",
+          "commit_object_sha256": "5ad54b41e5a681182281d0714017c06c628fbb65deada92a5e4cd04127a956fb",
+          "captured_sha256": "5ad54b41e5a681182281d0714017c06c628fbb65deada92a5e4cd04127a956fb",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/rail_fit_report.py",
+          "commit_object_sha256": "3bae4132006f5b72b7620be0e13fb76aebd413bfcce733c1d2c6738542f6bb44",
+          "captured_sha256": "3bae4132006f5b72b7620be0e13fb76aebd413bfcce733c1d2c6738542f6bb44",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/rail_geometry_audit.py",
+          "commit_object_sha256": "4314dd497098bee51d574daa0ca01089d46791c49102ca9a14fea5aaf127e044",
+          "captured_sha256": "4314dd497098bee51d574daa0ca01089d46791c49102ca9a14fea5aaf127e044",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/realistic_report.py",
+          "commit_object_sha256": "163806fdb60df8b981187b14e803ff921fdf1a9d14700b0e5ae4d30b0f0989d8",
+          "captured_sha256": "163806fdb60df8b981187b14e803ff921fdf1a9d14700b0e5ae4d30b0f0989d8",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/realistic_stress.py",
+          "commit_object_sha256": "e6468a325619d0a2e54f714fe0a98c03dd8631802ea83d771070fff869f3deac",
+          "captured_sha256": "e6468a325619d0a2e54f714fe0a98c03dd8631802ea83d771070fff869f3deac",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/render_alarm_cases.py",
+          "commit_object_sha256": "95b510a7143f7250ec718749ed654e95c225f1b5a9ce20aa054f3b0df9cd0cc7",
+          "captured_sha256": "95b510a7143f7250ec718749ed654e95c225f1b5a9ce20aa054f3b0df9cd0cc7",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/render_annotation_review.py",
+          "commit_object_sha256": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+          "captured_sha256": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/review_remaining_alerts.py",
+          "commit_object_sha256": "0fe5e93952e1a275a81b2b04d203ebe899fe4d1e304ef7d347e026cc87d4448b",
+          "captured_sha256": "0fe5e93952e1a275a81b2b04d203ebe899fe4d1e304ef7d347e026cc87d4448b",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/review_viewer.py",
+          "commit_object_sha256": "820c1bf57e90bd7f1e1317f9472e27a7698c08ca70b8a20c8727601ea160ff96",
+          "captured_sha256": "820c1bf57e90bd7f1e1317f9472e27a7698c08ca70b8a20c8727601ea160ff96",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/ros_node.py",
+          "commit_object_sha256": "adb3e539101f03c37ea6e54fbcecb1ba41c1fc5e1bc70dffe57f425b68699cb4",
+          "captured_sha256": "adb3e539101f03c37ea6e54fbcecb1ba41c1fc5e1bc70dffe57f425b68699cb4",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/run.py",
+          "commit_object_sha256": "1a201625c431a7563c604d0d1dacc389e8c301c58490597654b3e48f5ae23842",
+          "captured_sha256": "1a201625c431a7563c604d0d1dacc389e8c301c58490597654b3e48f5ae23842",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/segmentation.py",
+          "commit_object_sha256": "9e545b80d3e253309210f79745154fb83c5d0a30931d38fca4551eefd2635789",
+          "captured_sha256": "9e545b80d3e253309210f79745154fb83c5d0a30931d38fca4551eefd2635789",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/sensor_profile.py",
+          "commit_object_sha256": "4ff47460df305986034ba03e45e9c892e3559ccceffff61412c5d1ebadfb3c03",
+          "captured_sha256": "4ff47460df305986034ba03e45e9c892e3559ccceffff61412c5d1ebadfb3c03",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/stress.py",
+          "commit_object_sha256": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+          "captured_sha256": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/structural_view.py",
+          "commit_object_sha256": "667fc9c9d933bbb19ab5f6e77f32b3cd2f34baa5f39eba0bdbf000d1036fd541",
+          "captured_sha256": "667fc9c9d933bbb19ab5f6e77f32b3cd2f34baa5f39eba0bdbf000d1036fd541",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/surface_evaluate.py",
+          "commit_object_sha256": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+          "captured_sha256": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/sustech.py",
+          "commit_object_sha256": "103e7c167550022a86f37973a11dabfc476d0acdfc9eb1ca08212b6f4c615392",
+          "captured_sha256": "103e7c167550022a86f37973a11dabfc476d0acdfc9eb1ca08212b6f4c615392",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/sustech_import.py",
+          "commit_object_sha256": "1b6eaa071db373203e3908abafe6d0d018949920266e80fee94fd01826cead98",
+          "captured_sha256": "1b6eaa071db373203e3908abafe6d0d018949920266e80fee94fd01826cead98",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/trace_analysis.py",
+          "commit_object_sha256": "eb1c1617b8666166d1d96864b79d541592c3a6784b8a6007ab69b3714d748c4c",
+          "captured_sha256": "eb1c1617b8666166d1d96864b79d541592c3a6784b8a6007ab69b3714d748c4c",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/track_scene_experiment.py",
+          "commit_object_sha256": "a9b8f1445020f436b65470996b73f5df462b1973c3ca1520627fa4095343ae2d",
+          "captured_sha256": "a9b8f1445020f436b65470996b73f5df462b1973c3ca1520627fa4095343ae2d",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/uncertainty_probe.py",
+          "commit_object_sha256": "6c80e43d3e47a0b85257afef40f3e6931228f5dfbfa03fa5a4ce3a2ef1df488e",
+          "captured_sha256": "6c80e43d3e47a0b85257afef40f3e6931228f5dfbfa03fa5a4ce3a2ef1df488e",
+          "matches": true,
+          "reporting_only": false
+        },
+        {
+          "file": "tunnel_guard/visualization.py",
+          "commit_object_sha256": "0f2a911cf7cd2d7bd0b833bb903d75044819c8671c892f1ec771e4f1723c7ab1",
+          "captured_sha256": "0f2a911cf7cd2d7bd0b833bb903d75044819c8671c892f1ec771e4f1723c7ab1",
+          "matches": true,
+          "reporting_only": false
+        }
+      ],
+      "production_source_matches_declared_revision": true,
+      "reporting_source_differences": [
+        "tunnel_guard/compare_alarm_runs.py",
+        "tunnel_guard/decode_benchmark.py"
+      ]
+    }
+  }
+}

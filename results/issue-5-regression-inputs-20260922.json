@@ -1,0 +1,192 @@
+{
+  "inventory": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+      "files": [
+        {
+          "name": "doubleT_obstacle_0.db3",
+          "bytes": 4821250048,
+          "topics": [
+            {
+              "name": "/sensing/lidar/hesai128/pointcloud",
+              "type": "sensor_msgs/msg/PointCloud2",
+              "messages": 201,
+              "first_record_ns": 1788354623110040384,
+              "last_record_ns": 1788354643502070680
+            }
+          ]
+        }
+      ],
+      "raw_cloud_messages": 201
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+      "files": [
+        {
+          "name": "doubleT_platform_0.db3",
+          "bytes": 2758447104,
+          "topics": [
+            {
+              "name": "/lidar_points",
+              "type": "sensor_msgs/msg/PointCloud2",
+              "messages": 345,
+              "first_record_ns": 1788359712599450851,
+              "last_record_ns": 1788359747019017037
+            }
+          ]
+        }
+      ],
+      "raw_cloud_messages": 345
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "metadata_sha256": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d",
+      "files": [
+        {
+          "name": "roundT_doubleT_0.db3",
+          "bytes": 2014867456,
+          "topics": [
+            {
+              "name": "/lidar_points",
+              "type": "sensor_msgs/msg/PointCloud2",
+              "messages": 252,
+              "first_record_ns": 1788359059199396182,
+              "last_record_ns": 1788359084271366826
+            }
+          ]
+        }
+      ],
+      "raw_cloud_messages": 252
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "metadata_sha256": "bec21b5aa0581936678824b5cb43043dfe99c7b1eb468c3dddf8e25554b703c1",
+      "files": [
+        {
+          "name": "roundT_pressureGate_roundT_0.db3",
+          "bytes": 2142801920,
+          "topics": [
+            {
+              "name": "/lidar_points",
+              "type": "sensor_msgs/msg/PointCloud2",
+              "messages": 268,
+              "first_record_ns": 1788358838051667137,
+              "last_record_ns": 1788358864750447332
+            }
+          ]
+        }
+      ],
+      "raw_cloud_messages": 268
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+      "metadata_sha256": "9e9cedccc7a02337cd1f1020efebe22a4684c3598b2f7b5562b5fd044eafa616",
+      "files": [
+        {
+          "name": "roundT_squareT_pressureGate_squareT_0.db3",
+          "bytes": 4357537792,
+          "topics": [
+            {
+              "name": "/lidar_points",
+              "type": "sensor_msgs/msg/PointCloud2",
+              "messages": 545,
+              "first_record_ns": 1788356943781195141,
+              "last_record_ns": 1788356999158695083
+            }
+          ]
+        }
+      ],
+      "raw_cloud_messages": 545
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+      "metadata_sha256": "46b6f276a63bca7642a091e11d78416951bc952e7889d940c0b43309b7060553",
+      "files": [
+        {
+          "name": "squareT_platform_squareT_switch_0.db3",
+          "bytes": 7012012032,
+          "topics": [
+            {
+              "name": "/lidar_points",
+              "type": "sensor_msgs/msg/PointCloud2",
+              "messages": 877,
+              "first_record_ns": 1788358443342122534,
+              "last_record_ns": 1788358531550098466
+            }
+          ]
+        }
+      ],
+      "raw_cloud_messages": 877
+    },
+    {
+      "path": "data/extended_subset/new_data_0",
+      "metadata_sha256": "f728f16b249ac68d50bdc197ed3e80729a0c9dec701fbb2596cd34f9304ca115",
+      "files": [
+        {
+          "name": "new_data_0.db3",
+          "bytes": 407789568,
+          "topics": [
+            {
+              "name": "/lidar_points",
+              "type": "sensor_msgs/msg/PointCloud2",
+              "messages": 51,
+              "first_record_ns": 1789642926161078864,
+              "last_record_ns": 1789642931181372574
+            }
+          ]
+        }
+      ],
+      "raw_cloud_messages": 51
+    },
+    {
+      "path": "data/extended_subset/new_data_100",
+      "metadata_sha256": "f4a16fef04434d7f6958667e6e33fd2896991a0648fd43662cbbc2354e491e4f",
+      "files": [
+        {
+          "name": "new_data_100.db3",
+          "bytes": 407789568,
+          "topics": [
+            {
+              "name": "/lidar_points",
+              "type": "sensor_msgs/msg/PointCloud2",
+              "messages": 51,
+              "first_record_ns": 1789643436188421313,
+              "last_record_ns": 1789643441184646874
+            }
+          ]
+        }
+      ],
+      "raw_cloud_messages": 51
+    },
+    {
+      "path": "data/extended_subset/new_data_200",
+      "metadata_sha256": "696668de3ccfd60cb7a976865bdb19c1619372a453849256b2b81a60b4339d11",
+      "files": [
+        {
+          "name": "new_data_200.db3",
+          "bytes": 407789568,
+          "topics": [
+            {
+              "name": "/lidar_points",
+              "type": "sensor_msgs/msg/PointCloud2",
+              "messages": 51,
+              "first_record_ns": 1789643987026537478,
+              "last_record_ns": 1789643998355980953
+            }
+          ]
+        }
+      ],
+      "raw_cloud_messages": 51
+    }
+  ],
+  "criterion": {
+    "discrete": "All non-timing statuses, objects, IDs, integer support counts, confirmation flags, evidence timestamps and list order must agree; any mismatch is investigated.",
+    "numeric": "Report every unequal numeric leaf; absolute/relative tolerance 1e-9 is declared before replay for continuous floating estimates only. IDs, counters, flags and source timestamps must be exact.",
+    "coverage": "Every emitted unique measurement until EOF from all nine configured bags. Require manifests and ingestion counts; no intersection-of-frames-only acceptance. Report actual state coverage and unsupported cases.",
+    "diagnostics": "All legacy arrays byte-identical; exact original-slot/value/valid-mask alignment for saved diagnostic representative stages.",
+    "resources": "Measure processing/decode/wall and cumulative process peak RSS for sequential same-machine runs; report regressions honestly without asserting field latency or recall."
+  },
+  "note": "Counts queried directly from read-only SQLite messages/topics tables; header-time duplicate filtering is performed separately by iter_bag. Metadata aggregate and per-file counts can differ."
+}

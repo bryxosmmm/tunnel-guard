@@ -1,0 +1,5 @@
+{"bag": "new_data_200", "frame": 19, "path": ".objects[104].accumulated_support_voxels", "kind": "integer", "old": 10, "new": 11, "abs_diff": null, "rel_diff": null}
+{"bag": "new_data_200", "frame": 21, "path": ".objects[135].accumulated_support_voxels", "kind": "integer", "old": 14, "new": 13, "abs_diff": null, "rel_diff": null}
+{"bag": "new_data_200", "frame": 23, "path": ".objects[124].accumulated_support_voxels", "kind": "integer", "old": 12, "new": 11, "abs_diff": null, "rel_diff": null}
+{"bag": "roundT_pressureGate_roundT", "frame": 136, "path": ".objects[123].accumulated_support_voxels", "kind": "integer", "old": 15, "new": 16, "abs_diff": null, "rel_diff": null}
+{"bag": "roundT_pressureGate_roundT", "frame": 201, "path": ".objects[15].accumulated_support_voxels", "kind": "integer", "old": 1, "new": 2, "abs_diff": null, "rel_diff": null}

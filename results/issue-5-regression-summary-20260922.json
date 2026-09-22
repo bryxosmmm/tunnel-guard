@@ -1,0 +1,806 @@
+{
+  "strict_output_equality_passed": false,
+  "decision": "Do not claim zero-output regressions:27 exact accumulated_support_voxels differences remain. No observed status/association/confirmation/timestamp change. Unchanged-upstream control also has17 count differences,14 reproducing the exact patch-comparison change;13 originals are not reproduced by this one control. No threshold, tolerance or detector geometry code was changed.",
+  "seed": 20260915,
+  "upstream_revision": "bc4f73b4f75d83540683716953afb30351839cd6",
+  "submitted_fix_revision": "555250285d0b12ea2252fc14d5abf0a1a131e3f2",
+  "panel": {
+    "recordings": 9,
+    "complete_original_recordings": 6,
+    "extended_segments": 3,
+    "frames_per_implementation": 2641,
+    "source_messages": 2641,
+    "duplicate_skips": 0,
+    "subsample_skips": 0,
+    "frames_missing_or_extra": 0,
+    "decoded_valid_return_observations": 501204616,
+    "object_frame_observations": 698799,
+    "status_frames": {
+      "no_obstacle_observed": 2360,
+      "unresolved_obstacle": 58,
+      "obstacle": 202,
+      "candidate": 18,
+      "unknown": 3
+    },
+    "geometry_invalid_frames": [
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 130,
+        "timestamp_s": 946692915.4334661,
+        "geometry": {
+          "valid": false,
+          "reason": "insufficient_paired_rail_support",
+          "ground_quality": {
+            "sample_points": 4489,
+            "valid": true,
+            "support": 2013,
+            "fraction": 0.44842949431944756,
+            "median_residual_m": 0.025170376350433177,
+            "span_m": [
+              22.90804648399353,
+              3.726013422012329
+            ],
+            "reason": "supported_track_bed"
+          },
+          "lateral_boundary_policy": "heuristic_path_and_ground_interval",
+          "boundary_uncertainty_scope": "path_center_and_bed_height_only_not_full_extrinsics",
+          "ground_plane": [
+            -0.005210692539553758,
+            0.01876717780739031,
+            -1.3275640341480657
+          ],
+          "rail_center_estimator": "paired_line",
+          "rail_anchor_support": "measured",
+          "rail_support_diagnostics": [
+            {
+              "x_m": 14.887625694274902,
+              "window_center_m": 15.0,
+              "heading_slope": 0.0,
+              "side_longitudinal_ranges_m": [
+                [
+                  10.048699378967285,
+                  14.887625694274902
+                ],
+                [
+                  10.896801948547363,
+                  14.982994079589844
+                ]
+              ],
+              "bracketed": true
+            }
+          ],
+          "rail_frame_mode": "bed",
+          "rail_frames": [],
+          "rail_frame_version": 2,
+          "local_frame_segments": 0,
+          "rail_rejections": [],
+          "rail_head_height_m": 0.21440743802084894,
+          "ground_anchors": [
+            [
+              5.0,
+              -0.0016818429729138495,
+              0.03819039307517691
+            ],
+            [
+              10.0,
+              -0.0018714108823596476,
+              0.0398146655936623
+            ],
+            [
+              15.0,
+              0.007965854859026233,
+              0.05822507874719157
+            ],
+            [
+              20.0,
+              0.006431894674923555,
+              0.06293357353443756
+            ],
+            [
+              25.0,
+              -0.00031718956603987714,
+              0.07111188792735212
+            ],
+            [
+              30.0,
+              -0.00579376061330239,
+              0.07741400478553151
+            ],
+            [
+              35.0,
+              -0.006250462314985383,
+              0.08032821995061767
+            ],
+            [
+              40.0,
+              -0.00171897556475753,
+              0.07207547250073396
+            ],
+            [
+              45.0,
+              -0.003830275595226529,
+              0.07316589144294162
+            ],
+            [
+              50.0,
+              -0.00037179131732378856,
+              0.07603762453770695
+            ]
+          ],
+          "rail_anchors": [
+            [
+              14.887625694274902,
+              -0.44999999999999996,
+              1.5899999999999999,
+              7.0
+            ]
+          ],
+          "background": null
+        },
+        "sensor_attributes": {
+          "fields": {
+            "intensity": {
+              "available": true,
+              "dtype": "float32",
+              "units": "unverified_raw_counts",
+              "count": 189708,
+              "valid_count": 189708,
+              "invalid_count": 0
+            },
+            "ring": {
+              "available": true,
+              "dtype": "uint16",
+              "units": "ring_index",
+              "count": 189708,
+              "valid_count": 189708,
+              "invalid_count": 0
+            },
+            "raw_time": {
+              "available": true,
+              "dtype": "float64",
+              "units": "seconds",
+              "count": 189708,
+              "valid_count": 189708,
+              "invalid_count": 0
+            }
+          },
+          "source_time_field": "timestamp",
+          "profile_confirmed": false,
+          "firing_identity": "unknown",
+          "return_multiplicity": "unknown",
+          "intensity_calibration": "unverified"
+        }
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 249,
+        "timestamp_s": 946692927.3333482,
+        "geometry": {
+          "valid": false,
+          "reason": "insufficient_paired_rail_support",
+          "ground_quality": {
+            "sample_points": 4939,
+            "valid": true,
+            "support": 2242,
+            "fraction": 0.4539380441384896,
+            "median_residual_m": 0.025108027979367953,
+            "span_m": [
+              22.98678469657898,
+              3.6774203777313232
+            ],
+            "reason": "supported_track_bed"
+          },
+          "lateral_boundary_policy": "heuristic_path_and_ground_interval",
+          "boundary_uncertainty_scope": "path_center_and_bed_height_only_not_full_extrinsics",
+          "ground_plane": [
+            0.002329744162047219,
+            0.006329943815017043,
+            -1.3249298628348174
+          ],
+          "rail_center_estimator": "paired_line",
+          "rail_anchor_support": "measured",
+          "rail_support_diagnostics": [
+            {
+              "x_m": 15.0,
+              "window_center_m": 15.0,
+              "heading_slope": 0.04336222724373782,
+              "side_longitudinal_ranges_m": [
+                [
+                  7.4279046058654785,
+                  18.761730194091797
+                ],
+                [
+                  7.438911437988281,
+                  19.044315338134766
+                ]
+              ],
+              "bracketed": true
+            }
+          ],
+          "rail_frame_mode": "bed",
+          "rail_frames": [],
+          "rail_frame_version": 2,
+          "local_frame_segments": 0,
+          "rail_rejections": [],
+          "rail_head_height_m": 0.2147558884507664,
+          "ground_anchors": [
+            [
+              5.0,
+              0.0008174108225313947,
+              0.03859015682966386
+            ],
+            [
+              10.0,
+              0.0006205868810571502,
+              0.0459603591887059
+            ],
+            [
+              15.0,
+              0.002869073902017405,
+              0.05643287676647382
+            ],
+            [
+              20.0,
+              -0.0070788704090700705,
+              0.05491823447867501
+            ],
+            [
+              25.0,
+              -0.016599929377200118,
+              0.050187156184758136
+            ],
+            [
+              30.0,
+              -0.017863247626376255,
+              0.040364909258634285
+            ],
+            [
+              35.0,
+              0.0006463782317536193,
+              0.03576248819036411
+            ],
+            [
+              40.0,
+              0.016089858626709863,
+              0.05055376995231739
+            ],
+            [
+              45.0,
+              0.05718636149402534,
+              0.06346267200978883
+            ]
+          ],
+          "rail_anchors": [
+            [
+              15.0,
+              0.6188936319013948,
+              1.5835055164237775,
+              6.0
+            ]
+          ],
+          "background": null
+        },
+        "sensor_attributes": {
+          "fields": {
+            "intensity": {
+              "available": true,
+              "dtype": "float32",
+              "units": "unverified_raw_counts",
+              "count": 190006,
+              "valid_count": 190006,
+              "invalid_count": 0
+            },
+            "ring": {
+              "available": true,
+              "dtype": "uint16",
+              "units": "ring_index",
+              "count": 190006,
+              "valid_count": 190006,
+              "invalid_count": 0
+            },
+            "raw_time": {
+              "available": true,
+              "dtype": "float64",
+              "units": "seconds",
+              "count": 190006,
+              "valid_count": 190006,
+              "invalid_count": 0
+            }
+          },
+          "source_time_field": "timestamp",
+          "profile_confirmed": false,
+          "firing_identity": "unknown",
+          "return_multiplicity": "unknown",
+          "intensity_calibration": "unverified"
+        }
+      },
+      {
+        "bag": "new_data_200",
+        "frame": 48,
+        "timestamp_s": 946687758.7334721,
+        "geometry": {
+          "valid": false,
+          "reason": "insufficient_paired_rail_support",
+          "ground_quality": {
+            "sample_points": 4545,
+            "valid": true,
+            "support": 2114,
+            "fraction": 0.46512651265126514,
+            "median_residual_m": 0.02284841796047299,
+            "span_m": [
+              22.947197437286377,
+              3.813423991203308
+            ],
+            "reason": "supported_track_bed"
+          },
+          "lateral_boundary_policy": "heuristic_path_and_ground_interval",
+          "boundary_uncertainty_scope": "path_center_and_bed_height_only_not_full_extrinsics",
+          "ground_plane": [
+            -0.0016404184422135013,
+            -0.017147178599627222,
+            -1.34400084986799
+          ],
+          "rail_center_estimator": "paired_line",
+          "rail_anchor_support": "measured",
+          "rail_support_diagnostics": [
+            {
+              "x_m": 5.0,
+              "window_center_m": 5.0,
+              "heading_slope": 0.0,
+              "side_longitudinal_ranges_m": [
+                [
+                  2.354964017868042,
+                  7.327591419219971
+                ],
+                [
+                  2.281240224838257,
+                  6.918565273284912
+                ]
+              ],
+              "bracketed": true
+            }
+          ],
+          "rail_frame_mode": "bed",
+          "rail_frames": [],
+          "rail_frame_version": 2,
+          "local_frame_segments": 0,
+          "rail_rejections": [],
+          "rail_head_height_m": 0.2355826422609407,
+          "ground_anchors": [
+            [
+              5.0,
+              0.00022892049302769557,
+              0.034008310379802786
+            ],
+            [
+              10.0,
+              -0.0005961299910532958,
+              0.03957033071459028
+            ],
+            [
+              15.0,
+              0.0019389740228172858,
+              0.049065035798157526
+            ],
+            [
+              20.0,
+              -0.0002749185341477389,
+              0.05179447773200402
+            ],
+            [
+              25.0,
+              -0.005497061704811568,
+              0.05445598935881957
+            ],
+            [
+              30.0,
+              -0.0018973553632930518,
+              0.05654244313380145
+            ],
+            [
+              35.0,
+              0.029219936789340206,
+              0.07095832834042139
+            ],
+            [
+              40.0,
+              0.05103657763232827,
+              0.08184322287534168
+            ],
+            [
+              45.0,
+              0.063397146406031,
+              0.10860003982753752
+            ],
+            [
+              50.0,
+              0.08006946715739471,
+              0.1259583619378405
+            ]
+          ],
+          "rail_anchors": [
+            [
+              5.0,
+              -0.22499999999999998,
+              1.6199999999999999,
+              11.0
+            ]
+          ],
+          "background": null
+        },
+        "sensor_attributes": {
+          "fields": {
+            "intensity": {
+              "available": true,
+              "dtype": "float32",
+              "units": "unverified_raw_counts",
+              "count": 189868,
+              "valid_count": 189868,
+              "invalid_count": 0
+            },
+            "ring": {
+              "available": true,
+              "dtype": "uint16",
+              "units": "ring_index",
+              "count": 189868,
+              "valid_count": 189868,
+              "invalid_count": 0
+            },
+            "raw_time": {
+              "available": true,
+              "dtype": "float64",
+              "units": "seconds",
+              "count": 189868,
+              "valid_count": 189868,
+              "invalid_count": 0
+            }
+          },
+          "source_time_field": "timestamp",
+          "profile_confirmed": false,
+          "firing_identity": "unknown",
+          "return_multiplicity": "unknown",
+          "intensity_calibration": "unverified"
+        }
+      }
+    ],
+    "coverage_totals": {
+      "frames": 2641,
+      "objects": 698799,
+      "geometry_valid_frames": 2638,
+      "motion_valid_frames": 2426,
+      "confirmed_objects": 527,
+      "intersection_confirmed_objects": 276,
+      "evidence_observations": 698799,
+      "evidence_duplicate_observations": 0,
+      "evidence_future_observations": 0,
+      "interior_evidence_observations": 698799,
+      "interior_duplicate_observations": 0,
+      "interior_future_observations": 0
+    },
+    "not_independent_events": true
+  },
+  "output_comparison": {
+    "material_differences": 27,
+    "field": "accumulated_support_voxels",
+    "deltas": [
+      -1,
+      1
+    ],
+    "affected_relation": "adjacent",
+    "affected_confirmation": "pending",
+    "affected_uncertain_voxel_counts": {
+      "0": 17,
+      "1": 10
+    },
+    "maximum_continuous_float_difference": 8.730793865652231e-13,
+    "atol": 1e-09,
+    "rtol": 1e-09,
+    "exact_source_and_evidence_timestamps": true,
+    "report": "results/issue-5-full-regression-reviewed-20260922.json",
+    "mismatches": "results/issue-5-full-regression-reviewed-20260922-mismatches.jsonl",
+    "reviewed_mismatch_sidecar_identical_to_first": true,
+    "reporter_hashes_match_current_files": {
+      "compare_alarm_runs.py": true,
+      "decode_benchmark.py": true
+    }
+  },
+  "decoder": {
+    "report": "results/issue-5-full-decode-20260922.json",
+    "changed_legacy_output_frames": 0,
+    "attribute_failures": 0,
+    "max_coordinate_difference": 0.0,
+    "max_normalized_time_difference": 0.0,
+    "decode_ms": {
+      "before": {
+        "p50": 6.5810419619083405,
+        "p95": 16.90962491557002
+      },
+      "after": {
+        "p50": 7.926958031021059,
+        "p95": 20.040457951836288
+      }
+    },
+    "peak_retained_attribute_array_bytes": 8555468,
+    "before_io_matches_upstream_commit": true,
+    "after_io_matches_fix_commit": true
+  },
+  "diagnostics": {
+    "files": 85,
+    "legacy_arrays_compared": 1081,
+    "legacy_arrays_byte_identical": 1081,
+    "decoded_arrays_rebound_to_raw_messages": 85,
+    "executed_cluster_stages_verified": 82,
+    "cluster_stages_not_executed_on_invalid_geometry": 3,
+    "raw_binding_failures": 0,
+    "full_report_coverage": {
+      "before_files": 81,
+      "after_files": 81,
+      "compared": 81,
+      "legacy_keys": 1053,
+      "legacy_bytes_equal": 1053,
+      "files_with_sensor_attributes": 81,
+      "representative_verified": 81,
+      "representative_not_executed": 0
+    },
+    "supplementary_report_coverage": {
+      "before_files": 4,
+      "after_files": 4,
+      "compared": 4,
+      "legacy_keys": 28,
+      "legacy_bytes_equal": 28,
+      "files_with_sensor_attributes": 4,
+      "representative_verified": 1,
+      "representative_not_executed": 3
+    },
+    "expected_capture_inventory": {
+      "full": {
+        "expected_files": [
+          "doubleT_obstacle_000000.npz",
+          "doubleT_obstacle_000011.npz",
+          "doubleT_obstacle_000013.npz",
+          "doubleT_obstacle_000015.npz",
+          "doubleT_obstacle_000018.npz",
+          "doubleT_obstacle_000020.npz",
+          "doubleT_obstacle_000021.npz",
+          "doubleT_obstacle_000165.npz",
+          "doubleT_obstacle_000181.npz",
+          "doubleT_obstacle_000200.npz",
+          "doubleT_platform_000000.npz",
+          "doubleT_platform_000011.npz",
+          "doubleT_platform_000013.npz",
+          "doubleT_platform_000015.npz",
+          "doubleT_platform_000018.npz",
+          "doubleT_platform_000020.npz",
+          "doubleT_platform_000021.npz",
+          "doubleT_platform_000165.npz",
+          "doubleT_platform_000181.npz",
+          "doubleT_platform_000200.npz",
+          "new_data_0_000000.npz",
+          "new_data_0_000011.npz",
+          "new_data_0_000013.npz",
+          "new_data_0_000015.npz",
+          "new_data_0_000018.npz",
+          "new_data_0_000020.npz",
+          "new_data_0_000021.npz",
+          "new_data_100_000000.npz",
+          "new_data_100_000011.npz",
+          "new_data_100_000013.npz",
+          "new_data_100_000015.npz",
+          "new_data_100_000018.npz",
+          "new_data_100_000020.npz",
+          "new_data_100_000021.npz",
+          "new_data_200_000000.npz",
+          "new_data_200_000011.npz",
+          "new_data_200_000013.npz",
+          "new_data_200_000015.npz",
+          "new_data_200_000018.npz",
+          "new_data_200_000020.npz",
+          "new_data_200_000021.npz",
+          "roundT_doubleT_000000.npz",
+          "roundT_doubleT_000011.npz",
+          "roundT_doubleT_000013.npz",
+          "roundT_doubleT_000015.npz",
+          "roundT_doubleT_000018.npz",
+          "roundT_doubleT_000020.npz",
+          "roundT_doubleT_000021.npz",
+          "roundT_doubleT_000165.npz",
+          "roundT_doubleT_000181.npz",
+          "roundT_doubleT_000200.npz",
+          "roundT_pressureGate_roundT_000000.npz",
+          "roundT_pressureGate_roundT_000011.npz",
+          "roundT_pressureGate_roundT_000013.npz",
+          "roundT_pressureGate_roundT_000015.npz",
+          "roundT_pressureGate_roundT_000018.npz",
+          "roundT_pressureGate_roundT_000020.npz",
+          "roundT_pressureGate_roundT_000021.npz",
+          "roundT_pressureGate_roundT_000165.npz",
+          "roundT_pressureGate_roundT_000181.npz",
+          "roundT_pressureGate_roundT_000200.npz",
+          "roundT_squareT_pressureGate_squareT_000000.npz",
+          "roundT_squareT_pressureGate_squareT_000011.npz",
+          "roundT_squareT_pressureGate_squareT_000013.npz",
+          "roundT_squareT_pressureGate_squareT_000015.npz",
+          "roundT_squareT_pressureGate_squareT_000018.npz",
+          "roundT_squareT_pressureGate_squareT_000020.npz",
+          "roundT_squareT_pressureGate_squareT_000021.npz",
+          "roundT_squareT_pressureGate_squareT_000165.npz",
+          "roundT_squareT_pressureGate_squareT_000181.npz",
+          "roundT_squareT_pressureGate_squareT_000200.npz",
+          "squareT_platform_squareT_switch_000000.npz",
+          "squareT_platform_squareT_switch_000011.npz",
+          "squareT_platform_squareT_switch_000013.npz",
+          "squareT_platform_squareT_switch_000015.npz",
+          "squareT_platform_squareT_switch_000018.npz",
+          "squareT_platform_squareT_switch_000020.npz",
+          "squareT_platform_squareT_switch_000021.npz",
+          "squareT_platform_squareT_switch_000165.npz",
+          "squareT_platform_squareT_switch_000181.npz",
+          "squareT_platform_squareT_switch_000200.npz"
+        ],
+        "actual_files": [
+          "doubleT_obstacle_000000.npz",
+          "doubleT_obstacle_000011.npz",
+          "doubleT_obstacle_000013.npz",
+          "doubleT_obstacle_000015.npz",
+          "doubleT_obstacle_000018.npz",
+          "doubleT_obstacle_000020.npz",
+          "doubleT_obstacle_000021.npz",
+          "doubleT_obstacle_000165.npz",
+          "doubleT_obstacle_000181.npz",
+          "doubleT_obstacle_000200.npz",
+          "doubleT_platform_000000.npz",
+          "doubleT_platform_000011.npz",
+          "doubleT_platform_000013.npz",
+          "doubleT_platform_000015.npz",
+          "doubleT_platform_000018.npz",
+          "doubleT_platform_000020.npz",
+          "doubleT_platform_000021.npz",
+          "doubleT_platform_000165.npz",
+          "doubleT_platform_000181.npz",
+          "doubleT_platform_000200.npz",
+          "new_data_0_000000.npz",
+          "new_data_0_000011.npz",
+          "new_data_0_000013.npz",
+          "new_data_0_000015.npz",
+          "new_data_0_000018.npz",
+          "new_data_0_000020.npz",
+          "new_data_0_000021.npz",
+          "new_data_100_000000.npz",
+          "new_data_100_000011.npz",
+          "new_data_100_000013.npz",
+          "new_data_100_000015.npz",
+          "new_data_100_000018.npz",
+          "new_data_100_000020.npz",
+          "new_data_100_000021.npz",
+          "new_data_200_000000.npz",
+          "new_data_200_000011.npz",
+          "new_data_200_000013.npz",
+          "new_data_200_000015.npz",
+          "new_data_200_000018.npz",
+          "new_data_200_000020.npz",
+          "new_data_200_000021.npz",
+          "roundT_doubleT_000000.npz",
+          "roundT_doubleT_000011.npz",
+          "roundT_doubleT_000013.npz",
+          "roundT_doubleT_000015.npz",
+          "roundT_doubleT_000018.npz",
+          "roundT_doubleT_000020.npz",
+          "roundT_doubleT_000021.npz",
+          "roundT_doubleT_000165.npz",
+          "roundT_doubleT_000181.npz",
+          "roundT_doubleT_000200.npz",
+          "roundT_pressureGate_roundT_000000.npz",
+          "roundT_pressureGate_roundT_000011.npz",
+          "roundT_pressureGate_roundT_000013.npz",
+          "roundT_pressureGate_roundT_000015.npz",
+          "roundT_pressureGate_roundT_000018.npz",
+          "roundT_pressureGate_roundT_000020.npz",
+          "roundT_pressureGate_roundT_000021.npz",
+          "roundT_pressureGate_roundT_000165.npz",
+          "roundT_pressureGate_roundT_000181.npz",
+          "roundT_pressureGate_roundT_000200.npz",
+          "roundT_squareT_pressureGate_squareT_000000.npz",
+          "roundT_squareT_pressureGate_squareT_000011.npz",
+          "roundT_squareT_pressureGate_squareT_000013.npz",
+          "roundT_squareT_pressureGate_squareT_000015.npz",
+          "roundT_squareT_pressureGate_squareT_000018.npz",
+          "roundT_squareT_pressureGate_squareT_000020.npz",
+          "roundT_squareT_pressureGate_squareT_000021.npz",
+          "roundT_squareT_pressureGate_squareT_000165.npz",
+          "roundT_squareT_pressureGate_squareT_000181.npz",
+          "roundT_squareT_pressureGate_squareT_000200.npz",
+          "squareT_platform_squareT_switch_000000.npz",
+          "squareT_platform_squareT_switch_000011.npz",
+          "squareT_platform_squareT_switch_000013.npz",
+          "squareT_platform_squareT_switch_000015.npz",
+          "squareT_platform_squareT_switch_000018.npz",
+          "squareT_platform_squareT_switch_000020.npz",
+          "squareT_platform_squareT_switch_000021.npz",
+          "squareT_platform_squareT_switch_000165.npz",
+          "squareT_platform_squareT_switch_000181.npz",
+          "squareT_platform_squareT_switch_000200.npz"
+        ],
+        "missing": [],
+        "extra": [],
+        "ok": true,
+        "derivation": "Configured diagnostic raw frame indices below the independently measured SQLite message count; all runs have zero duplicate/subsample skips and exact contiguous frame progression."
+      },
+      "invalid_geometry": {
+        "expected_files": [
+          "new_data_200_000048.npz",
+          "roundT_pressureGate_roundT_000048.npz",
+          "roundT_pressureGate_roundT_000130.npz",
+          "roundT_pressureGate_roundT_000249.npz"
+        ],
+        "actual_files": [
+          "new_data_200_000048.npz",
+          "roundT_pressureGate_roundT_000048.npz",
+          "roundT_pressureGate_roundT_000130.npz",
+          "roundT_pressureGate_roundT_000249.npz"
+        ],
+        "missing": [],
+        "extra": [],
+        "ok": true,
+        "derivation": "Configured diagnostic raw frame indices below the independently measured SQLite message count; all runs have zero duplicate/subsample skips and exact contiguous frame progression."
+      }
+    },
+    "supplementary_reports": [
+      "results/issue-5-invalid-geometry-comparison-20260922.json",
+      "results/issue-5-invalid-geometry-decode-20260922.json"
+    ],
+    "supplementary_decoder_frames_are_repeated_subset": 319
+  },
+  "control": {
+    "report": "results/issue-5-upstream-control-20260922.json",
+    "investigation": "results/issue-5-counter-investigation-20260922.json",
+    "same_python_source": true,
+    "same_native_binary": true,
+    "material_differences": 17,
+    "same_original_changes_reproduced": 14,
+    "original_changes_not_reproduced_in_one_control": 13,
+    "maximum_continuous_float_difference": 1.2327916465437738e-12,
+    "causal_limit": "Pre-existing non-repeatability is established. Thread/reduction-order origin and causality of every original delta are not established."
+  },
+  "additional_source_checks": {
+    "upstream_repeat": {
+      "production_files_checked": 66,
+      "mismatched_files": [],
+      "declared_revision": "bc4f73b4f75d83540683716953afb30351839cd6"
+    },
+    "geometry_before": {
+      "production_files_checked": 66,
+      "mismatched_files": [],
+      "declared_revision": "bc4f73b4f75d83540683716953afb30351839cd6"
+    },
+    "geometry_after": {
+      "production_files_checked": 66,
+      "mismatched_files": [],
+      "declared_revision": "555250285d0b12ea2252fc14d5abf0a1a131e3f2"
+    }
+  },
+  "measurement_validity": {
+    "hardware": "Apple M3, macOS; no target CPU or live ROS2 measurement",
+    "detector_replays_sequential": true,
+    "baseline_timing_caveat": "Initial baseline overlapped worker-only NPZ design inspections (reported0.48s+0.44s+0.48s+2.61s and one cancelled command of unknown duration). Initial whole-pipeline timing is descriptive, not a causal performance comparison. Upstream repeat, fix and paired decoder measurements have distinct recorded runs.",
+    "decoder_timing_caveat": "One alternating before/after pair per source message, pooled quantiles; before omits added attribute extraction; uncontrolled local OS load, no deployment latency or speedup claim.",
+    "rss_caveat": "Detector RSS is cumulative process peak across sequential bags, not per-bag incremental allocation. Decoder benchmark holds before/after values and comparison data, so its RSS is not production streaming RSS."
+  },
+  "failed_reporting_attempt": {
+    "command": ".venv-iteration/bin/python -m tunnel_guard.compare_alarm_runs --experiment configs/issue-5-regression-report-20260922.json",
+    "exit_code": 1,
+    "wall_s": 5.34,
+    "error": "AttributeError: 'Coverage' object has no attribute 'sensor_count_mismatch_rows'",
+    "location": "compare_bag, after the first recording comparison",
+    "classification": "reporting tool accumulator initialization defect; no detector replay failure; replay artifacts unchanged",
+    "retained_at": "build/issue-5-report-attempt-1",
+    "source_sha256": "a6ced642413f811560833dfb2982f30f63111fdac11ba2ba3e147300e135eb3a"
+  },
+  "review": "results/issue-5-deepseek-review-decisions-20260922.json",
+  "limitations": [
+    "The strict unchanged-output acceptance criterion remains FAILED; do not relabel it as passed.",
+    "The support count participates in confirmation generally; these27 adjacent objects being gated out is not a general safety guarantee.",
+    "No independent event labels, hazard recall, precision, material identification, firing independence or return-multiplicity claim.",
+    "Observed channels are finite on the recorded layouts; missing-channel, big-endian and organized-cloud cases are not field-verified.",
+    "Deskew disabled; calibration, sensor profile and intensity calibration remain unverified."
+  ]
+}

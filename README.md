@@ -59,10 +59,20 @@ inference and result serialization. This is not live sensor-to-display latency.
 
 Issue #5: the decoder returned geometry and normalized times but discarded the sensor's
 own per-point fields. `intensity`, `ring` and the raw acquisition time now travel with
-the decoded rows, and nothing they touch changes a measurement or a decision. Evidence:
+the decoded rows as metadata, not as detector evidence. Initial prefix evidence:
 [`results/issue-5-sensor-attributes-20260922.json`](results/issue-5-sensor-attributes-20260922.json);
 recipes `configs/issue-5-decode.json`, `configs/issue-5-before.json`,
 `configs/issue-5-after.json`.
+
+**Full-recording follow-up: strict output equality fails.** All 2,641 frames across nine
+recordings preserve the four decoder outputs exactly (501,204,616 decoded valid-return
+observations), but 27 `accumulated_support_voxels` counters differ by one. Alarm states,
+object associations, confirmations and evidence timestamps do not change. An identical
+upstream replay itself has 17 such differences, including 14 of the exact original changes;
+this establishes upstream non-repeatability, not proof of every difference's cause.
+The failed criterion is not waived. See the
+[regression summary](results/issue-5-regression-summary-20260922.json) and
+[full audit](docs/DECODE_AND_LATENCY.md#full-recording-regression-audit--2026-09-22).
 
 - **Decoder** (56 messages, 11,760,266 point observations, three alternating repetitions
   each): all four original outputs (XYZ, normalized time, invalid count, duration) are

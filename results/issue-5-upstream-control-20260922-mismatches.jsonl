@@ -1,0 +1,17 @@
+{"bag": "doubleT_platform", "frame": 6, "path": ".objects[238].accumulated_support_voxels", "kind": "integer", "old": 54, "new": 55, "abs_diff": null, "rel_diff": null}
+{"bag": "doubleT_platform", "frame": 7, "path": ".objects[265].accumulated_support_voxels", "kind": "integer", "old": 36, "new": 37, "abs_diff": null, "rel_diff": null}
+{"bag": "doubleT_platform", "frame": 8, "path": ".objects[230].accumulated_support_voxels", "kind": "integer", "old": 22, "new": 23, "abs_diff": null, "rel_diff": null}
+{"bag": "doubleT_platform", "frame": 275, "path": ".objects[186].accumulated_support_voxels", "kind": "integer", "old": 2, "new": 1, "abs_diff": null, "rel_diff": null}
+{"bag": "doubleT_platform", "frame": 291, "path": ".objects[174].accumulated_support_voxels", "kind": "integer", "old": 3, "new": 2, "abs_diff": null, "rel_diff": null}
+{"bag": "doubleT_platform", "frame": 310, "path": ".objects[196].accumulated_support_voxels", "kind": "integer", "old": 1, "new": 2, "abs_diff": null, "rel_diff": null}
+{"bag": "new_data_200", "frame": 21, "path": ".objects[135].accumulated_support_voxels", "kind": "integer", "old": 13, "new": 14, "abs_diff": null, "rel_diff": null}
+{"bag": "new_data_200", "frame": 23, "path": ".objects[124].accumulated_support_voxels", "kind": "integer", "old": 11, "new": 12, "abs_diff": null, "rel_diff": null}
+{"bag": "new_data_200", "frame": 23, "path": ".objects[125].accumulated_support_voxels", "kind": "integer", "old": 11, "new": 12, "abs_diff": null, "rel_diff": null}
+{"bag": "roundT_doubleT", "frame": 122, "path": ".objects[174].accumulated_support_voxels", "kind": "integer", "old": 12, "new": 11, "abs_diff": null, "rel_diff": null}
+{"bag": "roundT_doubleT", "frame": 123, "path": ".objects[143].accumulated_support_voxels", "kind": "integer", "old": 12, "new": 11, "abs_diff": null, "rel_diff": null}
+{"bag": "roundT_doubleT", "frame": 131, "path": ".objects[145].accumulated_support_voxels", "kind": "integer", "old": 7, "new": 6, "abs_diff": null, "rel_diff": null}
+{"bag": "roundT_pressureGate_roundT", "frame": 136, "path": ".objects[123].accumulated_support_voxels", "kind": "integer", "old": 16, "new": 15, "abs_diff": null, "rel_diff": null}
+{"bag": "roundT_pressureGate_roundT", "frame": 201, "path": ".objects[15].accumulated_support_voxels", "kind": "integer", "old": 2, "new": 1, "abs_diff": null, "rel_diff": null}
+{"bag": "roundT_squareT_pressureGate_squareT", "frame": 401, "path": ".objects[118].accumulated_support_voxels", "kind": "integer", "old": 36, "new": 37, "abs_diff": null, "rel_diff": null}
+{"bag": "roundT_squareT_pressureGate_squareT", "frame": 436, "path": ".objects[203].accumulated_support_voxels", "kind": "integer", "old": 15, "new": 14, "abs_diff": null, "rel_diff": null}
+{"bag": "squareT_platform_squareT_switch", "frame": 96, "path": ".objects[105].accumulated_support_voxels", "kind": "integer", "old": 11, "new": 12, "abs_diff": null, "rel_diff": null}

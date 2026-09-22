@@ -262,6 +262,147 @@ reflectivity or material.
 - Initial workers ran out-of-contract synthetic/ad-hoc probes; these are excluded from
   acceptance, and no test files or framework were introduced.
 
+### Full-recording regression audit — 2026-09-22
+
+**Strict unchanged-output acceptance: FAILED, not waived.** The initial 12-frame
+prefix above did not exercise alarms or invalid geometry. The follow-up compares upstream
+`bc4f73b4f75d83540683716953afb30351839cd6` with submitted fix
+`555250285d0b12ea2252fc14d5abf0a1a131e3f2` across every frame of all six original
+recordings and the three available extended segments. Seed `20260915`,
+`configs/detector-native.json`, eight odometry threads, deskew disabled, no threshold
+changes. Every SQLite source message is accounted for: 2,641 messages/frames per arm,
+zero duplicate or subsample skips, missing frames, extra frames or progression gaps.
+
+The [audit summary](../results/issue-5-regression-summary-20260922.json) links the
+[reviewed comparison](../results/issue-5-full-regression-reviewed-20260922.json),
+[complete mismatch sidecar](../results/issue-5-full-regression-reviewed-20260922-mismatches.jsonl),
+[decoder evidence](../results/issue-5-full-decode-20260922.json) and compressed
+[per-message hashes and measurements](../results/issue-5-full-decode-20260922-frames.jsonl.gz).
+The original failed comparison and failed reporting-tool attempt are retained.
+
+| Recording | Frames | Fix-versus-upstream counter differences | Upstream-versus-itself counter differences |
+|---|---:|---:|---:|
+| doubleT_obstacle | 201 | 0 | 0 |
+| doubleT_platform | 345 | 7 | 6 |
+| roundT_doubleT | 252 | 9 | 3 |
+| roundT_pressureGate_roundT | 268 | 2 | 2 |
+| roundT_squareT_pressureGate_squareT | 545 | 5 | 2 |
+| squareT_platform_squareT_switch | 877 | 1 | 1 |
+| new_data_0 | 51 | 0 | 0 |
+| new_data_100 | 51 | 0 | 0 |
+| new_data_200 | 51 | 3 | 3 |
+| **Total** | **2,641** | **27** | **17** |
+
+Every material difference is an exact integer change of one in
+`accumulated_support_voxels`. IDs, object ordering, boxes, relations, confirmations, hits,
+source/evidence timestamps and alarm states are unchanged. Other unequal continuous
+estimates differ by at most `8.730793865652231e-13`; their predeclared tolerance is
+`atol=rtol=1e-9`. Tolerance is never applied to counts or timestamps. Operational timing
+fields and the known `sensor_attributes` addition are the only exclusions.
+
+Coverage is 698,799 **object-frame observations**, not independent objects/events:
+202 `obstacle`, 58 `unresolved_obstacle`, 18 `candidate`, 3 `unknown`, and 2,360
+`no_obstacle_observed` frames. Geometry is valid in 2,638 frames and motion in 2,426.
+There are zero duplicate or future evidence timestamps in either evidence history.
+These are unlabelled output states, not recall, precision or field-safety measurements.
+
+**Numerical control and remaining risk.** The
+[upstream self-comparison](../results/issue-5-upstream-control-20260922.json) uses
+identical captured Python source and the **same already-built native binary**. It still
+has 17 one-voxel differences and continuous differences up to `1.2327916465437738e-12`.
+Fourteen of the original 27 changes recur exactly; 13 do not recur in this one control.
+The [per-case investigation](../results/issue-5-counter-investigation-20260922.json)
+retains all three values rather than attributing every difference to the patch or to noise.
+
+The counter counts distinct `floor(track_local_evidence / 0.05)` keys after pose
+transformation (`detector.py` association; `accelerator.voxel_counts`). Arbitrarily small
+coordinate changes can cross a voxel boundary. Roundoff-level pose variation and this
+discontinuous count are consistent with the observed signature; the exact registration/
+reduction-order cause is not established. All 27 affected objects are adjacent/pending,
+with 0 or 1 uncertain-support voxels, below the configured 2-voxel confirmation gate.
+Their confirmation is therefore unaffected. **The accumulated count is used in
+confirmation generally**: this observation does not make other boundary cases safe.
+No point snapping, tolerance relaxation, counter exclusion or geometry change was made.
+
+**Decode and original-slot provenance.** All 501,204,616 decoded XYZ-valid return
+observations preserve XYZ, normalized time, invalid count and duration byte-for-byte:
+zero changed messages and zero raw-field/slot/mask failures. Intensity, ring and raw time
+remain metadata; sensor profile, firing identity, return multiplicity and intensity
+calibration remain unverified. The full replay captures 81 diagnostic frames with
+1,053 byte-identical legacy arrays.
+
+The three actual invalid-geometry frames were outside that fixed capture selection:
+`roundT_pressureGate_roundT` frames 130/249 and `new_data_200` frame 48, all
+`insufficient_paired_rail_support`. Supplementary complete replays of those two recordings
+capture all three failures plus one valid frame. All 28 additional legacy arrays are
+byte-identical, and fresh raw-message decoding rebinds all four decoded archives exactly.
+Across both panels: **85 archives, 1,081 legacy arrays unchanged, 82 executed cluster
+stages verified and 3 correctly reported as not executed**. Empty cluster metadata is not
+counted as observed cluster support. The supplementary 319 messages repeat the original
+panel; they are not extra independent data.
+
+**Observed costs, not a deployment benchmark.** One alternating decoder pair per raw
+message gives p50 **6.581 → 7.927 ms**, p95 **16.910 → 20.040 ms**; the after arm includes
+attribute extraction. Peak retained attribute arrays occupy **8,555,468 bytes**. These
+are pooled local measurements, excluding deserialization/comparison, not guaranteed
+streaming latency. Whole-replay wall/RSS/stage metrics remain in the reports. The initial
+baseline overlapped short worker NPZ inspections and one cancelled inspection of unknown
+duration, so its timing must not be used as a causal performance comparison. RSS is a
+cumulative process peak across recordings, not an incremental per-recording cost.
+
+**Provenance and reporting.** The baseline source archive is nested under the fix
+checkout, so its runner reports the enclosing fix Git revision. The
+[source bindings](../results/issue-5-regression-source-20260922.json) instead verify
+captured production Python/C++ hashes against the actual Git objects. Reviewed reports
+also record their comparer/helper source hashes and recipe hash. `compare_alarm_runs`
+now emits schema version 2, streams full rows, retains every material mismatch, rejects
+incomplete inputs and never overwrites previous evidence. Its historical CLI flags remain;
+the older summary schema is intentionally replaced. Strict recipe mode exits 1 for this
+failed criterion. The early report accumulator error was fixed and its attempt retained
+at `build/issue-5-report-attempt-1`; it was not a detector failure.
+
+Reproduction uses the upstream archive/native-build preparation above and **new output
+directories**. All nine bags are required. Run the following from the repository root,
+sequentially; expected failed comparisons must not stop collection of the remaining evidence:
+
+```sh
+PYTHONPATH="$PWD/build/issue-5-upstream-source" \
+  .venv-iteration/bin/python -P -m tunnel_guard.run \
+  --experiment configs/issue-5-regression-before-20260922.json
+.venv-iteration/bin/python -m tunnel_guard.run \
+  --experiment configs/issue-5-regression-after-20260922.json
+.venv-iteration/bin/python -m tunnel_guard.decode_benchmark \
+  --experiment configs/issue-5-regression-decode-20260922.json
+.venv-iteration/bin/python -m tunnel_guard.compare_alarm_runs \
+  --experiment configs/issue-5-regression-report-reviewed-20260922.json
+
+PYTHONPATH="$PWD/build/issue-5-upstream-source" \
+  .venv-iteration/bin/python -P -m tunnel_guard.run \
+  --experiment configs/issue-5-regression-upstream-repeat-20260922.json
+.venv-iteration/bin/python -m tunnel_guard.compare_alarm_runs \
+  --before build/issue-5-regression-before-20260922 \
+  --after build/issue-5-regression-upstream-repeat-20260922 \
+  --output results/issue-5-upstream-control-20260922.json
+
+PYTHONPATH="$PWD/build/issue-5-upstream-source" \
+  .venv-iteration/bin/python -P -m tunnel_guard.run \
+  --experiment configs/issue-5-invalid-geometry-before-20260922.json
+.venv-iteration/bin/python -m tunnel_guard.run \
+  --experiment configs/issue-5-invalid-geometry-after-20260922.json
+.venv-iteration/bin/python -m tunnel_guard.decode_benchmark \
+  --experiment configs/issue-5-invalid-geometry-decode-20260922.json
+.venv-iteration/bin/python -m tunnel_guard.compare_alarm_runs \
+  --before build/issue-5-invalid-geometry-before-20260922 \
+  --after build/issue-5-invalid-geometry-after-20260922 \
+  --output results/issue-5-invalid-geometry-comparison-20260922.json
+```
+
+For a new execution, regenerate source bindings from its captured source rather than
+reusing the historical binding's reporter-file hashes. The committed summary and source
+inventory describe this execution; they are evidence, not silently regenerated fixtures.
+No automated tests, generated clouds, ROS2 runtime validation or new calibration claim
+are part of this audit.
+
 ## Pause boundary and unresolved fundamentals
 
 This is a reasonable frozen research baseline pending the extended dataset.

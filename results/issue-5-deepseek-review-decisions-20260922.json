@@ -1,0 +1,27 @@
+{
+  "model_route": "opencode-go/deepseek-v4.1-flash (effective modelRoles.task)",
+  "reviews": [
+    "issue5-deepseek-review-1",
+    "issue5-deepseek-review-2",
+    "issue5-deepseek-review-3"
+  ],
+  "accepted": [
+    "Strict full-panel verdict remains false for27 exact integer differences; no tolerance or threshold change.",
+    "Bind newly generated reports to comparer/helper SHA256 and recipe SHA256.",
+    "Compare episode start/end source timestamps exactly.",
+    "Reject missing metadata hashes, blank-only result inputs and one-sided missing diagnostic directories.",
+    "Preserve old no-attribute diagnostic comparisons without inventing sensor-provenance coverage.",
+    "Add real saved-diagnostic coverage for all three observed invalid-geometry frames."
+  ],
+  "scope_decisions": [
+    "Attribute channels are optional by production contract; do not globally require every sensor to have intensity/ring/time. Full raw-message benchmark independently verifies availability on this actual panel.",
+    "Historical reporting schema is intentionally replaced with explicit schema_version2; no in-repo programmatic consumers were found. Existing reports are never overwritten.",
+    "No unsupported deskew/Linux/generated-layout result is claimed.",
+    "The counter is decision-coupled in general, so adjacent-case stability is not a universal safety argument."
+  ],
+  "rejected_reasoning": [
+    "A floor-voxel count can change under an arbitrarily small coordinate perturbation at a boundary; the review claim that a semantic change requires half a voxel is false.",
+    "The upstream repeat uses the identical already-built native binary; it is not a new-build control.",
+    "The exact source of pose non-repeatability is not established by source inspection; thread/reduction order remains a hypothesis until stronger measurement."
+  ]
+}
