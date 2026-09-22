@@ -270,7 +270,14 @@ def render_comparison(before: Path, after: Path, cases: dict, output: Path):
                 ax.set_aspect("equal", adjustable="box")
                 ax.grid(alpha=.2)
                 if level == 0:
-                    ax.set_title(f"{name} — {row['status']}; nearest={row['nearest_obstacle_m']:.3f} m\nhealth={row['health']}; confirmed denotes algorithmic evidence", fontsize=10)
+                    # `nearest_obstacle_m` is None whenever the frame has no confirmed hazard, which
+                    # is most frames now that the claim requires a measured coordinate.
+                    nearest = ("none" if row["nearest_obstacle_m"] is None
+                               else f"{row['nearest_obstacle_m']:.3f} m")
+                    candidate = ("none" if row.get("nearest_candidate_m") is None
+                                 else f"{row['nearest_candidate_m']:.3f} m")
+                    ax.set_title(f"{name} — {row['status']}; nearest hazard={nearest}, nearest candidate={candidate}"
+                                 f"\nhealth={row['health']}; confirmed denotes algorithmic evidence", fontsize=10)
                 elif level == 1:
                     detail = (f"component {target['component_id']}: reported={target['distance_m']:.3f} m; {target['path_relation']}"
                               if target is not None else "Provisional structure region; observed support only")

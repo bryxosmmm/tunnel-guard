@@ -1,0 +1,207 @@
+{
+  "what": "Corridor-claim change of 2026-09-22: the intrusion claim now requires a measured coordinate and evidence that is not the tunnel's own cross-section, the tunnel's own cross-section is recognised per return, and the frame status distinguishes a claim from doubt. Recorded frames only; no quality claim.",
+  "before": "build/notes-review",
+  "after": "build/fix",
+  "six_tunnels": {
+    "before": {
+      "frames": 2488,
+      "status_frames": {
+        "unresolved_obstacle": 2181,
+        "obstacle": 305,
+        "unknown": 2
+      },
+      "nearest_obstacle_m": {
+        "n": 2486,
+        "p10": 2.0,
+        "median": 2.002,
+        "p90": 2.024
+      },
+      "objects_per_frame_median": 305,
+      "hazard_observations": 62738,
+      "nearest_hazard_support_voxels_median": 1253,
+      "nearest_hazard_in_envelope_voxels_median": 0,
+      "object_reasons": {
+        "outside_envelope_evidence": 354909,
+        "envelope_boundary_uncertainty": 58157,
+        "longitudinally_continuous_structure": 278870,
+        "unsupported_nominal_envelope": 86090,
+        "inside_heuristic_path_and_ground_interval": 2109
+      }
+    },
+    "after": {
+      "frames": 2488,
+      "status_frames": {
+        "no_obstacle_observed": 2216,
+        "unresolved_obstacle": 54,
+        "obstacle": 202,
+        "candidate": 14,
+        "unknown": 2
+      },
+      "nearest_obstacle_m": {
+        "n": 256,
+        "p10": 43.155,
+        "median": 55.914,
+        "p90": 56.385
+      },
+      "objects_per_frame_median": 260,
+      "hazard_observations": 515,
+      "nearest_hazard_support_voxels_median": 17,
+      "nearest_hazard_in_envelope_voxels_median": 3,
+      "object_reasons": {
+        "outside_envelope_evidence": 606448,
+        "structure_crossing_envelope": 44833,
+        "unmeasured_corridor": 3650,
+        "envelope_boundary_uncertainty": 310,
+        "inside_heuristic_path_and_ground_interval": 570
+      }
+    },
+    "per_recording": {
+      "doubleT_obstacle": {
+        "before": {
+          "unresolved_obstacle": 32,
+          "obstacle": 169
+        },
+        "after": {
+          "no_obstacle_observed": 25,
+          "unresolved_obstacle": 6,
+          "obstacle": 166,
+          "candidate": 4
+        },
+        "before_nearest_median_m": 2.038,
+        "after_nearest_median_m": 56.359
+      },
+      "doubleT_platform": {
+        "before": {
+          "unresolved_obstacle": 323,
+          "obstacle": 22
+        },
+        "after": {
+          "candidate": 2,
+          "no_obstacle_observed": 302,
+          "unresolved_obstacle": 19,
+          "obstacle": 22
+        },
+        "before_nearest_median_m": 2.001,
+        "after_nearest_median_m": 45.99
+      },
+      "roundT_doubleT": {
+        "before": {
+          "unresolved_obstacle": 248,
+          "obstacle": 4
+        },
+        "after": {
+          "no_obstacle_observed": 234,
+          "unresolved_obstacle": 14,
+          "obstacle": 4
+        },
+        "before_nearest_median_m": 2.006,
+        "after_nearest_median_m": 45.119
+      },
+      "roundT_pressureGate_roundT": {
+        "before": {
+          "unresolved_obstacle": 265,
+          "unknown": 2,
+          "obstacle": 1
+        },
+        "after": {
+          "no_obstacle_observed": 253,
+          "unknown": 2,
+          "unresolved_obstacle": 9,
+          "obstacle": 1,
+          "candidate": 3
+        },
+        "before_nearest_median_m": 2.002,
+        "after_nearest_median_m": 8.757
+      },
+      "roundT_squareT_pressureGate_squareT": {
+        "before": {
+          "unresolved_obstacle": 440,
+          "obstacle": 105
+        },
+        "after": {
+          "no_obstacle_observed": 530,
+          "candidate": 3,
+          "unresolved_obstacle": 3,
+          "obstacle": 9
+        },
+        "before_nearest_median_m": 2.003,
+        "after_nearest_median_m": 34.226
+      },
+      "squareT_platform_squareT_switch": {
+        "before": {
+          "unresolved_obstacle": 873,
+          "obstacle": 4
+        },
+        "after": {
+          "no_obstacle_observed": 872,
+          "candidate": 2,
+          "unresolved_obstacle": 3
+        },
+        "before_nearest_median_m": 2.001,
+        "after_nearest_median_m": 58.943
+      }
+    }
+  },
+  "extended_corpus": {
+    "before": {
+      "frames": 1275,
+      "status_frames": {
+        "unresolved_obstacle": 1241,
+        "obstacle": 33,
+        "unknown": 1
+      },
+      "nearest_obstacle_m": {
+        "n": 1274,
+        "p10": 2.0,
+        "median": 2.004,
+        "p90": 2.02
+      },
+      "objects_per_frame_median": 318,
+      "hazard_observations": 26683,
+      "nearest_hazard_support_voxels_median": 554,
+      "nearest_hazard_in_envelope_voxels_median": 0,
+      "object_reasons": {
+        "envelope_boundary_uncertainty": 24251,
+        "outside_envelope_evidence": 197096,
+        "longitudinally_continuous_structure": 148303,
+        "unsupported_nominal_envelope": 34080,
+        "inside_heuristic_path_and_ground_interval": 528
+      }
+    },
+    "after": {
+      "frames": 1275,
+      "status_frames": {
+        "no_obstacle_observed": 1230,
+        "unresolved_obstacle": 32,
+        "obstacle": 7,
+        "candidate": 5,
+        "unknown": 1
+      },
+      "nearest_obstacle_m": {
+        "n": 39,
+        "p10": 8.072,
+        "median": 46.617,
+        "p90": 59.406
+      },
+      "objects_per_frame_median": 279,
+      "hazard_observations": 121,
+      "nearest_hazard_support_voxels_median": 13,
+      "nearest_hazard_in_envelope_voxels_median": 2,
+      "object_reasons": {
+        "outside_envelope_evidence": 330110,
+        "structure_crossing_envelope": 21615,
+        "unmeasured_corridor": 1248,
+        "envelope_boundary_uncertainty": 159,
+        "inside_heuristic_path_and_ground_interval": 136
+      }
+    }
+  },
+  "labelled_recording": {
+    "frames_losing_obstacle_status": [
+      75,
+      141,
+      177
+    ],
+    "note": "Each frame still reports the object with its distance; only the status differs. Frame 75 is the one the trailing-anchor guard costs, and the other two are frames where the certified intrusion is three voxels, so instant confirmation - which now reads interior geometry instead of whole-component density - does not fire."
+  }
+}

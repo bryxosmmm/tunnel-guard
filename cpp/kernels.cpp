@@ -982,7 +982,7 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
                               && (std::abs(lateral_value) <= half_width)) ? 1 : 0;
         }
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
-    PyObject* payload = PyTuple_New(6);
+    PyObject* payload = PyTuple_New(9);
     if (payload == nullptr) return nullptr;
     std::vector<PyObject*> owned;
     if (!accept(bytes_of(core.data(), core.size()), owned, "core")
@@ -990,7 +990,13 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
             || !accept(bytes_of(height.data(), height.size() * sizeof(double)), owned, "height")
             || !accept(bytes_of(observed.data(), observed.size()), owned, "observed")
             || !accept(bytes_of(overlap.data(), overlap.size()), owned, "nominal_overlap")
-            || !accept(bytes_of(boundary.data(), boundary.size()), owned, "boundary")) {
+            || !accept(bytes_of(boundary.data(), boundary.size()), owned, "boundary")
+            // The rail-relative coordinates the masks above were computed in. Returning them
+            // lets a caller gate a claim on the SAME numbers instead of recomputing them and
+            // risking a cell that falls on the other side of a bin edge.
+            || !accept(bytes_of(lateral.data(), lateral.size() * sizeof(double)), owned, "lateral")
+            || !accept(bytes_of(running.data(), running.size() * sizeof(double)), owned, "running height")
+            || !accept(bytes_of(gauge.data(), gauge.size() * sizeof(double)), owned, "gauge")) {
         Py_DECREF(payload);
         for (PyObject* object : owned) Py_DECREF(object);
         return nullptr;
@@ -1344,7 +1350,7 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
     const bool* is_uncertain = uncertain.bools();
     Arena& scratch = arena();
     std::vector<int64_t> label_rows, offsets_out, member_rows, reason_codes, relations,
-        distance_codes, relation_reasons, support_counts, dense_counts, envelope_counts,
+        distance_codes, support_counts, dense_counts, envelope_counts,
         uncertain_counts, boundary_counts, support_points, interior_dense;
     std::vector<double> bbox_min, bbox_max, centres, extents, height_spans, witnesses, distances,
         nearest_cluster, nearest_supported, nearest_unresolved, interior_heights;
@@ -1423,12 +1429,10 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
             double supported_x = HUGE_VAL, unresolved_x = HUGE_VAL;
             // A component reduced to one voxel has zero extent and cannot reach a support floor of
             // two, yet it is the only evidence that exists about a far object the sensor sampled with
-            // a single ray. Its admission rests entirely on support, so the size and extent floors
-            // below apply only to components with more than one voxel.
+            // a single ray. It is therefore ADMITTED on any interior evidence at all, and the CLAIM
+            // (an unresolved or certified intrusion) keeps its own threshold: one voxel inside the
+            // contour is reported as a candidate whose support is unresolved, never as an intrusion.
             const bool singleton = static_cast<int>(length) < 2;
-            // The count required is the component's own evidence, capped by weak_min_voxels:
-            // certification separately demands the full weak_min_voxels support in the tracker.
-            const int support_floor = std::min<int>(weak_min_voxels, static_cast<int>(length));
             // The gate also selects the support witnesses, so it must run for a singleton: otherwise
             // an admitted singleton would report an infinite unresolved witness.
             if (singleton || (static_cast<int>(length) >= weak_min_voxels && largest >= min_extent)) {
@@ -1452,18 +1456,18 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
                 }
             }
             // The INTERSECTION claim keeps its own threshold: one voxel inside the contour reports a
-            // candidate whose support is unresolved, not a certified intrusion. Only admission uses
-            // the lower support floor.
+            // candidate whose support is unresolved, not a certified intrusion. The unresolved claim
+            // uses the SAME floor, not the admission floor: a single stray return at the contour edge
+            // is doubt, and doubt is reported as a candidate, never as an intrusion claim.
             const bool intersects = inside >= claim_min_support;
-            const bool unresolved = uncertain_count >= support_floor;
+            const bool unresolved = uncertain_count >= claim_min_support;
             int reason = 0;
             if (!singleton && static_cast<int>(length) < weak_min_voxels) reason = 1;
             else if (!singleton && largest < min_extent) reason = 2;
-            else if (!intersects && !unresolved && dense_count == 0) reason = 3;
+            else if (!intersects && !unresolved && dense_count == 0 && uncertain_count == 0) reason = 3;
             reason_codes.push_back(reason);
             if (reason != 0) {
                 relations.push_back(0);
-                relation_reasons.push_back(0);
                 distance_codes.push_back(0);
                 distances.push_back(0.0);
                 witnesses.insert(witnesses.end(), 3, 0.0);
@@ -1518,7 +1522,6 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
             intersection_flags.push_back(
                 (interior_dense_count >= immediate_min_voxels && interior_span >= immediate_min_height) ? 1 : 0);
             relations.push_back(intersects ? 1 : (unresolved ? 2 : 0));
-            relation_reasons.push_back(intersects ? 0 : (unresolved ? (boundary_count > 0 ? 1 : 2) : 3));
             distance_codes.push_back(mode);
             nearest_supported.push_back(inside > 0 ? supported_x : NAN);
             nearest_unresolved.push_back(unresolved ? unresolved_x : NAN);
@@ -1535,7 +1538,6 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
         {reason_codes.data(), reason_codes.size() * sizeof(int64_t)},
         {relations.data(), relations.size() * sizeof(int64_t)},
         {distance_codes.data(), distance_codes.size() * sizeof(int64_t)},
-        {relation_reasons.data(), relation_reasons.size() * sizeof(int64_t)},
         {bbox_min.data(), bbox_min.size() * sizeof(double)},
         {bbox_max.data(), bbox_max.size() * sizeof(double)},
         {centres.data(), centres.size() * sizeof(double)},

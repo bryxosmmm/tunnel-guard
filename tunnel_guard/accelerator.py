@@ -205,8 +205,11 @@ def ground_values(points: np.ndarray, plane: np.ndarray, ground_anchors: np.ndar
 def classify_geometry(points: np.ndarray, geometry, module=None):
     """Envelope, rail-relative and ground support classification.
 
-    Returns core, context, height, observed, nominal_overlap, boundary; the NumPy
-    reference stays in TrackGeometry.classify for recipes without native kernels.
+    Returns (core, context, height, observed, nominal_overlap, boundary, lateral,
+    running_height, gauge); the NumPy reference stays in TrackGeometry.classify for recipes
+    without native kernels. The last three are the rail-relative coordinates the masks were
+    computed in, so a caller can gate a claim on the same numbers instead of recomputing
+    them.
     """
     if module is None or geometry.plane is None or len(geometry.ground_anchors) < 1 \
             or len(geometry.rail_anchors) < 2:
@@ -228,12 +231,10 @@ def classify_geometry(points: np.ndarray, geometry, module=None):
         config["envelope_margin_m"], config["rail_max_heading"],
         config.get("path_curve_window_m", 30.0), config.get("path_curvature_significance", 4.0))
     return tuple(np.frombuffer(payload[index], dtype=np.uint8).astype(bool) if index in (0, 1, 3, 4, 5)
-                 else np.frombuffer(payload[index], dtype=np.float64) for index in range(6))
+                 else np.frombuffer(payload[index], dtype=np.float64) for index in range(9))
 
 
 RELATION_NAMES = ("adjacent", "intersecting", "unresolved")
-RELATION_REASONS = ("inside_heuristic_path_and_ground_interval", "envelope_boundary_uncertainty",
-                    "unsupported_nominal_envelope", "outside_envelope_evidence")
 DISTANCE_METHODS = ("cluster_min_x", "supported_envelope_min_x", "unresolved_envelope_evidence_min_x")
 REJECTION_NAMES = {0: None, 1: "below_weak_min_voxels", 2: "below_min_extent",
                    3: "weak_without_envelope_support"}
@@ -255,7 +256,7 @@ def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncert
         float(config["cluster_min_extent_m"]), float(config["immediate_min_height_m"]),
         1 if config.get("obstacle_distance_mode", "cluster_min_x") == "envelope_support_min_x" else 0,
         int(config.get("claim_min_support_voxels", config["weak_min_voxels"])))
-    (ids, offsets, members, reasons, relations, distance_codes, relation_reasons, bbox_min, bbox_max,
+    (ids, offsets, members, reasons, relations, distance_codes, bbox_min, bbox_max,
      centres, extents, height_spans, witnesses, distances, support_points, nearest_cluster,
      nearest_supported, nearest_unresolved, support_counts, dense_counts, envelope_counts,
      uncertain_counts,
@@ -272,7 +273,7 @@ def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncert
 
     ids, offsets, members = integers(ids), integers(offsets), integers(members)
     reasons, relations = integers(reasons), integers(relations)
-    distance_codes, relation_reasons = integers(distance_codes), integers(relation_reasons)
+    distance_codes = integers(distance_codes)
     bbox_min, bbox_max = reals(bbox_min), reals(bbox_max)
     centres, extents, height_spans = reals(centres), reals(extents), reals(height_spans)
     witnesses, distances = reals(witnesses), reals(distances)
@@ -311,8 +312,8 @@ def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncert
             "in_envelope_voxels": int(envelope_counts[row]),
             "uncertain_voxels": int(uncertain_counts[row]),
             "_support_points": cloud[members[begin:end]],
+            "_support_indices": members[begin:end],
             "boundary_uncertain_voxels": int(boundary_counts[row]),
-            "path_relation_reason": RELATION_REASONS[int(relation_reasons[row])],
             "height_above_bed_m": [float(height_spans[2 * row]), float(height_spans[2 * row + 1])],
             "immediate": bool(immediate[row]),
             "interior_density_core_voxels": int(interior_dense[row]),

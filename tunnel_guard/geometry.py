@@ -5,25 +5,44 @@ Region-wise ground modelling follows the motivation of Himmelsbach et al. (IV
 """
 from __future__ import annotations
 
+from typing import NamedTuple
+
 import numpy as np
 from scipy.signal import find_peaks
 
 from . import accelerator
 
 
+class CrossSection(NamedTuple):
+    """Rail-relative coordinates of a set of returns, in the decision frame.
+
+    `lateral` is signed and measured from the estimated centre-line; `running_height` is
+    above the measured running surface (the rail heads). These are the two quantities the
+    reference-contour test consumes, so they are produced in one place, reported as-is, and
+    never recomputed for a decision that depends on them.
+    """
+    lateral: np.ndarray
+    running_height: np.ndarray
+    gauge: np.ndarray
+
+
 def voxel_representatives(points: np.ndarray, size: float, backend: str = "numpy") -> np.ndarray:
+    return points[voxel_representative_indices(points, size, backend)]
+
+
+def voxel_representative_indices(points: np.ndarray, size: float, backend: str = "numpy") -> np.ndarray:
+    """Rows of the first measurement in each occupied voxel, in voxel-key order."""
     if not len(points):
-        return points
+        return np.empty(0, dtype=np.int64)
     if backend == "cpp":
         from . import _native
         if points.dtype != np.float64:
             raise ValueError("cpp voxel backend requires float64 measurements")
-        indices = np.frombuffer(_native.voxel_indices(np.ascontiguousarray(points), size), dtype=np.int64)
-    elif backend == "numpy":
+        return np.frombuffer(_native.voxel_indices(np.ascontiguousarray(points), size), dtype=np.int64)
+    if backend == "numpy":
         _, indices = np.unique(np.floor(points / size).astype(np.int64), axis=0, return_index=True)
-    else:
-        raise ValueError("Unknown voxel backend")
-    return points[indices]
+        return indices
+    raise ValueError("Unknown voxel backend")
 
 
 # scipy prepares worker threads per call, so parallelism only pays for large
@@ -356,6 +375,37 @@ class TrackGeometry:
                     self.rail_rejections.append({"window_x_m": float(x), "anchor_x_m": anchor_x,
                                                 "reason": "relocated_heading_exceeds_bound"})
                     continue
+            if anchors and cfg.get("rail_anchor_continuity"):
+                # The heading bound above is a bound on RATE, not on the sequence: at the far edge of the rail
+                # support a pair can satisfy it and still sit a metre off the trend the previous anchors
+                # describe, because a metre of lateral error spread over ten metres is under 6.9 degrees. Such
+                # an anchor is the edge the continuation is fitted from, and one of them sets the SIGN of the
+                # fitted curvature: measured on roundT_squareT_pressureGate_squareT frame 350, the pair accepted
+                # at x = 50.04 m had gauge 1.428 m (9.2 cm off the frame's own anchors) and its centre sat
+                # 1.39 m below the trend of the three before it, and the corridor then left the tunnel by
+                # -26 m at 120 m while the tunnel curved the other way. The guard compares the anchor with its
+                # OWN recent history rather than with the nominal gauge, because the fitted gauge of a whole
+                # recording is biased (1.56-1.65 m across these recordings), so an absolute tolerance throws
+                # away good anchors with the bad one - measured: 0.05 m tolerance cut a frame from 9 anchors
+                # to 4 and its supported range from 62.5 m to 47.5 m.
+                plan = cfg["rail_anchor_continuity"]
+                recent = anchors[-int(plan.get("history", 4)):]
+                recent_x = np.asarray([entry[0] for entry in recent])
+                recent_y = np.asarray([entry[1] for entry in recent])
+                gauge_median = float(np.median([entry[2] for entry in recent]))
+                slope_fit = float(np.polyfit(recent_x, recent_y, 1)[0]) if len(recent) > 1 and np.ptp(recent_x) > 0 else 0.0
+                ahead = anchor_x - recent_x[-1]
+                trend_centre = float(recent_y[-1] + slope_fit * ahead)
+                gauge_deviation = abs(gauge - gauge_median)
+                centre_deviation = abs(center - trend_centre)
+                if (gauge_deviation > float(plan["gauge_m"])
+                        or centre_deviation > float(plan["centre_m"]) + float(plan["centre_slope"]) * ahead):
+                    self.rail_rejections.append({"window_x_m": float(x), "anchor_x_m": anchor_x,
+                        "reason": "anchor_inconsistent_with_recent_anchors",
+                        "gauge_m": float(gauge), "recent_gauge_median_m": gauge_median,
+                        "gauge_deviation_m": float(gauge_deviation), "centre_m": float(center),
+                        "trend_centre_m": trend_centre, "centre_deviation_m": float(centre_deviation)})
+                    continue
             bed, _ = self.ground(q[rail_mask])
             head_heights.append(float(np.quantile(q[rail_mask, 2] - bed, 0.8)))
             heads = [q[np.abs(lateral - center - side * gauge / 2) < cfg["rail_half_width_m"] / 2, 0]
@@ -367,9 +417,45 @@ class TrackGeometry:
             if cfg.get("rail_frame_mode", "bed") == "local_3d":
                 self.rail_frames.append(self._fit_head_heights(q, anchor_x, center, gauge, slope))
             anchors.append((anchor_x, center, gauge, support))
+        self._drop_inconsistent_trailing_anchors(anchors)
         self.rail_anchors = np.asarray(anchors, dtype=float).reshape(-1, 4)
         if head_heights:
             self.rail_head_height_m = float(np.median(head_heights))
+
+    def _drop_inconsistent_trailing_anchors(self, anchors: list) -> None:
+        """Remove trailing anchors that contradict the prefix they are fitted from.
+
+        The continuation past the last anchor is fitted in that anchor's own frame, so a trailing anchor
+        that disagrees with the anchors before it decides the SIGN of the extrapolated curvature. Only
+        trailing anchors are examined here, on purpose: an anchor in the middle of the span also moves
+        the interpolated corridor, and rejecting those changes decisions inside measured support as well
+        as beyond it. Measured on roundT_squareT_pressureGate_squareT frame 350, the trailing pair had
+        support 4 (the admissible floor), gauge 1.428 m against the frame's own 1.59 m, and its centre
+        stood 1.39 m below the trend of the three anchors before it; the corridor then left the tunnel by
+        -26 m at 120 m while the tunnel curved towards +y.
+        """
+        plan = self.config.get("rail_anchor_edge_continuity")
+        if not plan:
+            return
+        while len(anchors) > 2:
+            history = anchors[-1 - int(plan.get("history", 4)):-1]
+            if len(history) < 2:
+                return
+            xs = np.asarray([entry[0] for entry in history], dtype=float)
+            ys = np.asarray([entry[1] for entry in history], dtype=float)
+            if np.ptp(xs) <= 0:
+                return
+            ahead = float(anchors[-1][0] - xs[-1])
+            trend = float(ys[-1] + np.polyfit(xs, ys, 1)[0] * ahead)
+            deviation = abs(float(anchors[-1][1]) - trend)
+            if deviation <= float(plan["centre_m"]) + float(plan["centre_slope"]) * ahead:
+                return
+            rejected = anchors.pop()
+            self.rail_rejections.append({"anchor_x_m": float(rejected[0]),
+                "reason": "trailing_anchor_inconsistent_with_its_prefix",
+                "centre_m": float(rejected[1]), "trend_centre_m": trend,
+                "centre_deviation_m": deviation, "gauge_m": float(rejected[2]),
+                "support": int(rejected[3])})
 
     def _fit_head_heights(self, points, x, center, gauge, slope):
         """Local observed head support, not a CAD rail or absolute gravity estimate."""
@@ -563,6 +649,147 @@ class TrackGeometry:
         uncertainty[nearest > cfg["path_max_extrapolation_m"]] = np.inf
         return center, np.interp(x, a[:, 0], a[:, 2]), uncertainty
 
+    def _cross_section_detail(self, points: np.ndarray, ground: tuple | None = None):
+        """Rail-relative coordinates plus every quantity the interval test consumes.
+
+        Factored out of `classify` so a reported coordinate and a decision can never
+        disagree, and so a caller that already fitted the bed for the same array can pass
+        it in. Returns the public coordinates first, then the internals.
+        """
+        bed, ground_uncertainty = self.ground(points) if ground is None else ground
+        centre, gauge, path_uncertainty = self.path(points[:, 0])
+        height = points[:, 2] - bed
+        rail_head = self.rail_head_height_m if self.rail_head_height_m is not None else np.nan
+        slope = self.plane[1] if self.plane is not None else 0.0
+        normal_scale = np.sqrt(1 + np.sum(self.plane[:2] ** 2)) if self.plane is not None else 1.0
+        running_height = (height - rail_head) / normal_scale
+        # Project into a perpendicular track-bed cross-section. A z-only shear
+        # incorrectly keeps lateral position unchanged when the sensor is rolled.
+        dy = points[:, 1] - centre
+        lateral = (dy + slope * (height - rail_head + slope * dy)) / np.sqrt(1 + slope**2)
+        return (CrossSection(lateral, running_height, gauge), height, ground_uncertainty,
+                path_uncertainty, normal_scale, slope)
+
+    def cross_section(self, points: np.ndarray, ground: tuple | None = None) -> CrossSection:
+        """Rail-relative coordinates of returns, in the frame the decisions use."""
+        return self._cross_section_detail(points, ground)[0]
+
+    def reference_half_width(self, running_height: np.ndarray) -> np.ndarray:
+        """Half-width of the reference contour at a height above the running surface.
+
+        Heights outside the contour's vertical span take the nearest edge's half-width, so
+        a caller comparing a return to the contour's lateral reach always has a value.
+        """
+        envelope = np.asarray(self.config["envelope_segments_m"], dtype=float)
+        row = np.clip(np.searchsorted(envelope[:, 0], running_height, side="right") - 1, 0, len(envelope) - 1)
+        segment = envelope[row]
+        fraction = np.clip((running_height - segment[:, 0]) / (segment[:, 1] - segment[:, 0]), 0, 1)
+        return segment[:, 2] + fraction * (segment[:, 3] - segment[:, 2])
+
+    def structural_mask(self, points: np.ndarray, section: "CrossSection | None" = None) -> np.ndarray:
+        """Returns that belong to the tunnel's own cross-section rather than to an object.
+
+        Two necessary conditions, both measured from this scan alone, asked at the resolution
+        each one needs:
+
+        * longitudinal support, on a coarse cell (`structure_support_cell_m`): the occupied
+          stations of that cell span at least `structure_min_length_m` and number at least
+          `structure_min_stations`. A SPAN rather than a run of consecutive stations: a wall
+          seen at grazing incidence at 55 m lands in the same cell at eight stations spread
+          over fifty metres, and a run would call that sparse while calling a 3 m object
+          continuous. Coarse, because a surface only holds a cell for metres if the cell is
+          at least as wide as the error in its own coordinates: measured, a fixed platform
+          edge moves 0.1-0.3 m in lateral across one station as the estimated centre drifts.
+          Two grids offset by half a cell are asked and either may answer, so a surface
+          sitting on a cell boundary is not lost.
+        * outward reach, on a fine cell (`structure_cell_m`): at that height the occupied
+          region runs outward from the cell, past the reference contour's half-width, with no
+          break longer than `structure_outward_gap_m`. Fine, because this is what separates a
+          20 cm object standing inside the corridor from the walkway edge beside it - the gap
+          between them is one cell - and thickened by one row, because a vertical face and
+          the top surface it carries are adjacent rows of a 10 cm grid.
+
+        This gates the envelope CLAIM only. A return is never removed from the object pool,
+        so an object whose interior evidence is structural is still reported, with its
+        evidence and this reason, and never silently disappears.
+        """
+        cfg = self.config
+        if section is None:
+            section = self.cross_section(points)
+        if not len(points):
+            return np.zeros(0, dtype=bool)
+        fine = float(cfg.get("structure_cell_m", 0.1))
+        coarse = float(cfg.get("structure_support_cell_m", 0.4))
+        station = float(cfg.get("structure_station_m", 1.0))
+        x = points[:, 0]
+        station_index = np.floor(x / station).astype(np.int64)
+        support = np.zeros(len(points), dtype=bool)
+        for offset in (0.0, coarse / 2.0):
+            column = np.floor((section.lateral + offset) / coarse).astype(np.int64)
+            row = np.floor((section.running_height + offset) / coarse).astype(np.int64)
+            # One composite key sorts by cell and then by station in a single pass.
+            order = np.argsort((column * 4096 + row) * 1024 + station_index, kind="stable")
+            keys = ((column * 4096 + row) * 1024)[order]
+            stations = station_index[order]
+            breaks = np.r_[True, np.diff(keys) != 0]
+            starts = np.flatnonzero(breaks)
+            stops = np.r_[starts[1:], len(order)]
+            cell_of = np.repeat(np.arange(len(starts)), stops - starts)
+            # A cell is longitudinally supported when its occupied stations SPAN at least
+            # `structure_min_length_m` and number at least `structure_min_stations`. Span, not
+            # a run: a wall seen at grazing incidence at 55 m lands in the same cell at eight
+            # stations spread over fifty metres, and a run of consecutive stations would call
+            # that sparse and a 3 m object continuous, which is backwards.
+            span = (stations[stops - 1][cell_of] - stations[starts][cell_of] + 1) * station
+            count = (stops - starts)[cell_of]
+            per_cell = np.zeros(len(starts), dtype=bool)
+            np.logical_or.at(per_cell, cell_of,
+                             (span >= float(cfg.get("structure_min_length_m", 5.0)))
+                             & (count >= int(cfg.get("structure_min_stations", 3))))
+            support[order] = per_cell[cell_of]
+        # Outward reach, on a cross-section thickened by one row and by the reach gap: a
+        # vertical face is joined to the top surface it carries, and a surface whose inner
+        # edge stands a few centimetres off the rest of its own structure at that height is
+        # still one surface. Widening the reach cannot merge an object with the structure
+        # beside it - that is what the longitudinal support above is for, and it is asked on
+        # the raw cells, not on this grid.
+        column = np.floor(section.lateral / fine).astype(np.int64)
+        row = np.floor(section.running_height / fine).astype(np.int64)
+        column_min, column_max = int(column.min()), int(column.max())
+        row_min, row_max = int(row.min()), int(row.max())
+        width, height = column_max - column_min + 1, row_max - row_min + 2
+        thick = np.zeros((width, height), dtype=bool)
+        thick[column - column_min, row - row_min + 1] = True
+        thick[:, 1:] |= thick[:, :-1].copy()
+        thick[:, :-1] |= thick[:, 1:].copy()
+        gap = int(np.ceil(float(cfg.get("structure_outward_gap_m", 0.3)) / fine))
+        for _ in range(gap):
+            thick[1:, :] |= thick[:-1, :].copy()
+            thick[:-1, :] |= thick[1:, :].copy()
+        limit = self.reference_half_width((np.arange(row_min - 1, row_max + 1) + 0.5) * fine) \
+            + float(cfg.get("structure_outward_margin_m", 0.2))
+        positions = np.arange(width)
+        outward = np.zeros((width, height), dtype=bool)
+        for index in range(height):
+            here = thick[:, index]
+            empty = np.flatnonzero(~here)
+            if not len(empty):
+                outward[:, index] = True
+                continue
+            # A run that reaches an edge of the grid has no empty cell on that side, and the
+            # edge of the grid is where it ends. Clamping the search to the nearest empty cell
+            # instead returned an empty cell on the WRONG side, which reported a short run for
+            # the outermost surface of every frame.
+            after = np.searchsorted(empty, positions, side="left")
+            next_empty = np.where(after < len(empty), empty[np.minimum(after, len(empty) - 1)], width)
+            before = np.searchsorted(empty, positions, side="right") - 1
+            previous_empty = np.where(before >= 0, empty[np.maximum(before, 0)], -1)
+            right = (np.where(here, next_empty - 1, -1) + column_min + 1) * fine
+            left = (np.where(here, previous_empty + 1, 0) + column_min) * fine
+            absolute = positions + column_min
+            outward[:, index] = here & (np.where(absolute >= 0, right, -left) >= limit[index])
+        return support & outward[column - column_min, row - row_min + 1]
+
     def classify(self, points: np.ndarray, *, remove_background: bool = True,
                  include_boundary: bool = False, ground: tuple | None = None):
         """Classify support; optionally expose uncertain envelope intersections.
@@ -572,10 +799,23 @@ class TrackGeometry:
         that already fitted the bed for the same array may pass it in; the
         returned values are those of the identical fit.
         """
+        masks, _ = self.classify_with_section(points, remove_background=remove_background,
+                                             include_boundary=include_boundary, ground=ground)
+        return masks
+
+    def classify_with_section(self, points: np.ndarray, *, remove_background: bool = True,
+                              include_boundary: bool = False, ground: tuple | None = None):
+        """The same masks, plus the rail-relative coordinates they were computed in.
+
+        One pass, so a caller that must gate a decision on a coordinate (a cell of the
+        cross-section, say) uses exactly the number the mask was derived from instead of
+        recomputing it and risking the other side of a bin edge. Both backends return the
+        same pair because the native kernel now reports its own coordinates.
+        """
         cfg = self.config
         native = accelerator.classify_geometry(points, self, accelerator.native(cfg))
         if native is not None:
-            core, context, height, observed, nominal_overlap, boundary = native
+            core, context, height, observed, nominal_overlap, boundary, lateral, running, gauge = native
             if remove_background and self.background is not None:
                 # Only segmentation context consumes the background decision and
                 # protected returns can never be removed, so the frozen model is
@@ -585,19 +825,13 @@ class TrackGeometry:
                 eligible = np.flatnonzero(context & ~((observed & nominal_overlap) | boundary))
                 if len(eligible):
                     context[eligible] &= ~self.background.mask(points[eligible], np.zeros(len(eligible), dtype=bool))
-            return (core, context, height, observed, nominal_overlap, boundary) if include_boundary \
+            masks = (core, context, height, observed, nominal_overlap, boundary) if include_boundary \
                 else (core, context, height, observed, nominal_overlap)
-        z, ground_uncertainty = self.ground(points) if ground is None else ground
-        center, gauge, path_uncertainty = self.path(points[:, 0])
-        height = points[:, 2] - z
+            return masks, CrossSection(lateral, running, gauge)
+        section, height, ground_uncertainty, path_uncertainty, normal_scale, slope = \
+            self._cross_section_detail(points, ground)
+        lateral, running_height, gauge = section.lateral, section.running_height, section.gauge
         rail_head = self.rail_head_height_m if self.rail_head_height_m is not None else np.nan
-        # Project into a perpendicular track-bed cross-section. A z-only shear
-        # incorrectly keeps lateral position unchanged when the sensor is rolled.
-        slope = self.plane[1] if self.plane is not None else 0.0
-        normal_scale = np.sqrt(1 + np.sum(self.plane[:2] ** 2)) if self.plane is not None else 1.0
-        running_height = (height - rail_head) / normal_scale
-        dy = points[:, 1] - center
-        lateral = (dy + slope * (height - rail_head + slope * dy)) / np.sqrt(1 + slope**2)
         frame_supported = np.ones(len(points), dtype=bool)
         frame_error = np.zeros(len(points))
         if cfg.get("rail_frame_mode", "bed") == "local_3d":
@@ -662,7 +896,8 @@ class TrackGeometry:
             if len(eligible):
                 context[eligible] &= ~self.background.mask(points[eligible], np.zeros(len(eligible), dtype=bool))
         result = (core, context, height, observed, nominal_overlap)
-        return result + (boundary,) if include_boundary else result
+        masks = result + (boundary,) if include_boundary else result
+        return masks, section
 
     def supported_range_m(self) -> float | None:
         """How far ahead this frame's own evidence supports the corridor, in metres.

@@ -231,6 +231,107 @@ shape of the budget rather than the field number. Two runtime ideas were measure
 lateral band for the rail estimator (its 4 m search band is deliberate for rail-pair selection, and narrowing it moved
 an anchor 3.6 cm) and a decomposition of the gated assignment (identical output, no gain).
 
+## The corridor claim (2026-09-22)
+
+The detector's alarm was its own crop floor. On all six organizer recordings the reported
+`nearest_obstacle_m` had a **median of 2.00 m** - the value of `min_forward_m`, the near edge of the
+input crop - and the object behind it was the tunnel's own surface: a component of 1253 voxels (median;
+p90 6984) spanning 4-16 m along the track with **zero** voxels certified inside the reference contour.
+`candidate` and `no_obstacle_observed` never appeared once in 3763 real frames. Four rules interacted:
+
+1. **The boundary class asked the wrong question.** `possible` accepted a return whose *uncertainty
+   interval* reached the contour whether or not its nominal position was inside, so the tripwire was a
+   band on both sides of the contour edge. The document always said the class means "nominal position
+   inside, interval not".
+2. **A component's relation was an OR over its voxels**, so one return in that band made a
+   thousand-voxel surface a hazard.
+3. **Instant confirmation read the whole component's density and height**, not its interior support, so
+   any dense wall or arch fragment confirmed on a single frame whatever its relation to the corridor.
+   Measured, that is what put a 37-voxel component at 52 m into `nearest_obstacle_m` with one interior
+   voxel.
+4. **The infrastructure rule could not demote the head of a chain**: it required the chain to continue
+   12 m beyond the candidate on *both* sides, so the nearest member - the one that sets
+   `nearest_obstacle_m` - was exempt by construction. Measured: a chain at the same lateral existed in
+   340 of 345 frames, its recorded span began at the crop floor, and no demoted member ever sat there.
+
+What changed:
+
+- **A claim needs a measured coordinate.** Where the bed or the centre-line is beyond its own
+  uncertainty budget the lateral coordinate is our own extrapolation, and it cannot carry a claim on
+  the corridor. Measured: 94-98 % of nominal-interior returns on real frames sit beyond that horizon,
+  and they are what made the tunnel's own arch read as an intrusion at 60-200 m. Those objects are
+  still reported, with their distance and their own `far_field_lateral_bound_m`, and the frame states
+  how far its lateral reference reaches.
+- **A claim needs to be an object, not the tunnel.** Every return is tested against the tunnel's own
+  cross-section of the same scan, in track coordinates: longitudinal support (a coarse cell occupied
+  over a span of at least `structure_min_length_m`), and outward reach (at that height the occupied
+  region runs outward past the contour's half-width). Nothing is removed from the object pool - a
+  return the contour clips at its edge is still reported, with the reason `structure_crossing_envelope`.
+- **Doubt is a state, not an alarm.** Measured edge-uncertain evidence that is neither the tunnel's
+  cross-section nor attached to it (further than `structure_isolation_m`) makes the frame `candidate`.
+  Attachment is what separates a few returns of the tunnel's own surface that the cell test could not
+  hold from an object standing in the corridor.
+- **Instant confirmation is interior geometry**, as its own documentation always said.
+- **The distance is the distance to the claiming evidence**: the train meets an object where the
+  object's support first lies inside the contour, not at the nearest point of a cluster that extends
+  out of the envelope.
+- **A rejected registration no longer clears the history**; it marks the frame positionally uncertain,
+  and the measured registration residual becomes the pose uncertainty instead of being compared to a
+  threshold and discarded. Measured: the rejection is the tail of one continuous residual distribution
+  (accepted median 0.21 m, rejected 0.36 m against a 0.30 m gate; the overlap gate never fires), and it
+  cost a 91-frame stretch of `doubleT_platform` in which the train travelled 25 m.
+- **The trailing rail-pair anchor is guarded** against contradicting the prefix it is fitted from,
+  because the continuation past the last anchor is fitted in that anchor's frame and one inconsistent
+  trailing anchor decides the sign of the extrapolated curvature.
+
+Measured on recorded frames, no tuning to any recording. Reproduction: run the tracked gate recipe
+(`configs/real-gate-6tunnels.json`) and the extended recipe, then
+`python -m tunnel_guard.corridor_report --before-six build/notes-review/real6 --after-six <run>
+--before-extended build/notes-review/extended --after-extended <run> --output
+results/corridor-claim-20260922.json --markdown`. Artifact: `results/corridor-claim-20260922.json`.
+
+| | before | after |
+|---|---|---|
+| six tunnels, frames | 2488 | 2488 |
+| `obstacle` / `unresolved_obstacle` | 305 / 2181 | 202 / 54 |
+| `candidate` / `no_obstacle_observed` | 0 / 0 | 14 / 2216 |
+| hazard observations | 62738 | 515 |
+| nearest hazard support, median | 1253 voxels | 17 voxels |
+| `nearest_obstacle_m`, median | 2.002 m | 55.914 m |
+| extended corpus, `obstacle` / `unresolved` | 33 / 1241 | 7 / 32 |
+| extended corpus, `candidate` / clean | 0 / 0 | 5 / 1230 |
+| extended corpus, hazard observations | 26683 | 121 |
+| extended corpus, `nearest_obstacle_m`, median | 2.004 m | 46.617 m |
+
+Costs, stated rather than absorbed:
+
+- **Three frames of the labelled recording lose `obstacle` status** (169 -> 166). Frame 75 is the one
+  the trailing-anchor guard costs: its detection rests on an anchor with support 4 that contradicts six
+  better-supported anchors, and it is the only frame in 201 where the guard changes the answer. Frames
+  141 and 177 are frames where the certified intrusion is three voxels, so instant confirmation - which
+  now reads interior geometry - does not fire; both frames still report the object at 56.4 m, one as
+  `candidate` and one as `unresolved_obstacle`.
+- **The tunnel's own cross-section is measured per scan, not from a map.** Its resolution limit is
+  stated in `docs/DETECTOR.md` section 13: an object within about 0.2 m of the tunnel's own surface at
+  the same height is indistinguishable from it by returns alone, and where the tunnel's cross-section
+  *changes* along a recording (a recess, a section transition) a cell that holds for metres elsewhere
+  does not hold there, which leaves a few returns unexplained. Route memory - a per-station profile
+  accumulated over passes - is the honest next step and is not implemented.
+- **The reference contour is still GOST M, not the organizers' draft 2.1 m x 3 m.** The draft profile
+  is narrower than any metro car body (2.7 m), so narrowing the safety criterion on an ambiguous
+  statement would call in-envelope things clear. It is kept as a sensitivity arm
+  (`configs/detector-qa-provisional.json`), identical to the shipped recipe in every other key, and it
+  is measured: on the same 2488 frames it reports `obstacle` 112 instead of 202, `unresolved_obstacle`
+  25 instead of 54, and 2344 clean frames instead of 2216. On the labelled recording it reports 102
+  `obstacle` frames instead of 166 - the one object this project has labelled intrudes into GOST M
+  between 1.05 m and 1.46 m of lateral, so the draft profile would drop two thirds of its own
+  detections. That is the whole argument for keeping the conservative contour, and it is a
+  measurement rather than a preference.
+- **Runtime is unchanged.** On an idle machine, 30 frames of `doubleT_platform`: processing p50 128.3 ms
+  against 131.6 ms for the recorded revision, of which the cross-section test is 8.6 ms per frame and
+  the odometry 27.1 ms. The 500 ms readings taken while the six-tunnel and extended-corpus runs were
+  executing are contention, not cost.
+
 ## Two shipped behaviours measured on 2026-09-19
 
 Both are in `configs/detector-native.json`, the recipe the ROS container defaults to, and both were enabled only after
@@ -243,6 +344,14 @@ by its own support, so nothing inherits a neighbouring structure's span; a candi
 both fore and aft is the tunnel, not an object. Measured: unresolved objects 2757 -> 1323 on `roundT_doubleT` and
 3231 -> 1754 on `doubleT_obstacle`, and the full 1460-frame measured-pattern panel net-identical
 (709/251/176, event recall 0.8021, matched IoU 0.8223, zero empty-scene alarms). Recipe key `infrastructure_continuity`.
+
+**SUPERSEDED 2026-09-22.** This object-chain rule is gone. Measured afterwards, it could not demote the
+nearest member of any chain at all - the rule demanded the chain continue `reach_m` beyond the candidate
+on *both* sides, so the head of a chain, which is the member that sets `nearest_obstacle_m`, was exempt by
+construction - and it was the wrong layer anyway: the question "is this return part of the tunnel" is a
+question about a return, not about a candidate object. It is replaced by the per-return cross-section test
+described under [the corridor claim](#the-corridor-claim-2026-09-22). The chain rule's own history above is
+kept because its two failures are what motivated the replacement.
 
 That gate looked safe because 52 of 52 labelled obstacle frame statuses survived it, and that check was too weak:
 in 2026-09-20 the chain was measured to be *erasing* judgements rather than structures. On the labelled obstacle
@@ -323,8 +432,11 @@ proxy - robust circle fits to perpendicular slabs (16-23 slabs to 105-165 m, con
 only 1.32 m at 100 m.
 
 The corridor's reach is therefore set by an uncertainty budget, `path_max_uncertainty_m` (0.4 m), which the
-existing heuristic sigma reaches at 33.7 m past the last anchor - a ~74 m horizon, where the measured centre
-error is 0.72 m, 47% of the 1.535 m half-width. `path_max_extrapolation_m` does not bind: raising it 25 -> 45 m
+existing heuristic sigma `0.06 + 0.008 r + 0.0003 r^2` reaches at **22.9 m** past the last anchor - a ~63 m
+horizon at the measured median last anchor of 40.0 m, which is the median `supported_range_m` of 62.5 m
+reported on the six recordings. (This section said 33.7 m and ~74 m until 2026-09-22; that was arithmetic
+from an older sigma and the code never had such a horizon. Nothing downstream changed: the horizon is
+where the budget stops, not a tunable.) `path_max_extrapolation_m` does not bind: raising it 25 -> 45 m
 changed no classification at all. Raising the *budget* to 0.7 m would reach 86 m but was measured and rejected:
 it turns two frames of `roundT_doubleT` into certified obstacles (intersecting 12 -> 20) in a band where the
 centre is uncertain by ~1.0 m, for no measured gain. Fitted-curvature sigma propagated from the anchor window is
@@ -516,6 +628,8 @@ Nothing except scene directories may live under `SUSTechPOINTS/data/`: `scene_re
 | `tunnel_guard/inspect_bag.py` | Bounded layout, acquisition-clock and density inspection |
 | `tunnel_guard/visualization.py` | Actual PointCloud2 / MarkerArray / status export for RViz2 replay |
 | `tunnel_guard/evaluate.py` | One-to-one IoU matching and annotation validity |
+| `tunnel_guard/corridor_report.py` | Before/after summary of a recorded run pair; generates `results/*.json` and the table a document quotes |
+| `tunnel_guard/alarm_anatomy.py` | What the nearest alarm on each recorded frame is made of, as scalars |
 | `tunnel_guard/stress.py` | Occlusion-aware synthetic ray-cast evaluation |
 | `tunnel_guard/annotate.py` | Extract raw frames for annotation review |
 | `tunnel_guard/sustech.py` | SUSTechPOINTS human labels into the `annotations/*.json` schema |
@@ -544,14 +658,42 @@ Focused verification: the original tilted empty-tunnel wall alert disappears; na
 ## Output semantics
 
 - `obstacle`: intersection with the configured reference envelope has its own confirmation evidence; not a validated collision claim.
-- `unresolved_obstacle`: a confirmed potential hazard has uncertain geometry or insufficient repeated interior evidence.
-- `candidate`: insufficient confirmation evidence.
-- `no_obstacle_observed`: no hazard reported; **does not mean the route is clear**.
+- `unresolved_obstacle`: a confirmed intrusion claim whose interval crosses the contour edge - measured interior evidence the frame cannot certify.
+- `candidate`: measured edge-uncertain evidence that is neither the tunnel's own cross-section nor attached to it, or an intrusion claim not yet confirmed.
+- `no_obstacle_observed`: no claim and no doubt reported; **does not mean the route is clear**.
 - `unknown`: insufficient geometry or returns.
 
-Boxes describe observed support, not inferred full object volume. Distance is the minimum forward x of the current cluster in the configured processing frame, including its out-of-envelope support; a noisy extreme may dominate it. It is not bumper distance or curve-integrated track distance. Uncertainty is heuristic, not a calibrated safety probability.
+Boxes describe observed support, not inferred full object volume. `distance_m` is the minimum forward x of the
+evidence that **supports the object's claim** (`distance_method` names the definition), because the train meets an
+object where its support first lies inside the contour; `cluster_nearest_x_m` keeps the nearest point of the whole
+cluster. Neither is bumper distance or curve-integrated track distance. Uncertainty is heuristic, not a calibrated
+safety probability.
 
-- `health` (`normal` / `degraded` / `unavailable`) and `health_reasons` are independent of detection status. The current unverified calibration keeps results degraded.
+- Per-object rail-relative coordinates are reported: `lateral_m` and `height_above_railhead_m` (min/max of the
+  object's own support in the frame the decision is made in), `interior_voxels`, `interior_structural_voxels`,
+  `interior_unmeasured_voxels`, `claim_voxels`, `boundary_uncertain_voxels`, `boundary_unexplained_voxels`,
+  `structure_distance_m`, and `path_relation_reason`. A hazard decision can therefore be audited from the record
+  without re-running the detector.
+- `path_relation_reason` is one of `inside_heuristic_path_and_ground_interval` (certified interior support that is
+  separable from the tunnel), `certified_interior_shared_with_structure` (the same, but every certified voxel sits in a
+  cell the tunnel's own cross-section occupies elsewhere along the scan - the object and the tunnel are not separable
+  by returns alone; this fires on 411 of 570 certified observations, including 70 % of the labelled object's, so it
+  names an ambiguity rather than discriminating), `envelope_boundary_uncertainty` (measured interior support whose
+  interval crosses the edge), `structure_crossing_envelope` (interior support that is the tunnel's own cross-section),
+  `unmeasured_corridor` (interior support only where the lateral reference is beyond its budget),
+  `outside_envelope_evidence`.
+- `certified_unexplained_voxels` splits an object's certified interior support into the part that is not the tunnel's
+  own cross-section. The certified channel is deliberately **not** gated by that split: measured, gating it cost the
+  labelled object 108 of its 172 detection frames, because a compact cluster standing on the bed shares cells with the
+  bed and the walkway. The weak `unresolved` channel is gated, because it rests on the uncertainty interval rather
+  than on a measured intrusion.
+- `nearest_candidate_m` is the nearest thing that is not a confirmed hazard; `unresolved_range_objects` and
+  `nearest_unresolved_range_m` report objects whose lateral relation to the corridor cannot be measured at all,
+  alongside `supported_range_m`.
+- `health` (`normal` / `degraded` / `unavailable`) is decided by this frame's degradations only
+  (`health_degradations`). Permanent calibration caveats are listed separately in `calibration_caveats` and no longer
+  force `degraded` on every frame. `position_uncertain` marks a frame whose registration was rejected: its tracks
+  persist but nothing accumulates through it.
 - `timestamp_s` uses acquisition header time. `measurement_timestamp_ns` and `record_timestamp_ns` preserve both exact clocks; do not interpret their difference as latency.
 - `source_scan_id`, `last_observed_s`, `hits`, and `evidence_timestamps_s` expose the source and temporal evidence. Duplicate acquisition timestamps are skipped by the reader; backwards time or a changed sensor frame stops the run explicitly. A new bag creates a new detector.
 - `confirmed` describes the object; `intersection_confirmed` separately describes its current envelope intrusion. Immediate confirmation uses interior support; weak intrusion requires distinct recent interior observations. See [intersection evidence](docs/INTERSECTION_EVIDENCE.md) for real-data diagnosis, fields and tradeoffs. RViz uses red for confirmed intrusion and orange for confirmed objects with unresolved/pending intrusion.

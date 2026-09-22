@@ -187,7 +187,7 @@
     ]
   ],
   "density_vertical_scale": 0.5,
-  "rail_vertical_margin_m": 0.04,
+  "rail_vertical_margin_m": 0.08,
   "background": {
     "enabled": true,
     "voxel_m": 0.1,
@@ -255,11 +255,18 @@
   "path_curve_window_m": 30.0,
   "path_curvature_significance": 4.0,
   "background_refit_travel_m": 0.0,
-  "infrastructure_continuity": {
-    "enabled": true,
-    "cross_section_tolerance_m": 0.3,
-    "minimum_length_m": 12.0,
-    "reach_m": 12.0,
-    "minimum_members": 4
-  }
+  "obstacle_distance_mode": "envelope_support_min_x",
+  "structure_cell_m": 0.1,
+  "structure_station_m": 1.0,
+  "structure_outward_margin_m": 0.2,
+  "structure_support_cell_m": 0.4,
+  "structure_min_stations": 3,
+  "structure_isolation_m": 0.3,
+  "rail_anchor_edge_continuity": {
+    "centre_m": 0.2,
+    "centre_slope": 0.06,
+    "history": 4
+  },
+  "structure_outward_gap_m": 0.3,
+  "structure_min_length_m": 5.0
 }

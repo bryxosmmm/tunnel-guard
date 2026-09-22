@@ -49,7 +49,7 @@
   "ground_max_extrapolation_m": 15.0,
   "ground_max_uncertainty_m": 0.15,
   "rail_gauge_m": 1.52,
-  "rail_gauge_tolerance_m": 0.15,
+  "rail_gauge_tolerance_m": 0.05,
   "rail_height_bounds_m": [
     0.1,
     0.3
@@ -66,7 +66,7 @@
   "path_max_uncertainty_m": 0.4,
   "path_initial_center_bound_m": 0.75,
   "envelope_margin_m": 0.0,
-  "envelope_calibration": "QA_draft_2p1_by_3m_provisional_vertical_origin",
+  "envelope_calibration": "GOST_23961_80_M_reference_not_vehicle_swept_validation",
   "cluster_voxel_m": 0.05,
   "cluster_max_radius_m": 0.75,
   "cluster_min_extent_m": 0.08,
@@ -109,7 +109,7 @@
   "tracking_pose_sigma_m": 0.1,
   "min_running_height_m": -0.2,
   "segmentation_context_half_width_m": 3.0,
-  "envelope_source": "2026-09-16 supplied draft supplement, SHA256 da22e083a14e35bd4eeeca361ca78fc738afc1776a67acf8db8e42dab41e0fac. Total width 2.1m, height 3m. ASSUMPTION: bottom at existing 0.05m above estimated railhead; vertical placement NOT provided by organizers. Static rectangular sensitivity profile, not calibrated swept volume.",
+  "envelope_source": "GOST 23961-80 figures 6 and 7, https://engenegr.ru/gost-23961-80. Upper contour exact piecewise segments; lower contour horizontally filled conservatively, omitting wheel recesses. Mirrors and contact-collector extensions excluded. No actual vehicle/curve dynamic validation.",
   "odometry_min_normal_eigenvalue": 0.01,
   "sensor_profile_verified": false,
   "travel_objects": {
@@ -139,13 +139,55 @@
   "envelope_segments_m": [
     [
       0.05,
-      3.05,
-      1.05,
-      1.05
+      0.085,
+      1.15,
+      1.15
+    ],
+    [
+      0.085,
+      0.44,
+      1.32,
+      1.32
+    ],
+    [
+      0.44,
+      0.74,
+      1.45,
+      1.45
+    ],
+    [
+      0.74,
+      1.15,
+      1.435,
+      1.435
+    ],
+    [
+      1.15,
+      3.26,
+      1.46,
+      1.535
+    ],
+    [
+      3.26,
+      3.6,
+      1.535,
+      1.235
+    ],
+    [
+      3.6,
+      3.675,
+      1.235,
+      1.01
+    ],
+    [
+      3.675,
+      3.7,
+      1.01,
+      0.7
     ]
   ],
   "density_vertical_scale": 0.5,
-  "rail_vertical_margin_m": 0.08,
+  "rail_vertical_margin_m": 0.04,
   "background": {
     "enabled": true,
     "voxel_m": 0.1,
@@ -214,19 +256,12 @@
   "path_curve_window_m": 30.0,
   "path_curvature_significance": 4.0,
   "background_refit_travel_m": 0.0,
-  "obstacle_distance_mode": "envelope_support_min_x",
-  "structure_cell_m": 0.1,
-  "structure_station_m": 1.0,
-  "structure_outward_margin_m": 0.2,
-  "structure_support_cell_m": 0.4,
-  "structure_min_stations": 3,
-  "structure_isolation_m": 0.3,
-  "rail_anchor_edge_continuity": {
-    "centre_m": 0.2,
-    "centre_slope": 0.06,
-    "history": 4
+  "infrastructure_continuity": {
+    "enabled": true,
+    "cross_section_tolerance_m": 0.3,
+    "minimum_length_m": 12.0,
+    "reach_m": 12.0,
+    "minimum_members": 4
   },
-  "structure_outward_gap_m": 0.3,
-  "structure_min_length_m": 5.0,
-  "_variant_note": "Sensitivity arm: the organizers' draft 2.1 m by 3 m rectangular profile in place of the GOST M reference contour; every other key identical to the shipped recipe, same backend included. Any alarm reduction here is a specification effect, not a detector accuracy improvement."
+  "_variant_note": "Experiment: the shipped 0.15 m gauge tolerance accepted a rail pair whose fitted gauge was 1.428 m (9.2 cm off nominal) at 50.0 m in roundT_squareT_pressureGate_squareT frame 350, with the minimum longitudinal support of 4 bins; that anchor then set the sign of the fitted continuation curvature and the corridor curved away from the tunnel. Nominal gauge is 1520 mm with millimetre track tolerance, so 5 cm is already generous."
 }

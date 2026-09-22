@@ -59,27 +59,36 @@ def audit(root: Path = Path(".")) -> dict:
             continue                      # not a detector recipe: stress panels, run recipes and so on
         flat = flatten(other)
         differences = {k: [flat.get(k), keys.get(k)] for k in set(flat) | set(keys)
-                       if flat.get(k) != keys.get(k) and k not in BACKEND_KEYS}
+                       if flat.get(k) != keys.get(k) and k not in BACKEND_KEYS
+                       and not k.startswith("_variant_note")}
         if differences:
+            # A recipe may declare itself a deliberate variant with `_variant_note`, the
+            # convention the experiment arms already use. A declared variant is listed with
+            # its own statement of intent instead of being guessed at from its filename.
+            declared = str(other.get("_variant_note", "")).strip()
             drift[name] = {"keys": len(differences),
                            "historical": any(marker in name for marker in HISTORICAL_MARKERS),
+                           "declared": declared or None,
                            "differences": dict(sorted(differences.items())[:8])}
     return {"missing": missing, "drift": drift,
-            "unexplained": sorted(n for n, d in drift.items() if not d["historical"])}
+            "unexplained": sorted(n for n, d in drift.items() if not d["historical"] and not d["declared"])}
 
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--root", type=Path, default=Path("."))
     parser.add_argument("--fail-on-drift", action="store_true",
-                        help="exit non-zero when a recipe that is not marked historical differs")
+                        help="exit non-zero when a recipe that is neither historical nor a declared variant differs")
     args = parser.parse_args()
     report = audit(args.root)
     print(f"  documented configs that do not exist: {report['missing'] or 'none'}")
     print("  recipes differing from the shipped one:")
     for name, entry in report["drift"].items():
-        kind = "historical, drift expected" if entry["historical"] else "UNEXPLAINED"
+        kind = ("declared variant" if entry["declared"] else
+                "historical, drift expected" if entry["historical"] else "UNEXPLAINED")
         print(f"    {name:46s} {entry['keys']:3d} keys  ({kind})")
+        if entry["declared"]:
+            print(f"        {'_variant_note':44s} {entry['declared'][:60]}")
         for key, (old, new) in list(entry["differences"].items())[:3]:
             print(f"        {key:44s} {str(old)[:30]:32s} -> {str(new)[:30]}")
     if report["unexplained"] and args.fail_on_drift:
