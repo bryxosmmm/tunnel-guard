@@ -1,0 +1,1575 @@
+{
+  "issue": 5,
+  "base_commit": "bc4f73b4f75d83540683716953afb30351839cd6",
+  "branch": "fix/issue-5-sensor-attributes",
+  "seed": 20260915,
+  "decode": {
+    "frames": 56,
+    "point_observations": 11760266,
+    "changed_frames": [],
+    "layouts": [
+      {
+        "height": 1,
+        "width": 921600,
+        "point_step": 26,
+        "row_step": 23961600,
+        "bigendian": false,
+        "fields": [
+          [
+            "x",
+            0,
+            7,
+            1
+          ],
+          [
+            "y",
+            4,
+            7,
+            1
+          ],
+          [
+            "z",
+            8,
+            7,
+            1
+          ],
+          [
+            "intensity",
+            12,
+            7,
+            1
+          ],
+          [
+            "ring",
+            16,
+            4,
+            1
+          ],
+          [
+            "timestamp",
+            18,
+            8,
+            1
+          ]
+        ]
+      },
+      {
+        "height": 1,
+        "width": 307200,
+        "point_step": 26,
+        "row_step": 7987200,
+        "bigendian": false,
+        "fields": [
+          [
+            "x",
+            0,
+            7,
+            1
+          ],
+          [
+            "y",
+            4,
+            7,
+            1
+          ],
+          [
+            "z",
+            8,
+            7,
+            1
+          ],
+          [
+            "intensity",
+            12,
+            7,
+            1
+          ],
+          [
+            "ring",
+            16,
+            4,
+            1
+          ],
+          [
+            "timestamp",
+            18,
+            8,
+            1
+          ]
+        ]
+      }
+    ],
+    "repetitions": 3,
+    "max_coordinate_difference": 0.0,
+    "max_time_difference": 0.0,
+    "attributes_available": true,
+    "attribute_failures": [],
+    "attribute_channels": {
+      "intensity": {
+        "frames": 56,
+        "dtypes": {
+          "float32": 56
+        },
+        "invalid_total": 0,
+        "min": 0.0,
+        "max": 255.0
+      },
+      "raw_time": {
+        "frames": 56,
+        "dtypes": {
+          "float64": 56
+        },
+        "invalid_total": 0,
+        "min": 946687297.216015,
+        "max": 946693351.066083
+      },
+      "ring": {
+        "frames": 56,
+        "dtypes": {
+          "uint16": 56
+        },
+        "invalid_total": 0,
+        "min": 0.0,
+        "max": 127.0
+      }
+    },
+    "retained_attribute_bytes": 8554632,
+    "frames_with_attributes": 56,
+    "attribute_summary_example": {
+      "bag": "doubleT_obstacle",
+      "frame": 0,
+      "summary": {
+        "fields": {
+          "intensity": {
+            "available": true,
+            "dtype": "float32",
+            "units": "unverified_raw_counts",
+            "count": 346808,
+            "valid_count": 346808,
+            "invalid_count": 0
+          },
+          "ring": {
+            "available": true,
+            "dtype": "uint16",
+            "units": "ring_index",
+            "count": 346808,
+            "valid_count": 346808,
+            "invalid_count": 0
+          },
+          "raw_time": {
+            "available": true,
+            "dtype": "float64",
+            "units": "seconds",
+            "count": 346808,
+            "valid_count": 346808,
+            "invalid_count": 0
+          }
+        },
+        "source_time_field": "timestamp",
+        "profile_confirmed": false,
+        "firing_identity": "unknown",
+        "return_multiplicity": "unknown",
+        "intensity_calibration": "unverified"
+      }
+    },
+    "timing_scope": "decode_cloud only, alternating per-message order; no deserialization or comparison cost",
+    "decode_ms": {
+      "before": {
+        "p50": 6.577437510713935,
+        "p95": 17.473117081681266
+      },
+      "after": {
+        "p50": 7.8724585473537445,
+        "p95": 20.4497222264763
+      }
+    },
+    "peak_rss_bytes": 545046528,
+    "limitations": [
+      "Only recorded layouts/transforms exercised; no generated layout cases.",
+      "No safety/accuracy claim or target hardware measurement.",
+      "Retained-array bytes report the peak over measured frames, not a cumulative allocation or resident-set cost.",
+      "Attribute availability is reported as measured; firing identity and return multiplicity are not inferred."
+    ]
+  },
+  "detector_comparison": {
+    "doubleT_obstacle": {
+      "frames": 6,
+      "object_observations": 1814,
+      "differences": 5086,
+      "discrete_or_structural_differences": 0,
+      "max_numeric_difference": 2.6645352591003757e-15
+    },
+    "new_data_200": {
+      "frames": 6,
+      "object_observations": 1784,
+      "differences": 12377,
+      "discrete_or_structural_differences": 0,
+      "max_numeric_difference": 4.3298697960381105e-15
+    }
+  },
+  "comparison_excluded_keys": [
+    "decode_s",
+    "deserialize_s",
+    "diagnostic_write_s",
+    "inference_s",
+    "ingestion_s",
+    "motion_s",
+    "mounting_observation_s",
+    "processing_s",
+    "read_and_process_s",
+    "sensor_attributes"
+  ],
+  "diagnostic_provenance": [
+    {
+      "file": "doubleT_obstacle_000000.npz",
+      "legacy_arrays_changed": [],
+      "stages": {
+        "decoded": {
+          "representatives": 346808,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        },
+        "range": {
+          "representatives": 342740,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        },
+        "geometry_voxel": {
+          "representatives": 72647,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        },
+        "cluster": {
+          "representatives": 23303,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        }
+      },
+      "xyz_mask_matches_source_indices": true
+    },
+    {
+      "file": "doubleT_obstacle_000005.npz",
+      "legacy_arrays_changed": [],
+      "stages": {
+        "decoded": {
+          "representatives": 346722,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        },
+        "range": {
+          "representatives": 342641,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        },
+        "geometry_voxel": {
+          "representatives": 72588,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        },
+        "cluster": {
+          "representatives": 23034,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        }
+      },
+      "xyz_mask_matches_source_indices": true
+    },
+    {
+      "file": "new_data_200_000000.npz",
+      "legacy_arrays_changed": [],
+      "stages": {
+        "decoded": {
+          "representatives": 189478,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        },
+        "range": {
+          "representatives": 189478,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        },
+        "geometry_voxel": {
+          "representatives": 44327,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        },
+        "cluster": {
+          "representatives": 27157,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        }
+      },
+      "xyz_mask_matches_source_indices": true
+    },
+    {
+      "file": "new_data_200_000005.npz",
+      "legacy_arrays_changed": [],
+      "stages": {
+        "decoded": {
+          "representatives": 189824,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        },
+        "range": {
+          "representatives": 189824,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        },
+        "geometry_voxel": {
+          "representatives": 43834,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        },
+        "cluster": {
+          "representatives": 24067,
+          "source_slots_match": true,
+          "xyz_matches_source": true,
+          "attributes_match_source": true
+        }
+      },
+      "xyz_mask_matches_source_indices": true
+    }
+  ],
+  "replay_summaries": {
+    "before": [
+      {
+        "frames": 6,
+        "recording_duration_s": 0.5000598430633545,
+        "status_frames": {
+          "no_obstacle_observed": 6
+        },
+        "geometry_valid_frames": 6,
+        "motion_valid_frames": 5,
+        "processing_ms": {
+          "p50": 178.00593742867932,
+          "p95": 1320.4303957463708,
+          "p99": 1621.4291455398782
+        },
+        "read_and_process_ms": {
+          "p50": 214.892479008995,
+          "p95": 1418.8053960097022,
+          "p99": 1737.946912797634
+        },
+        "inference_ms": {
+          "p50": 178.45614650286734,
+          "p95": 1320.6176561652683,
+          "p99": 1621.5654311585245
+        },
+        "ingestion_wait_ms": {
+          "p50": 34.56162504153326,
+          "p95": 100.79069779021665,
+          "p99": 116.89743961906062
+        },
+        "prefetch_depth": 0,
+        "alarm_episodes_unlabelled": [],
+        "accuracy": null,
+        "accuracy_validity": "No ground truth implied by bag name or alarm count",
+        "bag": "doubleT_obstacle",
+        "split": "development",
+        "wall_s": 5.009157749940641,
+        "ingestion": {
+          "source_messages": 6,
+          "duplicate_measurements": 0,
+          "subsampled_measurements": 0,
+          "emitted_scans": 6
+        },
+        "process_peak_rss_bytes": 659636224,
+        "diagnostic_write_total_s": 2.0682250830577686,
+        "visualization_total_s": 0,
+        "stage_ms": {
+          "decode_s": {
+            "p50": 17.729520972352475,
+            "p95": 24.52908322447911
+          },
+          "offline_iteration_s": {
+            "p50": 220.24114546366036,
+            "p95": 2443.318729812745
+          }
+        },
+        "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+      },
+      {
+        "frames": 6,
+        "recording_duration_s": 0.49998199939727783,
+        "status_frames": {
+          "no_obstacle_observed": 6
+        },
+        "geometry_valid_frames": 6,
+        "motion_valid_frames": 5,
+        "processing_ms": {
+          "p50": 154.25310452701524,
+          "p95": 191.33209346910007,
+          "p99": 195.17208506003956
+        },
+        "read_and_process_ms": {
+          "p50": 176.14897951716557,
+          "p95": 205.82123947679065,
+          "p99": 208.671247883467
+        },
+        "inference_ms": {
+          "p50": 156.25370846828446,
+          "p95": 192.06861450220458,
+          "p99": 196.01328931166793
+        },
+        "ingestion_wait_ms": {
+          "p50": 16.28610404441133,
+          "p95": 31.969072559149936,
+          "p99": 33.80954736494459
+        },
+        "prefetch_depth": 0,
+        "alarm_episodes_unlabelled": [],
+        "accuracy": null,
+        "accuracy_validity": "No ground truth implied by bag name or alarm count",
+        "bag": "new_data_200",
+        "split": "development",
+        "wall_s": 2.4848451670259237,
+        "ingestion": {
+          "source_messages": 6,
+          "duplicate_measurements": 0,
+          "subsampled_measurements": 0,
+          "emitted_scans": 6
+        },
+        "process_peak_rss_bytes": 660602880,
+        "diagnostic_write_total_s": 1.360435500042513,
+        "visualization_total_s": 0,
+        "stage_ms": {
+          "decode_s": {
+            "p50": 8.359645958989859,
+            "p95": 14.366686926223338
+          },
+          "offline_iteration_s": {
+            "p50": 199.74435452604666,
+            "p95": 872.9239999956917
+          }
+        },
+        "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+      }
+    ],
+    "after": [
+      {
+        "frames": 6,
+        "recording_duration_s": 0.5000598430633545,
+        "status_frames": {
+          "no_obstacle_observed": 6
+        },
+        "geometry_valid_frames": 6,
+        "motion_valid_frames": 5,
+        "processing_ms": {
+          "p50": 181.5340624889359,
+          "p95": 1071.0117502021603,
+          "p99": 1307.5225836015309
+        },
+        "read_and_process_ms": {
+          "p50": 221.3528749998659,
+          "p95": 1155.1697599934414,
+          "p99": 1403.4725847886878
+        },
+        "inference_ms": {
+          "p50": 182.00647953199223,
+          "p95": 1071.1415627447423,
+          "p99": 1307.6404461346103
+        },
+        "ingestion_wait_ms": {
+          "p50": 38.98247895995155,
+          "p95": 84.64898919919506,
+          "p99": 95.95246418612079
+        },
+        "prefetch_depth": 0,
+        "alarm_episodes_unlabelled": [],
+        "accuracy": null,
+        "accuracy_validity": "No ground truth implied by bag name or alarm count",
+        "bag": "doubleT_obstacle",
+        "split": "development",
+        "wall_s": 5.482569874962792,
+        "ingestion": {
+          "source_messages": 6,
+          "duplicate_measurements": 0,
+          "subsampled_measurements": 0,
+          "emitted_scans": 6
+        },
+        "process_peak_rss_bytes": 727351296,
+        "diagnostic_write_total_s": 2.880071707884781,
+        "visualization_total_s": 0,
+        "stage_ms": {
+          "decode_s": {
+            "p50": 21.247021039016545,
+            "p95": 25.41483275126666
+          },
+          "offline_iteration_s": {
+            "p50": 229.21606252202764,
+            "p95": 2606.1874684819486
+          }
+        },
+        "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+      },
+      {
+        "frames": 6,
+        "recording_duration_s": 0.49998199939727783,
+        "status_frames": {
+          "no_obstacle_observed": 6
+        },
+        "geometry_valid_frames": 6,
+        "motion_valid_frames": 5,
+        "processing_ms": {
+          "p50": 134.91389551199973,
+          "p95": 161.74941626377404,
+          "p99": 165.44571607373658
+        },
+        "read_and_process_ms": {
+          "p50": 147.88585453061387,
+          "p95": 175.1632604864426,
+          "p99": 178.82748568663374
+        },
+        "inference_ms": {
+          "p50": 135.22464607376605,
+          "p95": 162.17044851509854,
+          "p99": 165.9073569229804
+        },
+        "ingestion_wait_ms": {
+          "p50": 12.798208452295512,
+          "p95": 24.18017719173804,
+          "p99": 27.091468975413594
+        },
+        "prefetch_depth": 0,
+        "alarm_episodes_unlabelled": [],
+        "accuracy": null,
+        "accuracy_validity": "No ground truth implied by bag name or alarm count",
+        "bag": "new_data_200",
+        "split": "development",
+        "wall_s": 2.771252708043903,
+        "ingestion": {
+          "source_messages": 6,
+          "duplicate_measurements": 0,
+          "subsampled_measurements": 0,
+          "emitted_scans": 6
+        },
+        "process_peak_rss_bytes": 767901696,
+        "diagnostic_write_total_s": 1.8098645829595625,
+        "visualization_total_s": 0,
+        "stage_ms": {
+          "decode_s": {
+            "p50": 7.927207974717021,
+            "p95": 8.719083474716172
+          },
+          "offline_iteration_s": {
+            "p50": 170.0805209693499,
+            "p95": 1069.9506249220576
+          }
+        },
+        "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+      }
+    ]
+  },
+  "artifacts": {
+    "baseline": "build/issue-5-before",
+    "after": "build/issue-5-after",
+    "decoder": "build/issue-5-decode",
+    "failed_baseline": "build/issue-5-before-native-mismatch",
+    "initial_decoder_report": "build/issue-5-decode-before-review"
+  },
+  "viewer": {
+    "bag": "doubleT_obstacle",
+    "run": "build/issue-5-after",
+    "frames_inspected": [
+      0,
+      1
+    ],
+    "channels_inspected": [
+      "intensity",
+      "ring",
+      "raw_time"
+    ],
+    "displayed_frame1": 28886,
+    "intensity_zero_samples_frame1": 831,
+    "ring_zero_samples_frame1": 218,
+    "errors_observed": [],
+    "screenshots": [
+      "results/issue-5-intensity.webp",
+      "results/issue-5-ring.webp",
+      "results/issue-5-raw-time.webp"
+    ]
+  },
+  "limitations": [
+    "No independent material labels/calibration; numerical validity is not physical validity.",
+    "Firing identity and return multiplicity unknown: no grouping or independent firing evidence claim.",
+    "Temporal hits unchanged; existing spatial voxel support is not a count of independent firings.",
+    "Deskew remains disabled; timing and mounting unverified.",
+    "Detector panel is 12 development frames, all frame statuses no_obstacle_observed and objects adjacent; no hazard recall/safety validation.",
+    "Decoder panel is first eight messages from each of seven real recordings; all measured channels present and finite. Missing/invalid attribute UI was not exercised against a real recording with those conditions.",
+    "One-row little-endian recordings only; no synthetic layouts included in acceptance.",
+    "No ROS2 runtime or target Intel CPU verification.",
+    "Workers ran out-of-contract synthetic/ad-hoc probes; these are excluded from acceptance. No automated test files/framework introduced."
+  ],
+  "source_sha256": {
+    "tunnel_guard/io.py": "4d3a86db018ba30bd64f1e25e3b41ee04add5a0efe3576476c8738400456fcd5",
+    "tunnel_guard/detector.py": "cba48e320668902a3a4e73c70cb37c1be906d84c44d321fc4b517c7b4ff328a0",
+    "tunnel_guard/review.html": "6ab9899d48298a038635df82937bbde9814b9a9790950f702075fbe8a071e85b",
+    "tunnel_guard/review_viewer.py": "820c1bf57e90bd7f1e1317f9472e27a7698c08ca70b8a20c8727601ea160ff96",
+    "tunnel_guard/decode_benchmark.py": "f345d866d7937b9f0033574e6cb68908d65fb2fe9332b98841d82d5a0a615a51",
+    "tunnel_guard/annotate.py": "deaff106d74388e3da172762a802019a57a1962cc40c22d7e5dccbde7d606125"
+  },
+  "consumer_cli": {
+    "sustech_import": [
+      {
+        "bag": "doubleT_obstacle",
+        "rows": 346808,
+        "xyz_matches": true,
+        "intensity_matches": true
+      },
+      {
+        "bag": "new_data_200",
+        "rows": 189478,
+        "xyz_matches": true,
+        "intensity_matches": true
+      }
+    ],
+    "inspect_bag_frames": 2,
+    "annotation_frames": 5,
+    "annotation_time_fields": [
+      "timestamp"
+    ]
+  },
+  "decoder_manifest": {
+    "before_io_sha256": "16a4410d0d19637d0cdac9b30a43c810d381d2e35feeef25cd63c41b40bc4a87",
+    "after_io_sha256": "4d3a86db018ba30bd64f1e25e3b41ee04add5a0efe3576476c8738400456fcd5",
+    "config_sha256": "20c4a89117a6c7ea1c7588b1d476909d93fef26c5bf80cf757c6f044db03a185",
+    "bags": [
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+        "available": true,
+        "split": "development",
+        "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+        "available": true,
+        "split": "development",
+        "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+        "available": true,
+        "split": "development",
+        "metadata_sha256": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+        "available": true,
+        "split": "development",
+        "metadata_sha256": "bec21b5aa0581936678824b5cb43043dfe99c7b1eb468c3dddf8e25554b703c1"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+        "available": true,
+        "split": "development",
+        "metadata_sha256": "9e9cedccc7a02337cd1f1020efebe22a4684c3598b2f7b5562b5fd044eafa616"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+        "available": true,
+        "split": "development",
+        "metadata_sha256": "46b6f276a63bca7642a091e11d78416951bc952e7889d940c0b43309b7060553"
+      },
+      {
+        "path": "data/extended_subset/new_data_200",
+        "available": true,
+        "split": "development",
+        "metadata_sha256": "696668de3ccfd60cb7a976865bdb19c1619372a453849256b2b81a60b4339d11"
+      }
+    ],
+    "python": "3.12.8 (v3.12.8:2dc476bcb91, Dec  3 2024, 14:43:19) [Clang 13.0.0 (clang-1300.0.29.30)]",
+    "platform": "macOS-26.5-arm64-arm-64bit",
+    "machine": "arm64",
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "rosbags": "0.11.5",
+      "kiss-icp": "1.3.0",
+      "open3d": "0.19.0",
+      "travel-seg": null,
+      "hdbscan": null,
+      "pypatchworkpp": null
+    }
+  },
+  "decoder_frame_provenance": [
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 0,
+      "record_ns": 1788354623110040384,
+      "measurement_ns": 946687297199933052,
+      "source_message_sha256": "bd3c3cd3cccc9f3f13319b0611cd697ffc5b429c35c9f80080fe2cdcf0afd33e",
+      "source_indices_sha256": "6ae277b9bfb1277e53fd715e0191a50676d5263d5da6ff8a95204ddeb8d79cf8",
+      "xyz_valid_mask_sha256": "af94833e2039dbdf23f147152242cb3939358734dcb81e42f7e65f1e8969939c",
+      "points": 346808,
+      "invalid": 574792
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 1,
+      "record_ns": 1788354623210133818,
+      "measurement_ns": 946687297299934030,
+      "source_message_sha256": "1c9823133533ea0e8a64d7e391fb9ef9bb4a2349eeb63300862a6761b2da4aee",
+      "source_indices_sha256": "c7e190b962964827d5e9b116c02063cdad6641dc6c52bcb303501e796ee507b3",
+      "xyz_valid_mask_sha256": "47a152161701390462fa4056b989a3d73b5b6da55a3f9f958c980c998368e9a6",
+      "points": 346630,
+      "invalid": 574970
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 2,
+      "record_ns": 1788354623301011132,
+      "measurement_ns": 946687297399942040,
+      "source_message_sha256": "c9cb4bb3cc3b3c75299643a4c27c39c6c01323a51a536364361d0f674910e852",
+      "source_indices_sha256": "c0e1b5fe9fa0eca7b4d1a79466a9ee0039199189678711eedabe71df455f8c6d",
+      "xyz_valid_mask_sha256": "6ccd96d02d9b80ba43444acf9ffbc5723a188145065a621e652bd08b0863bb87",
+      "points": 346768,
+      "invalid": 574832
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 3,
+      "record_ns": 1788354623393736917,
+      "measurement_ns": 946687297499959946,
+      "source_message_sha256": "0d42cffff5941a4cd1abc6af8835216454f3fc03d9576bbcea89f8416c3a98c7",
+      "source_indices_sha256": "d1e3e4cc9eb2d473bb2fda7e36c5cb23bfd72fe4935bce7e36d9d381bf637fb6",
+      "xyz_valid_mask_sha256": "09f58f4b8bf587ee18ab1f52f8ce6fa7da44b98c9394a77cc1918e5e867739ba",
+      "points": 346956,
+      "invalid": 574644
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 4,
+      "record_ns": 1788354623493171874,
+      "measurement_ns": 946687297599974036,
+      "source_message_sha256": "b9c19e781834c67b634d5e7078c7dbed3a07b62f702ff6e7b7f6f921100dee9c",
+      "source_indices_sha256": "5926d428b31448bd4094436c06c9cf564ba892cb7d5f8a2a0e1cd10d5e8a18bd",
+      "xyz_valid_mask_sha256": "91aed5fda7e188de51a0e454544a336b6e47800515f62b0b33e223f04f18f170",
+      "points": 346742,
+      "invalid": 574858
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 5,
+      "record_ns": 1788354623592582162,
+      "measurement_ns": 946687297699993014,
+      "source_message_sha256": "e1d56bc1e6db468ea54fa832d8b2d9b309660e67f12ffac5ea2ef8bd541ed957",
+      "source_indices_sha256": "8d3f76cfc9afe9fecf66e589973906ce65e9d5788f2bdbfe198fbdd38a27f2ba",
+      "xyz_valid_mask_sha256": "ce31c00f2de59e019106efcbe80cf87ffe4f66c80e4944d224ce2dee23af325e",
+      "points": 346722,
+      "invalid": 574878
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 6,
+      "record_ns": 1788354623694205255,
+      "measurement_ns": 946687297800017953,
+      "source_message_sha256": "0bedb2d5cc2e59ff12528a37d17f67e34e30cbe20bd10ef5787202980ee3bcea",
+      "source_indices_sha256": "54468e9e1b36fc7f81d18a29deb3a4b8651658bd799e6782d420aeb5158cbe38",
+      "xyz_valid_mask_sha256": "ac5cb11b59a281994c9f1efcdca1e4ca4fa74bbce306b4bc35d3089e95dfe7ed",
+      "points": 346786,
+      "invalid": 574814
+    },
+    {
+      "bag": "doubleT_obstacle",
+      "frame": 7,
+      "record_ns": 1788354623794177870,
+      "measurement_ns": 946687297900048018,
+      "source_message_sha256": "3a752148d9d27f1bd162418560224f5aa3ca93d60ec9b5d53ff12706f7cd4a62",
+      "source_indices_sha256": "1e2b09455cd732df619655a18a12b10b2c52fe262c02d2d86528988b517c2c4b",
+      "xyz_valid_mask_sha256": "2a294e0f58d38eecc4b37a73c459dfebae60a5e793ff57fea2f1a55dc205601e",
+      "points": 346950,
+      "invalid": 574650
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 0,
+      "record_ns": 1788359712599450851,
+      "measurement_ns": 946693350333430052,
+      "source_message_sha256": "91f3ee593c328345728a8460a5ffc867c4daaca4b65e4b215125c982260ad599",
+      "source_indices_sha256": "1ed185f9b25889ebd363ab8574e05bc1d948db4d5ee4480ce101065f8f6ba500",
+      "xyz_valid_mask_sha256": "ae19086e14add1aa6db66d21e3d92b257e1c863a9345704cff746f8685b3e0c4",
+      "points": 185638,
+      "invalid": 121562
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 1,
+      "record_ns": 1788359712714375113,
+      "measurement_ns": 946693350433428049,
+      "source_message_sha256": "fc9ace498cb4250f9efce2c2fbd59a2e0c53dfbe8e86ff575bcaf4a5901c3245",
+      "source_indices_sha256": "53555354c10e0e74df868795427e2739f32176d033f58161e56eda3e20dbd53b",
+      "xyz_valid_mask_sha256": "41168b73f7ab69f2a6a9c2f6b205bbde13bbfbebc5d95cf97cb76489d7d01098",
+      "points": 185888,
+      "invalid": 121312
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 2,
+      "record_ns": 1788359712798708275,
+      "measurement_ns": 946693350533426046,
+      "source_message_sha256": "ca0203cb63022f45ecab228d34132b9e49019a5303c1f299638fe7bdd884ca89",
+      "source_indices_sha256": "ed3d0d4df49a2245c8e4c20bfe8537fe77c960b3fcbaacb5d8936e09782fbbd2",
+      "xyz_valid_mask_sha256": "f73ca95626676ccb88a9fb1b52247aa30dc9b8a10dd21b138fcff7b7e4b4f043",
+      "points": 186002,
+      "invalid": 121198
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 3,
+      "record_ns": 1788359712893119985,
+      "measurement_ns": 946693350633420944,
+      "source_message_sha256": "5fccceca7dd790eaa5b6a86a50b791cff2ad9921620d0ebe7f796c66ecf05eb2",
+      "source_indices_sha256": "5e6c7b0c7eb54d9f9cc00d422193d48eedd02d54f5f68b36c131c42e3fcba8d5",
+      "xyz_valid_mask_sha256": "4854828d9e106c770aa12be19b6d51541a577102764eb7a4db5c96b55ac48d1a",
+      "points": 189416,
+      "invalid": 117784
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 4,
+      "record_ns": 1788359712989457528,
+      "measurement_ns": 946693350733417034,
+      "source_message_sha256": "f536709422d2fcdc0a27e80c487c94008c1863477891fc3968febcceacbc8d60",
+      "source_indices_sha256": "0e07396aa4f17bad952c4735a742c5815438077e946a63eb2073bc9438b8d9db",
+      "xyz_valid_mask_sha256": "b748bdc86e2db364e3071649f0e252c8484522441f772c0a0c93a87d5b4f6567",
+      "points": 173518,
+      "invalid": 133682
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 5,
+      "record_ns": 1788359713102654959,
+      "measurement_ns": 946693350833410025,
+      "source_message_sha256": "fbf118c756a9c725402f5f9d9195cddea9d2c458918e07cd325f572a540d0fe4",
+      "source_indices_sha256": "6c49455cfc80e83bb0388528d123fe6fb03c3ef8306216a8057ca9a660f2aeb9",
+      "xyz_valid_mask_sha256": "0387c18317cdfddb55614377c93fd9a2c96026929e13d92a4ebde498ab895dee",
+      "points": 189090,
+      "invalid": 118110
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 6,
+      "record_ns": 1788359713195374513,
+      "measurement_ns": 946693350933401942,
+      "source_message_sha256": "02f00632c1939d1b1f78e6ac265206e030f73e7eb14070d1d2f9a62d9afcae6c",
+      "source_indices_sha256": "cf8fa80f9b290583791393fcee18c5e0c0251dedf81c72d2812c1e38566a92f0",
+      "xyz_valid_mask_sha256": "1c5cb540cff023565d4de952fa52724d2c4591d6b2003f0a90e710a1f8eb4981",
+      "points": 189422,
+      "invalid": 117778
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 7,
+      "record_ns": 1788359713298364628,
+      "measurement_ns": 946693351033390999,
+      "source_message_sha256": "916efcfce623271650ec4f3c1b3eb9ec971900f95b81e8ed9285b4d71dd403ae",
+      "source_indices_sha256": "5c20a54c1bdd978a74bbeadf95972ee69f43f7d4610756ae00b51414f730e0cd",
+      "xyz_valid_mask_sha256": "1887d571f99f7f23c8eb9d827a02da294dac280595c0ec65419ca76f00b54866",
+      "points": 189202,
+      "invalid": 117998
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 0,
+      "record_ns": 1788359059199396182,
+      "measurement_ns": 946692931633399963,
+      "source_message_sha256": "fa5ad3803851334724499e493bd0f87661bc082b41e80edc762b75d8bb483388",
+      "source_indices_sha256": "7c83612c32705f2c5c086d483c6ade117103b213f5746bde1795dd86ee77844f",
+      "xyz_valid_mask_sha256": "1d5009c85e89273ef626c54b0e86209e368e54eafccfe3d258e4176d92548dad",
+      "points": 189502,
+      "invalid": 117698
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 1,
+      "record_ns": 1788359059279866699,
+      "measurement_ns": 946692931733415008,
+      "source_message_sha256": "b3cc6423079058b8396f1dd2826f5bcce85b48ab5d0ea713c4ec14e63f8392bc",
+      "source_indices_sha256": "6a36637d9cd8eb2845efe87e22031554a483541469e4f4e5e31f7831c4604235",
+      "xyz_valid_mask_sha256": "12696479e2cadb7b324d4796670c0fb853dc87e9a3ddcaa0864823e5f1a2db35",
+      "points": 189252,
+      "invalid": 117948
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 2,
+      "record_ns": 1788359059389344308,
+      "measurement_ns": 946692931833423018,
+      "source_message_sha256": "8510f0dc4698f44e951b0517494f1963b321067f661290b75202f9b1b877e4a7",
+      "source_indices_sha256": "0e3ba49637d4fa5c9cc7964bcedc23083dc28a3b6ccc5721f792508ac6e5c2f7",
+      "xyz_valid_mask_sha256": "1546ec2ebbca8829912c3643d0b71e403ea1a99c10d6497f7976f6c3e7b7f805",
+      "points": 189454,
+      "invalid": 117746
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 3,
+      "record_ns": 1788359059484137178,
+      "measurement_ns": 946692931933429956,
+      "source_message_sha256": "95df71de5dc9d03a6507deea21f859ce520d9f49274e31da2f50ed3470857908",
+      "source_indices_sha256": "daede542ee3b59747ebbd17b0e8df20d03a90368e0a67a8a601a950992db5c61",
+      "xyz_valid_mask_sha256": "0663a258f2f359b09f0fa2aa1505f31d7ef0676069fd4ffad28a87e02941ce72",
+      "points": 189552,
+      "invalid": 117648
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 4,
+      "record_ns": 1788359059604095481,
+      "measurement_ns": 946692932033439040,
+      "source_message_sha256": "f9d6e77c2abfbfd745452b79d6327eff53bea842c12175895b2e910c0da28cf3",
+      "source_indices_sha256": "e6d48614a9501bd74730479353bca90e8e7ce243f79efd28d8798d7074560580",
+      "xyz_valid_mask_sha256": "717c1929b65cdbdfa5a7fce94fc7998eba8e00ed5942b869bc5dbe12402c1a7d",
+      "points": 189302,
+      "invalid": 117898
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 5,
+      "record_ns": 1788359059692659555,
+      "measurement_ns": 946692932133450031,
+      "source_message_sha256": "3e18b48d9d01d93a7c15c74f58d76e3f22ed590974ffa137519bfe6cf63dad25",
+      "source_indices_sha256": "777d3bb217f5bba98497d66857047352ccb97e8867bc8c5c60e2128405821906",
+      "xyz_valid_mask_sha256": "ff9f938d482528f5574a2b265c5265e3ae5f9ed57ec7c74f9fb3016fe2ae57df",
+      "points": 189498,
+      "invalid": 117702
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 6,
+      "record_ns": 1788359059785285619,
+      "measurement_ns": 946692932233458996,
+      "source_message_sha256": "62b111753c0f81d35b3a2ecd589dd616d09ad7fa46817b048d79d69f40ed4a5e",
+      "source_indices_sha256": "464e077c5a4b1e01af89460cadab0a3e7b5713102bc2ed605d89aeba9e7d610e",
+      "xyz_valid_mask_sha256": "d7adad442abdf8993ce88fdcd196b4c340c56daa9f648e18d12256d06af61ff4",
+      "points": 189386,
+      "invalid": 117814
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 7,
+      "record_ns": 1788359059869645657,
+      "measurement_ns": 946692932333464026,
+      "source_message_sha256": "4d7aab223bd9dddf01dec73e82350b76eb0062e637b357518af5c64987d75ac4",
+      "source_indices_sha256": "b2d2c0b63a4682193d64ba3a47f4d8111854cfe5a3cef9528d2e5913eb4d53f8",
+      "xyz_valid_mask_sha256": "6bd82fdb4807b641698c1abb0912e0dfe3cb297b6557c798b2f949836ef93d02",
+      "points": 189530,
+      "invalid": 117670
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frame": 0,
+      "record_ns": 1788358838051667137,
+      "measurement_ns": 946692902433449030,
+      "source_message_sha256": "7ff0ba5a90c78a37f9474fd8c058300cb8e16017a2e8fd4844637019e0ddfe75",
+      "source_indices_sha256": "5d68bef4207160180b719fd439fea4139f0c4ff064b8cfcb6c7ee828d1175d3e",
+      "xyz_valid_mask_sha256": "6aabdbd1eb4afcfa7e5c0907e04ebb04d904fcb39156c47ed4b6b7b7e68df896",
+      "points": 189864,
+      "invalid": 117336
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frame": 1,
+      "record_ns": 1788358838161906924,
+      "measurement_ns": 946692902533450961,
+      "source_message_sha256": "2092143ca6117c058adbec681f0c3d615885eaf29026356fe99db2154277bae9",
+      "source_indices_sha256": "9c3625612b6611b3b7cdac46de0edd3cd7dc0487c04fc40997c013a8ea39da09",
+      "xyz_valid_mask_sha256": "5d0958ba1a14116e2a41158ddcb963c7c20fc617bc08df6630823f3eba1e2d82",
+      "points": 189680,
+      "invalid": 117520
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frame": 2,
+      "record_ns": 1788358838252470615,
+      "measurement_ns": 946692902633448958,
+      "source_message_sha256": "99fa012e37107ab2329a5c54a1491505523ec57426049396dccbda51b6c6a648",
+      "source_indices_sha256": "e7954dc6ea7de8585d3bf7bb585e4973f2ae3220b17b830fdd219e23ed5d82b2",
+      "xyz_valid_mask_sha256": "e5749dc7edf5268e127a9820219249aab756bdd20cd8c19b93c8f6deda6c13a2",
+      "points": 186140,
+      "invalid": 121060
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frame": 3,
+      "record_ns": 1788358838356509388,
+      "measurement_ns": 946692902733440995,
+      "source_message_sha256": "079a37dc67692501407a00c167bfc22529671da8e737f1fdb23743b05bdce692",
+      "source_indices_sha256": "ebee0c40a02e8b7a1e23963e24878b036647d18dc2740f32fcdc9d434fbb026e",
+      "xyz_valid_mask_sha256": "c10d88d2e7a83d7e62c553c68af602ce84850b5423efa4c24d0a4aab7498f717",
+      "points": 189628,
+      "invalid": 117572
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frame": 4,
+      "record_ns": 1788358838447527613,
+      "measurement_ns": 946692902833425999,
+      "source_message_sha256": "dd0d6bd27a844a934730d9cc3646b34a123e79aa71a78c4ebd4b44b4c74d4164",
+      "source_indices_sha256": "9b623d89900d619aab9018b1bd40d9993e3a3242197f69a9f401f09a484ac529",
+      "xyz_valid_mask_sha256": "0f116e1033057e7987b68e53e659bccf195423c6ac871c60b668e738b49c0c46",
+      "points": 189836,
+      "invalid": 117364
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frame": 5,
+      "record_ns": 1788358838557260402,
+      "measurement_ns": 946692902933408022,
+      "source_message_sha256": "021edd6a48bab916ad56019d48e9559bf8b2f2b26e416524227581d29479ea08",
+      "source_indices_sha256": "317296dfd03ecffd4124a5d5a3f444fad9a240559958d995c18153e6587649cd",
+      "xyz_valid_mask_sha256": "d738134f950c31e9db333221a0a21e374c33d0d7ee7e6f55776d1c28d79e5544",
+      "points": 188336,
+      "invalid": 118864
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frame": 6,
+      "record_ns": 1788358838645050895,
+      "measurement_ns": 946692903033386946,
+      "source_message_sha256": "3303f80f59432472e09840da4adf5d5428914672f3b48fbb30362f0c9ea22783",
+      "source_indices_sha256": "0d24a377780cf8da6cc95b4ade97bf8df62f3b7ede6fe8b12fb4498977ef41b4",
+      "xyz_valid_mask_sha256": "d9bc9bcb66643ca96cc02c4d8174e419404442889042e0b99550fca14869c093",
+      "points": 183338,
+      "invalid": 123862
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frame": 7,
+      "record_ns": 1788358838759297739,
+      "measurement_ns": 946692903133366942,
+      "source_message_sha256": "b337820243fe824a74a0240937a78039bc6956639bf55815889d883b9d94f323",
+      "source_indices_sha256": "3313dc67703927b0e282a01d2e02cd5df76b0c875572d83546d7a484b3944a81",
+      "xyz_valid_mask_sha256": "8c34a790af11002d2c29e67c0ff8d030e9252a63dbbc2ebf1351ea246a4ca474",
+      "points": 189730,
+      "invalid": 117470
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 0,
+      "record_ns": 1788356943781195141,
+      "measurement_ns": 946692690533414006,
+      "source_message_sha256": "68b021252f226e43a20a83ad68b8b654b10efec6fcd780d7a6f9beb20c09527a",
+      "source_indices_sha256": "d28988b4baeb248d06bcdc5fec82edcc8f4be67dcb46cd0aa56bb98abe6a2936",
+      "xyz_valid_mask_sha256": "9a6c5d2ca65145397fba5e2905541f1e320312047ea20162f2c9d58a3ea616fd",
+      "points": 185070,
+      "invalid": 122130
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 1,
+      "record_ns": 1788356943883772488,
+      "measurement_ns": 946692690633424997,
+      "source_message_sha256": "d67737092ed5cfea8448350403a817261f861575d570c9f59c4e3fa8e48b2bf0",
+      "source_indices_sha256": "0d4ff51952b67c3d79aea10197751a485196fd6fb9425fe2013164f9196e6140",
+      "xyz_valid_mask_sha256": "51e8c969aefbc076704fafada5c4f09229a49a252e3aba4c8f088d925fe80eea",
+      "points": 189236,
+      "invalid": 117964
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 2,
+      "record_ns": 1788356943976228849,
+      "measurement_ns": 946692690733435988,
+      "source_message_sha256": "451727d72ddb9fcc3f42a8cb225416c3b467db228a2bc031f06994d7460047ce",
+      "source_indices_sha256": "46bc1174583198c9a2d0ef15a97e109a7dbebcc96c0c58951d79b2661bddefce",
+      "xyz_valid_mask_sha256": "8a505edf22d3658d320811cefc6cfac391a1e5f9ff4e6cd73969ac20286c41b9",
+      "points": 189200,
+      "invalid": 118000
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 3,
+      "record_ns": 1788356944077048127,
+      "measurement_ns": 946692690833443046,
+      "source_message_sha256": "662e78385d7382b27b11b18ae0829c77fdf912c47e1d5f54b92353a0101c279b",
+      "source_indices_sha256": "2774ddb137ee135362ed82d74ef31d7b59967ce4d238434ec9a7f293e7b2afd8",
+      "xyz_valid_mask_sha256": "f9c07ef30e9c7970f9cf3339b658e991f9d5626a0b99100e84363c6c22164778",
+      "points": 189608,
+      "invalid": 117592
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 4,
+      "record_ns": 1788356944170556446,
+      "measurement_ns": 946692690933447003,
+      "source_message_sha256": "49fb9e603762d7bf640d7b1fd0f19ebfce970984a466f3be4a4bc0d98dfb2ed8",
+      "source_indices_sha256": "bae6d05a357afa457122ba0dd47719539837ce2f39f3415445b2efd22e9c89d4",
+      "xyz_valid_mask_sha256": "92e3c5b9df25e96b7e2ded00d271991e744a540c2a7437065e07891684e99eab",
+      "points": 189290,
+      "invalid": 117910
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 5,
+      "record_ns": 1788356944271841223,
+      "measurement_ns": 946692691033447981,
+      "source_message_sha256": "c59f60239bfd6e307761270e9102f248191f904b457e37a5c98cb0bfc62f4f22",
+      "source_indices_sha256": "d1e8f2d4761a5d7cbffb1789e3666fb7daca5c897fe3e382dad2ae5cd7695278",
+      "xyz_valid_mask_sha256": "76fabe13ce37828fa09c8b972753723464a7042161451547b01cce38c367bc52",
+      "points": 189554,
+      "invalid": 117646
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 6,
+      "record_ns": 1788356944374478076,
+      "measurement_ns": 946692691133448005,
+      "source_message_sha256": "423d3642bf9bb8031a3bd6f992f2c3a3f5e9c2c2f41b03300a6a060c7b13dc61",
+      "source_indices_sha256": "9d5ea6f02f62529fcb9c2375c6a0ee12bba11815afa008a55af79ee9702c5597",
+      "xyz_valid_mask_sha256": "92d43bd711c4a19c65767097e121017653125ebf72ffde774afc8a10ff0dfa17",
+      "points": 189300,
+      "invalid": 117900
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 7,
+      "record_ns": 1788356944472306172,
+      "measurement_ns": 946692691233446956,
+      "source_message_sha256": "52e5a30741e0f9015ec4ed57f0b09f88ec79c3f6915c473547ac4aa7ef3ab0b6",
+      "source_indices_sha256": "9642275503a7321bac7894b38be9831dd97632cdfc827dde5da1358993e17e22",
+      "xyz_valid_mask_sha256": "c291234bbdf92fef4c67872f8e37931056ce4271b9864e04179c8700e3c559c9",
+      "points": 189480,
+      "invalid": 117720
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "frame": 0,
+      "record_ns": 1788358443342122534,
+      "measurement_ns": 946692771733356953,
+      "source_message_sha256": "a3be15b35aeb8bedbb671c7a2caa4f5a71099fef019d9a16ed0273ea442fc9be",
+      "source_indices_sha256": "8c06555102e77c91d261771f7ce7e8ecdf88c893346e856b292a53b5e04f69d4",
+      "xyz_valid_mask_sha256": "ed830e5e5e1c758723f9ef5ef1e70ac9294ef5343b329d95171b47ed99f0045a",
+      "points": 181792,
+      "invalid": 125408
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "frame": 1,
+      "record_ns": 1788358443446432821,
+      "measurement_ns": 946692771833353996,
+      "source_message_sha256": "cffa355786964a4bf5c0230d6efaf7f8bbe7a2a34329458ee87508518f9344b4",
+      "source_indices_sha256": "fbd5d4334ddc4689904a1d39a059ac234fd3f7f9bbbccf3b90ba28d8234e4e2b",
+      "xyz_valid_mask_sha256": "170ec6e35173c703fd2c09248a7f1637412a2532386afc66d078a9987bb50d9d",
+      "points": 173372,
+      "invalid": 133828
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "frame": 2,
+      "record_ns": 1788358443543440109,
+      "measurement_ns": 946692771933351040,
+      "source_message_sha256": "011b187fd4daf6e7d4f07583855319feed8c3e3ca91228fcd778525452cca4e5",
+      "source_indices_sha256": "21d06cdf0f8be097df6beda2afe802aab7d32561ddfd351493d1e722d34b1e5c",
+      "xyz_valid_mask_sha256": "2c4be12927e59050c8e1feafd205e8cc83390a33f8c35f042dae9304062fe263",
+      "points": 182598,
+      "invalid": 124602
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "frame": 3,
+      "record_ns": 1788358443646502500,
+      "measurement_ns": 946692772033347964,
+      "source_message_sha256": "200474762d42098cfe309294c7ca7f034fcba3bc1ab870f4a6c846a0f38ea747",
+      "source_indices_sha256": "b5f0a8c577b3b8b42523f4262b0e2887fd5b190c8ff4cd965d3e4333d28f7119",
+      "xyz_valid_mask_sha256": "0e443c53f9efc68b3750e9bad7fa59cefd8a10e452ab01a6bf8ddd0ee6110b4d",
+      "points": 181028,
+      "invalid": 126172
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "frame": 4,
+      "record_ns": 1788358443746778287,
+      "measurement_ns": 946692772133345962,
+      "source_message_sha256": "89958236985a68389418a0326467ef7560793f5bd15caec8bb1f9a0304b8923a",
+      "source_indices_sha256": "3857192ddfcd8fb1366e7fa893c88bb7870c1fa6a42c2b192200114face033ad",
+      "xyz_valid_mask_sha256": "3096d08d9b80bed1d118d3602867731e52e23282d8f8bb5334cfd7d76ea25cb8",
+      "points": 177356,
+      "invalid": 129844
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "frame": 5,
+      "record_ns": 1788358443838386269,
+      "measurement_ns": 946692772233343959,
+      "source_message_sha256": "1fa0b0394a5e20b43183787afbf2b07859a3f47d1da6d0da4b200bcb54e73f5e",
+      "source_indices_sha256": "0683f76437ed9b7f2189b01066732d9ae01851b627173a91cecdd047413577ff",
+      "xyz_valid_mask_sha256": "d7d18871549cda889af60d284fe1863cdb17638bf157e51d4fed81147863a213",
+      "points": 182714,
+      "invalid": 124486
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "frame": 6,
+      "record_ns": 1788358443938807313,
+      "measurement_ns": 946692772333348989,
+      "source_message_sha256": "f0149961afae545f2af86eb860131de3969def380bd480e1783f6d1abae708ae",
+      "source_indices_sha256": "51ab0336ab90e0914202847c630b0c5196ff72a3e9e0875a2c5bb66aed0a20a7",
+      "xyz_valid_mask_sha256": "213192c1c7ea1e6ccd251b4afaa727a73515c482e2845f27b46c7fa81912c58a",
+      "points": 188824,
+      "invalid": 118376
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "frame": 7,
+      "record_ns": 1788358444035498044,
+      "measurement_ns": 946692772433359027,
+      "source_message_sha256": "9c8851d8719537fec4f4c41ddae8fbd4398afd85e92a5e8e9e225dab102ff523",
+      "source_indices_sha256": "de0ec41ba3eb3cd9e04d7ee659aeb1655fa7dd2bf9c2bffe735ff37f3496eb65",
+      "xyz_valid_mask_sha256": "8e888ba3eb56eb6f94a3dbdb8f1c11b78a6903e151f816de2d24de608239b517",
+      "points": 179804,
+      "invalid": 127396
+    },
+    {
+      "bag": "new_data_200",
+      "frame": 0,
+      "record_ns": 1789643987026537478,
+      "measurement_ns": 946687750033393025,
+      "source_message_sha256": "44bc370429d7a37fc486506675082fe5c4d4be87ea732ec5e364a88a5f367140",
+      "source_indices_sha256": "31c71eb41260b05abc5bbd1d263389d885e30ee4eb624911c715eb60a1c6cbc2",
+      "xyz_valid_mask_sha256": "6fcb81d83d669ff8aa8c395d9c25f717803536fde6fc37cecbd7060288710b28",
+      "points": 189478,
+      "invalid": 117722
+    },
+    {
+      "bag": "new_data_200",
+      "frame": 1,
+      "record_ns": 1789643987142632097,
+      "measurement_ns": 946687750133381963,
+      "source_message_sha256": "929fecbd678c8ebb8469253258c7a3ea8a5c6efb94a359f56b0f1d7f8e260ffe",
+      "source_indices_sha256": "7d137ff2b7e59f2a9c5e8d1975a2efb64f9adb28c92493251529b6e5ed1c66c0",
+      "xyz_valid_mask_sha256": "cc347ad9aba60c1ec190cd52ea99e6835ff06964413262188b5d89835a49445c",
+      "points": 189722,
+      "invalid": 117478
+    },
+    {
+      "bag": "new_data_200",
+      "frame": 2,
+      "record_ns": 1789643987229429343,
+      "measurement_ns": 946687750233379006,
+      "source_message_sha256": "7521a0224a207b5c9dd438f4c36c9560d436840b46c8b48761cc7f68b330a3ac",
+      "source_indices_sha256": "fc90e8235baca2e8b0fd410de71a6d27f2e6363de3b05cc09046ccc8ebbe9e7f",
+      "xyz_valid_mask_sha256": "8b8c1f8cfb925c046cb8502c6db4c006a520daf4cd7a7f716bbc2d001753662d",
+      "points": 189760,
+      "invalid": 117440
+    },
+    {
+      "bag": "new_data_200",
+      "frame": 3,
+      "record_ns": 1789643987330479281,
+      "measurement_ns": 946687750333377957,
+      "source_message_sha256": "4fbe4343343c01e04a2d9f3be9163b1e6da373007c456f2bb87090f7a8e8f97c",
+      "source_indices_sha256": "a9e9c4c45e63345dc940b5704b72f43c11c60c5686c4fb66be0ef9314c15b95b",
+      "xyz_valid_mask_sha256": "c78d17481c8ab2e473ad16819306da71a475cf56482167a2e3c03421faff56cd",
+      "points": 189470,
+      "invalid": 117730
+    },
+    {
+      "bag": "new_data_200",
+      "frame": 4,
+      "record_ns": 1789643987434745204,
+      "measurement_ns": 946687750433377981,
+      "source_message_sha256": "fc7fadc3c311320fae70186d9b1850b97ef112ceda11eeb88acbe34bf625d61b",
+      "source_indices_sha256": "0340edb4bc3dba92dc81922e5bb9c718dc248e4e68680a647533f9e37f8c4419",
+      "xyz_valid_mask_sha256": "071ac68f0ab1ce236023e3f70031582802933394195c7431f12ec6e4f624abd6",
+      "points": 189772,
+      "invalid": 117428
+    },
+    {
+      "bag": "new_data_200",
+      "frame": 5,
+      "record_ns": 1789643987529675535,
+      "measurement_ns": 946687750533375025,
+      "source_message_sha256": "f197a24deb53617743deaca65e4c1c65edb3684ee9d02e5c8d368dffc629ddec",
+      "source_indices_sha256": "2bca50b0ab974856b48e4337119305b1066640a6f74c7a61e6d7b1aa909576ec",
+      "xyz_valid_mask_sha256": "50843644e607e1bc76a45cf54613c9d65d49bcfb7fbe177456da1d0193fd4f59",
+      "points": 189824,
+      "invalid": 117376
+    },
+    {
+      "bag": "new_data_200",
+      "frame": 6,
+      "record_ns": 1789643987632277641,
+      "measurement_ns": 946687750633371949,
+      "source_message_sha256": "6796114e9947d78ba2056b788ac3759f22383f7937a34858b2a9ab968e38ef6a",
+      "source_indices_sha256": "e1f4f38861e2e177a6eb3276f7eeb17eda64f171fed0ff10b5da448c26404230",
+      "xyz_valid_mask_sha256": "7caddd2f913e9b01902ae7d01efc8874472fc5fec7b8170887af428f4eb30c55",
+      "points": 189580,
+      "invalid": 117620
+    },
+    {
+      "bag": "new_data_200",
+      "frame": 7,
+      "record_ns": 1789643987728751479,
+      "measurement_ns": 946687750733366013,
+      "source_message_sha256": "6f8405da5928d0919141585fddccad9bd70549657cdbe1750a7637dbbc32f48d",
+      "source_indices_sha256": "e74e4060027ddcd387a44629e95a446417a88ada3ce1491471a61ada66c0a3c1",
+      "xyz_valid_mask_sha256": "2b12dada95e2ca2c3ad264379a50715e06e2fa31aad2f46d79b1c6d670ca57a3",
+      "points": 189868,
+      "invalid": 117332
+    }
+  ],
+  "final_reproduction_confirmation": {
+    "baseline_source": "build/issue-5-upstream-source (git archive bc4f73b; native rebuilt there)",
+    "before_recipe": "build/issue-5-final-before.json",
+    "after_recipe": "build/issue-5-final-after.json",
+    "comparison": {
+      "doubleT_obstacle": {
+        "frames": 6,
+        "object_observations": 1814,
+        "discrete_or_structural_differences": 0,
+        "max_numeric_difference": 1.609823385706477e-15
+      },
+      "new_data_200": {
+        "frames": 6,
+        "object_observations": 1784,
+        "discrete_or_structural_differences": 0,
+        "max_numeric_difference": 1.021405182655144e-14
+      }
+    },
+    "legacy_diagnostic_array_differences": [],
+    "before_summary": [
+      {
+        "frames": 6,
+        "recording_duration_s": 0.5000598430633545,
+        "status_frames": {
+          "no_obstacle_observed": 6
+        },
+        "geometry_valid_frames": 6,
+        "motion_valid_frames": 5,
+        "processing_ms": {
+          "p50": 183.0895414459519,
+          "p95": 950.3858025418594,
+          "p99": 1153.8426277460533
+        },
+        "read_and_process_ms": {
+          "p50": 220.46412446070462,
+          "p95": 1046.0067395470105,
+          "p99": 1264.8333479533903
+        },
+        "inference_ms": {
+          "p50": 183.6383125046268,
+          "p95": 950.7566142710857,
+          "p99": 1154.0001892833973
+        },
+        "ingestion_wait_ms": {
+          "p50": 37.670395453460515,
+          "p95": 97.19789604423568,
+          "p99": 111.2197128473781
+        },
+        "prefetch_depth": 0,
+        "alarm_episodes_unlabelled": [],
+        "accuracy": null,
+        "accuracy_validity": "No ground truth implied by bag name or alarm count",
+        "bag": "doubleT_obstacle",
+        "split": "development",
+        "wall_s": 4.357856999966316,
+        "ingestion": {
+          "source_messages": 6,
+          "duplicate_measurements": 0,
+          "subsampled_measurements": 0,
+          "emitted_scans": 6
+        },
+        "process_peak_rss_bytes": 658046976,
+        "diagnostic_write_total_s": 1.897457665996626,
+        "visualization_total_s": 0,
+        "stage_ms": {
+          "decode_s": {
+            "p50": 19.011833472177386,
+            "p95": 22.788302245317027
+          },
+          "offline_iteration_s": {
+            "p50": 229.98587449546903,
+            "p95": 1995.232479297556
+          }
+        },
+        "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+      },
+      {
+        "frames": 6,
+        "recording_duration_s": 0.49998199939727783,
+        "status_frames": {
+          "no_obstacle_observed": 6
+        },
+        "geometry_valid_frames": 6,
+        "motion_valid_frames": 5,
+        "processing_ms": {
+          "p50": 143.1210630107671,
+          "p95": 165.74370823218487,
+          "p99": 170.59244161355312
+        },
+        "read_and_process_ms": {
+          "p50": 155.15310398768634,
+          "p95": 178.34185445099138,
+          "p99": 183.25010446715171
+        },
+        "inference_ms": {
+          "p50": 143.6587709467858,
+          "p95": 166.0977187275421,
+          "p99": 170.95264372765087
+        },
+        "ingestion_wait_ms": {
+          "p50": 11.821916443295777,
+          "p95": 24.256104283267632,
+          "p99": 27.442120882915336
+        },
+        "prefetch_depth": 0,
+        "alarm_episodes_unlabelled": [],
+        "accuracy": null,
+        "accuracy_validity": "No ground truth implied by bag name or alarm count",
+        "bag": "new_data_200",
+        "split": "development",
+        "wall_s": 2.2885349999414757,
+        "ingestion": {
+          "source_messages": 6,
+          "duplicate_measurements": 0,
+          "subsampled_measurements": 0,
+          "emitted_scans": 6
+        },
+        "process_peak_rss_bytes": 710230016,
+        "diagnostic_write_total_s": 1.2977481239940971,
+        "visualization_total_s": 0,
+        "stage_ms": {
+          "decode_s": {
+            "p50": 6.781042029615492,
+            "p95": 7.281614962266758
+          },
+          "offline_iteration_s": {
+            "p50": 176.07222945662215,
+            "p95": 808.6397922015749
+          }
+        },
+        "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+      }
+    ],
+    "after_summary": [
+      {
+        "frames": 6,
+        "recording_duration_s": 0.5000598430633545,
+        "status_frames": {
+          "no_obstacle_observed": 6
+        },
+        "geometry_valid_frames": 6,
+        "motion_valid_frames": 5,
+        "processing_ms": {
+          "p50": 179.47833344805986,
+          "p95": 750.4661247658078,
+          "p99": 900.4988913715353
+        },
+        "read_and_process_ms": {
+          "p50": 211.4587914547883,
+          "p95": 824.5917395106517,
+          "p99": 985.2922143298202
+        },
+        "inference_ms": {
+          "p50": 180.15943752834573,
+          "p95": 750.6698225042783,
+          "p99": 900.6437308969909
+        },
+        "ingestion_wait_ms": {
+          "p50": 31.36106248712167,
+          "p95": 73.91783321509138,
+          "p99": 84.64403302641587
+        },
+        "prefetch_depth": 0,
+        "alarm_episodes_unlabelled": [],
+        "accuracy": null,
+        "accuracy_validity": "No ground truth implied by bag name or alarm count",
+        "bag": "doubleT_obstacle",
+        "split": "development",
+        "wall_s": 5.013436958077364,
+        "ingestion": {
+          "source_messages": 6,
+          "duplicate_measurements": 0,
+          "subsampled_measurements": 0,
+          "emitted_scans": 6
+        },
+        "process_peak_rss_bytes": 683147264,
+        "diagnostic_write_total_s": 2.8839055410353467,
+        "visualization_total_s": 0,
+        "stage_ms": {
+          "decode_s": {
+            "p50": 21.347145491745323,
+            "p95": 23.70618752320297
+          },
+          "offline_iteration_s": {
+            "p50": 216.79710398893803,
+            "p95": 2266.105708491523
+          }
+        },
+        "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+      },
+      {
+        "frames": 6,
+        "recording_duration_s": 0.49998199939727783,
+        "status_frames": {
+          "no_obstacle_observed": 6
+        },
+        "geometry_valid_frames": 6,
+        "motion_valid_frames": 5,
+        "processing_ms": {
+          "p50": 148.47287500742823,
+          "p95": 172.73233324522153,
+          "p99": 177.20926665933803
+        },
+        "read_and_process_ms": {
+          "p50": 162.45729150250554,
+          "p95": 185.00900026992895,
+          "p99": 189.41143367555924
+        },
+        "inference_ms": {
+          "p50": 148.96252052858472,
+          "p95": 173.14948971034028,
+          "p99": 177.65963150304742
+        },
+        "ingestion_wait_ms": {
+          "p50": 13.49077100167051,
+          "p95": 24.312062974786386,
+          "p99": 26.243679755134508
+        },
+        "prefetch_depth": 0,
+        "alarm_episodes_unlabelled": [],
+        "accuracy": null,
+        "accuracy_validity": "No ground truth implied by bag name or alarm count",
+        "bag": "new_data_200",
+        "split": "development",
+        "wall_s": 2.932225332944654,
+        "ingestion": {
+          "source_messages": 6,
+          "duplicate_measurements": 0,
+          "subsampled_measurements": 0,
+          "emitted_scans": 6
+        },
+        "process_peak_rss_bytes": 746274816,
+        "diagnostic_write_total_s": 1.8904038750333712,
+        "visualization_total_s": 0,
+        "stage_ms": {
+          "decode_s": {
+            "p50": 9.102229494601488,
+            "p95": 10.069082956761122
+          },
+          "offline_iteration_s": {
+            "p50": 181.91037548240274,
+            "p95": 1129.759167204611
+          }
+        },
+        "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+      }
+    ]
+  }
+}

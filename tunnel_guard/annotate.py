@@ -40,8 +40,16 @@ def main():
             found.add(scan.index)
             frame = selected[scan.index]
             filename = f"{bag}_{scan.index:06d}.npz"
-            np.savez_compressed(args.output / filename, points=scan.points,
-                                timestamp_s=scan.timestamp_s, point_times=scan.point_times)
+            arrays = {"points": scan.points, "timestamp_s": scan.timestamp_s,
+                      "point_times": scan.point_times}
+            if scan.attributes is not None:
+                # The decoded tuple metadata travels with the raw cloud it was decoded from, under
+                # the same decoded_* naming the detector's diagnostic capture uses, so an
+                # independent annotator reads the sensor fields rather than reparsing the payload.
+                arrays["decoded_xyz_valid_mask"] = scan.attributes.xyz_valid_mask
+                arrays.update({f"decoded_{key}": value
+                               for key, value in scan.attributes.arrays().items()})
+            np.savez_compressed(args.output / filename, **arrays)
             object_evidence = []
             for obj in frame["objects"]:
                 inside = np.all((scan.points >= obj["bbox_min"]) & (scan.points <= obj["bbox_max"]), axis=1)
@@ -50,7 +58,8 @@ def main():
                                         "observed_min": cloud.min(axis=0).tolist() if len(cloud) else None,
                                         "observed_max": cloud.max(axis=0).tolist() if len(cloud) else None})
             evidence.append({"bag": bag, "frame": scan.index, "raw_cloud": filename,
-                             "timestamp_s": scan.timestamp_s, "objects": object_evidence})
+                             "timestamp_s": scan.timestamp_s, "objects": object_evidence,
+                             "sensor_attributes": scan.attributes.summary() if scan.attributes is not None else None})
             if found == set(selected):
                 break
         if found != set(selected):

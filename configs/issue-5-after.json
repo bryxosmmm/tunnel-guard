@@ -1,0 +1,25 @@
+{
+  "hypothesis": "Preserving sensor attributes changes neither decoded measurements nor detector decisions.",
+  "criterion": "Bit-identical XYZ, normalized time, invalid selection and unchanged discrete decisions; attributes follow exact representative indices; report runtime and RSS.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/issue-5-after",
+  "every": 1,
+  "max_frames": 6,
+  "prefetch_depth": 0,
+  "diagnostic_frames": [
+    0,
+    5
+  ],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    },
+    {
+      "path": "data/extended_subset/new_data_200",
+      "split": "development"
+    }
+  ]
+}

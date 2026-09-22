@@ -1,0 +1,20 @@
+{
+  "hypothesis": "Preserving the sensor attribute fields changes none of the first four decoder outputs (XYZ, normalized time, invalid count, duration); the retained attributes map exactly back to the raw PointCloud2 slots they came from, and the sensor profile remains unconfirmed.",
+  "criterion": "All seven configured recordings must be present and measured; a missing bag is an error. First four decoder outputs bit-identical (dtype, shape, raw bytes) between retained baseline and current source, including scalar encodings so -0.0 and 0.0 differ; source_indices equal the flattened row-major slots of the independently recomputed XYZ-valid points; xyz_valid_mask agrees over every slot; each retained value array shares the decoded-row length and is byte-identical to its raw field at those indices; each emitted per-channel validity array matches finite (ring: nonnegative integral) criteria on the real decoded rows; report per-channel availability, ranges, invalid counts, raw dtypes, mask/index/length/validity failures, retained bytes and decode timing.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "baseline_source": "build/issue-5-baseline-source/io.py",
+  "output": "build/issue-5-decode",
+  "every": 1,
+  "max_frames": 8,
+  "repetitions": 3,
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development"},
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_platform", "split": "development"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT", "split": "development"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT", "split": "development"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT", "split": "development"},
+    {"path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch", "split": "development"},
+    {"path": "data/extended_subset/new_data_200", "split": "development"}
+  ]
+}

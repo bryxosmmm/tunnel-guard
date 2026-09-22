@@ -156,13 +156,13 @@ class PerceptionNode(Node):
                     "sensor frame changed; reselect calibration and restart"
                 )
             decode_started = time.monotonic()
-            points, times, invalid, duration = decode_cloud(
+            points, times, invalid, duration, attributes = decode_cloud(
                 message, self.rotation, self.translation
             )
             decode_s = time.monotonic() - decode_started
             self.last_received = received
             self.silent = False
-            row = self.detector.process(points, ns * 1e-9, times)
+            row = self.detector.process(points, ns * 1e-9, times, point_attributes=attributes)
             self.last_stamp, self.source_frame = ns, message.header.frame_id
             if message.header.frame_id and message.header.frame_id not in self.broadcast_frames:
                 transform = TransformStamped()

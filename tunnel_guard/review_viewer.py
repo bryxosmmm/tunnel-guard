@@ -18,6 +18,45 @@ from .io import decode_cloud
 from .visualization import corridor_edges, distance_summary
 
 
+def _channel_payload(values: np.ndarray, valid: np.ndarray):
+    """JSON-safe channel row: unusable samples become null, never zero.
+
+    A zero that the sensor actually reported stays a zero; only samples the
+    validity mask rejects (non-finite, or a ring that is not a nonnegative
+    integer) are replaced by null so the browser cannot mistake them for data.
+    """
+    payload = values.tolist()
+    flags = valid.tolist()
+    for position, ok in enumerate(flags):
+        if not ok:
+            payload[position] = None
+    return payload, flags
+
+
+def _displayed_attributes(attributes, selection: np.ndarray) -> dict:
+    """Channel arrays and provenance aligned to exactly the displayed rows."""
+    if attributes is None:
+        return {"available": False, "summary": None, "channels": {},
+                "displayed_source_indices": None}
+    arrays = attributes.arrays(selection)
+    channels = {}
+    source_indices = None
+    for name, array in arrays.items():
+        if name == "source_indices":
+            source_indices = array.tolist()
+            continue
+        if name.endswith("_valid") and name[: -len("_valid")] in arrays:
+            continue
+        valid = arrays.get(name + "_valid")
+        if valid is None:
+            valid = np.isfinite(array)
+        values, flags = _channel_payload(array, valid)
+        channels[name] = {"values": values, "valid": flags,
+                          "dtype": str(array.dtype)}
+    return {"available": True, "summary": attributes.summary(),
+            "channels": channels, "displayed_source_indices": source_indices}
+
+
 class ResultIndex:
     """Index complete JSONL records by byte offset, keeping objects on disk."""
 
@@ -147,11 +186,12 @@ def main():
                     if index < 0 or index >= len(rows):
                         raise ValueError("Frame index outside recorded run")
                     row = rows[index]
+                    cloud = None
+                    attributes = None
                     with Reader(args.bag) as reader:
                         connections = [
                             c for c in reader.connections if c.topic == row["topic"]
                         ]
-                        cloud = None
                         for connection, _, raw in reader.messages(
                             connections=connections,
                             start=row["record_timestamp_ns"],
@@ -166,7 +206,7 @@ def main():
                                 ns == row["measurement_timestamp_ns"]
                                 and msg.header.frame_id == row["sensor_frame"]
                             ):
-                                cloud, _, _, _ = decode_cloud(
+                                cloud, _, _, _, attributes = decode_cloud(
                                     msg, rotation, translation
                                 )
                                 break
@@ -175,9 +215,10 @@ def main():
                             "Exact source measurement not found; refusing a different frame"
                         )
                     count = len(cloud)
-                    cloud = cloud[
-                        :: max(1, int(np.ceil(count / args.display_max_points)))
-                    ].round(4)
+                    step = max(1, int(np.ceil(count / args.display_max_points)))
+                    # One explicit index list drives both the displayed XYZ and the
+                    # attribute channels, so subsampling cannot desynchronize them.
+                    selection = np.arange(0, count, step, dtype=np.int64)
                     response = {
                         "row": row
                         | {
@@ -185,12 +226,14 @@ def main():
                                 row["measurement_timestamp_ns"]
                             )
                         },
-                        "points": cloud.tolist(),
+                        "points": cloud[selection].round(4).tolist(),
                         "decoded_points": count,
+                        "display_step": step,
                         "distances": distance_summary(row),
                         "corridor": corridor_edges(row.get("geometry", {}), config)
                         .round(4)
                         .tolist(),
+                        "attributes": _displayed_attributes(attributes, selection),
                     }
                     payload, kind = (
                         json.dumps(response, allow_nan=False).encode(),

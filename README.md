@@ -55,6 +55,67 @@ observations and normalized times matched exactly. The complete offline loop
 measures 140–201 ms median across three recordings, including read/decode,
 inference and result serialization. This is not live sensor-to-display latency.
 
+## Sensor attributes preserved through decode (2026-09-22)
+
+Issue #5: the decoder returned geometry and normalized times but discarded the sensor's
+own per-point fields. `intensity`, `ring` and the raw acquisition time now travel with
+the decoded rows, and nothing they touch changes a measurement or a decision. Evidence:
+[`results/issue-5-sensor-attributes-20260922.json`](results/issue-5-sensor-attributes-20260922.json);
+recipes `configs/issue-5-decode.json`, `configs/issue-5-before.json`,
+`configs/issue-5-after.json`.
+
+- **Decoder** (56 messages, 11,760,266 point observations, three alternating repetitions
+  each): all four original outputs (XYZ, normalized time, invalid count, duration) are
+  byte-identical to the retained baseline — maximum coordinate and time difference 0.0,
+  no changed frame, zero attribute failures. Attributes are present on all 56 frames and
+  every channel is numerically valid: intensity `float32` 0–255, ring `uint16` 0–127, raw
+  `float64` timestamp 946,687,297.216–946,693,351.066 s. `decode_cloud` p50
+  **6.58 → 7.87 ms**, p95 **17.47 → 20.45 ms** (decode alone, no deserialization or
+  comparison cost).
+- **Detector replay** (12 development frames, 3,598 object observations): every discrete
+  and structural field unchanged, numeric roundoff only, ≤ 4.33e-15; every legacy
+  diagnostic array bit-identical, and each retained attribute row traces to its exact
+  source slot at all four stages. Wall 5.01 → 5.48 s and 2.48 → 2.77 s; peak RSS
+  660 → 727 MB and 661 → 768 MB. A later independent repeat of both recipes against a
+  freshly rebuilt upstream tree confirmed the same outcome (zero discrete/structural and
+  legacy-array differences, roundoff ≤ 1.03e-14). This is a short development panel —
+  **no speedup, recall or safety claim**.
+
+The browser colour selector (neutral / intensity / ring / raw_time) on real frames 0 and
+1 of `doubleT_obstacle` replayed from `build/issue-5-after`:
+[intensity](results/issue-5-intensity.webp), [ring](results/issue-5-ring.webp),
+[raw_time](results/issue-5-raw-time.webp).
+
+```sh
+.venv-iteration/bin/python -m tunnel_guard.review_viewer \
+  --run build/issue-5-after \
+  --bag data/sourcecraft_subset/for_hackathon/doubleT_obstacle
+```
+
+Each channel is auto-scaled min→max over the displayed frame (blue minimum → red
+maximum); unusable samples (non-finite, or a ring that is not a nonnegative integer) are
+magenta; a field the source did not record is reported as absent, not as a zero, and a
+real zero stays a zero inside the scale. These colours are not calibrated reflectivity or
+material.
+
+API: `io.decode_cloud` returns a five-tuple
+`(points, normalized_times, invalid_count, duration_s, attributes)`; the first four values
+are unchanged. `attributes` is `io.PointAttributes` — `values` per present field with its
+original dtype, `source_indices`, `xyz_valid_mask`, `time_field`, plus `summary()` for
+JSON-safe availability/counts/units and `arrays(indices=None)` for NPZ-ready rows.
+`Scan.attributes` is appended at the end of the dataclass and `iter_bag` always fills it;
+`Detector.process(..., *, point_attributes=None)` reports `sensor_attributes` and never
+lets these fields reach detection, support or temporal confirmation.
+
+This work is isolated on branch `fix/issue-5-sensor-attributes`, based on the upstream
+commit `bc4f73b` (`origin/autoresearch/six-tunnel-recall-and-nuisance`), so the original
+checkout's experiment state is untouched. The full contract, reproduction — including the
+seven required recordings and the native rebuild — and the limitations are in
+[decode and latency](docs/DECODE_AND_LATENCY.md). It remains a short development panel:
+no calibration, firing-identity or return-multiplicity claim, no safety validation, and
+the missing/invalid-attribute display was not exercised on a real recording that has
+those conditions.
+
 ## Coverage expansion and modeled insertions
 
 See [coverage expansion](docs/COVERAGE_EXPANSION.md): complete platform and round-to-double tunnel runs, plus nine controlled cases on actual measured ray directions. Modeled support is traced through processing stages; missing rays, occlusion and candidate rejection are reported separately. Synthetic attribution is not field recall. The production detector is frozen for this experiment; its parameters were not tuned to inserted boxes.

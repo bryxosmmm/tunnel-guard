@@ -28,6 +28,83 @@ class Scan:
     skipped_duplicate_scans: int = 0
     deserialize_s: float = 0.0
     decode_s: float = 0.0
+    attributes: PointAttributes | None = None
+
+
+_ATTRIBUTE_KEYS = ("intensity", "ring", "raw_time")
+_ATTRIBUTE_UNITS = {"intensity": "unverified_raw_counts", "ring": "ring_index"}
+
+
+def _valid_values(key: str, values: np.ndarray) -> np.ndarray:
+    """Per-element attribute validity: finite, and for ring also nonnegative integral."""
+    if np.issubdtype(values.dtype, np.floating):
+        valid = np.isfinite(values)
+        if key == "ring":
+            valid &= (values >= 0) & (values == np.floor(values))
+        return valid
+    if np.issubdtype(values.dtype, np.integer):
+        # Integers are always finite and integral; only ring adds a sign constraint.
+        return values >= 0 if key == "ring" else np.ones(values.shape, dtype=bool)
+    return np.zeros(values.shape, dtype=bool)
+
+
+@dataclass
+class PointAttributes:
+    """Sensor fields carried through decode without changing geometry decisions.
+
+    ``values`` holds the raw source columns (original dtype and values) for whichever
+    optional fields exist, aligned with the decoded, XYZ-valid rows. Invalid attribute
+    values are preserved and flagged, never used to drop a point or alter the XYZ mask.
+    """
+    values: dict[str, np.ndarray]
+    source_indices: np.ndarray
+    xyz_valid_mask: np.ndarray
+    time_field: str | None = None
+
+    def summary(self) -> dict:
+        """JSON-safe availability, counts and units; no identity or calibration claim."""
+        fields = {}
+        for key in _ATTRIBUTE_KEYS:
+            values = self.values.get(key)
+            if values is None:
+                fields[key] = {"available": False}
+                continue
+            valid = _valid_values(key, values)
+            valid_count = int(np.count_nonzero(valid))
+            units = _ATTRIBUTE_UNITS.get(key)
+            if units is None:
+                units = "seconds" if self.time_field == "timestamp" else "unknown"
+            fields[key] = {
+                "available": True,
+                "dtype": values.dtype.name,
+                "units": units,
+                "count": int(values.size),
+                "valid_count": valid_count,
+                "invalid_count": int(values.size) - valid_count,
+            }
+        return {
+            "fields": fields,
+            "source_time_field": self.time_field,
+            "profile_confirmed": False,
+            "firing_identity": "unknown",
+            "return_multiplicity": "unknown",
+            "intensity_calibration": "unverified",
+        }
+
+    def arrays(self, indices=None) -> dict:
+        """NPZ-ready arrays for the selected decoded rows (all rows when indices is None).
+
+        Excludes the full ``xyz_valid_mask``, which the caller stores once.
+        """
+        source_indices = self.source_indices
+        if indices is not None:
+            source_indices = source_indices[indices]
+        out = {"source_indices": np.asarray(source_indices)}
+        for key, values in self.values.items():
+            selected = values if indices is None else values[indices]
+            out[key] = selected
+            out[f"{key}_valid"] = _valid_values(key, selected)
+        return out
 
 
 def prefetch(iterable, depth: int = 1):
@@ -102,7 +179,9 @@ def decode_cloud(message, rotation: np.ndarray, translation: np.ndarray):
     types = {1: "i1", 2: "u1", 3: "i2", 4: "u2", 5: "i4", 6: "u4", 7: "f4", 8: "f8"}
     required = ["x", "y", "z"]
     time_name = next((n for n in ("timestamp", "time", "t") if n in fields), None)
-    names = required + ([time_name] if time_name else [])
+    attribute_names = [n for n in ("intensity", "ring")
+                       if n in fields and n not in required and n != time_name]
+    names = required + ([time_name] if time_name else []) + attribute_names
     for name in names:
         if name not in fields or fields[name].count != 1 or fields[name].datatype not in types:
             raise ValueError(f"Missing or unsupported scalar PointCloud2 field: {name}")
@@ -140,6 +219,13 @@ def decode_cloud(message, rotation: np.ndarray, translation: np.ndarray):
             # Other time fields retain normalized ordering but unknown units.
             if time_name != "timestamp":
                 duration = 0.0
+    # Optional sensor fields travel with the points they came from: the same XYZ-valid
+    # mask selects both, so attribute rows stay aligned. Absent fields stay absent.
+    mask_2d = valid.reshape(message.height, message.width)
+    values = {name: records[name][mask_2d] for name in attribute_names}
+    if time_name:
+        values["raw_time"] = records[time_name][mask_2d]
+    attributes = PointAttributes(values, np.flatnonzero(valid), valid, time_name)
     if invalid:
         points = points[valid]
     # Exact signed axis permutations cover the current mounting recipe. General
@@ -155,7 +241,7 @@ def decode_cloud(message, rotation: np.ndarray, translation: np.ndarray):
     else:
         transformed = points @ rotation.T
     transformed += translation
-    return transformed, times, invalid, duration
+    return transformed, times, invalid, duration, attributes
 
 
 def iter_bag(path: Path, config: dict, *, topic: str | None = None, every: int = 1,
@@ -204,10 +290,11 @@ def iter_bag(path: Path, config: dict, *, topic: str | None = None, every: int =
                 stats["subsampled_measurements"] += 1
                 continue
             decode_start = time.perf_counter()
-            points, times, invalid, duration = decode_cloud(message, rotation, translation)
+            points, times, invalid, duration, attributes = decode_cloud(message, rotation, translation)
             decode_s = time.perf_counter() - decode_start
             stats["emitted_scans"] += 1
             yield Scan(index, measurement_ns * 1e-9, points, times, message.header.frame_id,
                        connection.topic, message.height * message.width, invalid, duration,
-                       measurement_ns, timestamp_ns, duplicates, deserialize_s, decode_s)
+                       measurement_ns, timestamp_ns, duplicates, deserialize_s, decode_s,
+                       attributes)
             emitted += 1

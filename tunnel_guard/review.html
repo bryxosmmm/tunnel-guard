@@ -80,6 +80,15 @@
   #legend {
     padding: 8px 20px;
   }
+  #channels {
+    padding: 8px 20px;
+    color: #aebdcb;
+    max-height: 150px;
+    overflow: auto;
+  }
+  #channels div + div {
+    margin-top: 4px;
+  }
   @media (max-width: 900px) {
     #plots {
       grid-template-columns: 1fr;
@@ -112,7 +121,16 @@
     ><span id="name"></span
     ><label><input id="adjacent" type="checkbox" /> рядом</label
     ><label><input id="labels" type="checkbox" /> подписи</label>
-    <label><input id="mounting" type="checkbox" checked /> опора установки</label>
+    <label><input id="mounting" type="checkbox" checked /> опора установки</label
+    ><label
+      >цвет облака:
+      <select id="colorBy">
+        <option value="neutral">нейтральный</option>
+        <option value="intensity">intensity</option>
+        <option value="ring">ring</option>
+        <option value="raw_time">raw_time</option></select
+      ></label
+    >
   </div>
   <small
     >Записанный результат, не живой датчик. Колесо — масштаб, перетаскивание —
@@ -131,6 +149,7 @@
     свободный путь. Прорежено только отображение облака.</small
   >
 </div>
+<div id="channels"></div>
 <div id="selection">Выберите объект в таблице: размеры, поддержка и причина решения.</div>
 <div id="objects"></div>
 <script>
@@ -142,6 +161,7 @@
     busy = false,
     selected = null,
     supportPoints = [],
+    pointColors = null,
     selectionRequest = 0;
   const views = [
     { canvas: $("xy"), dim: 1, bounds: [0, 100, -8, 8] },
@@ -168,6 +188,111 @@
       unsupported_nominal_envelope: "Недостаточная опора геометрии",
       outside_envelope_evidence: "Вне расчётного габарита",
     })[value] || value || "Не записано";
+  }
+  const CHANNEL_LABELS = {
+    intensity: "intensity",
+    ring: "ring",
+    raw_time: "raw_time",
+  };
+  const CHANNEL_NOTES = {
+    intensity:
+      "единицы и калибровка не подтверждены, материал поверхности не определён",
+    ring: "профиль датчика не подтверждён, число и порядок колец не проверены",
+    raw_time:
+      "это сырое поле сообщения, а не проверенное время излучения; задержки и выстрел не установлены",
+  };
+  const INVALID_COLOR = "#ff00ff";
+  function channelOf(name) {
+    return data?.attributes?.channels?.[name] || null;
+  }
+  function channelRange(ch) {
+    let lo = Infinity,
+      hi = -Infinity,
+      valid = 0;
+    for (let i = 0; i < ch.values.length; i++)
+      if (ch.valid[i]) {
+        const v = ch.values[i];
+        valid++;
+        if (v < lo) lo = v;
+        if (v > hi) hi = v;
+      }
+    return { lo, hi, valid };
+  }
+  function buildPointColors() {
+    pointColors = null;
+    const name = $("colorBy").value;
+    if (name === "neutral") return;
+    const ch = channelOf(name);
+    if (!ch || !data?.points || ch.values.length !== data.points.length) return;
+    const { lo, hi } = channelRange(ch);
+    const span = hi > lo ? hi - lo : 0;
+    pointColors = ch.values.map((value, i) => {
+      if (!ch.valid[i]) return INVALID_COLOR;
+      const t = span > 0 ? Math.min(1, Math.max(0, (value - lo) / span)) : 0.5;
+      return `hsl(${(1 - t) * 240}, 85%, 55%)`;
+    });
+  }
+  function describeSummary(summary) {
+    if (!summary || typeof summary !== "object") return [];
+    const lines = [];
+    for (const [key, value] of Object.entries(summary))
+      if (value !== null && typeof value !== "object")
+        lines.push(`${key} = ${value}`);
+    return lines;
+  }
+  function updateChannelPanel() {
+    const box = $("channels");
+    const chosen = $("colorBy").value;
+    const attributes = data?.attributes;
+    box.replaceChildren();
+    if (!attributes) return;
+    const lines = [];
+    if (!attributes.available) {
+      lines.push(
+        "Атрибуты облака недоступны: этот кадр декодирован без каналов датчика. Показанные точки не несут данных intensity/ring/raw_time.",
+      );
+    } else {
+      const summary = attributes.summary || {};
+      const fields = summary.fields || {};
+      for (const name of ["intensity", "ring", "raw_time"]) {
+        const ch = channelOf(name);
+        if (!ch) {
+          lines.push(
+            `${CHANNEL_LABELS[name]}: отсутствует в источнике — поле не записано; это не ноль и не прочерк в данных.`,
+          );
+          continue;
+        }
+        const { lo, hi, valid } = channelRange(ch);
+        const invalid = ch.values.length - valid;
+        const units = fields[name]?.units;
+        const scale = valid
+          ? `численно допустимых ${valid}, недействительных ${invalid}, диапазон ${lo}…${hi}`
+          : `численно допустимых 0, недействительных ${invalid}`;
+        lines.push(
+          `${CHANNEL_LABELS[name]}: ${scale}${units ? `, единицы: ${units}` : ""}. Ноль — допустимое наблюдаемое значение, если он попадает в диапазон. ${CHANNEL_NOTES[name]}.`,
+        );
+      }
+      lines.push(
+        "Интенсивность и материалы не поверены; профиль датчика не подтверждён, идентичность выстрела и кратность возвратов неизвестны. Атрибуты не влияют на обнаружение, поддержку и временное подтверждение.",
+      );
+      const source_time = summary.source_time_field;
+      if (source_time) lines.push(`Поле времени источника: ${source_time}.`);
+      const extra = describeSummary(summary);
+      if (extra.length) lines.push(`Сводка атрибутов: ${extra.join("; ")}`);
+    }
+    if (chosen !== "neutral") {
+      const ch = channelOf(chosen);
+      lines.push(
+        ch
+          ? `Раскраска по ${chosen}: синий — минимум, красный — максимум диапазона (${ch.dtype}); пурпурный — недействительные значения.`
+          : `Раскраска по ${chosen} недоступна: канал отсутствует в этом кадре, облако показано нейтрально. Это не означает нулевые значения.`,
+      );
+    }
+    for (const line of lines) {
+      const block = document.createElement("div");
+      block.textContent = line;
+      box.append(block);
+    }
   }
   async function focusObject(o) {
     selected = o;
@@ -228,10 +353,13 @@
       c.fillStyle = "#0a1119";
       c.fillRect(0, 0, w, h);
       c.fillStyle = "#94a4b2";
-      for (let p of data.points) {
+      for (let i = 0; i < data.points.length; i++) {
+        let p = data.points[i];
         let q = project(v, p);
-        if (q[0] >= 0 && q[0] <= w && q[1] >= 0 && q[1] <= h)
+        if (q[0] >= 0 && q[0] <= w && q[1] >= 0 && q[1] <= h) {
+          if (pointColors) c.fillStyle = pointColors[i];
           c.fillRect(q[0], q[1], devicePixelRatio, devicePixelRatio);
+        }
       }
       for (let k = 0; k < data.corridor.length; k += 2)
         line(v, data.corridor[k], data.corridor[k + 1], "#23b9ce");
@@ -299,6 +427,7 @@
     $("slider").value = index;
     $("number").value = index;
     $("error").textContent = "";
+    $("channels").textContent = "";
     $("info").textContent = `Загрузка кадра ${meta.frames[index]}…`;
     try {
       let response = await fetch("/frame?index=" + index);
@@ -306,8 +435,10 @@
       if (!response.ok) throw Error(result.error);
       data = result;
       let r = data.row;
+      buildPointColors();
+      updateChannelPanel();
       $("info").textContent =
-        `${meta.bag} | кадр ${r.frame} | ${r.status} | пересечение: ${format(data.distances.confirmed_intersection_m)} м · неопределённый объект: ${format(data.distances.unresolved_confirmed_m)} м\nКачество: ${r.health} — ${(r.health_reasons || []).join(", ")}\nИзмерение: ${r.measurement_timestamp_ns_string} нс | показано ${data.points.length} / ${data.decoded_points} отражений | система: ${r.coordinate_frame}`;
+        `${meta.bag} | кадр ${r.frame} | ${r.status} | пересечение: ${format(data.distances.confirmed_intersection_m)} м · неопределённый объект: ${format(data.distances.unresolved_confirmed_m)} м\nКачество: ${r.health} — ${(r.health_reasons || []).join(", ")}\nИзмерение: ${r.measurement_timestamp_ns_string} нс | показано ${data.points.length} / ${data.decoded_points} отражений (шаг прореживания ${data.display_step}) | каналы датчика: ${data.attributes?.available ? "декодированы" : "недоступны"} | система: ${r.coordinate_frame}`;
       if (r.mounting) {
         const m = r.mounting;
         $("info").textContent += m.state === "observed"
@@ -423,6 +554,11 @@
     draw();
   };
   $("adjacent").onchange = $("labels").onchange = $("mounting").onchange = draw;
+  $("colorBy").onchange = () => {
+    buildPointColors();
+    updateChannelPanel();
+    draw();
+  };
   $("slider").onchange = (e) => load(Number(e.target.value));
   $("number").onchange = (e) => load(Number(e.target.value));
   $("prev").onclick = () => load(index - 1);
