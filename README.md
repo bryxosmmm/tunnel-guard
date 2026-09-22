@@ -677,14 +677,15 @@ safety probability.
 - `path_relation_reason` is one of `inside_heuristic_path_and_ground_interval` (certified interior support that is
   separable from the tunnel), `certified_interior_shared_with_structure` (the same, but every certified voxel sits in a
   cell the tunnel's own cross-section occupies elsewhere along the scan - the object and the tunnel are not separable
-  by returns alone; this fires on 411 of 570 certified observations, including 70 % of the labelled object's, so it
+  by returns alone; this fired on 411 of 570 certified observations in the earlier experiment, so it
   names an ambiguity rather than discriminating), `envelope_boundary_uncertainty` (measured interior support whose
   interval crosses the edge), `structure_crossing_envelope` (interior support that is the tunnel's own cross-section),
   `unmeasured_corridor` (interior support only where the lateral reference is beyond its budget),
   `outside_envelope_evidence`.
 - `certified_unexplained_voxels` splits an object's certified interior support into the part that is not the tunnel's
   own cross-section. The certified channel is deliberately **not** gated by that split: measured, gating it cost the
-  labelled object 108 of its 172 detection frames, because a compact cluster standing on the bed shares cells with the
+  labelled recording 108 of its 172 hazard-status frames. Those are scene-level alarms, not verified
+  detections of the separately annotated nearby person. A compact cluster can share cells with the
   bed and the walkway. The weak `unresolved` channel is gated, because it rests on the uncertainty interval rather
   than on a measured intrusion.
 - `nearest_candidate_m` is the nearest thing that is not a confirmed hazard; `unresolved_range_objects` and
@@ -696,7 +697,7 @@ safety probability.
   persist but nothing accumulates through it.
 - `timestamp_s` uses acquisition header time. `measurement_timestamp_ns` and `record_timestamp_ns` preserve both exact clocks; do not interpret their difference as latency.
 - `source_scan_id`, `last_observed_s`, `hits`, and `evidence_timestamps_s` expose the source and temporal evidence. Duplicate acquisition timestamps are skipped by the reader; backwards time or a changed sensor frame stops the run explicitly. A new bag creates a new detector.
-- `confirmed` describes the object; `intersection_confirmed` separately describes its current envelope intrusion. Immediate confirmation uses interior support; weak intrusion requires distinct recent interior observations. See [intersection evidence](docs/INTERSECTION_EVIDENCE.md) for real-data diagnosis, fields and tradeoffs. RViz uses red for confirmed intrusion and orange for confirmed objects with unresolved/pending intrusion.
+- `presence_confirmed` / `presence_confirmation` describe measured component presence, using dense current geometry or repeated supported observations. They do not identify a semantic class or authorize a hazard alarm. `confirmed` / `confirmation` retain the corridor-hazard confirmation policy; `intersection_confirmed` separately certifies current interior evidence. `near_track_objects` evaluation uses presence; `collision_hazards` uses the hazard policy. Historical outputs without presence fields must use their frozen evaluator. See [the real-object evidence diagnosis](docs/DETECTOR.md#разрыв-между-присутствием-и-оценкой--2026-09-22). RViz still uses red for confirmed intrusion and orange for confirmed hazards with unresolved/pending intrusion.
 - `coordinate_frame=tunnel_guard_local` identifies the transformed current-scan coordinates. `sensor_frame` is source metadata. No global TF or verified vehicle extrinsics are implied.
 - `processing_s`, `read_and_process_s` and optional `visualization_s` use monotonic timing; summary includes ingestion/drop counts and visualization time. `range_observability` reports support, not free-space coverage.
 - The runner reads and decodes the next scan on one producer thread while the detector processes the

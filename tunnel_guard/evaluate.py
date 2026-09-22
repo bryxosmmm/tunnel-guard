@@ -69,9 +69,11 @@ def evaluate_frames(predictions: dict, annotations: dict) -> dict:
             missing.append(list(key))
             continue
         prediction = predictions[key]
-        objects = [p for p in prediction["objects"] if p["confirmed"]]
         if annotations["prediction_scope"] == "collision_hazards":
-            objects = [p for p in objects if p["path_relation"] in ("intersecting", "unresolved")]
+            objects = [p for p in prediction["objects"] if p["confirmed"]
+                       and p["path_relation"] in ("intersecting", "unresolved")]
+        else:
+            objects = [p for p in prediction["objects"] if p["presence_confirmed"]]
         truth = frame["objects"]
         matches = match_objects(objects, truth, annotations["minimum_iou"])
         found = {j: i for i, j, _ in matches}

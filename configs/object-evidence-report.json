@@ -1,0 +1,24 @@
+{
+  "seed": 20260915,
+  "before": "build/object-evidence-before",
+  "after": "build/object-evidence-after",
+  "output": "build/object-evidence-report",
+  "expected_frames": 2488,
+  "bags": [
+    "doubleT_obstacle",
+    "doubleT_platform",
+    "roundT_doubleT",
+    "roundT_pressureGate_roundT",
+    "roundT_squareT_pressureGate_squareT",
+    "squareT_platform_squareT_switch"
+  ],
+  "annotations": {
+    "person": "annotations/doubleT-obstacle-person.json",
+    "provisional": "annotations/sourcecraft-provisional.json"
+  },
+  "anchor": {
+    "bag": "doubleT_obstacle",
+    "frame": 181
+  },
+  "criterion": "Manual anchor passes unchanged near_track_objects IoU=0.25 through explicit presence confirmation; all six-recording statuses, alarm distances, hazard identities and observed boxes remain unchanged. No precision claim without exhaustive negatives. Historical score uses frozen historical evaluator; candidate-overlap counts separate scoring repair from geometry improvement."
+}
