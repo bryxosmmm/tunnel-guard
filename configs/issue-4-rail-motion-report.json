@@ -1,0 +1,16 @@
+{
+  "seed": 20260915,
+  "before": "../tunnel-guard-issue-5/build/issue-5-regression-before-20260922",
+  "after": "build/issue-4-rail-motion-full",
+  "output": "build/issue-4-rail-motion-report",
+  "continuous_tolerance": 1e-9,
+  "expected_frames": 2488,
+  "stationary_bag": "doubleT_obstacle",
+  "return_bags": ["doubleT_platform", "roundT_squareT_pressureGate_squareT", "roundT_pressureGate_roundT"],
+  "bags": ["doubleT_obstacle", "doubleT_platform", "roundT_doubleT", "roundT_pressureGate_roundT", "roundT_squareT_pressureGate_squareT", "squareT_platform_squareT_switch"],
+  "annotations": {
+    "provisional_geometry": "annotations/sourcecraft-provisional.json",
+    "person_author_reviewed_with_propagation": "annotations/doubleT-obstacle-person.json"
+  },
+  "interpretation": "Observed endpoint separation is not a measured drift bound or proof of return. Existing positive matches are compared without changing annotation scope or IoU; a zero-positive baseline is vacuous and cannot establish recall. No unlabelled interval is treated as a negative. Any failed proxy acceptance rejects promotion. No parameter is changed after the six-recording evaluation."
+}

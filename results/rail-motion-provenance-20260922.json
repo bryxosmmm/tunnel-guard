@@ -1,0 +1,1408 @@
+{
+  "issue": 4,
+  "verdict": "rejected_do_not_promote",
+  "seed": 20260915,
+  "before_manifest": {
+    "python": "3.12.8 (v3.12.8:2dc476bcb91, Dec  3 2024, 14:43:19) [Clang 13.0.0 (clang-1300.0.29.30)]",
+    "platform": "macOS-26.5-arm64-arm-64bit",
+    "machine": "arm64",
+    "cpu_count": 8,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "rosbags": "0.11.5",
+      "kiss-icp": "1.3.0",
+      "open3d": "0.19.0",
+      "travel-seg": null,
+      "hdbscan": null,
+      "pypatchworkpp": null
+    },
+    "source_sha256": {
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/accelerator.py": "b8a57cadcffc4f83e4e366b02ab7bd8ef20f9ceae60acd0aeec9931630db28c5",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/alarm_anatomy.py": "9579c8830b427b440d3d696dad20a0114a780bc92cf9a2e5205e174a10b21f81",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/alignment.py": "37019d4fa19e6186d89a1f8392d60eeadaf7b706eb602e91850d2fb86870fb08",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/alignment_probe.py": "15d69909fd6978047a92163f0b17dc31d027c14e09d029da28d65eeffac70551",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/assess_track_scenes.py": "57e44a32f451a308998759f4d346543780c37195d98f2e13d875c588e19a3033",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/background.py": "bea0e7ffae787bbf17ae06a9c775fc01d66aaac52cc104d82903cc8690dfb27b",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/background_repro.py": "816dbc51d7bb91afc6709d6435f2de966244167dc2d3dfce87b0c6496ca2f43c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/calibrate.py": "5ba977914f5f3da207454434c7111225d83dac6667c53bf9719326b691750f8c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/check_geometry_kernels.py": "40f6e22703158118ebca6a880fe658db55dbc6b68ed770254d72eb933b97338d",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/check_kernels.py": "79788a196bb9573600c1f17e78bd9d670b0c779d4d47c4c9e0f86ff86e1dacfb",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/compare_alarm_runs.py": "ce39621d4cea9ee07617f882f1d1f7035f006f16b252b74c2b5f63d2f1ad36d0",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/config_audit.py": "68b557b8902365311feb65c76954eb7b8b9f581970610d86dac667dfd9468b1c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/corridor_report.py": "d245b7d57fc996faa4315b41f9f9d8775becd7c91968d6fbcfdacb633ccdc4fd",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/curve_audit.py": "1326d9adab148558ba5b3607390a3609a0705f18e12375f5652effdc2a0d2381",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/curved_stress.py": "0bcada82de0d22b9d50feef464635c334ef57cd7883f461fe1ea27a676a2a078",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/decode_benchmark.py": "2d86ea1438c6fcb5365455fd2a0de9cd116c22544b13dfe5db89f220ef0d579f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/detector.py": "b7e30bf608108240e17b8e8d0c8a52f30a480145b41ae6e690ee19a8def878b3",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/episode_report.py": "dc932d8a30294a887e7a143e852c1e2c9d7a95e46aea72f341d780a33d584501",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/evaluate.py": "79f870c370a8b76b867b8a173af517e10116e7220a1c21af3aa859088ff5a574",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/expansion_report.py": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/extended_subset.py": "feaf7c41ab3ccd9b9d0497128353c7b36eedbd33aff8f46c2cae8193da9279ce",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/geometry.py": "df2e11b2ec266827f3fd26b7c7e0248ef0cd35753c3fa14fb7a9364ce777fc86",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/history_probe.py": "723311b1aee8248d2b18a72ac22e28b66b6df47dff16904ea87483b86cd1e3bf",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/hmm_mos_probe.py": "2f4c5a9f47ecedcb40457a5c64f3d606965a1db5178dacd85839d4df5070547f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/injection_experiment.py": "9887b6985e3e90de90c0505c4cca787f05703d7bd9f487041e84b89a8b5841c1",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/inspect_bag.py": "ccb30abe90954ab9e7862bcc914b9803ff538c5e4dd4695c97f189d04b766374",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/inspect_recording_headers.py": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/intrusion_audit.py": "e04ec075a2cc9ddcf6d844e6ddfda6657e275b562ec6de7728f11732c7cdcf84",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/io.py": "16a4410d0d19637d0cdac9b30a43c810d381d2e35feeef25cd63c41b40bc4a87",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/motion_audit.py": "d2d49f0bcff1af6bb7ba97c6d7047c59f6ab4605bb485cfac61e6f298c94a8c7",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/motion_scenarios.py": "2d928846e973b163471f3293ba1af4ae79fdede55159b5c515cb8c2f6cc0d897",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/mounting.py": "568b2716fafef9775d18e1105c0d1365aff1b32409d6cfcf82f22840bab33a2c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/mounting_replay.py": "f49091816ecf0854869c30bdf0ebaf1d19f836058ff1f0dd6ec8a1d6756d1731",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/mounting_report.py": "c7547ee3d650de0f35f4d5a86ab855b0db1214e4860bada9082619c0fb44e41f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/native_benchmark.py": "0adedf2f3de2bf5c698426c748d0ca2c98193110b7b710d4c182061c950b83d5",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/on_track.py": "b5b8f3f2eff1bf8c6d51b7ad47f9591b4f92fb685c9131a183f6ec917b8b70fb",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/panel_report.py": "f5fbf5612985fa008b580bb7446f445c5017d1170a04a7180b73b4e7dc38c505",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/plot_track_geometry.py": "b19aee7b6846a74b38cc9bec7ba0158443f473168b4fb6a18fe95014b6716113",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/prepare_segment.py": "154f5d0772d56473e82704d217723132c292efa0681d5df32f8bf6b1c355cf7a",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/profile_run.py": "5ad54b41e5a681182281d0714017c06c628fbb65deada92a5e4cd04127a956fb",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/rail_fit_report.py": "3bae4132006f5b72b7620be0e13fb76aebd413bfcce733c1d2c6738542f6bb44",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/rail_geometry_audit.py": "4314dd497098bee51d574daa0ca01089d46791c49102ca9a14fea5aaf127e044",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/realistic_report.py": "163806fdb60df8b981187b14e803ff921fdf1a9d14700b0e5ae4d30b0f0989d8",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/realistic_stress.py": "e6468a325619d0a2e54f714fe0a98c03dd8631802ea83d771070fff869f3deac",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/render_alarm_cases.py": "95b510a7143f7250ec718749ed654e95c225f1b5a9ce20aa054f3b0df9cd0cc7",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/render_annotation_review.py": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/review_remaining_alerts.py": "0fe5e93952e1a275a81b2b04d203ebe899fe4d1e304ef7d347e026cc87d4448b",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/review_viewer.py": "eb8b7c1de7591c7a1324184d29be20ef9adb58d7a2033d1335bcfcf92cf9297e",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/ros_node.py": "d4c0f9b3538c18b1144b424401b8cfcc9c819a9b686605beece9442f9fb8873c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/run.py": "23961c6f77b4ee0414b98ec0eb0e867fb18f4e69056d7d197c337640bf8d8164",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/segmentation.py": "9e545b80d3e253309210f79745154fb83c5d0a30931d38fca4551eefd2635789",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/sensor_profile.py": "4ff47460df305986034ba03e45e9c892e3559ccceffff61412c5d1ebadfb3c03",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/structural_view.py": "667fc9c9d933bbb19ab5f6e77f32b3cd2f34baa5f39eba0bdbf000d1036fd541",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/surface_evaluate.py": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/sustech.py": "103e7c167550022a86f37973a11dabfc476d0acdfc9eb1ca08212b6f4c615392",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/sustech_import.py": "adba80ec5aa9bfa31d8ec3321ed5f2d3ef97c55a77db7c0bd2addc7fb0f84700",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/trace_analysis.py": "eb1c1617b8666166d1d96864b79d541592c3a6784b8a6007ab69b3714d748c4c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/track_scene_experiment.py": "a9b8f1445020f436b65470996b73f5df462b1973c3ca1520627fa4095343ae2d",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/uncertainty_probe.py": "6c80e43d3e47a0b85257afef40f3e6931228f5dfbfa03fa5a4ce3a2ef1df488e",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/visualization.py": "0f2a911cf7cd2d7bd0b833bb903d75044819c8671c892f1ec771e4f1723c7ab1"
+    },
+    "command": [
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-5/build/issue-5-upstream-source/tunnel_guard/run.py",
+      "--experiment",
+      "configs/issue-5-regression-before-20260922.json"
+    ],
+    "config_sha256": "20c4a89117a6c7ea1c7588b1d476909d93fef26c5bf80cf757c6f044db03a185",
+    "started_unix_s": 1790092296.2633688,
+    "bags": [
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+        "split": "development",
+        "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+        "files": [
+          {
+            "name": "doubleT_obstacle_0.db3",
+            "bytes": 4821250048,
+            "mtime_ns": 1788354643000000000
+          }
+        ]
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+        "split": "development",
+        "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+        "files": [
+          {
+            "name": "doubleT_platform_0.db3",
+            "bytes": 2758447104,
+            "mtime_ns": 1788359747000000000
+          }
+        ]
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+        "split": "development",
+        "metadata_sha256": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d",
+        "files": [
+          {
+            "name": "roundT_doubleT_0.db3",
+            "bytes": 2014867456,
+            "mtime_ns": 1788359084000000000
+          }
+        ]
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+        "split": "development",
+        "metadata_sha256": "bec21b5aa0581936678824b5cb43043dfe99c7b1eb468c3dddf8e25554b703c1",
+        "files": [
+          {
+            "name": "roundT_pressureGate_roundT_0.db3",
+            "bytes": 2142801920,
+            "mtime_ns": 1788358865000000000
+          }
+        ]
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+        "split": "development",
+        "metadata_sha256": "9e9cedccc7a02337cd1f1020efebe22a4684c3598b2f7b5562b5fd044eafa616",
+        "files": [
+          {
+            "name": "roundT_squareT_pressureGate_squareT_0.db3",
+            "bytes": 4357537792,
+            "mtime_ns": 1788356999000000000
+          }
+        ]
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+        "split": "development",
+        "metadata_sha256": "46b6f276a63bca7642a091e11d78416951bc952e7889d940c0b43309b7060553",
+        "files": [
+          {
+            "name": "squareT_platform_squareT_switch_0.db3",
+            "bytes": 7012012032,
+            "mtime_ns": 1788358531000000000
+          }
+        ]
+      },
+      {
+        "path": "data/extended_subset/new_data_0",
+        "split": "development_extended_segment_not_independent_pass",
+        "metadata_sha256": "f728f16b249ac68d50bdc197ed3e80729a0c9dec701fbb2596cd34f9304ca115",
+        "files": [
+          {
+            "name": "new_data_0.db3",
+            "bytes": 407789568,
+            "mtime_ns": 1789713823540131028
+          }
+        ]
+      },
+      {
+        "path": "data/extended_subset/new_data_100",
+        "split": "development_extended_segment_not_independent_pass",
+        "metadata_sha256": "f4a16fef04434d7f6958667e6e33fd2896991a0648fd43662cbbc2354e491e4f",
+        "files": [
+          {
+            "name": "new_data_100.db3",
+            "bytes": 407789568,
+            "mtime_ns": 1789713816894289816
+          }
+        ]
+      },
+      {
+        "path": "data/extended_subset/new_data_200",
+        "split": "development_extended_segment_not_independent_pass",
+        "metadata_sha256": "696668de3ccfd60cb7a976865bdb19c1619372a453849256b2b81a60b4339d11",
+        "files": [
+          {
+            "name": "new_data_200.db3",
+            "bytes": 407789568,
+            "mtime_ns": 1789713768023856230
+          }
+        ]
+      }
+    ],
+    "git_revision": "555250285d0b12ea2252fc14d5abf0a1a131e3f2",
+    "git_status": "?? configs/issue-5-regression-after-20260922.json\n?? configs/issue-5-regression-before-20260922.json\n",
+    "native_accelerator": {
+      "binary_sha256": "e7964c3b177fa3b9556c0581f05a3a4019c530854723027f32ea701c93bd2240",
+      "module": "tunnel_guard._native",
+      "backend": "cpp",
+      "sources_sha256": {
+        "cpp/kernels.cpp": "07e6934a60bb1ab0a4c65d8bddb57e5985f9a6fd46de3f634fa12ee0b6406fbf",
+        "cpp/voxel.cpp": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+        "cpp/native.h": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+        "setup.py": "c6264d49cc69a6ea9052ddb27a7363229eca2e887f4eab77beafc31745200b59",
+        "MANIFEST.in": "33c4c37a2f87322b865aa3de40223f5a1d3a0aebf1c220aa0d266bf1366d6910"
+      }
+    },
+    "finished_unix_s": 1790092827.873879
+  },
+  "after_manifest": {
+    "python": "3.12.8 (v3.12.8:2dc476bcb91, Dec  3 2024, 14:43:19) [Clang 13.0.0 (clang-1300.0.29.30)]",
+    "platform": "macOS-26.5-arm64-arm-64bit",
+    "machine": "arm64",
+    "cpu_count": 8,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "rosbags": "0.11.5",
+      "kiss-icp": "1.3.0",
+      "open3d": "0.19.0",
+      "travel-seg": null,
+      "hdbscan": null,
+      "pypatchworkpp": null
+    },
+    "source_sha256": {
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/accelerator.py": "b8a57cadcffc4f83e4e366b02ab7bd8ef20f9ceae60acd0aeec9931630db28c5",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/alarm_anatomy.py": "9579c8830b427b440d3d696dad20a0114a780bc92cf9a2e5205e174a10b21f81",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/alignment.py": "37019d4fa19e6186d89a1f8392d60eeadaf7b706eb602e91850d2fb86870fb08",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/alignment_probe.py": "15d69909fd6978047a92163f0b17dc31d027c14e09d029da28d65eeffac70551",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/assess_track_scenes.py": "57e44a32f451a308998759f4d346543780c37195d98f2e13d875c588e19a3033",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/background.py": "bea0e7ffae787bbf17ae06a9c775fc01d66aaac52cc104d82903cc8690dfb27b",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/background_repro.py": "816dbc51d7bb91afc6709d6435f2de966244167dc2d3dfce87b0c6496ca2f43c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/calibrate.py": "5ba977914f5f3da207454434c7111225d83dac6667c53bf9719326b691750f8c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/check_geometry_kernels.py": "40f6e22703158118ebca6a880fe658db55dbc6b68ed770254d72eb933b97338d",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/check_kernels.py": "79788a196bb9573600c1f17e78bd9d670b0c779d4d47c4c9e0f86ff86e1dacfb",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/compare_alarm_runs.py": "ce39621d4cea9ee07617f882f1d1f7035f006f16b252b74c2b5f63d2f1ad36d0",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/config_audit.py": "68b557b8902365311feb65c76954eb7b8b9f581970610d86dac667dfd9468b1c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/corridor_report.py": "d245b7d57fc996faa4315b41f9f9d8775becd7c91968d6fbcfdacb633ccdc4fd",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/curve_audit.py": "1326d9adab148558ba5b3607390a3609a0705f18e12375f5652effdc2a0d2381",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/curved_stress.py": "0bcada82de0d22b9d50feef464635c334ef57cd7883f461fe1ea27a676a2a078",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/decode_benchmark.py": "2d86ea1438c6fcb5365455fd2a0de9cd116c22544b13dfe5db89f220ef0d579f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/detector.py": "435aab8e0bb016e57522690628ec224a1779cf0f02cbbea3e7f0bc89196d272f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/episode_report.py": "dc932d8a30294a887e7a143e852c1e2c9d7a95e46aea72f341d780a33d584501",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/evaluate.py": "79f870c370a8b76b867b8a173af517e10116e7220a1c21af3aa859088ff5a574",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/expansion_report.py": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/extended_subset.py": "feaf7c41ab3ccd9b9d0497128353c7b36eedbd33aff8f46c2cae8193da9279ce",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/geometry.py": "df2e11b2ec266827f3fd26b7c7e0248ef0cd35753c3fa14fb7a9364ce777fc86",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/history_probe.py": "723311b1aee8248d2b18a72ac22e28b66b6df47dff16904ea87483b86cd1e3bf",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/hmm_mos_probe.py": "2f4c5a9f47ecedcb40457a5c64f3d606965a1db5178dacd85839d4df5070547f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/injection_experiment.py": "9887b6985e3e90de90c0505c4cca787f05703d7bd9f487041e84b89a8b5841c1",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/inspect_bag.py": "ccb30abe90954ab9e7862bcc914b9803ff538c5e4dd4695c97f189d04b766374",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/inspect_recording_headers.py": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/intrusion_audit.py": "e04ec075a2cc9ddcf6d844e6ddfda6657e275b562ec6de7728f11732c7cdcf84",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/io.py": "16a4410d0d19637d0cdac9b30a43c810d381d2e35feeef25cd63c41b40bc4a87",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/motion_audit.py": "d2d49f0bcff1af6bb7ba97c6d7047c59f6ab4605bb485cfac61e6f298c94a8c7",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/motion_scenarios.py": "2d928846e973b163471f3293ba1af4ae79fdede55159b5c515cb8c2f6cc0d897",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/mounting.py": "568b2716fafef9775d18e1105c0d1365aff1b32409d6cfcf82f22840bab33a2c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/mounting_replay.py": "f49091816ecf0854869c30bdf0ebaf1d19f836058ff1f0dd6ec8a1d6756d1731",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/mounting_report.py": "c7547ee3d650de0f35f4d5a86ab855b0db1214e4860bada9082619c0fb44e41f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/native_benchmark.py": "0adedf2f3de2bf5c698426c748d0ca2c98193110b7b710d4c182061c950b83d5",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/on_track.py": "b5b8f3f2eff1bf8c6d51b7ad47f9591b4f92fb685c9131a183f6ec917b8b70fb",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/panel_report.py": "f5fbf5612985fa008b580bb7446f445c5017d1170a04a7180b73b4e7dc38c505",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/plot_track_geometry.py": "b19aee7b6846a74b38cc9bec7ba0158443f473168b4fb6a18fe95014b6716113",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/prepare_segment.py": "154f5d0772d56473e82704d217723132c292efa0681d5df32f8bf6b1c355cf7a",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/profile_run.py": "5ad54b41e5a681182281d0714017c06c628fbb65deada92a5e4cd04127a956fb",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/rail_fit_report.py": "3bae4132006f5b72b7620be0e13fb76aebd413bfcce733c1d2c6738542f6bb44",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/rail_geometry_audit.py": "4314dd497098bee51d574daa0ca01089d46791c49102ca9a14fea5aaf127e044",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/rail_odometry.py": "d6900c6523f1a88b13b202a863b1f3cf0a4e39765f9043bd16ab1169d7364707",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/realistic_report.py": "163806fdb60df8b981187b14e803ff921fdf1a9d14700b0e5ae4d30b0f0989d8",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/realistic_stress.py": "e6468a325619d0a2e54f714fe0a98c03dd8631802ea83d771070fff869f3deac",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/render_alarm_cases.py": "95b510a7143f7250ec718749ed654e95c225f1b5a9ce20aa054f3b0df9cd0cc7",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/render_annotation_review.py": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/review_remaining_alerts.py": "0fe5e93952e1a275a81b2b04d203ebe899fe4d1e304ef7d347e026cc87d4448b",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/review_viewer.py": "eb8b7c1de7591c7a1324184d29be20ef9adb58d7a2033d1335bcfcf92cf9297e",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/ros_node.py": "d4c0f9b3538c18b1144b424401b8cfcc9c819a9b686605beece9442f9fb8873c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/run.py": "23961c6f77b4ee0414b98ec0eb0e867fb18f4e69056d7d197c337640bf8d8164",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/segmentation.py": "9e545b80d3e253309210f79745154fb83c5d0a30931d38fca4551eefd2635789",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/sensor_profile.py": "4ff47460df305986034ba03e45e9c892e3559ccceffff61412c5d1ebadfb3c03",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/structural_view.py": "667fc9c9d933bbb19ab5f6e77f32b3cd2f34baa5f39eba0bdbf000d1036fd541",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/surface_evaluate.py": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/sustech.py": "103e7c167550022a86f37973a11dabfc476d0acdfc9eb1ca08212b6f4c615392",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/sustech_import.py": "adba80ec5aa9bfa31d8ec3321ed5f2d3ef97c55a77db7c0bd2addc7fb0f84700",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/trace_analysis.py": "eb1c1617b8666166d1d96864b79d541592c3a6784b8a6007ab69b3714d748c4c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/track_scene_experiment.py": "a9b8f1445020f436b65470996b73f5df462b1973c3ca1520627fa4095343ae2d",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/uncertainty_probe.py": "6c80e43d3e47a0b85257afef40f3e6931228f5dfbfa03fa5a4ce3a2ef1df488e",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/visualization.py": "0f2a911cf7cd2d7bd0b833bb903d75044819c8671c892f1ec771e4f1723c7ab1"
+    },
+    "command": [
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-4/tunnel_guard/run.py",
+      "--experiment",
+      "configs/issue-4-rail-motion-full.json"
+    ],
+    "config_sha256": "f16d21b9029af6c6180f5344ed368492606d4b44017e8b19f3ae0fa8bc163a2a",
+    "started_unix_s": 1790110152.9636211,
+    "bags": [
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+        "split": "development",
+        "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+        "files": [
+          {
+            "name": "doubleT_obstacle_0.db3",
+            "bytes": 4821250048,
+            "mtime_ns": 1788354643000000000
+          }
+        ]
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+        "split": "development",
+        "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+        "files": [
+          {
+            "name": "doubleT_platform_0.db3",
+            "bytes": 2758447104,
+            "mtime_ns": 1788359747000000000
+          }
+        ]
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+        "split": "development",
+        "metadata_sha256": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d",
+        "files": [
+          {
+            "name": "roundT_doubleT_0.db3",
+            "bytes": 2014867456,
+            "mtime_ns": 1788359084000000000
+          }
+        ]
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+        "split": "development",
+        "metadata_sha256": "bec21b5aa0581936678824b5cb43043dfe99c7b1eb468c3dddf8e25554b703c1",
+        "files": [
+          {
+            "name": "roundT_pressureGate_roundT_0.db3",
+            "bytes": 2142801920,
+            "mtime_ns": 1788358865000000000
+          }
+        ]
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+        "split": "development",
+        "metadata_sha256": "9e9cedccc7a02337cd1f1020efebe22a4684c3598b2f7b5562b5fd044eafa616",
+        "files": [
+          {
+            "name": "roundT_squareT_pressureGate_squareT_0.db3",
+            "bytes": 4357537792,
+            "mtime_ns": 1788356999000000000
+          }
+        ]
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+        "split": "development",
+        "metadata_sha256": "46b6f276a63bca7642a091e11d78416951bc952e7889d940c0b43309b7060553",
+        "files": [
+          {
+            "name": "squareT_platform_squareT_switch_0.db3",
+            "bytes": 7012012032,
+            "mtime_ns": 1788358531000000000
+          }
+        ]
+      }
+    ],
+    "git_revision": "bc4f73b4f75d83540683716953afb30351839cd6",
+    "git_status": " M tunnel_guard/detector.py\n?? configs/detector-issue-4-rail-motion.json\n?? configs/issue-4-rail-motion-full.json\n?? configs/issue-4-rail-motion-smoke.json\n?? tunnel_guard/rail_odometry.py\n",
+    "native_accelerator": {
+      "binary_sha256": "81a367424bfc00cc721111b4d849b8be8540ec0214304fc33725aa95ec31ff51",
+      "module": "tunnel_guard._native",
+      "backend": "cpp",
+      "sources_sha256": {
+        "cpp/kernels.cpp": "07e6934a60bb1ab0a4c65d8bddb57e5985f9a6fd46de3f634fa12ee0b6406fbf",
+        "cpp/voxel.cpp": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+        "cpp/native.h": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+        "setup.py": "c6264d49cc69a6ea9052ddb27a7363229eca2e887f4eab77beafc31745200b59",
+        "MANIFEST.in": "33c4c37a2f87322b865aa3de40223f5a1d3a0aebf1c220aa0d266bf1366d6910"
+      }
+    },
+    "finished_unix_s": 1790111032.848862
+  },
+  "before_experiment": {
+    "hypothesis": "Sensor-attribute preservation is behavior-neutral across complete real recordings, not only no-obstacle prefixes.",
+    "criterion": {
+      "discrete": "All non-timing statuses, objects, IDs, integer support counts, confirmation flags, evidence timestamps and list order must agree; any mismatch is investigated.",
+      "numeric": "Report every unequal numeric leaf; absolute/relative tolerance 1e-9 is declared before replay for continuous floating estimates only. IDs, counters, flags and source timestamps must be exact.",
+      "coverage": "Every emitted unique measurement until EOF from all nine configured bags. Require manifests and ingestion counts; no intersection-of-frames-only acceptance. Report actual state coverage and unsupported cases.",
+      "diagnostics": "All legacy arrays byte-identical; exact original-slot/value/valid-mask alignment for saved diagnostic representative stages.",
+      "resources": "Measure processing/decode/wall and cumulative process peak RSS for sequential same-machine runs; report regressions honestly without asserting field latency or recall."
+    },
+    "seed": 20260915,
+    "detector_config": "configs/detector-native.json",
+    "output": "build/issue-5-regression-before-20260922",
+    "every": 1,
+    "max_frames": null,
+    "prefetch_depth": 1,
+    "diagnostic_frames": [
+      0,
+      11,
+      13,
+      15,
+      18,
+      20,
+      21,
+      165,
+      181,
+      200
+    ],
+    "visualization": false,
+    "bags": [
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+        "split": "development"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+        "split": "development"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+        "split": "development"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+        "split": "development"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+        "split": "development"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+        "split": "development"
+      },
+      {
+        "path": "data/extended_subset/new_data_0",
+        "split": "development_extended_segment_not_independent_pass"
+      },
+      {
+        "path": "data/extended_subset/new_data_100",
+        "split": "development_extended_segment_not_independent_pass"
+      },
+      {
+        "path": "data/extended_subset/new_data_200",
+        "split": "development_extended_segment_not_independent_pass"
+      }
+    ]
+  },
+  "after_experiment": {
+    "hypothesis": "A bounded measured-rail point-to-line correction of lateral/vertical translation and rotation can reduce return discrepancy without changing forward ICP displacement, worsening registration, inventing stationary travel, or losing the existing labelled-recording alarm gate.",
+    "criterion": "All six complete recordings. Stationary total travel no worse than matched baseline; each of three named return discrepancies strictly lower (endpoint coincidence is NOT ground truth); accepted registration residual/overlap not worse; weak-axis flag not falsely cleared; no loss of baseline hazardous frames on doubleT_obstacle. Continuous comparison numerical tolerance 1e-9, no integer-count tolerance. Any failed criterion rejects promotion.",
+    "seed": 20260915,
+    "detector_config": "configs/detector-issue-4-rail-motion.json",
+    "output": "build/issue-4-rail-motion-full",
+    "every": 1,
+    "max_frames": null,
+    "prefetch_depth": 1,
+    "diagnostic_frames": [],
+    "visualization": false,
+    "bags": [
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+        "split": "development"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+        "split": "development"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+        "split": "development"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+        "split": "development"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+        "split": "development"
+      },
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+        "split": "development"
+      }
+    ],
+    "baseline_run": "../tunnel-guard-issue-5/build/issue-5-regression-before-20260922",
+    "sources": [
+      "https://arxiv.org/abs/2111.15043",
+      "https://pmc.ncbi.nlm.nih.gov/articles/PMC12349154/"
+    ],
+    "method_scope": "Original constrained rail-point registration experiment, NOT a reproduction of multi-sensor RailLoMer. Nominal gauge is not imposed by correction; upstream rail selection still has its original nominal-gauge candidate prior. Nonrail validation is disjoint from rail fitting but shares the sensor and ICP initialization. Raw KISS map remains untouched; corrected poses only feed detector association.",
+    "promotion": "disabled unless every acceptance criterion is met; no post-panel threshold tuning"
+  },
+  "smoke_summary": [
+    {
+      "frames": 12,
+      "recording_duration_s": 1.100207805633545,
+      "status_frames": {
+        "no_obstacle_observed": 6,
+        "unresolved_obstacle": 2,
+        "obstacle": 4
+      },
+      "geometry_valid_frames": 12,
+      "motion_valid_frames": 11,
+      "processing_ms": {
+        "p50": 604.0062495158054,
+        "p95": 16666.44260611499,
+        "p99": 32207.279987629754
+      },
+      "read_and_process_ms": {
+        "p50": 606.5667914808728,
+        "p95": 16770.30148946212,
+        "p99": 32408.84043142667
+      },
+      "inference_ms": {
+        "p50": 605.9735420276411,
+        "p95": 16668.852387776107,
+        "p99": 32209.149944752007
+      },
+      "ingestion_wait_ms": {
+        "p50": 0.8018125081434846,
+        "p95": 102.37741234013795,
+        "p99": 199.85834880964842
+      },
+      "prefetch_depth": 1,
+      "alarm_episodes_unlabelled": [
+        {
+          "start_frame": 6,
+          "start_s": 946687297.800018,
+          "end_s": 946687298.300141,
+          "frames": 6
+        }
+      ],
+      "accuracy": null,
+      "accuracy_validity": "No ground truth implied by bag name or alarm count",
+      "bag": "doubleT_obstacle",
+      "split": "development",
+      "wall_s": 43.21962154097855,
+      "ingestion": {
+        "source_messages": 12,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 12
+      },
+      "process_peak_rss_bytes": 666828800,
+      "diagnostic_write_total_s": 0,
+      "visualization_total_s": 0,
+      "stage_ms": {
+        "decode_s": {
+          "p50": 91.66597947478294,
+          "p95": 2385.45060434844
+        },
+        "offline_iteration_s": {
+          "p50": 623.3398544718511,
+          "p95": 16782.696557999563
+        }
+      },
+      "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+    }
+  ],
+  "full_summary": [
+    {
+      "frames": 201,
+      "recording_duration_s": 20.400028824806213,
+      "status_frames": {
+        "no_obstacle_observed": 25,
+        "unresolved_obstacle": 6,
+        "obstacle": 166,
+        "candidate": 4
+      },
+      "geometry_valid_frames": 201,
+      "motion_valid_frames": 200,
+      "processing_ms": {
+        "p50": 481.08454199973494,
+        "p95": 586.6885420400649,
+        "p99": 641.7588329641148
+      },
+      "read_and_process_ms": {
+        "p50": 485.7342910254374,
+        "p95": 592.163750086911,
+        "p99": 644.0354579826817
+      },
+      "inference_ms": {
+        "p50": 484.78175001218915,
+        "p95": 591.318333055824,
+        "p99": 642.9083329858258
+      },
+      "ingestion_wait_ms": {
+        "p50": 0.5236669676378369,
+        "p95": 1.4869999140501022,
+        "p99": 4.706416977569461
+      },
+      "prefetch_depth": 1,
+      "alarm_episodes_unlabelled": [
+        {
+          "start_frame": 6,
+          "start_s": 946687297.800018,
+          "end_s": 946687304.600005,
+          "frames": 69
+        },
+        {
+          "start_frame": 76,
+          "start_s": 946687304.7999861,
+          "end_s": 946687305.1000221,
+          "frames": 4
+        },
+        {
+          "start_frame": 81,
+          "start_s": 946687305.30006,
+          "end_s": 946687305.30006,
+          "frames": 1
+        },
+        {
+          "start_frame": 84,
+          "start_s": 946687305.6000792,
+          "end_s": 946687306.400121,
+          "frames": 9
+        },
+        {
+          "start_frame": 94,
+          "start_s": 946687306.6001141,
+          "end_s": 946687308.800108,
+          "frames": 23
+        },
+        {
+          "start_frame": 118,
+          "start_s": 946687309.00013,
+          "end_s": 946687309.200136,
+          "frames": 3
+        },
+        {
+          "start_frame": 122,
+          "start_s": 946687309.400126,
+          "end_s": 946687310.100085,
+          "frames": 8
+        },
+        {
+          "start_frame": 131,
+          "start_s": 946687310.3000782,
+          "end_s": 946687310.3000782,
+          "frames": 1
+        },
+        {
+          "start_frame": 133,
+          "start_s": 946687310.5000771,
+          "end_s": 946687310.900095,
+          "frames": 5
+        },
+        {
+          "start_frame": 139,
+          "start_s": 946687311.2000911,
+          "end_s": 946687311.3000741,
+          "frames": 2
+        },
+        {
+          "start_frame": 142,
+          "start_s": 946687311.5000391,
+          "end_s": 946687311.6000221,
+          "frames": 2
+        },
+        {
+          "start_frame": 145,
+          "start_s": 946687311.799999,
+          "end_s": 946687312.300053,
+          "frames": 6
+        },
+        {
+          "start_frame": 152,
+          "start_s": 946687312.500062,
+          "end_s": 946687313.400088,
+          "frames": 10
+        },
+        {
+          "start_frame": 163,
+          "start_s": 946687313.6001031,
+          "end_s": 946687313.700103,
+          "frames": 2
+        },
+        {
+          "start_frame": 166,
+          "start_s": 946687314.20003,
+          "end_s": 946687314.7999861,
+          "frames": 7
+        },
+        {
+          "start_frame": 174,
+          "start_s": 946687315.0000231,
+          "end_s": 946687315.0000231,
+          "frames": 1
+        },
+        {
+          "start_frame": 176,
+          "start_s": 946687315.200056,
+          "end_s": 946687315.5000871,
+          "frames": 4
+        },
+        {
+          "start_frame": 181,
+          "start_s": 946687315.7001021,
+          "end_s": 946687316.1001191,
+          "frames": 5
+        },
+        {
+          "start_frame": 187,
+          "start_s": 946687316.300122,
+          "end_s": 946687316.300122,
+          "frames": 1
+        },
+        {
+          "start_frame": 190,
+          "start_s": 946687316.600111,
+          "end_s": 946687316.600111,
+          "frames": 1
+        },
+        {
+          "start_frame": 192,
+          "start_s": 946687316.800089,
+          "end_s": 946687317.2000101,
+          "frames": 5
+        },
+        {
+          "start_frame": 198,
+          "start_s": 946687317.399975,
+          "end_s": 946687317.599962,
+          "frames": 3
+        }
+      ],
+      "accuracy": null,
+      "accuracy_validity": "No ground truth implied by bag name or alarm count",
+      "bag": "doubleT_obstacle",
+      "split": "development",
+      "wall_s": 103.484948957921,
+      "ingestion": {
+        "source_messages": 201,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 201
+      },
+      "process_peak_rss_bytes": 794034176,
+      "diagnostic_write_total_s": 0,
+      "visualization_total_s": 0,
+      "stage_ms": {
+        "decode_s": {
+          "p50": 88.54804199654609,
+          "p95": 141.64212497416884
+        },
+        "offline_iteration_s": {
+          "p50": 498.11662500724196,
+          "p95": 605.117917060852
+        }
+      },
+      "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+    },
+    {
+      "frames": 345,
+      "recording_duration_s": 34.399957060813904,
+      "status_frames": {
+        "candidate": 2,
+        "no_obstacle_observed": 302,
+        "unresolved_obstacle": 19,
+        "obstacle": 22
+      },
+      "geometry_valid_frames": 345,
+      "motion_valid_frames": 240,
+      "processing_ms": {
+        "p50": 145.12416708748788,
+        "p95": 448.150316043757,
+        "p99": 644.3196030147375
+      },
+      "read_and_process_ms": {
+        "p50": 145.6494590966031,
+        "p95": 449.63590772822505,
+        "p99": 646.6229519806803
+      },
+      "inference_ms": {
+        "p50": 145.40037501137704,
+        "p95": 449.372016475536,
+        "p99": 645.3764264797792
+      },
+      "ingestion_wait_ms": {
+        "p50": 0.20308292005211115,
+        "p95": 0.7404503878206015,
+        "p99": 1.2375304941087963
+      },
+      "prefetch_depth": 1,
+      "alarm_episodes_unlabelled": [
+        {
+          "start_frame": 208,
+          "start_s": 946693371.133396,
+          "end_s": 946693371.133396,
+          "frames": 1
+        },
+        {
+          "start_frame": 212,
+          "start_s": 946693371.533391,
+          "end_s": 946693371.533391,
+          "frames": 1
+        },
+        {
+          "start_frame": 220,
+          "start_s": 946693372.3333441,
+          "end_s": 946693372.3333441,
+          "frames": 1
+        },
+        {
+          "start_frame": 228,
+          "start_s": 946693373.133384,
+          "end_s": 946693373.133384,
+          "frames": 1
+        },
+        {
+          "start_frame": 257,
+          "start_s": 946693376.0334111,
+          "end_s": 946693376.0334111,
+          "frames": 1
+        },
+        {
+          "start_frame": 261,
+          "start_s": 946693376.4333711,
+          "end_s": 946693376.5333592,
+          "frames": 2
+        },
+        {
+          "start_frame": 267,
+          "start_s": 946693377.033349,
+          "end_s": 946693377.033349,
+          "frames": 1
+        },
+        {
+          "start_frame": 270,
+          "start_s": 946693377.3333791,
+          "end_s": 946693377.433389,
+          "frames": 2
+        },
+        {
+          "start_frame": 274,
+          "start_s": 946693377.733404,
+          "end_s": 946693377.9334161,
+          "frames": 3
+        },
+        {
+          "start_frame": 279,
+          "start_s": 946693378.233437,
+          "end_s": 946693378.233437,
+          "frames": 1
+        },
+        {
+          "start_frame": 283,
+          "start_s": 946693378.633445,
+          "end_s": 946693378.833432,
+          "frames": 3
+        },
+        {
+          "start_frame": 287,
+          "start_s": 946693379.033408,
+          "end_s": 946693379.233388,
+          "frames": 3
+        },
+        {
+          "start_frame": 291,
+          "start_s": 946693379.4333711,
+          "end_s": 946693379.4333711,
+          "frames": 1
+        },
+        {
+          "start_frame": 295,
+          "start_s": 946693379.8333441,
+          "end_s": 946693379.8333441,
+          "frames": 1
+        },
+        {
+          "start_frame": 299,
+          "start_s": 946693380.233357,
+          "end_s": 946693380.233357,
+          "frames": 1
+        },
+        {
+          "start_frame": 302,
+          "start_s": 946693380.5333802,
+          "end_s": 946693380.5333802,
+          "frames": 1
+        },
+        {
+          "start_frame": 308,
+          "start_s": 946693381.133405,
+          "end_s": 946693381.4334021,
+          "frames": 4
+        },
+        {
+          "start_frame": 317,
+          "start_s": 946693382.033396,
+          "end_s": 946693382.133393,
+          "frames": 2
+        },
+        {
+          "start_frame": 321,
+          "start_s": 946693382.433373,
+          "end_s": 946693382.8333491,
+          "frames": 5
+        },
+        {
+          "start_frame": 335,
+          "start_s": 946693383.83338,
+          "end_s": 946693384.1333832,
+          "frames": 4
+        },
+        {
+          "start_frame": 342,
+          "start_s": 946693384.533386,
+          "end_s": 946693384.6333871,
+          "frames": 2
+        }
+      ],
+      "accuracy": null,
+      "accuracy_validity": "No ground truth implied by bag name or alarm count",
+      "bag": "doubleT_platform",
+      "split": "development",
+      "wall_s": 63.19012812501751,
+      "ingestion": {
+        "source_messages": 345,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 345
+      },
+      "process_peak_rss_bytes": 794034176,
+      "diagnostic_write_total_s": 0,
+      "visualization_total_s": 0,
+      "stage_ms": {
+        "decode_s": {
+          "p50": 31.712959054857492,
+          "p95": 155.3847249597311
+        },
+        "offline_iteration_s": {
+          "p50": 150.8531249128282,
+          "p95": 462.8392499405892
+        }
+      },
+      "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+    },
+    {
+      "frames": 252,
+      "recording_duration_s": 25.099918127059937,
+      "status_frames": {
+        "no_obstacle_observed": 234,
+        "unresolved_obstacle": 14,
+        "obstacle": 4
+      },
+      "geometry_valid_frames": 252,
+      "motion_valid_frames": 251,
+      "processing_ms": {
+        "p50": 565.4986665467732,
+        "p95": 938.2477625331375,
+        "p99": 1101.1868565785699
+      },
+      "read_and_process_ms": {
+        "p50": 567.456791526638,
+        "p95": 939.243422821164,
+        "p99": 1102.5920822902117
+      },
+      "inference_ms": {
+        "p50": 566.9018335174769,
+        "p95": 939.0954749600495,
+        "p99": 1102.1845974924508
+      },
+      "ingestion_wait_ms": {
+        "p50": 0.25649945018813014,
+        "p95": 1.1267649417277412,
+        "p99": 2.6693764736410346
+      },
+      "prefetch_depth": 1,
+      "alarm_episodes_unlabelled": [
+        {
+          "start_frame": 78,
+          "start_s": 946692939.433368,
+          "end_s": 946692939.533386,
+          "frames": 2
+        },
+        {
+          "start_frame": 83,
+          "start_s": 946692939.9334261,
+          "end_s": 946692939.9334261,
+          "frames": 1
+        },
+        {
+          "start_frame": 85,
+          "start_s": 946692940.1334321,
+          "end_s": 946692940.233428,
+          "frames": 2
+        },
+        {
+          "start_frame": 102,
+          "start_s": 946692941.8334072,
+          "end_s": 946692941.8334072,
+          "frames": 1
+        },
+        {
+          "start_frame": 113,
+          "start_s": 946692942.933382,
+          "end_s": 946692943.0333731,
+          "frames": 2
+        },
+        {
+          "start_frame": 127,
+          "start_s": 946692944.333409,
+          "end_s": 946692944.333409,
+          "frames": 1
+        },
+        {
+          "start_frame": 130,
+          "start_s": 946692944.633419,
+          "end_s": 946692944.833427,
+          "frames": 3
+        },
+        {
+          "start_frame": 135,
+          "start_s": 946692945.1334271,
+          "end_s": 946692945.1334271,
+          "frames": 1
+        },
+        {
+          "start_frame": 163,
+          "start_s": 946692947.9334071,
+          "end_s": 946692947.9334071,
+          "frames": 1
+        },
+        {
+          "start_frame": 170,
+          "start_s": 946692948.6333832,
+          "end_s": 946692948.6333832,
+          "frames": 1
+        },
+        {
+          "start_frame": 174,
+          "start_s": 946692949.0333852,
+          "end_s": 946692949.0333852,
+          "frames": 1
+        },
+        {
+          "start_frame": 183,
+          "start_s": 946692949.9333621,
+          "end_s": 946692949.9333621,
+          "frames": 1
+        },
+        {
+          "start_frame": 190,
+          "start_s": 946692950.633341,
+          "end_s": 946692950.633341,
+          "frames": 1
+        }
+      ],
+      "accuracy": null,
+      "accuracy_validity": "No ground truth implied by bag name or alarm count",
+      "bag": "roundT_doubleT",
+      "split": "development",
+      "wall_s": 152.84773029200733,
+      "ingestion": {
+        "source_messages": 252,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 252
+      },
+      "process_peak_rss_bytes": 794034176,
+      "diagnostic_write_total_s": 0,
+      "visualization_total_s": 0,
+      "stage_ms": {
+        "decode_s": {
+          "p50": 234.8883119993843,
+          "p95": 632.6509642065502
+        },
+        "offline_iteration_s": {
+          "p50": 578.2400629832409,
+          "p95": 946.510489337379
+        }
+      },
+      "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+    },
+    {
+      "frames": 268,
+      "recording_duration_s": 26.69998800754547,
+      "status_frames": {
+        "no_obstacle_observed": 253,
+        "unknown": 2,
+        "unresolved_obstacle": 9,
+        "obstacle": 1,
+        "candidate": 3
+      },
+      "geometry_valid_frames": 266,
+      "motion_valid_frames": 266,
+      "processing_ms": {
+        "p50": 911.8857919820584,
+        "p95": 1529.7283937456086,
+        "p99": 1647.5471900985576
+      },
+      "read_and_process_ms": {
+        "p50": 912.9668544628657,
+        "p95": 1531.6849336144514,
+        "p99": 1648.693628271576
+      },
+      "inference_ms": {
+        "p50": 912.8076254855841,
+        "p95": 1531.278864108026,
+        "p99": 1648.556263135979
+      },
+      "ingestion_wait_ms": {
+        "p50": 0.2816665219143033,
+        "p95": 1.5661018493119583,
+        "p99": 4.017438811715681
+      },
+      "prefetch_depth": 1,
+      "alarm_episodes_unlabelled": [
+        {
+          "start_frame": 131,
+          "start_s": 946692915.5334661,
+          "end_s": 946692915.5334661,
+          "frames": 1
+        },
+        {
+          "start_frame": 136,
+          "start_s": 946692916.033443,
+          "end_s": 946692916.033443,
+          "frames": 1
+        },
+        {
+          "start_frame": 143,
+          "start_s": 946692916.733376,
+          "end_s": 946692916.9333481,
+          "frames": 3
+        },
+        {
+          "start_frame": 147,
+          "start_s": 946692917.1333281,
+          "end_s": 946692917.1333281,
+          "frames": 1
+        },
+        {
+          "start_frame": 150,
+          "start_s": 946692917.433344,
+          "end_s": 946692917.433344,
+          "frames": 1
+        },
+        {
+          "start_frame": 154,
+          "start_s": 946692917.8333981,
+          "end_s": 946692917.8333981,
+          "frames": 1
+        },
+        {
+          "start_frame": 160,
+          "start_s": 946692918.433425,
+          "end_s": 946692918.433425,
+          "frames": 1
+        },
+        {
+          "start_frame": 166,
+          "start_s": 946692919.0334162,
+          "end_s": 946692919.0334162,
+          "frames": 1
+        }
+      ],
+      "accuracy": null,
+      "accuracy_validity": "No ground truth implied by bag name or alarm count",
+      "bag": "roundT_pressureGate_roundT",
+      "split": "development",
+      "wall_s": 260.6909518330358,
+      "ingestion": {
+        "source_messages": 268,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 268
+      },
+      "process_peak_rss_bytes": 794034176,
+      "diagnostic_write_total_s": 0,
+      "visualization_total_s": 0,
+      "stage_ms": {
+        "decode_s": {
+          "p50": 577.7779794880189,
+          "p95": 1196.20505842613
+        },
+        "offline_iteration_s": {
+          "p50": 925.3281045239419,
+          "p95": 1540.1023084647022
+        }
+      },
+      "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+    },
+    {
+      "frames": 545,
+      "recording_duration_s": 55.3998898267746,
+      "status_frames": {
+        "no_obstacle_observed": 530,
+        "candidate": 3,
+        "unresolved_obstacle": 3,
+        "obstacle": 9
+      },
+      "geometry_valid_frames": 545,
+      "motion_valid_frames": 516,
+      "processing_ms": {
+        "p50": 180.31633307691664,
+        "p95": 713.2664586184544,
+        "p99": 1008.7475130241359
+      },
+      "read_and_process_ms": {
+        "p50": 181.05533299967647,
+        "p95": 714.2803997732698,
+        "p99": 1011.4577964786433
+      },
+      "inference_ms": {
+        "p50": 180.85845792666078,
+        "p95": 714.1252245754001,
+        "p99": 1011.1392485210666
+      },
+      "ingestion_wait_ms": {
+        "p50": 0.29433309100568295,
+        "p95": 0.7767165545374155,
+        "p99": 2.608996471390118
+      },
+      "prefetch_depth": 1,
+      "alarm_episodes_unlabelled": [
+        {
+          "start_frame": 347,
+          "start_s": 946692726.2334621,
+          "end_s": 946692726.2334621,
+          "frames": 1
+        },
+        {
+          "start_frame": 376,
+          "start_s": 946692729.133424,
+          "end_s": 946692729.133424,
+          "frames": 1
+        },
+        {
+          "start_frame": 391,
+          "start_s": 946692730.6334411,
+          "end_s": 946692730.7334391,
+          "frames": 2
+        },
+        {
+          "start_frame": 401,
+          "start_s": 946692731.6334491,
+          "end_s": 946692731.6334491,
+          "frames": 1
+        },
+        {
+          "start_frame": 411,
+          "start_s": 946692732.6333891,
+          "end_s": 946692732.6333891,
+          "frames": 1
+        },
+        {
+          "start_frame": 427,
+          "start_s": 946692734.233442,
+          "end_s": 946692734.233442,
+          "frames": 1
+        },
+        {
+          "start_frame": 436,
+          "start_s": 946692735.133466,
+          "end_s": 946692735.133466,
+          "frames": 1
+        },
+        {
+          "start_frame": 473,
+          "start_s": 946692738.833477,
+          "end_s": 946692738.833477,
+          "frames": 1
+        },
+        {
+          "start_frame": 489,
+          "start_s": 946692740.4334332,
+          "end_s": 946692740.4334332,
+          "frames": 1
+        },
+        {
+          "start_frame": 502,
+          "start_s": 946692741.7333751,
+          "end_s": 946692741.7333751,
+          "frames": 1
+        },
+        {
+          "start_frame": 511,
+          "start_s": 946692742.6333451,
+          "end_s": 946692742.6333451,
+          "frames": 1
+        }
+      ],
+      "accuracy": null,
+      "accuracy_validity": "No ground truth implied by bag name or alarm count",
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "split": "development",
+      "wall_s": 149.8138702500146,
+      "ingestion": {
+        "source_messages": 545,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 545
+      },
+      "process_peak_rss_bytes": 794034176,
+      "diagnostic_write_total_s": 0,
+      "visualization_total_s": 0,
+      "stage_ms": {
+        "decode_s": {
+          "p50": 54.1787080001086,
+          "p95": 388.0108503624796
+        },
+        "offline_iteration_s": {
+          "p50": 185.6051670620218,
+          "p95": 722.8145164204761
+        }
+      },
+      "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+    },
+    {
+      "frames": 877,
+      "recording_duration_s": 88.20011305809021,
+      "status_frames": {
+        "no_obstacle_observed": 872,
+        "candidate": 2,
+        "unresolved_obstacle": 3
+      },
+      "geometry_valid_frames": 877,
+      "motion_valid_frames": 804,
+      "processing_ms": {
+        "p50": 134.9778330186382,
+        "p95": 367.4047836335374,
+        "p99": 497.14925692416733
+      },
+      "read_and_process_ms": {
+        "p50": 135.8908750116825,
+        "p95": 370.0934335589408,
+        "p99": 498.7651662807912
+      },
+      "inference_ms": {
+        "p50": 135.42175001930445,
+        "p95": 369.91528277285386,
+        "p99": 498.6447837390006
+      },
+      "ingestion_wait_ms": {
+        "p50": 0.2596250269562006,
+        "p95": 0.72534941136837,
+        "p99": 1.2521260743960747
+      },
+      "prefetch_depth": 1,
+      "alarm_episodes_unlabelled": [
+        {
+          "start_frame": 207,
+          "start_s": 946692793.0334041,
+          "end_s": 946692793.0334041,
+          "frames": 1
+        },
+        {
+          "start_frame": 218,
+          "start_s": 946692794.133344,
+          "end_s": 946692794.133344,
+          "frames": 1
+        },
+        {
+          "start_frame": 781,
+          "start_s": 946692850.433413,
+          "end_s": 946692850.433413,
+          "frames": 1
+        }
+      ],
+      "accuracy": null,
+      "accuracy_validity": "No ground truth implied by bag name or alarm count",
+      "bag": "squareT_platform_squareT_switch",
+      "split": "development",
+      "wall_s": 149.60026237508282,
+      "ingestion": {
+        "source_messages": 877,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 877
+      },
+      "process_peak_rss_bytes": 794034176,
+      "diagnostic_write_total_s": 0,
+      "visualization_total_s": 0,
+      "stage_ms": {
+        "decode_s": {
+          "p50": 18.584250006824732,
+          "p95": 107.88405004423109
+        },
+        "offline_iteration_s": {
+          "p50": 140.71016700472683,
+          "p95": 379.09500799141813
+        }
+      },
+      "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+    }
+  ]
+}

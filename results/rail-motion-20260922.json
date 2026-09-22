@@ -1,0 +1,1657 @@
+{
+  "bags": [
+    {
+      "bag": "doubleT_obstacle",
+      "before": {
+        "frames": 201,
+        "status_frames": {
+          "no_obstacle_observed": 25,
+          "unresolved_obstacle": 6,
+          "obstacle": 166,
+          "candidate": 4
+        },
+        "hazard_frames": 172,
+        "pose_path_sum_m": 0.6109150343717098,
+        "endpoint_separation_m": 0.003840532483413346,
+        "gap_resets": 0,
+        "pose_path_validity": "Raw reported-pose sum; reset jumps are not physical travel; endpoint separation is not ground-truth drift",
+        "accepted_registrations": 200,
+        "rejected_registrations_with_residual": 0,
+        "accepted_residual_m": {
+          "p10": 0.027594115261817657,
+          "p50": 0.048812052214019186,
+          "p90": 0.10218432945556509,
+          "p95": 0.11702516337012288
+        },
+        "rejected_residual_m": null,
+        "accepted_overlap": {
+          "p10": 0.952878027181002,
+          "p50": 0.9738431841227744,
+          "p90": 0.9826031936230114,
+          "p95": 0.9839433560045796
+        },
+        "measured_weak_axis_frames": 5,
+        "unmeasured_observability_frames": 0,
+        "minimum_normal_eigenvalue": {
+          "p10": 0.011124557130177322,
+          "p50": 0.014075743004687799,
+          "p90": 0.019087353419691852,
+          "p95": 0.020288107569384473
+        }
+      },
+      "after": {
+        "frames": 201,
+        "status_frames": {
+          "no_obstacle_observed": 25,
+          "unresolved_obstacle": 6,
+          "obstacle": 166,
+          "candidate": 4
+        },
+        "hazard_frames": 172,
+        "pose_path_sum_m": 0.6181517517838587,
+        "endpoint_separation_m": 0.011147914315439305,
+        "gap_resets": 0,
+        "pose_path_validity": "Raw reported-pose sum; reset jumps are not physical travel; endpoint separation is not ground-truth drift",
+        "accepted_registrations": 200,
+        "rejected_registrations_with_residual": 0,
+        "accepted_residual_m": {
+          "p10": 0.02759411526181766,
+          "p50": 0.04881205221401927,
+          "p90": 0.1021843294555679,
+          "p95": 0.1168382302800158
+        },
+        "rejected_residual_m": null,
+        "accepted_overlap": {
+          "p10": 0.952878027181002,
+          "p50": 0.9738431841227744,
+          "p90": 0.9826031936230114,
+          "p95": 0.9839433560045796
+        },
+        "measured_weak_axis_frames": 5,
+        "unmeasured_observability_frames": 0,
+        "minimum_normal_eigenvalue": {
+          "p10": 0.011124557130177322,
+          "p50": 0.014075743004687799,
+          "p90": 0.019087353419691852,
+          "p95": 0.020288107569384473
+        }
+      },
+      "same_run_raw_ICP": {
+        "frames": 201,
+        "pose_path_sum_m": 0.6109150343717082,
+        "endpoint_separation_m": 0.0038405324834111694,
+        "scope": "Unmodified KISS poses from the same candidate execution, including any epoch reset jumps"
+      },
+      "correction_reasons": {
+        "first_frame": 1,
+        "rail_fit_and_nonrail_validation_accepted": 2,
+        "independent_alignment_gate_rejected": 116,
+        "rail_fit_not_improved": 81,
+        "outside_declared_trust_region": 1
+      },
+      "accepted_corrections": 2,
+      "rail_minimum_translation_eigenvalue": {
+        "p10": 0.003496352997556742,
+        "p50": 0.004306992386816821,
+        "p90": 0.005270416296267024,
+        "p95": 0.005772636924893075
+      },
+      "rail_weak_axis_mean_abs_xyz": [
+        0.9995727544615498,
+        0.02592080510578376,
+        0.013033644453029984
+      ],
+      "rail_correction_s": {
+        "p10": 0.005420000059530139,
+        "p50": 0.020185541012324393,
+        "p90": 0.027740500052459538,
+        "p95": 0.03140112501569092
+      },
+      "raw_ICP_pose_max_abs_difference": 4.385380947269368e-15,
+      "changes": []
+    },
+    {
+      "bag": "doubleT_platform",
+      "before": {
+        "frames": 345,
+        "status_frames": {
+          "candidate": 2,
+          "no_obstacle_observed": 302,
+          "unresolved_obstacle": 19,
+          "obstacle": 22
+        },
+        "hazard_frames": 41,
+        "pose_path_sum_m": 49.72325716434732,
+        "endpoint_separation_m": 2.7340996426648068,
+        "gap_resets": 0,
+        "pose_path_validity": "Raw reported-pose sum; reset jumps are not physical travel; endpoint separation is not ground-truth drift",
+        "accepted_registrations": 240,
+        "rejected_registrations_with_residual": 104,
+        "accepted_residual_m": {
+          "p10": 0.013440531456183423,
+          "p50": 0.16840503356594033,
+          "p90": 0.2734842010446272,
+          "p95": 0.2865489362055916
+        },
+        "rejected_residual_m": {
+          "p10": 0.31397422528023167,
+          "p50": 0.38505848679743715,
+          "p90": 0.4320929850151518,
+          "p95": 0.4429041258896685
+        },
+        "accepted_overlap": {
+          "p10": 0.7657385062445078,
+          "p50": 0.9723514653669723,
+          "p90": 0.9861324726268569,
+          "p95": 0.9871657667439773
+        },
+        "measured_weak_axis_frames": 0,
+        "unmeasured_observability_frames": 0,
+        "minimum_normal_eigenvalue": {
+          "p10": 0.037636772512822124,
+          "p50": 0.08944070617591302,
+          "p90": 0.17950294550860815,
+          "p95": 0.18818636736919125
+        }
+      },
+      "after": {
+        "frames": 345,
+        "status_frames": {
+          "candidate": 2,
+          "no_obstacle_observed": 302,
+          "unresolved_obstacle": 19,
+          "obstacle": 22
+        },
+        "hazard_frames": 41,
+        "pose_path_sum_m": 49.72124286449759,
+        "endpoint_separation_m": 2.7362375747953127,
+        "gap_resets": 0,
+        "pose_path_validity": "Raw reported-pose sum; reset jumps are not physical travel; endpoint separation is not ground-truth drift",
+        "accepted_registrations": 240,
+        "rejected_registrations_with_residual": 104,
+        "accepted_residual_m": {
+          "p10": 0.013440531456180412,
+          "p50": 0.168405033565939,
+          "p90": 0.27348420104462695,
+          "p95": 0.28654893620559446
+        },
+        "rejected_residual_m": {
+          "p10": 0.3139742252802319,
+          "p50": 0.38505848679744037,
+          "p90": 0.4320929850151518,
+          "p95": 0.44290412588966843
+        },
+        "accepted_overlap": {
+          "p10": 0.7657385062445078,
+          "p50": 0.9723514653669723,
+          "p90": 0.9861324726268569,
+          "p95": 0.9871657667439773
+        },
+        "measured_weak_axis_frames": 0,
+        "unmeasured_observability_frames": 0,
+        "minimum_normal_eigenvalue": {
+          "p10": 0.037636772512822124,
+          "p50": 0.08944070617591302,
+          "p90": 0.17950294550860815,
+          "p95": 0.18818636736919125
+        }
+      },
+      "same_run_raw_ICP": {
+        "frames": 345,
+        "pose_path_sum_m": 49.723257164347295,
+        "endpoint_separation_m": 2.7340996426648085,
+        "scope": "Unmodified KISS poses from the same candidate execution, including any epoch reset jumps"
+      },
+      "correction_reasons": {
+        "first_frame": 1,
+        "independent_alignment_gate_rejected": 65,
+        "rail_fit_not_improved": 151,
+        "rail_fit_and_nonrail_validation_accepted": 18,
+        "raw_registration_not_accepted": 104,
+        "outside_declared_trust_region": 6
+      },
+      "accepted_corrections": 18,
+      "rail_minimum_translation_eigenvalue": {
+        "p10": 0.003478831519130725,
+        "p50": 0.004859714058754497,
+        "p90": 0.006894027745520345,
+        "p95": 0.007688460012784664
+      },
+      "rail_weak_axis_mean_abs_xyz": [
+        0.9999581252692916,
+        0.005003328437891925,
+        0.005665276712507647
+      ],
+      "rail_correction_s": {
+        "p10": 0.0011852832278236747,
+        "p50": 0.0025693339994177222,
+        "p90": 0.00834809981752187,
+        "p95": 0.0102917668176815
+      },
+      "raw_ICP_pose_max_abs_difference": 7.105427357601002e-15,
+      "changes": []
+    },
+    {
+      "bag": "roundT_doubleT",
+      "before": {
+        "frames": 252,
+        "status_frames": {
+          "no_obstacle_observed": 234,
+          "unresolved_obstacle": 14,
+          "obstacle": 4
+        },
+        "hazard_frames": 18,
+        "pose_path_sum_m": 310.1294508856918,
+        "endpoint_separation_m": 305.24286761171044,
+        "gap_resets": 0,
+        "pose_path_validity": "Raw reported-pose sum; reset jumps are not physical travel; endpoint separation is not ground-truth drift",
+        "accepted_registrations": 251,
+        "rejected_registrations_with_residual": 0,
+        "accepted_residual_m": {
+          "p10": 0.2007223963568815,
+          "p50": 0.23873029148567523,
+          "p90": 0.2668107372453809,
+          "p95": 0.2716306063886095
+        },
+        "rejected_residual_m": null,
+        "accepted_overlap": {
+          "p10": 0.8941926589694985,
+          "p50": 0.9108012766672267,
+          "p90": 0.9415602065778744,
+          "p95": 0.9450808344299277
+        },
+        "measured_weak_axis_frames": 56,
+        "unmeasured_observability_frames": 0,
+        "minimum_normal_eigenvalue": {
+          "p10": 0.007467987100838301,
+          "p50": 0.013836276320344384,
+          "p90": 0.02244062725278587,
+          "p95": 0.02557251484003174
+        }
+      },
+      "after": {
+        "frames": 252,
+        "status_frames": {
+          "no_obstacle_observed": 234,
+          "unresolved_obstacle": 14,
+          "obstacle": 4
+        },
+        "hazard_frames": 18,
+        "pose_path_sum_m": 310.1246333674268,
+        "endpoint_separation_m": 305.2263404930962,
+        "gap_resets": 0,
+        "pose_path_validity": "Raw reported-pose sum; reset jumps are not physical travel; endpoint separation is not ground-truth drift",
+        "accepted_registrations": 251,
+        "rejected_registrations_with_residual": 0,
+        "accepted_residual_m": {
+          "p10": 0.20072239635688102,
+          "p50": 0.2387302914857145,
+          "p90": 0.266810737245387,
+          "p95": 0.27163060638861014
+        },
+        "rejected_residual_m": null,
+        "accepted_overlap": {
+          "p10": 0.8941926589694985,
+          "p50": 0.9108012766672267,
+          "p90": 0.9415602065778744,
+          "p95": 0.9450808344299277
+        },
+        "measured_weak_axis_frames": 56,
+        "unmeasured_observability_frames": 0,
+        "minimum_normal_eigenvalue": {
+          "p10": 0.007467987100838301,
+          "p50": 0.013836276320344384,
+          "p90": 0.02244062725278587,
+          "p95": 0.02557251484003174
+        }
+      },
+      "same_run_raw_ICP": {
+        "frames": 252,
+        "pose_path_sum_m": 310.1294508856918,
+        "endpoint_separation_m": 305.24286761171044,
+        "scope": "Unmodified KISS poses from the same candidate execution, including any epoch reset jumps"
+      },
+      "correction_reasons": {
+        "first_frame": 1,
+        "independent_alignment_gate_rejected": 99,
+        "rail_fit_and_nonrail_validation_accepted": 9,
+        "rail_fit_not_improved": 58,
+        "outside_declared_trust_region": 84,
+        "insufficient_measured_rail_support": 1
+      },
+      "accepted_corrections": 9,
+      "rail_minimum_translation_eigenvalue": {
+        "p10": 0.0014131133699983032,
+        "p50": 0.003932290103692259,
+        "p90": 0.007945487977915854,
+        "p95": 0.010045126191559959
+      },
+      "rail_weak_axis_mean_abs_xyz": [
+        0.9991397115118696,
+        0.02958989055593645,
+        0.0056842695755272435
+      ],
+      "rail_correction_s": {
+        "p10": 0.004595295200124383,
+        "p50": 0.008367416507098824,
+        "p90": 0.02247413690201938,
+        "p95": 0.02498844371875748
+      },
+      "raw_ICP_pose_max_abs_difference": 3.410605131648481e-13,
+      "changes": []
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "before": {
+        "frames": 268,
+        "status_frames": {
+          "no_obstacle_observed": 253,
+          "unknown": 2,
+          "unresolved_obstacle": 9,
+          "obstacle": 1,
+          "candidate": 3
+        },
+        "hazard_frames": 10,
+        "pose_path_sum_m": 18.156497435524507,
+        "endpoint_separation_m": 7.203451214269819,
+        "gap_resets": 0,
+        "pose_path_validity": "Raw reported-pose sum; reset jumps are not physical travel; endpoint separation is not ground-truth drift",
+        "accepted_registrations": 266,
+        "rejected_registrations_with_residual": 1,
+        "accepted_residual_m": {
+          "p10": 0.18006653828085573,
+          "p50": 0.20845207899109341,
+          "p90": 0.23148849217874345,
+          "p95": 0.26729671865800825
+        },
+        "rejected_residual_m": {
+          "p10": 0.30899708299330203,
+          "p50": 0.30899708299330203,
+          "p90": 0.30899708299330203,
+          "p95": 0.30899708299330203
+        },
+        "accepted_overlap": {
+          "p10": 0.844247170845906,
+          "p50": 0.9302289406833654,
+          "p90": 0.9639462678702999,
+          "p95": 0.9683550416301253
+        },
+        "measured_weak_axis_frames": 203,
+        "unmeasured_observability_frames": 0,
+        "minimum_normal_eigenvalue": {
+          "p10": 0.005111428947397842,
+          "p50": 0.006264179563119312,
+          "p90": 0.02812608904734565,
+          "p95": 0.03208726744395561
+        }
+      },
+      "after": {
+        "frames": 268,
+        "status_frames": {
+          "no_obstacle_observed": 253,
+          "unknown": 2,
+          "unresolved_obstacle": 9,
+          "obstacle": 1,
+          "candidate": 3
+        },
+        "hazard_frames": 10,
+        "pose_path_sum_m": 18.094093783582345,
+        "endpoint_separation_m": 7.1979408174835635,
+        "gap_resets": 0,
+        "pose_path_validity": "Raw reported-pose sum; reset jumps are not physical travel; endpoint separation is not ground-truth drift",
+        "accepted_registrations": 266,
+        "rejected_registrations_with_residual": 1,
+        "accepted_residual_m": {
+          "p10": 0.18006653828085378,
+          "p50": 0.20845207899109175,
+          "p90": 0.2314884921787433,
+          "p95": 0.2672967186580066
+        },
+        "rejected_residual_m": {
+          "p10": 0.30899708299330597,
+          "p50": 0.30899708299330597,
+          "p90": 0.30899708299330597,
+          "p95": 0.30899708299330597
+        },
+        "accepted_overlap": {
+          "p10": 0.844247170845906,
+          "p50": 0.9302289406833654,
+          "p90": 0.9641844790224932,
+          "p95": 0.9683550416301253
+        },
+        "measured_weak_axis_frames": 203,
+        "unmeasured_observability_frames": 0,
+        "minimum_normal_eigenvalue": {
+          "p10": 0.005111428947397842,
+          "p50": 0.006264179563119312,
+          "p90": 0.02812608904734565,
+          "p95": 0.03208726744395561
+        }
+      },
+      "same_run_raw_ICP": {
+        "frames": 268,
+        "pose_path_sum_m": 18.156497435524475,
+        "endpoint_separation_m": 7.203451214269823,
+        "scope": "Unmodified KISS poses from the same candidate execution, including any epoch reset jumps"
+      },
+      "correction_reasons": {
+        "first_frame": 1,
+        "rail_fit_not_improved": 24,
+        "independent_alignment_gate_rejected": 71,
+        "rail_fit_and_nonrail_validation_accepted": 18,
+        "raw_registration_not_accepted": 1,
+        "outside_declared_trust_region": 146,
+        "insufficient_measured_rail_support": 7
+      },
+      "accepted_corrections": 18,
+      "rail_minimum_translation_eigenvalue": {
+        "p10": 0.0036796644127843406,
+        "p50": 0.005353965489957053,
+        "p90": 0.009336773427572003,
+        "p95": 0.01088294392680894
+      },
+      "rail_weak_axis_mean_abs_xyz": [
+        0.999535843661304,
+        0.021269924337546552,
+        0.007522763518057809
+      ],
+      "rail_correction_s": {
+        "p10": 0.003994183149188757,
+        "p50": 0.007084875483997166,
+        "p90": 0.016212337487377226,
+        "p95": 0.018403098121052595
+      },
+      "raw_ICP_pose_max_abs_difference": 1.3322676295501878e-14,
+      "changes": []
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "before": {
+        "frames": 545,
+        "status_frames": {
+          "no_obstacle_observed": 530,
+          "candidate": 3,
+          "unresolved_obstacle": 3,
+          "obstacle": 9
+        },
+        "hazard_frames": 12,
+        "pose_path_sum_m": 161.7163445543852,
+        "endpoint_separation_m": 10.926448336222462,
+        "gap_resets": 1,
+        "pose_path_validity": "Raw reported-pose sum; reset jumps are not physical travel; endpoint separation is not ground-truth drift",
+        "accepted_registrations": 516,
+        "rejected_registrations_with_residual": 27,
+        "accepted_residual_m": {
+          "p10": 0.19224736787314245,
+          "p50": 0.24657585453502884,
+          "p90": 0.27775450945237695,
+          "p95": 0.2873476131162783
+        },
+        "rejected_residual_m": {
+          "p10": 0.3018973803943215,
+          "p50": 0.3051395829556325,
+          "p90": 0.32237532668381813,
+          "p95": 0.3277325358361136
+        },
+        "accepted_overlap": {
+          "p10": 0.8385499059424691,
+          "p50": 0.9015815867521677,
+          "p90": 0.9726467872852225,
+          "p95": 0.9752970493753571
+        },
+        "measured_weak_axis_frames": 297,
+        "unmeasured_observability_frames": 0,
+        "minimum_normal_eigenvalue": {
+          "p10": 0.006914565287345418,
+          "p50": 0.00977927442626383,
+          "p90": 0.022216699472547004,
+          "p95": 0.026584104626584264
+        }
+      },
+      "after": {
+        "frames": 545,
+        "status_frames": {
+          "no_obstacle_observed": 530,
+          "candidate": 3,
+          "unresolved_obstacle": 3,
+          "obstacle": 9
+        },
+        "hazard_frames": 12,
+        "pose_path_sum_m": 161.68222390520077,
+        "endpoint_separation_m": 10.925036549806622,
+        "gap_resets": 1,
+        "pose_path_validity": "Raw reported-pose sum; reset jumps are not physical travel; endpoint separation is not ground-truth drift",
+        "accepted_registrations": 516,
+        "rejected_registrations_with_residual": 27,
+        "accepted_residual_m": {
+          "p10": 0.1922473678731432,
+          "p50": 0.2465758545350292,
+          "p90": 0.2777545094523788,
+          "p95": 0.28734761311627827
+        },
+        "rejected_residual_m": {
+          "p10": 0.3018973803943216,
+          "p50": 0.3051395829556298,
+          "p90": 0.3223753266838145,
+          "p95": 0.3277325358361134
+        },
+        "accepted_overlap": {
+          "p10": 0.8385499059424691,
+          "p50": 0.90172938456476,
+          "p90": 0.9726467872852225,
+          "p95": 0.9753674376733846
+        },
+        "measured_weak_axis_frames": 297,
+        "unmeasured_observability_frames": 0,
+        "minimum_normal_eigenvalue": {
+          "p10": 0.006914565287345418,
+          "p50": 0.00977927442626383,
+          "p90": 0.022216699472547004,
+          "p95": 0.026584104626584264
+        }
+      },
+      "same_run_raw_ICP": {
+        "frames": 545,
+        "pose_path_sum_m": 161.71634455438524,
+        "endpoint_separation_m": 10.926448336222462,
+        "scope": "Unmodified KISS poses from the same candidate execution, including any epoch reset jumps"
+      },
+      "correction_reasons": {
+        "first_frame": 2,
+        "rail_fit_not_improved": 151,
+        "independent_alignment_gate_rejected": 214,
+        "rail_fit_and_nonrail_validation_accepted": 43,
+        "outside_declared_trust_region": 100,
+        "raw_registration_not_accepted": 27,
+        "insufficient_measured_rail_support": 8
+      },
+      "accepted_corrections": 43,
+      "rail_minimum_translation_eigenvalue": {
+        "p10": 0.004661104765555846,
+        "p50": 0.007567887426364911,
+        "p90": 0.01583171737419963,
+        "p95": 0.020062242624738318
+      },
+      "rail_weak_axis_mean_abs_xyz": [
+        0.9994384812326415,
+        0.022404538652705547,
+        0.007661921983075006
+      ],
+      "rail_correction_s": {
+        "p10": 0.0024586412357166408,
+        "p50": 0.006653624936006963,
+        "p90": 0.010215758229605854,
+        "p95": 0.013789541600272051
+      },
+      "raw_ICP_pose_max_abs_difference": 2.4868995751603507e-14,
+      "changes": []
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "before": {
+        "frames": 877,
+        "status_frames": {
+          "no_obstacle_observed": 872,
+          "candidate": 2,
+          "unresolved_obstacle": 3
+        },
+        "hazard_frames": 3,
+        "pose_path_sum_m": 196.92706735086847,
+        "endpoint_separation_m": 149.98574407731994,
+        "gap_resets": 1,
+        "pose_path_validity": "Raw reported-pose sum; reset jumps are not physical travel; endpoint separation is not ground-truth drift",
+        "accepted_registrations": 804,
+        "rejected_registrations_with_residual": 71,
+        "accepted_residual_m": {
+          "p10": 0.010825097459848795,
+          "p50": 0.12636541993956957,
+          "p90": 0.24944526899102687,
+          "p95": 0.26005428050701057
+        },
+        "rejected_residual_m": {
+          "p10": 0.30687253109605794,
+          "p50": 0.3475477241636363,
+          "p90": 0.4061717715295113,
+          "p95": 0.4114593478970694
+        },
+        "accepted_overlap": {
+          "p10": 0.8721917300058076,
+          "p50": 0.9725824062361494,
+          "p90": 0.9890233860710061,
+          "p95": 0.9898783725650797
+        },
+        "measured_weak_axis_frames": 35,
+        "unmeasured_observability_frames": 0,
+        "minimum_normal_eigenvalue": {
+          "p10": 0.014702505750565892,
+          "p50": 0.02547696293878726,
+          "p90": 0.09643604393548862,
+          "p95": 0.13330712767654584
+        }
+      },
+      "after": {
+        "frames": 877,
+        "status_frames": {
+          "no_obstacle_observed": 872,
+          "candidate": 2,
+          "unresolved_obstacle": 3
+        },
+        "hazard_frames": 3,
+        "pose_path_sum_m": 196.93125029935234,
+        "endpoint_separation_m": 149.98649226062247,
+        "gap_resets": 1,
+        "pose_path_validity": "Raw reported-pose sum; reset jumps are not physical travel; endpoint separation is not ground-truth drift",
+        "accepted_registrations": 804,
+        "rejected_registrations_with_residual": 71,
+        "accepted_residual_m": {
+          "p10": 0.010825097459848193,
+          "p50": 0.12636541993957304,
+          "p90": 0.24937499328496218,
+          "p95": 0.2600542805070104
+        },
+        "rejected_residual_m": {
+          "p10": 0.3068725310960605,
+          "p50": 0.34754772416363655,
+          "p90": 0.4061717715295114,
+          "p95": 0.41145934789707006
+        },
+        "accepted_overlap": {
+          "p10": 0.8721917300058076,
+          "p50": 0.9725824062361494,
+          "p90": 0.9890233860710061,
+          "p95": 0.9898783725650797
+        },
+        "measured_weak_axis_frames": 35,
+        "unmeasured_observability_frames": 0,
+        "minimum_normal_eigenvalue": {
+          "p10": 0.014702505750565892,
+          "p50": 0.02547696293878726,
+          "p90": 0.09643604393548862,
+          "p95": 0.13330712767654584
+        }
+      },
+      "same_run_raw_ICP": {
+        "frames": 877,
+        "pose_path_sum_m": 196.92706735086838,
+        "endpoint_separation_m": 149.9857440773199,
+        "scope": "Unmodified KISS poses from the same candidate execution, including any epoch reset jumps"
+      },
+      "correction_reasons": {
+        "first_frame": 2,
+        "independent_alignment_gate_rejected": 128,
+        "outside_declared_trust_region": 6,
+        "rail_fit_and_nonrail_validation_accepted": 30,
+        "rail_fit_not_improved": 640,
+        "raw_registration_not_accepted": 71
+      },
+      "accepted_corrections": 30,
+      "rail_minimum_translation_eigenvalue": {
+        "p10": 0.004196367332852448,
+        "p50": 0.011124831089370665,
+        "p90": 0.014493749298185745,
+        "p95": 0.01713345259241625
+      },
+      "rail_weak_axis_mean_abs_xyz": [
+        0.9999281059645407,
+        0.00421807721992857,
+        0.008924990223608776
+      ],
+      "rail_correction_s": {
+        "p10": 0.0024762590182945132,
+        "p50": 0.0027456670068204403,
+        "p90": 0.008252091379836202,
+        "p95": 0.008865075418725608
+      },
+      "raw_ICP_pose_max_abs_difference": 1.2789769243681803e-13,
+      "changes": []
+    }
+  ],
+  "annotations": {
+    "provisional_geometry": {
+      "before": {
+        "label_status": "provisional_geometry",
+        "prediction_scope": "near_track_objects",
+        "annotation_origins": {
+          "unspecified": 5
+        },
+        "box_semantics": "unspecified",
+        "minimum_3d_iou": 0.25,
+        "evaluated_frames": 5,
+        "missing_frames": [],
+        "exhaustive_frames": 0,
+        "tp": 0,
+        "fn": 5,
+        "fp_exhaustive_only": 0,
+        "annotated_object_recall": 0.0,
+        "precision_exhaustive_only": null,
+        "recall_exhaustive_only": null,
+        "f1_exhaustive_only": null,
+        "event_recall": 0.0,
+        "distance_mae_m": null,
+        "matched_mean_3d_iou": null,
+        "validity_warnings": [
+          "Provisional geometric annotations are not independently human-verified ground truth",
+          "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+          "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+        ],
+        "events": {
+          "doubleT_obstacle:upright_structure_17m": {
+            "annotated_frames": 5,
+            "matched_frames": 0,
+            "first_detection_distance_m": null
+          }
+        },
+        "frames": [
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 0,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 50,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 100,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 150,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 200,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          }
+        ]
+      },
+      "after": {
+        "label_status": "provisional_geometry",
+        "prediction_scope": "near_track_objects",
+        "annotation_origins": {
+          "unspecified": 5
+        },
+        "box_semantics": "unspecified",
+        "minimum_3d_iou": 0.25,
+        "evaluated_frames": 5,
+        "missing_frames": [],
+        "exhaustive_frames": 0,
+        "tp": 0,
+        "fn": 5,
+        "fp_exhaustive_only": 0,
+        "annotated_object_recall": 0.0,
+        "precision_exhaustive_only": null,
+        "recall_exhaustive_only": null,
+        "f1_exhaustive_only": null,
+        "event_recall": 0.0,
+        "distance_mae_m": null,
+        "matched_mean_3d_iou": null,
+        "validity_warnings": [
+          "Provisional geometric annotations are not independently human-verified ground truth",
+          "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+          "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+        ],
+        "events": {
+          "doubleT_obstacle:upright_structure_17m": {
+            "annotated_frames": 5,
+            "matched_frames": 0,
+            "first_detection_distance_m": null
+          }
+        },
+        "frames": [
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 0,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 50,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 100,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 150,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 200,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          }
+        ]
+      },
+      "annotation_sha256": "8dfe58e0e2723fec56298cd656a99adff992edace2a5ea965eeacd125b7fd8c6",
+      "nonvacuous_baseline_positive_matches": false
+    },
+    "person_author_reviewed_with_propagation": {
+      "before": {
+        "label_status": "provisional_geometry",
+        "prediction_scope": "near_track_objects",
+        "annotation_origins": {
+          "detector_track_propagation": 35,
+          "manual_anchor": 1
+        },
+        "box_semantics": "unspecified",
+        "minimum_3d_iou": 0.25,
+        "evaluated_frames": 36,
+        "missing_frames": [],
+        "exhaustive_frames": 0,
+        "tp": 0,
+        "fn": 36,
+        "fp_exhaustive_only": 0,
+        "annotated_object_recall": 0.0,
+        "precision_exhaustive_only": null,
+        "recall_exhaustive_only": null,
+        "f1_exhaustive_only": null,
+        "event_recall": 0.0,
+        "distance_mae_m": null,
+        "matched_mean_3d_iou": null,
+        "validity_warnings": [
+          "Provisional geometric annotations are not independently human-verified ground truth",
+          "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+          "Labels include detector-track propagation; retain author review provenance and do not treat this panel as an independent holdout",
+          "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+        ],
+        "events": {
+          "doubleT_obstacle:7": {
+            "annotated_frames": 36,
+            "matched_frames": 0,
+            "first_detection_distance_m": null
+          }
+        },
+        "frames": [
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 165,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "candidate",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 166,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 167,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 168,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 169,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 170,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 171,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 172,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 173,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 174,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 175,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 176,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 177,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "unresolved_obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 178,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 179,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 180,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 181,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 182,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 183,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 184,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 185,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 186,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 187,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 188,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 189,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 190,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "unresolved_obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 191,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 192,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 193,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 194,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 195,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 196,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 197,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 198,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 199,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 200,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          }
+        ]
+      },
+      "after": {
+        "label_status": "provisional_geometry",
+        "prediction_scope": "near_track_objects",
+        "annotation_origins": {
+          "detector_track_propagation": 35,
+          "manual_anchor": 1
+        },
+        "box_semantics": "unspecified",
+        "minimum_3d_iou": 0.25,
+        "evaluated_frames": 36,
+        "missing_frames": [],
+        "exhaustive_frames": 0,
+        "tp": 0,
+        "fn": 36,
+        "fp_exhaustive_only": 0,
+        "annotated_object_recall": 0.0,
+        "precision_exhaustive_only": null,
+        "recall_exhaustive_only": null,
+        "f1_exhaustive_only": null,
+        "event_recall": 0.0,
+        "distance_mae_m": null,
+        "matched_mean_3d_iou": null,
+        "validity_warnings": [
+          "Provisional geometric annotations are not independently human-verified ground truth",
+          "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+          "Labels include detector-track propagation; retain author review provenance and do not treat this panel as an independent holdout",
+          "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+        ],
+        "events": {
+          "doubleT_obstacle:7": {
+            "annotated_frames": 36,
+            "matched_frames": 0,
+            "first_detection_distance_m": null
+          }
+        },
+        "frames": [
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 165,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "candidate",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 166,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 167,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 168,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 169,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 170,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 171,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 172,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 173,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 174,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 175,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 176,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 177,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "unresolved_obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 178,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 179,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 180,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 181,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 182,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 183,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 184,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 185,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 186,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 187,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 188,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 189,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 190,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "unresolved_obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 191,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 192,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 193,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 194,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 195,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 196,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 197,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 198,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 199,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 200,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          }
+        ]
+      },
+      "annotation_sha256": "f538adc5eed18ff526b7a21c02b16562bc334e34abaf702f841d35927eba06e8",
+      "nonvacuous_baseline_positive_matches": false
+    }
+  },
+  "criteria": {
+    "stationary_not_worse": false,
+    "return_recordings": {
+      "doubleT_platform": {
+        "smaller_endpoint_separation": false,
+        "uninterrupted_pose_epoch": true
+      },
+      "roundT_squareT_pressureGate_squareT": {
+        "smaller_endpoint_separation": true,
+        "uninterrupted_pose_epoch": false
+      },
+      "roundT_pressureGate_roundT": {
+        "smaller_endpoint_separation": true,
+        "uninterrupted_pose_epoch": true
+      }
+    },
+    "accepted_registrations_not_worse": true,
+    "stationary_hazard_frames_preserved": true,
+    "existing_label_matches_preserved": true,
+    "weak_flag_and_forward_component_preserved": true,
+    "longitudinal_accuracy": "not_measured_no_independent_reference",
+    "weak_axis_policy": "Never clear normal-based flag using the rail fit; forward ICP component is retained, not validated"
+  },
+  "promote": false,
+  "promotion_scope": "Even passed proxy gates do not establish absolute longitudinal accuracy or field precision",
+  "recipe_sha256": "da2fbd77fdbb9a9c735db00194903bb308f472e42f1d41eefa8ef4894d9230e7",
+  "before_manifest_sha256": "d6cca8683370cda849bbfb2d432de231dd09568072c266d6701f198226327dc3",
+  "reporter_sha256": "eb74d56cc442016efd142e9f96508f82d2cdc69904df9932dccf96542cfbc695",
+  "after_manifest_sha256": "1de2b312d9b108f96d5d593fb30ac90f2d8a7ba635018d5d37ca40282e69405f",
+  "method_plan": {
+    "method": "measured_lines_fixed_forward",
+    "max_rail_range_m": 30.0,
+    "max_points_per_rail": 512,
+    "line_neighbors": 8,
+    "line_eigenratio": 5.0,
+    "min_points_per_rail": 24,
+    "max_match_distance_m": 0.3,
+    "robust_scale_m": 0.03,
+    "iterations": 3,
+    "svd_relative_cutoff": 1e-06,
+    "max_correction_translation_m": 0.03,
+    "max_correction_rotation_rad": 0.01,
+    "min_nonrail_points": 256
+  },
+  "native_provenance": {
+    "sources_identical": true,
+    "binary_identical": false,
+    "before_binary_sha256": "e7964c3b177fa3b9556c0581f05a3a4019c530854723027f32ea701c93bd2240",
+    "after_binary_sha256": "81a367424bfc00cc721111b4d849b8be8540ec0214304fc33725aa95ec31ff51",
+    "limitation": "A historical baseline is not an identical-binary control; same-run raw ICP isolates the pose correction, not a complete uncorrected detector replay"
+  },
+  "frame_records_sha256": "2195e44a832df3cf345f1d748f4e58ee967d160a56a706ae1054f2da2dae5223"
+}

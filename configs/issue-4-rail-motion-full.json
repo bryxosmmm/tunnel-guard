@@ -1,0 +1,45 @@
+{
+  "hypothesis": "A bounded measured-rail point-to-line correction of lateral/vertical translation and rotation can reduce return discrepancy without changing forward ICP displacement, worsening registration, inventing stationary travel, or losing the existing labelled-recording alarm gate.",
+  "criterion": "All six complete recordings. Stationary total travel no worse than matched baseline; each of three named return discrepancies strictly lower (endpoint coincidence is NOT ground truth); accepted registration residual/overlap not worse; weak-axis flag not falsely cleared; no loss of baseline hazardous frames on doubleT_obstacle. Continuous comparison numerical tolerance 1e-9, no integer-count tolerance. Any failed criterion rejects promotion.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-issue-4-rail-motion.json",
+  "output": "build/issue-4-rail-motion-full",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+      "split": "development"
+    }
+  ],
+  "baseline_run": "../tunnel-guard-issue-5/build/issue-5-regression-before-20260922",
+  "sources": [
+    "https://arxiv.org/abs/2111.15043",
+    "https://pmc.ncbi.nlm.nih.gov/articles/PMC12349154/"
+  ],
+  "method_scope": "Original constrained rail-point registration experiment, NOT a reproduction of multi-sensor RailLoMer. Nominal gauge is not imposed by correction; upstream rail selection still has its original nominal-gauge candidate prior. Nonrail validation is disjoint from rail fitting but shares the sensor and ICP initialization. Raw KISS map remains untouched; corrected poses only feed detector association.",
+  "promotion": "disabled unless every acceptance criterion is met; no post-panel threshold tuning"
+}

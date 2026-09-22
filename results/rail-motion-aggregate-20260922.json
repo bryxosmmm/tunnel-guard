@@ -1,0 +1,26 @@
+{
+  "before": {
+    "accepted": 2277,
+    "accepted_median_residual_m": 0.20836030008163792,
+    "accepted_median_overlap": 0.9436907366885485,
+    "normal_min_eigenvalues_p10_p50_p90": [
+      0.006870684976551951,
+      0.01903210640060758,
+      0.09440990101360418
+    ],
+    "unmeasured": 0
+  },
+  "after": {
+    "accepted": 2277,
+    "accepted_median_residual_m": 0.20820653652436438,
+    "accepted_median_overlap": 0.9436907366885485,
+    "normal_min_eigenvalues_p10_p50_p90": [
+      0.006870684976551951,
+      0.01903210640060758,
+      0.09440990101360418
+    ],
+    "unmeasured": 0
+  },
+  "accepted_corrections": 120,
+  "same_run_accepted_quality_regressions": 0
+}

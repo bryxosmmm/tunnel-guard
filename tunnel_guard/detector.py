@@ -16,6 +16,7 @@ from . import accelerator
 from .geometry import CrossSection, TrackGeometry, voxel_representative_indices
 from .mounting import observe_mounting, validate_mounting_config
 from .segmentation import density_labels, published_labels
+from .rail_odometry import RailOdometry
 
 
 def load_config(path: str | Path) -> dict:
@@ -382,6 +383,7 @@ class Detector:
         self.native_kernels = accelerator.native(config)
         self.config = config
         self.odometry = self._new_odometry()
+        self.rail_odometry = RailOdometry(config) if config.get("rail_motion_correction") else None
         self.previous_source = None
         self.previous_pose = np.eye(4)
         self.cached_background = None
@@ -444,7 +446,7 @@ class Detector:
             # The residual is what the alignment is actually verified to, so it is reported as
             # the position uncertainty of this frame and used as one, instead of being compared
             # to a threshold and then discarded. It is a median nearest-neighbour distance over
-            # a voxel-downsampled pair, so it bounds the pose error rather than equalling it.
+            # a voxel-downsampled pair: a heuristic scale, NOT a bound on pose error.
             quality |= {"valid": bool(valid), "reason": "registered" if valid else "registration_rejected",
                         "overlap": overlap, "median_residual_m": median,
                         "position_sigma_m": max(float(median), self.config["tracking_pose_sigma_m"])}
@@ -629,6 +631,8 @@ class Detector:
             self.previous_source = None
             self.previous_pose = np.eye(4)
             self.tracks.clear()
+            if self.rail_odometry is not None:
+                self.rail_odometry.reset()
         self.last_timestamp = timestamp_s
         self.frame_number += 1
         self.display_support = {}
@@ -663,6 +667,8 @@ class Detector:
             self.tracks.clear()
             self.previous_source = None
             self.odometry = self._new_odometry()
+            if self.rail_odometry is not None:
+                self.rail_odometry.reset()
             return result | {"reason": "insufficient_returns", "processing_s": time.perf_counter() - started}
         motion_started = time.perf_counter()
         frame, pose, motion = self._motion(points, point_times)
@@ -716,6 +722,20 @@ class Detector:
             geometry.background = self.cached_background
         elif refit_due:
             self.cached_background = geometry.background
+        if self.rail_odometry is not None:
+            correction_started = time.perf_counter()
+            raw_pose = pose
+            pose, correction = self.rail_odometry.update(
+                geometry, reduced, self.previous_source, raw_pose, motion)
+            if self.rail_odometry.map_correction is not None:
+                rotation_change = pose[:3, :3] @ raw_pose[:3, :3].T
+                self.motion_translation_covariance = (rotation_change @ self.motion_translation_covariance
+                                                      @ rotation_change.T)
+                if "translation_covariance_heuristic_m2" in motion:
+                    motion["translation_covariance_heuristic_m2"] = self.motion_translation_covariance.tolist()
+            motion["rail_correction"] = correction
+            motion["raw_ICP_pose"] = raw_pose.tolist()
+            result["rail_odometry_s"] = time.perf_counter() - correction_started
         mounting_started = time.perf_counter()
         mounting = observe_mounting(reduced, geometry, self.config)
         mounting_s = time.perf_counter() - mounting_started
