@@ -2,7 +2,7 @@
   "hypothesis": "Lowering the segmentation floor to the bed does not increase the hazard load on the real recordings.",
   "success_criterion": "Decision fields identical to build/adopt-20260920/real-crop-off; supported_range_m never exceeds the old certified_range_m on any frame.",
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "output": "build/floor-real-20260920",
   "every": 1,
   "max_frames": 201,

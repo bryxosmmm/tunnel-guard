@@ -45,7 +45,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--run", type=Path, required=True, help="run directory with per-recording jsonl")
     parser.add_argument("--bags", type=Path, default=Path("data/extended_subset"))
-    parser.add_argument("--config", type=Path, default=Path("configs/detector-native.json"))
+    parser.add_argument("--config", type=Path, default=Path("configs/detector.json"))
     parser.add_argument("--lookahead", type=float, nargs="+", default=[20.0, 40.0, 60.0])
     parser.add_argument("--radius-max", type=float, default=800.0, help="curved frames below this radius")
     parser.add_argument("--min-travel-m", type=float, default=10.0,

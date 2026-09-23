@@ -16,13 +16,13 @@ The [Gerasimov/HMM-MOS review and scenario runs](docs/REVIEW_GERASIMOV_20260918.
 
 The [3D track and clearance literature review](docs/TRACK_GEOMETRY_LITERATURE_20260918.md) maps published rail-pair estimation and local clearance coordinates to the remaining curve, grade and cant limitations. It distinguishes proposed adaptations from implemented and evaluated behavior.
 
-[The first 3D geometry iteration](docs/TRACK_LOCAL3D_ITERATION.md) now enforces the configured heading bound at actual rail-anchor locations in the default Python/native recipes. An opt-in `configs/detector-local3d-experimental.json` estimates local head heights and tilted cross-sections shared by classification, viewer and RViz. Real replay and ray-cast curve/grade/cant experiments are recorded; height bias and unresolved alarms prevent promotion of the 3D mode.
+The experimental `local_3d` rail frame was removed because classification had a Python-only fallback. The shipped `bed` frame remains the only detector mode; the historical experiments are retained in `docs/TRACK_LOCAL3D_ITERATION.md`.
 
 See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and ROS2 launch commands, and [iteration evidence](docs/GOAL_ITERATION.md) for all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
 
 ## Native acceleration and calibration experiment
 
-See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md) and the [native integration report](docs/NATIVE_INTEGRATION.md). Native acceleration is integrated with the current interval-envelope policy. Use `configs/detector-native.json`; ROS container defaults select this recipe. The Python recipe remains available as a reference. Historical performance experiments are retained in `results/performance-20260917.json`; they are not evidence for the merged revision. Mounting calibration remains provisional: all three evaluated orientation candidates failed stability gates and were not installed.
+See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md) and the [native integration report](docs/NATIVE_INTEGRATION.md). The detector has one decision path: the C++ extension, required by `configs/detector.json` and ROS container defaults. Build it with `python setup.py build_ext --inplace`; loading a detector recipe without it fails with that command. Historical performance results predate this consolidation and are not evidence of Python/C++ equivalence in this revision. Mounting calibration remains provisional: all three evaluated orientation candidates failed stability gates and were not installed.
 
 ## Native kernels follow the corrected contour
 
@@ -334,7 +334,7 @@ Costs, stated rather than absorbed:
 
 ## Two shipped behaviours measured on 2026-09-19
 
-Both are in `configs/detector-native.json`, the recipe the ROS container defaults to, and both were enabled only after
+Both are in `configs/detector.json`, the recipe the ROS container defaults to, and both were enabled only after
 their own gate.
 
 **The tunnel's own structures leave the hazard list, but never a measured intrusion.** A duct, cable tray or walkway
@@ -621,6 +621,7 @@ Nothing except scene directories may live under `SUSTechPOINTS/data/`: `scene_re
 |---|---|
 | `tunnel_guard/io.py` | PointCloud2 decoding, invalid returns, acquisition timestamps |
 | `tunnel_guard/geometry.py` | Track bed, paired rails, reference clearance envelope |
+| `tunnel_guard/accelerator.py` and `cpp/kernels.cpp` | Required C++ decision kernels and their Python bindings |
 | `tunnel_guard/segmentation.py` | Density-core clustering; optional published backends |
 | `tunnel_guard/background.py` | Open3D-supported tunnel surfaces and protrusion protection |
 | `tunnel_guard/detector.py` | KISS-ICP motion, candidates, tracking and temporal evidence |
@@ -643,11 +644,9 @@ Pipeline: validated points → KISS-ICP pose (optional deskew) → local bed and
 
 **Deskew is disabled in the current recipes.** The observed point-time span differs from the frame period, especially in cropped clouds; KISS-ICP normalizes that span to a full previous motion increment. `deskew_enabled=true` restores the experimental mode, but needs verified timing and prior-deskew provenance. Turning it off leaves motion distortion unresolved. This change is not a claim of higher detection accuracy.
 
-`configs/detector-native-fast.json` is a HISTORICAL recipe from before the 2026-09-19 changes: its recorded numbers belong to that state, and it now differs from the shipped recipe in many more keys than its stated one - `python -m tunnel_guard.config_audit` lists them. Its original purpose was two background plane proposals per window instead of three. That is a behaviour change, so it is kept as a separate recipe: measured on 798 real scans it moves 297 definite alarms to 296 (one frame becomes unresolved) and leaves all three labelled panels unchanged, while `detector-native.json` keeps the original setting and is the integration recipe. Historical pre-kernel comparisons and current interval-policy comparisons must be distinguished.
+`configs/detector.json` is the sole detector recipe. Backend-selection keys are invalid. `local_3d` is unsupported and rejected at configuration load because the native classifier implements the shipped `bed` frame only.
 
-`native_kernels` (C++ recipe only; the NumPy recipe keeps the reference path) selects the locally built `tunnel_guard._native` kernels: radial range selection, mutual-radius clustering graph, envelope classification, track-bed reference, background patch candidates, protrusion protection, strip membership and the evidence voxel count. `normal_covariances` replaces Open3D's `estimate_normals` plus `estimate_covariances` with one grid pass: neighbours within the radius capped to the nearest `max_nn`, mean-centred covariance over n, and — in the same call — the eigenvalues and the smallest eigenvector by fixed-sweep Jacobi rotations. Three labelled panels (development, seed holdout, measured beam pattern; 2,120 frames) reproduce their recorded tp/fn, event recall and precision exactly with the native kernels. Measured on a real sample: counts identical to the scipy radius count, planarity gate identical on all 31,298 points, normal agreement |dot| = 1.000000000000 on every reliable point and zero alignment differences across all patches — the points whose normals differ are exactly the ones the gate discards.
-
-Native kernels cover voxel selection, neighbour graphs, geometry classification, background masking, component statistics and evidence counting. They use reusable buffers and preserve measurement support on the recorded integration panel. Empirical agreement does not establish identity for all unseen inputs. `query_workers` controls SciPy queries; native kernels also use their own worker threads. Open3D plane proposals remain serial for repeatability. See [integration evidence and limitations](docs/NATIVE_INTEGRATION.md).
+The required `tunnel_guard._native` extension handles radial selection, voxel representatives, mutual-radius connectivity, ground profile and reference, envelope classification, background masks, component assembly, normal statistics and evidence counts. Python retains the single-implementation work for rail-anchor search, robust plane fitting, tunnel-surface proposals, path continuation, range support, object association and mounting observation. Build with `python setup.py build_ext --inplace`. Earlier equivalence panels and Python/native timing results were produced before this revision and do not establish output identity for the consolidated source. Open3D plane proposals remain serial for repeatability. See [integration evidence and limitations](docs/NATIVE_INTEGRATION.md).
 
 Segmentation preserves object portions outside the clearance gate. Dense instances cannot merge through a thin chain of border points. Temporal matching uses velocity, heuristic covariance, shape, and distinct-frame evidence. Missing path support must not turn rail removal into an infinite-width exclusion zone.
 

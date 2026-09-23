@@ -3,10 +3,10 @@
 ## What ships
 
 - `tunnel_guard.calibrate`: chronological fitting and later-frame consistency evaluation of a **provisional track-relative orientation**. Raw measurements, per-frame acceptance reasons, frozen rotation and provenance are retained. No mounting transform is automatically installed.
-- `cpp/voxel.cpp`: optional C++17 first-point voxel selection, integrated into the detector's geometry, clustering and temporal-support paths. It retains the first measured return and lexicographic voxel order, matching the NumPy implementation; it does not average away sparse returns.
-- Explicit `configs/detector-native.json`, paired real-data benchmark and full-recording comparison recipes. NumPy remains the default. Selecting `cpp` without the built extension fails explicitly.
+- `cpp/voxel.cpp` and `cpp/kernels.cpp`: required C++17 detector decision path. It retains the first measured return and lexicographic voxel order; it does not average away sparse returns.
+- `configs/detector.json` is the sole shipped detector recipe. There is no backend selector or NumPy decision path.
 
-This iteration uses real organizer data. No automated tests, synthetic scenes, new Docker images or dataset extraction were used. The native extension was built locally with Clang 21 on Apple M3/macOS, Python 3.12.8; Linux/ROS native compilation and target throughput were **not** verified here.
+The historical measurements below predate single-path consolidation and do not establish equivalence for the current source. The native extension was built locally with Clang 21 on Apple M3/macOS, Python 3.12.8; Linux/ROS native compilation and target throughput were **not** verified here.
 
 ## Build and use
 
@@ -18,11 +18,11 @@ From the repository root, using the existing environment:
 .venv-iteration/bin/python -m tunnel_guard.calibrate --experiment configs/calibration-track-real.json
 ```
 
-The extension uses only the CPython buffer API and the standard C++ library; no new runtime package is added. A compiler and Python development headers are needed for a native build. An ordinary package installation attempts the optional extension; inspect build output before selecting the native recipe. GCC/Clang flags are configured; Windows/MSVC is not supported by this build recipe. The Docker build context now includes native sources, but no image was rebuilt in this iteration.
+The extension uses only the CPython buffer API and the standard C++ library; no new runtime package is added. A compiler and Python development headers are needed for a native build. The extension is mandatory for every detector run. Build it with `python setup.py build_ext --inplace`; recipe loading fails with this command in the error if the binary is missing. GCC/Clang flags are configured; Windows/MSVC is not supported by this build recipe. The Docker build context now includes native sources, but no image was rebuilt in this iteration.
 
 **These output directories already contain evidence on the development machine.** For another run, copy the experiment JSON and choose a new `output`. Do not overwrite or delete the original run to repeat a measurement. `configs/native-full-real.json` requires the three currently extracted bags, not all six supplied bags.
 
-To use acceleration in another existing experiment, copy it and change only `detector_config` to `configs/detector-native.json` and `output` to a new directory. Keep any intentional non-default detector settings by copying that detector config and adding `"voxel_backend": "cpp"` instead. GUI, JSONL and ROS result formats are unchanged.
+To use acceleration in another existing experiment, copy it and change only `detector_config` to `configs/detector.json` and `output` to a new directory. Use `configs/detector.json`; backend keys have been removed. GUI, JSONL and ROS result formats are unchanged.
 
 ## Calibration: what is actually measured
 
@@ -77,7 +77,7 @@ A full run processed all 798 scans of the three available recordings. Against th
 
 `build/native-full-real/comparison.json` contains the complete comparison. Per-recording processing medians were 517, 324 and 407 ms. Those full-run timings are descriptive: workloads and visualization settings differed from the historical run. Use the paired benchmark below for the speed comparison.
 
-The native module uses the [CPython buffer API](https://docs.python.org/3/c-api/buffer.html), accepts contiguous native float64 triples, releases the GIL during computation and rejects nonfinite/out-of-range voxel coordinates. It uses no fast-math flags. Source and binary hashes are included in native run manifests; the build log and source snapshots are retained. Other audit tools that do not explicitly select the backend continue to use NumPy.
+The native module uses the [CPython buffer API](https://docs.python.org/3/c-api/buffer.html), accepts contiguous native float64 triples, releases the GIL during computation and rejects nonfinite/out-of-range voxel coordinates. It uses no fast-math flags. Source and binary hashes are included in native run manifests; the build log and source snapshots are retained. All detector audit tools now use the required C++ implementation.
 
 ### Paired end-to-end timing
 

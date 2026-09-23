@@ -3,7 +3,7 @@
   "source": "https://github.com/vb44/HMM-MOS commit 3f625031d135b2bbe4297125da11facdaba8ca81, built unmodified from source",
   "bag": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
   "recorded_run": "build/perf-cpp-opt-20260917/roundT_doubleT.jsonl",
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "annotation": null,
   "note": "Moving platform: 1.72 m/frame median ego-motion (about 17 m/s at 10 Hz), 310 m of travel in the recording, curved section. Poses are the recorded run's own KISS-ICP estimates.",
   "first_frame": 60,

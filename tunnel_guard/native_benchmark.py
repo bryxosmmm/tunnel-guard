@@ -28,7 +28,9 @@ def main():
     config = load_config(recipe['detector_config'])
     if recipe['seed'] != config['seed']:
         raise ValueError('Seed mismatch')
-    variants = [('numpy', Detector, 'numpy'), ('cpp', Detector, 'cpp')]
+    variants = []
+    if not recipe.get('baseline_source'):
+        raise ValueError('A saved historical baseline_source is required for the paired benchmark')
     baseline_hashes = None
     baseline_native_hash = None
     if recipe.get('baseline_source'):
@@ -50,8 +52,7 @@ def main():
         sys.modules[spec.name + '._native'] = before_native
         package._native = before_native
         before_detector = importlib.import_module(spec.name + '.detector').Detector
-        backend = config.get('voxel_backend', 'numpy')
-        variants = [('before', before_detector, backend), ('after', Detector, backend)]
+        variants = [('before', before_detector), ('after', Detector)]
         baseline_hashes = {p.name: digest(p) for p in sorted(baseline.glob('*.py'))}
     output = Path(recipe['output'])
     output.mkdir(parents=True, exist_ok=False)
@@ -67,7 +68,7 @@ def main():
                                'baseline_native_sha256': baseline_native_hash,
                                'config_sha256': digest(Path(recipe['detector_config'])),
                                'baseline_source_sha256': baseline_hashes,
-                               'variants': [{'name': name, 'voxel_backend': backend} for name, _, backend in variants],
+                               'variants': [{'name': name} for name, _ in variants],
                                'bag_metadata_sha256': digest(bag / 'metadata.yaml'),
                                'bag_files': [{'name': p.name, 'size': p.stat().st_size, 'mtime_ns': p.stat().st_mtime_ns}
                                              for p in sorted(bag.glob('*.db3'))]}
@@ -78,15 +79,15 @@ def main():
     write_json(output / 'manifest.json', manifest)
     # Load libraries and exercise each implementation on the same real first
     # frame before timing. Fresh detectors below retain identical cold tracking.
-    for _, constructor, backend in variants:
-        cfg = copy.deepcopy(config) | {'voxel_backend': backend}
+    for _, constructor in variants:
+        cfg = copy.deepcopy(config)
         constructor(cfg).process(scans[0].points, scans[0].timestamp_s, scans[0].point_times)
     runs, comparisons = [], []
     for repeat in range(recipe['repetitions']):
         order = variants if repeat % 2 == 0 else list(reversed(variants))
         paths = {}
-        for name, constructor, backend in order:
-            cfg = copy.deepcopy(config) | {'voxel_backend': backend}
+        for name, constructor in order:
+            cfg = copy.deepcopy(config)
             detector = constructor(cfg)
             path = output / f'{repeat}-{name}.jsonl'
             paths[name] = path
@@ -100,7 +101,7 @@ def main():
                                record_timestamp_ns=scan.record_timestamp_ns, sensor_frame=scan.frame_id,
                                topic=scan.topic, benchmark_elapsed_s=elapsed[-1])
                     stream.write(json.dumps(row, allow_nan=False) + '\n')
-            record = {'repeat': repeat, 'backend': name, 'voxel_backend': backend,
+            record = {'repeat': repeat, 'implementation': name,
                       'order': [v[0] for v in order],
                       'frames': len(scans), 'elapsed_s': sum(elapsed),
                       'processing_ms': {name: float(np.quantile(elapsed, q)*1000)
@@ -108,8 +109,8 @@ def main():
             runs.append(record)
             print(json.dumps(record), flush=True)
         comparisons.append(compare({'bag': bag.name, 'before': str(paths[variants[0][0]]), 'after': str(paths[variants[1][0]])}))
-    medians = {backend: float(np.median([r['processing_ms']['p50'] for r in runs if r['backend'] == backend]))
-               for backend, _, _ in variants}
+    medians = {backend: float(np.median([r['processing_ms']['p50'] for r in runs if r['implementation'] == backend]))
+               for backend, _ in variants}
     write_json(output / 'report.json', {'runs': runs, 'comparisons': comparisons,
                                       'median_of_run_p50_ms': medians,
                                       'p50_speedup': medians[variants[0][0]] / medians[variants[1][0]],

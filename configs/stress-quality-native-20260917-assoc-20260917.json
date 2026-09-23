@@ -6,7 +6,7 @@
     "minimum_iou": 0.1
   },
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "output": "build/stress-quality-native-20260917-assoc-20260917",
   "frames_per_case": 3,
   "frame_period_s": 0.1,

@@ -2,7 +2,7 @@
   "hypothesis": "Rebuilt native extension with the opt-in absent reproduces the pre-change production replay exactly.",
   "success_criterion": "Every serialized frame row is identical to build/metrics-real-replay-20260920 for both bags, apart from timing fields.",
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "output": "build/detector-fix-20260920/equivalence-20260920",
   "every": 1,
   "max_frames": 201,

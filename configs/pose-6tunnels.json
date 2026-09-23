@@ -2,7 +2,7 @@
   "hypothesis": "Per-tunnel pose and rail-anchor runs, so the synthetic panel can be built on every hackathon tunnel rather than one of them.",
   "criterion": "One row per frame carrying the sensor pose and the fitted rail anchors; the panel only reads pose, timestamp_s and geometry.rail_anchors from these files.",
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "output": "build/pose-6tunnels",
   "every": 1,
   "max_frames": 96,

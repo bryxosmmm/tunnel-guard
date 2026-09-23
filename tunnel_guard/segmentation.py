@@ -37,11 +37,8 @@ def density_labels(points: np.ndarray, config: dict) -> tuple[np.ndarray, np.nda
     core_ids = np.flatnonzero(core)
     count = 0
     if len(core_ids):
-        if module is not None:
-            core_labels = accelerator.component_labels(graph, core, module)
-            count = int(core_labels.max()) + 1
-        else:
-            count, core_labels = connected_components(graph[core_ids][:, core_ids], directed=False)
+        core_labels = accelerator.component_labels(graph, core, module)
+        count = int(core_labels.max()) + 1
         labels[core_ids] = core_labels
         border_ids = np.flatnonzero(~core)
         if len(border_ids):
@@ -53,12 +50,9 @@ def density_labels(points: np.ndarray, config: dict) -> tuple[np.ndarray, np.nda
     # assignment above may already have claimed some non-core points.
     weak_ids = np.flatnonzero(labels < 0)
     if len(weak_ids):
-        if module is not None:
-            weak_mask = np.zeros(len(core), dtype=bool)
-            weak_mask[weak_ids] = True
-            weak_labels = accelerator.component_labels(graph, weak_mask, module)
-        else:
-            _, weak_labels = connected_components(graph[weak_ids][:, weak_ids], directed=False)
+        weak_mask = np.zeros(len(core), dtype=bool)
+        weak_mask[weak_ids] = True
+        weak_labels = accelerator.component_labels(graph, weak_mask, module)
         labels[weak_ids] = count + weak_labels
     return labels, core
 

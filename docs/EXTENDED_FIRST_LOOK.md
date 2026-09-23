@@ -55,9 +55,9 @@ Commands below use `.venv-iteration/bin/python`. Original metadata was recovered
 python -m tunnel_guard.prepare_segment data/extended_subset/new_data_0/new_data_0.db3 --source-metadata build/extended-inventory/source-metadata.yaml
 python -m tunnel_guard.prepare_segment data/extended_subset/new_data_100/new_data_100.db3 --source-metadata build/extended-inventory/source-metadata.yaml
 python -m tunnel_guard.prepare_segment data/extended_subset/new_data_200/new_data_200.db3 --source-metadata build/extended-inventory/source-metadata.yaml
-python -m tunnel_guard.inspect_bag data/extended_subset/new_data_0 --config configs/detector-native.json --max-frames 3 --output build/extended-inventory/segment-0-layout.json
-python -m tunnel_guard.inspect_bag data/extended_subset/new_data_100 --config configs/detector-native.json --max-frames 3 --output build/extended-inventory/segment-100-layout.json
-python -m tunnel_guard.inspect_bag data/extended_subset/new_data_200 --config configs/detector-native.json --max-frames 3 --output build/extended-inventory/segment-200-layout.json
+python -m tunnel_guard.inspect_bag data/extended_subset/new_data_0 --config configs/detector.json --max-frames 3 --output build/extended-inventory/segment-0-layout.json
+python -m tunnel_guard.inspect_bag data/extended_subset/new_data_100 --config configs/detector.json --max-frames 3 --output build/extended-inventory/segment-100-layout.json
+python -m tunnel_guard.inspect_bag data/extended_subset/new_data_200 --config configs/detector.json --max-frames 3 --output build/extended-inventory/segment-200-layout.json
 python -m tunnel_guard.run --experiment configs/extended-prefix.json
 python -m tunnel_guard.run --experiment configs/extended-measured.json
 python -m tunnel_guard.run --experiment configs/extended-baseline.json

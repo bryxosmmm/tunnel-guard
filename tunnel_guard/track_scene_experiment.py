@@ -115,7 +115,7 @@ def main():
                               'candidate_iou':max((box_iou(o,truth) for o in objects),default=0) if truth else None,
                               'intersection_iou':max((box_iou(o,truth) for o in objects if o.get('intersection_confirmed')),default=0) if truth else None,
                               'geometry_valid':row['geometry']['valid'],'status':row['status'],
-                              'local_frame_segments':row['geometry'].get('local_frame_segments',0)}
+                              }
                     records.append(record)
                     streams[name].write(json.dumps(row|{'frame':frame,'scenario':record},allow_nan=False)+'\n')
                     if frame == 0:

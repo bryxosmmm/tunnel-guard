@@ -1,6 +1,6 @@
 {
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "output": "build/perf-cpp-normal-20260917",
   "every": 1,
   "max_frames": null,

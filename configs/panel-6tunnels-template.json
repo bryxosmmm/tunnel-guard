@@ -2,7 +2,7 @@
   "hypothesis": "Objects inserted into real recorded frames on the recorded track, occlusion-correct, on the sensor's own measured emission pattern. Every hackathon tunnel, twenty-four consecutive frames per case.",
   "criterion": "Report the share of visible injected objects that were reported by a comparably sized box, pooled over all six tunnels, and per tunnel. Until segment 4 this was six frames of doubleT_obstacle only.",
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "pose_run": "build/pose-6tunnels",
   "background_bag": "SET PER TUNNEL BY THE HARNESS",
   "output": "SET PER TUNNEL BY THE HARNESS",

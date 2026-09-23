@@ -218,9 +218,7 @@
   },
   "deskew_enabled": true,
   "query_workers": -1,
-  "native_kernels": true,
   "deskew_policy": "Disabled until acquisition span versus scan period and prior deskew provenance are verified. KISS-ICP normalizes the supplied point-time range to one full previous motion increment.",
-  "voxel_backend": "cpp",
   "object_relation": {
     "structure_max_object_height_m": 2.5,
     "linear_min_length_m": 1.5,

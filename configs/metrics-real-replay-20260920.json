@@ -2,7 +2,7 @@
   "hypothesis": "Frame alarm counts do not establish target recall. Replay current production through all existing annotated frames and retain false-alarm source diagnostics.",
   "success_criterion": "Complete 201 consecutive frames per bag, evaluate all annotation keys with unchanged IoU and scope, and attribute confirmed geometric hazard observations by reason and range. Report unsupported accuracy claims separately.",
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "output": "build/metrics-real-replay-20260920",
   "every": 1,
   "max_frames": 201,

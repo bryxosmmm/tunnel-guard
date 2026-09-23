@@ -1,5 +1,5 @@
 {
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "bags": [
     {
       "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",

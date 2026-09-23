@@ -1,23 +1,31 @@
 # Native integration, 2026-09-17
 
 Integrated Gerasimov `bb8c20c` into our `48977ad`; merge commit `22e6a55`.
-The production recipe is `configs/detector-native.json`. Preserve three background
+The production recipe is `configs/detector.json`. Preserve three background
 plane proposals; the separate `native-fast` recipe is not the accepted baseline.
+
+**Current architecture (2026-09-22):** one detector decision path uses the
+required `tunnel_guard._native` extension. This report records integration
+history; its Python-reference comparisons and dual-backend commands describe
+the earlier revision and are not current verification. Build with
+`python setup.py build_ext --inplace`. Without the extension, configuration load
+fails with this command in its error. Backend-selection keys have been removed. The
+Python-only experimental `local_3d` classifier was removed; `bed` is supported.
 
 ## Changes
 
 - Native voxel selection, neighbour graph, background operations, component
   statistics, batched evidence counting and association are integrated.
 - Ported our height/lateral uncertainty and stepped-contour interval bounds to
-  native classification. Preserved the Python reference, context-only background
-  queries, stable Python component grouping and exact-support viewer.
+  native classification. Preserved context-only background
+  queries and exact-support viewer; current component grouping is native.
 - Invalid geometry now returns unsupported observability and `unknown` instead
   of indexing an empty classification cache.
 - Skip redundant cluster voxelization only for identical grids. Coarse-grid
   uniqueness alone does not guarantee the same fine-grid ordering/cluster IDs.
 - Added header packaging, extension header dependency and Docker header allowlist.
   Container installation explicitly imports `_native`; ROS defaults select the
-  native recipe. Explicit Python configuration remains available.
+  native recipe. The sole detector recipe is required.
 - Replay/benchmark provenance now captures all C++ sources, headers and build
   recipes. Paired benchmarking can load the historical binary independently.
 - Added `tunnel_guard.profile_run` for inclusive stage wall timings around an

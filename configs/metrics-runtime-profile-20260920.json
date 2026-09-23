@@ -2,7 +2,7 @@
   "hypothesis": "Attribute production replay latency to actual inclusive detector stages.",
   "success_criterion": "Retain stage times from actual replay; nested times are not additive and this workstation is not competition hardware.",
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "output": "build/metrics-runtime-profile-20260920",
   "every": 1,
   "max_frames": 30,

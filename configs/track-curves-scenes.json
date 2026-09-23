@@ -7,8 +7,7 @@
   "mesh_step_m": 0.5,
   "detectors": {
     "baseline": "configs/detector-track-baseline.json",
-    "continuity": "configs/detector-continuity-experimental.json",
-    "local3d": "configs/detector-local3d-experimental.json"
+    "continuity": "configs/detector-continuity-experimental.json"
   },
   "cases": [
     {

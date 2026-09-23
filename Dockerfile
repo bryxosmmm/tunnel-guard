@@ -1,7 +1,7 @@
 FROM ros:humble-ros-base-jammy
 ENV DEBIAN_FRONTEND=noninteractive PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    python3-pip libgl1 libgomp1 ros-humble-rviz2 ros-humble-tf2-ros \
+    python3-pip python3-dev build-essential libgl1 libgomp1 ros-humble-rviz2 ros-humble-tf2-ros \
     && rm -rf /var/lib/apt/lists/*
 WORKDIR /opt/tunnel-guard
 COPY docker/constraints.txt ./docker/constraints.txt

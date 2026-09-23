@@ -2,7 +2,7 @@
   "hypothesis": "Same-machine-state A/B for the processing-time effect of the continuity guard.",
   "success_criterion": "Report intersecting recovery, hazard-load change and any status change against the pre-change baseline; no loss of existing intersecting observations.",
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "output": "build/timing-ab-guard-20260920",
   "every": 1,
   "max_frames": 201,

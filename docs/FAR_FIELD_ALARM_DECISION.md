@@ -23,12 +23,12 @@ whole decision: our output is honest, and how honest output scores depends on th
 Beyond the supported range the corridor centre is extrapolated and wrong by metres, so the tunnel's own surfaces appear to be
 inside the swept path. That range is reported per frame as `supported_range_m`: the **contiguous** interval from the first
 station whose path uncertainty is within `path_max_uncertainty_m`, whose bed uncertainty is within `ground_max_uncertainty_m`
-and which lies inside a measured frame segment in `local_3d` mode, up to the last station before the first gap. It replaces a
+and which lies inside a measured frame segment in the historical `local_3d` mode, up to the last station before the first gap. It replaces a
 maximum over all supported stations, which let an island of support beyond a gap claim a horizon the corridor did not have.
 
 The size of that defect is mode-dependent and was measured on 2026-09-20. In the shipped `bed` mode the contiguity and bed
 conditions shortened **one frame of 402** by 2 m, and the reported value moved by half a grid step (the grid is now 0.5 m
-instead of 1.0 m, so the field reads 61–62 m rather than 61 m). In `local_3d` mode, where the basis needs measured frame
+instead of 1.0 m, so the field reads 61–62 m rather than 61 m). In the historical `local_3d` mode, where the basis needs measured frame
 segments, the old rule was wrong by a wide margin on every sampled frame: over 20 real frames of `roundT_doubleT` it reported
 a median 63.5 m while exceeding the end of the last available 3D section on **all 20**, at 67 m against 20 m on the worst
 frame. The new rule reports a median 45.0 m and tracks the real section end (48.0 against 48.1, 20.0 against 20.0, 35.0

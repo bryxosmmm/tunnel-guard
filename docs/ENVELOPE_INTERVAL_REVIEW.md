@@ -105,7 +105,7 @@ timing benchmark and is still far from a 100 ms budget.
 Results: `results/envelope-interval-20260917.json`. Complete decisions, selected
 point diagnostics, original configuration, source snapshots and manifests:
 `build/envelope-interval-real`. The unchanged thresholds and native backend are
-from `configs/detector-native.json`. Old code/reference outputs remain available.
+from `configs/detector.json`. Old code/reference outputs remain available.
 
 ## Can mathematics recover the sensor position?
 

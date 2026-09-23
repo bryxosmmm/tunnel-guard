@@ -29,7 +29,7 @@ STEP_M = 1.72
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--config", type=Path, default=Path("configs/detector-native.json"))
+    parser.add_argument("--config", type=Path, default=Path("configs/detector.json"))
     parser.add_argument("--bag", type=Path, required=True)
     parser.add_argument("--poses", type=Path, required=True)
     parser.add_argument("--frames", type=int, nargs="+", required=True)

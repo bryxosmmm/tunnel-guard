@@ -218,9 +218,7 @@
   },
   "deskew_enabled": false,
   "query_workers": -1,
-  "native_kernels": true,
   "deskew_policy": "Disabled until acquisition span versus scan period and prior deskew provenance are verified. KISS-ICP normalizes the supplied point-time range to one full previous motion increment.",
-  "voxel_backend": "cpp",
   "installation_reference": {
     "source": "user_report_2026-09-17",
     "statement": "Лидар (нулевая точка его отсчёта) стоит на уровне 1075мм от уровня головки рельсов, ровно посередине между ними. На пустом вагоне без движения.",

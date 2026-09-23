@@ -22,7 +22,7 @@ from tunnel_guard.io import iter_bag
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--bag", type=Path, required=True)
-    parser.add_argument("--config", type=Path, default=Path("configs/detector-native.json"))
+    parser.add_argument("--config", type=Path, default=Path("configs/detector.json"))
     parser.add_argument("--frame", type=int, default=0)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
@@ -38,7 +38,7 @@ def main():
         radii = np.linalg.norm(points, axis=1)
         points = points[(radii >= config["min_range_m"]) & (radii <= config["max_range_m"])]
         frame = points[(points[:, 0] >= config["min_forward_m"]) & (np.abs(points[:, 1]) < config["context_half_width_m"])]
-        reduced = frame[voxel_representative_indices(frame, config["geometry_voxel_m"], config.get("voxel_backend", "numpy"))]
+        reduced = frame[voxel_representative_indices(frame, config["geometry_voxel_m"])]
         geometry = TrackGeometry(reduced, config)
         masks, section = geometry.classify_with_section(reduced, remove_background=False, include_boundary=True)
         _core, _context, _height, observed, interior, boundary = masks

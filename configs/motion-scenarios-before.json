@@ -3,7 +3,7 @@
   "frames": 12,
   "frame_period_s": 0.1,
   "minimum_iou": 0.1,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "scene_config": "configs/stress-measured-pattern-final.json",
   "output": "build/motion-scenarios-before",
   "cases": [

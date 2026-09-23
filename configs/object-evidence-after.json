@@ -2,7 +2,7 @@
   "hypothesis": "Object presence is conflated with corridor-hazard confirmation; a supported adjacent object can pass IoU yet be excluded from near_track_objects evaluation.",
   "criterion": "Keep annotations and IoU 0.25 fixed. Require the manual anchor to be counted as present without changing boxes or corridor alarms; compare all 2488 real frames, report nonexhaustive-label limits separately.",
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "output": "build/object-evidence-after",
   "every": 1,
   "max_frames": null,

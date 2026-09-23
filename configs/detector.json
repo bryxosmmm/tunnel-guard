@@ -219,7 +219,6 @@
   },
   "deskew_enabled": false,
   "query_workers": -1,
-  "native_kernels": false,
   "deskew_policy": "Disabled until acquisition span versus scan period and prior deskew provenance are verified. KISS-ICP normalizes the supplied point-time range to one full previous motion increment.",
   "installation_reference": {
     "source": "user_report_2026-09-17",

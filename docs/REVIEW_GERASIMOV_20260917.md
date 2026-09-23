@@ -29,7 +29,7 @@ Recipes and both logs are retained under `build/review-gerasimov-*`.
 source distribution, and `.dockerignore:17–18` admits only `cpp/*.cpp`.
 Consequently a source-distribution installation or Docker build cannot compile
 the accelerator. Since the extension is optional, the build command can return
-success while omitting `_native`; selecting `detector-native.json` subsequently
+success while omitting `_native`; selecting `detector.json` subsequently
 cannot import the required module.
 
 Reproduced with `setup.py sdist`, extraction, and `setup.py build_ext --inplace`
@@ -42,7 +42,7 @@ Docker itself was not built or run.
 ## Actual replay results
 
 Compiled the untouched archived revision in `build/review-gerasimov-source` and
-ran `detector-native.json` (three background plane proposals), every frame,
+ran `detector.json` (three background plane proposals), every frame,
 seed 20260915, visualization off. Compared against saved common-ancestor outputs
 in `build/native-full-real` using the existing `tunnel_guard.panel_report` CLI.
 

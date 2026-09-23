@@ -3,7 +3,7 @@
   "source": "https://github.com/vb44/HMM-MOS commit 3f625031d135b2bbe4297125da11facdaba8ca81, built unmodified from source",
   "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
   "recorded_run": "build/perf-cpp-opt-20260917/doubleT_obstacle.jsonl",
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "annotation": "annotations/doubleT-obstacle-person.json",
   "note": "Range-envelope probe at maxRange=80.0 m; identical frames and poses as configs/hmm-mos-probe-real-obstacle.json.",
   "first_frame": 0,
