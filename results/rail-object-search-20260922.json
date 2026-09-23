@@ -1,0 +1,115 @@
+{
+  "organizer_source_sha256": "da22e083a14e35bd4eeeca361ca78fc738afc1776a67acf8db8e42dab41e0fac",
+  "organizer_source_locator": "\u0420\u0430\u0441\u0448\u0438\u0444\u0440\u043e\u0432\u043a\u0430.md, question 15, line 56; no scan identity or coordinates",
+  "searches": [
+    {
+      "plan": {
+        "seed": 20260915,
+        "source_run": "../tunnel-guard-object-evidence/build/object-evidence-after",
+        "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+        "output": "build/rail-obstacle-review-full",
+        "expected_frames": 201,
+        "frames": [
+          0,
+          100,
+          150,
+          165,
+          181,
+          200
+        ],
+        "forward_bounds_m": [
+          2,
+          25
+        ],
+        "track_half_width_m": 1.05,
+        "height_view_bounds_m": [
+          -0.15,
+          0.8
+        ],
+        "above_railhead_review_margin_m": 0.05,
+        "hypothesis": "The reported low object may leave local returns near the annotated person. Review raw returns before segmentation, including below-railhead support; do not derive an object label from detector boxes.",
+        "criterion": "Measure raw review support in all 201 frames and render the six fixed frames. Object-specific detection range or latency requires an independently identified object and first visible frame; absence of a clearly identifiable object is not an exhaustive negative."
+      },
+      "recipe_sha256": "83d4cfc3e417ca3709c786cc2f7858f704079d4e98655554c951256840474521",
+      "frames": 201,
+      "above_railhead_plus_margin_returns": 0,
+      "max_height_in_view_m": 0.2293157084683004,
+      "limits": "Exploratory review, not a label or an exhaustive negative. Low returns below the estimated railhead can belong to sleepers, bed irregularities, or a low object. The visualization does not establish object identity, true railhead geometry, swept clearance, or first physical visibility.",
+      "local_report": "/Users/mors1337/Code/DL/tunnel-guard-issue-9/build/rail-obstacle-review-full/summary.json"
+    },
+    {
+      "plan": {
+        "seed": 20260915,
+        "source_run": "../tunnel-guard-object-evidence/build/object-evidence-after",
+        "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+        "output": "build/rail-obstacle-far-review",
+        "expected_frames": 201,
+        "frames": [
+          0,
+          20,
+          40,
+          75,
+          100,
+          181,
+          200
+        ],
+        "forward_bounds_m": [
+          40,
+          70
+        ],
+        "track_half_width_m": 2.0,
+        "height_view_bounds_m": [
+          -0.15,
+          2.2
+        ],
+        "above_railhead_review_margin_m": 0.05,
+        "hypothesis": "The organizer did not identify which person. Inspect the separate upright group near 56 m and its surroundings, without equating it with the annotated near person or assigning an object label from an alarm.",
+        "criterion": "Measure raw review support in all 201 frames and render the six fixed frames. Object-specific detection range or latency requires an independently identified object and first visible frame; absence of a clearly identifiable object is not an exhaustive negative."
+      },
+      "recipe_sha256": "7074af6e9215bf9c5c36ef879bececf1493ff4d072ab2f787970156e6f15f801",
+      "frames": 201,
+      "above_railhead_plus_margin_returns": 55248,
+      "max_height_in_view_m": 2.199856957735265,
+      "limits": "Exploratory review, not a label or an exhaustive negative. Low returns below the estimated railhead can belong to sleepers, bed irregularities, or a low object. The visualization does not establish object identity, true railhead geometry, swept clearance, or first physical visibility.",
+      "local_report": "/Users/mors1337/Code/DL/tunnel-guard-issue-9/build/rail-obstacle-far-review/summary.json"
+    },
+    {
+      "plan": {
+        "seed": 20260915,
+        "source_run": "../tunnel-guard-object-evidence/build/object-evidence-after",
+        "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+        "output": "build/rail-obstacle-focus-review",
+        "expected_frames": 201,
+        "frames": [
+          0,
+          20,
+          40,
+          60,
+          75,
+          100,
+          181,
+          200
+        ],
+        "forward_bounds_m": [
+          54,
+          58
+        ],
+        "track_half_width_m": 3.0,
+        "height_view_bounds_m": [
+          -0.15,
+          2.2
+        ],
+        "above_railhead_review_margin_m": 0.05,
+        "hypothesis": "Inspect the changing upright support near 56 m and any persistent lower support after it changes shape. This is a raw-cloud candidate search, not an identity assignment or a tuned detector configuration.",
+        "criterion": "Measure raw review support in all 201 frames and render the six fixed frames. Object-specific detection range or latency requires an independently identified object and first visible frame; absence of a clearly identifiable object is not an exhaustive negative."
+      },
+      "recipe_sha256": "20d04768c4a2414508b956d46a758e85d5ff59ffc1609bc5c25afda2e06f3015",
+      "frames": 201,
+      "above_railhead_plus_margin_returns": 26999,
+      "max_height_in_view_m": 2.1457817027037644,
+      "limits": "Exploratory review, not a label or an exhaustive negative. Low returns below the estimated railhead can belong to sleepers, bed irregularities, or a low object. The visualization does not establish object identity, true railhead geometry, swept clearance, or first physical visibility.",
+      "local_report": "/Users/mors1337/Code/DL/tunnel-guard-issue-9/build/rail-obstacle-focus-review/summary.json"
+    }
+  ],
+  "identity_status": "unverified; no organizer-provided anchor matches the persistent low group to the reported foreign object"
+}
