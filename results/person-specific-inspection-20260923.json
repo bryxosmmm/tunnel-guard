@@ -1,0 +1,116 @@
+{
+  "scene_truth": {
+    "source": "User statement 2026-09-23",
+    "target_obstacles": 1,
+    "class": "Person",
+    "position_review": "Author reports reviewing all frames 165-200; original oriented labels preserved.",
+    "box_convention": "Author describes a full-person volume, not a tight observed-return box."
+  },
+  "person_review": {
+    "frames": [
+      165,
+      166,
+      167,
+      168,
+      169,
+      170,
+      171,
+      172,
+      173,
+      174,
+      175,
+      176,
+      177,
+      178,
+      179,
+      180,
+      181,
+      182,
+      183,
+      184,
+      185,
+      186,
+      187,
+      188,
+      189,
+      190,
+      191,
+      192,
+      193,
+      194,
+      195,
+      196,
+      197,
+      198,
+      199,
+      200
+    ],
+    "inspected_projections": [
+      "XY",
+      "XZ"
+    ],
+    "observations": "Selected orange support follows the upright body and legs on all 36 frames; background bed points remain separate. Blue full-person boxes are broader and offset relative to visible return support. Selection is independently repeated per frame; all results share track 2535.",
+    "component_points_inside_obb_range": [
+      282,
+      415
+    ],
+    "runner_up_inside_obb_max": 11,
+    "fraction_of_component_inside_obb_min_median_max": [
+      0.7546666666666667,
+      0.912074251180802,
+      0.9771428571428571
+    ],
+    "semantic_classification_claim": false
+  },
+  "far_field_review": {
+    "frames": [
+      0,
+      2,
+      25,
+      50,
+      75,
+      100,
+      150,
+      181,
+      200
+    ],
+    "roi_min": [
+      50.0,
+      -5.0,
+      -3.5
+    ],
+    "roi_max": [
+      62.0,
+      2.0,
+      1.5
+    ],
+    "observations": "Early confirmed support is vertically extended; later confirmed support near 56.4 m is low and spread along the local bed/side profile. Identity outside labelled frames is unresolved. Do not identify another person or prove infrastructure identity from these projections."
+  },
+  "replay_control": {
+    "before": "build/geometry-independent-full-20260923",
+    "after": "build/person-specific-replay-20260923",
+    "frames": [
+      201,
+      201
+    ],
+    "field_difference_counts": {
+      "objects": 0,
+      "status": 0,
+      "nearest_obstacle_m": 0,
+      "pose": 0,
+      "geometry": 0,
+      "source_scan_id": 0
+    },
+    "scope": "Exact object records, frame status, nearest-obstacle distance, pose, geometry and source-scan identity. Diagnostic capture and timings excluded; detector configuration unchanged."
+  },
+  "decision": {
+    "detector_modified": false,
+    "primary_problem": "On the labelled interval 32 confirmed hazard observations across 27 frames are spatially disjoint from the sole target person; all have 2-3 certified interior voxels and no unexplained certified support.",
+    "unsafe_shortcuts": [
+      "Do not treat existing 5/36 IoU matches as 31 missed people.",
+      "Do not infer a second target from distant alarms.",
+      "Do not suppress every structure-sharing or single-ring component: sparse genuine hazards can have that evidence.",
+      "Do not call reductions in non-target alarms safe without a verified positive on-track control."
+    ]
+  }
+}

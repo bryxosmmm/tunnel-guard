@@ -61,7 +61,7 @@ See [coverage expansion](docs/COVERAGE_EXPANSION.md): complete platform and roun
 
 ## Review of new annotations
 
-See [annotation review](docs/ANNOTATION_REVIEW.md) and [sensor evidence](docs/SENSOR_PROFILE.md). The new person panel contains one manual anchor and 35 detector-propagated boxes. Raw-cloud review and a fresh 201-frame run are complete; the panel is not accepted as independent ground truth. Original oriented label files are now included; their AABB conversion reproduces all 36 exported boxes exactly. The author reports reviewing all propagated positions. The box convention and oriented evaluation remain to be resolved.
+See [annotation review](docs/ANNOTATION_REVIEW.md) and [sensor evidence](docs/SENSOR_PROFILE.md). The teammate's original oriented person boxes cover frames 165–200; all positions were author-reviewed after detector-assisted propagation. A fresh person-specific replay and inspection finds the person's measured component on all 36 frames, one track and zero ID switches. The unchanged IoU gate passes 5/36 against exported AABBs and 14/36 against original oriented full-person boxes; these are localization scores, not person-detection counts. There are 32 confirmed non-target hazard observations on 27 of those frames, disjoint from the sole target person. Full evidence and limits are in the linked review; no detector behavior was changed.
 
 ## Latest real-sequence iteration
 
@@ -323,10 +323,11 @@ Costs, stated rather than absorbed:
   (`configs/detector-qa-provisional.json`), identical to the shipped recipe in every other key, and it
   is measured: on the same 2488 frames it reports `obstacle` 112 instead of 202, `unresolved_obstacle`
   25 instead of 54, and 2344 clean frames instead of 2216. On the labelled recording it reports 102
-  `obstacle` frames instead of 166 - the one object this project has labelled intrudes into GOST M
-  between 1.05 m and 1.46 m of lateral, so the draft profile would drop two thirds of its own
-  detections. That is the whole argument for keeping the conservative contour, and it is a
-  measurement rather than a preference.
+  `obstacle` frames instead of 166. **Attribution corrected 2026-09-24:** these are frame-level
+  hazard counts, not detections of the labelled person. The current person-specific review finds
+  that person's component `adjacent` on all 36 labelled frames. The earlier claim that these counts
+  demonstrated loss of the labelled person is withdrawn. Choosing the physical reference contour
+  still requires vehicle dimensions and calibration, not optimization against total alarm counts.
 - **Runtime is unchanged.** On an idle machine, 30 frames of `doubleT_platform`: processing p50 128.3 ms
   against 131.6 ms for the recorded revision, of which the cross-section test is 8.6 ms per frame and
   the odometry 27.1 ms. The 500 ms readings taken while the six-tunnel and extended-corpus runs were
@@ -552,7 +553,7 @@ The five supplied annotation boxes describe **one provisional upright structure*
 
 ## Label the recordings in SUSTechPOINTS
 
-Human labels do not exist yet for the six recordings, and no score can be computed without them. The upstream [SUSTechPOINTS](https://github.com/naurril/SUSTechPOINTS) annotation tool is used for that work: its source is vendored under `SUSTechPOINTS/` at upstream revision `50fa188`, with this project's taxonomy patch already applied (the delta is kept in `patches/`). What is not tracked, matching the tool's own rules and this project's data rule, is its `data/` directory, its virtualenv and the 14 MB model release.
+Reviewed person labels already exist for `doubleT_obstacle` frames 165–200; a complete independently reviewed panel across all six recordings does not. Use the existing labels rather than starting them again. The upstream [SUSTechPOINTS](https://github.com/naurril/SUSTechPOINTS) annotation tool supports further work: its source is vendored under `SUSTechPOINTS/` at upstream revision `50fa188`, with this project's taxonomy patch already applied (the delta is kept in `patches/`). What is not tracked, matching the tool's own rules and this project's data rule, is its `data/` directory, its virtualenv and the 14 MB model release.
 
 ```sh
 cd SUSTechPOINTS
