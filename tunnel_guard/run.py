@@ -57,6 +57,8 @@ def environment() -> dict:
             packages[name] = None
     return {"python": sys.version, "platform": platform.platform(), "machine": platform.machine(),
             "cpu_count": os.cpu_count(),
+            "numeric_threads": {name: os.environ.get(name) for name in
+                                ("OPENBLAS_NUM_THREADS", "OMP_NUM_THREADS", "MKL_NUM_THREADS")},
             "packages": packages,
             "source_sha256": {str(p): digest(p) for p in sorted(Path(__file__).parent.glob("*.py"))}}
 
@@ -144,11 +146,10 @@ def main():
     if revision is not None:
         (output / "working-tree.patch").write_bytes(subprocess.check_output(
             ["git", "diff", "HEAD", "--", "tunnel_guard", "configs"], cwd=source_root))
-    if config.get("voxel_backend", "numpy") == "cpp" or config.get("native_kernels", False):
-        from . import _native
-        manifest["native_accelerator"] = {"binary_sha256": digest(Path(_native.__file__)),
-            "module": "tunnel_guard._native", "backend": "cpp"}
-        manifest["native_accelerator"]["sources_sha256"] = capture_native_sources(output / "source")
+    from . import _native
+    manifest["native_accelerator"] = {"binary_sha256": digest(Path(_native.__file__)),
+        "module": "tunnel_guard._native", "backend": "cpp"}
+    manifest["native_accelerator"]["sources_sha256"] = capture_native_sources(output / "source")
     write_json(output / "manifest.json", manifest)
     summaries = []
     for entry in experiment["bags"]:

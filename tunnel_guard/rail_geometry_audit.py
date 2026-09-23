@@ -30,8 +30,7 @@ def main():
     if policy not in ('zero', 'fitted'):
         raise ValueError('Unknown rail_initial_heading')
     cfg = cfg | {'rail_initial_heading': policy}
-    for name, allowed in [('rail_pair_continuity', ('window', 'relocated')),
-                          ('rail_frame_mode', ('bed', 'local_3d'))]:
+    for name, allowed in [('rail_pair_continuity', ('window', 'relocated'))]:
         value = recipe.get(name, allowed[0])
         if value not in allowed:
             raise ValueError('Unknown ' + name)
@@ -53,8 +52,8 @@ def main():
     for path in Path(__file__).parent.glob('*.py'):
         shutil.copyfile(path, snapshot / path.name)
     cfg = cfg | {'background': cfg['background'] | {'enabled': False}}
-    native = accelerator.native(cfg)
-    voxel_native = native if cfg.get('voxel_backend') == 'cpp' else None
+    native = accelerator.native()
+    voxel_native = native
     probes = np.asarray(recipe['probe_ranges_m'], dtype=float)
     counts = {'frames': 0, 'before_valid': 0, 'after_valid': 0, 'unbracketed_anchors': 0}
     recovered, regressed, changes = [], [], []

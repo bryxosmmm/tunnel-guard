@@ -1,6 +1,6 @@
 {
   "seed": 20260915,
-  "detector_config": "detector.json",
+  "detector_config": "configs/detector-native.json",
   "output": "../goal-baseline-round-serial",
   "every": 1,
   "max_frames": null,

@@ -2,7 +2,7 @@
   "hypothesis": "Density-core segmentation before rail-relative clearance gating separates connected infrastructure; state and point evidence maintain sparse detections while uncertainty remains explicit.",
   "success_criterion": "Report real object localization on independently reviewed frames, and false alarm episodes only where annotations are exhaustive. Synthetic ray-cast results are a separate stress test. Unannotated bags cannot produce accuracy, precision, or recall.",
   "seed": 20260915,
-  "detector_config": "configs/detector.json",
+  "detector_config": "configs/detector-native.json",
   "output": "build/tunnel-guard-real-quality",
   "every": 1,
   "max_frames": null,

@@ -1,6 +1,6 @@
 {
   "seed": 20260915,
-  "detector_config": "configs/detector.json",
+  "detector_config": "configs/detector-native.json",
   "output": "build/goal-final-real",
   "every": 1,
   "max_frames": null,

@@ -152,7 +152,7 @@ portable when invoked from the frozen source directory:
   -m tunnel_guard.run --experiment ../../configs/goal-baseline-gates.json)
 .venv-iteration/bin/python -m tunnel_guard.motion_audit \
   --bag data/sourcecraft_subset/for_hackathon/doubleT_platform \
-  --config configs/detector.json --output build/goal-motion-dense-reference
+  --config configs/detector-native.json --output build/goal-motion-dense-reference
 .venv-iteration/bin/python -m tunnel_guard.run \
   --experiment configs/goal-runner-real-prefix.json
 docker build --platform linux/amd64 -t tunnel-guard:goal-amd64 .

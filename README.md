@@ -16,20 +16,19 @@ The [Gerasimov/HMM-MOS review and scenario runs](docs/REVIEW_GERASIMOV_20260918.
 
 The [3D track and clearance literature review](docs/TRACK_GEOMETRY_LITERATURE_20260918.md) maps published rail-pair estimation and local clearance coordinates to the remaining curve, grade and cant limitations. It distinguishes proposed adaptations from implemented and evaluated behavior.
 
-[The first 3D geometry iteration](docs/TRACK_LOCAL3D_ITERATION.md) now enforces the configured heading bound at actual rail-anchor locations in the default Python/native recipes. An opt-in `configs/detector-local3d-experimental.json` estimates local head heights and tilted cross-sections shared by classification, viewer and RViz. Real replay and ray-cast curve/grade/cant experiments are recorded; height bias and unresolved alarms prevent promotion of the 3D mode.
+[The first 3D geometry iteration](docs/TRACK_LOCAL3D_ITERATION.md) enforced the configured heading bound at actual rail-anchor locations. Its experimental `local_3d` mode was not shipped and has been removed with the NumPy classification path. The historical replay and curve/grade/cant observations remain recorded; height bias and unresolved alarms prevented promotion.
 
 See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and ROS2 launch commands, and [iteration evidence](docs/GOAL_ITERATION.md) for all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
 
-## Native acceleration and calibration experiment
+## C++ detector and calibration experiment
 
-See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md) and the [native integration report](docs/NATIVE_INTEGRATION.md). Native acceleration is integrated with the current interval-envelope policy. Use `configs/detector-native.json`; ROS container defaults select this recipe. The Python recipe remains available as a reference. Historical performance experiments are retained in `results/performance-20260917.json`; they are not evidence for the merged revision. Mounting calibration remains provisional: all three evaluated orientation candidates failed stability gates and were not installed.
+See [build, commands and evidence](docs/CALIBRATION_AND_NATIVE.md) and the [native integration report](docs/NATIVE_INTEGRATION.md). The C++ kernels are required by the current interval-envelope policy. Build the extension with `python setup.py build_ext --inplace` and use `configs/detector-native.json`; ROS container defaults select this recipe. Historical performance experiments are retained in `results/performance-20260917.json`; they are not evidence for the merged revision. Mounting calibration remains provisional: all three evaluated orientation candidates failed stability gates and were not installed.
 
 ## Native kernels follow the corrected contour
 
-The corrected interval semantics above are implemented in **both** paths. The native classification kernel computes the same exact extrema of the piecewise-linear contour width over each point's height interval, in the same order, so the C++ recipe is not a frozen copy of the older rule. Verified two ways: the kernel and object checks compare the two recipes array by array (28/28 kernel checks, 20/20 geometry arrays, 624 and 550 candidate objects with no field mismatch), and the native recipe independently reproduces every corpus count the correction reports — `obstacle` frames 119 / 87 / 64 and 82 / 258 / 187 unresolved, identical to the review's table on 798 real scans. The three labelled panels are unchanged (development 162/54, holdout 159/57, measured 709/251), so the correction removes marginal confirmations in the unlabelled corpus, not in the annotated panels.
+The C++ classification kernel computes the exact extrema of the piecewise-linear contour width over each point's height interval. Before removal of the NumPy branch, kernel and object checks compared the two recipes array by array (28/28 kernel checks, 20/20 geometry arrays, 624 and 550 candidate objects with no field mismatch), and the C++ recipe reproduced the corpus counts reported for that correction — `obstacle` frames 119 / 87 / 64 and 82 / 258 / 187 unresolved on 798 real scans. The three labelled panels were unchanged (development 162/54, holdout 159/57, measured 709/251). These are historical comparisons, not a current second implementation.
 
-Their kernel-equivalence and corpus counts were measured on this branch's pre-merge recipes; the object counts move with the rail-heading and decode changes merged below, while the two-backend agreement is re-checked on the merged build.
-The review's other finding — that the background model was queried for returns whose decision is never consumed — is now applied in both paths as well, and it is what closes the remaining latency gap: only segmentation-context returns that are not protected evidence are queried. No threshold changed.
+Those counts were measured on pre-merge recipes; object counts moved with the rail-heading and decode changes merged below. The background model now queries only segmentation-context returns that are not protected evidence. No threshold changed.
 
 ## Measured rail anchors and corrected path geometry
 
@@ -621,6 +620,7 @@ Nothing except scene directories may live under `SUSTechPOINTS/data/`: `scene_re
 |---|---|
 | `tunnel_guard/io.py` | PointCloud2 decoding, invalid returns, acquisition timestamps |
 | `tunnel_guard/geometry.py` | Track bed, paired rails, reference clearance envelope |
+| `tunnel_guard/accelerator.py`, `cpp/` | Required C++ voxel, graph, geometry, background and component kernels |
 | `tunnel_guard/segmentation.py` | Density-core clustering; optional published backends |
 | `tunnel_guard/background.py` | Open3D-supported tunnel surfaces and protrusion protection |
 | `tunnel_guard/detector.py` | KISS-ICP motion, candidates, tracking and temporal evidence |
@@ -636,7 +636,7 @@ Nothing except scene directories may live under `SUSTechPOINTS/data/`: `scene_re
 | `tunnel_guard/on_track.py` | Objects with real point support inside the clearance envelope |
 | `tunnel_guard/sustech_import.py` | Recordings into SUSTechPOINTS scenes |
 | `patches/` | Modifications applied to the pinned SUSTechPOINTS revision |
-| `configs/detector.json` | Default detector recipe; no bag-specific branches |
+| `configs/detector-native.json` | Default detector recipe; no bag-specific branches |
 | `results/` | Small recorded result summaries; full artifacts remain local |
 
 Pipeline: validated points → KISS-ICP pose (optional deskew) → local bed and rails → supported tunnel-surface rejection → density-core segmentation → rail-relative clearance classification → temporal state and spatial evidence.
@@ -645,9 +645,9 @@ Pipeline: validated points → KISS-ICP pose (optional deskew) → local bed and
 
 `configs/detector-native-fast.json` is a HISTORICAL recipe from before the 2026-09-19 changes: its recorded numbers belong to that state, and it now differs from the shipped recipe in many more keys than its stated one - `python -m tunnel_guard.config_audit` lists them. Its original purpose was two background plane proposals per window instead of three. That is a behaviour change, so it is kept as a separate recipe: measured on 798 real scans it moves 297 definite alarms to 296 (one frame becomes unresolved) and leaves all three labelled panels unchanged, while `detector-native.json` keeps the original setting and is the integration recipe. Historical pre-kernel comparisons and current interval-policy comparisons must be distinguished.
 
-`native_kernels` (C++ recipe only; the NumPy recipe keeps the reference path) selects the locally built `tunnel_guard._native` kernels: radial range selection, mutual-radius clustering graph, envelope classification, track-bed reference, background patch candidates, protrusion protection, strip membership and the evidence voxel count. `normal_covariances` replaces Open3D's `estimate_normals` plus `estimate_covariances` with one grid pass: neighbours within the radius capped to the nearest `max_nn`, mean-centred covariance over n, and — in the same call — the eigenvalues and the smallest eigenvector by fixed-sweep Jacobi rotations. Three labelled panels (development, seed holdout, measured beam pattern; 2,120 frames) reproduce their recorded tp/fn, event recall and precision exactly with the native kernels. Measured on a real sample: counts identical to the scipy radius count, planarity gate identical on all 31,298 points, normal agreement |dot| = 1.000000000000 on every reliable point and zero alignment differences across all patches — the points whose normals differ are exactly the ones the gate discards.
+The detector always uses the locally built `tunnel_guard._native` extension for voxel selection, mutual-radius graphs, geometry classification, background operations, component statistics and evidence counts. Build it from the repository root with `python setup.py build_ext --inplace` before running a source checkout. Loading a detector recipe fails with that command in the error if the extension is absent. The recipe has no backend selector. NumPy remains in the single implementation for array assembly, rail fitting, motion and reporting.
 
-Native kernels cover voxel selection, neighbour graphs, geometry classification, background masking, component statistics and evidence counting. They use reusable buffers and preserve measurement support on the recorded integration panel. Empirical agreement does not establish identity for all unseen inputs. `query_workers` controls SciPy queries; native kernels also use their own worker threads. Open3D plane proposals remain serial for repeatability. See [integration evidence and limitations](docs/NATIVE_INTEGRATION.md).
+The kernels use reusable buffers and preserve measurement support on the recorded integration panel. The current full-corpus comparison retains small differences in accumulated evidence voxel counts; the exact-object acceptance gate remains open. `query_workers` controls remaining SciPy queries; native kernels also use their own worker threads. Open3D plane proposals remain serial for repeatability. See [integration evidence and limitations](docs/NATIVE_INTEGRATION.md).
 
 Segmentation preserves object portions outside the clearance gate. Dense instances cannot merge through a thin chain of border points. Temporal matching uses velocity, heuristic covariance, shape, and distinct-frame evidence. Missing path support must not turn rail removal into an infinite-width exclusion zone.
 

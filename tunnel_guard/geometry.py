@@ -26,23 +26,18 @@ class CrossSection(NamedTuple):
     gauge: np.ndarray
 
 
-def voxel_representatives(points: np.ndarray, size: float, backend: str = "numpy") -> np.ndarray:
-    return points[voxel_representative_indices(points, size, backend)]
+def voxel_representatives(points: np.ndarray, size: float) -> np.ndarray:
+    return points[voxel_representative_indices(points, size)]
 
 
-def voxel_representative_indices(points: np.ndarray, size: float, backend: str = "numpy") -> np.ndarray:
+def voxel_representative_indices(points: np.ndarray, size: float) -> np.ndarray:
     """Rows of the first measurement in each occupied voxel, in voxel-key order."""
     if not len(points):
         return np.empty(0, dtype=np.int64)
-    if backend == "cpp":
-        from . import _native
-        if points.dtype != np.float64:
-            raise ValueError("cpp voxel backend requires float64 measurements")
-        return np.frombuffer(_native.voxel_indices(np.ascontiguousarray(points), size), dtype=np.int64)
-    if backend == "numpy":
-        _, indices = np.unique(np.floor(points / size).astype(np.int64), axis=0, return_index=True)
-        return indices
-    raise ValueError("Unknown voxel backend")
+    if points.dtype != np.float64:
+        raise ValueError("C++ voxel selection requires float64 measurements")
+    module = accelerator.native()
+    return np.frombuffer(module.voxel_indices(np.ascontiguousarray(points), size), dtype=np.int64)
 
 
 # scipy prepares worker threads per call, so parallelism only pays for large
@@ -95,7 +90,7 @@ def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, d
     mask = ((points[:, 0] >= lo) & (points[:, 0] <= hi)
             & (np.abs(points[:, 1]) < config["ground_fit_half_width_m"])
             & (points[:, 2] > -max_height) & (points[:, 2] < -min_height))
-    sample = voxel_representatives(points[mask], max(config["geometry_voxel_m"], 0.12), config.get("voxel_backend", "numpy"))
+    sample = voxel_representatives(points[mask], max(config["geometry_voxel_m"], 0.12))
     rng = np.random.default_rng(config["seed"])
     if len(sample) > 6000:
         sample = sample[rng.choice(len(sample), 6000, replace=False)]
@@ -206,60 +201,17 @@ class TrackGeometry:
 
     def _ground_profile(self, points: np.ndarray):
         cfg = self.config
-        residual = points[:, 2] - (points[:, :2] @ self.plane[:2] + self.plane[2])
-        lateral_ok = np.abs(points[:, 1]) < cfg["ground_fit_half_width_m"]
-        anchors = []
-        previous = 0.0
-        half = cfg["ground_local_window_m"] / 2
-        limit = cfg["ground_inlier_m"] * 2
-        native = accelerator.native(cfg)
-        if native is not None:
-            anchors = accelerator.ground_profile(points, self.plane, cfg["ground_segment_m"], cfg["max_range_m"],
-                                                 cfg["ground_local_window_m"], cfg["ground_fit_half_width_m"],
-                                                 cfg["ground_inlier_m"], cfg["ground_min_support"],
-                                                 cfg["ground_max_slopes"][0], native)
-            self.ground_anchors = anchors.reshape(-1, 3)
-            return
-        # Sorting once makes each longitudinal window a contiguous slice of the
-        # same measurements; the original inequalities are then applied to the
-        # slice, so the selected set, its median and its spread are unchanged.
-        order = np.argsort(points[:, 0], kind="stable")
-        sorted_x = points[order, 0]
-        for x in np.arange(cfg["ground_segment_m"], cfg["max_range_m"], cfg["ground_segment_m"]):
-            start = np.searchsorted(sorted_x, x - half, side="left")
-            stop = np.searchsorted(sorted_x, x + half, side="right")
-            ids = order[start:stop]
-            ids = ids[(np.abs(sorted_x[start:stop] - x) < half) & lateral_ok[ids]
-                      & (np.abs(residual[ids] - previous) < limit)]
-            values = residual[ids]
-            if len(values) < max(12, cfg["ground_min_support"] // 3):
-                continue
-            support_points = points[ids]
-            if np.ptp(support_points[:, 0]) < 1.5 or np.ptp(support_points[:, 1]) < 0.4:
-                continue
-            shift = float(np.median(values))
-            mad = float(np.median(np.abs(values - shift)))
-            if anchors and abs(shift - previous) / (x - anchors[-1][0]) > cfg["ground_max_slopes"][0]:
-                continue
-            anchors.append((float(x), shift, max(mad * 1.4826, 0.015)))
-            previous = shift
-        self.ground_anchors = np.asarray(anchors, dtype=float).reshape(-1, 3)
+        self.ground_anchors = accelerator.ground_profile(
+            points, self.plane, cfg["ground_segment_m"], cfg["max_range_m"],
+            cfg["ground_local_window_m"], cfg["ground_fit_half_width_m"],
+            cfg["ground_inlier_m"], cfg["ground_min_support"],
+            cfg["ground_max_slopes"][0], accelerator.native()).reshape(-1, 3)
 
     def ground(self, points: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
         if self.plane is None or not len(self.ground_anchors):
             return np.full(len(points), np.nan), np.full(len(points), np.inf)
-        native = accelerator.native(self.config)
-        if native is not None:
-            return accelerator.ground_values(points, self.plane, self.ground_anchors,
-                                             self.config["ground_max_extrapolation_m"], native)
-        x = points[:, 0]
-        anchors = self.ground_anchors
-        shift = np.interp(x, anchors[:, 0], anchors[:, 1])
-        nearest = nearest_anchor_distance(x, anchors[:, 0])
-        uncertainty = np.interp(x, anchors[:, 0], anchors[:, 2]) + nearest * 0.008
-        uncertainty[nearest > self.config["ground_max_extrapolation_m"]] = np.inf
-        z = points[:, :2] @ self.plane[:2] + self.plane[2] + shift
-        return z, uncertainty
+        return accelerator.ground_values(points, self.plane, self.ground_anchors,
+                                         self.config["ground_max_extrapolation_m"], accelerator.native())
 
     def _rail_profile(self, points: np.ndarray):
         cfg = self.config
@@ -414,8 +366,6 @@ class TrackGeometry:
                 "side_longitudinal_ranges_m": [[float(head.min()), float(head.max())] if len(head) else None
                                                 for head in heads],
                 "bracketed": bool(all(len(head) and head.min() <= anchor_x <= head.max() for head in heads))})
-            if cfg.get("rail_frame_mode", "bed") == "local_3d":
-                self.rail_frames.append(self._fit_head_heights(q, anchor_x, center, gauge, slope))
             anchors.append((anchor_x, center, gauge, support))
         self._drop_inconsistent_trailing_anchors(anchors)
         self.rail_anchors = np.asarray(anchors, dtype=float).reshape(-1, 4)
@@ -456,96 +406,6 @@ class TrackGeometry:
                 "centre_m": float(rejected[1]), "trend_centre_m": trend,
                 "centre_deviation_m": deviation, "gauge_m": float(rejected[2]),
                 "support": int(rejected[3])})
-
-    def _fit_head_heights(self, points, x, center, gauge, slope):
-        """Local observed head support, not a CAD rail or absolute gravity estimate."""
-        cfg = self.config
-        heights, errors = [], []
-        for side in (-1, 1):
-            lateral = points[:, 1] - center - slope * (points[:, 0] - x)
-            head = points[np.abs(lateral - side * gauge / 2) < cfg["rail_half_width_m"] / 2]
-            bins = np.floor(head[:, 0] / .30).astype(np.int64)
-            keys = np.unique(bins)
-            if len(keys) < cfg["rail_min_longitudinal_bins"] or np.ptp(head[:, 0]) < cfg["rail_min_span_m"]:
-                return None
-            # Equal weight per longitudinal bin; upper support reduces the
-            # influence of web returns without inventing an unseen rail top.
-            samples = np.asarray([(np.median(head[bins == k, 0]),
-                                   np.quantile(head[bins == k, 2], .8)) for k in keys])
-            design = np.column_stack((samples[:, 0] - x, np.ones(len(samples))))
-            fit, _, rank, _ = np.linalg.lstsq(design, samples[:, 1], rcond=None)
-            error = float(np.quantile(np.abs(design @ fit - samples[:, 1]), .9))
-            if rank < 2 or abs(fit[0]) > cfg["ground_max_slopes"][0] or error > cfg["ground_inlier_m"]:
-                return None
-            heights.append(float(fit[1]))
-            errors.append(max(error, .015))
-        return [float(x), float(center), float(np.mean(heights)),
-                float(heights[1] - heights[0]), float(gauge), max(errors)]
-
-    def frame_segments(self):
-        """Piecewise local orthonormal bases shared by decisions and rendering.
-
-        Invalid head fits break support; never bridge them with a smooth curve.
-        """
-        frames = getattr(self, "rail_frames", [])
-        segments = []
-        diagnostics = getattr(self, "rail_support_diagnostics", [])
-        for index, (left, right) in enumerate(zip(frames, frames[1:])):
-            if left is None or right is None:
-                continue
-            a, b = np.asarray(left), np.asarray(right)
-            delta = b[:3] - a[:3]
-            length = np.linalg.norm(delta)
-            if length <= 0 or abs(delta[2] / delta[0]) > self.config["ground_max_slopes"][0]:
-                continue
-            tangent = delta / length
-            cross = np.array([0., (a[4] + b[4]) / 2, (a[3] + b[3]) / 2])
-            cross -= tangent * np.dot(cross, tangent)
-            gauge = np.linalg.norm(cross)
-            if gauge <= 0:
-                continue
-            lateral = cross / gauge
-            normal = np.cross(tangent, lateral)
-            start, end = a[:3].copy(), b[:3].copy()
-            # The first/last anchors need not be the first/last measured rail
-            # returns. Extend only inside BOTH heads' recorded support hulls;
-            # otherwise an arbitrary 5 m window centre creates a near blind zone.
-            if getattr(self, "rail_frame_version", 1) >= 2 and index == 0 and len(diagnostics) == len(frames):
-                ranges = diagnostics[0]['side_longitudinal_ranges_m']
-                if all(r is not None for r in ranges):
-                    x = min(a[0], max(r[0] for r in ranges))
-                    start += tangent * ((x-a[0])/tangent[0])
-            if getattr(self, "rail_frame_version", 1) >= 2 and index == len(frames)-2 and len(diagnostics) == len(frames):
-                ranges = diagnostics[-1]['side_longitudinal_ranges_m']
-                if all(r is not None for r in ranges):
-                    x = max(b[0], min(r[1] for r in ranges))
-                    end += tangent * ((x-b[0])/tangent[0])
-            segments.append((start, end, tangent, lateral, normal, gauge, max(a[5], b[5])))
-        return segments
-
-    def rail_coordinates(self, points):
-        """Coordinates at the closest measured segment; no far extrapolation.
-
-        Lateral/vertical values outside longitudinal support remain unavailable.
-        Selection is by 3D distance to the centreline, independently per point.
-        """
-        size = len(points)
-        best = np.full(size, np.inf)
-        values = np.full((size, 4), np.nan)
-        for a, b, tangent, lateral, normal, gauge, error in self.frame_segments():
-            offset = points - a
-            along = offset @ tangent
-            length = np.linalg.norm(b - a)
-            supported = (along >= 0) & (along <= length)
-            dy, dz = offset @ lateral, offset @ normal
-            distance = dy * dy + dz * dz
-            chosen = supported & (distance < best)
-            values[chosen, 0] = dy[chosen]
-            values[chosen, 1] = dz[chosen]
-            values[chosen, 2] = gauge
-            values[chosen, 3] = error
-            best[chosen] = distance[chosen]
-        return values, np.isfinite(best)
 
     def _continuation(self, edge: int) -> tuple[float, float, float, float, float, float, float]:
         """Local quadratic continuation of the measured centre-line past an anchor edge.
@@ -809,95 +669,19 @@ class TrackGeometry:
 
         One pass, so a caller that must gate a decision on a coordinate (a cell of the
         cross-section, say) uses exactly the number the mask was derived from instead of
-        recomputing it and risking the other side of a bin edge. Both backends return the
-        same pair because the native kernel now reports its own coordinates.
+        recomputing it and risking the other side of a bin edge.
         """
         cfg = self.config
-        native = accelerator.classify_geometry(points, self, accelerator.native(cfg))
-        if native is not None:
-            core, context, height, observed, nominal_overlap, boundary, lateral, running, gauge = native
-            if remove_background and self.background is not None:
-                # Only segmentation context consumes the background decision and
-                # protected returns can never be removed, so the frozen model is
-                # queried for those points alone. Each decision reads the model
-                # and the point itself, never another query point, so the result
-                # for the queried points is the one the full pass produced.
-                eligible = np.flatnonzero(context & ~((observed & nominal_overlap) | boundary))
-                if len(eligible):
-                    context[eligible] &= ~self.background.mask(points[eligible], np.zeros(len(eligible), dtype=bool))
-            masks = (core, context, height, observed, nominal_overlap, boundary) if include_boundary \
-                else (core, context, height, observed, nominal_overlap)
-            return masks, CrossSection(lateral, running, gauge)
-        section, height, ground_uncertainty, path_uncertainty, normal_scale, slope = \
-            self._cross_section_detail(points, ground)
-        lateral, running_height, gauge = section.lateral, section.running_height, section.gauge
-        rail_head = self.rail_head_height_m if self.rail_head_height_m is not None else np.nan
-        frame_supported = np.ones(len(points), dtype=bool)
-        frame_error = np.zeros(len(points))
-        if cfg.get("rail_frame_mode", "bed") == "local_3d":
-            local, frame_supported = self.rail_coordinates(points)
-            lateral[frame_supported] = local[frame_supported, 0]
-            running_height[frame_supported] = local[frame_supported, 1]
-            gauge[frame_supported] = local[frame_supported, 2]
-            frame_error[frame_supported] = local[frame_supported, 3]
-        envelope = np.asarray(cfg["envelope_segments_m"])
-        segment = envelope[np.clip(np.searchsorted(envelope[:, 0], running_height, side="right") - 1, 0, len(envelope) - 1)]
-        fraction = np.clip((running_height - segment[:, 0]) / (segment[:, 1] - segment[:, 0]), 0, 1)
-        width = segment[:, 2] + fraction * (segment[:, 3] - segment[:, 2]) + cfg["envelope_margin_m"]
-        observed = ((ground_uncertainty <= cfg["ground_max_uncertainty_m"])
-                    & (path_uncertainty <= cfg["path_max_uncertainty_m"]) & frame_supported)
-        # Remove only the measured rail-head band, not all points near a rail. The point's lateral
-        # and the rail's assumed gauge/2 are both measured from the SAME estimated centre, so the
-        # centre's error cancels in their difference; adding the path uncertainty here counted that
-        # error a second time and widened the band to ~0.48 m at 60 m, which deleted every return of
-        # an object standing 0.22 m from the rail below 0.26 m above the bed.
-        on_rail = (observed & (np.abs(np.abs(lateral) - gauge / 2) < cfg["rail_half_width_m"])
-                   & (running_height <= cfg["rail_vertical_margin_m"]))
-        # Propagate existing bed-height error through BOTH coordinates. A height
-        # error can also cross a step in the reference contour's half-width.
-        # Marginal bounds discard correlation and are conservative: they can
-        # retain extra unresolved evidence, never certify a marginal intrusion.
-        bed_error = np.where(observed, ground_uncertainty, 0.)
-        # Differential head-height error also tilts the cross-section. This is
-        # a heuristic bound, not a calibrated confidence interval.
-        angular_error = 2 * frame_error / np.maximum(gauge, 1e-6)
-        height_error = bed_error / normal_scale + frame_error + np.abs(lateral) * angular_error
-        low, high = running_height - height_error, running_height + height_error
-        min_width, max_width = envelope_width_bounds(low, high, envelope, cfg["envelope_margin_m"])
-        lateral_uncertainty = (np.where(observed, path_uncertainty, 0.) * np.sqrt(1 + slope**2)
-                               + abs(slope) * bed_error / np.sqrt(1 + slope**2)
-                               + np.abs(running_height) * angular_error)
-        vertical_inside = (low >= envelope[0, 0]) & (high <= envelope[-1, 1])
-        core = observed & ~on_rail & vertical_inside & (np.abs(lateral) + lateral_uncertainty <= min_width)
-        possible = ((high >= envelope[0, 0]) & (low <= envelope[-1, 1])
-                    & (np.abs(lateral) - lateral_uncertainty <= max_width))
-        boundary = observed & ~on_rail & ~core & possible
-        # Segmentation precedes the collision gate. Do not amputate the feet or
-        # head of an object just because only part intersects the envelope.
-        segmentation_height = (running_height >= cfg["min_running_height_m"]) & (running_height <= envelope[-1, 1] + cfg["cluster_context_margin_m"])
-        # The lateral window may only discard a return where the lateral coordinate is measured. Where
-        # the path itself is unsupported that coordinate is our own extrapolation, so it cannot be the
-        # reason a return disappears. Measured: the fitted continuation saturates against the heading
-        # bound on 1.8 per cent of real frames and puts the 100 m centre 14-15 m off, and this 3 m
-        # window then removed every return at range before anything could classify it. The height and
-        # rail tests still apply. Cost of the exemption is bounded: at most 9.8 per cent more context
-        # points, on those frames only, falling to a handful of points on other recordings.
-        lateral_within_window = ((np.abs(lateral) <= cfg["segmentation_context_half_width_m"])
-                                 | (path_uncertainty > cfg["path_max_uncertainty_m"]))
-        context = segmentation_height & ~on_rail & lateral_within_window
-        nominal_overlap = ((running_height >= envelope[0, 0]) & (running_height <= envelope[-1, 1])
-                           & ~on_rail & (np.abs(lateral) <= width))
+        native = accelerator.classify_geometry(points, self, accelerator.native())
+        core, context, height, observed, nominal_overlap, boundary, lateral, running, gauge = native
         if remove_background and self.background is not None:
-            # Background decisions are consumed only for segmentation context;
-            # protected points cannot be removed. Each mask decision depends on
-            # the frozen surface model, not on other query points, so avoid the
-            # expensive nearest-normal search for all unused/protected returns.
+            # Only unprotected segmentation context needs a background decision.
             eligible = np.flatnonzero(context & ~((observed & nominal_overlap) | boundary))
             if len(eligible):
                 context[eligible] &= ~self.background.mask(points[eligible], np.zeros(len(eligible), dtype=bool))
-        result = (core, context, height, observed, nominal_overlap)
-        masks = result + (boundary,) if include_boundary else result
-        return masks, section
+        masks = (core, context, height, observed, nominal_overlap, boundary) if include_boundary \
+            else (core, context, height, observed, nominal_overlap)
+        return masks, CrossSection(lateral, running, gauge)
 
     def supported_range_m(self) -> float | None:
         """How far ahead this frame's own evidence supports the corridor, in metres.
@@ -905,9 +689,8 @@ class TrackGeometry:
         The value describes the evidence, not a sensor specification, and it does not certify that
         the corridor is clear: it states how far the reported centre-line and bed can be read from
         what was measured here. A station counts as supported only when the path uncertainty is
-        within `path_max_uncertainty_m`, the bed uncertainty is within `ground_max_uncertainty_m`,
-        and - in `local_3d` frame mode - the station lies inside a measured frame segment, because
-        the basis itself exists only there. The two uncertainties grow with distance from their
+        within `path_max_uncertainty_m`, and the bed uncertainty is within
+        `ground_max_uncertainty_m`. The two uncertainties grow with distance from their
         nearest measured anchor, so support ends where either policy stops holding.
 
         The reported value is the far end of the CONTIGUOUS run that starts at the first supported
@@ -925,13 +708,6 @@ class TrackGeometry:
         _, _, path_uncertainty = self.path(grid)
         supported = (np.isfinite(path_uncertainty) & (path_uncertainty <= self.config["path_max_uncertainty_m"])
                      & np.isfinite(bed_uncertainty) & (bed_uncertainty <= self.config["ground_max_uncertainty_m"]))
-        if self.config.get("rail_frame_mode", "bed") == "local_3d":
-            # A centre-line station projected onto a measured segment has 0 <= along <= length
-            # exactly when its station lies within that segment's longitudinal hull.
-            inside = np.zeros(len(grid), dtype=bool)
-            for a, b, _, _, _, _, _ in self.frame_segments():
-                inside |= (grid >= min(a[0], b[0])) & (grid <= max(a[0], b[0]))
-            supported &= inside
         run = np.flatnonzero(supported)
         if not len(run):
             return 0.0
@@ -943,9 +719,7 @@ class TrackGeometry:
     def describe(self) -> dict:
         return {"valid": self.valid, "reason": self.reason, "ground_quality": self.ground_quality,
                 "lateral_boundary_policy": "heuristic_path_and_ground_interval",
-                "boundary_uncertainty_scope": ("path_bed_and_head_fit_heuristic_not_full_extrinsics"
-                    if self.config.get("rail_frame_mode", "bed") == "local_3d"
-                    else "path_center_and_bed_height_only_not_full_extrinsics"),
+                "boundary_uncertainty_scope": "path_center_and_bed_height_only_not_full_extrinsics",
                 "ground_plane": None if self.plane is None else self.plane.tolist(),
                 "rail_center_estimator": self.config.get("rail_center_estimator", "histogram"),
                 "rail_anchor_support": self.config.get("rail_anchor_support", "window"),
@@ -953,7 +727,7 @@ class TrackGeometry:
                 "rail_frame_mode": self.config.get("rail_frame_mode", "bed"),
                 "rail_frames": self.rail_frames,
                 "rail_frame_version": self.rail_frame_version,
-                "local_frame_segments": len(self.frame_segments()) if self.rail_frames else 0,
+                "local_frame_segments": 0,
                 "rail_rejections": self.rail_rejections,
                 "rail_head_height_m": self.rail_head_height_m,
                 "ground_anchors": self.ground_anchors.tolist(), "rail_anchors": self.rail_anchors.tolist(),

@@ -6,7 +6,7 @@
     "minimum_iou": 0.1
   },
   "seed": 20260915,
-  "detector_config": "configs/detector.json",
+  "detector_config": "configs/detector-native.json",
   "output": "build/tunnel-guard-stress-quality-final",
   "frames_per_case": 3,
   "frame_period_s": 0.1,

@@ -6,7 +6,7 @@
     "synthetic_event_recall_min": 0.95,
     "negative_episode_rate_max": 0.05
   },
-  "detector_config": "configs/detector.json",
+  "detector_config": "configs/detector-native.json",
   "stress_config": "configs/stress-quality.json",
   "annotations": "annotations/sourcecraft-provisional.json",
   "bag_root": "data/sourcecraft_subset/for_hackathon",

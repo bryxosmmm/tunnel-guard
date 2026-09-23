@@ -41,9 +41,8 @@ def main():
     source_manifest = json.loads((source / "manifest.json").read_text())
     manifest = environment() | {"source_manifest_sha256": digest(source / "manifest.json"),
                                "native_sources_sha256": native_sources, "candidates": []}
-    if config.get("voxel_backend") == "cpp" or config.get("native_kernels"):
-        from . import _native
-        manifest["native_binary_sha256"] = digest(Path(_native.__file__))
+    from . import _native
+    manifest["native_binary_sha256"] = digest(Path(_native.__file__))
     cfg = copy.deepcopy(config)
     cfg["background"]["enabled"] = False
     reference_origin = np.asarray(cfg["sensor_translation"])
@@ -92,7 +91,7 @@ def main():
                 keep = ((radii >= cfg["min_range_m"]) & (radii <= cfg["max_range_m"])
                         & (points[:, 0] >= cfg["min_forward_m"])
                         & (np.abs(points[:, 1]) < cfg["context_half_width_m"]))
-                reduced = voxel_representatives(points[keep], cfg["geometry_voxel_m"], cfg.get("voxel_backend", "numpy"))
+                reduced = voxel_representatives(points[keep], cfg["geometry_voxel_m"])
                 geometry = TrackGeometry(reduced, cfg)
                 observation = observe_mounting(reduced, geometry, cfg)
                 record = {"frame": scan.index, "measurement_timestamp_ns": scan.measurement_timestamp_ns,

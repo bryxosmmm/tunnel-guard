@@ -1,6 +1,6 @@
 {
   "seed": 20260915,
-  "detector_config": "/opt/tunnel-guard/configs/detector.json",
+  "detector_config": "/opt/tunnel-guard/configs/detector-native.json",
   "output": "/evidence/offline-fixed",
   "every": 1,
   "max_frames": 10,

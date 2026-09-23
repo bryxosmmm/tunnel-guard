@@ -206,7 +206,7 @@ def report_candidates(events: list[dict], plan: dict) -> list[dict]:
 
 
 def scan(bag: Path, plan: dict, start_frame: int = 0, max_frames: int | None = None) -> dict:
-    detector = load_config(Path(plan.get("detector_config", "configs/detector.json")))
+    detector = load_config(Path(plan.get("detector_config", "configs/detector-native.json")))
     thresholds = plan.get("thresholds", {})
     clusters, selected = [], []
     for scan_row in iter_bag(bag, detector):

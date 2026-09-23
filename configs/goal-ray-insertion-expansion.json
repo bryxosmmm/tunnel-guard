@@ -1,6 +1,6 @@
 {
   "seed": 20260915,
-  "detector_config": "configs/detector.json",
+  "detector_config": "configs/detector-native.json",
   "bag": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
   "frames": 10,
   "output": "build/goal-ray-insertion-expansion",

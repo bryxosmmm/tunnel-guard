@@ -1,6 +1,6 @@
 {
   "seed": 20260915,
-  "detector_config": "configs/detector.json",
+  "detector_config": "configs/detector-native.json",
   "output": "build/native-paired-m4-20260917",
   "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
   "frames": 20,

@@ -1,5 +1,5 @@
 {
-  "detector_config": "configs/detector.json",
+  "detector_config": "configs/detector-native.json",
   "output": "build/sustech-import-new-data",
   "bags": [
     {

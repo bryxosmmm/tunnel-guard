@@ -85,7 +85,7 @@ Raw evidence, original annotation snapshot, evaluations and sheets:
 ```sh
 git fetch origin
 git merge --no-commit --no-ff origin/main
-.venv-iteration/bin/python -m tunnel_guard.annotate --annotations annotations/doubleT-obstacle-person.json --bag-root data/sourcecraft_subset/for_hackathon --config configs/detector.json --output build/annotation-review-20260916
+.venv-iteration/bin/python -m tunnel_guard.annotate --annotations annotations/doubleT-obstacle-person.json --bag-root data/sourcecraft_subset/for_hackathon --config configs/detector-native.json --output build/annotation-review-20260916
 .venv-iteration/bin/python -m tunnel_guard.run --experiment configs/annotation-review-run.json
 .venv-iteration/bin/python -m tunnel_guard.evaluate --run build/iteration-baseline --annotations annotations/doubleT-obstacle-person.json --output build/annotation-review-20260916/baseline-evaluation.json
 .venv-iteration/bin/python -m tunnel_guard.evaluate --run build/annotation-detector-20260916 --annotations annotations/doubleT-obstacle-person.json --output build/annotation-review-20260916/current-evaluation.json

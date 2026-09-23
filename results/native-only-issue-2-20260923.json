@@ -1,0 +1,48 @@
+{
+  "issue": "https://github.com/bryxosmmm/tunnel-guard/issues/2",
+  "seed": 20260915,
+  "cpp_sources_changed": false,
+  "cpp_binary_sha256_baseline_and_after": "23b32e11607311575d4d84816e89ebde4364054662e46559aaf94fdb9c1cd08b",
+  "six_tunnels": {
+    "frames": 2488,
+    "standard_run": {
+      "report": "build/issue-2-six-tunnels-comparison-v2.json",
+      "changed_frames_by_field": {"objects": 34}
+    },
+    "openblas_one_thread": {
+      "report": "build/issue-2-six-tunnels-one-thread-comparison.json",
+      "changed_frames_by_field": {"objects": 27}
+    }
+  },
+  "extended_subset": {
+    "indices": "0..216 inclusive, step 9",
+    "frames_per_split": 51,
+    "frames": 1275,
+    "standard_run": {
+      "report": "build/issue-2-extended-comparison.json",
+      "changed_frames_by_field": {"objects": 136}
+    },
+    "openblas_one_thread": {
+      "report": "build/issue-2-extended-one-thread-comparison.json",
+      "changed_frames_by_field": {"objects": 117}
+    }
+  },
+  "baseline_self_repeat": {
+    "split": "new_data_9",
+    "frames": 51,
+    "openblas_one_thread": true,
+    "report": "build/issue-2-original-self-repeat-comparison.json",
+    "changed_frames_by_field": {"objects": 24}
+  },
+  "comparison": {
+    "missing_frames": 0,
+    "measurement_identity_errors": 0,
+    "status_geometry_motion_pose_observability_health_changes": 0,
+    "only_changed_object_field": "accumulated_support_voxels",
+    "float_tolerance": 1e-10,
+    "strict_object_equality_met": false
+  },
+  "config_audit_fail_on_drift": "passed",
+  "docker_build": "unverified: docker command unavailable locally",
+  "interpretation": "The original detector also changes evidence voxel counts between independent replays. The issue's exact-object comparison remains unmet; no field accuracy or safety claim follows from these unlabelled panels."
+}

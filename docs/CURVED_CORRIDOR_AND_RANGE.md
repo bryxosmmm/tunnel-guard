@@ -212,10 +212,10 @@ and the 1460-frame panel is identical on every metric. See
   `curved_stress.py` — the estimators and probes, none selected by any recipe.
 - Recipes: `configs/stress-measured-pattern-{final,curve,curve4,cropcheck}-*.json`, `configs/perf-curve-*.json`,
   `configs/perf-prefetch-on.json`.
-- Shipped tools, all runnable as `python -m ...`: `tunnel_guard.check_kernels` and
-  `tunnel_guard.check_geometry_kernels` (backend equivalence), `tunnel_guard.curved_stress` (arc panel),
+- Shipped tools, runnable as `python -m ...`: `tunnel_guard.curved_stress` (arc panel),
   `tunnel_guard.extended_subset` (sample the extended recording without copying it) and
   `tunnel_guard.curve_audit` (score the continuation against later measurements on real curves).
+  The historical backend-equivalence scripts were removed with the NumPy branch.
   Probes under `scripts/` are working copies and are not tracked by this repository.
 - Recorded evidence: `results/curve-continuation-20260919.json`,
   `results/alignment-long-lever-20260919.json`, `results/reader-overlap-20260919.json`,

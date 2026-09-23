@@ -45,20 +45,15 @@ def load_config(path: str | Path) -> dict:
         raise ValueError("Invalid sensor range bounds")
     if not isinstance(config.get("deskew_enabled", False), bool):
         raise ValueError("deskew_enabled must be boolean")
-    if config.get("voxel_backend", "numpy") not in ("numpy", "cpp"):
-        raise ValueError("voxel_backend must be numpy or cpp")
-    if config.get("voxel_backend") == "cpp":
-        from . import _native  # Fail explicitly when the selected accelerator is unavailable.
+    if "voxel_backend" in config or "native_kernels" in config:
+        raise ValueError("Remove voxel_backend and native_kernels: the C++ detector path is mandatory")
+    accelerator.native()  # Fail before reading a recording when the extension is missing.
     ransac_threads = config.get("background", {}).get("ransac_threads", 1)
     if type(ransac_threads) is not int or ransac_threads < 1:
         raise ValueError("background.ransac_threads must be a positive integer")
     query_workers = config.get("query_workers", -1)
     if type(query_workers) is not int or (query_workers < 1 and query_workers != -1):
         raise ValueError("query_workers must be -1 (all cores) or a positive integer")
-    if not isinstance(config.get("native_kernels", False), bool):
-        raise ValueError("native_kernels must be boolean")
-    if config.get("native_kernels", False):
-        from . import _native  # Fail explicitly when the selected kernels are unavailable.
     if config.get("obstacle_distance_mode", "cluster_min_x") not in ("cluster_min_x", "envelope_support_min_x"):
         raise ValueError("Unknown obstacle_distance_mode")
     if config.get("rail_center_estimator", "histogram") not in ("histogram", "paired_line"):
@@ -67,8 +62,8 @@ def load_config(path: str | Path) -> dict:
         raise ValueError("Unknown rail_initial_heading")
     if config.get("rail_pair_continuity", "window") not in ("window", "relocated"):
         raise ValueError("Unknown rail_pair_continuity")
-    if config.get("rail_frame_mode", "bed") not in ("bed", "local_3d"):
-        raise ValueError("Unknown rail_frame_mode")
+    if config.get("rail_frame_mode", "bed") != "bed":
+        raise ValueError("Only rail_frame_mode=bed is supported by the C++ detector")
     if config.get("rail_anchor_support", "window") not in ("window", "bracketed", "measured"):
         raise ValueError("Unknown rail_anchor_support")
     validate_mounting_config(config)
@@ -108,7 +103,7 @@ def _far_field_bound(distance_m: float, geometry: TrackGeometry, config: dict) -
 def relation_reason(obj: dict) -> str:
     """Why this object has the relation to the corridor that it has.
 
-    One place, both backends, derived from the object's own evidence counts, so the reason
+    One place, derived from the object's own evidence counts, so the reason
     a consumer reads is the reason the decision was taken in.
 
     * `inside_heuristic_path_and_ground_interval` - certified interior support.
@@ -162,8 +157,7 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                                      section.gauge[context])
         structural = structural_full[context]
     else:
-        chosen = voxel_representative_indices(points[context], config["cluster_voxel_m"],
-                                             config.get("voxel_backend", "numpy"))
+        chosen = voxel_representative_indices(points[context], config["cluster_voxel_m"])
         rows = np.flatnonzero(context)[chosen]
         cloud = points[rows]
         cloud_section = CrossSection(section.lateral[rows], section.running_height[rows],
@@ -226,113 +220,21 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     if arrays is not None:
         arrays.update(cluster_labels=labels, cluster_core=core, cluster_observed=observed,
                       cluster_nominal_overlap=nominal_overlap, cluster_boundary_uncertain=boundary)
-    native = accelerator.native(config)
-    if native is not None and len(cloud):
-        # One native call groups the cloud by component and computes every
-        # statistic; the dictionaries are assembled here, where they cost under a
-        # millisecond, in the original field order.
-        objects, rejected_counts, rows = accelerator.cluster_objects(
-            cloud, labels, core, boundary, density_core, heights, uncertain_support, config, native)
-        rejected.update(rejected_counts)
-        if arrays is not None:
-            components = rows
-            diagnostics["components"] = components
-        if diagnostics is not None:
-            diagnostics.update(rejected=dict(rejected), accepted=len(objects),
-                               noise_points=int(np.count_nonzero(labels < 0)))
-    else:
-        order = np.argsort(labels, kind="stable")
-        # One stable grouping replaces a full labels==label scan per component.
-        # Stable order preserves original point order within every cluster, hence
-        # witness selection, box ties and temporal evidence ordering stay unchanged.
-        sorted_labels = labels[order]
-        starts = np.r_[0, np.flatnonzero(np.diff(sorted_labels)) + 1]
-        stops = np.r_[starts[1:], len(order)]
-        for start, stop in zip(starts, stops):
-            label = sorted_labels[start]
-            if label < 0:
-                continue
-            indices = order[start:stop]
-            inside = indices[core[indices]]
-            # A component reduced to one voxel has zero extent and cannot reach a support floor of
-            # two, yet it is the only evidence that exists about a far object the sensor sampled with
-            # a single ray. It is therefore ADMITTED on any interior evidence at all, and the CLAIM
-            # (an unresolved or certified intrusion) keeps its own threshold: one voxel inside the
-            # contour is reported as a candidate whose support is unresolved, never as an intrusion.
-            singleton = len(indices) < 2
-            if not singleton and len(indices) < config["weak_min_voxels"]:
-                rejected["below_weak_min_voxels"] += 1
-                if arrays is not None:
-                    components.append({"component_id": int(label), "reason": "below_weak_min_voxels", "points": len(indices)})
-                continue
-            q = cloud[indices]
-            minimum, maximum = q.min(axis=0), q.max(axis=0)
-            extent = maximum - minimum
-            if not singleton and extent.max() < config["cluster_min_extent_m"]:
-                rejected["below_min_extent"] += 1
-                if arrays is not None:
-                    components.append({"component_id": int(label), "reason": "below_min_extent", "points": len(indices)})
-                continue
-            # The INTERSECTION claim keeps its own threshold: one voxel inside the contour reports a
-            # candidate whose support is unresolved, not a certified intrusion. The unresolved claim
-            # uses the SAME floor, not the admission floor: a single stray return at the contour edge
-            # is doubt, and doubt is reported as a candidate, never as an intrusion claim.
-            claim_floor = config.get("claim_min_support_voxels", config["weak_min_voxels"])
-            intersects = len(inside) >= claim_floor
-            uncertain_count = int(np.count_nonzero(uncertain_support[indices]))
-            unresolved = uncertain_count >= claim_floor
-            dense_count = int(np.count_nonzero(density_core[indices]))
-            if not intersects and not unresolved and dense_count == 0 and uncertain_count == 0:
-                rejected["weak_without_envelope_support"] += 1
-                if arrays is not None:
-                    components.append({"component_id": int(label), "reason": "weak_without_envelope_support", "points": len(indices)})
-                continue
-            instant = (dense_count >= config["immediate_min_voxels"]
-                       and extent[2] >= config["immediate_min_height_m"])
-            interior_dense_count = int(np.count_nonzero(density_core[inside]))
-            interior_height = float(np.ptp(cloud[inside, 2])) if len(inside) else 0.
-            intersection_immediate = (interior_dense_count >= config["immediate_min_voxels"]
-                                      and interior_height >= config["immediate_min_height_m"])
-            distance_points = q
-            distance_method = "cluster_min_x"
-            if config.get("obstacle_distance_mode", "cluster_min_x") == "envelope_support_min_x":
-                if intersects:
-                    distance_points = cloud[inside]
-                    distance_method = "supported_envelope_min_x"
-                elif unresolved:
-                    distance_points = q[uncertain_support[indices]]
-                    distance_method = "unresolved_envelope_evidence_min_x"
-            witness = distance_points[np.argmin(distance_points[:, 0])]
-            objects.append({"bbox_min": minimum.tolist(), "bbox_max": maximum.tolist(),
-                            "component_id": int(label),
-                            "cluster_nearest_x_m": float(np.min(q[:, 0])),
-                            "supported_envelope_nearest_x_m": float(np.min(cloud[inside, 0])) if len(inside) else None,
-                            "unresolved_envelope_nearest_x_m": float(np.min(q[uncertain_support[indices], 0])) if unresolved else None,
-                            "center": ((minimum + maximum) / 2).tolist(), "extent_m": extent.tolist(),
-                            "distance_m": float(witness[0]), "distance_method": distance_method,
-                            "distance_support_point": witness.tolist(), "distance_support_points": len(distance_points),
-                            "path_relation": "intersecting" if intersects else ("unresolved" if unresolved else "adjacent"),
-                            "support_voxels": len(indices), "density_core_voxels": dense_count,
-                            "in_envelope_voxels": len(inside), "_support_points": q,
-                            "_support_indices": indices,
-                            "uncertain_voxels": int(np.count_nonzero(uncertain_support[indices])),
-                            "boundary_uncertain_voxels": int(np.count_nonzero(boundary[indices])),
-                            "height_above_bed_m": [float(heights[indices].min()), float(heights[indices].max())],
-                            "immediate": bool(instant),
-                            "interior_density_core_voxels": interior_dense_count,
-                            "interior_height_span_m": interior_height,
-                            "intersection_immediate": bool(intersection_immediate)})
-            if arrays is not None:
-                components.append({"component_id": int(label), "reason": "accepted", "points": len(indices)})
+    native = accelerator.native()
+    objects, rejected_counts, rows = accelerator.cluster_objects(
+        cloud, labels, core, boundary, density_core, heights, uncertain_support, config, native)
+    rejected.update(rejected_counts)
+    if arrays is not None:
+        components = rows
     if diagnostics is not None:
         diagnostics.update(rejected=dict(rejected), accepted=len(objects),
                            noise_points=int(np.count_nonzero(labels < 0)))
         if arrays is not None:
             diagnostics["components"] = components
     # Every object carries the rail-relative coordinates of its own support and the split of
-    # its evidence into the kinds the decision distinguishes. Computed here, once, for both
-    # backends, so a reported reason and the decision it explains can never come from
-    # different code. `_support_indices` indexes this cluster cloud, the same array the masks
+    # its evidence into the kinds the decision distinguishes. Computed here once, so
+    # a reported reason and the decision it explains use the same masks.
+    # `_support_indices` indexes this cluster cloud, the same array the masks
     # above index.
     for obj in objects:
         rows = obj.pop("_support_indices")
@@ -379,7 +281,7 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
 
 class Detector:
     def __init__(self, config: dict):
-        self.native_kernels = accelerator.native(config)
+        self.kernels = accelerator.native()
         self.config = config
         self.odometry = self._new_odometry()
         self.previous_source = None
@@ -569,7 +471,7 @@ class Detector:
         # One native call counts every track's accumulated evidence, instead of
         # one call per track: the same distinct-voxel count, same per-track value.
         counts = accelerator.voxel_counts([record["evidence"] for record in pending],
-                                          cfg["cluster_voxel_m"], self.native_kernels)
+                                          cfg["cluster_voxel_m"], self.kernels)
         for record, count in zip(pending, counts):
             record["count"] = int(count)
         for record in pending:
@@ -639,7 +541,7 @@ class Detector:
         # one of the range bounds, so an explicit finite test would drop exactly
         # the same rows. Measurements are decoded as float64 triples.
         keep = accelerator.range_indices(points, self.config["min_range_m"], self.config["max_range_m"],
-                                         self.native_kernels)
+                                         self.kernels)
         points = points[keep]
         if capture_diagnostics:
             self.diagnostic_arrays["range_points"] = points
@@ -677,7 +579,6 @@ class Detector:
         # the native kernel partitions by the leading key axis so each slice is
         # deduplicated and sorted in cache. The kernel is handed the masked cloud with a
         # half-width that covers it, so its partition stays exact.
-        accelerator_module = self.native_kernels if self.config.get("voxel_backend", "numpy") == "cpp" else None
         # The kernel returns indices into the array it is given and re-clips laterally, so it is handed
         # the already-masked subset with a half-width that cannot clip it again.
         subset = frame[crop]
@@ -687,7 +588,7 @@ class Detector:
         reach = (max(abs(float(subset[:, 1].min())), abs(float(subset[:, 1].max())))
                  + self.config["geometry_voxel_m"]) if len(subset) else base_half
         reduced = subset[accelerator.crop_voxels(subset, self.config["min_forward_m"], reach,
-                                                 self.config["geometry_voxel_m"], accelerator_module)]
+                                                 self.config["geometry_voxel_m"], self.kernels)]
         if capture_diagnostics:
             self.diagnostic_arrays.update(registered_points=frame, cropped_points=frame[crop], geometry_voxel_points=reduced)
         # The criterion is DISTANCE TRAVELLED, not frames: the model's validity is a spatial property, so a
@@ -777,28 +678,14 @@ class Detector:
         classification = carried[0] if carried else geometry.classify(reduced, remove_background=False)
         _, _, _, observed, _ = classification
         edges = self.config["range_bins_m"]
-        if self.native_kernels is not None:
-            counts = accelerator.range_summary(reduced, frame, crop, observed,
-                                               np.column_stack((edges[:-1], edges[1:])), self.native_kernels)
-            for index, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
-                bins.append({"range_m": [lo, hi], "returns": int(counts[index, 0]),
-                             "returns_before_geometry_voxel": int(counts[index, 1]),
-                             "geometry_supported_returns": int(counts[index, 2])})
-        else:
-            for lo, hi in zip(edges[:-1], edges[1:]):
-                mask = (reduced[:, 0] >= lo) & (reduced[:, 0] < hi)
-                raw_mask = (frame[:, 0] >= lo) & (frame[:, 0] < hi) & crop
-                bins.append({"range_m": [lo, hi], "returns": int(mask.sum()),
-                             "returns_before_geometry_voxel": int(raw_mask.sum()),
-                             "geometry_supported_returns": int(np.count_nonzero(mask & observed))})
+        counts = accelerator.range_summary(reduced, frame, crop, observed,
+                                           np.column_stack((edges[:-1], edges[1:])), self.kernels)
+        for index, (lo, hi) in enumerate(zip(edges[:-1], edges[1:])):
+            bins.append({"range_m": [lo, hi], "returns": int(counts[index, 0]),
+                         "returns_before_geometry_voxel": int(counts[index, 1]),
+                         "geometry_supported_returns": int(counts[index, 2])})
         health_reasons = []
         calibration_caveats = []
-        if self.config.get("rail_frame_mode", "bed") == "local_3d":
-            health_reasons.append("experimental_local_rail_frames")
-            if not geometry.frame_segments():
-                health_reasons.append("local_rail_frames_unavailable")
-                if status == "no_obstacle_observed":
-                    status = "unknown"
         if not geometry.valid:
             health_reasons.append(geometry.reason)
         if not motion["valid"]:
@@ -815,7 +702,7 @@ class Detector:
             calibration_caveats.append("deskew_disabled_unverified_timing")
         elif not len(point_times):
             calibration_caveats.append("deskew_timestamps_unavailable")
-        # One place for both backends: the native component path builds its own records, so the
+        # The native component path builds its own records, so the
         # far-field lateral bound is attached here rather than inside either builder.
         for obj in objects:
             obj["far_field_lateral_bound_m"] = _far_field_bound(obj["distance_m"], geometry, self.config)

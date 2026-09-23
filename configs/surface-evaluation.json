@@ -1,6 +1,6 @@
 {
   "seed": 20260921,
-  "detector_config": "configs/detector.json",
+  "detector_config": "configs/detector-native.json",
   "scene_config": "configs/stress-measured-pattern-final.json",
   "output": "build/surface-preservation-supported",
   "frames": 3,

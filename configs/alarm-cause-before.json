@@ -1,6 +1,6 @@
 {
   "seed": 20260915,
-  "detector_config": "configs/detector.json",
+  "detector_config": "configs/detector-native.json",
   "output": "build/alarm-cause-before",
   "every": 1,
   "max_frames": 201,

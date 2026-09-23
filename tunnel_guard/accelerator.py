@@ -1,22 +1,8 @@
-"""Optional native kernels, each with the NumPy expression it must reproduce.
-
-The native paths are selected by `native_kernels` in the detector recipe and
-require the locally built `tunnel_guard._native` extension. Every function here
-returns exactly what the NumPy branch returns: same selection, same arithmetic
-order, same tie-breaking. Nothing in this module defines a threshold or changes
-a decision; it only evaluates predicates the detector already applies.
-
-Keeping both branches side by side is deliberate: the NumPy branch is the
-reference, the native branch is an accelerator, and the project has no test
-suite in which a silent divergence could hide.
-"""
+"""Required C++ kernels for the detector's spatial operations."""
 from __future__ import annotations
 
-from itertools import chain
-
 import numpy as np
-from scipy.sparse import coo_matrix, csr_matrix
-from scipy.spatial import cKDTree
+from scipy.sparse import csr_matrix
 
 # Grid resolution for the native pair search. It only bounds how many candidate
 # points a radius query inspects: the enumeration covers each point's radius
@@ -24,11 +10,12 @@ from scipy.spatial import cKDTree
 GRID_CELL_M = 0.25
 
 
-def native(config: dict):
-    """Return the extension module when this recipe selects native kernels."""
-    if not config.get("native_kernels", False):
-        return None
-    from . import _native
+def native():
+    """Load the required extension with an actionable build error."""
+    try:
+        from . import _native
+    except ImportError as exc:
+        raise RuntimeError("C++ detector kernel is required; run python setup.py build_ext --inplace") from exc
     return _native
 
 
@@ -76,7 +63,7 @@ def component_labels(graph, subset, module):
     return np.frombuffer(payload, dtype=np.int64)
 
 
-def crop_voxels(frame: np.ndarray, min_forward: float, half_width: float, size: float, module=None):
+def crop_voxels(frame: np.ndarray, min_forward: float, half_width: float, size: float, module):
     """Indices of the voxel representatives inside a longitudinal window.
 
     Numerically identical to reducing frame[crop] on the same grid: the retained
@@ -84,147 +71,94 @@ def crop_voxels(frame: np.ndarray, min_forward: float, half_width: float, size: 
     key order. The native branch does the crop, the key computation and the
     reduction in one partitioned pass, so the cropped copy never exists.
     """
-    if module is not None:
-        return np.frombuffer(module.select_crop_voxels(np.ascontiguousarray(frame), min_forward,
-                                                       half_width, size), dtype=np.int64)
-    crop = (frame[:, 0] >= min_forward) & (np.abs(frame[:, 1]) < half_width)
-    window = np.flatnonzero(crop)
-    cropped = frame[window]
-    if not len(cropped):
-        return np.empty(0, dtype=np.int64)
-    _, first = np.unique(np.floor(cropped / size).astype(np.int64), axis=0, return_index=True)
-    return window[first]
+    return np.frombuffer(module.select_crop_voxels(np.ascontiguousarray(frame), min_forward,
+                                                   half_width, size), dtype=np.int64)
 
 
-def range_indices(points: np.ndarray, minimum: float, maximum: float, module=None) -> np.ndarray:
+def range_indices(points: np.ndarray, minimum: float, maximum: float, module) -> np.ndarray:
     """Rows whose radius lies inside the sensor band."""
-    if module is not None:
-        return np.frombuffer(module.range_indices(points, minimum, maximum), dtype=np.int64)
-    radii = np.linalg.norm(points, axis=1)
-    return np.flatnonzero((radii >= minimum) & (radii <= maximum))
+    return np.frombuffer(module.range_indices(points, minimum, maximum), dtype=np.int64)
 
 
-def density_graph(metric: np.ndarray, radius: np.ndarray, config: dict, module=None):
+def density_graph(metric: np.ndarray, radius: np.ndarray, config: dict, module):
     """Mutual-radius symmetric graph and per-row partner count of a cluster cloud.
 
     The retained pairs are { (i, j) : i < j, d2(i, j) <= min(r_i, r_j)^2 } with d2
-    accumulated as dx*dx + dy*dy + dz*dz. The NumPy branch's radius query is only
-    a candidate filter and is a strict superset of that predicate.
+    accumulated as dx*dx + dy*dy + dz*dz.
     """
     n = len(metric)
-    if module is not None:
-        indptr, indices, data, degree = module.mutual_graph(metric, radius, GRID_CELL_M)
-        indptr = np.frombuffer(indptr, dtype=np.int64)
-        indices = np.frombuffer(indices, dtype=np.int64)
-        data = np.frombuffer(data, dtype=np.uint8)
-        # scipy accepts the canonical CSR directly; the arrays already carry
-        # sorted columns and summed duplicates, exactly like coo_matrix().tocsr().
-        graph = csr_matrix((data, indices, indptr), shape=(n, n))
-        return graph, np.frombuffer(degree, dtype=np.int64) + 1
-    from .geometry import query_workers
-    tree = cKDTree(metric)
-    configured = config.get("query_workers", -1)
-    neighbors = tree.query_ball_point(metric, radius, return_sorted=False,
-                                      workers=query_workers(n, configured))
-    counts = np.fromiter(map(len, neighbors), dtype=np.int64, count=n)
-    row = np.repeat(np.arange(n), counts)
-    column = np.fromiter(chain.from_iterable(neighbors), dtype=np.int64, count=int(counts.sum()))
-    forward = row < column
-    pairs = np.column_stack((row[forward], column[forward]))
-    if len(pairs):
-        delta = metric[pairs[:, 0]] - metric[pairs[:, 1]]
-        pairs = pairs[np.einsum("ij,ij->i", delta, delta)
-                      <= np.minimum(radius[pairs[:, 0]], radius[pairs[:, 1]])**2]
-    edge_i = np.concatenate((pairs[:, 0], pairs[:, 1]))
-    edge_j = np.concatenate((pairs[:, 1], pairs[:, 0]))
-    graph = coo_matrix((np.ones(len(edge_i), dtype=np.uint8), (edge_i, edge_j)), shape=(n, n)).tocsr()
-    return graph, np.asarray(graph.sum(axis=1)).ravel() + 1
+    indptr, indices, data, degree = module.mutual_graph(metric, radius, GRID_CELL_M)
+    indptr = np.frombuffer(indptr, dtype=np.int64)
+    indices = np.frombuffer(indices, dtype=np.int64)
+    data = np.frombuffer(data, dtype=np.uint8)
+    graph = csr_matrix((data, indices, indptr), shape=(n, n))
+    return graph, np.frombuffer(degree, dtype=np.int64) + 1
 
 
 def patch_candidates(leveled: np.ndarray, plane: np.ndarray, low: float, high: float,
-                     distance: float, module=None) -> np.ndarray:
+                     distance: float, module) -> np.ndarray:
     """Rows inside a patch's longitudinal window and plane distance band."""
-    if module is not None:
-        return np.frombuffer(module.patch_candidates(leveled, np.asarray(plane, dtype=float),
-                                                     low, high, distance), dtype=np.int64)
-    window = np.flatnonzero((leveled[:, 0] >= low) & (leveled[:, 0] <= high))
-    return window[np.abs(leveled[window] @ plane[:3] + plane[3]) <= distance]
+    return np.frombuffer(module.patch_candidates(leveled, np.asarray(plane, dtype=float),
+                                                 low, high, distance), dtype=np.int64)
 
 
 def protrusion_ids(sample: np.ndarray, normals: np.ndarray, reliable: np.ndarray, plane: np.ndarray,
-                   depth: float, radius: float, alignment: float, module=None) -> np.ndarray:
+                   depth: float, radius: float, alignment: float, module) -> np.ndarray:
     """Samples that protect an attachment edge against this plane."""
-    if module is not None:
-        return np.frombuffer(module.protrusion_ids(sample, normals, reliable,
-                                                   np.asarray(plane, dtype=float),
-                                                   depth, radius, alignment), dtype=np.int64)
-    distance = np.abs(sample @ plane[:3] + plane[3])
-    return np.flatnonzero(reliable & (distance >= depth) & (distance <= radius)
-                          & (np.abs(normals @ plane[:3]) < alignment))
+    return np.frombuffer(module.protrusion_ids(sample, normals, reliable,
+                                               np.asarray(plane, dtype=float),
+                                               depth, radius, alignment), dtype=np.int64)
 
 
-def keep_outside_radius(query: np.ndarray, targets: np.ndarray, radius: float, module=None) -> np.ndarray:
+def keep_outside_radius(query: np.ndarray, targets: np.ndarray, radius: float, module) -> np.ndarray:
     """Per-query flag: no target point lies within the Euclidean radius."""
-    if module is not None:
-        hit = np.frombuffer(module.within_radius(query, targets, radius), dtype=np.uint8)
-        return ~hit.astype(bool)
-    distance, _ = cKDTree(targets).query(query)
-    return distance > radius
+    hit = np.frombuffer(module.within_radius(query, targets, radius), dtype=np.uint8)
+    return ~hit.astype(bool)
 
 
 def strip_inside(leveled: np.ndarray, ids: np.ndarray, strips: np.ndarray, margin: float,
-                 transverse: int, module=None) -> np.ndarray:
+                 transverse: int, module) -> np.ndarray:
     """Given points landing inside any of a patch's observed strips."""
-    if module is not None:
-        return np.frombuffer(module.strip_inside(leveled, ids, np.asarray(strips, dtype=float),
-                                                 margin, int(transverse)), dtype=np.int64)
-    q = leveled[ids]
-    inside = np.zeros(len(ids), dtype=bool)
-    for strip_low, strip_high, bottom, top in strips:
-        inside |= ((q[:, 0] >= strip_low - margin) & (q[:, 0] <= strip_high + margin)
-                   & (q[:, transverse] >= bottom - margin) & (q[:, transverse] <= top + margin))
-    return ids[inside]
+    return np.frombuffer(module.strip_inside(leveled, ids, np.asarray(strips, dtype=float),
+                                             margin, int(transverse)), dtype=np.int64)
 
 
 def ground_values(points: np.ndarray, plane: np.ndarray, ground_anchors: np.ndarray, maximum: float,
-                  module=None):
+                  module):
     """Track-bed reference height and extrapolation uncertainty."""
-    if module is not None:
-        z, uncertainty = module.ground_values(np.ascontiguousarray(points), np.asarray(plane, dtype=float),
-                                              np.asarray(ground_anchors, dtype=float), maximum)
-        return np.frombuffer(z, dtype=np.float64), np.frombuffer(uncertainty, dtype=np.float64)
-    from .geometry import nearest_anchor_distance
-    x = points[:, 0]
-    shift = np.interp(x, ground_anchors[:, 0], ground_anchors[:, 1])
-    nearest = nearest_anchor_distance(x, ground_anchors[:, 0])
-    uncertainty = np.interp(x, ground_anchors[:, 0], ground_anchors[:, 2]) + nearest * 0.008
-    uncertainty[nearest > maximum] = np.inf
-    return points[:, :2] @ plane[:2] + plane[2] + shift, uncertainty
+    z, uncertainty = module.ground_values(np.ascontiguousarray(points), np.asarray(plane, dtype=float),
+                                          np.asarray(ground_anchors, dtype=float), maximum)
+    return np.frombuffer(z, dtype=np.float64), np.frombuffer(uncertainty, dtype=np.float64)
 
 
-def classify_geometry(points: np.ndarray, geometry, module=None):
+def classify_geometry(points: np.ndarray, geometry, module):
     """Envelope, rail-relative and ground support classification.
 
     Returns (core, context, height, observed, nominal_overlap, boundary, lateral,
-    running_height, gauge); the NumPy reference stays in TrackGeometry.classify for recipes
-    without native kernels. The last three are the rail-relative coordinates the masks were
+    running_height, gauge). The last three are the rail-relative coordinates the masks were
     computed in, so a caller can gate a claim on the same numbers instead of recomputing
     them.
     """
-    if module is None or geometry.plane is None or len(geometry.ground_anchors) < 1 \
-            or len(geometry.rail_anchors) < 2:
-        return None
     config = geometry.config
-    # The C++ kernel implements the legacy bed basis. Experimental local 3D
-    # frames use the shared NumPy classifier until profiling warrants a port.
-    if config.get("rail_frame_mode", "bed") == "local_3d":
-        return None
+    # The kernel requires fitted anchors. For an unobservable frame, feed it neutral
+    # coordinates while making path support impossible. These anchors are only
+    # computational inputs; they never turn an unmeasured corridor into evidence.
+    plane = geometry.plane if geometry.plane is not None else np.zeros(3)
+    ground = (geometry.ground_anchors if geometry.plane is not None and len(geometry.ground_anchors)
+              else np.array([[0.0, np.nan, np.inf]]))
+    rail = geometry.rail_anchors
+    path_limit = config["path_max_uncertainty_m"]
+    if len(rail) < 2:
+        gauge = config["rail_gauge_m"]
+        rail = np.array([[0.0, 0.0, gauge, 0.0],
+                         [config["max_range_m"], 0.0, gauge, 0.0]])
+        path_limit = -1.0
     rail_head = geometry.rail_head_height_m if geometry.rail_head_height_m is not None else float("nan")
     payload = module.classify_geometry(
-        np.ascontiguousarray(points), np.asarray(geometry.plane, dtype=float),
-        np.asarray(geometry.ground_anchors, dtype=float), np.asarray(geometry.rail_anchors, dtype=float),
+        np.ascontiguousarray(points), np.asarray(plane, dtype=float),
+        np.asarray(ground, dtype=float), np.asarray(rail, dtype=float),
         np.asarray(config["envelope_segments_m"], dtype=float), rail_head,
-        config["ground_max_uncertainty_m"], config["path_max_uncertainty_m"],
+        config["ground_max_uncertainty_m"], path_limit,
         config["ground_max_extrapolation_m"], config["path_max_extrapolation_m"],
         config["rail_half_width_m"], config["rail_vertical_margin_m"], config["min_running_height_m"],
         config["cluster_context_margin_m"], config["segmentation_context_half_width_m"],
@@ -338,35 +272,22 @@ def normal_statistics(sample: np.ndarray, radius: float, max_nn: int, min_neighb
             np.frombuffer(normals, dtype=np.float64).reshape(-1, 3))
 
 
-def voxel_counts(stacks, size: float, module=None):
+def voxel_counts(stacks, size: float, module):
     """Distinct voxel count per evidence stack, one call for every object.
 
-    Equal to [len(voxel_representatives(stack, size)) for stack in stacks]; the
-    counts are integers, so the native and NumPy branches agree exactly.
+    Counts the unique first-point voxels in each evidence stack.
     """
-    if module is not None:
-        payload = module.voxel_counts(list(stacks), size)
-        return np.frombuffer(payload, dtype=np.int64)
-    return np.array([len(np.unique(np.floor(stack / size).astype(np.int64), axis=0)) if len(stack) else 0
-                     for stack in stacks], dtype=np.int64)
+    payload = module.voxel_counts(list(stacks), size)
+    return np.frombuffer(payload, dtype=np.int64)
 
 
 def mask_candidates(leveled: np.ndarray, planes: np.ndarray, bounds: np.ndarray, distance: float,
-                    module=None):
+                    module):
     """All patch candidates, their per-patch slices, and their unique union."""
-    if module is not None:
-        union, candidates, offsets = module.mask_candidates(
-            np.ascontiguousarray(leveled), np.asarray(planes, dtype=float), np.asarray(bounds, dtype=float), distance)
-        return (np.frombuffer(union, dtype=np.int64), np.frombuffer(candidates, dtype=np.int64),
-                np.frombuffer(offsets, dtype=np.int64))
-    offset = [0]
-    prepared = []
-    for plane, bound in zip(planes, bounds):
-        ids = patch_candidates(leveled, plane, bound[0], bound[1], distance)
-        prepared.append(ids)
-        offset.append(offset[-1] + len(ids))
-    union = np.unique(np.concatenate(prepared)) if prepared else np.empty(0, dtype=np.int64)
-    return union, np.concatenate(prepared) if prepared else np.empty(0, dtype=np.int64), np.asarray(offset, dtype=np.int64)
+    union, candidates, offsets = module.mask_candidates(
+        np.ascontiguousarray(leveled), np.asarray(planes, dtype=float), np.asarray(bounds, dtype=float), distance)
+    return (np.frombuffer(union, dtype=np.int64), np.frombuffer(candidates, dtype=np.int64),
+            np.frombuffer(offsets, dtype=np.int64))
 
 
 def mask_apply(leveled: np.ndarray, protected: np.ndarray, background: np.ndarray, planes: np.ndarray,

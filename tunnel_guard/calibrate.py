@@ -27,8 +27,7 @@ def estimate(points, config, recipe):
     mask = ((radius >= config['min_range_m']) & (radius <= config['max_range_m'])
             & (points[:, 0] >= config['min_forward_m'])
             & (np.abs(points[:, 1]) <= config['context_half_width_m']))
-    reduced = voxel_representatives(points[mask], config['geometry_voxel_m'],
-                                     config.get('voxel_backend', 'numpy'))
+    reduced = voxel_representatives(points[mask], config['geometry_voxel_m'])
     geometry = TrackGeometry(reduced, config)
     result = {'accepted': False, 'reason': geometry.reason,
               'ground_quality': geometry.ground_quality,

@@ -1,6 +1,6 @@
 {
   "seed": 20260915,
-  "detector_config": "configs/detector.json",
+  "detector_config": "configs/detector-native.json",
   "output": "build/perf-current-corpus-after-20260917",
   "every": 1,
   "max_frames": null,

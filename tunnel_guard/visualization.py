@@ -44,21 +44,6 @@ def corridor_edges(description: dict, config: dict) -> np.ndarray:
     contour = [(float(h), float(w + config["envelope_margin_m"]))
                for low, high, wlow, whigh in segments for h, w in ((low, wlow), (high, whigh))]
     contour = [(h, -w) for h, w in contour] + [(h, w) for h, w in reversed(contour)]
-    if config.get("rail_frame_mode", "bed") == "local_3d":
-        edges = []
-        for a, b, _, lateral, normal, _, _ in geometry.frame_segments():
-            _, _, path_error = geometry.path(np.asarray([a[0], b[0]]))
-            _, bed_error = geometry.ground(np.asarray([a, b]))
-            if (np.any(path_error > config["path_max_uncertainty_m"])
-                    or np.any(bed_error > config["ground_max_uncertainty_m"])):
-                continue
-            rings = [np.asarray([c + w * lateral + h * normal for h, w in contour]) for c in (a, b)]
-            for ring in rings:
-                for p, q in zip(ring, np.roll(ring, -1, axis=0)):
-                    edges.extend((p, q))
-            for p, q in zip(*rings):
-                edges.extend((p, q))
-        return np.asarray(edges).reshape(-1, 3)
     edges, previous = [], None
     slope = geometry.plane[1]
     normal = np.sqrt(1 + np.sum(geometry.plane[:2] ** 2))

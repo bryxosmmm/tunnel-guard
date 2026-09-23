@@ -1,5 +1,27 @@
 # Native integration, 2026-09-17
 
+This document records the 2026-09-17 integration. The current detector has one required C++ spatial path. Build with `python setup.py build_ext --inplace`; detector recipe loading fails explicitly when the extension is missing. Historical two-backend comparisons below describe the earlier implementation.
+
+## Native-only consolidation, 2026-09-23
+
+Issue #2 removes the NumPy fallback, the backend selectors and the experimental
+`local_3d` mode. The original C++ sources are unchanged; clean baseline and edited
+builds produced the same extension SHA-256
+`23b32e11607311575d4d84816e89ebde4364054662e46559aaf94fdb9c1cd08b`.
+An actual detector replay covered all 2,488 frames of the six tunnel recordings
+and 25 selected splits of the extended recording (1,275 frames). The frame statuses,
+geometry, motion, pose, range observability and health fields agreed within the
+panel comparator's 1e-10 float tolerance. The strict object-equality gate did
+not pass: `accumulated_support_voxels` differed on 34 tunnel frames and 136
+extended frames. No other object field changed. The original code also differed
+on 24 of 51 frames when the same extended split was replayed twice with
+`OPENBLAS_NUM_THREADS=1`; the voxel count is sensitive to tiny coordinate changes
+at cell boundaries. Those counts do not justify an accuracy claim, and the
+issue's exact-object acceptance criterion remains unresolved. Docker was not
+available in this local environment, so its build gate remains unverified.
+The run counts, fixed split selection, comparison reports and baseline self-repeat
+are indexed in `results/native-only-issue-2-20260923.json`.
+
 Integrated Gerasimov `bb8c20c` into our `48977ad`; merge commit `22e6a55`.
 The production recipe is `configs/detector-native.json`. Preserve three background
 plane proposals; the separate `native-fast` recipe is not the accepted baseline.
@@ -9,15 +31,14 @@ plane proposals; the separate `native-fast` recipe is not the accepted baseline.
 - Native voxel selection, neighbour graph, background operations, component
   statistics, batched evidence counting and association are integrated.
 - Ported our height/lateral uncertainty and stepped-contour interval bounds to
-  native classification. Preserved the Python reference, context-only background
-  queries, stable Python component grouping and exact-support viewer.
+  native classification. Context-only background queries and the exact-support viewer remain.
 - Invalid geometry now returns unsupported observability and `unknown` instead
   of indexing an empty classification cache.
 - Skip redundant cluster voxelization only for identical grids. Coarse-grid
   uniqueness alone does not guarantee the same fine-grid ordering/cluster IDs.
 - Added header packaging, extension header dependency and Docker header allowlist.
   Container installation explicitly imports `_native`; ROS defaults select the
-  native recipe. Explicit Python configuration remains available.
+  native recipe. The C++ extension is now required for every detector recipe.
 - Replay/benchmark provenance now captures all C++ sources, headers and build
   recipes. Paired benchmarking can load the historical binary independently.
 - Added `tunnel_guard.profile_run` for inclusive stage wall timings around an
@@ -95,7 +116,6 @@ From the repository root, with the local environment installed:
 .venv-iteration/bin/python -m tunnel_guard.panel_report --panel configs/integrated-native-panel.json --output build/integrated-native-comparison.json
 .venv-iteration/bin/python -m tunnel_guard.run --experiment configs/integrated-native-no-rails.json
 .venv-iteration/bin/python -m tunnel_guard.run --experiment configs/integrated-python-prefix.json
-.venv-iteration/bin/python -m tunnel_guard.native_benchmark --experiment configs/integrated-native-paired.json
 .venv-iteration/bin/python -m tunnel_guard.profile_run --experiment configs/integrated-native-wall-profile.json
 .venv-iteration/bin/python setup.py sdist --dist-dir build/integrated-native-dist
 .venv-iteration/bin/python -m tunnel_guard.review_viewer --run build/integrated-native-real --bag data/sourcecraft_subset/for_hackathon/doubleT_platform --port 8768

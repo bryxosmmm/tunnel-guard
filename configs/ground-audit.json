@@ -1,7 +1,7 @@
 {
   "seed": 20260918,
   "output": "build/tunnel-guard-ground-audit-common",
-  "detector_config": "configs/detector.json",
+  "detector_config": "configs/detector-native.json",
   "scene_config": "configs/stress-measured-pattern-final.json",
   "hypothesis": "Published ground segmentation must be evaluated after sensor-height and tilt correction before rejection; exact synthetic floor labels reveal genuine classification errors.",
   "success_criterion": {

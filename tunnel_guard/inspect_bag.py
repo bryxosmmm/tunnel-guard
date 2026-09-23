@@ -15,7 +15,7 @@ from .run import digest, write_json
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("bag", type=Path)
-    parser.add_argument("--config", type=Path, default=Path("configs/detector.json"))
+    parser.add_argument("--config", type=Path, default=Path("configs/detector-native.json"))
     parser.add_argument("--max-frames", type=int, default=30)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()

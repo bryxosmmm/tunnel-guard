@@ -1,5 +1,5 @@
 {
-  "detector_config": "configs/detector.json",
+  "detector_config": "configs/detector-native.json",
   "thresholds": {
     "cluster_eps_m": 0.30,
     "cluster_voxel_m": 0.10,

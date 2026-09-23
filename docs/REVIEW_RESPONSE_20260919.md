@@ -160,10 +160,11 @@ candidate-level metric; it is superseded by this table.
 
 ## Reproduction
 
+The historical backend-equivalence commands were removed with the NumPy detector path;
+their earlier results remain in the saved reports.
+
 ```sh
 uv run python setup.py build_ext --inplace
-uv run python -m tunnel_guard.check_geometry_kernels --bag data/sourcecraft_subset/for_hackathon/roundT_doubleT --frames 2
-uv run python -m tunnel_guard.check_kernels --config configs/detector-native.json --bag data/sourcecraft_subset/for_hackathon/doubleT_obstacle --frames 1
 uv run python -m tunnel_guard.run --experiment <experiment with prefetch_depth 0 and with 1>
 uv run python -m tunnel_guard.curved_stress --experiment <arc panel experiment>
 uv run python -m tunnel_guard.extended_subset --bag data/new_data --indices 0 9 18 --out data/extended_subset

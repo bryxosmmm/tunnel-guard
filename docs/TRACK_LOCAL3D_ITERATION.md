@@ -1,12 +1,14 @@
 # Применение геометрического ресерча: непрерывность и локальный 3D-габарит
 
+Исторический отчёт от 2026-09-18. Экспериментальный режим `local_3d` и его рецепты удалены при переходе детектора на единственный C++ путь; команды с архивными именами ниже больше не исполняются. Числа описывают старый эксперимент.
+
 2026-09-18. Исходный commit: `da74738`. [Обоснование по литературе](TRACK_GEOMETRY_LITERATURE_20260918.md). Это собственная адаптация геометрических принципов, не воспроизведение опубликованного метода или его метрик.
 
 ## Что интегрировано
 
-**Основной режим:** `configs/detector.json` и `configs/detector-native.json` теперь включают `rail_pair_continuity: relocated`. После уточнения и переноса опоры проверяется фактический наклон от предыдущей опоры: `abs(delta_y) <= rail_max_heading * delta_x`. Старый допуск в центре поискового окна больше не позволяет принять противоречащий конфигу переход. Отклонённые предложения сохраняются в `geometry.rail_rejections`. Предел направления не менялся.
+**Основной режим:** `configs/detector-native.json` теперь включают `rail_pair_continuity: relocated`. После уточнения и переноса опоры проверяется фактический наклон от предыдущей опоры: `abs(delta_y) <= rail_max_heading * delta_x`. Старый допуск в центре поискового окна больше не позволяет принять противоречащий конфигу переход. Отклонённые предложения сохраняются в `geometry.rail_rejections`. Предел направления не менялся.
 
-**Отдельный рабочий эксперимент:** `configs/detector-local3d-experimental.json`, `rail_frame_mode: local_3d`.
+**Отдельный рабочий эксперимент:** `archived detector-local3d-experimental.json`, `rail_frame_mode: local_3d`.
 
 - `geometry._fit_head_heights`: независимые локальные оценки высоты двух рельсовых полос, с балансировкой продольных бинов, проверкой поддержки, уклона и остатка. Верхний квантиль отражений — приближение поверхности головки, не доказательство правильного выделения её верхней грани.
 - `frame_segments`: центр, касательная, ортогонализованная поперечная ось и нормаль. Неудачная оценка головок разрывает поддержку. На крайних участках продолжение допускается только внутри пересечения измеренных продольных диапазонов обеих сторон.
@@ -87,10 +89,10 @@ Viewer: `http://127.0.0.1:8771`, реальная `roundT_doubleT`, первые
 Команды выполнены через `.venv-iteration/bin/python`. При повторе нужен новый output в копии рецепта: результаты не перезаписываются. Open3D уже был зависимостью проекта; новые контейнеры, веса и датасеты не скачивались.
 
 ```bash
-python -m tunnel_guard.run --experiment configs/track-local3d-prefix.json
+python -m tunnel_guard.run --experiment archived track-local3d-prefix.json
 python -m tunnel_guard.rail_geometry_audit --experiment configs/track-continuity-full-geometry.json
 python -m tunnel_guard.run --experiment configs/track-continuity-real.json
-python -m tunnel_guard.run --experiment configs/track-local3d-real.json
+python -m tunnel_guard.run --experiment archived track-local3d-real.json
 python -m tunnel_guard.panel_report --panel configs/track-continuity-comparison.json --output build/track-continuity-real/comparison.json
 python -m tunnel_guard.panel_report --panel configs/track-local3d-comparison.json --output build/track-local3d-final-real-supported/comparison.json
 python -m tunnel_guard.evaluate --run build/track-local3d-final-real-supported --annotations annotations/sourcecraft-provisional.json --output build/track-local3d-final-real-supported/evaluation.json
@@ -107,7 +109,7 @@ python -m tunnel_guard.run --experiment configs/track-default-promoted.json
 
 `configs/detector-track-baseline.json` замораживает старый native-рецепт до включения непрерывности. Сценарии теперь явно ссылаются на него; исходные snapshots предыдущих запусков не менялись. Промежуточные версии сохранены в `build/track-local3d-real`, `build/track-local3d-final-real`, `build/track-curves-scenes`, `build/track-curves-negative-scenes`. Итоговые каталоги имеют суффикс `supported`; несколько коротких префиксов отражают проверку версии сериализованной геометрии.
 
-Автоматизированные тесты не создавались и не запускались. `configs/track-local3d-full-geometry.json` подготовлен, но полный 11271-кадровый replay local_3d **не выполнен**. Отчёт: `results/track-local3d-20260918.json`.
+Автоматизированные тесты не создавались и не запускались. `archived track-local3d-full-geometry.json` подготовлен, но полный 11271-кадровый replay local_3d **не выполнен**. Отчёт: `results/track-local3d-20260918.json`.
 
 ## Следующий приоритет
 

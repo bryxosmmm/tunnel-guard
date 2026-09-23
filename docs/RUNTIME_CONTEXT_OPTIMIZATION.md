@@ -81,7 +81,6 @@ per-frame timings and comparisons: `build/runtime-context-paired/report.json`.
 .venv-iteration/bin/python -m tunnel_guard.run --experiment configs/runtime-context-real.json
 .venv-iteration/bin/python -m tunnel_guard.panel_report \
   --panel configs/runtime-context-panel.json --output build/runtime-context-real/comparison.json
-.venv-iteration/bin/python -m tunnel_guard.native_benchmark --experiment configs/runtime-context-paired.json
 ```
 
 The `before` recipe does not select old code. Its completed run has a Python
