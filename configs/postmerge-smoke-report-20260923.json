@@ -1,0 +1,37 @@
+{
+  "mode": "cutover",
+  "hypothesis": "The merged C++-only integration preserves the verified native-path behavior and sensor provenance; only declared obsolete schema fields disappear.",
+  "seed": 20260915,
+  "removed_config": [
+    ["native_kernels", true],
+    ["voxel_backend", "cpp"]
+  ],
+  "removed_output": {
+    "geometry.rail_frames": [],
+    "geometry.rail_frame_version": 2,
+    "geometry.local_frame_segments": 0
+  },
+  "timing_fields": [
+    "processing_s",
+    "motion_s",
+    "mounting_observation_s",
+    "deserialize_s",
+    "decode_s",
+    "ingestion_s",
+    "inference_s",
+    "read_and_process_s",
+    "diagnostic_write_s",
+    "visualization_s"
+  ],
+  "output": "build/postmerge-smoke-report-20260923",
+  "comparisons": {
+    "smoke": {
+      "before": "/Users/mors1337/Code/DL/tunnel-guard-attributes-compact/build/attributes-smoke-after-rebuilt-20260923",
+      "after": "build/postmerge-smoke-20260923",
+      "bags": {
+        "doubleT_obstacle": 22,
+        "new_data_0": 22
+      }
+    }
+  }
+}

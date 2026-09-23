@@ -723,31 +723,31 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
     double rail_head, ground_max_uncertainty, path_max_uncertainty, ground_max_extrapolation,
         path_max_extrapolation, rail_half_width, rail_vertical_margin, min_running_height,
         cluster_context_margin, segmentation_half_width, envelope_margin, rail_max_heading,
-        path_curve_window, path_curvature_significance;
-    if (!PyArg_ParseTuple(args, "OOOOO" "dddddddddddddd", &points_object, &plane_object, &ground_object,
+        path_curve_window, path_curvature_significance, nominal_gauge;
+    if (!PyArg_ParseTuple(args, "OOOOO" "ddddddddddddddd", &points_object, &plane_object, &ground_object,
                           &rail_object, &envelope_object, &rail_head, &ground_max_uncertainty,
                           &path_max_uncertainty, &ground_max_extrapolation, &path_max_extrapolation,
                           &rail_half_width, &rail_vertical_margin, &min_running_height,
                           &cluster_context_margin, &segmentation_half_width, &envelope_margin,
-                          &rail_max_heading, &path_curve_window, &path_curvature_significance))
+                          &rail_max_heading, &path_curve_window, &path_curvature_significance, &nominal_gauge))
         return nullptr;
     Buffer points(points_object);
     Buffer plane(plane_object);
     Buffer ground(ground_object);
     Buffer rail(rail_object);
     Buffer envelope(envelope_object);
-    if (!points.points() || !plane.vector() || plane.size() != 3 || !ground.matrix(3)
+    if (!points.points() || !plane.vector() || (plane.size() != 0 && plane.size() != 3) || !ground.matrix(3)
             || !rail.matrix(4) || !envelope.matrix(4)) {
         PyErr_SetString(PyExc_ValueError,
-                        "expected points (N,3), plane (3), ground anchors (G,3), rail anchors (R,4), envelope (S,4)");
+                        "expected points (N,3), plane (0 or 3), ground anchors (G,3), rail anchors (R,4), envelope (S,4)");
         return nullptr;
     }
     const Py_ssize_t n = points.rows();
     const Py_ssize_t g = ground.rows(), r = rail.rows(), s = envelope.rows();
     const double* data = points.doubles();
     const double* model = plane.doubles();
-    if (g < 1 || r < 2 || s < 1) {
-        PyErr_SetString(PyExc_ValueError, "classification requires ground anchors, two rail anchors and an envelope");
+    if (s < 1) {
+        PyErr_SetString(PyExc_ValueError, "classification requires a nonempty envelope");
         return nullptr;
     }
     auto& height = workspace.d0;
@@ -773,149 +773,172 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
             vector->resize(size);
         for (auto* vector : {&core, &context, &observed, &overlap, &boundary}) vector->resize(size);
         for (Py_ssize_t i = 0; i < n; ++i) scratch_x[static_cast<size_t>(i)] = data[3 * i];
-        const double* ground_x = ground.doubles();
-        const double* ground_shift = ground.doubles() + 1;
-        const double* ground_spread = ground.doubles() + 2;
-        std::vector<double> anchors_x(static_cast<size_t>(g));
-        std::vector<double> anchors_shift(static_cast<size_t>(g));
-        std::vector<double> anchors_spread(static_cast<size_t>(g));
-        for (Py_ssize_t i = 0; i < g; ++i) {
-            anchors_x[static_cast<size_t>(i)] = ground_x[3 * i];
-            anchors_shift[static_cast<size_t>(i)] = ground_shift[3 * i];
-            anchors_spread[static_cast<size_t>(i)] = ground_spread[3 * i];
+        // Missing measurements are an ordinary unavailable-geometry state,
+        // not a request for a different classifier or a fabricated plane.
+        if (plane.size() == 0 || g == 0) {
+            std::fill(height.begin(), height.end(), NAN);
+            std::fill(ground_uncertainty.begin(), ground_uncertainty.end(), INFINITY);
+        } else {
+            const double *ground_x = ground.doubles();
+            const double *ground_shift = ground.doubles() + 1;
+            const double *ground_spread = ground.doubles() + 2;
+            std::vector<double> anchors_x(static_cast<size_t>(g));
+            std::vector<double> anchors_shift(static_cast<size_t>(g));
+            std::vector<double> anchors_spread(static_cast<size_t>(g));
+            for (Py_ssize_t i = 0; i < g; ++i) {
+                anchors_x[static_cast<size_t>(i)] = ground_x[3 * i];
+                anchors_shift[static_cast<size_t>(i)] = ground_shift[3 * i];
+                anchors_spread[static_cast<size_t>(i)] = ground_spread[3 * i];
+            }
+            interp_into(scratch_x.data(), n, anchors_x.data(), anchors_shift.data(), g, center.data());
+            interp_into(scratch_x.data(), n, anchors_x.data(), anchors_spread.data(), g, ground_uncertainty.data());
+            nearest_anchor_into(scratch_x.data(), n, anchors_x.data(), g, scratch_reach.data());
+            for (Py_ssize_t i = 0; i < n; ++i) {
+                const size_t index = static_cast<size_t>(i);
+                ground_uncertainty[index] = ground_uncertainty[index] + scratch_reach[index] * 0.008;
+                if (scratch_reach[index] > ground_max_extrapolation)
+                    ground_uncertainty[index] = INFINITY;
+                const double z = data[3 * i] * model[0] + data[3 * i + 1] * model[1] + model[2] + center[index];
+                height[index] = data[3 * i + 2] - z;
+            }
         }
-        interp_into(scratch_x.data(), n, anchors_x.data(), anchors_shift.data(), g, center.data());
-        interp_into(scratch_x.data(), n, anchors_x.data(), anchors_spread.data(), g, ground_uncertainty.data());
-        nearest_anchor_into(scratch_x.data(), n, anchors_x.data(), g, scratch_reach.data());
-        for (Py_ssize_t i = 0; i < n; ++i) {
-            const size_t index = static_cast<size_t>(i);
-            ground_uncertainty[index] = ground_uncertainty[index] + scratch_reach[index] * 0.008;
-            if (scratch_reach[index] > ground_max_extrapolation) ground_uncertainty[index] = INFINITY;
-            const double z = data[3 * i] * model[0] + data[3 * i + 1] * model[1] + model[2] + center[index];
-            height[index] = data[3 * i + 2] - z;
-        }
-        const double* rail_x = rail.doubles();
-        const double* rail_center = rail.doubles() + 1;
-        const double* rail_gauge = rail.doubles() + 2;
-        std::vector<double> rail_anchor_x(static_cast<size_t>(r));
-        std::vector<double> rail_anchor_center(static_cast<size_t>(r));
-        std::vector<double> rail_anchor_gauge(static_cast<size_t>(r));
-        for (Py_ssize_t i = 0; i < r; ++i) {
-            rail_anchor_x[static_cast<size_t>(i)] = rail_x[4 * i];
-            rail_anchor_center[static_cast<size_t>(i)] = rail_center[4 * i];
-            rail_anchor_gauge[static_cast<size_t>(i)] = rail_gauge[4 * i];
-        }
-        interp_into(scratch_x.data(), n, rail_anchor_x.data(), rail_anchor_center.data(), r, lateral.data());
-        interp_into(scratch_x.data(), n, rail_anchor_x.data(), rail_anchor_gauge.data(), r, gauge.data());
-        nearest_anchor_into(scratch_x.data(), n, rail_anchor_x.data(), r, scratch_reach.data());
-        for (Py_ssize_t i = 0; i < n; ++i) {
-            const size_t index = static_cast<size_t>(i);
-            const double reach = scratch_reach[index];
-            // NumPy forms the square first and scales it afterwards.
-            path_uncertainty[index] = 0.06 + 0.008 * reach + 0.0003 * (reach * reach);
-        }
-        {
-            // Local quadratic continuation past each anchor edge, mirroring
-            // TrackGeometry._continuation in Python: the fit is expressed in the edge anchor's
-            // own frame so the curve passes through the measured edge point, the curvature is
-            // shrunk to zero unless the window supports it, and the fit's own covariance feeds
-            // the extrapolation uncertainty. Same summation order as NumPy.
-            const std::array<int, 2> edges = {{0, -1}};
-            for (const int edge : edges) {
-                const int index_here = edge < 0 ? static_cast<int>(r) - 1 : 0;
-                const double x_edge = rail_anchor_x[static_cast<size_t>(index_here)];
-                const double y_edge = rail_anchor_center[static_cast<size_t>(index_here)];
-                double slope = 0.0, curvature = 0.0, slope_sigma = 0.0, curvature_sigma = 0.0;
-                double covariance = 0.0;
-                bool fitted = false;
-                const bool below = edge == 0;
-                if (r >= 3 && path_curve_window > 0) {
-                    int count = 0;
-                    double s11 = 0, s12 = 0, s22 = 0, b1 = 0, b2 = 0;
-                    for (Py_ssize_t i = 0; i < r; ++i) {
-                        const double ax = rail_anchor_x[static_cast<size_t>(i)];
-                        if (below ? (ax > x_edge + path_curve_window) : (ax < x_edge - path_curve_window)) continue;
-                        const double t = (ax - x_edge) / path_curve_window;
-                        const double v = rail_anchor_center[static_cast<size_t>(i)] - y_edge;
-                        const double tt = t * t;
-                        s11 += tt;
-                        s12 += tt * t;
-                        s22 += tt * tt;
-                        b1 += t * v;
-                        b2 += tt * v;
-                        ++count;
-                    }
-                    if (count >= 3) {
-                        const double determinant = s11 * s22 - s12 * s12;
-                        if (determinant > 0) {
-                            const double slope_scaled = (b1 * s22 - b2 * s12) / determinant;
-                            const double curvature_scaled = (s11 * b2 - s12 * b1) / determinant;
-                            double residual_square = 0;
-                            for (Py_ssize_t i = 0; i < r; ++i) {
-                                const double ax = rail_anchor_x[static_cast<size_t>(i)];
-                                if (below ? (ax > x_edge + path_curve_window) : (ax < x_edge - path_curve_window)) continue;
-                                const double t = (ax - x_edge) / path_curve_window;
-                                const double v = rail_anchor_center[static_cast<size_t>(i)] - y_edge;
-                                const double residual = v - (slope_scaled * t + curvature_scaled * t * t);
-                                residual_square += residual * residual;
+        if (r < 2) {
+            std::fill(center.begin(), center.end(), 0.0);
+            std::fill(gauge.begin(), gauge.end(), nominal_gauge);
+            std::fill(path_uncertainty.begin(), path_uncertainty.end(), INFINITY);
+        } else {
+            const double *rail_x = rail.doubles();
+            const double *rail_center = rail.doubles() + 1;
+            const double *rail_gauge = rail.doubles() + 2;
+            std::vector<double> rail_anchor_x(static_cast<size_t>(r));
+            std::vector<double> rail_anchor_center(static_cast<size_t>(r));
+            std::vector<double> rail_anchor_gauge(static_cast<size_t>(r));
+            for (Py_ssize_t i = 0; i < r; ++i) {
+                rail_anchor_x[static_cast<size_t>(i)] = rail_x[4 * i];
+                rail_anchor_center[static_cast<size_t>(i)] = rail_center[4 * i];
+                rail_anchor_gauge[static_cast<size_t>(i)] = rail_gauge[4 * i];
+            }
+            interp_into(scratch_x.data(), n, rail_anchor_x.data(), rail_anchor_center.data(), r, lateral.data());
+            interp_into(scratch_x.data(), n, rail_anchor_x.data(), rail_anchor_gauge.data(), r, gauge.data());
+            nearest_anchor_into(scratch_x.data(), n, rail_anchor_x.data(), r, scratch_reach.data());
+            for (Py_ssize_t i = 0; i < n; ++i) {
+                const size_t index = static_cast<size_t>(i);
+                const double reach = scratch_reach[index];
+                // NumPy forms the square first and scales it afterwards.
+                path_uncertainty[index] = 0.06 + 0.008 * reach + 0.0003 * (reach * reach);
+            }
+            {
+                // Local quadratic continuation past each anchor edge, mirroring
+                // TrackGeometry._continuation in Python: the fit is expressed in the edge anchor's
+                // own frame so the curve passes through the measured edge point, the curvature is
+                // shrunk to zero unless the window supports it, and the fit's own covariance feeds
+                // the extrapolation uncertainty. Same summation order as NumPy.
+                const std::array<int, 2> edges = {{0, -1}};
+                for (const int edge : edges) {
+                    const int index_here = edge < 0 ? static_cast<int>(r) - 1 : 0;
+                    const double x_edge = rail_anchor_x[static_cast<size_t>(index_here)];
+                    const double y_edge = rail_anchor_center[static_cast<size_t>(index_here)];
+                    double slope = 0.0, curvature = 0.0, slope_sigma = 0.0, curvature_sigma = 0.0;
+                    double covariance = 0.0;
+                    bool fitted = false;
+                    const bool below = edge == 0;
+                    if (r >= 3 && path_curve_window > 0) {
+                        int count = 0;
+                        double s11 = 0, s12 = 0, s22 = 0, b1 = 0, b2 = 0;
+                        for (Py_ssize_t i = 0; i < r; ++i) {
+                            const double ax = rail_anchor_x[static_cast<size_t>(i)];
+                            if (below ? (ax > x_edge + path_curve_window) : (ax < x_edge - path_curve_window))
+                                continue;
+                            const double t = (ax - x_edge) / path_curve_window;
+                            const double v = rail_anchor_center[static_cast<size_t>(i)] - y_edge;
+                            const double tt = t * t;
+                            s11 += tt;
+                            s12 += tt * t;
+                            s22 += tt * tt;
+                            b1 += t * v;
+                            b2 += tt * v;
+                            ++count;
+                        }
+                        if (count >= 3) {
+                            const double determinant = s11 * s22 - s12 * s12;
+                            if (determinant > 0) {
+                                const double slope_scaled = (b1 * s22 - b2 * s12) / determinant;
+                                const double curvature_scaled = (s11 * b2 - s12 * b1) / determinant;
+                                double residual_square = 0;
+                                for (Py_ssize_t i = 0; i < r; ++i) {
+                                    const double ax = rail_anchor_x[static_cast<size_t>(i)];
+                                    if (below ? (ax > x_edge + path_curve_window) : (ax < x_edge - path_curve_window))
+                                        continue;
+                                    const double t = (ax - x_edge) / path_curve_window;
+                                    const double v = rail_anchor_center[static_cast<size_t>(i)] - y_edge;
+                                    const double residual = v - (slope_scaled * t + curvature_scaled * t * t);
+                                    residual_square += residual * residual;
+                                }
+                                const int dof = count - 2;
+                                const double variance = dof > 0 ? residual_square / dof : 0.0;
+                                slope_sigma =
+                                    std::sqrt(std::max(variance * s22 / determinant, 0.0)) / path_curve_window;
+                                curvature_sigma = std::sqrt(std::max(variance * s11 / determinant, 0.0)) /
+                                                  (path_curve_window * path_curve_window);
+                                // Off-diagonal of the same inverse, in physical units. The fit is
+                                // one-sided, so this is positive and its d^3 term dominates the
+                                // continuation error at range; omitting it understated the bound.
+                                covariance = -variance * s12 /
+                                             (determinant * path_curve_window * path_curve_window * path_curve_window);
+                                double scaled = curvature_scaled;
+                                if (std::abs(scaled) < path_curvature_significance * curvature_sigma *
+                                                           path_curve_window * path_curve_window)
+                                    scaled = 0.0;
+                                slope = slope_scaled / path_curve_window;
+                                slope = std::max(-rail_max_heading, std::min(rail_max_heading, slope));
+                                curvature = scaled / (path_curve_window * path_curve_window);
+                                fitted = true;
                             }
-                            const int dof = count - 2;
-                            const double variance = dof > 0 ? residual_square / dof : 0.0;
-                            slope_sigma = std::sqrt(std::max(variance * s22 / determinant, 0.0)) / path_curve_window;
-                            curvature_sigma = std::sqrt(std::max(variance * s11 / determinant, 0.0))
-                                / (path_curve_window * path_curve_window);
-                            // Off-diagonal of the same inverse, in physical units. The fit is
-                            // one-sided, so this is positive and its d^3 term dominates the
-                            // continuation error at range; omitting it understated the bound.
-                            covariance = -variance * s12
-                                / (determinant * path_curve_window * path_curve_window * path_curve_window);
-                            double scaled = curvature_scaled;
-                            if (std::abs(scaled) < path_curvature_significance * curvature_sigma
-                                    * path_curve_window * path_curve_window) scaled = 0.0;
-                            slope = slope_scaled / path_curve_window;
-                            slope = std::max(-rail_max_heading, std::min(rail_max_heading, slope));
-                            curvature = scaled / (path_curve_window * path_curve_window);
-                            fitted = true;
+                        }
+                    }
+                    if (!fitted) {
+                        const int index_other = below ? 1 : static_cast<int>(r) - 2;
+                        const double raw = (rail_anchor_center[static_cast<size_t>(index_here)] -
+                                            rail_anchor_center[static_cast<size_t>(index_other)]) /
+                                           (rail_anchor_x[static_cast<size_t>(index_here)] -
+                                            rail_anchor_x[static_cast<size_t>(index_other)]);
+                        slope = std::max(-rail_max_heading, std::min(rail_max_heading, raw));
+                    }
+                    for (Py_ssize_t i = 0; i < n; ++i) {
+                        const size_t index = static_cast<size_t>(i);
+                        const double value = scratch_x[index];
+                        if (below ? (value < rail_anchor_x[0]) : (value > rail_anchor_x[r - 1])) {
+                            const double distance = value - x_edge;
+                            lateral[index] = y_edge + slope * distance + curvature * distance * distance;
+                            const double combined =
+                                (distance * slope_sigma) * (distance * slope_sigma) +
+                                ((distance * distance) * curvature_sigma) * ((distance * distance) * curvature_sigma) +
+                                2.0 * ((distance * distance) * distance) * covariance;
+                            const double extension = std::sqrt(std::max(combined, 0.0));
+                            path_uncertainty[index] =
+                                std::sqrt(path_uncertainty[index] * path_uncertainty[index] + extension * extension);
                         }
                     }
                 }
-                if (!fitted) {
-                    const int index_other = below ? 1 : static_cast<int>(r) - 2;
-                    const double raw = (rail_anchor_center[static_cast<size_t>(index_here)]
-                        - rail_anchor_center[static_cast<size_t>(index_other)])
-                        / (rail_anchor_x[static_cast<size_t>(index_here)]
-                           - rail_anchor_x[static_cast<size_t>(index_other)]);
-                    slope = std::max(-rail_max_heading, std::min(rail_max_heading, raw));
-                }
-                for (Py_ssize_t i = 0; i < n; ++i) {
-                    const size_t index = static_cast<size_t>(i);
-                    const double value = scratch_x[index];
-                    if (below ? (value < rail_anchor_x[0]) : (value > rail_anchor_x[r - 1])) {
-                        const double distance = value - x_edge;
-                        lateral[index] = y_edge + slope * distance + curvature * distance * distance;
-                        const double combined = (distance * slope_sigma) * (distance * slope_sigma)
-                            + ((distance * distance) * curvature_sigma) * ((distance * distance) * curvature_sigma)
-                            + 2.0 * ((distance * distance) * distance) * covariance;
-                        const double extension = std::sqrt(std::max(combined, 0.0));
-                        path_uncertainty[index] = std::sqrt(path_uncertainty[index] * path_uncertainty[index]
-                            + extension * extension);
-                    }
-                }
             }
+            for (Py_ssize_t i = 0; i < n; ++i) {
+                const size_t index = static_cast<size_t>(i);
+                if (scratch_reach[index] > path_max_extrapolation)
+                    path_uncertainty[index] = INFINITY;
+            }
+            for (Py_ssize_t i = 0; i < n; ++i)
+                center[static_cast<size_t>(i)] = lateral[static_cast<size_t>(i)];
         }
-        for (Py_ssize_t i = 0; i < n; ++i) {
-            const size_t index = static_cast<size_t>(i);
-            if (scratch_reach[index] > path_max_extrapolation) path_uncertainty[index] = INFINITY;
-        }
-        for (Py_ssize_t i = 0; i < n; ++i) center[static_cast<size_t>(i)] = lateral[static_cast<size_t>(i)];
-        const double* segments = envelope.doubles();
+        const double *segments = envelope.doubles();
         const double low_edge = segments[0];
         const double high_edge = segments[4 * (s - 1) + 1];
         std::vector<double> segment_edges(static_cast<size_t>(s));
-        for (Py_ssize_t i = 0; i < s; ++i) segment_edges[static_cast<size_t>(i)] = segments[4 * i];
-        const double slope_plane = model[1];
+        for (Py_ssize_t i = 0; i < s; ++i)
+            segment_edges[static_cast<size_t>(i)] = segments[4 * i];
+        const double slope_plane = plane.size() == 3 ? model[1] : 0.0;
         // NumPy sums the squared components first and adds one afterwards.
-        const double normal_scale = std::sqrt(1.0 + (model[0] * model[0] + model[1] * model[1]));
+        const double normal_scale =
+            plane.size() == 3 ? std::sqrt(1.0 + (model[0] * model[0] + model[1] * model[1])) : 1.0;
         const double lateral_scale = std::sqrt(1.0 + slope_plane * slope_plane);
         for (Py_ssize_t i = 0; i < n; ++i) {
             const size_t index = static_cast<size_t>(i);
