@@ -1,0 +1,170 @@
+{
+  "actual_recorded_status_messages": 30,
+  "actions": {
+    "inspect_unresolved": 8,
+    "inspect_obstacle": 22
+  },
+  "examples": {
+    "no_obstacle_observed": {
+      "frame": 0,
+      "decision": {
+        "policy": "operator_review_only",
+        "operator_action": "inspect_unresolved",
+        "reason": "unresolved_observations_require_review",
+        "movement_authority": "not_issued",
+        "braking_decision": "not_computed",
+        "train_control_approval": "not_validated",
+        "evidence_kind": "uncalibrated_not_probability",
+        "adjudication": "not_adjudicated",
+        "obstacle_detected": null,
+        "nearest_obstacle_m": null,
+        "unresolved": {
+          "objects": 4,
+          "nearest_m": 122.90605163574219,
+          "categories": {
+            "confirmed_boundary": {
+              "objects": 0,
+              "nearest_m": null
+            },
+            "tentative_intrusion": {
+              "objects": 0,
+              "nearest_m": null
+            },
+            "isolated_boundary": {
+              "objects": 0,
+              "nearest_m": null
+            },
+            "unsupported_range": {
+              "objects": 4,
+              "nearest_m": 122.90605163574219
+            }
+          }
+        },
+        "distance_origin": "configured_processing_frame_origin",
+        "distance_kind": "forward_coordinate_not_braking_distance",
+        "supported_forward_x_m": 62.0,
+        "route_clearance": "not_established",
+        "health": "degraded",
+        "health_reasons": [
+          "first_frame",
+          "unverified_sensor_profile_and_extrinsics",
+          "deskew_disabled_unverified_timing"
+        ],
+        "timing": {
+          "freshness": "unverified",
+          "sensor_to_result_s": null,
+          "reason": "acquisition_to_consumer_age_not_measured"
+        }
+      }
+    },
+    "unresolved_obstacle": {
+      "frame": 6,
+      "decision": {
+        "policy": "operator_review_only",
+        "operator_action": "inspect_unresolved",
+        "reason": "unresolved_observations_require_review",
+        "movement_authority": "not_issued",
+        "braking_decision": "not_computed",
+        "train_control_approval": "not_validated",
+        "evidence_kind": "uncalibrated_not_probability",
+        "adjudication": "not_adjudicated",
+        "obstacle_detected": null,
+        "nearest_obstacle_m": null,
+        "unresolved": {
+          "objects": 5,
+          "nearest_m": 55.51122283935547,
+          "categories": {
+            "confirmed_boundary": {
+              "objects": 1,
+              "nearest_m": 55.51122283935547
+            },
+            "tentative_intrusion": {
+              "objects": 0,
+              "nearest_m": null
+            },
+            "isolated_boundary": {
+              "objects": 0,
+              "nearest_m": null
+            },
+            "unsupported_range": {
+              "objects": 4,
+              "nearest_m": 114.64098358154297
+            }
+          }
+        },
+        "distance_origin": "configured_processing_frame_origin",
+        "distance_kind": "forward_coordinate_not_braking_distance",
+        "supported_forward_x_m": 62.5,
+        "route_clearance": "not_established",
+        "health": "normal",
+        "health_reasons": [
+          "unverified_sensor_profile_and_extrinsics",
+          "deskew_disabled_unverified_timing"
+        ],
+        "timing": {
+          "freshness": "unverified",
+          "sensor_to_result_s": null,
+          "reason": "acquisition_to_consumer_age_not_measured"
+        }
+      }
+    },
+    "obstacle": {
+      "frame": 8,
+      "decision": {
+        "policy": "operator_review_only",
+        "operator_action": "inspect_obstacle",
+        "reason": "confirmed_reference_contour_intrusion",
+        "movement_authority": "not_issued",
+        "braking_decision": "not_computed",
+        "train_control_approval": "not_validated",
+        "evidence_kind": "uncalibrated_not_probability",
+        "adjudication": "not_adjudicated",
+        "obstacle_detected": true,
+        "nearest_obstacle_m": 55.58803939819336,
+        "unresolved": {
+          "objects": 8,
+          "nearest_m": 89.19699096679688,
+          "categories": {
+            "confirmed_boundary": {
+              "objects": 0,
+              "nearest_m": null
+            },
+            "tentative_intrusion": {
+              "objects": 0,
+              "nearest_m": null
+            },
+            "isolated_boundary": {
+              "objects": 0,
+              "nearest_m": null
+            },
+            "unsupported_range": {
+              "objects": 8,
+              "nearest_m": 89.19699096679688
+            }
+          }
+        },
+        "distance_origin": "configured_processing_frame_origin",
+        "distance_kind": "forward_coordinate_not_braking_distance",
+        "supported_forward_x_m": 62.5,
+        "route_clearance": "not_established",
+        "health": "normal",
+        "health_reasons": [
+          "unverified_sensor_profile_and_extrinsics",
+          "deskew_disabled_unverified_timing"
+        ],
+        "timing": {
+          "freshness": "unverified",
+          "sensor_to_result_s": null,
+          "reason": "acquisition_to_consumer_age_not_measured"
+        }
+      }
+    }
+  },
+  "serialized_marker_text": {
+    "RECORDED_RESULT_REPLAY | no_obstacle_observed": "RECORDED_RESULT_REPLAY | no_obstacle_observed\nIntrusion=None m | uncertain=None m\ndegraded: first_frame, unverified_sensor_profile_and_extrinsics, deskew_disabled_unverified_timing\nReference envelope; observed support only; route clearance unknown\nOperator: inspect_unresolved | unresolved_observations_require_review\nUnresolved: 4 | nearest=122.90605163574219 m\nFreshness: unverified | movement authority NOT ISSUED\nRail support height: 1.500 m; reported static height: 1.075 m\nRecording applicability unverified; vehicle calibration unverified",
+    "RECORDED_RESULT_REPLAY | unresolved_obstacle": "RECORDED_RESULT_REPLAY | unresolved_obstacle\nIntrusion=None m | uncertain=55.51122283935547 m\nnormal: unverified_sensor_profile_and_extrinsics, deskew_disabled_unverified_timing\nReference envelope; observed support only; route clearance unknown\nOperator: inspect_unresolved | unresolved_observations_require_review\nUnresolved: 5 | nearest=55.51122283935547 m\nFreshness: unverified | movement authority NOT ISSUED\nRail support height: 1.498 m; reported static height: 1.075 m\nRecording applicability unverified; vehicle calibration unverified",
+    "RECORDED_RESULT_REPLAY | obstacle": "RECORDED_RESULT_REPLAY | obstacle\nIntrusion=55.58803939819336 m | uncertain=None m\nnormal: unverified_sensor_profile_and_extrinsics, deskew_disabled_unverified_timing\nReference envelope; observed support only; route clearance unknown\nOperator: inspect_obstacle | confirmed_reference_contour_intrusion\nUnresolved: 8 | nearest=89.19699096679688 m\nFreshness: unverified | movement authority NOT ISSUED\nRail support height: 1.499 m; reported static height: 1.075 m\nRecording applicability unverified; vehicle calibration unverified"
+  },
+  "live_ros_runtime": "not_exercised",
+  "rviz_visual_inspection": "not_available"
+}

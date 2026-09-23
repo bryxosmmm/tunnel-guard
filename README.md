@@ -55,6 +55,23 @@ observations and normalized times matched exactly. The complete offline loop
 measures 140–201 ms median across three recordings, including read/decode,
 inference and result serialization. This is not live sensor-to-display latency.
 
+## Operator review channel — issue #7
+
+Every detector result now includes `decision`: a human-review action and reason, separate
+unresolved counts/distances, explicit uncalibrated evidence and unverified freshness.
+No outcome issues movement authority or computes braking. See the
+[contract and measured limitations](docs/DETECTOR.md#операторское-решение-один-вариант-не-управление-поездом-issue-7).
+
+The proposal has a substantial measured cost: **2330/2641 alert frames, 162 contiguous
+alert runs** on frozen upstream outputs. These are not independent objects or verified
+false alarms. It is **not approved for deployment**. The actual detector and recorded ROS
+status path were exercised on 30 real scans; the named decision fields match upstream
+exactly across 9196 object observations. Live ROS/DDS, RViz visual inspection and target
+i7-9700E latency remain unverified. Issue #7 is not closed.
+
+Recipes: `configs/issue-7-operator-smoke.json` and `configs/issue-7-operator-metrics.json`.
+The metrics CLI streams archived JSONL gzip without a new full detector replay.
+
 ## Coverage expansion and modeled insertions
 
 See [coverage expansion](docs/COVERAGE_EXPANSION.md): complete platform and round-to-double tunnel runs, plus nine controlled cases on actual measured ray directions. Modeled support is traced through processing stages; missing rays, occlusion and candidate rejection are reported separately. Synthetic attribution is not field recall. The production detector is frozen for this experiment; its parameters were not tuned to inserted boxes.

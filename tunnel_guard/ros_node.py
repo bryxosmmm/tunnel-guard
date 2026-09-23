@@ -20,6 +20,7 @@ from visualization_msgs.msg import MarkerArray
 from .detector import Detector, load_config
 from .io import decode_cloud
 from .visualization import ResultMessages
+from .operator_channel import operator_decision, live_timing
 
 
 class PerceptionNode(Node):
@@ -86,7 +87,10 @@ class PerceptionNode(Node):
             f"Ready. Reliability={reliability}, queue depth=1; use slow replay for complete evaluation."
         )
 
-    def publish(self, row, points, stamp, support=None):
+    def publish(self, row, points, stamp, support=None, *, received=None, input_period=None):
+        row["decision"] = operator_decision(row, self.config)
+        if received is not None:
+            live_timing(row["decision"], time.monotonic() - received, input_period)
         payloads = self.messages.build(row, points, stamp, support)
         for topic, message in payloads.items():
             typename, native = self.kinds[topic]
@@ -104,6 +108,8 @@ class PerceptionNode(Node):
             "health": "unavailable",
             "health_reasons": [reason],
             "processed_scans": self.processed,
+            "unresolved_range_objects": 0,
+            "nearest_unresolved_range_m": None,
             "measurement_timestamp_ns": stamp,
         }
         self.publish(row, np.empty((0, 3)), stamp)
@@ -162,6 +168,7 @@ class PerceptionNode(Node):
             decode_s = time.monotonic() - decode_started
             self.last_received = received
             self.silent = False
+            input_period = ((ns - self.last_stamp) * 1e-9 if self.last_stamp is not None else None)
             row = self.detector.process(points, ns * 1e-9, times)
             self.last_stamp, self.source_frame = ns, message.header.frame_id
             if message.header.frame_id and message.header.frame_id not in self.broadcast_frames:
@@ -190,13 +197,14 @@ class PerceptionNode(Node):
                 latency_scope="Callback entry to result; excludes DDS queue and publication. Sensor/host clock relation unverified.",
                 callback_processing_s=time.monotonic() - received,
             )
-            if row["callback_processing_s"] > 0.1:
-                row["health_reasons"].append("processing_exceeds_10hz_input_period")
+            if input_period is not None and row["callback_processing_s"] > input_period:
+                row["health_reasons"].append("processing_exceeds_input_period")
                 if row["health"] == "normal":
                     row["health"] = "degraded"
             publish_started = time.monotonic()
             self.publish(
-                row, self.detector.display_points, ns, self.detector.display_support
+                row, self.detector.display_points, ns, self.detector.display_support,
+                received=received, input_period=input_period,
             )
             publish_s = time.monotonic() - publish_started
             callback_to_publish_return_s = time.monotonic() - received

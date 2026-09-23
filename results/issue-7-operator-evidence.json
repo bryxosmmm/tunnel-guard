@@ -1,0 +1,317 @@
+{
+  "base_revision": "bc4f73b4f75d83540683716953afb30351839cd6",
+  "branch": "fix/issue-7-operator-decision",
+  "policy": "operator_review_only; no train-control authority",
+  "policy_promotion": "Not approved for deployment: measured review burden is high; no target latency or exhaustive negative labels",
+  "smoke": [
+    {
+      "frames": 30,
+      "recording_duration_s": 2.900183916091919,
+      "status_frames": {
+        "no_obstacle_observed": 6,
+        "unresolved_obstacle": 2,
+        "obstacle": 22
+      },
+      "geometry_valid_frames": 30,
+      "motion_valid_frames": 29,
+      "processing_ms": {
+        "p50": 188.22547898162156,
+        "p95": 223.15897141816095,
+        "p99": 24803.744532103912
+      },
+      "read_and_process_ms": {
+        "p50": 189.28202096140012,
+        "p95": 224.19145195744932,
+        "p99": 24906.960698023933
+      },
+      "inference_ms": {
+        "p50": 188.87572950916365,
+        "p95": 223.80563961341977,
+        "p99": 24805.04050031773
+      },
+      "ingestion_wait_ms": {
+        "p50": 0.24345802376046777,
+        "p95": 0.8078603597823528,
+        "p99": 102.10366508807067
+      },
+      "prefetch_depth": 1,
+      "alarm_episodes_unlabelled": [
+        {
+          "start_frame": 6,
+          "start_s": 946687297.800018,
+          "end_s": 946687300.1001171,
+          "frames": 24
+        }
+      ],
+      "accuracy": null,
+      "accuracy_validity": "No ground truth implied by bag name or alarm count",
+      "bag": "doubleT_obstacle",
+      "split": "development",
+      "wall_s": 43.10725366708357,
+      "ingestion": {
+        "source_messages": 30,
+        "duplicate_measurements": 0,
+        "subsampled_measurements": 0,
+        "emitted_scans": 30
+      },
+      "process_peak_rss_bytes": 752615424,
+      "diagnostic_write_total_s": 0,
+      "visualization_total_s": 2.2424106284743175,
+      "stage_ms": {
+        "decode_s": {
+          "p50": 30.211021017748863,
+          "p95": 50.89471060200588
+        },
+        "offline_iteration_s": {
+          "p50": 276.3758960063569,
+          "p95": 324.98472504667
+        }
+      },
+      "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+    }
+  ],
+  "smoke_manifest": {
+    "python": "3.12.8 (v3.12.8:2dc476bcb91, Dec  3 2024, 14:43:19) [Clang 13.0.0 (clang-1300.0.29.30)]",
+    "platform": "macOS-26.5-arm64-arm-64bit",
+    "machine": "arm64",
+    "cpu_count": 8,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "rosbags": "0.11.5",
+      "kiss-icp": "1.3.0",
+      "open3d": "0.19.0",
+      "travel-seg": null,
+      "hdbscan": null,
+      "pypatchworkpp": null
+    },
+    "source_sha256": {
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/accelerator.py": "b8a57cadcffc4f83e4e366b02ab7bd8ef20f9ceae60acd0aeec9931630db28c5",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/alarm_anatomy.py": "9579c8830b427b440d3d696dad20a0114a780bc92cf9a2e5205e174a10b21f81",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/alignment.py": "37019d4fa19e6186d89a1f8392d60eeadaf7b706eb602e91850d2fb86870fb08",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/alignment_probe.py": "15d69909fd6978047a92163f0b17dc31d027c14e09d029da28d65eeffac70551",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/assess_track_scenes.py": "57e44a32f451a308998759f4d346543780c37195d98f2e13d875c588e19a3033",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/background.py": "bea0e7ffae787bbf17ae06a9c775fc01d66aaac52cc104d82903cc8690dfb27b",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/background_repro.py": "816dbc51d7bb91afc6709d6435f2de966244167dc2d3dfce87b0c6496ca2f43c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/calibrate.py": "5ba977914f5f3da207454434c7111225d83dac6667c53bf9719326b691750f8c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/check_geometry_kernels.py": "40f6e22703158118ebca6a880fe658db55dbc6b68ed770254d72eb933b97338d",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/check_kernels.py": "79788a196bb9573600c1f17e78bd9d670b0c779d4d47c4c9e0f86ff86e1dacfb",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/compare_alarm_runs.py": "ce39621d4cea9ee07617f882f1d1f7035f006f16b252b74c2b5f63d2f1ad36d0",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/config_audit.py": "68b557b8902365311feb65c76954eb7b8b9f581970610d86dac667dfd9468b1c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/corridor_report.py": "d245b7d57fc996faa4315b41f9f9d8775becd7c91968d6fbcfdacb633ccdc4fd",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/curve_audit.py": "1326d9adab148558ba5b3607390a3609a0705f18e12375f5652effdc2a0d2381",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/curved_stress.py": "0bcada82de0d22b9d50feef464635c334ef57cd7883f461fe1ea27a676a2a078",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/decode_benchmark.py": "2d86ea1438c6fcb5365455fd2a0de9cd116c22544b13dfe5db89f220ef0d579f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/detector.py": "2c7da6ae559c500b6f7b1cfeca13f02e3e120d2e72778bbf91ee25fc69bb0450",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/episode_report.py": "dc932d8a30294a887e7a143e852c1e2c9d7a95e46aea72f341d780a33d584501",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/evaluate.py": "79f870c370a8b76b867b8a173af517e10116e7220a1c21af3aa859088ff5a574",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/expansion_report.py": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/extended_subset.py": "feaf7c41ab3ccd9b9d0497128353c7b36eedbd33aff8f46c2cae8193da9279ce",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/geometry.py": "df2e11b2ec266827f3fd26b7c7e0248ef0cd35753c3fa14fb7a9364ce777fc86",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/history_probe.py": "723311b1aee8248d2b18a72ac22e28b66b6df47dff16904ea87483b86cd1e3bf",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/hmm_mos_probe.py": "2f4c5a9f47ecedcb40457a5c64f3d606965a1db5178dacd85839d4df5070547f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/injection_experiment.py": "9887b6985e3e90de90c0505c4cca787f05703d7bd9f487041e84b89a8b5841c1",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/inspect_bag.py": "ccb30abe90954ab9e7862bcc914b9803ff538c5e4dd4695c97f189d04b766374",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/inspect_recording_headers.py": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/intrusion_audit.py": "e04ec075a2cc9ddcf6d844e6ddfda6657e275b562ec6de7728f11732c7cdcf84",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/io.py": "16a4410d0d19637d0cdac9b30a43c810d381d2e35feeef25cd63c41b40bc4a87",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/motion_audit.py": "d2d49f0bcff1af6bb7ba97c6d7047c59f6ab4605bb485cfac61e6f298c94a8c7",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/motion_scenarios.py": "2d928846e973b163471f3293ba1af4ae79fdede55159b5c515cb8c2f6cc0d897",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/mounting.py": "568b2716fafef9775d18e1105c0d1365aff1b32409d6cfcf82f22840bab33a2c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/mounting_replay.py": "f49091816ecf0854869c30bdf0ebaf1d19f836058ff1f0dd6ec8a1d6756d1731",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/mounting_report.py": "c7547ee3d650de0f35f4d5a86ab855b0db1214e4860bada9082619c0fb44e41f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/native_benchmark.py": "0adedf2f3de2bf5c698426c748d0ca2c98193110b7b710d4c182061c950b83d5",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/on_track.py": "b5b8f3f2eff1bf8c6d51b7ad47f9591b4f92fb685c9131a183f6ec917b8b70fb",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/operator_channel.py": "ed9934f7f65025a2d053127974b9f1f2832b72b017e99636312ec69d625a654b",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/operator_metrics.py": "36ad1c2fb732a94925b5e87bc0dd98610cbe697788adb59ff96a52771549fd51",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/panel_report.py": "f5fbf5612985fa008b580bb7446f445c5017d1170a04a7180b73b4e7dc38c505",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/plot_track_geometry.py": "b19aee7b6846a74b38cc9bec7ba0158443f473168b4fb6a18fe95014b6716113",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/prepare_segment.py": "154f5d0772d56473e82704d217723132c292efa0681d5df32f8bf6b1c355cf7a",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/profile_run.py": "5ad54b41e5a681182281d0714017c06c628fbb65deada92a5e4cd04127a956fb",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/rail_fit_report.py": "3bae4132006f5b72b7620be0e13fb76aebd413bfcce733c1d2c6738542f6bb44",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/rail_geometry_audit.py": "4314dd497098bee51d574daa0ca01089d46791c49102ca9a14fea5aaf127e044",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/realistic_report.py": "163806fdb60df8b981187b14e803ff921fdf1a9d14700b0e5ae4d30b0f0989d8",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/realistic_stress.py": "e6468a325619d0a2e54f714fe0a98c03dd8631802ea83d771070fff869f3deac",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/render_alarm_cases.py": "95b510a7143f7250ec718749ed654e95c225f1b5a9ce20aa054f3b0df9cd0cc7",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/render_annotation_review.py": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/review_remaining_alerts.py": "0fe5e93952e1a275a81b2b04d203ebe899fe4d1e304ef7d347e026cc87d4448b",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/review_viewer.py": "eb8b7c1de7591c7a1324184d29be20ef9adb58d7a2033d1335bcfcf92cf9297e",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/ros_node.py": "884ccee707099dee9d7c7c87c605ee6016d8fdb289164c3808724bf83bf0206b",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/run.py": "23961c6f77b4ee0414b98ec0eb0e867fb18f4e69056d7d197c337640bf8d8164",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/segmentation.py": "9e545b80d3e253309210f79745154fb83c5d0a30931d38fca4551eefd2635789",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/sensor_profile.py": "4ff47460df305986034ba03e45e9c892e3559ccceffff61412c5d1ebadfb3c03",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/structural_view.py": "667fc9c9d933bbb19ab5f6e77f32b3cd2f34baa5f39eba0bdbf000d1036fd541",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/surface_evaluate.py": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/sustech.py": "103e7c167550022a86f37973a11dabfc476d0acdfc9eb1ca08212b6f4c615392",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/sustech_import.py": "adba80ec5aa9bfa31d8ec3321ed5f2d3ef97c55a77db7c0bd2addc7fb0f84700",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/trace_analysis.py": "eb1c1617b8666166d1d96864b79d541592c3a6784b8a6007ab69b3714d748c4c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/track_scene_experiment.py": "a9b8f1445020f436b65470996b73f5df462b1973c3ca1520627fa4095343ae2d",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/uncertainty_probe.py": "6c80e43d3e47a0b85257afef40f3e6931228f5dfbfa03fa5a4ce3a2ef1df488e",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/visualization.py": "989921314fff8ff61e4220212b2e4a1791dd554f2c7f2374cc960e4f7f641e0a"
+    },
+    "command": [
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/run.py",
+      "--experiment",
+      "configs/issue-7-operator-smoke.json"
+    ],
+    "config_sha256": "20c4a89117a6c7ea1c7588b1d476909d93fef26c5bf80cf757c6f044db03a185",
+    "started_unix_s": 1790107596.8074949,
+    "bags": [
+      {
+        "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+        "split": "development",
+        "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+        "files": [
+          {
+            "name": "doubleT_obstacle_0.db3",
+            "bytes": 4821250048,
+            "mtime_ns": 1788354643000000000
+          }
+        ]
+      }
+    ],
+    "git_revision": "bc4f73b4f75d83540683716953afb30351839cd6",
+    "git_status": " M tunnel_guard/detector.py\n M tunnel_guard/ros_node.py\n M tunnel_guard/visualization.py\n?? configs/issue-7-operator-metrics.json\n?? configs/issue-7-operator-smoke.json\n?? tunnel_guard/operator_channel.py\n?? tunnel_guard/operator_metrics.py\n",
+    "native_accelerator": {
+      "binary_sha256": "81a367424bfc00cc721111b4d849b8be8540ec0214304fc33725aa95ec31ff51",
+      "module": "tunnel_guard._native",
+      "backend": "cpp",
+      "sources_sha256": {
+        "cpp/kernels.cpp": "07e6934a60bb1ab0a4c65d8bddb57e5985f9a6fd46de3f634fa12ee0b6406fbf",
+        "cpp/voxel.cpp": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+        "cpp/native.h": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+        "setup.py": "c6264d49cc69a6ea9052ddb27a7363229eca2e887f4eab77beafc31745200b59",
+        "MANIFEST.in": "33c4c37a2f87322b865aa3de40223f5a1d3a0aebf1c220aa0d266bf1366d6910"
+      }
+    },
+    "finished_unix_s": 1790107639.980115
+  },
+  "audit_manifest": {
+    "python": "3.12.8 (v3.12.8:2dc476bcb91, Dec  3 2024, 14:43:19) [Clang 13.0.0 (clang-1300.0.29.30)]",
+    "platform": "macOS-26.5-arm64-arm-64bit",
+    "machine": "arm64",
+    "cpu_count": 8,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "rosbags": "0.11.5",
+      "kiss-icp": "1.3.0",
+      "open3d": "0.19.0",
+      "travel-seg": null,
+      "hdbscan": null,
+      "pypatchworkpp": null
+    },
+    "source_sha256": {
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/accelerator.py": "b8a57cadcffc4f83e4e366b02ab7bd8ef20f9ceae60acd0aeec9931630db28c5",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/alarm_anatomy.py": "9579c8830b427b440d3d696dad20a0114a780bc92cf9a2e5205e174a10b21f81",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/alignment.py": "37019d4fa19e6186d89a1f8392d60eeadaf7b706eb602e91850d2fb86870fb08",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/alignment_probe.py": "15d69909fd6978047a92163f0b17dc31d027c14e09d029da28d65eeffac70551",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/assess_track_scenes.py": "57e44a32f451a308998759f4d346543780c37195d98f2e13d875c588e19a3033",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/background.py": "bea0e7ffae787bbf17ae06a9c775fc01d66aaac52cc104d82903cc8690dfb27b",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/background_repro.py": "816dbc51d7bb91afc6709d6435f2de966244167dc2d3dfce87b0c6496ca2f43c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/calibrate.py": "5ba977914f5f3da207454434c7111225d83dac6667c53bf9719326b691750f8c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/check_geometry_kernels.py": "40f6e22703158118ebca6a880fe658db55dbc6b68ed770254d72eb933b97338d",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/check_kernels.py": "79788a196bb9573600c1f17e78bd9d670b0c779d4d47c4c9e0f86ff86e1dacfb",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/compare_alarm_runs.py": "ce39621d4cea9ee07617f882f1d1f7035f006f16b252b74c2b5f63d2f1ad36d0",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/config_audit.py": "68b557b8902365311feb65c76954eb7b8b9f581970610d86dac667dfd9468b1c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/corridor_report.py": "d245b7d57fc996faa4315b41f9f9d8775becd7c91968d6fbcfdacb633ccdc4fd",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/curve_audit.py": "1326d9adab148558ba5b3607390a3609a0705f18e12375f5652effdc2a0d2381",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/curved_stress.py": "0bcada82de0d22b9d50feef464635c334ef57cd7883f461fe1ea27a676a2a078",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/decode_benchmark.py": "2d86ea1438c6fcb5365455fd2a0de9cd116c22544b13dfe5db89f220ef0d579f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/detector.py": "2c7da6ae559c500b6f7b1cfeca13f02e3e120d2e72778bbf91ee25fc69bb0450",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/episode_report.py": "dc932d8a30294a887e7a143e852c1e2c9d7a95e46aea72f341d780a33d584501",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/evaluate.py": "79f870c370a8b76b867b8a173af517e10116e7220a1c21af3aa859088ff5a574",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/expansion_report.py": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/extended_subset.py": "feaf7c41ab3ccd9b9d0497128353c7b36eedbd33aff8f46c2cae8193da9279ce",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/geometry.py": "df2e11b2ec266827f3fd26b7c7e0248ef0cd35753c3fa14fb7a9364ce777fc86",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/history_probe.py": "723311b1aee8248d2b18a72ac22e28b66b6df47dff16904ea87483b86cd1e3bf",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/hmm_mos_probe.py": "2f4c5a9f47ecedcb40457a5c64f3d606965a1db5178dacd85839d4df5070547f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/injection_experiment.py": "9887b6985e3e90de90c0505c4cca787f05703d7bd9f487041e84b89a8b5841c1",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/inspect_bag.py": "ccb30abe90954ab9e7862bcc914b9803ff538c5e4dd4695c97f189d04b766374",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/inspect_recording_headers.py": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/intrusion_audit.py": "e04ec075a2cc9ddcf6d844e6ddfda6657e275b562ec6de7728f11732c7cdcf84",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/io.py": "16a4410d0d19637d0cdac9b30a43c810d381d2e35feeef25cd63c41b40bc4a87",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/motion_audit.py": "d2d49f0bcff1af6bb7ba97c6d7047c59f6ab4605bb485cfac61e6f298c94a8c7",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/motion_scenarios.py": "2d928846e973b163471f3293ba1af4ae79fdede55159b5c515cb8c2f6cc0d897",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/mounting.py": "568b2716fafef9775d18e1105c0d1365aff1b32409d6cfcf82f22840bab33a2c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/mounting_replay.py": "f49091816ecf0854869c30bdf0ebaf1d19f836058ff1f0dd6ec8a1d6756d1731",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/mounting_report.py": "c7547ee3d650de0f35f4d5a86ab855b0db1214e4860bada9082619c0fb44e41f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/native_benchmark.py": "0adedf2f3de2bf5c698426c748d0ca2c98193110b7b710d4c182061c950b83d5",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/on_track.py": "b5b8f3f2eff1bf8c6d51b7ad47f9591b4f92fb685c9131a183f6ec917b8b70fb",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/operator_channel.py": "ed9934f7f65025a2d053127974b9f1f2832b72b017e99636312ec69d625a654b",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/operator_metrics.py": "5c6d590271a65ffd18b3d4d57665749ca04fec08b5014ec6e9452a1a8bb3c821",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/panel_report.py": "f5fbf5612985fa008b580bb7446f445c5017d1170a04a7180b73b4e7dc38c505",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/plot_track_geometry.py": "b19aee7b6846a74b38cc9bec7ba0158443f473168b4fb6a18fe95014b6716113",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/prepare_segment.py": "154f5d0772d56473e82704d217723132c292efa0681d5df32f8bf6b1c355cf7a",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/profile_run.py": "5ad54b41e5a681182281d0714017c06c628fbb65deada92a5e4cd04127a956fb",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/rail_fit_report.py": "3bae4132006f5b72b7620be0e13fb76aebd413bfcce733c1d2c6738542f6bb44",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/rail_geometry_audit.py": "4314dd497098bee51d574daa0ca01089d46791c49102ca9a14fea5aaf127e044",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/realistic_report.py": "163806fdb60df8b981187b14e803ff921fdf1a9d14700b0e5ae4d30b0f0989d8",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/realistic_stress.py": "e6468a325619d0a2e54f714fe0a98c03dd8631802ea83d771070fff869f3deac",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/render_alarm_cases.py": "95b510a7143f7250ec718749ed654e95c225f1b5a9ce20aa054f3b0df9cd0cc7",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/render_annotation_review.py": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/review_remaining_alerts.py": "0fe5e93952e1a275a81b2b04d203ebe899fe4d1e304ef7d347e026cc87d4448b",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/review_viewer.py": "eb8b7c1de7591c7a1324184d29be20ef9adb58d7a2033d1335bcfcf92cf9297e",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/ros_node.py": "884ccee707099dee9d7c7c87c605ee6016d8fdb289164c3808724bf83bf0206b",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/run.py": "23961c6f77b4ee0414b98ec0eb0e867fb18f4e69056d7d197c337640bf8d8164",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/segmentation.py": "9e545b80d3e253309210f79745154fb83c5d0a30931d38fca4551eefd2635789",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/sensor_profile.py": "4ff47460df305986034ba03e45e9c892e3559ccceffff61412c5d1ebadfb3c03",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/structural_view.py": "667fc9c9d933bbb19ab5f6e77f32b3cd2f34baa5f39eba0bdbf000d1036fd541",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/surface_evaluate.py": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/sustech.py": "103e7c167550022a86f37973a11dabfc476d0acdfc9eb1ca08212b6f4c615392",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/sustech_import.py": "adba80ec5aa9bfa31d8ec3321ed5f2d3ef97c55a77db7c0bd2addc7fb0f84700",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/trace_analysis.py": "eb1c1617b8666166d1d96864b79d541592c3a6784b8a6007ab69b3714d748c4c",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/track_scene_experiment.py": "a9b8f1445020f436b65470996b73f5df462b1973c3ca1520627fa4095343ae2d",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/uncertainty_probe.py": "6c80e43d3e47a0b85257afef40f3e6931228f5dfbfa03fa5a4ce3a2ef1df488e",
+      "/Users/mors1337/Code/DL/tunnel-guard-issue-7/tunnel_guard/visualization.py": "989921314fff8ff61e4220212b2e4a1791dd554f2c7f2374cc960e4f7f641e0a"
+    },
+    "recipe_sha256": "b3bcb09158ca72d3ffd43b07239b34e253716b829c53b64150cedf1d419c0f40",
+    "captured_manifest_sha256": "d6cca8683370cda849bbfb2d432de231dd09568072c266d6701f198226327dc3",
+    "captured_config_sha256": "20c4a89117a6c7ea1c7588b1d476909d93fef26c5bf80cf757c6f044db03a185",
+    "policy_sha256": "ed9934f7f65025a2d053127974b9f1f2832b72b017e99636312ec69d625a654b",
+    "scope": "Policy evaluation on recorded outputs; no new detector replay or target-runtime benchmark"
+  },
+  "five_moving_recordings": {
+    "frames": 2287,
+    "alert_frames": 2008,
+    "observed_alert_runs": 145,
+    "observed_s": 227.99983191490173,
+    "estimated_distance_m": 704.0111089746686,
+    "alert_frames_per_estimated_km": 2852.227719708115,
+    "observed_alert_runs_per_minute": 38.15792286744831
+  },
+  "metric_limits": [
+    "Episodes at recording boundaries are censored; this is not a new-alarm onset rate or independent object count.",
+    "Previous alert is held to next adjacent scan; terminal interval is unknown and excluded.",
+    "Pose path length is uncalibrated and excludes over-gap intervals; not surveyed distance.",
+    "No speed/stopping model, exhaustive negatives, calibrated confidence or object-onset timestamps are supplied."
+  ],
+  "target": {
+    "required": "Intel i7-9700E",
+    "measured": false,
+    "blocker": "No identified project target endpoint or target measurements available; local Docker has no ROS image. No image download or target substitute performed."
+  },
+  "runtime_limits": {
+    "actual_detector_frames": 30,
+    "actual_serialized_ros_status_messages": 30,
+    "live_ros_adapter_executed": false,
+    "rviz_visual_inspection": false,
+    "note": "Recorded CDR status and marker text inspected; no ROS/DDS transport, watchdog or sensor-to-display age verification claimed."
+  },
+  "artifacts": {
+    "results/issue-7-operator-metrics.json": "1f3eced0df55be7b71d919a63a6aa709b74707c64eb612a126c5976cd0689c4f",
+    "results/issue-7-operator-decisions.jsonl.gz": "752bc20033732e148e2f14e5be9c4e638911ed23b8ad24aeb4b4776a51f76b55",
+    "results/issue-7-operator-channel-inspection.json": "ffed957e7732fcbcba7a680efca7cae909a341f2c5eddbdd620a8ab6a001aedf",
+    "results/issue-7-operator-decision-preservation.json": "ee8eb971ad47b5eab3e46bb1eb0e26846791d19bbe57ce57cd18793da18e591b"
+  }
+}

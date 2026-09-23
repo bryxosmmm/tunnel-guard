@@ -1,0 +1,22 @@
+{
+  "frames": 30,
+  "object_observations": 9196,
+  "frame_fields": [
+    "status",
+    "nearest_obstacle_m",
+    "nearest_candidate_m",
+    "unresolved_range_objects",
+    "nearest_unresolved_range_m"
+  ],
+  "object_fields": [
+    "track_id",
+    "confirmed",
+    "intersection_confirmed",
+    "hits",
+    "support_voxels",
+    "accumulated_support_voxels",
+    "path_relation"
+  ],
+  "differences": [],
+  "scope": "Exact named field comparison on 30 actual scans, not complete geometry equivalence or full-panel detector rerun"
+}

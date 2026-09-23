@@ -16,6 +16,7 @@ from . import accelerator
 from .geometry import CrossSection, TrackGeometry, voxel_representative_indices
 from .mounting import observe_mounting, validate_mounting_config
 from .segmentation import density_labels, published_labels
+from .operator_channel import observation_groups, operator_decision
 
 
 def load_config(path: str | Path) -> dict:
@@ -573,7 +574,9 @@ class Detector:
             self.tracks.clear()
             self.previous_source = None
             self.odometry = self._new_odometry()
-            return result | {"reason": "insufficient_returns", "processing_s": time.perf_counter() - started}
+            result.update(reason="insufficient_returns", processing_s=time.perf_counter() - started)
+            result["decision"] = operator_decision(result, self.config)
+            return result
         motion_started = time.perf_counter()
         frame, pose, motion = self._motion(points, point_times)
         self.display_points = frame
@@ -643,39 +646,9 @@ class Detector:
         pipeline["association"] = {"state": "ran", "candidates": len(objects),
                                    "confirmed": sum(o["confirmed"] for o in objects),
                                    "history_retained_for_motion": motion["valid"]}
-        # A hazard needs interior evidence this frame actually measured, on something that is
-        # not the tunnel's own cross-section. Both halves are decided per point upstream
-        # (`claim`), so this is a partition of the object list, not a second policy.
-        def is_hazard(obj: dict) -> bool:
-            return obj["path_relation"] in ("intersecting", "unresolved")
-
-        def is_doubt(obj: dict) -> bool:
-            # Something is present, in a coordinate this frame actually measured, whose
-            # relation to the corridor it cannot resolve: edge uncertainty that is neither the
-            # tunnel's own cross-section nor attached to it. `structure_isolation_m` is what
-            # separates an object standing in the corridor from a few returns of the tunnel's
-            # own surface that the cell test could not hold. Doubt is reported and never
-            # counted as an intrusion.
-            # `None` means no structural return inside the isolation distance at all, which is
-            # the most isolated case there is, not a missing measurement.
-            distance = obj["structure_distance_m"]
-            return (obj["boundary_unexplained_voxels"] >= int(self.config.get("claim_min_support_voxels", 2))
-                    and (distance is None or distance > isolation))
-
-        def is_range_unknown(obj: dict) -> bool:
-            # Interior evidence only where the bed or the centre-line is beyond its own
-            # uncertainty budget. The lateral relation there is our extrapolation, so this is
-            # not doubt about an intrusion - it is the statement that the corridor's lateral
-            # reference does not reach that far. Counted and reported separately, with
-            # `supported_range_m` and each object's own `far_field_lateral_bound_m`.
-            return bool(obj["interior_unmeasured_voxels"])
-
-        isolation = float(self.config.get("structure_isolation_m", 0.3))
-        hazards = [o for o in objects if is_hazard(o)]
+        hazards, doubt, range_unknown = observation_groups(objects, self.config)
         confirmed = [o for o in hazards if o["confirmed"]]
         certain = [o for o in confirmed if o["intersection_confirmed"]]
-        doubt = [o for o in objects if not is_hazard(o) and is_doubt(o)]
-        range_unknown = [o for o in objects if not is_hazard(o) and is_range_unknown(o)]
         status = ("obstacle" if certain else ("unresolved_obstacle" if confirmed else
                   ("candidate" if (hazards or doubt) else
                    ("no_obstacle_observed" if geometry.valid else "unknown"))))
@@ -715,7 +688,7 @@ class Detector:
         # far-field lateral bound is attached here rather than inside either builder.
         for obj in objects:
             obj["far_field_lateral_bound_m"] = _far_field_bound(obj["distance_m"], geometry, self.config)
-        return result | {"status": status, "reason": geometry.reason,
+        result |= {"status": status, "reason": geometry.reason,
                          "supported_range_m": geometry.supported_range_m(), "objects": objects,
                          "health": "unavailable" if not geometry.valid else ("degraded" if health_reasons else "normal"),
                          "health_reasons": health_reasons + calibration_caveats,
@@ -729,3 +702,5 @@ class Detector:
                          "geometry": geometry.describe(), "motion": motion, "pose": pose.tolist(),
                          "range_observability": bins, "geometry_points": len(reduced),
                          "processing_s": time.perf_counter() - started, "motion_s": motion_s}
+        result["decision"] = operator_decision(result, self.config, groups=(hazards, doubt, range_unknown))
+        return result

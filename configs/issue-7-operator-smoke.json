@@ -1,0 +1,14 @@
+{
+  "hypothesis": "The same detector produces a uniform operator-review field and serialized status without changing detection thresholds or issuing movement authority.",
+  "criterion": "Process 30 real scans, serialize the actual recorded ROS status/markers, inspect operator action, unresolved counts, distances and explicit unverified freshness. This is not a target latency measurement or a safety validation.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/issue-7-operator-smoke",
+  "every": 1,
+  "max_frames": 30,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [],
+  "visualization": true,
+  "display_max_points": 1000,
+  "bags": [{"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development"}]
+}
