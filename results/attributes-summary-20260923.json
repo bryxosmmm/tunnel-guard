@@ -1,0 +1,143 @@
+{
+  "purpose": "Compact sensor-attribute preservation on the accepted presence and numerical-stability baseline; data-loss fix, not a detection or safety improvement.",
+  "source_revisions": {
+    "before": "f2dd7c4f5619992572756c7cb6518a41630e2b77",
+    "after": "e48304c9811e3c7211fb9140428aaff1e272e7f5"
+  },
+  "dependencies": {
+    "presence_pr": 11,
+    "numerical_fix_pr": 13,
+    "sensor_issue_remains_open": 5
+  },
+  "seed": 20260915,
+  "panel": {
+    "recordings": 9,
+    "frames_per_variant": 2641,
+    "every": 1,
+    "max_frames": null,
+    "odometry_threads": 1,
+    "extended_recordings_are_segments_not_independent_passes": true
+  },
+  "regression": {
+    "ok": true,
+    "component_frame_observations": 698799,
+    "atol": 0,
+    "rtol": 0,
+    "material_mismatches": 0,
+    "within_tolerance_differences": 0,
+    "excluded_from_equality": "Operational timings and the independently validated new sensor_attributes summary only.",
+    "status_frames": {
+      "obstacle": 202,
+      "unresolved_obstacle": 58,
+      "candidate": 18,
+      "unknown": 3,
+      "no_obstacle_observed": 2360
+    }
+  },
+  "decode": {
+    "xyz_valid_return_observations": 501204616,
+    "changed_frames": 0,
+    "attribute_failures": 0,
+    "first_four_outputs_byte_identical": true,
+    "paired_ms": {
+      "before": {
+        "p50": 18.40491604525596,
+        "p95": 37.03150001820177
+      },
+      "after": {
+        "p50": 21.756374975666404,
+        "p95": 43.07458398398012
+      }
+    },
+    "samples_per_arm": {
+      "before": 2641,
+      "after": 2641
+    },
+    "peak_retained_attribute_bytes": 8555468
+  },
+  "diagnostics": {
+    "full_panel": {
+      "before_files": 81,
+      "after_files": 81,
+      "compared": 81,
+      "legacy_keys": 113589,
+      "legacy_bytes_equal": 113589,
+      "files_with_sensor_attributes": 81,
+      "representative_verified": 81,
+      "representative_not_executed": 0
+    },
+    "supplementary": {
+      "before_files": 4,
+      "after_files": 4,
+      "compared": 4,
+      "legacy_keys": 1327,
+      "legacy_bytes_equal": 1327,
+      "files_with_sensor_attributes": 4,
+      "representative_verified": 1,
+      "representative_not_executed": 3
+    },
+    "supplementary_frames_per_variant": 319,
+    "supplementary_new_independent_frames": 0,
+    "combined_archives": 85,
+    "combined_legacy_arrays_byte_identical": 114916,
+    "executed_representative_stages": 82,
+    "correctly_not_executed_stages": 3,
+    "supplementary_ok": true
+  },
+  "replay_resources": {
+    "before": {
+      "wall_s": 2224.092085667071,
+      "process_peak_rss_bytes": 777207808,
+      "diagnostic_write_s": 164.41105383110698
+    },
+    "after": {
+      "wall_s": 2149.587618749123,
+      "process_peak_rss_bytes": 898023424,
+      "diagnostic_write_s": 205.9107317965245
+    }
+  },
+  "resource_limit": "One sequential pair on a shared Mac, with diagnostics. Wall-time difference is not a speedup; neither this replay nor paired decode measures live ROS/DDS age or i7-9700E performance.",
+  "consumer_execution": {
+    "compact_decoder_cli_frames": 9,
+    "scene_exports": 9,
+    "scene_points": 1806204,
+    "export_xyz_or_intensity_differences": 0,
+    "browser_frames_viewed": [
+      0,
+      15
+    ],
+    "ros_callback_not_exercised": true
+  },
+  "operator_compatibility": {
+    "policy_unchanged": true,
+    "frames_compared": 2641,
+    "record_differences": 0,
+    "decision_gzip_sha256": "752bc20033732e148e2f14e5be9c4e638911ed23b8ad24aeb4b4776a51f76b55",
+    "alert_frames": 2330,
+    "all_recording_episodes": 162,
+    "moving_proxy_panel_episodes": 145,
+    "moving_proxy_panel_seconds": 227.99983191490173,
+    "moving_proxy_panel_episodes_per_minute": 38.15792286744831,
+    "policy_approval_and_target_runtime_remain_unverified": true
+  },
+  "initial_smoke_failure": {
+    "cause": "Worktree clone retained an older native extension incompatible with the integrated Python source.",
+    "remedy": "Built the unchanged integrated C++ sources with setup.py build_ext --inplace --force, then installed the same resulting binary in both frozen variants.",
+    "preserved": true
+  },
+  "evidence": {
+    "revision": "97ea60cf6cde92eac06d9937fb1bf7554e1b4ed8",
+    "index": "https://github.com/bryxosmmm/tunnel-guard/blob/97ea60cf6cde92eac06d9937fb1bf7554e1b4ed8/results/attributes-evidence-index-20260923.json",
+    "full_regression": "https://github.com/bryxosmmm/tunnel-guard/blob/97ea60cf6cde92eac06d9937fb1bf7554e1b4ed8/results/attributes-regression-20260923.json.gz",
+    "invalid_geometry": "https://github.com/bryxosmmm/tunnel-guard/blob/97ea60cf6cde92eac06d9937fb1bf7554e1b4ed8/results/attributes-invalid-regression-20260923.json.gz",
+    "decode": "https://github.com/bryxosmmm/tunnel-guard/blob/97ea60cf6cde92eac06d9937fb1bf7554e1b4ed8/results/attributes-decode-20260923.json",
+    "operator": "https://github.com/bryxosmmm/tunnel-guard/blob/97ea60cf6cde92eac06d9937fb1bf7554e1b4ed8/results/attributes-operator-compatibility-20260923.json",
+    "consumers": "https://github.com/bryxosmmm/tunnel-guard/blob/97ea60cf6cde92eac06d9937fb1bf7554e1b4ed8/results/attributes-consumers-20260923.json"
+  },
+  "non_claims": [
+    "Physical firing identity and return multiplicity remain unknown; raw slots are not independent emissions.",
+    "No intensity threshold, raw-time deduplication, new deskew, sensor calibration or train-control authority.",
+    "No exhaustive false-alarm labels, independent object-onset latency or field-safety certification.",
+    "No automated tests or synthetic scenes were created or run."
+  ]
+}

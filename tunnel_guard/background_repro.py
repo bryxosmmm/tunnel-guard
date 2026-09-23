@@ -54,7 +54,7 @@ def main():
             measured = message.header.stamp.sec * 10**9 + message.header.stamp.nanosec
             if measured != reference["measurement_timestamp_ns"]:
                 raise ValueError("Source measurement does not match reference row")
-            points, times, _, _ = decode_cloud(
+            points, times, _, _, attributes = decode_cloud(
                 message,
                 np.asarray(config["sensor_rotation"]),
                 np.asarray(config["sensor_translation"]),
@@ -62,7 +62,8 @@ def main():
             for repetition in range(recipe["repetitions"]):
                 detector = Detector(config)
                 row = detector.process(
-                    points, measured * 1e-9, times, capture_diagnostics=True
+                    points, measured * 1e-9, times, capture_diagnostics=True,
+                    point_attributes=attributes,
                 )
                 row.update(
                     source_frame_index=frame,

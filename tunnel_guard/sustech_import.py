@@ -24,8 +24,6 @@ from rosbags.typesys import Stores, get_typestore
 
 from .io import decode_cloud
 
-INTENSITY_TYPES = {1: "i1", 2: "u1", 3: "i2", 4: "u2", 5: "i4", 6: "u4", 7: "f4", 8: "f8"}
-
 
 def write_pcd(path: Path, points: np.ndarray, intensity: np.ndarray):
     header = (f"# .PCD v0.7\nVERSION 0.7\nFIELDS x y z intensity\nSIZE 4 4 4 4\nTYPE F F F F\n"
@@ -56,22 +54,11 @@ def import_bag(bag: Path, scene: Path, config: dict, max_frames: int | None = No
             if max_frames is not None and index >= max_frames:
                 break
             message = store.deserialize_cdr(raw, connection.msgtype)
-            xyz, _, _, _ = decode_cloud(message, rotation, translation)
-            fields = {f.name: f for f in message.fields}
-            names = ["x", "y", "z", "intensity"]
-            dtype = np.dtype({
-                "names": names,
-                "formats": [(">" if message.is_bigendian else "<") + INTENSITY_TYPES[fields[n].datatype]
-                            for n in names],
-                "offsets": [fields[n].offset for n in names],
-                "itemsize": message.point_step,
-            })
-            records = np.ndarray((message.height, message.width), dtype=dtype, buffer=message.data,
-                                 strides=(message.row_step, message.point_step))
-            valid = (np.isfinite(records["x"]) & np.isfinite(records["y"]) & np.isfinite(records["z"])
-                     & ((records["x"].astype(float) ** 2 + records["y"].astype(float) ** 2
-                         + records["z"].astype(float) ** 2) > 1e-6))
-            write_pcd(scene / "lidar" / f"{index:06d}.pcd", xyz, records["intensity"][valid])
+            xyz, _, _, _, attributes = decode_cloud(message, rotation, translation)
+            intensity = attributes.values.get("intensity")
+            if intensity is None:
+                raise ValueError(f"PointCloud2 in {bag} has no scalar intensity field")
+            write_pcd(scene / "lidar" / f"{index:06d}.pcd", xyz, intensity)
             frames += 1
             points += len(xyz)
     shutil.copyfile(bag / "metadata.yaml", scene / "source-metadata.yaml")

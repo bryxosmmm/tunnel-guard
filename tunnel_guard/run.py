@@ -183,7 +183,8 @@ def main():
                 inference_start = time.perf_counter()
                 ingestion_s = inference_start - frame_start
                 row = detector.process(scan.points, scan.timestamp_s, scan.point_times,
-                                       capture_diagnostics=scan.index in diagnostic_frames)
+                                       capture_diagnostics=scan.index in diagnostic_frames,
+                                       point_attributes=scan.attributes)
                 inference_s = time.perf_counter() - inference_start
                 row.update(frame=scan.index, bag=bag.name, raw_points=scan.raw_points,
                            invalid_points=scan.invalid_points, sensor_frame=scan.frame_id,

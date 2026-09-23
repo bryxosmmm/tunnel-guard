@@ -87,7 +87,7 @@ def main():
                         if a[offset].shape == b[offset].shape and a[offset].size:
                             key = "max_coordinate_difference" if offset == 0 else "max_time_difference"
                             report[key] = max(report[key], float(np.max(np.abs(a[offset] - b[offset]))))
-                    if a[2:] != b[2:]:
+                    if a[2:4] != b[2:4]:
                         changed.append("invalid_count_or_duration")
                     if changed:
                         report["changed_frames"].append({"bag": bag.name, "frame": index, "fields": changed})

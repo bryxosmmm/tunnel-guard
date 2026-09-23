@@ -108,3 +108,63 @@ independent event labels and prioritize errors by event/range/visibility. Keep
 unobserved intervals unknown. Revisit calibration only with observable references;
 do not turn a generic sensor manual or more repeated frames into missing ground
 truth. No ML training or new synthetic campaign is needed before that audit.
+
+## Attribute retention after #11 and #13 — 2026-09-23
+
+The compact implementation `e48304c` is compared with `f2dd7c4`: the accepted presence
+separation plus the numerical support fix and serial ICP. No detector threshold, transform,
+deskew setting or alarm policy differs between the variants.
+
+The unchanged nine-recording panel contains **2641 frames**: six complete recordings and
+three extended-data segments, not nine independent field trials. Seed: **20260915**.
+Both frozen variants ran to EOF, in separate sequential processes, with the same rebuilt
+native binary. The input inventory and source bindings are retained with the audit.
+
+- **Zero differences** in every prior non-timing result field across **698799 component-frame
+  observations**, with `atol=rtol=0`. This includes integer support, timestamps, poses, geometry,
+  IDs, presence, confirmation, intersection and frame decisions. Only operational timings and
+  the newly added `sensor_attributes` summary are outside equality; the latter is independently
+  validated.
+- The first four decoder outputs are **byte-identical** over **501204616 XYZ-valid return
+  observations**. Raw optional fields, original-slot indices and validity masks were checked
+  against the real PointCloud2 messages. These are not independent physical emissions.
+- The full replay saved **81 diagnostic archives**: all **113589 prior arrays** are byte-identical,
+  and all 81 representative selections retain exact source-attribute alignment.
+- State coverage is unchanged: 202 obstacle, 58 unresolved, 18 candidate, 3 unknown and
+  2360 no-obstacle-observed frames. This is regression coverage, not accuracy or route clearance.
+- A supplementary replay of the same 319 frames from two recordings captured four additional
+  archives, including all three invalid-geometry frames. Combined: **85 archives, 114916 prior
+  arrays byte-identical, 82 executed representative stages and 3 correctly marked not executed**.
+  It also had zero result/attribute mismatches. These repeats do not enlarge the independent panel.
+
+### Measured cost
+
+| Measurement | Before | With attributes |
+|---|---:|---:|
+| Paired decode p50, ms | 18.405 | 21.756 |
+| Paired decode p95, ms | 37.032 | 43.075 |
+| Full replay process peak RSS, MiB | 741.203 | 856.422 |
+| Sum of recording wall times, s | 2224.092 | 2149.588 |
+| Diagnostic-write time within that replay, s | 164.411 | 205.911 |
+
+Decoder timing alternates call order on each of 2641 real messages and excludes deserialization
+and comparison work. The observed p50/p95 increases are **18.21% / 16.32%**. Peak retained
+attribute arrays are **8555468 bytes**; that is neither total allocation nor process RSS.
+The replay RSS includes prefetch, tracking, output retention and diagnostic payloads.
+The wall-time difference is **not a speedup claim**: one sequential pair on a shared Mac does
+not isolate thermal, scheduling or cache effects and is not an i7-9700E deployment benchmark.
+
+The first smoke attempt failed because the cloned worktree carried an older native ABI
+(`classify_geometry`: 17 arguments versus the source's 19). Its failure record and binary were
+preserved; the unchanged C++ sources were rebuilt for both variants before the successful
+44-frame-per-variant smoke and full replay.
+
+**Enablement tradeoff:** retaining fields fixes data loss and enables traceable inspection;
+it has measured decode/memory cost and no measured detection benefit. This evidence supports
+reviewing the compact metadata-preservation change, not enabling intensity decisions, deskew,
+return deduplication or train-control authority. Sensor provenance and issue #5 remain open.
+
+The compact [summary](../results/attributes-summary-20260923.json) records source identities,
+costs and artifact references. Replay recipes are
+`configs/attributes-before-20260923.json` and `configs/attributes-after-20260923.json`.
+The large audit implementation and detailed evidence are kept outside the functional PR.
