@@ -1,0 +1,70 @@
+{
+  "inference_commit": "69ea6fa36a63dbba7c5516e7ffe31f3dac7d17cc",
+  "integration_base": "f5b0983",
+  "reference_commit": "e48304c9811e3c7211fb9140428aaff1e272e7f5",
+  "seed": 20260915,
+  "odometry_threads": 1,
+  "unknown_frames": [
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frame": 130,
+      "status": "unknown",
+      "health": "unavailable",
+      "reason": "insufficient_paired_rail_support"
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frame": 249,
+      "status": "unknown",
+      "health": "unavailable",
+      "reason": "insufficient_paired_rail_support"
+    },
+    {
+      "bag": "new_data_200",
+      "frame": 48,
+      "status": "unknown",
+      "health": "unavailable",
+      "reason": "insufficient_paired_rail_support"
+    }
+  ],
+  "limits": [
+    "319 supplemental frames repeat a subset of the 2641-frame panel.",
+    "All three observed invalid geometries lack sufficient paired rail support; no claim of exercising every possible geometry failure.",
+    "Timing excluded; no target-hardware, live ROS/DDS, field-accuracy or operator-load acceptance claim.",
+    "Panel comprises six tunnel recordings and three 51-frame extended segments, not nine independent passes or the entire extended dataset."
+  ],
+  "source_binding": {
+    "cpp/kernels.cpp": "71ad3fee9bf4a943dce0aef0afb2d51b4ee5b49488807b4567be00b7d4f67ff4",
+    "cpp/voxel.cpp": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+    "tunnel_guard/accelerator.py": "17cf7cf4e22c446d73cd4361d48551732190b27cf531fb3c2efde5fdba91bd22",
+    "tunnel_guard/geometry.py": "da86a42ce860a58929d6efd36493fb019ed111e68764ee4f8b52e5c4155db9c6",
+    "tunnel_guard/detector.py": "a65bd072a34c4a18d220de41b931d1cc77eaf522f2c329c5162c497cc3a3423a"
+  },
+  "native_binary_sha256": "967807b62bb13deba113f5413190990500615a03fb6f76b9f235eb1552d9fc60",
+  "reporter_sha256": "9023ddb2443fe0a229e5aafa795a1612f5df323f27159540cacf5843a9cceb86",
+  "artifacts": {
+    "postmerge-regression-20260923.json": {
+      "path": "results/postmerge-regression-20260923.json",
+      "sha256": "1af4703a19b1dadbc31e8c617c71ec320a82db5c646ad5b4f37d9a7ee4285fb4"
+    },
+    "postmerge-failure-20260923.json": {
+      "path": "results/postmerge-failure-20260923.json",
+      "sha256": "ccefdffe709e7c82d7dba199537c5662c74e3f35ab6e5c17e4fc011277d18e2a"
+    },
+    "postmerge-smoke-20260923.json": {
+      "path": "results/postmerge-smoke-20260923.json",
+      "sha256": "92a51e7d64de1f3e788549accd38d7c368c376bb11683a93cb8c1e370c2a1bc1"
+    }
+  },
+  "local_replays": [
+    "build/postmerge-smoke-20260923",
+    "build/postmerge-full-20260923",
+    "build/postmerge-invalid-fixed-20260923",
+    "build/postmerge-full-fixed-20260923"
+  ],
+  "configuration_audit": {
+    "exit_code": 0,
+    "missing_detector_configs": [],
+    "removed_backend_keys": []
+  }
+}

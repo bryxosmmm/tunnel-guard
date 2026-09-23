@@ -2,10 +2,10 @@
   "mode": "cutover",
   "hypothesis": "The merged C++-only integration preserves the verified native-path behavior and sensor provenance; only declared obsolete schema fields disappear.",
   "seed": 20260915,
-  "removed_config": {
-    "native_kernels": true,
-    "voxel_backend": "cpp"
-  },
+  "removed_config": [
+    ["native_kernels", true],
+    ["voxel_backend", "cpp"]
+  ],
   "removed_output": {
     "geometry.rail_frames": [],
     "geometry.rail_frame_version": 2,

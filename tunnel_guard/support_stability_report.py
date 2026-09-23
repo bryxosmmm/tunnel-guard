@@ -64,7 +64,7 @@ def compare_cutover(plan):
         if not all("finished_unix_s" in m for m in manifests):
             raise ValueError("Cannot compare an unfinished replay")
         configs = [json.loads((root / "detector.json").read_text()) for root in (before, after)]
-        for key, expected in plan["removed_config"].items():
+        for key, expected in plan["removed_config"]:
             if key not in configs[0] or configs[0].pop(key) != expected or key in configs[1]:
                 raise ValueError(f"Unexpected configuration removal: {key}")
         if configs[0] != configs[1]:
