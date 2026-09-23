@@ -1,0 +1,29 @@
+{
+  "seed": 20260915,
+  "source_run": "../tunnel-guard-object-evidence/build/object-evidence-after",
+  "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+  "output": "build/rail-obstacle-focus-review",
+  "expected_frames": 201,
+  "frames": [
+    0,
+    20,
+    40,
+    60,
+    75,
+    100,
+    181,
+    200
+  ],
+  "forward_bounds_m": [
+    54,
+    58
+  ],
+  "track_half_width_m": 3.0,
+  "height_view_bounds_m": [
+    -0.15,
+    2.2
+  ],
+  "above_railhead_review_margin_m": 0.05,
+  "hypothesis": "Inspect the changing upright support near 56 m and any persistent lower support after it changes shape. This is a raw-cloud candidate search, not an identity assignment or a tuned detector configuration.",
+  "criterion": "Measure raw review support in all 201 frames and render the six fixed frames. Object-specific detection range or latency requires an independently identified object and first visible frame; absence of a clearly identifiable object is not an exhaustive negative."
+}

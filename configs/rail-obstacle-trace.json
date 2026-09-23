@@ -1,0 +1,30 @@
+{
+  "hypothesis": "The low group near 56 m is visible independently of the upright moving group. Trace actual support through the frame31/32 relation change and frame39/40 merge; do not assume that persistence proves a foreign object or collision.",
+  "criterion": "Preserve raw support and actual component membership at the fixed transitions. Distinguish first visible support, presence confirmation, unresolved corridor evidence, and certified intersection; no detector threshold or box changes.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-issue-9-serial.json",
+  "output": "build/rail-obstacle-trace",
+  "every": 1,
+  "max_frames": 61,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [
+    0,
+    2,
+    31,
+    32,
+    33,
+    38,
+    39,
+    40,
+    41,
+    50,
+    60
+  ],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    }
+  ]
+}

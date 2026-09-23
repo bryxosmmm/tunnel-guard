@@ -44,6 +44,65 @@ stays local; the following interpretation is auditable by its hash.
   supporting measurements. It is not braking distance, arc length, or distance
   from the train bumper. Preserve that distinction in the viewer and JSON.
 
+## Actual rail-object search — 2026-09-22
+
+The original draft was located and its SHA256 matched the source above. Question
+15, line 56, says there is an item on the rails near a person, but supplies neither
+a recording/frame identity nor coordinates. Existing annotations identify the
+near person and a different provisional upright structure, not this item.
+
+Raw-return review covered all 201 `doubleT_obstacle` frames in explicit near and
+far windows. The near window (forward 2–25 m, estimated track offset ±1.05 m,
+bed-relative height −0.15–0.8 m) contained no returns more than 0.05 m above the
+estimated railhead; maximum height in that view was 0.229316 m above the estimated
+bed. This is **not a negative label**: low objects, missing returns and inaccurate
+geometry remain possible. The review bounds are not detector thresholds.
+
+The far review distinguishes a moving upright group near 56 m from a persistent
+lower group beside it. The latter is a **candidate for inspection**, not an
+identified foreign object. At frame 0 its review ROI contains 12 return slots,
+9 unique XYZ positions and 8 detector representatives, assigned to track 179.
+Its observed component extends only about 0.077 × 0.356 × 0.511 m; these are
+sampled extents, not amodal dimensions or the organizer's 300×300×100 mm object.
+
+| Initial track 179 event | Frame | Time since first available scan | Forward distance |
+|---|---:|---:|---:|
+| Candidate already present | 0 | 0 s | 56.3262 m |
+| Presence confirmed | 2 | 0.200009 s | 56.3300 m |
+| `confirmed=true`, intersection still pending | 32 | 3.200177 s | 56.3460 m |
+| `intersection_confirmed=true` | Not observed on track 179, frames 0–38 | — | — |
+
+**The 3.20 s value is not a verified obstacle-detection latency.** At frame 32,
+the scene-level `obstacle` is supported by upright track 176; track 179 has
+`intersection_confirmed=false`. Visibility before the recording is unknown,
+and a first observation at 56 m establishes neither maximum range nor 100 m recall.
+
+Saved real-support reclassification isolates both sampling and estimated geometry:
+frame-32 support has 2 certified interior voxels in frame-32 geometry, but 0 in
+frame-31 geometry after estimated static-world reprojection. Frame-31 support
+has 0 certified interior voxels under either geometry. Thus the transition is
+not explained by elapsed confirmation time alone. This offline counterfactual
+assumes static support and estimated registration; it is not ground truth.
+
+Actual membership also reveals instance merging: the ROI's 7 representatives
+at frame 39 and 10 at frame 40 belong to upright track 176, not a separate low
+track. At frame 60 its 8 representatives belong to track 1073, a component with
+18 representatives in total. Disappearance of track 179 therefore does not prove
+that the low support disappeared. The ROI is a review window, not an annotation,
+and cross-section sharing does not prove infrastructure identity.
+
+Evidence: [search scope](../results/rail-object-search-20260922.json),
+[exact support, timing and counterfactual report](../results/rail-object-evidence-20260922.json),
+[raw far-region views](../results/rail-object-raw-views-20260922.png),
+[component merge/split views](../results/rail-object-membership-20260922.png).
+Recipes: `configs/rail-obstacle-{review,far-review,focus-review,trace}.json`
+and `configs/rail-object-report.json`. All executed on real measurements;
+no detector threshold, annotation or box was adjusted.
+
+**Still missing:** an independent frame/point-cloud anchor or organizer image
+identifying the claimed item. Without it, object-specific recall, physical
+collision status and visibility-to-alarm latency for that item remain unmeasured.
+
 ## Delivery
 
 Use the same decoder/detector/display builder for offline processing and ROS2

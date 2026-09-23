@@ -1,0 +1,27 @@
+{
+  "seed": 20260915,
+  "source_run": "../tunnel-guard-object-evidence/build/object-evidence-after",
+  "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+  "output": "build/rail-obstacle-review-full",
+  "expected_frames": 201,
+  "frames": [
+    0,
+    100,
+    150,
+    165,
+    181,
+    200
+  ],
+  "forward_bounds_m": [
+    2,
+    25
+  ],
+  "track_half_width_m": 1.05,
+  "height_view_bounds_m": [
+    -0.15,
+    0.8
+  ],
+  "above_railhead_review_margin_m": 0.05,
+  "hypothesis": "The reported low object may leave local returns near the annotated person. Review raw returns before segmentation, including below-railhead support; do not derive an object label from detector boxes.",
+  "criterion": "Measure raw review support in all 201 frames and render the six fixed frames. Object-specific detection range or latency requires an independently identified object and first visible frame; absence of a clearly identifiable object is not an exhaustive negative."
+}

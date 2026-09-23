@@ -1,0 +1,40 @@
+{
+  "seed": 20260915,
+  "run": "build/issue-9-serial-a",
+  "trace": "build/rail-obstacle-trace",
+  "bag": "doubleT_obstacle",
+  "output": "build/rail-object-report-with-views",
+  "view_frames": [0, 39, 60],
+  "context_roi_min": [55.0, -3.6, -2.9],
+  "context_roi_max": [57.0, 1.0, -0.8],
+  "track_id": 179,
+  "counterfactual_frames": [
+    31,
+    32
+  ],
+  "membership_frames": [
+    0,
+    2,
+    31,
+    32,
+    33,
+    38,
+    39,
+    40,
+    41,
+    50,
+    60
+  ],
+  "review_roi_min": [
+    56.2,
+    -3.35,
+    -2.65
+  ],
+  "review_roi_max": [
+    56.6,
+    -2.7,
+    -1.85
+  ],
+  "hypothesis": "The raw-reviewed persistent low group can merge with the upright group, while estimated path geometry changes its corridor relation. A matching geometric region does not establish organizer object identity.",
+  "criterion": "Measure actual support membership and initial-track times; separate nominal overlap, certified support and intersection confirmation. Preserve ambiguous identity and left-censored visibility rather than claiming obstacle recall or maximum range."
+}
