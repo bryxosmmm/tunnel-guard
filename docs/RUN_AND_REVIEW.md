@@ -23,8 +23,9 @@ scale. Nearby infrastructure and text labels can be toggled without changing the
 recorded detector output. All source returns are eligible for display sampling;
 the display is not a claim that the detector evaluated every rendered point.
 
-Red: confirmed intersection. Orange: confirmed object whose intersection is not
-confirmed. Yellow: candidate. Gray: adjacent. Cyan: reference contour and distance
+Red: confirmed intersection. Orange: a confirmed corridor-hazard candidate whose
+intersection is not confirmed. Yellow: candidate. Gray: adjacent, even when its
+measured presence is confirmed. Cyan: reference contour and distance
 support point. Missing contour means unsupported geometry, not unlimited clearance.
 Displayed distance is forward x in the configured processing frame, not distance
 along a curved path or from the front bumper.

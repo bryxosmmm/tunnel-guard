@@ -53,6 +53,14 @@ It has not been identified with the separately annotated nearby person at frames
   and orange. Tentative candidates remain yellow. Existing `confirmed` means object
   confirmation, not intersection confirmation.
 
+Current contract clarification (2026-09-22): the later corridor-claim policy made
+`confirmed` depend on interior/uncertain support, so it no longer represented
+general object presence. `presence_confirmed` and `presence_confirmation` now
+represent measured component presence separately. `near_track_objects` evaluation
+uses those fields; hazard decisions retain the corridor policy and relation checks.
+The original measurements below are historical, not measurements of this new field.
+See [the point-chain diagnosis](DETECTOR.md#разрыв-между-присутствием-и-оценкой--2026-09-22).
+
 This can delay weak detections until a second qualifying scan, and missed associations
 can delay them further. Strong current interior geometry retains the immediate path.
 Correlated contour errors can still persist across scans and get confirmed. The fix

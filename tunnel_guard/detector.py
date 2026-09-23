@@ -576,6 +576,11 @@ class Detector:
             obj, key, hits = record["obj"], record["key"], record["hits"]
             recent_interior = record["recent_interior"]
             state, covariance, track = record["state"], record["covariance"], record["track"]
+            # Presence is evidence for a measured component, not a corridor claim.
+            # Dense adjacent objects may be present without becoming hazards.
+            presence_confirmed = (obj["immediate"]
+                                  or (hits >= cfg["confirmation_hits"]
+                                      and int(record["count"]) >= cfg["evidence_min_points"]))
             # ADMISSION vs CERTIFICATION: `weak_min_voxels` decides what a component needs to be
             # REPORTED at all; `claim_min_support_voxels` is the count of interior-support voxels a
             # candidate needs to CLAIM a hazard. The support count, not the component's size, is what
@@ -596,6 +601,9 @@ class Detector:
             intersection_confirmed = (confirmed and obj["path_relation"] == "intersecting"
                                       and (obj["intersection_immediate"] or len(recent_interior) >= cfg["confirmation_hits"]))
             obj.update(track_id=key, hits=hits, confirmed=bool(confirmed),
+                       presence_confirmed=bool(presence_confirmed),
+                       presence_confirmation=("immediate_geometry" if obj["immediate"]
+                                              else "temporal_evidence" if presence_confirmed else "pending"),
                        accumulated_support_voxels=int(record["count"]),
                        intersection_confirmed=bool(intersection_confirmed),
                        intersection_hits=len(recent_interior),
@@ -606,7 +614,8 @@ class Detector:
                        evidence_timestamps_s=[e[0] for e in track["evidence"]],
                        covariance_kind="heuristic_not_calibrated",
                        velocity_world_mps=state[3:].tolist(), position_covariance_m2=covariance[:3, :3].tolist(),
-                       confirmation="immediate_geometry" if obj["immediate"] else ("temporal_evidence" if confirmed else "pending"),
+                       confirmation=("immediate_interior_geometry" if obj["intersection_immediate"]
+                                     else "temporal_evidence" if confirmed else "pending"),
                        track_age_s=stamp - track["first_stamp"])
 
     def process(self, points: np.ndarray, timestamp_s: float, point_times: np.ndarray | None = None,
