@@ -31,8 +31,8 @@ def main():
             if len(records) >= args.max_frames:
                 break
             message = store.deserialize_cdr(raw, c.msgtype)
-            points, times, invalid, duration = decode_cloud(message, np.asarray(config["sensor_rotation"]),
-                                                           np.asarray(config["sensor_translation"]))
+            points, times, invalid, duration, attributes = decode_cloud(message, np.asarray(config["sensor_rotation"]),
+                                                                        np.asarray(config["sensor_translation"]))
             header_ns = message.header.stamp.sec * 1000000000 + message.header.stamp.nanosec
             records.append({"topic": c.topic, "frame_id": message.header.frame_id,
                 "record_ns": record_ns, "measurement_ns": header_ns, "record_minus_header_s": (record_ns-header_ns)/1e9,
@@ -41,6 +41,7 @@ def main():
                 "fields": [{"name": f.name, "offset": f.offset, "datatype": f.datatype, "count": f.count} for f in message.fields],
                 "valid_points": len(points), "invalid_points": invalid, "normalized_point_times": len(times),
                 "inferred_scan_duration_s": duration,
+                "sensor_attributes": attributes.summary(),
                 "range_counts": np.histogram(np.linalg.norm(points, axis=1), bins=config["range_bins_m"])[0].tolist()})
     report = {"bag": str(args.bag), "metadata_sha256": digest(args.bag / "metadata.yaml"),
               "config_sha256": digest(args.config), "topics": topics, "frames": records,

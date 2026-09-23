@@ -140,7 +140,15 @@ def relation_reason(obj: dict) -> str:
 def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict,
                        diagnostics: dict | None = None, arrays: dict | None = None,
                        *, reduced_on_grid_m: float | None = None,
-                       classification_out: list | None = None) -> list[dict]:
+                       classification_out: list | None = None,
+                       cluster_rows_out: list | None = None) -> list[dict]:
+    """Candidate objects of this scan.
+
+    `cluster_rows_out`, when given, receives the single row index array (into `points`) of the
+    reduced cluster cloud the objects were built from. It is the exact selection this function
+    already made - no nearest-point matching is repeated - and only the diagnostic caller asks
+    for it, so the detection path pays nothing.
+    """
     classification, section = geometry.classify_with_section(points)
     if classification_out is not None:
         # The caller needs the same classification for its range bins; the two
@@ -158,17 +166,21 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
         # so the reduction below would only reproduce the same rows in the same
         # order; filtering keeps it identical without the sort.
         cloud = points[context]
+        cluster_rows = np.flatnonzero(context) if cluster_rows_out is not None else None
         cloud_section = CrossSection(section.lateral[context], section.running_height[context],
                                      section.gauge[context])
         structural = structural_full[context]
     else:
         chosen = voxel_representative_indices(points[context], config["cluster_voxel_m"],
                                              config.get("voxel_backend", "numpy"))
-        rows = np.flatnonzero(context)[chosen]
-        cloud = points[rows]
-        cloud_section = CrossSection(section.lateral[rows], section.running_height[rows],
-                                     section.gauge[rows])
-        structural = structural_full[rows]
+        cluster_rows = np.flatnonzero(context)[chosen]
+        cloud = points[cluster_rows]
+        cloud_section = CrossSection(section.lateral[cluster_rows], section.running_height[cluster_rows],
+                                     section.gauge[cluster_rows])
+        structural = structural_full[cluster_rows]
+    if cluster_rows_out is not None:
+        # The exact rows this call selected, relative to the array it was handed.
+        cluster_rows_out.append(cluster_rows)
     if diagnostics is not None:
         diagnostics.update(state="ran", context_points=int(context.sum()), cluster_points=len(cloud), rejected={})
     if arrays is not None:
@@ -635,7 +647,15 @@ class Detector:
                        track_age_s=stamp - track["first_stamp"])
 
     def process(self, points: np.ndarray, timestamp_s: float, point_times: np.ndarray | None = None,
-                *, capture_diagnostics: bool = False) -> dict:
+                *, capture_diagnostics: bool = False, point_attributes=None) -> dict:
+        """Detect on one scan.
+
+        `point_attributes` is optional sensor metadata decoded for exactly these `points` rows
+        (see `io.PointAttributes`). It is never an input to a decision: the detection, support and
+        temporal confirmation below read geometry alone, and the field numbers do not reach them.
+        It is reported and, when `capture_diagnostics` is set, saved alongside the point arrays
+        with a provenance index into the original cloud. Legacy and synthetic callers pass nothing.
+        """
         started = time.perf_counter()
         points = np.asarray(points, dtype=np.float64)
         if points.ndim != 2 or points.shape[1] != 3 or not np.isfinite(timestamp_s):
@@ -649,6 +669,20 @@ class Detector:
             raise ValueError("point_times must be empty or match the number of points")
         if len(point_times) and (not np.isfinite(point_times).all() or point_times.min() < 0 or point_times.max() > 1):
             raise ValueError("point_times must be finite and normalized to [0, 1]")
+        if point_attributes is not None:
+            # Sensor fields are only provenance when each one names exactly these decoded rows.
+            # Checked here, before any detector state below moves, so a caller cannot attach
+            # mismatched metadata to a scan or advance the stream with it accepted. Index/shape
+            # checks only: the correspondence is positional, never re-derived from the cloud.
+            source_indices = np.asarray(point_attributes.source_indices)
+            if source_indices.ndim != 1 or len(source_indices) != len(points):
+                raise ValueError("point_attributes.source_indices must hold one source slot per decoded "
+                                 f"point ({len(points)} rows), got shape {source_indices.shape}")
+            for key, values in point_attributes.values.items():
+                shape = np.asarray(values).shape
+                if shape != (len(points),):
+                    raise ValueError(f"point_attributes.values[{key!r}] must align one value per decoded "
+                                     f"point ({len(points)} rows), got shape {shape}")
         if reset:
             self.odometry = self._new_odometry()
             self.previous_source = None
@@ -658,6 +692,12 @@ class Detector:
         self.frame_number += 1
         self.display_support = {}
         self.diagnostic_arrays = {"decoded_points": points} if capture_diagnostics else {}
+        if capture_diagnostics and point_attributes is not None:
+            # Provenance for the decoded stage: every source field aligned to the decoded rows,
+            # plus the full original-slot validity mask, saved once here.
+            self.diagnostic_arrays["decoded_xyz_valid_mask"] = point_attributes.xyz_valid_mask
+            self.diagnostic_arrays.update(
+                {f"decoded_{key}": value for key, value in point_attributes.arrays().items()})
         pipeline = {"geometry": {"state": "not_run"}, "segmentation": {"state": "not_run"},
                     "association": {"state": "not_run"}}
         # A non-finite coordinate always yields a non-finite radius, which fails
@@ -668,6 +708,11 @@ class Detector:
         points = points[keep]
         if capture_diagnostics:
             self.diagnostic_arrays["range_points"] = points
+            if point_attributes is not None:
+                # `keep` are the exact rows this filter already selected, so the same selection
+                # carries the metadata without a second lookup.
+                self.diagnostic_arrays.update(
+                    {f"range_{key}": value for key, value in point_attributes.arrays(keep).items()})
         self.display_points = points
         if len(point_times):
             point_times = point_times[keep]
@@ -684,6 +729,10 @@ class Detector:
                   "health": "unavailable", "health_reasons": ["insufficient_returns"],
                   "pipeline": pipeline,
                   "envelope_calibration": self.config["envelope_calibration"]}
+        if point_attributes is not None:
+            # What the sensor fields are, what they cover, and what is NOT verified about them.
+            # Present whenever a caller supplies decoded attributes; JSON-safe.
+            result["sensor_attributes"] = point_attributes.summary()
         if len(points) < self.config["ground_min_support"]:
             self.tracks.clear()
             self.previous_source = None
@@ -693,6 +742,16 @@ class Detector:
         frame, pose, motion = self._motion(points, point_times)
         self.display_points = frame
         motion_s = time.perf_counter() - motion_started
+        # Provenance through the motion stage: `_motion` transforms one point at a time, so the KISS
+        # row-preserving contract is that `frame` keeps the row order and count of `points`, and
+        # `keep` still names these decoded rows. A future deskew that resamples must preserve the
+        # count or fail here: dropping the trace on a mismatch would silently lose provenance, and a
+        # count alone cannot prove order, so this asserts the contract instead of guarding it.
+        trace_rows = keep if capture_diagnostics and point_attributes is not None else None
+        if trace_rows is not None and len(frame) != len(points):
+            raise RuntimeError(
+                f"motion stage changed the point count ({len(points)} -> {len(frame)}); "
+                "sensor provenance cannot be carried through this scan")
         # Fixed band around the sensor axis: a corridor-following window (the previous frame's
         # extrapolated centre) added ambiguous hazards without changing any frame decision, so the
         # base window is used unconditionally.
@@ -711,10 +770,21 @@ class Detector:
         # tight as the data allows without dropping a point the mask kept.
         reach = (max(abs(float(subset[:, 1].min())), abs(float(subset[:, 1].max())))
                  + self.config["geometry_voxel_m"]) if len(subset) else base_half
-        reduced = subset[accelerator.crop_voxels(subset, self.config["min_forward_m"], reach,
-                                                 self.config["geometry_voxel_m"], accelerator_module)]
+        voxel_rows = accelerator.crop_voxels(subset, self.config["min_forward_m"], reach,
+                                             self.config["geometry_voxel_m"], accelerator_module)
+        reduced = subset[voxel_rows]
+        geometry_rows = None
         if capture_diagnostics:
             self.diagnostic_arrays.update(registered_points=frame, cropped_points=frame[crop], geometry_voxel_points=reduced)
+            if trace_rows is not None:
+                # `crop` then `voxel_rows` are the exact selections above, composed: the rows
+                # into `frame` are `flatnonzero(crop)` and the kept rows into that subset are
+                # `voxel_rows`. `reduced` is not re-searched for.
+                crop_rows = np.flatnonzero(crop)
+                geometry_rows = trace_rows[crop_rows[voxel_rows]]
+                self.diagnostic_arrays.update(
+                    {f"geometry_voxel_{key}": value
+                     for key, value in point_attributes.arrays(geometry_rows).items()})
         # The criterion is DISTANCE TRAVELLED, not frames: the model's validity is a spatial property, so a
         # stopped train needs no refit and a fast one needs refits sooner. Travel is measured on the pose
         # the odometry already produced, so it costs nothing to evaluate.
@@ -748,10 +818,19 @@ class Detector:
             result.update(mounting=mounting, mounting_observation_s=mounting_s)
         pipeline["geometry"] = {"state": "ran", "valid": geometry.valid, "reason": geometry.reason}
         carried: list = []
+        cluster_rows_out: list = []
         objects = cluster_candidates(reduced, geometry, self.config, pipeline["segmentation"],
                                      self.diagnostic_arrays if capture_diagnostics else None,
                                      reduced_on_grid_m=self.config["geometry_voxel_m"],
-                                     classification_out=carried) if geometry.valid else []
+                                     classification_out=carried,
+                                     cluster_rows_out=(cluster_rows_out if trace_rows is not None else None)) if geometry.valid else []
+        if trace_rows is not None:
+            # The representative cloud rows the cluster stage already selected, mapped back
+            # through the geometry-voxel rows to the original slots of this scan.
+            obj_rows = cluster_rows_out[0] if cluster_rows_out else np.empty(0, dtype=np.int64)
+            self.diagnostic_arrays.update(
+                {f"cluster_{key}": value
+                 for key, value in point_attributes.arrays(geometry_rows[obj_rows]).items()})
         if not geometry.valid:
             pipeline["segmentation"]["reason"] = geometry.reason
         self._associate(objects, pose, timestamp_s, motion)

@@ -166,7 +166,7 @@ def main():
                                 ns == row["measurement_timestamp_ns"]
                                 and msg.header.frame_id == row["sensor_frame"]
                             ):
-                                cloud, _, _, _ = decode_cloud(
+                                cloud, _, _, _, _ = decode_cloud(
                                     msg, rotation, translation
                                 )
                                 break
