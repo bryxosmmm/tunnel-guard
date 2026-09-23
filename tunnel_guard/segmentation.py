@@ -67,13 +67,15 @@ def level_rotation(plane: np.ndarray) -> np.ndarray:
     return np.vstack((forward, np.cross(up, forward), up))
 
 
-def published_labels(points: np.ndarray, plane: np.ndarray, config: dict, method: str) -> np.ndarray:
+def published_labels(points: np.ndarray, plane: np.ndarray | None, config: dict, method: str) -> np.ndarray:
     if method == "hdbscan":
         import hdbscan
         return hdbscan.HDBSCAN(**config["hdbscan"]).fit_predict(points)
     if method == "travel":
         import travel_seg
-        aligned = (points @ level_rotation(plane).T).astype(np.float32)
+        # Without a measured plane, retain the configured processing frame;
+        # do not fabricate a measured bed normal merely to segment the cloud.
+        aligned = (points if plane is None else points @ level_rotation(plane).T).astype(np.float32)
         clusterer = travel_seg.ObjectCluster(travel_seg.ObjectClusterConfig(**config["travel_objects"]))
         return clusterer.segment_objects(aligned).astype(np.int32) - 1
     raise ValueError(f"Unknown published segmentation method: {method}")

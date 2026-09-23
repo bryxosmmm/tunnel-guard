@@ -1,0 +1,153 @@
+{
+  "records": [
+    {
+      "source": "build/postmerge-full-fixed-20260923/diagnostics/doubleT_obstacle_000000.npz",
+      "source_sha256": "642b4bf052dbc4f8b29be39b98ad0d991cdcd28296ca817d0fc91b1020744e51",
+      "valid": true,
+      "fit_points": 35877,
+      "withheld_points": 36770,
+      "shared_evaluation_points": 129,
+      "before": {
+        "median_m": 0.1058633279800415,
+        "p90_m": 0.3649574750661849,
+        "within_half_width": 51
+      },
+      "after": {
+        "median_m": 0.02502498533995301,
+        "p90_m": 0.0701194727640008,
+        "within_half_width": 113
+      }
+    },
+    {
+      "source": "build/postmerge-full-fixed-20260923/diagnostics/doubleT_obstacle_000200.npz",
+      "source_sha256": "7f1580a7e57ea34ae9bea310a3913f77ed78843eadc01959dd3a319a241b9604",
+      "valid": true,
+      "fit_points": 35755,
+      "withheld_points": 36639,
+      "shared_evaluation_points": 129,
+      "before": {
+        "median_m": 0.049910087585449237,
+        "p90_m": 0.12049797773361215,
+        "within_half_width": 82
+      },
+      "after": {
+        "median_m": 0.023180859746824933,
+        "p90_m": 0.063204561583838,
+        "within_half_width": 116
+      }
+    },
+    {
+      "source": "build/postmerge-full-fixed-20260923/diagnostics/roundT_doubleT_000000.npz",
+      "source_sha256": "064d9012da11747490cc281d59ee6dbff396356446e11f75a24c5cd925874001",
+      "valid": true,
+      "fit_points": 21271,
+      "withheld_points": 21808,
+      "shared_evaluation_points": 204,
+      "before": {
+        "median_m": 0.028516803383827227,
+        "p90_m": 0.06900856370925906,
+        "within_half_width": 181
+      },
+      "after": {
+        "median_m": 0.016918539210911243,
+        "p90_m": 0.05172340930480932,
+        "within_half_width": 192
+      }
+    },
+    {
+      "source": "build/postmerge-full-fixed-20260923/diagnostics/roundT_doubleT_000200.npz",
+      "source_sha256": "9bdb8bd49812add37941d77c90930db0e24f64a327aa05892f34bec1c4c64119",
+      "valid": true,
+      "fit_points": 29420,
+      "withheld_points": 29549,
+      "shared_evaluation_points": 153,
+      "before": {
+        "median_m": 0.11215728759765631,
+        "p90_m": 0.2546923751831055,
+        "within_half_width": 58
+      },
+      "after": {
+        "median_m": 0.060615364561032226,
+        "p90_m": 0.11772879339247348,
+        "within_half_width": 79
+      }
+    },
+    {
+      "source": "build/postmerge-full-fixed-20260923/diagnostics/roundT_squareT_pressureGate_squareT_000000.npz",
+      "source_sha256": "8141cf28541b40ca629ba01e59a6a061085a60f43c9a17cf3e78969e8a5e6fcc",
+      "valid": true,
+      "fit_points": 20171,
+      "withheld_points": 21201,
+      "shared_evaluation_points": 183,
+      "before": {
+        "median_m": 0.02186621904373176,
+        "p90_m": 0.056871743202209495,
+        "within_half_width": 169
+      },
+      "after": {
+        "median_m": 0.019521115012377077,
+        "p90_m": 0.050690560692030984,
+        "within_half_width": 174
+      }
+    },
+    {
+      "source": "build/postmerge-full-fixed-20260923/diagnostics/roundT_squareT_pressureGate_squareT_000200.npz",
+      "source_sha256": "e20dd1937de172f12fdcb81f4b899347309363354e7623be7e9c8cd4e990100d",
+      "valid": true,
+      "fit_points": 19494,
+      "withheld_points": 19781,
+      "shared_evaluation_points": 180,
+      "before": {
+        "median_m": 0.024924880266189553,
+        "p90_m": 0.07339033222198484,
+        "within_half_width": 160
+      },
+      "after": {
+        "median_m": 0.020942824313056718,
+        "p90_m": 0.07179919034147729,
+        "within_half_width": 160
+      }
+    },
+    {
+      "source": "build/postmerge-full-fixed-20260923/diagnostics/squareT_platform_squareT_switch_000000.npz",
+      "source_sha256": "60feaa236176d268b802480ae15873b783078fc74e2dcddefd3883f45e66cccb",
+      "valid": true,
+      "fit_points": 19431,
+      "withheld_points": 19167,
+      "shared_evaluation_points": 180,
+      "before": {
+        "median_m": 0.01834974789619448,
+        "p90_m": 0.048738950920104926,
+        "within_half_width": 172
+      },
+      "after": {
+        "median_m": 0.016166390226884264,
+        "p90_m": 0.04872635407165722,
+        "within_half_width": 173
+      }
+    },
+    {
+      "source": "build/postmerge-full-fixed-20260923/diagnostics/squareT_platform_squareT_switch_000200.npz",
+      "source_sha256": "1df05fc96a1b4786d59bff99d72bd192f95aa38b2f92a95497758bac0f9ed4da",
+      "valid": true,
+      "fit_points": 18195,
+      "withheld_points": 18624,
+      "shared_evaluation_points": 190,
+      "before": {
+        "median_m": 0.019919000387191743,
+        "p90_m": 0.06243579430580134,
+        "within_half_width": 172
+      },
+      "after": {
+        "median_m": 0.018556012432799585,
+        "p90_m": 0.04872015867891767,
+        "within_half_width": 178
+      }
+    }
+  ],
+  "limitations": [
+    "Real spatially withheld returns, not independent surveyed rail labels.",
+    "Shared selection uses both fitted paths and baseline bed; measures geometric fit only.",
+    "Existing recordings are development data; no precision or collision-safety claim."
+  ]
+}

@@ -307,7 +307,7 @@
       data = result;
       let r = data.row;
       $("info").textContent =
-        `${meta.bag} | кадр ${r.frame} | ${r.status} | пересечение: ${format(data.distances.confirmed_intersection_m)} м · неопределённый объект: ${format(data.distances.unresolved_confirmed_m)} м\nКачество: ${r.health} — ${(r.health_reasons || []).join(", ")}\nИзмерение: ${r.measurement_timestamp_ns_string} нс | показано ${data.points.length} / ${data.decoded_points} отражений | система: ${r.coordinate_frame}`;
+        `${meta.bag} | кадр ${r.frame} | ${r.status} | подтверждённое пересечение: ${format(data.distances.confirmed_intersection_m)} м · неопределённое пересечение: ${format(data.distances.unresolved_confirmed_m)} м · объект без оценки габарита: ${format(data.distances.geometry_unknown_m)} м\nКачество: ${r.health} — ${(r.health_reasons || []).join(", ")}\nИзмерение: ${r.measurement_timestamp_ns_string} нс | показано ${data.points.length} / ${data.decoded_points} отражений | система: ${r.coordinate_frame}`;
       if (r.mounting) {
         const m = r.mounting;
         $("info").textContent += m.state === "observed"

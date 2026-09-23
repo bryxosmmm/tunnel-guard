@@ -1003,6 +1003,15 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
                               && (std::abs(lateral_value) <= segmentation_half_width || !path_ok)) ? 1 : 0;
             overlap[index] = ((running_height >= low_edge) && (running_height <= high_edge) && !on_rail
                               && (std::abs(lateral_value) <= half_width)) ? 1 : 0;
+            if (plane.size() == 0 || g == 0 || r < 2) {
+                // Longitudinal rail support and vertical support are distinct.
+                // Retain the existing height gate where the bed and head are
+                // measured, but never gate on an assumed lateral centre.
+                const bool vertical_measured = ground_ok && std::isfinite(rail_head);
+                context[index] = !vertical_measured || segmentation;
+                core[index] = observed[index] = overlap[index] = boundary[index] = 0;
+                lateral[index] = running[index] = NAN;
+            }
         }
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     PyObject* payload = PyTuple_New(9);
@@ -1340,12 +1349,13 @@ PyObject* select_crop_voxels(PyObject*, PyObject* args) {
 PyObject* cluster_components(PyObject*, PyObject* args) {
     PyObject *cloud_object, *labels_object, *core_object, *boundary_object, *dense_object,
         *heights_object, *uncertain_object;
-    int weak_min_voxels, immediate_min_voxels, envelope_support_mode, claim_min_support;
+    int weak_min_voxels, immediate_min_voxels, envelope_support_mode, claim_min_support, geometry_valid;
     double min_extent, immediate_min_height;
-    if (!PyArg_ParseTuple(args, "OOOOOOOiiddii", &cloud_object, &labels_object, &core_object,
+    if (!PyArg_ParseTuple(args, "OOOOOOOiiddiii", &cloud_object, &labels_object, &core_object,
                           &boundary_object, &dense_object, &heights_object, &uncertain_object,
                           &weak_min_voxels, &immediate_min_voxels, &min_extent,
-                          &immediate_min_height, &envelope_support_mode, &claim_min_support)) return nullptr;
+                          &immediate_min_height, &envelope_support_mode, &claim_min_support,
+                          &geometry_valid)) return nullptr;
     Buffer cloud(cloud_object);
     Buffer labels(labels_object);
     Buffer core(core_object);
@@ -1487,7 +1497,7 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
             int reason = 0;
             if (!singleton && static_cast<int>(length) < weak_min_voxels) reason = 1;
             else if (!singleton && largest < min_extent) reason = 2;
-            else if (!intersects && !unresolved && dense_count == 0 && uncertain_count == 0) reason = 3;
+            else if (geometry_valid && !intersects && !unresolved && dense_count == 0 && uncertain_count == 0) reason = 3;
             reason_codes.push_back(reason);
             if (reason != 0) {
                 relations.push_back(0);
@@ -1544,7 +1554,7 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
             interior_heights.push_back(interior_span);
             intersection_flags.push_back(
                 (interior_dense_count >= immediate_min_voxels && interior_span >= immediate_min_height) ? 1 : 0);
-            relations.push_back(intersects ? 1 : (unresolved ? 2 : 0));
+            relations.push_back(!geometry_valid ? 3 : (intersects ? 1 : (unresolved ? 2 : 0)));
             distance_codes.push_back(mode);
             nearest_supported.push_back(inside > 0 ? supported_x : NAN);
             nearest_unresolved.push_back(unresolved ? unresolved_x : NAN);
