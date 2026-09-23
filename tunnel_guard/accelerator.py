@@ -115,14 +115,12 @@ def ground_values(points, plane, ground_anchors, maximum, module):
 
 
 def classify_geometry(points, geometry, module):
-    if geometry.plane is None or len(geometry.ground_anchors) < 1 or len(geometry.rail_anchors) < 2:
-        return None
     if geometry.config.get("rail_frame_mode", "bed") != "bed":
         raise ValueError("rail_frame_mode must be bed; only the C++ bed classifier is supported")
     config = geometry.config
     rail_head = geometry.rail_head_height_m if geometry.rail_head_height_m is not None else float("nan")
     payload = module.classify_geometry(
-        np.ascontiguousarray(points), np.asarray(geometry.plane, dtype=float),
+        np.ascontiguousarray(points), np.asarray([] if geometry.plane is None else geometry.plane, dtype=float),
         np.asarray(geometry.ground_anchors, dtype=float), np.asarray(geometry.rail_anchors, dtype=float),
         np.asarray(config["envelope_segments_m"], dtype=float), rail_head,
         config["ground_max_uncertainty_m"], config["path_max_uncertainty_m"],
@@ -130,7 +128,8 @@ def classify_geometry(points, geometry, module):
         config["rail_half_width_m"], config["rail_vertical_margin_m"], config["min_running_height_m"],
         config["cluster_context_margin_m"], config["segmentation_context_half_width_m"],
         config["envelope_margin_m"], config["rail_max_heading"],
-        config.get("path_curve_window_m", 30.0), config.get("path_curvature_significance", 4.0))
+        config.get("path_curve_window_m", 30.0), config.get("path_curvature_significance", 4.0),
+        config["rail_gauge_m"])
     return tuple(np.frombuffer(payload[i], dtype=np.uint8).astype(bool) if i in (0, 1, 3, 4, 5)
                  else np.frombuffer(payload[i], dtype=np.float64) for i in range(9))
 

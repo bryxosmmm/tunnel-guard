@@ -561,8 +561,8 @@ python -m tunnel_guard.registration_repeat --experiment configs/issue-9-registra
 сохранено как [реальный pre-fix diff](../results/issue-9-pre-fix-instrumentation-20260922.patch);
 SHA256 использованных исходников приведены в manifests отчёта.
 
-Для воспроизводимого режима `configs/detector.json` и `configs/detector-native.json`
-теперь задают `odometry_threads=1`. Исторические 8-поточные эксперименты сохраняют
+Для воспроизводимого режима единственный `configs/detector.json`
+теперь задаёт `odometry_threads=1`. Исторические 8-поточные эксперименты сохраняют
 свои явные настройки; `detector-issue-9-parallel.json` фиксирует контрольный вариант.
 Два полных однопоточных запуска на тех же шести записях дали **побитно одинаковые
 позы во всех 2488 кадрах** и точное совпадение всех 655811 счётчиков и проверяемых

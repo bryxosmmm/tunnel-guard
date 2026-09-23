@@ -51,11 +51,111 @@ def compare(before, after, bags):
             "manifests": manifests}
 
 
+def compare_cutover(plan):
+    """Audit complete real replays, allowing only declared schema removals."""
+    output = Path(plan["output"])
+    output.mkdir(parents=True, exist_ok=False)
+    write_json(output / "experiment.json", plan)
+    (output / "reporter.py").write_bytes(Path(__file__).read_bytes())
+    results = {}
+    for label, case in plan["comparisons"].items():
+        before, after = Path(case["before"]), Path(case["after"])
+        manifests = [json.loads((root / "manifest.json").read_text()) for root in (before, after)]
+        if not all("finished_unix_s" in m for m in manifests):
+            raise ValueError("Cannot compare an unfinished replay")
+        configs = [json.loads((root / "detector.json").read_text()) for root in (before, after)]
+        for key, expected in plan["removed_config"].items():
+            if key not in configs[0] or configs[0].pop(key) != expected or key in configs[1]:
+                raise ValueError(f"Unexpected configuration removal: {key}")
+        if configs[0] != configs[1]:
+            raise ValueError("Detector parameters changed beyond the declared cutover")
+        totals, paths, removals = Counter(), Counter(), Counter()
+        examples = []
+
+        def difference(a, b, path, bag, frame):
+            if type(a) is type(b) and isinstance(a, dict):
+                for key in sorted(a.keys() | b.keys()):
+                    child = f"{path}.{key}" if path else key
+                    if key not in a or key not in b:
+                        record(child, a.get(key), b.get(key), bag, frame)
+                    else:
+                        difference(a[key], b[key], child, bag, frame)
+            elif type(a) is type(b) and isinstance(a, list):
+                if len(a) != len(b):
+                    record(path + ".length", len(a), len(b), bag, frame)
+                for index, (x, y) in enumerate(zip(a, b)):
+                    difference(x, y, f"{path}[{index}]", bag, frame)
+            elif type(a) is not type(b) or a != b:
+                record(path, a, b, bag, frame)
+
+        def record(path, a, b, bag, frame):
+            paths[path] += 1
+            if len(examples) < 30:
+                examples.append({"bag": bag, "frame": frame, "path": path, "before": a, "after": b})
+
+        bag_counts = {}
+        for bag, expected_frames in case["bags"].items():
+            count = 0
+            for old, new in zip_longest(rows(before, bag), rows(after, bag)):
+                if old is None or new is None:
+                    raise ValueError(f"Incomplete replay: {bag}")
+                if any(old[k] != new[k] for k in ("frame", "source_scan_id", "measurement_timestamp_ns")):
+                    raise ValueError(f"Measurement identity/order changed: {bag}")
+                count += 1
+                totals["objects"] += len(old["objects"])
+                for key in plan["timing_fields"]:
+                    old.pop(key, None)
+                    new.pop(key, None)
+                for path, expected in plan["removed_output"].items():
+                    parent, key = path.split(".")
+                    if parent not in old and parent not in new:
+                        continue
+                    if (key not in old.get(parent, {}) or old[parent][key] != expected
+                            or key in new.get(parent, {})):
+                        raise ValueError(f"Unexpected schema removal: {bag}:{old['frame']}:{path}")
+                    del old[parent][key]
+                    removals[path] += 1
+                difference(old, new, "", bag, old["frame"])
+            if count != expected_frames:
+                raise ValueError(f"Panel truncated: {bag}: {count} != {expected_frames}")
+            bag_counts[bag] = count
+            totals["frames"] += count
+        old_npz = {p.name: p for p in (before / "diagnostics").glob("*.npz")}
+        new_npz = {p.name: p for p in (after / "diagnostics").glob("*.npz")}
+        if old_npz.keys() != new_npz.keys():
+            raise ValueError("Diagnostic frame sets changed")
+        for name, path in old_npz.items():
+            with np.load(path, allow_pickle=False) as a, np.load(new_npz[name], allow_pickle=False) as b:
+                if set(a.files) != set(b.files):
+                    raise ValueError(f"Diagnostic array keys changed: {name}")
+                for key in a.files:
+                    x, y = a[key], b[key]
+                    totals["diagnostic_arrays"] += 1
+                    if x.dtype != y.dtype or x.shape != y.shape or x.tobytes() != y.tobytes():
+                        record(f"diagnostics.{key}", "before", "after", name, None)
+        results[label] = {"totals": dict(totals), "bags": bag_counts, "schema_removals": dict(removals),
+                          "diagnostic_archives": len(old_npz), "difference_count": sum(paths.values()),
+                          "difference_paths": dict(paths), "examples": examples,
+                          "manifest_sha256": [digest(root / "manifest.json") for root in (before, after)],
+                          "manifests": manifests}
+        print(json.dumps({"comparison": label, "totals": dict(totals),
+                          "differences": sum(paths.values())}), flush=True)
+    report = {"ok": all(r["difference_count"] == 0 for r in results.values()),
+              "plan": plan, "comparisons": results,
+              "limits": "Exact recorded-output comparison, not field accuracy, independent emissions, or target-hardware timing."}
+    write_json(output / "summary.json", report)
+    if not report["ok"]:
+        raise SystemExit(1)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--experiment", type=Path, required=True)
     args = parser.parse_args()
     plan = json.loads(args.experiment.read_text())
+    if plan.get("mode") == "cutover":
+        compare_cutover(plan)
+        return
     output = Path(plan["output"])
     output.mkdir(parents=True, exist_ok=False)
     (output / "reporter.py").write_bytes(Path(__file__).read_bytes())

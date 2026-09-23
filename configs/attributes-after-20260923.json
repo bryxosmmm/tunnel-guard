@@ -8,7 +8,7 @@
     "resources": "Measure processing/decode/wall and cumulative process peak RSS for sequential same-machine runs; report regressions honestly without asserting field latency or recall."
   },
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector.json",
   "output": "build/attributes-after-20260923",
   "every": 1,
   "max_frames": null,
