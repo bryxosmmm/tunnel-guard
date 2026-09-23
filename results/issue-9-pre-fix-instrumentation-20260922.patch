@@ -1,0 +1,50 @@
+diff --git a/tunnel_guard/detector.py b/tunnel_guard/detector.py
+index ca73a63..e5b65b9 100644
+--- a/tunnel_guard/detector.py
++++ b/tunnel_guard/detector.py
+@@ -407,8 +407,15 @@ class Detector:
+         return KissICP(cfg)
+ 
+     def _motion(self, points: np.ndarray, point_times: np.ndarray):
++        if self.diagnostic_arrays:
++            self.diagnostic_arrays.update(
++                motion_initial_guess=self.odometry.last_pose @ self.odometry.last_delta,
++                motion_map=self.odometry.local_map.point_cloud(),
++                motion_sigma=np.array(self.odometry.adaptive_threshold.get_threshold()))
+         frame, source = self.odometry.register_frame(points, point_times)
+         pose = self.odometry.last_pose.copy()
++        if self.diagnostic_arrays:
++            self.diagnostic_arrays.update(motion_source=source, motion_pose=pose)
+         quality = {"valid": False, "reason": "first_frame",
+                    "deskew_timestamps": bool(len(point_times)) and self.config.get("deskew_enabled", False),
+                    "overlap": None, "median_residual_m": None}
+@@ -467,6 +474,8 @@ class Detector:
+         ids = list(self.tracks)
+         world = np.array([o["center"] for o in objects], dtype=float).reshape(-1, 3)
+         world = world @ pose[:3, :3].T + pose[:3, 3]
++        if self.diagnostic_arrays:
++            self.diagnostic_arrays["association_centers_world"] = world.copy()
+         # The measured registration residual enters the association covariance, so a frame whose
+         # pose is only verified to 0.3 m cannot claim a 0.1 m position uncertainty.
+         pose_sigma = float(motion.get("position_sigma_m", cfg["tracking_pose_sigma_m"]))
+@@ -539,6 +548,9 @@ class Detector:
+             support = obj.pop("_support_points")
+             self.display_support[key] = support
+             support_world = support @ pose[:3, :3].T + pose[:3, 3]
++            if self.diagnostic_arrays:
++                self.diagnostic_arrays[f"support_{key}"] = support
++                self.diagnostic_arrays[f"support_world_{key}"] = support_world
+             # Track-local spatial evidence compensates estimated object translation.
+             # Bounds remain from this frame; past points never fabricate present shape.
+             # Through an unverified transform nothing is accumulated: a point placed by a pose
+@@ -572,6 +584,10 @@ class Detector:
+                                           cfg["cluster_voxel_m"], self.native_kernels)
+         for record, count in zip(pending, counts):
+             record["count"] = int(count)
++            if self.diagnostic_arrays:
++                self.diagnostic_arrays[f"evidence_{record['key']}"] = record["evidence"]
++                self.diagnostic_arrays[f"evidence_stamps_{record['key']}"] = np.array(
++                    [entry[0] for entry in record["track"]["evidence"]])
+         for record in pending:
+             obj, key, hits = record["obj"], record["key"], record["hits"]
+             recent_interior = record["recent_interior"]

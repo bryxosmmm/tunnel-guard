@@ -196,13 +196,11 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     # is measured rather than aesthetic. `unresolved` rests on the uncertainty interval, so it
     # needs the strongest exclusion - without it, the tunnel's own edge raised the alarm on
     # 98 % of frames. `intersecting` rests on a whole interval lying inside the contour, and
-    # gating it by cell-sharing cost the one labelled object 108 of its 172 detection frames:
-    # a compact cluster standing on the bed shares cells with the bed and the walkway, so its
-    # evidence is "structural" by construction while the object is not. Suppressing certified
-    # interior evidence because a surface occupies the same cell elsewhere is the same mistake
-    # the object-chain rule made when it erased 30 measured intrusions. Such objects are
-    # reported, with their split (`certified_unexplained_voxels`) and with a reason that names
-    # the ambiguity.
+    # cross-section cell sharing cannot prove that a compact measured group is
+    # infrastructure: an object may share cells with the bed or walkway elsewhere.
+    # Suppressing certified interior evidence on that basis would conflate cell
+    # occupancy with physical identity. Preserve the evidence and expose its split
+    # through `certified_unexplained_voxels`, without claiming a verified object class.
     # Mixed evidence (one interior + one boundary return) must not disappear
     # merely because neither subset separately reaches weak_min_voxels.
     uncertain_support = core | claim
@@ -308,8 +306,15 @@ class Detector:
         return KissICP(cfg)
 
     def _motion(self, points: np.ndarray, point_times: np.ndarray):
+        if self.diagnostic_arrays:
+            self.diagnostic_arrays.update(
+                motion_initial_guess=self.odometry.last_pose @ self.odometry.last_delta,
+                motion_map=self.odometry.local_map.point_cloud(),
+                motion_sigma=np.array(self.odometry.adaptive_threshold.get_threshold()))
         frame, source = self.odometry.register_frame(points, point_times)
         pose = self.odometry.last_pose.copy()
+        if self.diagnostic_arrays:
+            self.diagnostic_arrays.update(motion_source=source, motion_pose=pose)
         quality = {"valid": False, "reason": "first_frame",
                    "deskew_timestamps": bool(len(point_times)) and self.config.get("deskew_enabled", False),
                    "overlap": None, "median_residual_m": None}
@@ -366,8 +371,10 @@ class Detector:
         # independent evidence. `track_max_gap_s` still ages out anything longer.
         self.tracks = {key: t for key, t in self.tracks.items() if stamp - t["stamp"] <= cfg["track_max_gap_s"]}
         ids = list(self.tracks)
-        world = np.array([o["center"] for o in objects], dtype=float).reshape(-1, 3)
-        world = world @ pose[:3, :3].T + pose[:3, 3]
+        centers = np.array([o["center"] for o in objects], dtype=float).reshape(-1, 3)
+        world = centers @ pose[:3, :3].T + pose[:3, 3]
+        if self.diagnostic_arrays:
+            self.diagnostic_arrays["association_centers_world"] = world.copy()
         # The measured registration residual enters the association covariance, so a frame whose
         # pose is only verified to 0.3 m cannot claim a 0.1 m position uncertainty.
         pose_sigma = float(motion.get("position_sigma_m", cfg["tracking_pose_sigma_m"]))
@@ -439,13 +446,18 @@ class Detector:
             track = self.tracks[key]
             support = obj.pop("_support_points")
             self.display_support[key] = support
-            support_world = support @ pose[:3, :3].T + pose[:3, 3]
+            if self.diagnostic_arrays:
+                self.diagnostic_arrays[f"support_{key}"] = support
+                self.diagnostic_arrays[f"support_world_{key}"] = support @ pose[:3, :3].T + pose[:3, 3]
+                self.diagnostic_arrays[f"support_relative_{key}"] = support - centers[index]
             # Track-local spatial evidence compensates estimated object translation.
             # Bounds remain from this frame; past points never fabricate present shape.
             # Through an unverified transform nothing is accumulated: a point placed by a pose
             # that was not verified would manufacture a stable object out of a bad registration.
             if motion_valid:
-                track["evidence"].append((stamp, support_world - world[index]))
+                # R(p-c), not (Rp+t)-(Rc+t): a point at its own center must
+                # stay exactly zero, rather than creating cells across floor(0).
+                track["evidence"].append((stamp, (support - centers[index]) @ pose[:3, :3].T))
                 while track["evidence"] and stamp - track["evidence"][0][0] > cfg["evidence_window_s"]:
                     track["evidence"].popleft()
                 if not track["history"] or track["history"][-1] != self.frame_number:
@@ -473,6 +485,10 @@ class Detector:
                                           cfg["cluster_voxel_m"], self.native_kernels)
         for record, count in zip(pending, counts):
             record["count"] = int(count)
+            if self.diagnostic_arrays:
+                self.diagnostic_arrays[f"evidence_{record['key']}"] = record["evidence"]
+                self.diagnostic_arrays[f"evidence_stamps_{record['key']}"] = np.array(
+                    [entry[0] for entry in record["track"]["evidence"]])
         for record in pending:
             obj, key, hits = record["obj"], record["key"], record["hits"]
             recent_interior = record["recent_interior"]
