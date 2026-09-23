@@ -1,0 +1,42 @@
+{
+  "hypothesis": "Local centering before rotation removes false support from world-coordinate cancellation while retaining eight-thread ICP.",
+  "criterion": "Two fresh real full panels must agree exactly on accumulated support, presence, hazard and intersection confirmations. Compare all geometry and alarms against recorded eight-thread controls; retain every integer difference without tolerance.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-issue-9-parallel.json",
+  "output": "build/issue-9-relative-b",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [
+    0,
+    1,
+    291
+  ],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+      "split": "development"
+    }
+  ]
+}

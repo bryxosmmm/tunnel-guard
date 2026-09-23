@@ -1,0 +1,61 @@
+{
+  "seed": 20260915,
+  "output": "build/issue-9-report",
+  "voxel_m": 0.05,
+  "trace_frames": [
+    0,
+    1,
+    2,
+    3,
+    291
+  ],
+  "hypothesis": "Subtracting the measured center before rotation removes translation cancellation; one measured point cannot manufacture spatial support across the zero cell boundary.",
+  "comparisons": {
+    "control_repeat": {
+      "before": "build/issue-9-trace-a",
+      "after": "build/issue-9-trace-b",
+      "bags": [
+        "doubleT_platform"
+      ],
+      "expected_frames": 345
+    },
+    "fixed_smoke": {
+      "before": "build/issue-9-trace-a",
+      "after": "build/issue-9-relative-smoke",
+      "bags": [
+        "doubleT_platform"
+      ],
+      "expected_frames": 345
+    },
+    "fix_repeat": {
+      "before": "build/issue-9-relative-a",
+      "after": "build/issue-9-relative-b",
+      "bags": [
+        "doubleT_obstacle",
+        "doubleT_platform",
+        "roundT_doubleT",
+        "roundT_pressureGate_roundT",
+        "roundT_squareT_pressureGate_squareT",
+        "squareT_platform_squareT_switch"
+      ],
+      "expected_frames": 2488
+    },
+    "before_fix": {
+      "before": "../tunnel-guard-object-evidence/build/object-evidence-after",
+      "after": "build/issue-9-relative-a",
+      "bags": [
+        "doubleT_obstacle",
+        "doubleT_platform",
+        "roundT_doubleT",
+        "roundT_pressureGate_roundT",
+        "roundT_squareT_pressureGate_squareT",
+        "squareT_platform_squareT_switch"
+      ],
+      "expected_frames": 2488
+    }
+  },
+  "registration_reports": {
+    "parallel": "build/issue-9-registration-parallel/summary.json",
+    "serial": "build/issue-9-registration-serial/summary.json"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-issue-9-parallel.json",
+  "input": "results/issue-9-registration-input-20260922.npz",
+  "repetitions": 32,
+  "output": "build/issue-9-registration-parallel-public",
+  "hypothesis": "Only execution order changes between repeated alignments of one captured real source/map/initial guess. Serial TBB execution should remove variation."
+}
