@@ -21,6 +21,8 @@ def distance_summary(row: dict) -> dict:
         "unresolved_confirmed_m": min((obj["distance_m"] for obj in hazards
             if obj["confirmed"] and not obj.get("intersection_confirmed", False)), default=None),
         "tentative_m": min((obj["distance_m"] for obj in hazards if not obj["confirmed"]), default=None),
+        "geometry_unknown_m": min((obj["cluster_nearest_x_m"] for obj in row["objects"]
+                                  if obj["path_relation"] == "unknown"), default=None),
         "method": row.get("distance_method", "unavailable"),
         "origin": row.get("distance_origin", "configured_processing_frame_origin"),
     }
@@ -124,7 +126,7 @@ class ResultMessages:
             intersection_confirmed = obj.get("intersection_confirmed", obj["confirmed"] and obj["path_relation"] == "intersecting")
             color = ((1., .15, .1, 1.) if intersection_confirmed else
                      (1., .55, .05, 1.) if obj["confirmed"] and hazard else
-                     ((1., .8, .1, 1.) if hazard else (.5, .5, .5, 1.)))
+                     ((1., .8, .1, 1.) if hazard or obj["path_relation"] == "unknown" else (.5, .5, .5, 1.)))
             markers.append(self.marker(header, "observed_support", obj["track_id"], 5, box_edges(obj), color))
             if support is not None and obj["track_id"] in support:
                 markers.append(self.marker(header, "candidate_measurements", obj["track_id"], 8,
@@ -143,6 +145,7 @@ class ResultMessages:
         distances = distance_summary(row)
         text = (f"{self.presentation.upper()} | {row['status']}\n"
                 f"Intrusion={distances['confirmed_intersection_m']} m | uncertain={distances['unresolved_confirmed_m']} m\n"
+                f"Object without corridor relation={distances['geometry_unknown_m']} m\n"
                 f"{row['health']}: {', '.join(row['health_reasons'])}\n"
                 "Reference envelope; observed support only; route clearance unknown")
         if mounting:

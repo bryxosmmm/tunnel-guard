@@ -135,13 +135,14 @@ def classify_geometry(points, geometry, module):
 
 
 
-RELATION_NAMES = ("adjacent", "intersecting", "unresolved")
+RELATION_NAMES = ("adjacent", "intersecting", "unresolved", "unknown")
 DISTANCE_METHODS = ("cluster_min_x", "supported_envelope_min_x", "unresolved_envelope_evidence_min_x")
 REJECTION_NAMES = {0: None, 1: "below_weak_min_voxels", 2: "below_min_extent",
                    3: "weak_without_envelope_support"}
 
 
-def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncertain_support, config, module):
+def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncertain_support, config, module,
+                    *, geometry_valid):
     """Component statistics for the cluster cloud, in one native call.
 
     Returns the accepted candidate dictionaries in component order, the rejection
@@ -156,7 +157,7 @@ def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncert
         int(config["weak_min_voxels"]), int(config["immediate_min_voxels"]),
         float(config["cluster_min_extent_m"]), float(config["immediate_min_height_m"]),
         1 if config.get("obstacle_distance_mode", "cluster_min_x") == "envelope_support_min_x" else 0,
-        int(config.get("claim_min_support_voxels", config["weak_min_voxels"])))
+        int(config.get("claim_min_support_voxels", config["weak_min_voxels"])), int(geometry_valid))
     (ids, offsets, members, reasons, relations, distance_codes, bbox_min, bbox_max,
      centres, extents, height_spans, witnesses, distances, support_points, nearest_cluster,
      nearest_supported, nearest_unresolved, support_counts, dense_counts, envelope_counts,
@@ -215,7 +216,8 @@ def cluster_objects(cloud, labels, core, boundary, density_core, heights, uncert
             "_support_points": cloud[members[begin:end]],
             "_support_indices": members[begin:end],
             "boundary_uncertain_voxels": int(boundary_counts[row]),
-            "height_above_bed_m": [float(height_spans[2 * row]), float(height_spans[2 * row + 1])],
+            "height_above_bed_m": [float(h) if np.isfinite(h) else None
+                                  for h in height_spans[2 * row:2 * row + 2]],
             "immediate": bool(immediate[row]),
             "interior_density_core_voxels": int(interior_dense[row]),
             "interior_height_span_m": float(interior_heights[row]),

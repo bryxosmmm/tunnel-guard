@@ -1,0 +1,24 @@
+{
+  "seed": 20260915,
+  "before_config": "configs/detector-geometry-review-baseline.json",
+  "after_config": "configs/detector-geometry-review-current.json",
+  "output": "build/geometry-independent-rail-review-20260923",
+  "split_bin_m": 0.3,
+  "range_m": [
+    5,
+    25
+  ],
+  "selection_half_width_m": 0.13,
+  "clouds": [
+    "build/postmerge-full-fixed-20260923/diagnostics/doubleT_obstacle_000000.npz",
+    "build/postmerge-full-fixed-20260923/diagnostics/doubleT_obstacle_000200.npz",
+    "build/postmerge-full-fixed-20260923/diagnostics/roundT_doubleT_000000.npz",
+    "build/postmerge-full-fixed-20260923/diagnostics/roundT_doubleT_000200.npz",
+    "build/postmerge-full-fixed-20260923/diagnostics/roundT_squareT_pressureGate_squareT_000000.npz",
+    "build/postmerge-full-fixed-20260923/diagnostics/roundT_squareT_pressureGate_squareT_000200.npz",
+    "build/postmerge-full-fixed-20260923/diagnostics/squareT_platform_squareT_switch_000000.npz",
+    "build/postmerge-full-fixed-20260923/diagnostics/squareT_platform_squareT_switch_000200.npz"
+  ],
+  "hypothesis": "Quantify whether the current measured rail recipe fits held-out real spatial bins on selected sections; retain failed fits and do not equate residuals with surveyed rail identity or swept-envelope correctness.",
+  "criterion": "Report all eight selected real sections, including invalid fits and evaluation support; no field-accuracy promotion without independent geometry references."
+}

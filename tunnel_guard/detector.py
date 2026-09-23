@@ -116,6 +116,8 @@ def relation_reason(obj: dict) -> str:
       beyond its uncertainty budget, so the lateral relation is our extrapolation.
     * `outside_envelope_evidence` - no interior support at all.
     """
+    if obj["path_relation"] == "unknown":
+        return "geometry_unavailable"
     if obj["path_relation"] == "intersecting":
         return ("inside_heuristic_path_and_ground_interval" if obj["certified_unexplained_voxels"]
                 else "certified_interior_shared_with_structure")
@@ -153,7 +155,8 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     # object pool: the pool has already had the fitted tunnel surfaces removed from it, so a
     # structural test run on the pool would be asked to recognise the tunnel from what is
     # left of it. The verdict is then carried onto the pool rows.
-    structural_full = geometry.structural_mask(points, section)
+    structural_full = (geometry.structural_mask(points, section) if geometry.valid
+                       else np.zeros(len(points), dtype=bool))
     if voxel_unique_at(config, reduced_on_grid_m):
         # The context cloud is already one point per cluster voxel in key order,
         # so the reduction below would only reproduce the same rows in the same
@@ -231,7 +234,8 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     native = accelerator.native(config)
     if len(cloud):
         objects, rejected_counts, rows = accelerator.cluster_objects(
-            cloud, labels, core, boundary, density_core, heights, uncertain_support, config, native)
+            cloud, labels, core, boundary, density_core, heights, uncertain_support, config, native,
+            geometry_valid=geometry.valid)
         rejected.update(rejected_counts)
         if arrays is not None:
             components = rows
@@ -247,9 +251,11 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     # above index.
     for obj in objects:
         rows = obj.pop("_support_indices")
-        obj["lateral_m"] = [float(lateral[rows].min()), float(lateral[rows].max())]
-        obj["height_above_railhead_m"] = [float(running_height[rows].min()),
+        obj["lateral_m"] = ([float(lateral[rows].min()), float(lateral[rows].max())]
+                            if geometry.valid else [None, None])
+        obj["height_above_railhead_m"] = ([float(running_height[rows].min()),
                                           float(running_height[rows].max())]
+                                         if geometry.valid else [None, None])
         obj["interior_voxels"] = int(np.count_nonzero(nominal_overlap[rows]))
         obj["certified_unexplained_voxels"] = int(np.count_nonzero(core[rows] & ~structural[rows]))
         obj["interior_structural_voxels"] = int(np.count_nonzero(nominal_overlap[rows] & structural[rows]))
@@ -724,7 +730,7 @@ class Detector:
                                      self.diagnostic_arrays if capture_diagnostics else None,
                                      reduced_on_grid_m=self.config["geometry_voxel_m"],
                                      classification_out=carried,
-                                     cluster_rows_out=(cluster_rows_out if trace_rows is not None else None)) if geometry.valid else []
+                                     cluster_rows_out=(cluster_rows_out if trace_rows is not None else None))
         if trace_rows is not None:
             # The representative cloud rows the cluster stage already selected, mapped back
             # through the geometry-voxel rows to the original slots of this scan.
@@ -732,8 +738,6 @@ class Detector:
             self.diagnostic_arrays.update(
                 {f"cluster_{key}": value
                  for key, value in point_attributes.arrays(geometry_rows[obj_rows]).items()})
-        if not geometry.valid:
-            pipeline["segmentation"]["reason"] = geometry.reason
         self._associate(objects, pose, timestamp_s, motion)
         pipeline["association"] = {"state": "ran", "candidates": len(objects),
                                    "confirmed": sum(o["confirmed"] for o in objects),

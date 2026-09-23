@@ -1,0 +1,2434 @@
+{
+  "pipeline_contract_passed": true,
+  "totals": {
+    "frames": 2641,
+    "valid_geometry_frames": 2638,
+    "invalid_geometry_frames": 3
+  },
+  "bags": {
+    "doubleT_obstacle": 201,
+    "doubleT_platform": 345,
+    "roundT_doubleT": 252,
+    "roundT_pressureGate_roundT": 268,
+    "roundT_squareT_pressureGate_squareT": 545,
+    "squareT_platform_squareT_switch": 877,
+    "new_data_0": 51,
+    "new_data_100": 51,
+    "new_data_200": 51
+  },
+  "preserved_field_differences": {},
+  "status_changes": [],
+  "temporal_outcome_changes": {
+    "hits": 9881,
+    "accumulated_support_voxels": 31823,
+    "track_id": 38727,
+    "presence_confirmed": 2010,
+    "intersection_hits": 39
+  },
+  "temporal_examples": {
+    "hits": [
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 2,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 0,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 1,
+        "before": 1,
+        "after": 2
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 3,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 4,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 5,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 6,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 7,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 8,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 9,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 10,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 11,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 12,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 13,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 14,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 15,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 17,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 16,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 18,
+        "before": 2,
+        "after": 3
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 19,
+        "before": 2,
+        "after": 3
+      }
+    ],
+    "accumulated_support_voxels": [
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 2,
+        "before": 30334,
+        "after": 37953
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 0,
+        "before": 27533,
+        "after": 36467
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 1,
+        "before": 980,
+        "after": 1702
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 3,
+        "before": 222,
+        "after": 241
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 5,
+        "before": 104,
+        "after": 141
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 6,
+        "before": 55,
+        "after": 51
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 7,
+        "before": 33,
+        "after": 34
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 8,
+        "before": 47,
+        "after": 44
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 10,
+        "before": 36,
+        "after": 38
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 11,
+        "before": 60,
+        "after": 61
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 12,
+        "before": 48,
+        "after": 50
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 13,
+        "before": 19,
+        "after": 20
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 14,
+        "before": 38,
+        "after": 42
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 15,
+        "before": 125,
+        "after": 108
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 17,
+        "before": 41,
+        "after": 51
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 18,
+        "before": 28,
+        "after": 29
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 19,
+        "before": 25,
+        "after": 33
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 20,
+        "before": 33,
+        "after": 28
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 21,
+        "before": 115,
+        "after": 162
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 22,
+        "before": 27,
+        "after": 19
+      }
+    ],
+    "track_id": [
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 6,
+        "before": 1791,
+        "after": 1046
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 8,
+        "before": 663,
+        "after": 1153
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 10,
+        "before": 1044,
+        "after": 1793
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 14,
+        "before": 1046,
+        "after": 1667
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 15,
+        "before": 52,
+        "after": 1749
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 17,
+        "before": 1667,
+        "after": 1154
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 19,
+        "before": 1155,
+        "after": 1801
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 20,
+        "before": 1801,
+        "after": 1817
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 22,
+        "before": 1154,
+        "after": 1851
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 23,
+        "before": 1669,
+        "after": 1852
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 24,
+        "before": 371,
+        "after": 1860
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 26,
+        "before": 1817,
+        "after": 1199
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 29,
+        "before": 1780,
+        "after": 1912
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 31,
+        "before": 1261,
+        "after": 1923
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 32,
+        "before": 1601,
+        "after": 1304
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 36,
+        "before": 1366,
+        "after": 1913
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 37,
+        "before": 1515,
+        "after": 556
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 39,
+        "before": 1284,
+        "after": 1366
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 42,
+        "before": 556,
+        "after": 1928
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 44,
+        "before": 1766,
+        "after": 1950
+      }
+    ],
+    "presence_confirmed": [
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 47,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 55,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 70,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 72,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 73,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 76,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 79,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 81,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 106,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 154,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 171,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 173,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 183,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 192,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 195,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 196,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 199,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 201,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 220,
+        "before": false,
+        "after": true
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 131,
+        "component_id": 221,
+        "before": false,
+        "after": true
+      }
+    ],
+    "intersection_hits": [
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 132,
+        "component_id": 57,
+        "before": 0,
+        "after": 1
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 133,
+        "component_id": 40,
+        "before": 0,
+        "after": 1
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 133,
+        "component_id": 49,
+        "before": 1,
+        "after": 0
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 137,
+        "component_id": 62,
+        "before": 1,
+        "after": 0
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 137,
+        "component_id": 76,
+        "before": 1,
+        "after": 0
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 137,
+        "component_id": 93,
+        "before": 1,
+        "after": 0
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 137,
+        "component_id": 101,
+        "before": 0,
+        "after": 1
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 137,
+        "component_id": 146,
+        "before": 0,
+        "after": 1
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 137,
+        "component_id": 149,
+        "before": 1,
+        "after": 0
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 137,
+        "component_id": 155,
+        "before": 1,
+        "after": 0
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 137,
+        "component_id": 159,
+        "before": 0,
+        "after": 1
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 138,
+        "component_id": 55,
+        "before": 1,
+        "after": 0
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 138,
+        "component_id": 58,
+        "before": 0,
+        "after": 1
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 138,
+        "component_id": 72,
+        "before": 1,
+        "after": 0
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 138,
+        "component_id": 92,
+        "before": 1,
+        "after": 0
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 138,
+        "component_id": 93,
+        "before": 0,
+        "after": 1
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 138,
+        "component_id": 103,
+        "before": 1,
+        "after": 0
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 138,
+        "component_id": 110,
+        "before": 0,
+        "after": 1
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 138,
+        "component_id": 119,
+        "before": 1,
+        "after": 0
+      },
+      {
+        "bag": "roundT_pressureGate_roundT",
+        "frame": 138,
+        "component_id": 123,
+        "before": 1,
+        "after": 0
+      }
+    ]
+  },
+  "cases": [
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frame": 130,
+      "before_objects": 0,
+      "after_objects": 1537,
+      "previous_objects": 285,
+      "previous_tracks_observed": 271,
+      "tracks_observed_on_all_three_frames": 170,
+      "singleton_proposals": 929,
+      "unsafe_relation_records": [],
+      "status": "unknown",
+      "health": "unavailable",
+      "segmentation_state": "ran",
+      "drawn_reference_vertices": 0,
+      "source_attributes_exact": true,
+      "diagnostic_sha256": "1436590f19e70e8cb114b58aa60b9141e53fe36d304694ab7d2eca002fc5706b",
+      "recorded_marker_counts": {
+        "clear": 1,
+        "observed_support": 1537,
+        "candidate_measurements": 1537,
+        "object_labels": 1537,
+        "quality": 1
+      },
+      "unknown_marker_colors": [
+        [
+          1.0,
+          0.800000011920929,
+          0.10000000149011612
+        ]
+      ],
+      "largest_components": [
+        {
+          "track_id": 1662,
+          "support_voxels": 14723,
+          "extent_m": [
+            22.69035053253174,
+            2.1308014392852783,
+            4.205915808677673
+          ]
+        },
+        {
+          "track_id": 1374,
+          "support_voxels": 11180,
+          "extent_m": [
+            10.411260604858398,
+            1.4925953149795532,
+            4.042457342147827
+          ]
+        },
+        {
+          "track_id": 1909,
+          "support_voxels": 3544,
+          "extent_m": [
+            31.295449256896973,
+            2.4675579369068146,
+            3.0133527517318726
+          ]
+        },
+        {
+          "track_id": 22,
+          "support_voxels": 932,
+          "extent_m": [
+            4.317739009857178,
+            1.2908207178115845,
+            0.6364201903343201
+          ]
+        },
+        {
+          "track_id": 1838,
+          "support_voxels": 481,
+          "extent_m": [
+            4.007827281951904,
+            0.6775753498077393,
+            0.23758161067962646
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frame": 249,
+      "before_objects": 0,
+      "after_objects": 1519,
+      "previous_objects": 247,
+      "previous_tracks_observed": 246,
+      "tracks_observed_on_all_three_frames": 163,
+      "singleton_proposals": 879,
+      "unsafe_relation_records": [],
+      "status": "unknown",
+      "health": "unavailable",
+      "segmentation_state": "ran",
+      "drawn_reference_vertices": 0,
+      "source_attributes_exact": true,
+      "diagnostic_sha256": "f66dfddf249ff94fd87122ab7297c6ede4633c245e8a4b854af61f9e6d5ea24c",
+      "recorded_marker_counts": {
+        "clear": 1,
+        "observed_support": 1519,
+        "candidate_measurements": 1519,
+        "object_labels": 1519,
+        "quality": 1
+      },
+      "unknown_marker_colors": [
+        [
+          1.0,
+          0.800000011920929,
+          0.10000000149011612
+        ]
+      ],
+      "largest_components": [
+        {
+          "track_id": 3506,
+          "support_voxels": 16045,
+          "extent_m": [
+            27.399908781051636,
+            2.3950933814048767,
+            4.250155925750732
+          ]
+        },
+        {
+          "track_id": 3512,
+          "support_voxels": 10463,
+          "extent_m": [
+            11.254453182220459,
+            1.1625196933746338,
+            3.9803361892700195
+          ]
+        },
+        {
+          "track_id": 3917,
+          "support_voxels": 963,
+          "extent_m": [
+            8.658955574035645,
+            1.176269769668579,
+            2.2696826457977295
+          ]
+        },
+        {
+          "track_id": 3820,
+          "support_voxels": 865,
+          "extent_m": [
+            4.561663866043091,
+            1.1521871089935303,
+            0.5855040550231934
+          ]
+        },
+        {
+          "track_id": 3486,
+          "support_voxels": 640,
+          "extent_m": [
+            8.83272933959961,
+            1.2387244701385498,
+            2.467294454574585
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "new_data_200",
+      "frame": 48,
+      "before_objects": 0,
+      "after_objects": 1523,
+      "previous_objects": 236,
+      "previous_tracks_observed": 228,
+      "tracks_observed_on_all_three_frames": 158,
+      "singleton_proposals": 943,
+      "unsafe_relation_records": [],
+      "status": "unknown",
+      "health": "unavailable",
+      "segmentation_state": "ran",
+      "drawn_reference_vertices": 0,
+      "source_attributes_exact": true,
+      "diagnostic_sha256": "76c00d85ff292691c7a4524f5fb2df74d11cbdb54abd5d8605d0a7d2715623d4",
+      "recorded_marker_counts": {
+        "clear": 1,
+        "observed_support": 1523,
+        "candidate_measurements": 1523,
+        "object_labels": 1523,
+        "quality": 1
+      },
+      "unknown_marker_colors": [
+        [
+          1.0,
+          0.800000011920929,
+          0.10000000149011612
+        ]
+      ],
+      "largest_components": [
+        {
+          "track_id": 863,
+          "support_voxels": 14517,
+          "extent_m": [
+            23.813780307769775,
+            1.9520483613014221,
+            4.067014932632446
+          ]
+        },
+        {
+          "track_id": 805,
+          "support_voxels": 13295,
+          "extent_m": [
+            22.969659566879272,
+            1.9447660446166992,
+            4.060345530509949
+          ]
+        },
+        {
+          "track_id": 796,
+          "support_voxels": 761,
+          "extent_m": [
+            7.745719909667969,
+            1.3811831241473556,
+            2.705384850502014
+          ]
+        },
+        {
+          "track_id": 839,
+          "support_voxels": 487,
+          "extent_m": [
+            4.141758680343628,
+            0.9075078964233398,
+            0.22750139236450195
+          ]
+        },
+        {
+          "track_id": 990,
+          "support_voxels": 455,
+          "extent_m": [
+            5.994813919067383,
+            2.161789081990719,
+            2.4791953563690186
+          ]
+        }
+      ]
+    }
+  ],
+  "labels": {
+    "raw_cloud_structure": {
+      "before": {
+        "label_status": "provisional_geometry",
+        "prediction_scope": "near_track_objects",
+        "annotation_origins": {
+          "unspecified": 5
+        },
+        "box_semantics": "unspecified",
+        "minimum_3d_iou": 0.25,
+        "evaluated_frames": 5,
+        "missing_frames": [],
+        "exhaustive_frames": 0,
+        "tp": 5,
+        "fn": 0,
+        "fp_exhaustive_only": 0,
+        "annotated_object_recall": 1.0,
+        "precision_exhaustive_only": null,
+        "recall_exhaustive_only": null,
+        "f1_exhaustive_only": null,
+        "event_recall": 1.0,
+        "distance_mae_m": 0.2011451721191392,
+        "matched_mean_3d_iou": 0.30036108132308065,
+        "validity_warnings": [
+          "Provisional geometric annotations are not independently human-verified ground truth",
+          "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+          "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+        ],
+        "events": {
+          "doubleT_obstacle:upright_structure_17m": {
+            "annotated_frames": 5,
+            "matched_frames": 5,
+            "first_detection_distance_m": 16.6
+          }
+        },
+        "frames": [
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 0,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": [
+              [
+                3,
+                0,
+                0.2923557287450781
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 50,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                49,
+                0,
+                0.2877042497107031
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 100,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                55,
+                0,
+                0.32107803887512404
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 150,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                46,
+                0,
+                0.27858318110696645
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 200,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                48,
+                0,
+                0.32208420817753153
+              ]
+            ]
+          }
+        ]
+      },
+      "after": {
+        "label_status": "provisional_geometry",
+        "prediction_scope": "near_track_objects",
+        "annotation_origins": {
+          "unspecified": 5
+        },
+        "box_semantics": "unspecified",
+        "minimum_3d_iou": 0.25,
+        "evaluated_frames": 5,
+        "missing_frames": [],
+        "exhaustive_frames": 0,
+        "tp": 5,
+        "fn": 0,
+        "fp_exhaustive_only": 0,
+        "annotated_object_recall": 1.0,
+        "precision_exhaustive_only": null,
+        "recall_exhaustive_only": null,
+        "f1_exhaustive_only": null,
+        "event_recall": 1.0,
+        "distance_mae_m": 0.2011451721191392,
+        "matched_mean_3d_iou": 0.30036108132308065,
+        "validity_warnings": [
+          "Provisional geometric annotations are not independently human-verified ground truth",
+          "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+          "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+        ],
+        "events": {
+          "doubleT_obstacle:upright_structure_17m": {
+            "annotated_frames": 5,
+            "matched_frames": 5,
+            "first_detection_distance_m": 16.6
+          }
+        },
+        "frames": [
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 0,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": [
+              [
+                3,
+                0,
+                0.2923557287450781
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 50,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                49,
+                0,
+                0.2877042497107031
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 100,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                55,
+                0,
+                0.32107803887512404
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 150,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                46,
+                0,
+                0.27858318110696645
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 200,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                48,
+                0,
+                0.32208420817753153
+              ]
+            ]
+          }
+        ]
+      },
+      "source_sha256": "8dfe58e0e2723fec56298cd656a99adff992edace2a5ea965eeacd125b7fd8c6"
+    },
+    "person_anchor_and_propagation": {
+      "before": {
+        "label_status": "provisional_geometry",
+        "prediction_scope": "near_track_objects",
+        "annotation_origins": {
+          "detector_track_propagation": 35,
+          "manual_anchor": 1
+        },
+        "box_semantics": "unspecified",
+        "minimum_3d_iou": 0.25,
+        "evaluated_frames": 36,
+        "missing_frames": [],
+        "exhaustive_frames": 0,
+        "tp": 5,
+        "fn": 31,
+        "fp_exhaustive_only": 0,
+        "annotated_object_recall": 0.1388888888888889,
+        "precision_exhaustive_only": null,
+        "recall_exhaustive_only": null,
+        "f1_exhaustive_only": null,
+        "event_recall": 1.0,
+        "distance_mae_m": 0.1004743280031521,
+        "matched_mean_3d_iou": 0.27357264323119673,
+        "validity_warnings": [
+          "Provisional geometric annotations are not independently human-verified ground truth",
+          "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+          "Labels include detector-track propagation; retain author review provenance and do not treat this panel as an independent holdout",
+          "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+        ],
+        "events": {
+          "doubleT_obstacle:7": {
+            "annotated_frames": 36,
+            "matched_frames": 5,
+            "first_detection_distance_m": 5.22791267323644
+          }
+        },
+        "frames": [
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 165,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "candidate",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 166,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 167,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                12,
+                0,
+                0.2677525321977375
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 168,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 169,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 170,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 171,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 172,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 173,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 174,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 175,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 176,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                22,
+                0,
+                0.29113577345907093
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 177,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "unresolved_obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 178,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 179,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 180,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": [
+              [
+                24,
+                0,
+                0.2850597622223239
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 181,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                23,
+                0,
+                0.2654261596569857
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 182,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 183,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                28,
+                0,
+                0.25848898861986586
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 184,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 185,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 186,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 187,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 188,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 189,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 190,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "unresolved_obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 191,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 192,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 193,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 194,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 195,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 196,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 197,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 198,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 199,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 200,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          }
+        ]
+      },
+      "after": {
+        "label_status": "provisional_geometry",
+        "prediction_scope": "near_track_objects",
+        "annotation_origins": {
+          "detector_track_propagation": 35,
+          "manual_anchor": 1
+        },
+        "box_semantics": "unspecified",
+        "minimum_3d_iou": 0.25,
+        "evaluated_frames": 36,
+        "missing_frames": [],
+        "exhaustive_frames": 0,
+        "tp": 5,
+        "fn": 31,
+        "fp_exhaustive_only": 0,
+        "annotated_object_recall": 0.1388888888888889,
+        "precision_exhaustive_only": null,
+        "recall_exhaustive_only": null,
+        "f1_exhaustive_only": null,
+        "event_recall": 1.0,
+        "distance_mae_m": 0.1004743280031521,
+        "matched_mean_3d_iou": 0.27357264323119673,
+        "validity_warnings": [
+          "Provisional geometric annotations are not independently human-verified ground truth",
+          "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+          "Labels include detector-track propagation; retain author review provenance and do not treat this panel as an independent holdout",
+          "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+        ],
+        "events": {
+          "doubleT_obstacle:7": {
+            "annotated_frames": 36,
+            "matched_frames": 5,
+            "first_detection_distance_m": 5.22791267323644
+          }
+        },
+        "frames": [
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 165,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "candidate",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 166,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 167,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                12,
+                0,
+                0.2677525321977375
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 168,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 169,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 170,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 171,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 172,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 173,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 174,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 175,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 176,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                22,
+                0,
+                0.29113577345907093
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 177,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "unresolved_obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 178,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 179,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 180,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": [
+              [
+                24,
+                0,
+                0.2850597622223239
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 181,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                23,
+                0,
+                0.2654261596569857
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 182,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 183,
+            "tp": 1,
+            "fn": 0,
+            "fp": null,
+            "status": "obstacle",
+            "matches": [
+              [
+                28,
+                0,
+                0.25848898861986586
+              ]
+            ]
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 184,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 185,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 186,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 187,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 188,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 189,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 190,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "unresolved_obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 191,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 192,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 193,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 194,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 195,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 196,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 197,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "no_obstacle_observed",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 198,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 199,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          },
+          {
+            "bag": "doubleT_obstacle",
+            "frame": 200,
+            "tp": 0,
+            "fn": 1,
+            "fp": null,
+            "status": "obstacle",
+            "matches": []
+          }
+        ]
+      },
+      "source_sha256": "f538adc5eed18ff526b7a21c02b16562bc334e34abaf702f841d35927eba06e8"
+    }
+  },
+  "manifests": [
+    {
+      "python": "3.12.8 (v3.12.8:2dc476bcb91, Dec  3 2024, 14:43:19) [Clang 13.0.0 (clang-1300.0.29.30)]",
+      "platform": "macOS-26.5-arm64-arm-64bit",
+      "machine": "arm64",
+      "cpu_count": 8,
+      "packages": {
+        "numpy": "2.5.3",
+        "scipy": "1.18.1",
+        "rosbags": "0.11.5",
+        "kiss-icp": "1.3.0",
+        "open3d": "0.19.0",
+        "travel-seg": null,
+        "hdbscan": null,
+        "pypatchworkpp": null
+      },
+      "source_sha256": {
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/accelerator.py": "17cf7cf4e22c446d73cd4361d48551732190b27cf531fb3c2efde5fdba91bd22",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/alarm_anatomy.py": "9579c8830b427b440d3d696dad20a0114a780bc92cf9a2e5205e174a10b21f81",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/alignment.py": "37019d4fa19e6186d89a1f8392d60eeadaf7b706eb602e91850d2fb86870fb08",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/alignment_probe.py": "e8fc2e1844b8365fec1d9bca71f92557db3f6391db0a689b21d3cd5a6b0b705a",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/background.py": "74a041271a8537cd94401f665134cd7d912b10c8debaa49496e437d3bfecb148",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/background_repro.py": "2f1a23ce474659084c3de1213519b8946e23338deadd2c50ea630832efc315b6",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/calibrate.py": "83dfd35c841ac3db596a7b93e88643001b4d3aa8f3610f13770db1096289debe",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/compare_alarm_runs.py": "ce39621d4cea9ee07617f882f1d1f7035f006f16b252b74c2b5f63d2f1ad36d0",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/config_audit.py": "2dd2a1279c2b9a01ab956ef2d4d1b66e203ff667aad09a9b92ca1c33e8669cd7",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/corridor_report.py": "d245b7d57fc996faa4315b41f9f9d8775becd7c91968d6fbcfdacb633ccdc4fd",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/curve_audit.py": "26cfd35306aa438d39d23a3123f0ac38b860d90f2945bea43dd42c2337133be0",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/curved_stress.py": "0bcada82de0d22b9d50feef464635c334ef57cd7883f461fe1ea27a676a2a078",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/decode_benchmark.py": "e4a1f1270b180276d12347557db88048137687989900d1c5f14c29e102a1f4fa",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/detector.py": "a65bd072a34c4a18d220de41b931d1cc77eaf522f2c329c5162c497cc3a3423a",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/episode_report.py": "dc932d8a30294a887e7a143e852c1e2c9d7a95e46aea72f341d780a33d584501",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/evaluate.py": "561754ec856ecd5529c7d59fddaff004ffa9d56b5b782e89384a27bdbcd0efc2",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/expansion_report.py": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/extended_subset.py": "feaf7c41ab3ccd9b9d0497128353c7b36eedbd33aff8f46c2cae8193da9279ce",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/geometry.py": "da86a42ce860a58929d6efd36493fb019ed111e68764ee4f8b52e5c4155db9c6",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/history_probe.py": "3cd13e291fd643150282c74f63c66f94566045e4406958278805856fbf62f76c",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/hmm_mos_probe.py": "2f4c5a9f47ecedcb40457a5c64f3d606965a1db5178dacd85839d4df5070547f",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/injection_experiment.py": "9887b6985e3e90de90c0505c4cca787f05703d7bd9f487041e84b89a8b5841c1",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/inspect_bag.py": "18018c587fea64f8e3d35591944809b162fb31d3aab301b5fc708796c3c9700f",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/inspect_recording_headers.py": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/intrusion_audit.py": "e04ec075a2cc9ddcf6d844e6ddfda6657e275b562ec6de7728f11732c7cdcf84",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/io.py": "4d3a86db018ba30bd64f1e25e3b41ee04add5a0efe3576476c8738400456fcd5",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/motion_audit.py": "d2d49f0bcff1af6bb7ba97c6d7047c59f6ab4605bb485cfac61e6f298c94a8c7",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/motion_scenarios.py": "2d928846e973b163471f3293ba1af4ae79fdede55159b5c515cb8c2f6cc0d897",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/mounting.py": "568b2716fafef9775d18e1105c0d1365aff1b32409d6cfcf82f22840bab33a2c",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/mounting_replay.py": "be2e6d666fbd51d0ecd4614369651b7f5c65779ddbe796751a4824d5194e37f4",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/mounting_report.py": "c7547ee3d650de0f35f4d5a86ab855b0db1214e4860bada9082619c0fb44e41f",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/native_benchmark.py": "3ff29f3e9107f8bcd145e906e5d5421b6cdd31e6c5c64615c50262d77ccb442b",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/object_evidence_report.py": "ceae0cbb2f8841fac8eed0ef870341184861e3dd3c61e1fe2d04c49e987a7dc0",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/on_track.py": "b5b8f3f2eff1bf8c6d51b7ad47f9591b4f92fb685c9131a183f6ec917b8b70fb",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/panel_report.py": "f5fbf5612985fa008b580bb7446f445c5017d1170a04a7180b73b4e7dc38c505",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/plot_track_geometry.py": "b19aee7b6846a74b38cc9bec7ba0158443f473168b4fb6a18fe95014b6716113",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/prepare_segment.py": "154f5d0772d56473e82704d217723132c292efa0681d5df32f8bf6b1c355cf7a",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/profile_run.py": "5ad54b41e5a681182281d0714017c06c628fbb65deada92a5e4cd04127a956fb",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/rail_fit_report.py": "3bae4132006f5b72b7620be0e13fb76aebd413bfcce733c1d2c6738542f6bb44",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/rail_geometry_audit.py": "132e5f7772c56e3e204b2ba372f89d003d0551616c4d22d65238b011880a930a",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/realistic_report.py": "163806fdb60df8b981187b14e803ff921fdf1a9d14700b0e5ae4d30b0f0989d8",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/realistic_stress.py": "e6468a325619d0a2e54f714fe0a98c03dd8631802ea83d771070fff869f3deac",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/registration_repeat.py": "bff8c9f38d3a0cd319f7071a4d5741950976fb7a8994fd38268ad7cd7e06ef9c",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/render_alarm_cases.py": "95b510a7143f7250ec718749ed654e95c225f1b5a9ce20aa054f3b0df9cd0cc7",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/render_annotation_review.py": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/review_remaining_alerts.py": "0fe5e93952e1a275a81b2b04d203ebe899fe4d1e304ef7d347e026cc87d4448b",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/review_viewer.py": "4bad77dd7e102f75f572ed34cd232e59c649d7e6bc74efd139e6266709e77c45",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/ros_node.py": "8657db60629e22aac7e5455b3086ca513e19e1afd7d272c564cfb9b767ad51d7",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/run.py": "dec17042a879e104762a4eed48d00d4ee371b00121edc71d8fd26cf036f47b92",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/segmentation.py": "3a850281271ec9046aba370af034afd71c19ca8e3beedce9b6cfd83df44748a7",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/sensor_profile.py": "4ff47460df305986034ba03e45e9c892e3559ccceffff61412c5d1ebadfb3c03",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/structural_view.py": "3ee1b69f8d320ed23ee86d5ddd1e142d74e420df0d6c5d4510e8e443838ef9f8",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/support_stability_report.py": "48b48ed6f51a1b929668bf2f51399d02996d1dabea398d18d2f82e9f2e8e87fb",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/surface_evaluate.py": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/sustech.py": "103e7c167550022a86f37973a11dabfc476d0acdfc9eb1ca08212b6f4c615392",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/sustech_import.py": "1b6eaa071db373203e3908abafe6d0d018949920266e80fee94fd01826cead98",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/trace_analysis.py": "be1eef8bd26e30c9efc432304c292f2f1db34f2ecb6fba7248c3d2b081ef07eb",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/track_scene_experiment.py": "9352b34c678d220c25eea79a80ce25d14ecffd5780dd86162606ff3d091e2f85",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/uncertainty_probe.py": "78bf9156edf3f126724959104a89a1fc18ab14b8ba2717000186ade99bfb2560",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/visualization.py": "bde69cdc07a3107accd01c996cb96269e18a858c33df0f02a69361c1b076e7cd"
+      },
+      "command": [
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/postmerge-source-fixed/tunnel_guard/run.py",
+        "--experiment",
+        "configs/postmerge-full-fixed-20260923.json"
+      ],
+      "config_sha256": "68e3515671a8a0bd7c6998a8aac59a8f7cff5153d964739edc266ae794c59834",
+      "started_unix_s": 1790182037.119078,
+      "bags": [
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+          "split": "development",
+          "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+          "files": [
+            {
+              "name": "doubleT_obstacle_0.db3",
+              "bytes": 4821250048,
+              "mtime_ns": 1788354643000000000
+            }
+          ]
+        },
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+          "split": "development",
+          "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+          "files": [
+            {
+              "name": "doubleT_platform_0.db3",
+              "bytes": 2758447104,
+              "mtime_ns": 1788359747000000000
+            }
+          ]
+        },
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+          "split": "development",
+          "metadata_sha256": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d",
+          "files": [
+            {
+              "name": "roundT_doubleT_0.db3",
+              "bytes": 2014867456,
+              "mtime_ns": 1788359084000000000
+            }
+          ]
+        },
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+          "split": "development",
+          "metadata_sha256": "bec21b5aa0581936678824b5cb43043dfe99c7b1eb468c3dddf8e25554b703c1",
+          "files": [
+            {
+              "name": "roundT_pressureGate_roundT_0.db3",
+              "bytes": 2142801920,
+              "mtime_ns": 1788358865000000000
+            }
+          ]
+        },
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+          "split": "development",
+          "metadata_sha256": "9e9cedccc7a02337cd1f1020efebe22a4684c3598b2f7b5562b5fd044eafa616",
+          "files": [
+            {
+              "name": "roundT_squareT_pressureGate_squareT_0.db3",
+              "bytes": 4357537792,
+              "mtime_ns": 1788356999000000000
+            }
+          ]
+        },
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+          "split": "development",
+          "metadata_sha256": "46b6f276a63bca7642a091e11d78416951bc952e7889d940c0b43309b7060553",
+          "files": [
+            {
+              "name": "squareT_platform_squareT_switch_0.db3",
+              "bytes": 7012012032,
+              "mtime_ns": 1788358531000000000
+            }
+          ]
+        },
+        {
+          "path": "data/extended_subset/new_data_0",
+          "split": "development_extended_segment_not_independent_pass",
+          "metadata_sha256": "f728f16b249ac68d50bdc197ed3e80729a0c9dec701fbb2596cd34f9304ca115",
+          "files": [
+            {
+              "name": "new_data_0.db3",
+              "bytes": 407789568,
+              "mtime_ns": 1789713823540131028
+            }
+          ]
+        },
+        {
+          "path": "data/extended_subset/new_data_100",
+          "split": "development_extended_segment_not_independent_pass",
+          "metadata_sha256": "f4a16fef04434d7f6958667e6e33fd2896991a0648fd43662cbbc2354e491e4f",
+          "files": [
+            {
+              "name": "new_data_100.db3",
+              "bytes": 407789568,
+              "mtime_ns": 1789713816894289816
+            }
+          ]
+        },
+        {
+          "path": "data/extended_subset/new_data_200",
+          "split": "development_extended_segment_not_independent_pass",
+          "metadata_sha256": "696668de3ccfd60cb7a976865bdb19c1619372a453849256b2b81a60b4339d11",
+          "files": [
+            {
+              "name": "new_data_200.db3",
+              "bytes": 407789568,
+              "mtime_ns": 1789713768023856230
+            }
+          ]
+        }
+      ],
+      "git_revision": "69ea6fa36a63dbba7c5516e7ffe31f3dac7d17cc",
+      "git_status": "?? results/postmerge-failure-20260923.json\n",
+      "native_accelerator": {
+        "binary_sha256": "967807b62bb13deba113f5413190990500615a03fb6f76b9f235eb1552d9fc60",
+        "module": "tunnel_guard._native",
+        "backend": "cpp",
+        "sources_sha256": {
+          "cpp/kernels.cpp": "71ad3fee9bf4a943dce0aef0afb2d51b4ee5b49488807b4567be00b7d4f67ff4",
+          "cpp/voxel.cpp": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+          "cpp/native.h": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+          "setup.py": "1315ab98ae387d30bcbd8ad20080442b7ab01511d703e7dcb0ecf8db0a5a94a2",
+          "MANIFEST.in": "33c4c37a2f87322b865aa3de40223f5a1d3a0aebf1c220aa0d266bf1366d6910"
+        }
+      },
+      "finished_unix_s": 1790184740.545151
+    },
+    {
+      "python": "3.12.8 (v3.12.8:2dc476bcb91, Dec  3 2024, 14:43:19) [Clang 13.0.0 (clang-1300.0.29.30)]",
+      "platform": "macOS-26.5-arm64-arm-64bit",
+      "machine": "arm64",
+      "cpu_count": 8,
+      "packages": {
+        "numpy": "2.5.3",
+        "scipy": "1.18.1",
+        "rosbags": "0.11.5",
+        "kiss-icp": "1.3.0",
+        "open3d": "0.19.0",
+        "travel-seg": null,
+        "hdbscan": null,
+        "pypatchworkpp": null
+      },
+      "source_sha256": {
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/accelerator.py": "439731143ed9bea6fca157a6ebb6c519ed2d7ab341303cca898f96784ccd7cd3",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/alarm_anatomy.py": "9579c8830b427b440d3d696dad20a0114a780bc92cf9a2e5205e174a10b21f81",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/alignment.py": "37019d4fa19e6186d89a1f8392d60eeadaf7b706eb602e91850d2fb86870fb08",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/alignment_probe.py": "e8fc2e1844b8365fec1d9bca71f92557db3f6391db0a689b21d3cd5a6b0b705a",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/background.py": "74a041271a8537cd94401f665134cd7d912b10c8debaa49496e437d3bfecb148",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/background_repro.py": "2f1a23ce474659084c3de1213519b8946e23338deadd2c50ea630832efc315b6",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/calibrate.py": "83dfd35c841ac3db596a7b93e88643001b4d3aa8f3610f13770db1096289debe",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/compare_alarm_runs.py": "ce39621d4cea9ee07617f882f1d1f7035f006f16b252b74c2b5f63d2f1ad36d0",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/config_audit.py": "2dd2a1279c2b9a01ab956ef2d4d1b66e203ff667aad09a9b92ca1c33e8669cd7",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/corridor_report.py": "d245b7d57fc996faa4315b41f9f9d8775becd7c91968d6fbcfdacb633ccdc4fd",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/curve_audit.py": "26cfd35306aa438d39d23a3123f0ac38b860d90f2945bea43dd42c2337133be0",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/curved_stress.py": "0bcada82de0d22b9d50feef464635c334ef57cd7883f461fe1ea27a676a2a078",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/decode_benchmark.py": "e4a1f1270b180276d12347557db88048137687989900d1c5f14c29e102a1f4fa",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/detector.py": "bc2e27b204cb61d53145142b14e125f694d9f2c08644fe0cfd8a116b246c4de8",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/episode_report.py": "dc932d8a30294a887e7a143e852c1e2c9d7a95e46aea72f341d780a33d584501",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/evaluate.py": "561754ec856ecd5529c7d59fddaff004ffa9d56b5b782e89384a27bdbcd0efc2",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/expansion_report.py": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/extended_subset.py": "feaf7c41ab3ccd9b9d0497128353c7b36eedbd33aff8f46c2cae8193da9279ce",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/geometry.py": "da86a42ce860a58929d6efd36493fb019ed111e68764ee4f8b52e5c4155db9c6",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/history_probe.py": "3cd13e291fd643150282c74f63c66f94566045e4406958278805856fbf62f76c",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/hmm_mos_probe.py": "2f4c5a9f47ecedcb40457a5c64f3d606965a1db5178dacd85839d4df5070547f",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/injection_experiment.py": "9887b6985e3e90de90c0505c4cca787f05703d7bd9f487041e84b89a8b5841c1",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/inspect_bag.py": "18018c587fea64f8e3d35591944809b162fb31d3aab301b5fc708796c3c9700f",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/inspect_recording_headers.py": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/intrusion_audit.py": "e04ec075a2cc9ddcf6d844e6ddfda6657e275b562ec6de7728f11732c7cdcf84",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/io.py": "4d3a86db018ba30bd64f1e25e3b41ee04add5a0efe3576476c8738400456fcd5",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/motion_audit.py": "d2d49f0bcff1af6bb7ba97c6d7047c59f6ab4605bb485cfac61e6f298c94a8c7",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/motion_scenarios.py": "2d928846e973b163471f3293ba1af4ae79fdede55159b5c515cb8c2f6cc0d897",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/mounting.py": "568b2716fafef9775d18e1105c0d1365aff1b32409d6cfcf82f22840bab33a2c",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/mounting_replay.py": "be2e6d666fbd51d0ecd4614369651b7f5c65779ddbe796751a4824d5194e37f4",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/mounting_report.py": "c7547ee3d650de0f35f4d5a86ab855b0db1214e4860bada9082619c0fb44e41f",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/native_benchmark.py": "3ff29f3e9107f8bcd145e906e5d5421b6cdd31e6c5c64615c50262d77ccb442b",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/object_evidence_report.py": "ceae0cbb2f8841fac8eed0ef870341184861e3dd3c61e1fe2d04c49e987a7dc0",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/on_track.py": "b5b8f3f2eff1bf8c6d51b7ad47f9591b4f92fb685c9131a183f6ec917b8b70fb",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/panel_report.py": "f5fbf5612985fa008b580bb7446f445c5017d1170a04a7180b73b4e7dc38c505",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/plot_track_geometry.py": "b19aee7b6846a74b38cc9bec7ba0158443f473168b4fb6a18fe95014b6716113",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/prepare_segment.py": "154f5d0772d56473e82704d217723132c292efa0681d5df32f8bf6b1c355cf7a",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/profile_run.py": "5ad54b41e5a681182281d0714017c06c628fbb65deada92a5e4cd04127a956fb",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/rail_fit_report.py": "3bae4132006f5b72b7620be0e13fb76aebd413bfcce733c1d2c6738542f6bb44",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/rail_geometry_audit.py": "132e5f7772c56e3e204b2ba372f89d003d0551616c4d22d65238b011880a930a",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/realistic_report.py": "163806fdb60df8b981187b14e803ff921fdf1a9d14700b0e5ae4d30b0f0989d8",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/realistic_stress.py": "e6468a325619d0a2e54f714fe0a98c03dd8631802ea83d771070fff869f3deac",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/registration_repeat.py": "bff8c9f38d3a0cd319f7071a4d5741950976fb7a8994fd38268ad7cd7e06ef9c",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/render_alarm_cases.py": "95b510a7143f7250ec718749ed654e95c225f1b5a9ce20aa054f3b0df9cd0cc7",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/render_annotation_review.py": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/review_remaining_alerts.py": "0fe5e93952e1a275a81b2b04d203ebe899fe4d1e304ef7d347e026cc87d4448b",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/review_viewer.py": "4bad77dd7e102f75f572ed34cd232e59c649d7e6bc74efd139e6266709e77c45",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/ros_node.py": "8657db60629e22aac7e5455b3086ca513e19e1afd7d272c564cfb9b767ad51d7",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/run.py": "dec17042a879e104762a4eed48d00d4ee371b00121edc71d8fd26cf036f47b92",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/segmentation.py": "9787d0210c3345aec8089b821d290f7a1256504674ab4347352d1f52857b468a",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/sensor_profile.py": "4ff47460df305986034ba03e45e9c892e3559ccceffff61412c5d1ebadfb3c03",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/structural_view.py": "3ee1b69f8d320ed23ee86d5ddd1e142d74e420df0d6c5d4510e8e443838ef9f8",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/support_stability_report.py": "9023ddb2443fe0a229e5aafa795a1612f5df323f27159540cacf5843a9cceb86",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/surface_evaluate.py": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/sustech.py": "103e7c167550022a86f37973a11dabfc476d0acdfc9eb1ca08212b6f4c615392",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/sustech_import.py": "1b6eaa071db373203e3908abafe6d0d018949920266e80fee94fd01826cead98",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/trace_analysis.py": "be1eef8bd26e30c9efc432304c292f2f1db34f2ecb6fba7248c3d2b081ef07eb",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/track_scene_experiment.py": "9352b34c678d220c25eea79a80ce25d14ecffd5780dd86162606ff3d091e2f85",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/uncertainty_probe.py": "78bf9156edf3f126724959104a89a1fc18ab14b8ba2717000186ade99bfb2560",
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/visualization.py": "78fb10cf2c7ea7134abee03ca6c71767492fb92c42fd354c9784915df940654a"
+      },
+      "command": [
+        "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/geometry-independent-source-final/tunnel_guard/run.py",
+        "--experiment",
+        "configs/geometry-independent-full-20260923.json"
+      ],
+      "config_sha256": "68e3515671a8a0bd7c6998a8aac59a8f7cff5153d964739edc266ae794c59834",
+      "started_unix_s": 1790187751.805536,
+      "bags": [
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+          "split": "development",
+          "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+          "files": [
+            {
+              "name": "doubleT_obstacle_0.db3",
+              "bytes": 4821250048,
+              "mtime_ns": 1788354643000000000
+            }
+          ]
+        },
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+          "split": "development",
+          "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+          "files": [
+            {
+              "name": "doubleT_platform_0.db3",
+              "bytes": 2758447104,
+              "mtime_ns": 1788359747000000000
+            }
+          ]
+        },
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+          "split": "development",
+          "metadata_sha256": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d",
+          "files": [
+            {
+              "name": "roundT_doubleT_0.db3",
+              "bytes": 2014867456,
+              "mtime_ns": 1788359084000000000
+            }
+          ]
+        },
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+          "split": "development",
+          "metadata_sha256": "bec21b5aa0581936678824b5cb43043dfe99c7b1eb468c3dddf8e25554b703c1",
+          "files": [
+            {
+              "name": "roundT_pressureGate_roundT_0.db3",
+              "bytes": 2142801920,
+              "mtime_ns": 1788358865000000000
+            }
+          ]
+        },
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+          "split": "development",
+          "metadata_sha256": "9e9cedccc7a02337cd1f1020efebe22a4684c3598b2f7b5562b5fd044eafa616",
+          "files": [
+            {
+              "name": "roundT_squareT_pressureGate_squareT_0.db3",
+              "bytes": 4357537792,
+              "mtime_ns": 1788356999000000000
+            }
+          ]
+        },
+        {
+          "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+          "split": "development",
+          "metadata_sha256": "46b6f276a63bca7642a091e11d78416951bc952e7889d940c0b43309b7060553",
+          "files": [
+            {
+              "name": "squareT_platform_squareT_switch_0.db3",
+              "bytes": 7012012032,
+              "mtime_ns": 1788358531000000000
+            }
+          ]
+        },
+        {
+          "path": "data/extended_subset/new_data_0",
+          "split": "development_extended_segment_not_independent_pass",
+          "metadata_sha256": "f728f16b249ac68d50bdc197ed3e80729a0c9dec701fbb2596cd34f9304ca115",
+          "files": [
+            {
+              "name": "new_data_0.db3",
+              "bytes": 407789568,
+              "mtime_ns": 1789713823540131028
+            }
+          ]
+        },
+        {
+          "path": "data/extended_subset/new_data_100",
+          "split": "development_extended_segment_not_independent_pass",
+          "metadata_sha256": "f4a16fef04434d7f6958667e6e33fd2896991a0648fd43662cbbc2354e491e4f",
+          "files": [
+            {
+              "name": "new_data_100.db3",
+              "bytes": 407789568,
+              "mtime_ns": 1789713816894289816
+            }
+          ]
+        },
+        {
+          "path": "data/extended_subset/new_data_200",
+          "split": "development_extended_segment_not_independent_pass",
+          "metadata_sha256": "696668de3ccfd60cb7a976865bdb19c1619372a453849256b2b81a60b4339d11",
+          "files": [
+            {
+              "name": "new_data_200.db3",
+              "bytes": 407789568,
+              "mtime_ns": 1789713768023856230
+            }
+          ]
+        }
+      ],
+      "git_revision": "e89d51065b4e58d1d29ed538ebe21b6a56dd8b09",
+      "git_status": " M cpp/kernels.cpp\n M tunnel_guard/accelerator.py\n M tunnel_guard/detector.py\n M tunnel_guard/segmentation.py\n M tunnel_guard/visualization.py\n?? configs/geometry-independent-full-20260923.json\n?? configs/geometry-independent-smoke-20260923.json\n?? configs/geometry-independent-smoke-partial-20260923.json\n",
+      "native_accelerator": {
+        "binary_sha256": "aa79ed7154fcf7e40122814ef7b3ecfee111fcb97cf9fedac3d73aa3e534c2ec",
+        "module": "tunnel_guard._native",
+        "backend": "cpp",
+        "sources_sha256": {
+          "cpp/kernels.cpp": "ab1f038ed0eb3b004bfbc35a594cb69d939ccadddb8b2c3dd25a15a7496637f1",
+          "cpp/voxel.cpp": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+          "cpp/native.h": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+          "setup.py": "1315ab98ae387d30bcbd8ad20080442b7ab01511d703e7dcb0ecf8db0a5a94a2",
+          "MANIFEST.in": "33c4c37a2f87322b865aa3de40223f5a1d3a0aebf1c220aa0d266bf1366d6910"
+        }
+      },
+      "finished_unix_s": 1790188586.4406211
+    }
+  ],
+  "manifest_sha256": [
+    "2ae254403850b10f049ea8f275f76482f71086bf8e5fffb0ccad92900a66b66d",
+    "719f09aba7897fd270d2250cc76fe9b4914c028f14fa535ea2625e0281a60102"
+  ],
+  "reporter_sha256": "0f8c812e385332e4851fb2d5a1b49ee6dcdb2710b037a2da49327a9cdbda00c9",
+  "limits": [
+    "Association continuity is not independent object identity or recall.",
+    "Large infrastructure and singleton proposals remain; no operator-policy approval.",
+    "Observed invalid frames have insufficient longitudinal rail support, not every possible failure.",
+    "Provisional/nonexhaustive and detector-propagated labels cannot establish field precision or holdout recall.",
+    "No surveyed rail contour, actual swept envelope, target-hardware or live ROS/DDS validation."
+  ]
+}
