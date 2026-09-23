@@ -1,0 +1,22 @@
+{
+  "hypothesis": "Preserving the sensor attribute fields changes none of the first four decoder outputs (XYZ, normalized time, invalid count, duration); the retained attributes map exactly back to the raw PointCloud2 slots they came from, and the sensor profile remains unconfirmed.",
+  "criterion": "Decode every real source message until EOF in all nine bags; all old outputs byte-identical; independent raw-field, original-slot and validity-mask comparisons must have zero failures. One before/after pair per message with alternating order. No missing-bag skips.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "baseline_source": "build/attributes-baseline-source/tunnel_guard/io.py",
+  "output": "build/attributes-invalid-decode-20260923",
+  "diagnostic_run": "build/attributes-invalid-after-20260923",
+  "every": 1,
+  "max_frames": null,
+  "repetitions": 1,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "development"
+    },
+    {
+      "path": "data/extended_subset/new_data_200",
+      "split": "development_extended_segment_not_independent_pass"
+    }
+  ]
+}

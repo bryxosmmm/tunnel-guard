@@ -1,0 +1,278 @@
+{
+  "frames": 2641,
+  "point_observations": 501204616,
+  "changed_frames": [],
+  "layouts": [
+    {
+      "height": 1,
+      "width": 921600,
+      "point_step": 26,
+      "row_step": 23961600,
+      "bigendian": false,
+      "fields": [
+        [
+          "x",
+          0,
+          7,
+          1
+        ],
+        [
+          "y",
+          4,
+          7,
+          1
+        ],
+        [
+          "z",
+          8,
+          7,
+          1
+        ],
+        [
+          "intensity",
+          12,
+          7,
+          1
+        ],
+        [
+          "ring",
+          16,
+          4,
+          1
+        ],
+        [
+          "timestamp",
+          18,
+          8,
+          1
+        ]
+      ]
+    },
+    {
+      "height": 1,
+      "width": 307200,
+      "point_step": 26,
+      "row_step": 7987200,
+      "bigendian": false,
+      "fields": [
+        [
+          "x",
+          0,
+          7,
+          1
+        ],
+        [
+          "y",
+          4,
+          7,
+          1
+        ],
+        [
+          "z",
+          8,
+          7,
+          1
+        ],
+        [
+          "intensity",
+          12,
+          7,
+          1
+        ],
+        [
+          "ring",
+          16,
+          4,
+          1
+        ],
+        [
+          "timestamp",
+          18,
+          8,
+          1
+        ]
+      ]
+    }
+  ],
+  "repetitions": 1,
+  "max_coordinate_difference": 0.0,
+  "max_time_difference": 0.0,
+  "attributes_available": true,
+  "attribute_failures": [],
+  "attribute_channels": {
+    "intensity": {
+      "frames": 2641,
+      "dtypes": {
+        "float32": 2641
+      },
+      "invalid_total": 0,
+      "min": 0.0,
+      "max": 255.0
+    },
+    "raw_time": {
+      "frames": 2641,
+      "dtypes": {
+        "float64": 2641
+      },
+      "invalid_total": 0,
+      "min": 946686689.234044,
+      "max": 946693384.766082
+    },
+    "ring": {
+      "frames": 2641,
+      "dtypes": {
+        "uint16": 2641
+      },
+      "invalid_total": 0,
+      "min": 0.0,
+      "max": 127.0
+    }
+  },
+  "retained_attribute_bytes": 8555468,
+  "frames_with_attributes": 2641,
+  "attribute_summary_example": {
+    "bag": "doubleT_obstacle",
+    "frame": 0,
+    "summary": {
+      "fields": {
+        "intensity": {
+          "available": true,
+          "dtype": "float32",
+          "units": "unverified_raw_counts",
+          "count": 346808,
+          "valid_count": 346808,
+          "invalid_count": 0
+        },
+        "ring": {
+          "available": true,
+          "dtype": "uint16",
+          "units": "ring_index",
+          "count": 346808,
+          "valid_count": 346808,
+          "invalid_count": 0
+        },
+        "raw_time": {
+          "available": true,
+          "dtype": "float64",
+          "units": "seconds",
+          "count": 346808,
+          "valid_count": 346808,
+          "invalid_count": 0
+        }
+      },
+      "source_time_field": "timestamp",
+      "profile_confirmed": false,
+      "firing_identity": "unknown",
+      "return_multiplicity": "unknown",
+      "intensity_calibration": "unverified"
+    }
+  },
+  "timing_scope": "decode_cloud only, alternating per-message order; no deserialization or comparison cost",
+  "diagnostic_source_files": [
+    "doubleT_obstacle_000000.npz",
+    "doubleT_obstacle_000011.npz",
+    "doubleT_obstacle_000013.npz",
+    "doubleT_obstacle_000015.npz",
+    "doubleT_obstacle_000018.npz",
+    "doubleT_obstacle_000020.npz",
+    "doubleT_obstacle_000021.npz",
+    "doubleT_obstacle_000165.npz",
+    "doubleT_obstacle_000181.npz",
+    "doubleT_obstacle_000200.npz",
+    "doubleT_platform_000000.npz",
+    "doubleT_platform_000011.npz",
+    "doubleT_platform_000013.npz",
+    "doubleT_platform_000015.npz",
+    "doubleT_platform_000018.npz",
+    "doubleT_platform_000020.npz",
+    "doubleT_platform_000021.npz",
+    "doubleT_platform_000165.npz",
+    "doubleT_platform_000181.npz",
+    "doubleT_platform_000200.npz",
+    "roundT_doubleT_000000.npz",
+    "roundT_doubleT_000011.npz",
+    "roundT_doubleT_000013.npz",
+    "roundT_doubleT_000015.npz",
+    "roundT_doubleT_000018.npz",
+    "roundT_doubleT_000020.npz",
+    "roundT_doubleT_000021.npz",
+    "roundT_doubleT_000165.npz",
+    "roundT_doubleT_000181.npz",
+    "roundT_doubleT_000200.npz",
+    "roundT_pressureGate_roundT_000000.npz",
+    "roundT_pressureGate_roundT_000011.npz",
+    "roundT_pressureGate_roundT_000013.npz",
+    "roundT_pressureGate_roundT_000015.npz",
+    "roundT_pressureGate_roundT_000018.npz",
+    "roundT_pressureGate_roundT_000020.npz",
+    "roundT_pressureGate_roundT_000021.npz",
+    "roundT_pressureGate_roundT_000165.npz",
+    "roundT_pressureGate_roundT_000181.npz",
+    "roundT_pressureGate_roundT_000200.npz",
+    "roundT_squareT_pressureGate_squareT_000000.npz",
+    "roundT_squareT_pressureGate_squareT_000011.npz",
+    "roundT_squareT_pressureGate_squareT_000013.npz",
+    "roundT_squareT_pressureGate_squareT_000015.npz",
+    "roundT_squareT_pressureGate_squareT_000018.npz",
+    "roundT_squareT_pressureGate_squareT_000020.npz",
+    "roundT_squareT_pressureGate_squareT_000021.npz",
+    "roundT_squareT_pressureGate_squareT_000165.npz",
+    "roundT_squareT_pressureGate_squareT_000181.npz",
+    "roundT_squareT_pressureGate_squareT_000200.npz",
+    "squareT_platform_squareT_switch_000000.npz",
+    "squareT_platform_squareT_switch_000011.npz",
+    "squareT_platform_squareT_switch_000013.npz",
+    "squareT_platform_squareT_switch_000015.npz",
+    "squareT_platform_squareT_switch_000018.npz",
+    "squareT_platform_squareT_switch_000020.npz",
+    "squareT_platform_squareT_switch_000021.npz",
+    "squareT_platform_squareT_switch_000165.npz",
+    "squareT_platform_squareT_switch_000181.npz",
+    "squareT_platform_squareT_switch_000200.npz",
+    "new_data_0_000000.npz",
+    "new_data_0_000011.npz",
+    "new_data_0_000013.npz",
+    "new_data_0_000015.npz",
+    "new_data_0_000018.npz",
+    "new_data_0_000020.npz",
+    "new_data_0_000021.npz",
+    "new_data_100_000000.npz",
+    "new_data_100_000011.npz",
+    "new_data_100_000013.npz",
+    "new_data_100_000015.npz",
+    "new_data_100_000018.npz",
+    "new_data_100_000020.npz",
+    "new_data_100_000021.npz",
+    "new_data_200_000000.npz",
+    "new_data_200_000011.npz",
+    "new_data_200_000013.npz",
+    "new_data_200_000015.npz",
+    "new_data_200_000018.npz",
+    "new_data_200_000020.npz",
+    "new_data_200_000021.npz"
+  ],
+  "diagnostic_source_failures": [],
+  "decode_ms": {
+    "before": {
+      "p50": 18.40491604525596,
+      "p95": 37.03150001820177
+    },
+    "after": {
+      "p50": 21.756374975666404,
+      "p95": 43.07458398398012
+    }
+  },
+  "peak_rss_bytes": 566607872,
+  "decode_samples_per_arm": {
+    "before": 2641,
+    "after": 2641
+  },
+  "limitations": [
+    "Only recorded layouts/transforms exercised; no generated layout cases.",
+    "No safety/accuracy claim or target hardware measurement.",
+    "Pooled local timing, not a controlled deployment benchmark; after includes attribute extraction.",
+    "Point observations count decoded XYZ-valid returns over raw messages, not independent events.",
+    "Retained-array bytes report the peak over measured frames, not a cumulative allocation or resident-set cost.",
+    "Attribute availability is reported as measured; firing identity and return multiplicity are not inferred."
+  ]
+}

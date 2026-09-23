@@ -1,0 +1,32 @@
+{
+  "hypothesis": "All three geometry-invalid frames observed in the original complete panel must retain correct source attributes through stages that actually ran. Empty cluster metadata is not evidence that clustering ran. Supplementary diagnostic coverage only; original full-panel criterion and failures remain unchanged.",
+  "criterion": {
+    "discrete": "Zero differences, including every support counter, presence/intersection/confirmation flag, object ID and evidence timestamp. Any difference fails; no integer tolerance.",
+    "numeric": "Zero differences in continuous estimates are required for this same-machine serial-ICP replay; comparison atol=rtol=0.",
+    "coverage": "Supplementary diagnostic replay of the same 319 frames from the two named recordings until EOF, not extra independent examples. Capture frames 48, 130 and 249 where present; these cover the original three invalid-geometry frames.",
+    "diagnostics": "All legacy arrays byte-identical; exact original-slot/value/valid-mask alignment for saved diagnostic representative stages.",
+    "resources": "Measure processing/decode/wall and cumulative process peak RSS for sequential same-machine runs; report regressions honestly without asserting field latency or recall."
+  },
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/attributes-invalid-before-20260923",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [
+    48,
+    130,
+    249
+  ],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "development"
+    },
+    {
+      "path": "data/extended_subset/new_data_200",
+      "split": "development_extended_segment_not_independent_pass"
+    }
+  ]
+}

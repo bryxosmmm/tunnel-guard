@@ -1,0 +1,40 @@
+{
+  "hypothesis": "On the integrated #11 presence and #13 reproducible ICP baseline, preserving sensor attributes changes no existing non-timing detector output.",
+  "criterion": {
+    "discrete": "Zero differences, including every support counter, presence/intersection/confirmation flag, object ID and evidence timestamp. Any difference fails; no integer tolerance.",
+    "numeric": "Zero differences in continuous estimates are required for this same-machine serial-ICP replay; comparison atol=rtol=0.",
+    "coverage": "Every emitted unique measurement until EOF from all nine configured bags. Require manifests and ingestion counts; no intersection-of-frames-only acceptance. Report actual state coverage and unsupported cases.",
+    "diagnostics": "All legacy arrays byte-identical; exact original-slot/value/valid-mask alignment for saved diagnostic representative stages.",
+    "resources": "Measure processing/decode/wall and cumulative process peak RSS for sequential same-machine runs; report regressions honestly without asserting field latency or recall."
+  },
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/attributes-smoke-before-rebuilt-20260923",
+  "every": 1,
+  "max_frames": 22,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [
+    0,
+    11,
+    13,
+    15,
+    18,
+    20,
+    21,
+    165,
+    181,
+    200
+  ],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    },
+    {
+      "path": "data/extended_subset/new_data_0",
+      "split": "development_extended_segment_not_independent_pass"
+    }
+  ],
+  "source_base": "f2dd7c4: #11 plus #13; serial ICP, unchanged geometry and thresholds."
+}

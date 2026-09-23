@@ -1,0 +1,161 @@
+{
+  "purpose": "Evidence-only companion to the compact sensor-attribute change; not a detector promotion or independent field-safety claim.",
+  "functional_revisions": {
+    "before": "f2dd7c4f5619992572756c7cb6518a41630e2b77",
+    "after": "e48304c9811e3c7211fb9140428aaff1e272e7f5"
+  },
+  "audit_tools_revision": "0b26bc12562a39cfde8560c6af3d3d122ee73c88",
+  "full_panel_frames_per_variant": 2641,
+  "supplementary_repeated_frames_per_variant": 319,
+  "seed": 20260915,
+  "atol": 0,
+  "rtol": 0,
+  "artifacts": {
+    "configs/attributes-before-20260923.json": {
+      "sha256": "d7c5a9c9ea7bf687fa1edeaa0d1133382ec9609206cd2d376969a9b64dd5e8f5",
+      "bytes": 2615
+    },
+    "configs/attributes-after-20260923.json": {
+      "sha256": "42bffb4a2162fb6ae488dbb4f31b7fbd2e185d0f365baeea66531f61766c1a5c",
+      "bytes": 2614
+    },
+    "configs/attributes-smoke-before-20260923.json": {
+      "sha256": "2f11d74c3bc7f55cbf785b30f88d70ccc4ac5256863694ae9c08f353fc4852b4",
+      "bytes": 1753
+    },
+    "configs/attributes-smoke-after-20260923.json": {
+      "sha256": "fd48254051ca30a0966b7599c3430b8841dfffaa5a3addcb1c47d574751516af",
+      "bytes": 1752
+    },
+    "configs/attributes-report-20260923.json": {
+      "sha256": "2142adc8ba61b2fc65bdd5613f7cb0ab204e0421302a8d2a24a7aad634b6d9fa",
+      "bytes": 3606
+    },
+    "configs/attributes-decode-20260923.json": {
+      "sha256": "e769b8543bc180480f42c50c403733507d6bd38738b47ea69e9a38f0b368bba0",
+      "bytes": 2011
+    },
+    "configs/attributes-operator-compatibility-20260923.json": {
+      "sha256": "8a156cccf0b0e1274f33e468c237d5ddce05ff708129a55cb2cfafe095e61870",
+      "bytes": 1350
+    },
+    "configs/attributes-consumers-20260923.json": {
+      "sha256": "b2edc93746557f0ae02bf4f5f354101c344a73b9ef69ae26fd465635c1fb1992",
+      "bytes": 1731
+    },
+    "configs/attributes-invalid-before-20260923.json": {
+      "sha256": "af2811f281d20f0a23dd0940ec2ce181061b6dc410d7383c4a6af7dc83ccd4fc",
+      "bytes": 1800
+    },
+    "configs/attributes-invalid-after-20260923.json": {
+      "sha256": "52c71033f91028413183add193cce045691519d04ae31ca8d45d5f41320f80c8",
+      "bytes": 1799
+    },
+    "configs/attributes-invalid-report-20260923.json": {
+      "sha256": "933b2591a6b294f828e09fc3a9959ea8d0ff40428276c88e4e86b430f94b7d68",
+      "bytes": 2541
+    },
+    "configs/attributes-invalid-decode-20260923.json": {
+      "sha256": "e360ef5fd42d5e35104c1cfe4028bff04c7ce9519d38b66ee5eb8890dcd1a08c",
+      "bytes": 1165
+    },
+    "results/attributes-inputs-20260923.json": {
+      "sha256": "306f081720dcde9aa77732d9af4a8d5cf5fee4c85a3db5658ebfad1c380c6b55",
+      "bytes": 6998
+    },
+    "results/attributes-source-20260923.json": {
+      "sha256": "bcc8a1f880cf83a1a8ea38ce1406de88fc796a271ade7c0e82c325cc6a7856ae",
+      "bytes": 50377
+    },
+    "results/attributes-regression-20260923.json.gz": {
+      "sha256": "4dff22ad68e042936dbaed5b2e8130cffeca24be8d87b7e2086dd7e9e283145c",
+      "bytes": 1407784
+    },
+    "results/attributes-invalid-regression-20260923.json.gz": {
+      "sha256": "9922c6640ea2429ffd9a85b54cfa247dc1ba4fed60e7dd4fc7cb35ce80d683ee",
+      "bytes": 34196
+    },
+    "results/attributes-smoke-comparison-20260923.json.gz": {
+      "sha256": "485db3f9f9aec6686652a57211744f3bfbe920da9d8744f5c17a02f03f113950",
+      "bytes": 251480
+    },
+    "results/attributes-decode-20260923.json": {
+      "sha256": "7199c6121915277c0559f7a5db62165c3d82b5a839dd2f8dd4583e6a2ed235e7",
+      "bytes": 7305
+    },
+    "results/attributes-invalid-decode-20260923.json": {
+      "sha256": "0532affeea3b095ec1d81e9efaed34d61abf948a27fd815db6d0761e440aea6e",
+      "bytes": 3690
+    },
+    "results/attributes-operator-compatibility-20260923.json": {
+      "sha256": "e257b9fbe3cd2d3131110e0d8e364b4a7a0bcb618bd69bb3dcaf0353b3b7b3c0",
+      "bytes": 82900
+    },
+    "results/attributes-operator-decisions-20260923.jsonl.gz": {
+      "sha256": "752bc20033732e148e2f14e5be9c4e638911ed23b8ad24aeb4b4776a51f76b55",
+      "bytes": 82890
+    },
+    "results/attributes-consumers-20260923.json": {
+      "sha256": "2b6102db8bacb123293e2eada2a895ab184e708f1cfa10c67a4cd58f19bce5e3",
+      "bytes": 4771
+    },
+    "results/attributes-consumer-inspection-20260923.json": {
+      "sha256": "9aef7c22fb7ddfe651d492c49d0b9413a7a3d7b56ec7d067471f06e521a2cfd6",
+      "bytes": 5314
+    },
+    "results/attributes-viewer-20260923.png": {
+      "sha256": "6b1679ab55880320f4c17521123ed1c368d51d8fea3366f81ed5a11ca8e95346",
+      "bytes": 175310
+    },
+    "results/attributes-initial-abi-failure-20260923.json": {
+      "sha256": "7edc1d14eb287fba9ced1c840425492bc0b1602fc176b8760b4b3ac257f66267",
+      "bytes": 641
+    },
+    "results/attributes-run-provenance-20260923.json": {
+      "sha256": "990eae6e4543e86bef327a7d1c871ff554cf57c37f50437b1d30f95c0de46de0",
+      "bytes": 197571
+    },
+    "results/attributes-regression-20260923-mismatches.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    },
+    "results/attributes-invalid-regression-20260923-mismatches.jsonl": {
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "bytes": 0
+    }
+  },
+  "reproduction": {
+    "prerequisites": "Fresh worktree of this evidence branch, the recorded Python 3.12 environment, and the unchanged nine real recordings at the recipe paths. Existing output directories are intentionally not overwritten.",
+    "commands": [
+      "python setup.py build_ext --inplace --force",
+      "mkdir -p build/attributes-baseline-source",
+      "git archive f2dd7c4 tunnel_guard cpp setup.py MANIFEST.in | tar -x -C build/attributes-baseline-source",
+      "cp tunnel_guard/_native*.so build/attributes-baseline-source/tunnel_guard/",
+      "cp tunnel_guard/decode_benchmark.py tunnel_guard/compare_alarm_runs.py build/attributes-baseline-source/tunnel_guard/",
+      "PYTHONPATH=build/attributes-baseline-source python -P -m tunnel_guard.run --experiment configs/attributes-before-20260923.json",
+      "PYTHONPATH=. python -P -m tunnel_guard.run --experiment configs/attributes-after-20260923.json",
+      "PYTHONPATH=. python -P -m tunnel_guard.decode_benchmark --experiment configs/attributes-decode-20260923.json",
+      "PYTHONPATH=. python -P -m tunnel_guard.compare_alarm_runs --experiment configs/attributes-report-20260923.json"
+    ],
+    "note": "Run the invalid-before/invalid-after recipes with the same respective sources, then invalid-report and invalid-decode. Original full logs are retained locally as verified lossless gzip archives; restore them before using the comparator on saved runs. Native binary hashes may differ across build locations; both arms of one comparison must use the same freshly built binary."
+  },
+  "operator_policy": {
+    "sha256": "ed9934f7f65025a2d053127974b9f1f2832b72b017e99636312ec69d625a654b",
+    "source_pr": 10,
+    "archive_exactly_matches_prior_published_proposal": true,
+    "revision": "3d82f02effdfe7cf7b0b3a2af10dfcfe21763b10",
+    "source_sha256": {
+      "operator_channel.py": "ed9934f7f65025a2d053127974b9f1f2832b72b017e99636312ec69d625a654b",
+      "operator_metrics.py": "5c6d590271a65ffd18b3d4d57665749ca04fec08b5014ec6e9452a1a8bb3c821"
+    },
+    "reproduction_commands": [
+      "git worktree add ../attributes-operator-policy 3d82f02effdfe7cf7b0b3a2af10dfcfe21763b10",
+      "PYTHONPATH=../attributes-operator-policy python -P -m tunnel_guard.operator_metrics --experiment configs/attributes-operator-compatibility-20260923.json"
+    ]
+  },
+  "limitations": [
+    "No automated tests or generated scenes were created or run. All execution and comparisons use actual recorded measurements.",
+    "No physical firing identity, calibration, exhaustive labels, policy approval, live ROS/DDS timing or i7-9700E verification.",
+    "Consumer verification and supplemental replay timings are not the isolated full-panel cost evidence."
+  ]
+}

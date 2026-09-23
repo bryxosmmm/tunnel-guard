@@ -1,0 +1,217 @@
+{
+  "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+  "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+  "config_sha256": "4cac532f4b3838b80f72a563a687b660f3b8a86a74c0efa82e48cba3cbe5694c",
+  "topics": [
+    {
+      "topic": "/sensing/lidar/hesai128/pointcloud",
+      "type": "sensor_msgs/msg/PointCloud2",
+      "messages": 201
+    }
+  ],
+  "frames": [
+    {
+      "topic": "/sensing/lidar/hesai128/pointcloud",
+      "frame_id": "lidar_livox",
+      "record_ns": 1788354623110040384,
+      "measurement_ns": 946687297199933052,
+      "record_minus_header_s": 841667325.9101074,
+      "width": 921600,
+      "height": 1,
+      "point_step": 26,
+      "row_step": 23961600,
+      "bigendian": false,
+      "fields": [
+        {
+          "name": "x",
+          "offset": 0,
+          "datatype": 7,
+          "count": 1
+        },
+        {
+          "name": "y",
+          "offset": 4,
+          "datatype": 7,
+          "count": 1
+        },
+        {
+          "name": "z",
+          "offset": 8,
+          "datatype": 7,
+          "count": 1
+        },
+        {
+          "name": "intensity",
+          "offset": 12,
+          "datatype": 7,
+          "count": 1
+        },
+        {
+          "name": "ring",
+          "offset": 16,
+          "datatype": 4,
+          "count": 1
+        },
+        {
+          "name": "timestamp",
+          "offset": 18,
+          "datatype": 8,
+          "count": 1
+        }
+      ],
+      "valid_points": 346808,
+      "invalid_points": 574792,
+      "normalized_point_times": 346808,
+      "inferred_scan_duration_s": 0.06805706024169922,
+      "sensor_attributes": {
+        "fields": {
+          "intensity": {
+            "available": true,
+            "dtype": "float32",
+            "units": "unverified_raw_counts",
+            "count": 346808,
+            "valid_count": 346808,
+            "invalid_count": 0
+          },
+          "ring": {
+            "available": true,
+            "dtype": "uint16",
+            "units": "ring_index",
+            "count": 346808,
+            "valid_count": 346808,
+            "invalid_count": 0
+          },
+          "raw_time": {
+            "available": true,
+            "dtype": "float64",
+            "units": "seconds",
+            "count": 346808,
+            "valid_count": 346808,
+            "invalid_count": 0
+          }
+        },
+        "source_time_field": "timestamp",
+        "profile_confirmed": false,
+        "firing_identity": "unknown",
+        "return_multiplicity": "unknown",
+        "intensity_calibration": "unverified"
+      },
+      "range_counts": [
+        252158,
+        57228,
+        23467,
+        4934,
+        2669,
+        776,
+        209
+      ]
+    },
+    {
+      "topic": "/sensing/lidar/hesai128/pointcloud",
+      "frame_id": "lidar_livox",
+      "record_ns": 1788354623210133818,
+      "measurement_ns": 946687297299934030,
+      "record_minus_header_s": 841667325.9101998,
+      "width": 921600,
+      "height": 1,
+      "point_step": 26,
+      "row_step": 23961600,
+      "bigendian": false,
+      "fields": [
+        {
+          "name": "x",
+          "offset": 0,
+          "datatype": 7,
+          "count": 1
+        },
+        {
+          "name": "y",
+          "offset": 4,
+          "datatype": 7,
+          "count": 1
+        },
+        {
+          "name": "z",
+          "offset": 8,
+          "datatype": 7,
+          "count": 1
+        },
+        {
+          "name": "intensity",
+          "offset": 12,
+          "datatype": 7,
+          "count": 1
+        },
+        {
+          "name": "ring",
+          "offset": 16,
+          "datatype": 4,
+          "count": 1
+        },
+        {
+          "name": "timestamp",
+          "offset": 18,
+          "datatype": 8,
+          "count": 1
+        }
+      ],
+      "valid_points": 346630,
+      "invalid_points": 574970,
+      "normalized_point_times": 346630,
+      "inferred_scan_duration_s": 0.06806397438049316,
+      "sensor_attributes": {
+        "fields": {
+          "intensity": {
+            "available": true,
+            "dtype": "float32",
+            "units": "unverified_raw_counts",
+            "count": 346630,
+            "valid_count": 346630,
+            "invalid_count": 0
+          },
+          "ring": {
+            "available": true,
+            "dtype": "uint16",
+            "units": "ring_index",
+            "count": 346630,
+            "valid_count": 346630,
+            "invalid_count": 0
+          },
+          "raw_time": {
+            "available": true,
+            "dtype": "float64",
+            "units": "seconds",
+            "count": 346630,
+            "valid_count": 346630,
+            "invalid_count": 0
+          }
+        },
+        "source_time_field": "timestamp",
+        "profile_confirmed": false,
+        "firing_identity": "unknown",
+        "return_multiplicity": "unknown",
+        "intensity_calibration": "unverified"
+      },
+      "range_counts": [
+        252037,
+        57256,
+        23415,
+        4905,
+        2692,
+        778,
+        207
+      ]
+    }
+  ],
+  "range_bins_m": [
+    2.0,
+    10.0,
+    20.0,
+    40.0,
+    60.0,
+    100.0,
+    150.0,
+    220.0
+  ],
+  "note": "Fields and clocks measured from this prefix only; no calibration, deskew provenance, or range validation implied."
+}

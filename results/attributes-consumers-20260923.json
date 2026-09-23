@@ -1,0 +1,199 @@
+{
+  "decoder_cli": {
+    "frames": 9,
+    "point_observations": 1806204,
+    "changed_frames": [],
+    "layouts": [
+      {
+        "height": 1,
+        "width": 921600,
+        "point_step": 26,
+        "row_step": 23961600,
+        "bigendian": false,
+        "fields": [
+          [
+            "x",
+            0,
+            7,
+            1
+          ],
+          [
+            "y",
+            4,
+            7,
+            1
+          ],
+          [
+            "z",
+            8,
+            7,
+            1
+          ],
+          [
+            "intensity",
+            12,
+            7,
+            1
+          ],
+          [
+            "ring",
+            16,
+            4,
+            1
+          ],
+          [
+            "timestamp",
+            18,
+            8,
+            1
+          ]
+        ]
+      },
+      {
+        "height": 1,
+        "width": 307200,
+        "point_step": 26,
+        "row_step": 7987200,
+        "bigendian": false,
+        "fields": [
+          [
+            "x",
+            0,
+            7,
+            1
+          ],
+          [
+            "y",
+            4,
+            7,
+            1
+          ],
+          [
+            "z",
+            8,
+            7,
+            1
+          ],
+          [
+            "intensity",
+            12,
+            7,
+            1
+          ],
+          [
+            "ring",
+            16,
+            4,
+            1
+          ],
+          [
+            "timestamp",
+            18,
+            8,
+            1
+          ]
+        ]
+      }
+    ],
+    "repetitions": 1,
+    "max_coordinate_difference": 0.0,
+    "max_time_difference": 0.0,
+    "timing_scope": "decode_cloud only, alternating per-message order; no deserialization or comparison cost",
+    "decode_ms": {
+      "before": {
+        "p50": 15.791291953064501,
+        "p95": 43.51187520660459
+      },
+      "after": {
+        "p50": 30.173250008374453,
+        "p95": 67.87692483048885
+      }
+    },
+    "limitations": [
+      "Only recorded layouts/transforms exercised; no generated layout cases.",
+      "No safety/accuracy claim or target hardware measurement."
+    ]
+  },
+  "scene_export": [
+    {
+      "bag": "doubleT_obstacle",
+      "points": 346808,
+      "xyz_changed_values": 0,
+      "intensity_changed_values": 0,
+      "pcd_sha256": "18ff81ca616d65f513cd8d4bdafd7b5d3e4dbf531ab1cf54b02060e6526c0caa"
+    },
+    {
+      "bag": "doubleT_platform",
+      "points": 185638,
+      "xyz_changed_values": 0,
+      "intensity_changed_values": 0,
+      "pcd_sha256": "0b512f33ed32c7929d65a41f678ddf6512908c04918fc8eb7c2c660424c588c7"
+    },
+    {
+      "bag": "roundT_doubleT",
+      "points": 189502,
+      "xyz_changed_values": 0,
+      "intensity_changed_values": 0,
+      "pcd_sha256": "efbc997fd85ca1c0e5378e2f681863867cd1435108005a36758bdc773eacd650"
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "points": 189864,
+      "xyz_changed_values": 0,
+      "intensity_changed_values": 0,
+      "pcd_sha256": "30afcac53a7779b5cebb105e6a5de61a6af301123cef6878c21c4176b0e736b0"
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "points": 185070,
+      "xyz_changed_values": 0,
+      "intensity_changed_values": 0,
+      "pcd_sha256": "4f3f09be09e07011935923813803132dead5850393155f60b42fdf4b2bf42c34"
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "points": 181792,
+      "xyz_changed_values": 0,
+      "intensity_changed_values": 0,
+      "pcd_sha256": "03dfb20edab0722043c5133d5b64765a343360db97ffe2c2c4c1ed4caa436cef"
+    },
+    {
+      "bag": "new_data_0",
+      "points": 159162,
+      "xyz_changed_values": 0,
+      "intensity_changed_values": 0,
+      "pcd_sha256": "053ce4023a45cf20640cc2c124ddb490991ca3eea6cb9428ddc09282832f4ba7"
+    },
+    {
+      "bag": "new_data_100",
+      "points": 178890,
+      "xyz_changed_values": 0,
+      "intensity_changed_values": 0,
+      "pcd_sha256": "72263e9ab79af0e31a735977c971b3ae7bd3d7c0c5d6ef0becf7edb65e6ef6b3"
+    },
+    {
+      "bag": "new_data_200",
+      "points": 189478,
+      "xyz_changed_values": 0,
+      "intensity_changed_values": 0,
+      "pcd_sha256": "47b0820b731f1eb8b67b6ed6cb97c52f9fa2f69f477e11ebf60eaa134795e391"
+    }
+  ],
+  "browser": {
+    "run": "build/attributes-smoke-after-rebuilt-20260923",
+    "bag": "doubleT_obstacle",
+    "frames_viewed": [
+      0,
+      15
+    ],
+    "frame_15_status": "obstacle",
+    "frame_15_shown_points": 28894,
+    "frame_15_raw_valid_points": 346728,
+    "javascript_errors": [],
+    "screenshot": "results/attributes-viewer-20260923.png"
+  },
+  "limitations": [
+    "Consumer CLI timings were not isolated and are not the paired full-panel performance evidence.",
+    "ROS/DDS callback and deployment target were not exercised."
+  ]
+}

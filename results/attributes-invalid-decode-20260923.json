@@ -1,0 +1,156 @@
+{
+  "frames": 319,
+  "point_observations": 60097068,
+  "changed_frames": [],
+  "layouts": [
+    {
+      "height": 1,
+      "width": 307200,
+      "point_step": 26,
+      "row_step": 7987200,
+      "bigendian": false,
+      "fields": [
+        [
+          "x",
+          0,
+          7,
+          1
+        ],
+        [
+          "y",
+          4,
+          7,
+          1
+        ],
+        [
+          "z",
+          8,
+          7,
+          1
+        ],
+        [
+          "intensity",
+          12,
+          7,
+          1
+        ],
+        [
+          "ring",
+          16,
+          4,
+          1
+        ],
+        [
+          "timestamp",
+          18,
+          8,
+          1
+        ]
+      ]
+    }
+  ],
+  "repetitions": 1,
+  "max_coordinate_difference": 0.0,
+  "max_time_difference": 0.0,
+  "attributes_available": true,
+  "attribute_failures": [],
+  "attribute_channels": {
+    "intensity": {
+      "frames": 319,
+      "dtypes": {
+        "float32": 319
+      },
+      "invalid_total": 0,
+      "min": 0.0,
+      "max": 255.0
+    },
+    "raw_time": {
+      "frames": 319,
+      "dtypes": {
+        "float64": 319
+      },
+      "invalid_total": 0,
+      "min": 946687750.034032,
+      "max": 946692929.166134
+    },
+    "ring": {
+      "frames": 319,
+      "dtypes": {
+        "uint16": 319
+      },
+      "invalid_total": 0,
+      "min": 0.0,
+      "max": 127.0
+    }
+  },
+  "retained_attribute_bytes": 4504492,
+  "frames_with_attributes": 319,
+  "attribute_summary_example": {
+    "bag": "roundT_pressureGate_roundT",
+    "frame": 0,
+    "summary": {
+      "fields": {
+        "intensity": {
+          "available": true,
+          "dtype": "float32",
+          "units": "unverified_raw_counts",
+          "count": 189864,
+          "valid_count": 189864,
+          "invalid_count": 0
+        },
+        "ring": {
+          "available": true,
+          "dtype": "uint16",
+          "units": "ring_index",
+          "count": 189864,
+          "valid_count": 189864,
+          "invalid_count": 0
+        },
+        "raw_time": {
+          "available": true,
+          "dtype": "float64",
+          "units": "seconds",
+          "count": 189864,
+          "valid_count": 189864,
+          "invalid_count": 0
+        }
+      },
+      "source_time_field": "timestamp",
+      "profile_confirmed": false,
+      "firing_identity": "unknown",
+      "return_multiplicity": "unknown",
+      "intensity_calibration": "unverified"
+    }
+  },
+  "timing_scope": "decode_cloud only, alternating per-message order; no deserialization or comparison cost",
+  "diagnostic_source_files": [
+    "roundT_pressureGate_roundT_000048.npz",
+    "roundT_pressureGate_roundT_000130.npz",
+    "roundT_pressureGate_roundT_000249.npz",
+    "new_data_200_000048.npz"
+  ],
+  "diagnostic_source_failures": [],
+  "decode_ms": {
+    "before": {
+      "p50": 16.27337501849979,
+      "p95": 26.888966036494814
+    },
+    "after": {
+      "p50": 19.96858394704759,
+      "p95": 29.196774971205738
+    }
+  },
+  "peak_rss_bytes": 508248064,
+  "decode_samples_per_arm": {
+    "before": 319,
+    "after": 319
+  },
+  "limitations": [
+    "Only recorded layouts/transforms exercised; no generated layout cases.",
+    "No safety/accuracy claim or target hardware measurement.",
+    "Pooled local timing, not a controlled deployment benchmark; after includes attribute extraction.",
+    "Point observations count decoded XYZ-valid returns over raw messages, not independent events.",
+    "Retained-array bytes report the peak over measured frames, not a cumulative allocation or resident-set cost.",
+    "Attribute availability is reported as measured; firing identity and return multiplicity are not inferred."
+  ]
+}

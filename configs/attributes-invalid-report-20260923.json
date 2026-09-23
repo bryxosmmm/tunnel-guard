@@ -1,0 +1,44 @@
+{
+  "description": "Strict integrated #11 + #13 sensor-attribute regression on the unchanged nine-recording panel.",
+  "hypothesis": "On the integrated #11 presence and #13 reproducible ICP baseline, preserving sensor attributes changes no existing non-timing detector output.",
+  "before": "build/attributes-invalid-before-20260923",
+  "after": "build/attributes-invalid-after-20260923",
+  "output": "results/attributes-invalid-regression-20260923.json",
+  "detector_config": "configs/detector-native.json",
+  "input_inventory": "results/attributes-inputs-20260923.json",
+  "source_binding": "results/attributes-source-20260923.json",
+  "declared_revisions": {
+    "before": "f2dd7c4f5619992572756c7cb6518a41630e2b77",
+    "after": "e48304c9811e3c7211fb9140428aaff1e272e7f5"
+  },
+  "atol": 0,
+  "rtol": 0,
+  "tolerance_scope": "Exact equality for all prior non-timing fields: continuous estimates, IDs, counters, flags and timestamps. The added sensor_attributes metadata is validated independently.",
+  "excluded_fields": [
+    "processing_s",
+    "motion_s",
+    "mounting_observation_s",
+    "deserialize_s",
+    "decode_s",
+    "ingestion_s",
+    "inference_s",
+    "read_and_process_s",
+    "diagnostic_write_s",
+    "visualization_s"
+  ],
+  "excluded_note": "Only these operational timing fields plus the top-level sensor_attributes summary are excluded. Timing, throughput and RSS are reported, never used to assert a detector decision, field latency or recall. The sensor_attributes summary must remain present with unknown flags and availability counts in strict mode; it carries no detector-promotion flag.",
+  "provenance_note": "Both variants include merged #11 and pending #13. Production source is bound to Git objects below. Identical reporting-only overlays are borrowed unchanged from PR #8 audit code and never imported by detector execution. Manifest Git discovery names the enclosing worktree, not the frozen snapshot. Both variants use the same newly rebuilt native binary.",
+  "expected_bags": [
+    {
+      "name": "roundT_pressureGate_roundT",
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "development"
+    },
+    {
+      "name": "new_data_200",
+      "path": "data/extended_subset/new_data_200",
+      "split": "development_extended_segment_not_independent_pass"
+    }
+  ],
+  "panel": "Supplementary EOF replay of the same 319 frames in two recordings; four diagnostic archives, including all three invalid-geometry frames. Not added independent observations."
+}

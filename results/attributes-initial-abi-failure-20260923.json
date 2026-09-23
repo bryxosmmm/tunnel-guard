@@ -1,0 +1,9 @@
+{
+  "stage": "first real baseline frame",
+  "error": "TypeError: function takes exactly 17 arguments (19 given)",
+  "cause": "Worktree clone retained an older native extension incompatible with the integrated Python source.",
+  "remedy": "Built the unchanged integrated C++ sources with setup.py build_ext --inplace --force, then installed the same resulting binary in both frozen variants.",
+  "failed_native_sha256": "261a35922f08b244eb88aabc84b37c997a99656185047982906e1d08568058ec",
+  "rebuilt_native_sha256": "3c9b39f623150876325b93206518d5a3b52f30be115e7c623f67203001be626c",
+  "failed_run": "build/attributes-smoke-before-20260923"
+}
