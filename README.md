@@ -18,7 +18,7 @@ The [3D track and clearance literature review](docs/TRACK_GEOMETRY_LITERATURE_20
 
 The experimental `local_3d` rail frame was removed because classification had a Python-only fallback. The shipped `bed` frame remains the only detector mode; the historical experiments are retained in `docs/TRACK_LOCAL3D_ITERATION.md`.
 
-See [ROS 2 release contract](docs/ROS2.md) and [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and launch commands, and [iteration evidence](docs/GOAL_ITERATION.md) for all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
+See [ROS 2 release contract](docs/ROS2.md), the [target deployment acceptance record](docs/TARGET_ACCEPTANCE.md), and [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and launch commands. [Iteration evidence](docs/GOAL_ITERATION.md) covers all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
 
 ## Native acceleration and calibration experiment
 

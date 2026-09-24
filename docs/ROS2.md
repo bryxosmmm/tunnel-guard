@@ -52,3 +52,7 @@ rviz2 -d /opt/tunnel-guard/rviz/tunnel_guard.rviz
 Apple Silicon emulation is a compatibility check only. Full-bag runtime,
 watchdog/restart, RViz and video acceptance must still be captured on the target
 Ubuntu 22.04 / Humble deployment machine.
+
+Use the [target deployment acceptance record](TARGET_ACCEPTANCE.md) to capture
+that evidence, including the image identity, input/output bags, watchdog
+transition and RViz session.
