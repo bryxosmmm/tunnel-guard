@@ -1,15 +1,14 @@
 {
-  "hypothesis": "On the integrated #11 presence and #13 reproducible ICP baseline, preserving sensor attributes changes no existing non-timing detector output.",
+  "hypothesis": "The merged C++-only integration preserves the verified native-path behavior and sensor provenance; only declared obsolete schema fields disappear.",
   "criterion": {
-    "discrete": "Zero differences, including every support counter, presence/intersection/confirmation flag, object ID and evidence timestamp. Any difference fails; no integer tolerance.",
-    "numeric": "Zero differences in continuous estimates are required for this same-machine serial-ICP replay; comparison atol=rtol=0.",
-    "coverage": "Every emitted unique measurement until EOF from all nine configured bags. Require manifests and ingestion counts; no intersection-of-frames-only acceptance. Report actual state coverage and unsupported cases.",
-    "diagnostics": "All legacy arrays byte-identical; exact original-slot/value/valid-mask alignment for saved diagnostic representative stages.",
-    "resources": "Measure processing/decode/wall and cumulative process peak RSS for sequential same-machine runs; report regressions honestly without asserting field latency or recall."
+    "outputs": "Zero differences in all non-timing output values except the three explicitly declared removed local_3d metadata fields. No counter or continuous-estimate tolerance.",
+    "configuration": "Only native_kernels=true and voxel_backend=cpp disappear; all other detector parameters match the saved reference.",
+    "coverage": "All 2641 frames from the fixed nine-recording/segment panel, seed 20260915, one ICP thread.",
+    "diagnostics": "Full set equality and byte-identical arrays at the original 81 captured frames; supplemental 319-frame replay covers four further archives including all three invalid-geometry frames."
   },
   "seed": 20260915,
   "detector_config": "configs/detector.json",
-  "output": "build/attributes-before-20260923",
+  "output": "build/postmerge-full-20260923",
   "every": 1,
   "max_frames": null,
   "prefetch_depth": 1,
@@ -64,5 +63,5 @@
       "split": "development_extended_segment_not_independent_pass"
     }
   ],
-  "source_base": "f2dd7c4: #11 plus #13; serial ICP, unchanged geometry and thresholds."
+  "source_base": "f5b0983 integrated C++ cutover plus #13 and #15"
 }

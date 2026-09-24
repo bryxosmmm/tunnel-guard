@@ -66,7 +66,7 @@
   "path_max_uncertainty_m": 0.4,
   "path_initial_center_bound_m": 0.75,
   "envelope_margin_m": 0.0,
-  "envelope_calibration": "GOST_23961_80_M_reference_not_vehicle_swept_validation",
+  "envelope_calibration": "GOST_23961_2024_M_reference_not_vehicle_swept_validation",
   "cluster_voxel_m": 0.05,
   "cluster_max_radius_m": 0.75,
   "cluster_min_extent_m": 0.08,
@@ -109,7 +109,7 @@
   "tracking_pose_sigma_m": 0.1,
   "min_running_height_m": -0.2,
   "segmentation_context_half_width_m": 3.0,
-  "envelope_source": "GOST 23961-80 figures 6 and 7, https://engenegr.ru/gost-23961-80. Upper contour exact piecewise segments; lower contour horizontally filled conservatively, omitting wheel recesses. Mirrors and contact-collector extensions excluded. No actual vehicle/curve dynamic validation.",
+  "envelope_source": "GOST 23961-2024 figures 10 and 11 (replaces GOST 23961-80 figures 6 and 7). Dimensioned main contour vertices checked against both editions; numerical detector profile unchanged. The selected lower profile fills its recesses laterally above 50 mm but omits special outboard equipment outlines; it is not a superset of every lower outline. Mirrors, cameras and contact-collector extensions are excluded. This is not a measured swept envelope for a particular vehicle or track.",
   "odometry_min_normal_eigenvalue": 0.01,
   "sensor_profile_verified": false,
   "travel_objects": {

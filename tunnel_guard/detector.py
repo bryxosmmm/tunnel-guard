@@ -629,7 +629,10 @@ class Detector:
                   "distance_along_path_m": None,
                   "health": "unavailable", "health_reasons": ["insufficient_returns"],
                   "pipeline": pipeline,
-                  "envelope_calibration": self.config["envelope_calibration"]}
+                  "envelope_calibration": self.config["envelope_calibration"],
+                  "envelope_role": "rolling_stock_limit_reference",
+                  "swept_volume_validation": "unavailable_without_vehicle_and_track_specification",
+                  "collision_assessment": "not_established_by_reference_contour_intrusion"}
         if point_attributes is not None:
             # What the sensor fields are, what they cover, and what is NOT verified about them.
             # Present whenever a caller supplies decoded attributes; JSON-safe.
