@@ -187,5 +187,340 @@
   "21 per cent of development frames and 30 per cent of evaluation frames have an anchor chain that does not fit its own quadratic within 5 cm. Those frames keep their rail support to the same median range, so the instability is lateral, not a loss of reach.",
   "Curved frames are 5 per cent of development and 4 per cent of evaluation on these stretches, so a metric pooled over the panel will not show curve behaviour."
  ],
- "limits": "Availability is not accuracy. The anchors are detector output, so this bounds where a lateral reference can exist at all, not how well it locates the track. The evaluation split is sampled every third segment, so it covers the range of the route but not continuous travel. No obstacle is present in this recording per the organizer statement recorded in issue #21, so nothing here speaks to detection."
+ "limits": "Availability is not accuracy. The anchors are detector output, so this bounds where a lateral reference can exist at all, not how well it locates the track. The evaluation split is sampled every third segment, so it covers the range of the route but not continuous travel. No obstacle is present in this recording per the organizer statement recorded in issue #21, so nothing here speaks to detection.",
+ "organizer_label": "Per the statement recorded in issue #21 these tunnels contain no obstacle, so every in-envelope cluster measured here is load the detector should not carry. That makes attribution possible without annotation, and it also means nothing here speaks to detection.",
+ "false_load_attribution": {
+  "development": {
+   "frames": 1530,
+   "in_envelope_clusters": 7952,
+   "events": 184,
+   "candidates": 8,
+   "by_section": {
+    "straight": {
+     "frames": 1133,
+     "clusters": 5249,
+     "clusters_per_frame": 4.63,
+     "share_of_load": 0.66
+    },
+    "anchor_chain_unstable": {
+     "frames": 327,
+     "clusters": 2241,
+     "clusters_per_frame": 6.85,
+     "share_of_load": 0.282
+    },
+    "curve_400_800m": {
+     "frames": 62,
+     "clusters": 399,
+     "clusters_per_frame": 6.44,
+     "share_of_load": 0.05
+    },
+    "curve_under_400m": {
+     "frames": 8,
+     "clusters": 63,
+     "clusters_per_frame": 7.88,
+     "share_of_load": 0.008
+    }
+   },
+   "intervals": [
+    {
+     "from_f": 811,
+     "to_f": 1350,
+     "clusters": 4085,
+     "t_from": 946687280.333,
+     "t_to": 946687334.233,
+     "kinds": [
+      "\u043f\u0440\u044f\u043c\u0430\u044f"
+     ]
+    },
+    {
+     "from_f": 1354,
+     "to_f": 1529,
+     "clusters": 1735,
+     "t_from": 946687334.633,
+     "t_to": 946687352.133,
+     "kinds": [
+      "\u043a\u0440\u0438\u0432\u0430\u044f 400-800",
+      "\u043a\u0440\u0438\u0432\u0430\u044f R<400",
+      "\u043f\u0440\u044f\u043c\u0430\u044f",
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 196,
+     "to_f": 263,
+     "clusters": 700,
+     "t_from": 946687218.833,
+     "t_to": 946687225.533,
+     "kinds": [
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 147,
+     "to_f": 193,
+     "clusters": 434,
+     "t_from": 946687213.933,
+     "t_to": 946687218.533,
+     "kinds": [
+      "\u043a\u0440\u0438\u0432\u0430\u044f 400-800",
+      "\u043a\u0440\u0438\u0432\u0430\u044f R<400",
+      "\u043f\u0440\u044f\u043c\u0430\u044f",
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 268,
+     "to_f": 278,
+     "clusters": 69,
+     "t_from": 946687226.033,
+     "t_to": 946687227.033,
+     "kinds": [
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 613,
+     "to_f": 620,
+     "clusters": 51,
+     "t_from": 946687260.533,
+     "t_to": 946687261.233,
+     "kinds": [
+      "\u043f\u0440\u044f\u043c\u0430\u044f"
+     ]
+    },
+    {
+     "from_f": 509,
+     "to_f": 513,
+     "clusters": 34,
+     "t_from": 946687250.133,
+     "t_to": 946687250.533,
+     "kinds": [
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 631,
+     "to_f": 635,
+     "clusters": 33,
+     "t_from": 946687262.333,
+     "t_to": 946687262.733,
+     "kinds": [
+      "\u043f\u0440\u044f\u043c\u0430\u044f"
+     ]
+    },
+    {
+     "from_f": 136,
+     "to_f": 139,
+     "clusters": 22,
+     "t_from": 946687212.833,
+     "t_to": 946687213.133,
+     "kinds": [
+      "\u043f\u0440\u044f\u043c\u0430\u044f"
+     ]
+    },
+    {
+     "from_f": 519,
+     "to_f": 522,
+     "clusters": 21,
+     "t_from": 946687251.133,
+     "t_to": 946687251.433,
+     "kinds": [
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    }
+   ]
+  },
+  "evaluation": {
+   "frames": 1581,
+   "in_envelope_clusters": 2369,
+   "events": 127,
+   "candidates": 3,
+   "by_section": {
+    "straight": {
+     "frames": 1034,
+     "clusters": 475,
+     "clusters_per_frame": 0.46,
+     "share_of_load": 0.201
+    },
+    "anchor_chain_unstable": {
+     "frames": 477,
+     "clusters": 1824,
+     "clusters_per_frame": 3.82,
+     "share_of_load": 0.77
+    },
+    "curve_400_800m": {
+     "frames": 51,
+     "clusters": 35,
+     "clusters_per_frame": 0.69,
+     "share_of_load": 0.015
+    },
+    "curve_under_400m": {
+     "frames": 19,
+     "clusters": 35,
+     "clusters_per_frame": 1.84,
+     "share_of_load": 0.015
+    }
+   },
+   "intervals": [
+    {
+     "from_f": 535,
+     "to_f": 559,
+     "clusters": 162,
+     "t_from": 946687540.633,
+     "t_to": 946687543.033,
+     "kinds": [
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 510,
+     "to_f": 532,
+     "clusters": 144,
+     "t_from": 946687538.133,
+     "t_to": 946687540.333,
+     "kinds": [
+      "\u043f\u0440\u044f\u043c\u0430\u044f",
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 755,
+     "to_f": 758,
+     "clusters": 105,
+     "t_from": 946687613.133,
+     "t_to": 946687613.433,
+     "kinds": [
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 743,
+     "to_f": 745,
+     "clusters": 90,
+     "t_from": 946687611.933,
+     "t_to": 946687612.133,
+     "kinds": [
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 305,
+     "to_f": 313,
+     "clusters": 83,
+     "t_from": 946687474.533,
+     "t_to": 946687485.533,
+     "kinds": [
+      "\u043f\u0440\u044f\u043c\u0430\u044f",
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 418,
+     "to_f": 418,
+     "clusters": 62,
+     "t_from": 946687509.133,
+     "t_to": 946687509.133,
+     "kinds": [
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 799,
+     "to_f": 801,
+     "clusters": 60,
+     "t_from": 946687631.233,
+     "t_to": 946687631.433,
+     "kinds": [
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 789,
+     "to_f": 790,
+     "clusters": 58,
+     "t_from": 946687630.233,
+     "t_to": 946687630.333,
+     "kinds": [
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 400,
+     "to_f": 402,
+     "clusters": 51,
+     "t_from": 946687507.333,
+     "t_to": 946687507.533,
+     "kinds": [
+      "\u043a\u0440\u0438\u0432\u0430\u044f 400-800",
+      "\u043f\u0440\u044f\u043c\u0430\u044f",
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    },
+    {
+     "from_f": 1396,
+     "to_f": 1396,
+     "clusters": 50,
+     "t_from": 946687843.333,
+     "t_to": 946687843.333,
+     "kinds": [
+      "\u0446\u0435\u043f\u043e\u0447\u043a\u0430 \u043d\u0435\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u0430"
+     ]
+    }
+   ]
+  }
+ },
+ "dominant_interval": {
+  "frames": "811-1350 of the development block",
+  "clusters": 4085,
+  "clusters_per_frame": 7.56,
+  "share_of_development_load": 0.514,
+  "distance_m": {
+   "p10": 38.8,
+   "p50": 44.6,
+   "p90": 51.5
+  },
+  "lateral_m": {
+   "p10": -1.48,
+   "p50": -1.3,
+   "p90": -1.04
+  },
+  "height_above_railhead_m_p50": -0.99,
+  "share_beyond_1m_lateral": 0.96,
+  "share_already_flagged_continuous_or_periodic": 0.99,
+  "bore_axis_at_40m_m": {
+   "this_interval": -2.1,
+   "rest_of_block": 2.5
+  },
+  "reading": "A continuous structure alongside the track at about 1.3 m lateral and 1 m below the rail head, entering the envelope between 39 and 52 m. Rails are measured to 35 m here and the corridor is certified to 52 m, so this is the corridor's extrapolation past the measured rails laid over trackside infrastructure. 99 per cent of these clusters are already recognised as continuous or periodic, so the information needed to reject them exists in the probe output. The bore axis also flips from +2.50 to -2.10 m across this stretch, so the track runs on the other side of the excavation here."
+ },
+ "variant_comparison": {
+  "where": "development block only; the evaluation split is sampled every third segment and carries no continuous travel, so a pair test cannot be run on it",
+  "pairs": 12314,
+  "median_abs_error_m": {
+   "5_10m": {
+    "tangent": 0.085,
+    "curvature": 0.079,
+    "bore": 2.158
+   },
+   "20_35m": {
+    "tangent": 0.771,
+    "curvature": 0.666,
+    "bore": 2.29
+   },
+   "60_100m": {
+    "tangent": 5.24,
+    "curvature": 4.264,
+    "bore": 2.43
+   }
+  },
+  "note": "All three candidates were scored on identical pairs under identical pose, so the ordering between them holds even though the absolute values inherit an unknown longitudinal error. Curvature is ahead of the tangent everywhere; the bore does not degrade with range and overtakes both past 60 m at an error still wider than the 1.535 m half-width."
+ },
+ "release_policy_beyond_support": [
+  "Report object presence and distance beyond the certified horizon; withhold intersection.",
+  "Unproven intersection and unknown coverage stay explicit in the output and are never rendered as a clear route.",
+  "Do not extend the certified horizon on the strength of the bore: at about 2.4 m its error is wider than the corridor half-width, so it can indicate direction but cannot certify.",
+  "Do not claim a detection range from beam density or from the tunnel axis; geometric support, synthetic detection and unknown field range are reported separately.",
+  "The absence of a repeat pass is stated as a limit and is not replaced by any route-memory claim."
+ ],
+ "recommendation": "Keep the baseline. No variant here is a convincing improvement to ship: curvature continuation is already the shipped behaviour on the branches that adopted it, and the bore is not accurate enough to widen the certified horizon. What the measurements do support is a boundary that is documented rather than promised: rails to a median 35-40 m, corridor certified to 52-57 m, a lateral source that exists but does not certify out to about 90 m, and nothing beyond that."
 }
