@@ -109,7 +109,7 @@
   "tracking_pose_sigma_m": 0.1,
   "min_running_height_m": -0.2,
   "segmentation_context_half_width_m": 3.0,
-  "envelope_source": "GOST 23961-2024 figures 10 and 11 (replaces GOST 23961-80 figures 6 and 7). Dimensioned main contour vertices checked against both editions; numerical detector profile unchanged. Lower contour is horizontally filled conservatively above 50 mm, omitting equipment recesses; mirrors, cameras and contact-collector extensions are excluded. This is not a measured swept envelope for a particular vehicle or track.",
+  "envelope_source": "GOST 23961-2024 figures 10 and 11 (replaces GOST 23961-80 figures 6 and 7). Dimensioned main contour vertices checked against both editions; numerical detector profile unchanged. The selected lower profile fills its recesses laterally above 50 mm but omits special outboard equipment outlines; it is not a superset of every lower outline. Mirrors, cameras and contact-collector extensions are excluded. This is not a measured swept envelope for a particular vehicle or track.",
   "odometry_min_normal_eigenvalue": 0.01,
   "sensor_profile_verified": false,
   "travel_objects": {

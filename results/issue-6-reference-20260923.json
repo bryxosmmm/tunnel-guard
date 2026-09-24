@@ -13,9 +13,9 @@
     "labelled_recording_obstacle_frames": {"gost_m": 166, "organizer_2_1_by_3_m": 102}
   },
   "current_cpp_replay": {
-    "command": "python -m tunnel_guard.run --experiment tmp/issue-6-replay-201.json",
-    "artifact": "build/issue-6-replay-201",
-    "config_sha256": "c43b85514c211b417570784ba6793e879c17d4d27ff2d521d81c48dba99adf61",
+    "command": "python -m tunnel_guard.run --experiment build/issue-6-scratch/issue-6-replay-201-final.json",
+    "artifact": "build/issue-6-replay-201-final",
+    "config_sha256": "1df1102ec6b84923a8d2740b8fb9694dd1ce3e36aa529cfc2d0d4fe54f946179",
     "native_binary_sha256": "80a7de1f9a3dd67303ceabed07364e859db631a847990e97513f11150b426651",
     "bag_metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
     "seed": 20260915,
