@@ -589,6 +589,7 @@ class Detector:
             if len(point_times) and np.ptp(point_times) == 0:
                 point_times = np.empty(0)
         result = {"timestamp_s": timestamp_s, "status": "unknown", "objects": [], "nearest_obstacle_m": None,
+                  "nearest_candidate_m": None, "nearest_unresolved_range_m": None,
                   "input_valid_points": len(points), "gap_reset": reset,
                   "coordinate_frame": "tunnel_guard_local",
                   "distance_method": ("minimum_forward_x_of_envelope_evidence_for_hazards"
@@ -754,7 +755,15 @@ class Detector:
                          "supported_range_m": geometry.supported_range_m(), "objects": objects,
                          "health": "unavailable" if not geometry.valid else ("degraded" if health_reasons else "normal"),
                          "health_reasons": health_reasons,
+                         # These are observations in the configured processing frame, not a
+                         # braking command or path-clearance decision.  Keep the confirmed,
+                         # tentative, and unresolved ranges separate so a consumer cannot
+                         # silently turn an unresolved return into either a clear route or a
+                         # confirmed collision.
                          "nearest_obstacle_m": min((o["distance_m"] for o in confirmed), default=None),
+                         "nearest_candidate_m": min((o["distance_m"] for o in hazards if not o["confirmed"]), default=None),
+                         "nearest_unresolved_range_m": min((o["distance_m"] for o in hazards
+                                                            if o["path_relation"] == "unresolved"), default=None),
                          "geometry": geometry.describe(), "motion": motion, "pose": pose.tolist(),
                          "range_observability": bins, "geometry_points": len(reduced),
                          "processing_s": time.perf_counter() - started, "motion_s": motion_s}

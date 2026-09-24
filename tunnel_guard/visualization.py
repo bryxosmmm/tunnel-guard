@@ -62,6 +62,11 @@ def corridor_edges(description: dict, config: dict) -> np.ndarray:
     edges, previous = [], None
     slope = geometry.plane[1]
     normal = np.sqrt(1 + np.sum(geometry.plane[:2] ** 2))
+    rail_head_height = geometry.rail_head_height_m
+    if rail_head_height is None or not np.isfinite(rail_head_height):
+        # The current bed-frame classifier uses one measured scalar head height.
+        # Do not draw a contour from a removed profile API or invent support.
+        return np.empty((0, 3))
     for x in np.arange(config["min_forward_m"], config["max_range_m"], 2.0):
         center, _, path_uncertainty = geometry.path(np.array([x]))
         ring = []
@@ -71,7 +76,7 @@ def corridor_edges(description: dict, config: dict) -> np.ndarray:
             p = np.array([[x, center[0] + dy, 0.0]])
             ground, uncertainty = geometry.ground(p)
             supported &= uncertainty[0] <= config["ground_max_uncertainty_m"]
-            ring.append([x, p[0, 1], ground[0] + geometry.rail_head_profile(np.array([x]))[0] + h * normal])
+            ring.append([x, p[0, 1], ground[0] + rail_head_height + h * normal])
         if not supported:
             previous = None
             continue
@@ -186,10 +191,13 @@ class ResultBag(ResultMessages):
 
     def __enter__(self):
         self.writer.open()
-        for topic, kind in (("points_display", "sensor_msgs/msg/PointCloud2"),
-                            ("debug_markers", "visualization_msgs/msg/MarkerArray"),
-                            ("status", "std_msgs/msg/String")):
-            self.connections[topic] = self.writer.add_connection("/perception/" + topic, kind, typestore=self.store)
+        # Recorded RViz exports intentionally use the same release topic names
+        # as the live adapter.  They remain recorded inference, not a second
+        # detector implementation or a different operator contract.
+        for topic, name, kind in (("points_display", "/tunnel_guard/points", "sensor_msgs/msg/PointCloud2"),
+                                  ("debug_markers", "/tunnel_guard/markers", "visualization_msgs/msg/MarkerArray"),
+                                  ("status", "/tunnel_guard/result", "std_msgs/msg/String")):
+            self.connections[topic] = self.writer.add_connection(name, kind, typestore=self.store)
         return self
 
     def __exit__(self, *args):

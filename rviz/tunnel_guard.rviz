@@ -12,7 +12,7 @@ Visualization Manager:
       Name: Measured points (display sample)
       Enabled: true
       Topic:
-        Value: /perception/points_display
+        Value: /tunnel_guard/points
         Reliability Policy: Reliable
         Durability Policy: Volatile
         History Policy: Keep Last
@@ -26,7 +26,7 @@ Visualization Manager:
       Name: Reference envelope, objects, quality
       Enabled: true
       Marker Topic:
-        Value: /perception/debug_markers
+        Value: /tunnel_guard/markers
         Reliability Policy: Reliable
         Durability Policy: Volatile
         History Policy: Keep Last

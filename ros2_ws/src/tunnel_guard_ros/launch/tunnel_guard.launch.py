@@ -8,6 +8,8 @@ def generate_launch_description():
     return LaunchDescription([
         DeclareLaunchArgument("config_path", default_value="/opt/tunnel-guard/configs/detector-native.json"),
         DeclareLaunchArgument("input_topic", default_value="/lidar_points"),
+        DeclareLaunchArgument("input_timeout_s", default_value="3.0"),
+        DeclareLaunchArgument("input_reliability", default_value="reliable"),
         Node(
             package="tunnel_guard_ros",
             executable="tunnel_guard_node",
@@ -16,6 +18,8 @@ def generate_launch_description():
             parameters=[{
                 "config_path": LaunchConfiguration("config_path"),
                 "input_topic": LaunchConfiguration("input_topic"),
+                "input_timeout_s": LaunchConfiguration("input_timeout_s"),
+                "input_reliability": LaunchConfiguration("input_reliability"),
             }],
         ),
     ])

@@ -8,6 +8,20 @@ Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 
 
 **Research baseline, not a validated collision-warning system.** Recall, infrastructure alarms, generalization, and runtime remain unresolved. `CASE.md` contains the original requirements. A live ROS 2 Humble adapter and root Dockerfile are now included; target-host latency, QoS compatibility and the RViz GUI remain unverified. See [docs/ROS2.md](docs/ROS2.md).
 
+## Release Docker → ROS 2 → RViz
+
+The only supported live ROS contract is `/tunnel_guard/...`, launched by
+`ros2 launch tunnel_guard_ros tunnel_guard.launch.py`. It is documented,
+including the complete Docker build → launch → bag playback → RViz sequence, in
+[docs/ROS2.md](docs/ROS2.md). [docs/RUN_AND_REVIEW.md](docs/RUN_AND_REVIEW.md)
+separates full offline evaluation from live DDS inspection.
+
+The image was not rebuilt here: this machine has no Docker daemon. The existing
+ten-scan emulated run is a compatibility check, not target-runtime, full-bag or
+RViz-GUI acceptance evidence. `tunnel_guard_local` is detector-local output
+coordinates; it has no published identity TF and does not assert surveyed
+mounting or vehicle extrinsics.
+
 The initial review and its two real 30-frame prefixes are documented in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). Subsequent iterations and historical results below are separate evidence.
 
 ## Extended dataset: initial real runs
@@ -147,8 +161,9 @@ panel and the corrected metric definitions are in
 The node subscribes to `/lidar_points` by default. Our own recordings do not share one topic: `doubleT_obstacle`
 publishes on `/sensing/lidar/hesai128/pointcloud`, while the tunnel recordings and the extended run use `/lidar_points`.
 Run with `input_topic:=<the bag's topic>` when they differ - `ros2 bag info <bag>` prints it. If nothing arrives within
-`input_timeout_s`, the node degrades to `unavailable` and now logs an error naming the configured topic, the point-cloud
-topics that are actually present, and the parameter to restart with, so the cause is visible rather than silent.
+`input_timeout_s`, the node publishes `unknown`, clears the live cloud and
+markers, and logs the configured topic and elapsed wall time. Restart with the
+actual input topic; see [docs/ROS2.md](docs/ROS2.md) for the current contract.
 
 ### The audit behind those instructions
 
@@ -158,7 +173,11 @@ absence of these container instructions together with the host-networking requir
 the exact commands to run first, and everything that remains unverified are in
 [docs/DELIVERY_PATH_AUDIT.md](docs/DELIVERY_PATH_AUDIT.md).
 
-## Running it in the container (2026-09-19)
+## Historical container path (2026-09-19, superseded)
+
+Do not use the commands or `/perception/...` names in this historical note.
+They describe the retired adapter contract. The release instructions are only
+the ones in [docs/ROS2.md](docs/ROS2.md).
 
 The submission requires build and run instructions for the container, and the README carried none: it documented the
 offline runner and the ROS adapter separately, but never the sequence an evaluator actually performs. That is now here,
@@ -204,7 +223,7 @@ and the changes of 2026-09-19 in it - the published fixed frame, the input-topic
 dependency and the build-time node import - are standard usage that this development machine cannot execute, because it
 has no ROS 2 and no Docker daemon. They must be confirmed inside the container before the demonstration.
 
-## Demonstration path, checked statically (2026-09-19)
+## Historical demonstration audit, superseded
 
 `rviz/tunnel_guard.rviz` and the node were consistent on topics - the config listens to `/perception/points_display` and
 `/perception/debug_markers`, which the node publishes - but the config's fixed frame, `tunnel_guard_local`, was published
@@ -531,7 +550,8 @@ Nothing except scene directories may live under `SUSTechPOINTS/data/`: `scene_re
 | `tunnel_guard/run.py` | Reproducible bag runner |
 | `tunnel_guard/inspect_bag.py` | Bounded layout, acquisition-clock and density inspection |
 | `tunnel_guard/visualization.py` | Actual PointCloud2 / MarkerArray / status export for RViz2 replay |
-| `tunnel_guard/ros_node.py` | Live ROS 2 PointCloud2 subscriber and result publishers |
+| `tunnel_guard/ros_node_buyanov.py` | Live ROS 2 PointCloud2 subscriber, watchdog and result publishers |
+| `tunnel_guard/ros_node.py` | Compatibility entry point to the same live ROS 2 adapter |
 | `tunnel_guard/evaluate.py` | One-to-one IoU matching and annotation validity |
 | `tunnel_guard/stress.py` | Occlusion-aware synthetic ray-cast evaluation |
 | `tunnel_guard/annotate.py` | Extract raw frames for annotation review |

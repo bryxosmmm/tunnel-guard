@@ -308,9 +308,10 @@ OMP_NUM_THREADS=1 .venv-iteration/bin/python -m tunnel_guard.background_repro --
 MPLCONFIGDIR=/private/tmp/tunnel-guard-matplotlib .venv-iteration/bin/python -m tunnel_guard.injection_experiment --experiment configs/goal-ray-insertion-expansion.json
 MPLCONFIGDIR=/private/tmp/tunnel-guard-matplotlib .venv-iteration/bin/python -m tunnel_guard.injection_experiment --experiment configs/goal-ray-insertion-obstacle-background.json
 
-# Inside the Humble image, unchanged real ten-scan bag mounted at /data:
-ros2 launch /opt/tunnel-guard/launch/tunnel_guard.launch.py input_topic:=/lidar_points input_reliability:=reliable input_timeout_s:=15.0
-ros2 bag record -o /evidence/ros_output /perception/status /perception/points_display /perception/debug_markers
+# Historical ten-scan image run. The release adapter now uses the same
+# /tunnel_guard topic contract as documented in docs/ROS2.md:
+ros2 launch tunnel_guard_ros tunnel_guard.launch.py input_topic:=/lidar_points input_reliability:=reliable input_timeout_s:=15.0
+ros2 bag record -o /evidence/ros_output /tunnel_guard/result /tunnel_guard/points /tunnel_guard/markers
 ros2 bag play /data --rate 0.02 --delay 3 --wait-for-all-acked 30000
 python3 -m pip check
 python3 -m tunnel_guard.run --experiment /recipe.json

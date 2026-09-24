@@ -23,18 +23,16 @@ replay. Она сохраняет события рождения/сопоста
 выдавать за поддержанную дальность текущего детектора. Для точного воспроизведения
 старых результатов нужны также зависимости и исходники соответствующего commit.
 
-Сохранены оба ROS-интерфейса:
+Сохранён один ROS-интерфейс: `ros2 launch tunnel_guard_ros
+tunnel_guard.launch.py`, который вызывает `ros_node_buyanov.py` с параметрами
+`config_path`, `input_topic`, `input_reliability` и `input_timeout_s` и
+публикует `/tunnel_guard/...`. `python -m tunnel_guard.ros_node` — только
+совместимый вход в тот же адаптер; он не выбирает второй topic contract.
 
-- `python -m tunnel_guard.ros_node`: адаптер Gerasimov, параметры `config`,
-  `input_reliability`, `input_timeout_s`, публикации `/perception/...`.
-- `ros2 launch tunnel_guard_ros tunnel_guard.launch.py`: совместимый адаптер
-  Buyanov из `ros_node_buyanov.py`, параметр `config_path`, публикации
-  `/tunnel_guard/...`. Оба используют текущий Detector; launch Buyanov теперь
-  выбирает native-конфиг.
-
-Docker сохраняет colcon-упаковку Buyanov, добавляет сборку native-модуля,
-заголовки, зависимости и прямой launch Gerasimov. Новый объединённый контейнер
-и live ROS на Mac не запускались; прежние отчёты Docker не подтверждают эту сборку.
+Docker сохраняет colcon-упаковку этого адаптера, добавляет сборку native-модуля
+и зависимости. Новый объединённый контейнер и live ROS на Mac не запускались;
+прежние отчёты Docker не подтверждают эту сборку. Актуальные команды и
+семантика — в `docs/ROS2.md`.
 
 ## Проверка реальным исполнением
 

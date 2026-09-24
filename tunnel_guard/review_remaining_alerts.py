@@ -51,7 +51,7 @@ def extract(plan):
         folder.mkdir()
         support = {f: {} for f in selected}
         with Reader(run / f'{bag}_rviz') as reader:
-            connections = [c for c in reader.connections if c.topic == '/perception/debug_markers']
+            connections = [c for c in reader.connections if c.topic == '/tunnel_guard/markers']
             for connection, stamp, raw in reader.messages(connections=connections):
                 if stamp not in timestamps:
                     continue
