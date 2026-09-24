@@ -2,7 +2,7 @@
   "hypothesis": "Fine longitudinal surface support removes false certified claims from measured infrastructure without deleting compact object observations.",
   "criterion": "Reduce confirmed obstacle episodes on four fixed development recordings, preserve full object observations and avoid replacing alarms with unresolved or unknown; inspect point-level diagnostics and synthetic on-track cases before evaluation.",
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector-issue23-surface.json",
   "output": "build/issue23-development-candidate",
   "every": 1,
   "max_frames": 400,

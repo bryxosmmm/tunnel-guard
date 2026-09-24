@@ -2,7 +2,7 @@
   "hypothesis": "Across all six issued source recordings, fine current-scan surface attribution decreases infrastructure false alarms without losing the separately annotated adjacent person.",
   "criterion": "2488/2488 source frames, five empty recordings analyzed as episodes and 36/36 separately annotated person-presence frames; no increased unknown/unresolved exposure or synthetic hazard regressions; report changes to unannotated obstacle states in the first recording, not as true person detections.",
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector-issue23-surface.json",
   "output": "build/issue23-original-six-candidate",
   "every": 1,
   "max_frames": 900,

@@ -2,7 +2,7 @@
   "hypothesis": "Surface attribution changes only interior collision support and leaves the single observed adjacent person localized and tracked in all 36 annotated frames.",
   "criterion": "Person present in all 36 annotated frames, one track, adjacent relation preserved; report observed-support AABB separately from amodal annotation IoU.",
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector-issue23-surface.json",
   "output": "build/issue23-person-candidate",
   "every": 1,
   "max_frames": 201,

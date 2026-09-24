@@ -2,7 +2,7 @@
   "hypothesis": "An independently inserted, beam-sampled on-track object remains detectable when infrastructure-correlated returns are excluded from certified support.",
   "success_criterion": {"minimum_iou": 0.1, "candidate_event_recall_no_lower_than_paired_baseline": true, "hazard_event_recall_no_lower_than_paired_baseline": true},
   "seed": 20260915,
-  "detector_config": "configs/detector-native.json",
+  "detector_config": "configs/detector-issue23-surface.json",
   "output": "build/issue23-hybrid-candidate",
   "background_bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
   "pose_run": "build/perf-cpp-hardware-20260917",
