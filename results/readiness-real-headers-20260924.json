@@ -1,0 +1,256 @@
+{
+  "manifest": "configs/readiness-real-panel-20260924.json",
+  "recordings": [
+    {
+      "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "pointcloud_messages": 201,
+      "unique_acquisition_ids": 201,
+      "duplicate_acquisition_ids": 0,
+      "frame_ids": {
+        "lidar_livox": 201
+      },
+      "acquisition_start_ns": 946687297199933052,
+      "acquisition_end_ns": 946687317599961996,
+      "acquisition_span_s": 20.400028944,
+      "record_span_s": 20.392030296,
+      "backward_acquisition_steps": 0,
+      "positive_period_quantiles_s": [
+        0.099982024,
+        0.100000024,
+        0.10001898399999999
+      ],
+      "gaps_above_0_5_s": [],
+      "scope": "Within-recording acquisition identity only; no cross-recording de-duplication by rebootable sensor clock."
+    },
+    {
+      "bag": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "pointcloud_messages": 345,
+      "unique_acquisition_ids": 345,
+      "duplicate_acquisition_ids": 0,
+      "frame_ids": {
+        "hesai_lidar": 345
+      },
+      "acquisition_start_ns": 946693350333430052,
+      "acquisition_end_ns": 946693384733386993,
+      "acquisition_span_s": 34.399956941,
+      "record_span_s": 34.419566186,
+      "backward_acquisition_steps": 0,
+      "positive_period_quantiles_s": [
+        0.09998800185000001,
+        0.09999907,
+        0.10001084804999999
+      ],
+      "gaps_above_0_5_s": [],
+      "scope": "Within-recording acquisition identity only; no cross-recording de-duplication by rebootable sensor clock."
+    },
+    {
+      "bag": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "pointcloud_messages": 252,
+      "unique_acquisition_ids": 252,
+      "duplicate_acquisition_ids": 0,
+      "frame_ids": {
+        "hesai_lidar": 252
+      },
+      "acquisition_start_ns": 946692931633399963,
+      "acquisition_end_ns": 946692956733317971,
+      "acquisition_span_s": 25.099918008,
+      "record_span_s": 25.071970644,
+      "backward_acquisition_steps": 0,
+      "positive_period_quantiles_s": [
+        0.0999900105,
+        0.099998951,
+        0.100010991
+      ],
+      "gaps_above_0_5_s": [],
+      "scope": "Within-recording acquisition identity only; no cross-recording de-duplication by rebootable sensor clock."
+    },
+    {
+      "bag": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "pointcloud_messages": 268,
+      "unique_acquisition_ids": 268,
+      "duplicate_acquisition_ids": 0,
+      "frame_ids": {
+        "hesai_lidar": 268
+      },
+      "acquisition_start_ns": 946692902433449030,
+      "acquisition_end_ns": 946692929133437037,
+      "acquisition_span_s": 26.699988007,
+      "record_span_s": 26.698780195,
+      "backward_acquisition_steps": 0,
+      "positive_period_quantiles_s": [
+        0.0999882699,
+        0.09999907,
+        0.1000146388
+      ],
+      "gaps_above_0_5_s": [],
+      "scope": "Within-recording acquisition identity only; no cross-recording de-duplication by rebootable sensor clock."
+    },
+    {
+      "bag": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+      "pointcloud_messages": 545,
+      "unique_acquisition_ids": 545,
+      "duplicate_acquisition_ids": 0,
+      "frame_ids": {
+        "hesai_lidar": 545
+      },
+      "acquisition_start_ns": 946692690533414006,
+      "acquisition_end_ns": 946692745933303952,
+      "acquisition_span_s": 55.399889946,
+      "record_span_s": 55.377499942,
+      "backward_acquisition_steps": 0,
+      "positive_period_quantiles_s": [
+        0.099985003,
+        0.099999904,
+        0.10001502615
+      ],
+      "gaps_above_0_5_s": [
+        {
+          "after_message": 169,
+          "seconds": 1.099941015
+        }
+      ],
+      "scope": "Within-recording acquisition identity only; no cross-recording de-duplication by rebootable sensor clock."
+    },
+    {
+      "bag": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+      "pointcloud_messages": 877,
+      "unique_acquisition_ids": 877,
+      "duplicate_acquisition_ids": 0,
+      "frame_ids": {
+        "hesai_lidar": 877
+      },
+      "acquisition_start_ns": 946692771733356953,
+      "acquisition_end_ns": 946692859933470011,
+      "acquisition_span_s": 88.200113058,
+      "record_span_s": 88.207975932,
+      "backward_acquisition_steps": 0,
+      "positive_period_quantiles_s": [
+        0.09998703,
+        0.09999907,
+        0.10001429875000001
+      ],
+      "gaps_above_0_5_s": [
+        {
+          "after_message": 136,
+          "seconds": 0.700093031
+        }
+      ],
+      "scope": "Within-recording acquisition identity only; no cross-recording de-duplication by rebootable sensor clock."
+    },
+    {
+      "bag": "data/extended_full/new_data",
+      "pointcloud_messages": 11271,
+      "unique_acquisition_ids": 11271,
+      "duplicate_acquisition_ids": 0,
+      "frame_ids": {
+        "hesai_lidar": 11271
+      },
+      "acquisition_start_ns": 946686689233376980,
+      "acquisition_end_ns": 946687889033326983,
+      "acquisition_span_s": 1199.799950003,
+      "record_span_s": 1199.883468908,
+      "backward_acquisition_steps": 0,
+      "positive_period_quantiles_s": [
+        0.09998405,
+        0.100000024,
+        0.100015998
+      ],
+      "gaps_above_0_5_s": [
+        {
+          "after_message": 7988,
+          "seconds": 2.999976039
+        },
+        {
+          "after_message": 8249,
+          "seconds": 3.399996996
+        },
+        {
+          "after_message": 8381,
+          "seconds": 1.300011039
+        },
+        {
+          "after_message": 8633,
+          "seconds": 3.399981022
+        },
+        {
+          "after_message": 8765,
+          "seconds": 2.199939012
+        },
+        {
+          "after_message": 8897,
+          "seconds": 4.400135994
+        },
+        {
+          "after_message": 9154,
+          "seconds": 3.599995017
+        },
+        {
+          "after_message": 9286,
+          "seconds": 2.799995065
+        },
+        {
+          "after_message": 9418,
+          "seconds": 1.300040007
+        },
+        {
+          "after_message": 9550,
+          "seconds": 1.200155973
+        },
+        {
+          "after_message": 9682,
+          "seconds": 7.100091934
+        },
+        {
+          "after_message": 9814,
+          "seconds": 2.900133014
+        },
+        {
+          "after_message": 9946,
+          "seconds": 4.299910068
+        },
+        {
+          "after_message": 10078,
+          "seconds": 1.299903035
+        },
+        {
+          "after_message": 10210,
+          "seconds": 3.999989033
+        },
+        {
+          "after_message": 10342,
+          "seconds": 4.59999609
+        },
+        {
+          "after_message": 10474,
+          "seconds": 6.700020075
+        },
+        {
+          "after_message": 10606,
+          "seconds": 1.399973035
+        },
+        {
+          "after_message": 10738,
+          "seconds": 4.30011797
+        },
+        {
+          "after_message": 10870,
+          "seconds": 4.700057983
+        },
+        {
+          "after_message": 11002,
+          "seconds": 1.499905944
+        },
+        {
+          "after_message": 11134,
+          "seconds": 2.90003407
+        },
+        {
+          "after_message": 11266,
+          "seconds": 2.799834967
+        }
+      ],
+      "scope": "Within-recording acquisition identity only; no cross-recording de-duplication by rebootable sensor clock."
+    }
+  ],
+  "method": "Read-only SQLite blob prefix: standard PointCloud2 CDR Header, checked encapsulation, scalar bounds and frame_id terminator. XYZ arrays untouched."
+}

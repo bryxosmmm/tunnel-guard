@@ -1,0 +1,58 @@
+{
+  "candidate_base": "5d80ef3",
+  "work_branch": "fix/issue-23-pose-independent-evidence",
+  "release_status": "NOT promoted to main; existing main remains unchanged. New confirmation channel opt-in and initial gate only.",
+  "integrated_lineage": [
+    {
+      "change": "single C++ decision path",
+      "commit": "42ade0b",
+      "related_issue": 2
+    },
+    {
+      "change": "support cancellation and reproducible ICP",
+      "commit": "f2dd7c4",
+      "pr": 13
+    },
+    {
+      "change": "sensor attribute provenance",
+      "commit": "e48304c",
+      "pr": 15
+    },
+    {
+      "change": "native unavailable-geometry crash fix",
+      "commit": "69ea6fa",
+      "pr": 18
+    },
+    {
+      "change": "candidates retained without rail geometry",
+      "commit": "9e7fc92",
+      "pr": 19
+    },
+    {
+      "change": "real person evidence distinct from nuisance alarms",
+      "commit": "5d80ef3",
+      "pr": 20
+    }
+  ],
+  "not_blindly_merged": [
+    {
+      "pr": 17,
+      "reason": "Alternative native cutover conflicts with main; coordinate against existing42ade0b instead of applying twice."
+    },
+    {
+      "pr": 10,
+      "reason": "Operator decision policy remains a separate unapproved change; not silently included."
+    }
+  ],
+  "verification": [
+    "results/geometry-independent-20260923.json",
+    "results/organizer-synthetic-summary-20260924.json",
+    "results/issue-23-local-evidence-20260924.json",
+    "results/issue-23-default-control-20260924.json"
+  ],
+  "remaining_release_gates": [
+    "Full continuous negative corpus evaluation before default enablement.",
+    "Current target Ubuntu/Humble container, runtime and GUI/video acceptance.",
+    "Team review and deliberate PR consolidation; do not equate open-issue status with missing code."
+  ]
+}

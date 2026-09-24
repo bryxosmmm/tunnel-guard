@@ -1,0 +1,3383 @@
+{
+  "plan": {
+    "before_real": "build/geometry-independent-full-20260923",
+    "after_real": "build/issue-23-local-real-20260924",
+    "before_synthetic": "build/organizer-synthetic-full-20260924",
+    "after_synthetic": "build/issue-23-local-synthetic-20260924",
+    "source_provenance_report": "results/organizer-synthetic-exact-20260924.json",
+    "output": "results/issue-23-local-evidence-20260924.json",
+    "bags": [
+      "doubleT_obstacle",
+      "doubleT_platform",
+      "roundT_doubleT",
+      "roundT_pressureGate_roundT",
+      "roundT_squareT_pressureGate_squareT",
+      "squareT_platform_squareT_switch",
+      "new_data_0",
+      "new_data_100",
+      "new_data_200"
+    ],
+    "person": {
+      "bag": "doubleT_obstacle",
+      "frames": [
+        165,
+        200
+      ],
+      "baseline_track_id": 2535,
+      "provenance": "Author-reviewed target support from results/person-specific-20260923.json; identity reuse requires unchanged per-frame component geometry."
+    },
+    "frame_max_gap_s": 0.5,
+    "hypothesis_plan": "configs/issue-23-local-evidence-plan-20260924.json"
+  },
+  "real": {
+    "doubleT_obstacle": {
+      "before": {
+        "frames": 201,
+        "status_frames": {
+          "no_obstacle_observed": 25,
+          "unresolved_obstacle": 6,
+          "obstacle": 166,
+          "candidate": 4
+        },
+        "alarm_frames": 166,
+        "alarm_episodes": 23,
+        "duration_s": 20.400028944015503,
+        "alarm_duration_s": 16.799891591072083,
+        "observed_duration_s": 20.400028944015503,
+        "unobserved_gap_duration_s": 0.0,
+        "episodes_per_observed_minute": 67.64696284437542,
+        "local_confirmation_frames": []
+      },
+      "after": {
+        "frames": 201,
+        "status_frames": {
+          "no_obstacle_observed": 25,
+          "unresolved_obstacle": 6,
+          "obstacle": 166,
+          "candidate": 4
+        },
+        "alarm_frames": 166,
+        "alarm_episodes": 23,
+        "duration_s": 20.400028944015503,
+        "alarm_duration_s": 16.799891591072083,
+        "observed_duration_s": 20.400028944015503,
+        "unobserved_gap_duration_s": 0.0,
+        "episodes_per_observed_minute": 67.64696284437542,
+        "local_confirmation_frames": []
+      },
+      "component_geometry_or_identity_changed_frames": [],
+      "measurement_changed_frames": [],
+      "geometry_motion_pose_changed_frames": [],
+      "added_alarm_frames": [],
+      "person": [
+        {
+          "frame": 165,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 166,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 167,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 168,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 169,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 170,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 171,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 172,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 173,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 174,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 175,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 176,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 177,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 178,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 179,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 180,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 181,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 182,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 183,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 184,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 185,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 186,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 187,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 188,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 189,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 190,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 191,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 192,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 193,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 194,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 195,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 196,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 197,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 198,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 199,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        },
+        {
+          "frame": 200,
+          "before_presence": true,
+          "after_presence": true,
+          "after_intersection": false,
+          "added_non_target_alarm": false
+        }
+      ]
+    },
+    "doubleT_platform": {
+      "before": {
+        "frames": 345,
+        "status_frames": {
+          "candidate": 2,
+          "no_obstacle_observed": 302,
+          "unresolved_obstacle": 19,
+          "obstacle": 22
+        },
+        "alarm_frames": 22,
+        "alarm_episodes": 11,
+        "duration_s": 34.399956941604614,
+        "alarm_duration_s": 2.19991672039032,
+        "observed_duration_s": 34.399956941604614,
+        "unobserved_gap_duration_s": 0.0,
+        "episodes_per_observed_minute": 19.186070526785194,
+        "local_confirmation_frames": []
+      },
+      "after": {
+        "frames": 345,
+        "status_frames": {
+          "candidate": 2,
+          "no_obstacle_observed": 302,
+          "unresolved_obstacle": 19,
+          "obstacle": 22
+        },
+        "alarm_frames": 22,
+        "alarm_episodes": 11,
+        "duration_s": 34.399956941604614,
+        "alarm_duration_s": 2.19991672039032,
+        "observed_duration_s": 34.399956941604614,
+        "unobserved_gap_duration_s": 0.0,
+        "episodes_per_observed_minute": 19.186070526785194,
+        "local_confirmation_frames": []
+      },
+      "component_geometry_or_identity_changed_frames": [],
+      "measurement_changed_frames": [],
+      "geometry_motion_pose_changed_frames": [],
+      "added_alarm_frames": [],
+      "person": []
+    },
+    "roundT_doubleT": {
+      "before": {
+        "frames": 252,
+        "status_frames": {
+          "no_obstacle_observed": 234,
+          "unresolved_obstacle": 14,
+          "obstacle": 4
+        },
+        "alarm_frames": 4,
+        "alarm_episodes": 4,
+        "duration_s": 25.099918007850647,
+        "alarm_duration_s": 0.3999999761581421,
+        "observed_duration_s": 25.099918007850647,
+        "unobserved_gap_duration_s": 0.0,
+        "episodes_per_observed_minute": 9.561784222758568,
+        "local_confirmation_frames": []
+      },
+      "after": {
+        "frames": 252,
+        "status_frames": {
+          "no_obstacle_observed": 234,
+          "unresolved_obstacle": 14,
+          "obstacle": 4
+        },
+        "alarm_frames": 4,
+        "alarm_episodes": 4,
+        "duration_s": 25.099918007850647,
+        "alarm_duration_s": 0.3999999761581421,
+        "observed_duration_s": 25.099918007850647,
+        "unobserved_gap_duration_s": 0.0,
+        "episodes_per_observed_minute": 9.561784222758568,
+        "local_confirmation_frames": []
+      },
+      "component_geometry_or_identity_changed_frames": [],
+      "measurement_changed_frames": [],
+      "geometry_motion_pose_changed_frames": [],
+      "added_alarm_frames": [],
+      "person": []
+    },
+    "roundT_pressureGate_roundT": {
+      "before": {
+        "frames": 268,
+        "status_frames": {
+          "no_obstacle_observed": 253,
+          "unknown": 2,
+          "unresolved_obstacle": 9,
+          "obstacle": 1,
+          "candidate": 3
+        },
+        "alarm_frames": 1,
+        "alarm_episodes": 1,
+        "duration_s": 26.69998800754547,
+        "alarm_duration_s": 0.10000109672546387,
+        "observed_duration_s": 26.69998800754547,
+        "unobserved_gap_duration_s": 0.0,
+        "episodes_per_observed_minute": 2.247192020574836,
+        "local_confirmation_frames": []
+      },
+      "after": {
+        "frames": 268,
+        "status_frames": {
+          "no_obstacle_observed": 253,
+          "unknown": 2,
+          "unresolved_obstacle": 9,
+          "obstacle": 1,
+          "candidate": 3
+        },
+        "alarm_frames": 1,
+        "alarm_episodes": 1,
+        "duration_s": 26.69998800754547,
+        "alarm_duration_s": 0.10000109672546387,
+        "observed_duration_s": 26.69998800754547,
+        "unobserved_gap_duration_s": 0.0,
+        "episodes_per_observed_minute": 2.247192020574836,
+        "local_confirmation_frames": []
+      },
+      "component_geometry_or_identity_changed_frames": [],
+      "measurement_changed_frames": [],
+      "geometry_motion_pose_changed_frames": [],
+      "added_alarm_frames": [],
+      "person": []
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "before": {
+        "frames": 545,
+        "status_frames": {
+          "no_obstacle_observed": 530,
+          "candidate": 3,
+          "unresolved_obstacle": 3,
+          "obstacle": 9
+        },
+        "alarm_frames": 9,
+        "alarm_episodes": 9,
+        "duration_s": 55.39988994598389,
+        "alarm_duration_s": 0.8999890089035034,
+        "observed_duration_s": 54.299948930740356,
+        "unobserved_gap_duration_s": 1.0999410152435303,
+        "episodes_per_observed_minute": 9.94476073428302,
+        "local_confirmation_frames": []
+      },
+      "after": {
+        "frames": 545,
+        "status_frames": {
+          "no_obstacle_observed": 530,
+          "candidate": 3,
+          "unresolved_obstacle": 3,
+          "obstacle": 9
+        },
+        "alarm_frames": 9,
+        "alarm_episodes": 9,
+        "duration_s": 55.39988994598389,
+        "alarm_duration_s": 0.8999890089035034,
+        "observed_duration_s": 54.299948930740356,
+        "unobserved_gap_duration_s": 1.0999410152435303,
+        "episodes_per_observed_minute": 9.94476073428302,
+        "local_confirmation_frames": []
+      },
+      "component_geometry_or_identity_changed_frames": [],
+      "measurement_changed_frames": [],
+      "geometry_motion_pose_changed_frames": [],
+      "added_alarm_frames": [],
+      "person": []
+    },
+    "squareT_platform_squareT_switch": {
+      "before": {
+        "frames": 877,
+        "status_frames": {
+          "no_obstacle_observed": 872,
+          "candidate": 2,
+          "unresolved_obstacle": 3
+        },
+        "alarm_frames": 0,
+        "alarm_episodes": 0,
+        "duration_s": 88.20011305809021,
+        "alarm_duration_s": 0.0,
+        "observed_duration_s": 87.50002002716064,
+        "unobserved_gap_duration_s": 0.7000930309295654,
+        "episodes_per_observed_minute": 0.0,
+        "local_confirmation_frames": []
+      },
+      "after": {
+        "frames": 877,
+        "status_frames": {
+          "no_obstacle_observed": 872,
+          "candidate": 2,
+          "unresolved_obstacle": 3
+        },
+        "alarm_frames": 0,
+        "alarm_episodes": 0,
+        "duration_s": 88.20011305809021,
+        "alarm_duration_s": 0.0,
+        "observed_duration_s": 87.50002002716064,
+        "unobserved_gap_duration_s": 0.7000930309295654,
+        "episodes_per_observed_minute": 0.0,
+        "local_confirmation_frames": []
+      },
+      "component_geometry_or_identity_changed_frames": [],
+      "measurement_changed_frames": [],
+      "geometry_motion_pose_changed_frames": [],
+      "added_alarm_frames": [],
+      "person": []
+    },
+    "new_data_0": {
+      "before": {
+        "frames": 51,
+        "status_frames": {
+          "no_obstacle_observed": 51
+        },
+        "alarm_frames": 0,
+        "alarm_episodes": 0,
+        "duration_s": 5.000063061714172,
+        "alarm_duration_s": 0.0,
+        "observed_duration_s": 5.000063061714172,
+        "unobserved_gap_duration_s": 0.0,
+        "episodes_per_observed_minute": 0.0,
+        "local_confirmation_frames": []
+      },
+      "after": {
+        "frames": 51,
+        "status_frames": {
+          "no_obstacle_observed": 51
+        },
+        "alarm_frames": 0,
+        "alarm_episodes": 0,
+        "duration_s": 5.000063061714172,
+        "alarm_duration_s": 0.0,
+        "observed_duration_s": 5.000063061714172,
+        "unobserved_gap_duration_s": 0.0,
+        "episodes_per_observed_minute": 0.0,
+        "local_confirmation_frames": []
+      },
+      "component_geometry_or_identity_changed_frames": [],
+      "measurement_changed_frames": [],
+      "geometry_motion_pose_changed_frames": [],
+      "added_alarm_frames": [],
+      "person": []
+    },
+    "new_data_100": {
+      "before": {
+        "frames": 51,
+        "status_frames": {
+          "no_obstacle_observed": 48,
+          "candidate": 3
+        },
+        "alarm_frames": 0,
+        "alarm_episodes": 0,
+        "duration_s": 4.999898910522461,
+        "alarm_duration_s": 0.0,
+        "observed_duration_s": 4.999898910522461,
+        "unobserved_gap_duration_s": 0.0,
+        "episodes_per_observed_minute": 0.0,
+        "local_confirmation_frames": []
+      },
+      "after": {
+        "frames": 51,
+        "status_frames": {
+          "no_obstacle_observed": 48,
+          "candidate": 3
+        },
+        "alarm_frames": 0,
+        "alarm_episodes": 0,
+        "duration_s": 4.999898910522461,
+        "alarm_duration_s": 0.0,
+        "observed_duration_s": 4.999898910522461,
+        "unobserved_gap_duration_s": 0.0,
+        "episodes_per_observed_minute": 0.0,
+        "local_confirmation_frames": []
+      },
+      "component_geometry_or_identity_changed_frames": [],
+      "measurement_changed_frames": [],
+      "geometry_motion_pose_changed_frames": [],
+      "added_alarm_frames": [],
+      "person": []
+    },
+    "new_data_200": {
+      "before": {
+        "frames": 51,
+        "status_frames": {
+          "no_obstacle_observed": 45,
+          "candidate": 1,
+          "unresolved_obstacle": 4,
+          "unknown": 1
+        },
+        "alarm_frames": 0,
+        "alarm_episodes": 0,
+        "duration_s": 8.90007495880127,
+        "alarm_duration_s": 0.0,
+        "observed_duration_s": 4.900085926055908,
+        "unobserved_gap_duration_s": 3.9999890327453613,
+        "episodes_per_observed_minute": 0.0,
+        "local_confirmation_frames": []
+      },
+      "after": {
+        "frames": 51,
+        "status_frames": {
+          "no_obstacle_observed": 45,
+          "candidate": 1,
+          "unresolved_obstacle": 4,
+          "unknown": 1
+        },
+        "alarm_frames": 0,
+        "alarm_episodes": 0,
+        "duration_s": 8.90007495880127,
+        "alarm_duration_s": 0.0,
+        "observed_duration_s": 4.900085926055908,
+        "unobserved_gap_duration_s": 3.9999890327453613,
+        "episodes_per_observed_minute": 0.0,
+        "local_confirmation_frames": []
+      },
+      "component_geometry_or_identity_changed_frames": [],
+      "measurement_changed_frames": [],
+      "geometry_motion_pose_changed_frames": [],
+      "added_alarm_frames": [],
+      "person": []
+    }
+  },
+  "synthetic": {
+    "before": {
+      "frames": 1510,
+      "status_frames": {
+        "no_obstacle_observed": 1110,
+        "obstacle": 282,
+        "unknown": 9,
+        "unresolved_obstacle": 39,
+        "candidate": 70
+      },
+      "alarm_frames": 282,
+      "alarm_episodes": 26,
+      "duration_s": 150.89994311332703,
+      "alarm_duration_s": 28.20015025138855,
+      "observed_duration_s": 150.89994311332703,
+      "unobserved_gap_duration_s": 0.0,
+      "episodes_per_observed_minute": 10.337976064235013,
+      "local_confirmation_frames": []
+    },
+    "after": {
+      "frames": 1510,
+      "status_frames": {
+        "no_obstacle_observed": 1110,
+        "obstacle": 299,
+        "unknown": 9,
+        "unresolved_obstacle": 39,
+        "candidate": 53
+      },
+      "alarm_frames": 299,
+      "alarm_episodes": 35,
+      "duration_s": 150.89994311332703,
+      "alarm_duration_s": 29.90009593963623,
+      "observed_duration_s": 150.89994311332703,
+      "unobserved_gap_duration_s": 0.0,
+      "episodes_per_observed_minute": 13.916506240316364,
+      "local_confirmation_frames": [
+        681,
+        711,
+        716,
+        717,
+        718,
+        719,
+        722,
+        728,
+        729,
+        730,
+        732,
+        734,
+        777,
+        794,
+        795,
+        796,
+        799
+      ]
+    },
+    "component_geometry_or_identity_changed_frames": [],
+    "measurement_changed_frames": [],
+    "geometry_motion_pose_changed_frames": [],
+    "added_alarm_frames": [
+      681,
+      711,
+      716,
+      717,
+      718,
+      719,
+      722,
+      728,
+      729,
+      730,
+      732,
+      734,
+      777,
+      794,
+      795,
+      796,
+      799
+    ],
+    "person": []
+  },
+  "events": [
+    {
+      "event": 1,
+      "description": "посередине габарита крупный, 2х2 метра",
+      "before": {
+        "sampled_frames": 232,
+        "majority_component_frames": 226,
+        "mixed_component_frames": 4,
+        "majority_relations": {
+          "adjacent": 151,
+          "intersecting": 75,
+          "unknown": 1
+        },
+        "reported_frames": 226,
+        "first_reported": {
+          "frame": 0,
+          "source_forward_m": 98.69306945800781,
+          "object_distance_m": 98.26268005371094,
+          "relation": "adjacent"
+        },
+        "presence_frames": 226,
+        "first_presence": {
+          "frame": 0,
+          "source_forward_m": 98.69306945800781,
+          "object_distance_m": 98.26268005371094,
+          "relation": "adjacent"
+        },
+        "intersection_frames": 75,
+        "first_intersection": {
+          "frame": 144,
+          "source_forward_m": 64.73154067993164,
+          "object_distance_m": 64.7269287109375,
+          "relation": "intersecting"
+        }
+      },
+      "after_confirmed": [
+        {
+          "frame": 144,
+          "forward_m": 64.73154067993164,
+          "distance_m": 64.7269287109375,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 149,
+          "forward_m": 62.17768096923828,
+          "distance_m": 62.17210388183594,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 151,
+          "forward_m": 61.121856689453125,
+          "distance_m": 61.116729736328125,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 152,
+          "forward_m": 60.591012954711914,
+          "distance_m": 60.58600997924805,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 154,
+          "forward_m": 59.501922607421875,
+          "distance_m": 59.49724578857422,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 155,
+          "forward_m": 58.94289779663086,
+          "distance_m": 58.93833541870117,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 156,
+          "forward_m": 58.383819580078125,
+          "distance_m": 58.37922668457031,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 157,
+          "forward_m": 57.816694259643555,
+          "distance_m": 57.811946868896484,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 158,
+          "forward_m": 57.249563217163086,
+          "distance_m": 57.244606018066406,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 159,
+          "forward_m": 56.67046928405762,
+          "distance_m": 56.665374755859375,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 160,
+          "forward_m": 56.09102821350098,
+          "distance_m": 56.08541488647461,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 161,
+          "forward_m": 55.507999420166016,
+          "distance_m": 55.50232696533203,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 162,
+          "forward_m": 54.91900062561035,
+          "distance_m": 54.913333892822266,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 163,
+          "forward_m": 54.32499122619629,
+          "distance_m": 54.319427490234375,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 164,
+          "forward_m": 53.725027084350586,
+          "distance_m": 53.7195930480957,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 165,
+          "forward_m": 53.11900329589844,
+          "distance_m": 53.113685607910156,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 166,
+          "forward_m": 52.506988525390625,
+          "distance_m": 52.50175094604492,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 167,
+          "forward_m": 51.884145736694336,
+          "distance_m": 51.87870407104492,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 168,
+          "forward_m": 51.26115798950195,
+          "distance_m": 51.25577926635742,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 169,
+          "forward_m": 50.629173278808594,
+          "distance_m": 50.62378692626953,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 170,
+          "forward_m": 49.99720001220703,
+          "distance_m": 49.99181365966797,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 171,
+          "forward_m": 49.35302734375,
+          "distance_m": 49.34747314453125,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 172,
+          "forward_m": 48.70895767211914,
+          "distance_m": 48.703365325927734,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 173,
+          "forward_m": 48.05807876586914,
+          "distance_m": 48.052616119384766,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 174,
+          "forward_m": 47.40117645263672,
+          "distance_m": 47.395965576171875,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 175,
+          "forward_m": 46.738521575927734,
+          "distance_m": 46.7334098815918,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 176,
+          "forward_m": 46.07568359375,
+          "distance_m": 46.07073211669922,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 177,
+          "forward_m": 45.399728775024414,
+          "distance_m": 45.39498519897461,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 178,
+          "forward_m": 44.723690032958984,
+          "distance_m": 44.71907043457031,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 179,
+          "forward_m": 44.036739349365234,
+          "distance_m": 44.03240203857422,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 180,
+          "forward_m": 43.34483337402344,
+          "distance_m": 43.34072494506836,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 181,
+          "forward_m": 42.64303779602051,
+          "distance_m": 42.638938903808594,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 182,
+          "forward_m": 41.94096755981445,
+          "distance_m": 41.936851501464844,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 183,
+          "forward_m": 41.227989196777344,
+          "distance_m": 41.22380447387695,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 184,
+          "forward_m": 40.51514434814453,
+          "distance_m": 40.510807037353516,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 185,
+          "forward_m": 39.79216194152832,
+          "distance_m": 39.78765869140625,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 186,
+          "forward_m": 39.069095611572266,
+          "distance_m": 39.06428909301758,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 187,
+          "forward_m": 38.34200477600098,
+          "distance_m": 38.337196350097656,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 188,
+          "forward_m": 37.61456489562988,
+          "distance_m": 37.60913848876953,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 189,
+          "forward_m": 36.87033653259277,
+          "distance_m": 36.864688873291016,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 190,
+          "forward_m": 36.12604522705078,
+          "distance_m": 36.12040710449219,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 191,
+          "forward_m": 35.3649787902832,
+          "distance_m": 35.358856201171875,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 192,
+          "forward_m": 34.600629806518555,
+          "distance_m": 34.59434127807617,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 193,
+          "forward_m": 33.82476806640625,
+          "distance_m": 33.8183708190918,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 194,
+          "forward_m": 33.04868125915527,
+          "distance_m": 33.04252624511719,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 195,
+          "forward_m": 32.26456260681152,
+          "distance_m": 32.258148193359375,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 196,
+          "forward_m": 31.473583221435547,
+          "distance_m": 31.467912673950195,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 197,
+          "forward_m": 30.670872688293457,
+          "distance_m": 30.664997100830078,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 198,
+          "forward_m": 29.867721557617188,
+          "distance_m": 29.862058639526367,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 199,
+          "forward_m": 29.06181526184082,
+          "distance_m": 29.056657791137695,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 200,
+          "forward_m": 28.2558536529541,
+          "distance_m": 28.25103759765625,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 201,
+          "forward_m": 27.4417781829834,
+          "distance_m": 27.436931610107422,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 202,
+          "forward_m": 26.61986255645752,
+          "distance_m": 26.615203857421875,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 203,
+          "forward_m": 25.780935287475586,
+          "distance_m": 25.776464462280273,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 204,
+          "forward_m": 24.941944122314453,
+          "distance_m": 24.93736457824707,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 205,
+          "forward_m": 24.09605312347412,
+          "distance_m": 24.091659545898438,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 206,
+          "forward_m": 23.245159149169922,
+          "distance_m": 23.24081802368164,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 207,
+          "forward_m": 22.389299392700195,
+          "distance_m": 22.385168075561523,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 208,
+          "forward_m": 21.533451080322266,
+          "distance_m": 21.529560089111328,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 209,
+          "forward_m": 20.659777641296387,
+          "distance_m": 20.656095504760742,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 210,
+          "forward_m": 19.786017417907715,
+          "distance_m": 19.782548904418945,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 211,
+          "forward_m": 18.89724349975586,
+          "distance_m": 18.893848419189453,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 212,
+          "forward_m": 18.008405685424805,
+          "distance_m": 18.004976272583008,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 213,
+          "forward_m": 17.113454818725586,
+          "distance_m": 17.110061645507812,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 214,
+          "forward_m": 16.21332550048828,
+          "distance_m": 16.209735870361328,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 215,
+          "forward_m": 15.304106712341309,
+          "distance_m": 15.300386428833008,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 216,
+          "forward_m": 14.394728183746338,
+          "distance_m": 14.390832901000977,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 217,
+          "forward_m": 13.48254680633545,
+          "distance_m": 13.478631973266602,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 218,
+          "forward_m": 12.564440727233887,
+          "distance_m": 12.560766220092773,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 219,
+          "forward_m": 11.636456966400146,
+          "distance_m": 11.632688522338867,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 220,
+          "forward_m": 10.700576782226562,
+          "distance_m": 10.697012901306152,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 221,
+          "forward_m": 9.759770393371582,
+          "distance_m": 9.756392478942871,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 222,
+          "forward_m": 8.813895225524902,
+          "distance_m": 8.810789108276367,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 223,
+          "forward_m": 7.863076686859131,
+          "distance_m": 7.860109329223633,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 224,
+          "forward_m": 6.906064987182617,
+          "distance_m": 6.903051376342773,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        }
+      ],
+      "after_local": [],
+      "has_consecutive_confirmations": true,
+      "after_confirmed_frames": 75
+    },
+    {
+      "event": 2,
+      "description": "посередине габарита мелкий 0.3х0.3 м",
+      "before": {
+        "sampled_frames": 185,
+        "majority_component_frames": 51,
+        "mixed_component_frames": 0,
+        "majority_relations": {
+          "adjacent": 18,
+          "intersecting": 38
+        },
+        "reported_frames": 51,
+        "first_reported": {
+          "frame": 308,
+          "source_forward_m": 102.64607238769531,
+          "object_distance_m": 102.54829406738281,
+          "relation": "adjacent"
+        },
+        "presence_frames": 51,
+        "first_presence": {
+          "frame": 308,
+          "source_forward_m": 102.64607238769531,
+          "object_distance_m": 102.54829406738281,
+          "relation": "adjacent"
+        },
+        "intersection_frames": 32,
+        "first_intersection": {
+          "frame": 336,
+          "source_forward_m": 57.50846290588379,
+          "object_distance_m": 57.49298858642578,
+          "relation": "intersecting"
+        }
+      },
+      "after_confirmed": [
+        {
+          "frame": 336,
+          "forward_m": 57.50846290588379,
+          "distance_m": 57.49298858642578,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 337,
+          "forward_m": 55.86233901977539,
+          "distance_m": 55.83749008178711,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 338,
+          "forward_m": 54.18248748779297,
+          "distance_m": 54.162353515625,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 339,
+          "forward_m": 52.532344818115234,
+          "distance_m": 52.50332260131836,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 340,
+          "forward_m": 50.84575271606445,
+          "distance_m": 50.81745910644531,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 341,
+          "forward_m": 49.170236587524414,
+          "distance_m": 49.151668548583984,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 342,
+          "forward_m": 47.50876235961914,
+          "distance_m": 47.4818000793457,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 343,
+          "forward_m": 45.827186584472656,
+          "distance_m": 45.80091857910156,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 344,
+          "forward_m": 44.162559509277344,
+          "distance_m": 44.136985778808594,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 345,
+          "forward_m": 42.47881317138672,
+          "distance_m": 42.45397186279297,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 346,
+          "forward_m": 40.810224533081055,
+          "distance_m": 40.77804183959961,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 347,
+          "forward_m": 39.109622955322266,
+          "distance_m": 39.08268737792969,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 348,
+          "forward_m": 37.43824577331543,
+          "distance_m": 37.404605865478516,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 349,
+          "forward_m": 35.733097076416016,
+          "distance_m": 35.70343017578125,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 350,
+          "forward_m": 34.05016899108887,
+          "distance_m": 34.01896667480469,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 351,
+          "forward_m": 32.34979248046875,
+          "distance_m": 32.319923400878906,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 352,
+          "forward_m": 30.666797637939453,
+          "distance_m": 30.638172149658203,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 353,
+          "forward_m": 28.964787483215332,
+          "distance_m": 28.93120765686035,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 354,
+          "forward_m": 28.964787483215332,
+          "distance_m": 28.93120765686035,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 355,
+          "forward_m": 25.570087432861328,
+          "distance_m": 25.5307559967041,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 356,
+          "forward_m": 23.870515823364258,
+          "distance_m": 23.837482452392578,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 357,
+          "forward_m": 22.170143127441406,
+          "distance_m": 22.129253387451172,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 358,
+          "forward_m": 20.46331787109375,
+          "distance_m": 20.427804946899414,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 360,
+          "forward_m": 17.057161331176758,
+          "distance_m": 17.01338768005371,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 361,
+          "forward_m": 15.345680236816406,
+          "distance_m": 15.307963371276855,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 362,
+          "forward_m": 13.638488292694092,
+          "distance_m": 13.59682846069336,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 363,
+          "forward_m": 13.638488292694092,
+          "distance_m": 13.59682846069336,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 364,
+          "forward_m": 10.212752342224121,
+          "distance_m": 10.175077438354492,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 365,
+          "forward_m": 8.49512004852295,
+          "distance_m": 8.459437370300293,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 366,
+          "forward_m": 8.49512004852295,
+          "distance_m": 8.459437370300293,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 367,
+          "forward_m": 5.044145107269287,
+          "distance_m": 4.99878454208374,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 368,
+          "forward_m": 3.316788911819458,
+          "distance_m": 3.272427797317505,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        }
+      ],
+      "after_local": [],
+      "has_consecutive_confirmations": true,
+      "after_confirmed_frames": 32
+    },
+    {
+      "event": 3,
+      "description": "мелкий 0.3х0.3 м стоит на рельсах",
+      "before": {
+        "sampled_frames": 109,
+        "majority_component_frames": 36,
+        "mixed_component_frames": 9,
+        "majority_relations": {
+          "adjacent": 10,
+          "intersecting": 31
+        },
+        "reported_frames": 36,
+        "first_reported": {
+          "frame": 381,
+          "source_forward_m": 81.37056732177734,
+          "object_distance_m": 81.34967803955078,
+          "relation": "adjacent"
+        },
+        "presence_frames": 35,
+        "first_presence": {
+          "frame": 381,
+          "source_forward_m": 81.37056732177734,
+          "object_distance_m": 81.34967803955078,
+          "relation": "adjacent"
+        },
+        "intersection_frames": 21,
+        "first_intersection": {
+          "frame": 393,
+          "source_forward_m": 60.333438873291016,
+          "object_distance_m": 60.31340026855469,
+          "relation": "intersecting"
+        }
+      },
+      "after_confirmed": [
+        {
+          "frame": 393,
+          "forward_m": 60.333438873291016,
+          "distance_m": 60.31340026855469,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 394,
+          "forward_m": 58.5855712890625,
+          "distance_m": 58.56624984741211,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 395,
+          "forward_m": 56.851314544677734,
+          "distance_m": 56.81411361694336,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 396,
+          "forward_m": 55.04605674743652,
+          "distance_m": 55.028175354003906,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 397,
+          "forward_m": 53.306196212768555,
+          "distance_m": 53.27243423461914,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 398,
+          "forward_m": 51.51787185668945,
+          "distance_m": 51.491455078125,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 399,
+          "forward_m": 49.74115180969238,
+          "distance_m": 49.724971771240234,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 401,
+          "forward_m": 46.20743179321289,
+          "distance_m": 46.17823028564453,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 402,
+          "forward_m": 44.448726654052734,
+          "distance_m": 44.42070388793945,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 403,
+          "forward_m": 42.698076248168945,
+          "distance_m": 42.657989501953125,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 404,
+          "forward_m": 40.930397033691406,
+          "distance_m": 40.89213943481445,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 406,
+          "forward_m": 37.352638244628906,
+          "distance_m": 37.328731536865234,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 409,
+          "forward_m": 32.01171112060547,
+          "distance_m": 31.981185913085938,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 413,
+          "forward_m": 24.867013931274414,
+          "distance_m": 24.841169357299805,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 415,
+          "forward_m": 21.299046516418457,
+          "distance_m": 21.2652530670166,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 417,
+          "forward_m": 17.698959350585938,
+          "distance_m": 17.664827346801758,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 421,
+          "forward_m": 10.511016845703125,
+          "distance_m": 10.471664428710938,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 422,
+          "forward_m": 8.726004123687744,
+          "distance_m": 8.908452987670898,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 423,
+          "forward_m": 6.916929244995117,
+          "distance_m": 6.87427282333374,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 424,
+          "forward_m": 5.115009307861328,
+          "distance_m": 5.083495616912842,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 425,
+          "forward_m": 3.299986720085144,
+          "distance_m": 3.2696597576141357,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        }
+      ],
+      "after_local": [],
+      "has_consecutive_confirmations": true,
+      "after_confirmed_frames": 21
+    },
+    {
+      "event": 4,
+      "description": "0.3х0.3 м скраю габарита",
+      "before": {
+        "sampled_frames": 97,
+        "majority_component_frames": 44,
+        "mixed_component_frames": 0,
+        "majority_relations": {
+          "adjacent": 13,
+          "intersecting": 38,
+          "unresolved": 2
+        },
+        "reported_frames": 44,
+        "first_reported": {
+          "frame": 415,
+          "source_forward_m": 120.78521347045898,
+          "object_distance_m": 120.72926330566406,
+          "relation": "adjacent"
+        },
+        "presence_frames": 43,
+        "first_presence": {
+          "frame": 435,
+          "source_forward_m": 84.80479431152344,
+          "object_distance_m": 84.56903076171875,
+          "relation": "adjacent"
+        },
+        "intersection_frames": 29,
+        "first_intersection": {
+          "frame": 450,
+          "source_forward_m": 57.141136169433594,
+          "object_distance_m": 57.140140533447266,
+          "relation": "intersecting"
+        }
+      },
+      "after_confirmed": [
+        {
+          "frame": 450,
+          "forward_m": 57.141136169433594,
+          "distance_m": 57.140140533447266,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 451,
+          "forward_m": 55.29946708679199,
+          "distance_m": 55.265350341796875,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 452,
+          "forward_m": 53.46122932434082,
+          "distance_m": 53.460723876953125,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 453,
+          "forward_m": 51.594215393066406,
+          "distance_m": 51.59217834472656,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 454,
+          "forward_m": 49.750736236572266,
+          "distance_m": 49.76530838012695,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 455,
+          "forward_m": 47.9112434387207,
+          "distance_m": 47.91220474243164,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 456,
+          "forward_m": 46.08768081665039,
+          "distance_m": 46.057804107666016,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 457,
+          "forward_m": 44.23070526123047,
+          "distance_m": 44.202476501464844,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 458,
+          "forward_m": 42.41116905212402,
+          "distance_m": 42.37046432495117,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 459,
+          "forward_m": 40.556640625,
+          "distance_m": 40.530555725097656,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 460,
+          "forward_m": 38.69134521484375,
+          "distance_m": 38.666507720947266,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 461,
+          "forward_m": 36.86302947998047,
+          "distance_m": 36.827518463134766,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 462,
+          "forward_m": 35.0001335144043,
+          "distance_m": 34.966373443603516,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 463,
+          "forward_m": 33.1492919921875,
+          "distance_m": 33.12664794921875,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 464,
+          "forward_m": 31.29837989807129,
+          "distance_m": 31.268117904663086,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 465,
+          "forward_m": 29.449464797973633,
+          "distance_m": 29.41184425354004,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 466,
+          "forward_m": 27.59197998046875,
+          "distance_m": 27.556612014770508,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 467,
+          "forward_m": 25.73378562927246,
+          "distance_m": 25.70089340209961,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 468,
+          "forward_m": 23.859980583190918,
+          "distance_m": 23.843843460083008,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 470,
+          "forward_m": 20.14485740661621,
+          "distance_m": 20.10627555847168,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 471,
+          "forward_m": 18.281864166259766,
+          "distance_m": 18.246652603149414,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 472,
+          "forward_m": 16.414648056030273,
+          "distance_m": 16.382484436035156,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 473,
+          "forward_m": 14.559454917907715,
+          "distance_m": 14.522335052490234,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 474,
+          "forward_m": 12.68920373916626,
+          "distance_m": 12.65285873413086,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 475,
+          "forward_m": 10.827282428741455,
+          "distance_m": 10.793328285217285,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 476,
+          "forward_m": 8.959975242614746,
+          "distance_m": 8.928550720214844,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 477,
+          "forward_m": 7.097120761871338,
+          "distance_m": 7.065702438354492,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 478,
+          "forward_m": 5.227210998535156,
+          "distance_m": 5.195901870727539,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 479,
+          "forward_m": 3.353787064552307,
+          "distance_m": 3.322894811630249,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        }
+      ],
+      "after_local": [],
+      "has_consecutive_confirmations": true,
+      "after_confirmed_frames": 29
+    },
+    {
+      "event": 5,
+      "description": "0.3х0.3 м за пределами габарита, но близко",
+      "before": {
+        "sampled_frames": 117,
+        "majority_component_frames": 41,
+        "mixed_component_frames": 0,
+        "majority_relations": {
+          "adjacent": 9,
+          "intersecting": 37
+        },
+        "reported_frames": 41,
+        "first_reported": {
+          "frame": 484,
+          "source_forward_m": 93.8915023803711,
+          "object_distance_m": 93.86569213867188,
+          "relation": "adjacent"
+        },
+        "presence_frames": 41,
+        "first_presence": {
+          "frame": 484,
+          "source_forward_m": 93.8915023803711,
+          "object_distance_m": 93.86569213867188,
+          "relation": "adjacent"
+        },
+        "intersection_frames": 31,
+        "first_intersection": {
+          "frame": 502,
+          "source_forward_m": 59.815555572509766,
+          "object_distance_m": 59.796119689941406,
+          "relation": "intersecting"
+        }
+      },
+      "after_confirmed": [
+        {
+          "frame": 502,
+          "forward_m": 59.815555572509766,
+          "distance_m": 59.796119689941406,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 503,
+          "forward_m": 57.90268516540527,
+          "distance_m": 57.8838996887207,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 504,
+          "forward_m": 56.04100227355957,
+          "distance_m": 56.00492858886719,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 505,
+          "forward_m": 54.11452293395996,
+          "distance_m": 54.079681396484375,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 506,
+          "forward_m": 52.175716400146484,
+          "distance_m": 52.158756256103516,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 507,
+          "forward_m": 50.295480728149414,
+          "distance_m": 50.26314926147461,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 508,
+          "forward_m": 48.36790657043457,
+          "distance_m": 48.33683395385742,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 509,
+          "forward_m": 46.473196029663086,
+          "distance_m": 46.44331359863281,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 510,
+          "forward_m": 44.5574836730957,
+          "distance_m": 44.51400375366211,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 511,
+          "forward_m": 42.62051010131836,
+          "distance_m": 42.59250259399414,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 512,
+          "forward_m": 40.71360206604004,
+          "distance_m": 40.68682861328125,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 513,
+          "forward_m": 38.78122901916504,
+          "distance_m": 38.7557258605957,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 514,
+          "forward_m": 36.882545471191406,
+          "distance_m": 36.84648132324219,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 515,
+          "forward_m": 34.962812423706055,
+          "distance_m": 34.92864227294922,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 516,
+          "forward_m": 33.02792930603027,
+          "distance_m": 33.01399612426758,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 517,
+          "forward_m": 31.112330436706543,
+          "distance_m": 31.35555648803711,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 518,
+          "forward_m": 29.187554359436035,
+          "distance_m": 29.14961814880371,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 519,
+          "forward_m": 27.25897979736328,
+          "distance_m": 27.22325325012207,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 520,
+          "forward_m": 25.332523345947266,
+          "distance_m": 25.310575485229492,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 521,
+          "forward_m": 23.412510871887207,
+          "distance_m": 23.37412452697754,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 522,
+          "forward_m": 21.48941993713379,
+          "distance_m": 21.447179794311523,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 523,
+          "forward_m": 19.553502082824707,
+          "distance_m": 19.508716583251953,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 524,
+          "forward_m": 17.61610507965088,
+          "distance_m": 17.582502365112305,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 525,
+          "forward_m": 15.685444831848145,
+          "distance_m": 15.644244194030762,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 526,
+          "forward_m": 13.758277893066406,
+          "distance_m": 13.712807655334473,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 527,
+          "forward_m": 11.819879531860352,
+          "distance_m": 11.780265808105469,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 528,
+          "forward_m": 9.879237174987793,
+          "distance_m": 9.845688819885254,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 529,
+          "forward_m": 7.936816453933716,
+          "distance_m": 7.896068572998047,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 530,
+          "forward_m": 5.995405197143555,
+          "distance_m": 5.960890769958496,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 531,
+          "forward_m": 4.056581974029541,
+          "distance_m": 4.012190341949463,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 532,
+          "forward_m": 4.056581974029541,
+          "distance_m": 4.012190341949463,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        }
+      ],
+      "after_local": [],
+      "has_consecutive_confirmations": true,
+      "after_confirmed_frames": 31
+    },
+    {
+      "event": 6,
+      "description": "2х2 метра скраю в пределах габарита",
+      "before": {
+        "sampled_frames": 157,
+        "majority_component_frames": 107,
+        "mixed_component_frames": 7,
+        "majority_relations": {
+          "adjacent": 155,
+          "unresolved": 6,
+          "intersecting": 23
+        },
+        "reported_frames": 107,
+        "first_reported": {
+          "frame": 470,
+          "source_forward_m": 219.17904663085938,
+          "object_distance_m": 218.90255737304688,
+          "relation": "adjacent"
+        },
+        "presence_frames": 106,
+        "first_presence": {
+          "frame": 471,
+          "source_forward_m": 217.33583068847656,
+          "object_distance_m": 217.0574951171875,
+          "relation": "adjacent"
+        },
+        "intersection_frames": 18,
+        "first_intersection": {
+          "frame": 559,
+          "source_forward_m": 48.31601142883301,
+          "object_distance_m": 48.51374816894531,
+          "relation": "intersecting"
+        }
+      },
+      "after_confirmed": [
+        {
+          "frame": 559,
+          "forward_m": 48.31601142883301,
+          "distance_m": 48.51374816894531,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 560,
+          "forward_m": 46.33501434326172,
+          "distance_m": 46.50931167602539,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 561,
+          "forward_m": 44.340993881225586,
+          "distance_m": 44.5323600769043,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 562,
+          "forward_m": 42.36013984680176,
+          "distance_m": 42.53190612792969,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 563,
+          "forward_m": 40.40652847290039,
+          "distance_m": 40.53853988647461,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 564,
+          "forward_m": 38.39472198486328,
+          "distance_m": 38.56582260131836,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 565,
+          "forward_m": 36.4151554107666,
+          "distance_m": 36.573516845703125,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 566,
+          "forward_m": 34.42866897583008,
+          "distance_m": 34.580326080322266,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 567,
+          "forward_m": 32.442169189453125,
+          "distance_m": 32.586483001708984,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 568,
+          "forward_m": 30.44270610809326,
+          "distance_m": 30.592931747436523,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 569,
+          "forward_m": 28.461576461791992,
+          "distance_m": 28.603261947631836,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 570,
+          "forward_m": 28.461576461791992,
+          "distance_m": 28.607568740844727,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 571,
+          "forward_m": 24.482086181640625,
+          "distance_m": 24.633731842041016,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 572,
+          "forward_m": 22.481706619262695,
+          "distance_m": 22.635757446289062,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 573,
+          "forward_m": 20.495893478393555,
+          "distance_m": 20.637693405151367,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 574,
+          "forward_m": 18.503256797790527,
+          "distance_m": 18.643430709838867,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 582,
+          "forward_m": 2.5582189559936523,
+          "distance_m": 2.6495487689971924,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 583,
+          "forward_m": 0.7143460512161255,
+          "distance_m": 2.0105130672454834,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        }
+      ],
+      "after_local": [],
+      "has_consecutive_confirmations": true,
+      "after_confirmed_frames": 18
+    },
+    {
+      "event": 7,
+      "description": "2х2 за пределами габарита",
+      "before": {
+        "sampled_frames": 153,
+        "majority_component_frames": 104,
+        "mixed_component_frames": 7,
+        "majority_relations": {
+          "adjacent": 197,
+          "unresolved": 16,
+          "intersecting": 75
+        },
+        "reported_frames": 104,
+        "first_reported": {
+          "frame": 524,
+          "source_forward_m": 218.81092834472656,
+          "object_distance_m": 218.5991973876953,
+          "relation": "adjacent"
+        },
+        "presence_frames": 103,
+        "first_presence": {
+          "frame": 525,
+          "source_forward_m": 216.9359359741211,
+          "object_distance_m": 216.656982421875,
+          "relation": "adjacent"
+        },
+        "intersection_frames": 22,
+        "first_intersection": {
+          "frame": 606,
+          "source_forward_m": 56.35098648071289,
+          "object_distance_m": 57.587947845458984,
+          "relation": "intersecting"
+        }
+      },
+      "after_confirmed": [
+        {
+          "frame": 606,
+          "forward_m": 56.35098648071289,
+          "distance_m": 57.587947845458984,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 607,
+          "forward_m": 54.31794357299805,
+          "distance_m": 55.12836837768555,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 608,
+          "forward_m": 52.298770904541016,
+          "distance_m": 53.29092788696289,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 609,
+          "forward_m": 50.25593185424805,
+          "distance_m": 51.51007843017578,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 610,
+          "forward_m": 48.25934982299805,
+          "distance_m": 49.26122283935547,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 611,
+          "forward_m": 46.234031677246094,
+          "distance_m": 47.02436447143555,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 612,
+          "forward_m": 44.197486877441406,
+          "distance_m": 44.47234344482422,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 613,
+          "forward_m": 42.18229675292969,
+          "distance_m": 42.60179901123047,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 614,
+          "forward_m": 40.134483337402344,
+          "distance_m": 40.46519088745117,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 615,
+          "forward_m": 38.0942497253418,
+          "distance_m": 38.423274993896484,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 616,
+          "forward_m": 36.06838035583496,
+          "distance_m": 36.37714767456055,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 617,
+          "forward_m": 34.04414939880371,
+          "distance_m": 34.584712982177734,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 618,
+          "forward_m": 32.02833557128906,
+          "distance_m": 32.53901290893555,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 619,
+          "forward_m": 30.001028060913086,
+          "distance_m": 30.3604736328125,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 620,
+          "forward_m": 27.985767364501953,
+          "distance_m": 28.57115936279297,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 621,
+          "forward_m": 25.95634651184082,
+          "distance_m": 26.503028869628906,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 622,
+          "forward_m": 23.930360794067383,
+          "distance_m": 24.57170867919922,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 623,
+          "forward_m": 21.899836540222168,
+          "distance_m": 22.6130313873291,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 624,
+          "forward_m": 19.88346290588379,
+          "distance_m": 20.528682708740234,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 625,
+          "forward_m": 17.86061668395996,
+          "distance_m": 18.53070831298828,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 626,
+          "forward_m": 15.846955299377441,
+          "distance_m": 16.514202117919922,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 633,
+          "forward_m": 1.8436768054962158,
+          "distance_m": 2.7068140506744385,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        }
+      ],
+      "after_local": [],
+      "has_consecutive_confirmations": true,
+      "after_confirmed_frames": 22
+    },
+    {
+      "event": 8,
+      "description": "2х2 сверху габарита",
+      "before": {
+        "sampled_frames": 149,
+        "majority_component_frames": 108,
+        "mixed_component_frames": 6,
+        "majority_relations": {
+          "adjacent": 138,
+          "intersecting": 215,
+          "unresolved": 9
+        },
+        "reported_frames": 108,
+        "first_reported": {
+          "frame": 574,
+          "source_forward_m": 218.5424041748047,
+          "object_distance_m": 218.3313446044922,
+          "relation": "adjacent"
+        },
+        "presence_frames": 98,
+        "first_presence": {
+          "frame": 575,
+          "source_forward_m": 216.4998321533203,
+          "object_distance_m": 216.3578338623047,
+          "relation": "adjacent"
+        },
+        "intersection_frames": 32,
+        "first_intersection": {
+          "frame": 649,
+          "source_forward_m": 67.66785430908203,
+          "object_distance_m": 67.40531921386719,
+          "relation": "intersecting"
+        }
+      },
+      "after_confirmed": [
+        {
+          "frame": 649,
+          "forward_m": 67.66785430908203,
+          "distance_m": 67.40531921386719,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 650,
+          "forward_m": 65.70371627807617,
+          "distance_m": 65.45056915283203,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 651,
+          "forward_m": 63.75318908691406,
+          "distance_m": 63.50558853149414,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 652,
+          "forward_m": 61.851104736328125,
+          "distance_m": 61.53511428833008,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 653,
+          "forward_m": 59.91404724121094,
+          "distance_m": 59.60723114013672,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 654,
+          "forward_m": 57.97429084777832,
+          "distance_m": 57.685997009277344,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 655,
+          "forward_m": 56.05306625366211,
+          "distance_m": 55.72859191894531,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 656,
+          "forward_m": 54.16133117675781,
+          "distance_m": 53.813716888427734,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 657,
+          "forward_m": 52.236019134521484,
+          "distance_m": 51.90065002441406,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 658,
+          "forward_m": 50.308387756347656,
+          "distance_m": 49.98567581176758,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 659,
+          "forward_m": 48.389892578125,
+          "distance_m": 48.08074188232422,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 660,
+          "forward_m": 46.44373321533203,
+          "distance_m": 46.17688751220703,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 661,
+          "forward_m": 44.54342460632324,
+          "distance_m": 44.28791809082031,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 662,
+          "forward_m": 42.70194625854492,
+          "distance_m": 42.402618408203125,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 663,
+          "forward_m": 40.823286056518555,
+          "distance_m": 40.5113525390625,
+          "methods": [
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 664,
+          "forward_m": 38.90636444091797,
+          "distance_m": 38.64571762084961,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 665,
+          "forward_m": 37.03205871582031,
+          "distance_m": 36.772586822509766,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 666,
+          "forward_m": 35.235469818115234,
+          "distance_m": 34.92097854614258,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 667,
+          "forward_m": 33.352622985839844,
+          "distance_m": 33.07722854614258,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 668,
+          "forward_m": 31.47686767578125,
+          "distance_m": 31.21670150756836,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 669,
+          "forward_m": 29.687246322631836,
+          "distance_m": 29.384986877441406,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 670,
+          "forward_m": 27.82558822631836,
+          "distance_m": 27.54191017150879,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 671,
+          "forward_m": 25.99915313720703,
+          "distance_m": 25.701261520385742,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 672,
+          "forward_m": 24.13724708557129,
+          "distance_m": 23.875221252441406,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 673,
+          "forward_m": 22.3295955657959,
+          "distance_m": 22.044231414794922,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 674,
+          "forward_m": 20.50963592529297,
+          "distance_m": 20.224958419799805,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 675,
+          "forward_m": 18.69186019897461,
+          "distance_m": 18.408594131469727,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 676,
+          "forward_m": 16.887250900268555,
+          "distance_m": 16.597898483276367,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 677,
+          "forward_m": 15.084420680999756,
+          "distance_m": 14.797417640686035,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 678,
+          "forward_m": 13.306046962738037,
+          "distance_m": 13.016755104064941,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 679,
+          "forward_m": 11.524151802062988,
+          "distance_m": 11.214211463928223,
+          "methods": [
+            "immediate_interior_geometry",
+            "temporal_interior_evidence"
+          ]
+        },
+        {
+          "frame": 680,
+          "forward_m": 9.784972190856934,
+          "distance_m": 9.425307273864746,
+          "methods": [
+            "immediate_interior_geometry"
+          ]
+        },
+        {
+          "frame": 681,
+          "forward_m": 8.258644104003906,
+          "distance_m": 8.111003875732422,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        }
+      ],
+      "after_local": [
+        681
+      ],
+      "has_consecutive_confirmations": true,
+      "after_confirmed_frames": 33
+    },
+    {
+      "event": 9,
+      "description": "длинный низкий предмет лежит на рельсах (2х0.2)",
+      "before": {
+        "sampled_frames": 127,
+        "majority_component_frames": 67,
+        "mixed_component_frames": 1,
+        "majority_relations": {
+          "adjacent": 33,
+          "intersecting": 41,
+          "unresolved": 1
+        },
+        "reported_frames": 67,
+        "first_reported": {
+          "frame": 624,
+          "source_forward_m": 218.2803497314453,
+          "object_distance_m": 218.14060974121094,
+          "relation": "adjacent"
+        },
+        "presence_frames": 2,
+        "first_presence": {
+          "frame": 626,
+          "source_forward_m": 214.2925796508789,
+          "object_distance_m": 214.08712768554688,
+          "relation": "adjacent"
+        },
+        "intersection_frames": 0,
+        "first_intersection": null
+      },
+      "after_confirmed": [
+        {
+          "frame": 711,
+          "forward_m": 57.16234016418457,
+          "distance_m": 57.052703857421875,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 716,
+          "forward_m": 48.91110610961914,
+          "distance_m": 48.70616912841797,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 717,
+          "forward_m": 47.25607109069824,
+          "distance_m": 47.02744674682617,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 718,
+          "forward_m": 45.58016395568848,
+          "distance_m": 45.3745002746582,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 719,
+          "forward_m": 43.960947036743164,
+          "distance_m": 43.72076416015625,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 722,
+          "forward_m": 38.94430732727051,
+          "distance_m": 38.74534606933594,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 728,
+          "forward_m": 29.079358100891113,
+          "distance_m": 28.865327835083008,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 729,
+          "forward_m": 27.473764419555664,
+          "distance_m": 27.228044509887695,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 730,
+          "forward_m": 25.795961380004883,
+          "distance_m": 25.582656860351562,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 732,
+          "forward_m": 22.541672706604004,
+          "distance_m": 22.311479568481445,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 734,
+          "forward_m": 19.2685546875,
+          "distance_m": 19.046611785888672,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        }
+      ],
+      "after_local": [
+        711,
+        716,
+        717,
+        718,
+        719,
+        722,
+        728,
+        729,
+        730,
+        732,
+        734
+      ],
+      "has_consecutive_confirmations": true,
+      "after_confirmed_frames": 11
+    },
+    {
+      "event": 10,
+      "description": "узкий длинный свисает с потолка (ширина 0.05 м)",
+      "before": {
+        "sampled_frames": 46,
+        "majority_component_frames": 29,
+        "mixed_component_frames": 1,
+        "majority_relations": {
+          "adjacent": 7,
+          "intersecting": 23
+        },
+        "reported_frames": 29,
+        "first_reported": {
+          "frame": 713,
+          "source_forward_m": 153.94197845458984,
+          "object_distance_m": 153.94122314453125,
+          "relation": "adjacent"
+        },
+        "presence_frames": 0,
+        "first_presence": null,
+        "intersection_frames": 0,
+        "first_intersection": null
+      },
+      "after_confirmed": [
+        {
+          "frame": 777,
+          "forward_m": 49.827972412109375,
+          "distance_m": 49.82712173461914,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 794,
+          "forward_m": 21.812381744384766,
+          "distance_m": 21.812286376953125,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 795,
+          "forward_m": 20.142669677734375,
+          "distance_m": 20.13179588317871,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 796,
+          "forward_m": 18.472421646118164,
+          "distance_m": 18.461963653564453,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        },
+        {
+          "frame": 799,
+          "forward_m": 13.443693161010742,
+          "distance_m": 13.442170143127441,
+          "methods": [
+            "sensor_frame_shape_recurrence"
+          ]
+        }
+      ],
+      "after_local": [
+        777,
+        794,
+        795,
+        796,
+        799
+      ],
+      "has_consecutive_confirmations": true,
+      "after_confirmed_frames": 5
+    }
+  ],
+  "criteria": {
+    "negative_nonincrease": true,
+    "person_preserved": true,
+    "both_difficult_synthetic_events": true,
+    "previous_positive_retention": true,
+    "upstream_geometry_and_identity_unchanged": true
+  },
+  "initial_gate_passed": true,
+  "promotion": "Eligible for further full-corpus evaluation, not automatically promoted",
+  "limits": [
+    "Initial2641-real-frame subset, not full20-minute corpus.",
+    "Synthetic membership reused only after unchanged component geometry/identity and timestamps; segmentation inputs/config unchanged.",
+    "Organizer synthetic labels remain forensic reconstruction, not field ground truth.",
+    "Confirmed frame intervals are operational alarm episodes, not independent physical obstacle events."
+  ]
+}

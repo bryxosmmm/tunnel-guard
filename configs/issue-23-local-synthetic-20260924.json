@@ -1,0 +1,37 @@
+{
+  "hypothesis": "Current-scan shape recurrence without rejected pose accumulation recovers both low and thin inserted obstacles without hiding original detector state.",
+  "criterion": "Exact-provenance events9 and10 must each be confirmed on at least2 consecutive acquisitions; retain other positive events; independently inspect outside-contour disagreement.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-local-evidence-20260924.json",
+  "output": "build/issue-23-local-synthetic-20260924",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [
+    200,
+    350,
+    410,
+    460,
+    520,
+    570,
+    620,
+    670,
+    730,
+    790,
+    800
+  ],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/cloud_with_fake_obj",
+      "topic": "/lidar_points",
+      "split": "organizer_synthetic_first_inspection_not_field_evaluation"
+    }
+  ],
+  "data_source": "https://disk.yandex.ru/d/KpkG_yKoGk-vHQ",
+  "limitations": [
+    "Organizer descriptions give order and approximate 100 m spacing, not timestamped boxes or full 3D dimensions.",
+    "Only XYZI fields are present; no ring or per-point acquisition time.",
+    "Record time and acquisition time use different epochs; their difference is not sensor latency."
+  ]
+}

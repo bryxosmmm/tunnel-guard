@@ -1,0 +1,30 @@
+{
+  "before_real": "build/geometry-independent-full-20260923",
+  "after_real": "build/issue-23-local-real-20260924",
+  "before_synthetic": "build/organizer-synthetic-full-20260924",
+  "after_synthetic": "build/issue-23-local-synthetic-20260924",
+  "source_provenance_report": "results/organizer-synthetic-exact-20260924.json",
+  "output": "results/issue-23-local-evidence-20260924.json",
+  "bags": [
+    "doubleT_obstacle",
+    "doubleT_platform",
+    "roundT_doubleT",
+    "roundT_pressureGate_roundT",
+    "roundT_squareT_pressureGate_squareT",
+    "squareT_platform_squareT_switch",
+    "new_data_0",
+    "new_data_100",
+    "new_data_200"
+  ],
+  "person": {
+    "bag": "doubleT_obstacle",
+    "frames": [
+      165,
+      200
+    ],
+    "baseline_track_id": 2535,
+    "provenance": "Author-reviewed target support from results/person-specific-20260923.json; identity reuse requires unchanged per-frame component geometry."
+  },
+  "frame_max_gap_s": 0.5,
+  "hypothesis_plan": "configs/issue-23-local-evidence-plan-20260924.json"
+}

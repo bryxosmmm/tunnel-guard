@@ -1,0 +1,29 @@
+{
+  "runs": {
+    "baseline": {
+      "frames": 11271,
+      "wall_s": 2757.8136039170204,
+      "processing_ms": {
+        "p50": 211.67537500150502,
+        "p95": 420.3790625324473,
+        "p99": 560.2683668956156
+      },
+      "process_peak_rss_bytes": 1025015808,
+      "prediction_bytes": 1531198979
+    },
+    "local": {
+      "frames": 11271,
+      "wall_s": 6006.883555333014,
+      "processing_ms": {
+        "p50": 311.25575001351535,
+        "p95": 1543.5577084426768,
+        "p99": 2209.0782412793483
+      },
+      "process_peak_rss_bytes": 1218527232,
+      "prediction_bytes": 1544419365
+    }
+  },
+  "scope": "Observed sequential offline macOS runs, not a controlled performance benchmark. Inference timings include OS scheduling. No profiling evidence isolates the cause of the runtime difference. Neither replay demonstrates 10Hz real-time operation.",
+  "compression": "gzip level1; complete prediction records retained. Result serialization/compression is outside processing_s and included in offline wall time.",
+  "interrupted_attempt": "results/issue-23-continuous-interrupted-20260924.json"
+}

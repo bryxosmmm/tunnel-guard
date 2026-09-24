@@ -1,0 +1,9 @@
+{
+  "before": "build/issue-23-continuous-baseline-retry-20260924",
+  "after": "build/issue-23-continuous-local-20260924",
+  "panel_manifest": "configs/readiness-real-panel-20260924.json",
+  "frame_max_gap_s": 0.5,
+  "output": "results/issue-23-continuous-20260924.json",
+  "acceptance": "Require complete identical acquisition coverage and unchanged component geometry, identity, pose and motion. Confirmed-alarm frames, alarm episodes and unknown frames must not increase for full corpus or either predeclared partition. No default promotion solely from an empty-corpus pass.",
+  "temporal_protocol": "One uninterrupted detector per variant; no reset at database or development/evaluation boundaries. Metrics sliced by original record timestamps. Partition episodes restart at partition boundaries and are not additive."
+}

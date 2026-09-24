@@ -1,0 +1,53 @@
+{
+  "hypothesis": "Reject the local-evidence change if any fixed negative recording gains confirmed alarm episodes or frames; preserve person presence and geometry.",
+  "criterion": "Acceptance is defined before evaluation in configs/issue-23-local-evidence-plan-20260924.json.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-local-evidence-20260924.json",
+  "output": "build/issue-23-local-real-20260924",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [
+    181
+  ],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+      "split": "development"
+    },
+    {
+      "path": "data/extended_subset/new_data_0",
+      "split": "development_extended_segment_not_independent_pass"
+    },
+    {
+      "path": "data/extended_subset/new_data_100",
+      "split": "development_extended_segment_not_independent_pass"
+    },
+    {
+      "path": "data/extended_subset/new_data_200",
+      "split": "development_extended_segment_not_independent_pass"
+    }
+  ],
+  "source_base": "e89d510"
+}

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter
+import gzip
 import hashlib
 import importlib.metadata
 import json
@@ -123,6 +124,9 @@ def main():
     config = load_config(config_path)
     if experiment["seed"] != config["seed"]:
         raise ValueError("Experiment and detector seed disagree")
+    compression = experiment.get("result_compression", "none")
+    if compression not in ("none", "gzip"):
+        raise ValueError("result_compression must be 'none' or 'gzip'")
     for entry in experiment["bags"]:
         if not (Path(entry["path"]) / "metadata.yaml").is_file():
             raise FileNotFoundError(f"ROS bag metadata missing: {entry['path']}/metadata.yaml")
@@ -172,7 +176,10 @@ def main():
         visual = (ResultBag(output / f"{bag.name}_rviz", config,
                             experiment.get("display_max_points", 100000))
                   if experiment.get("visualization", False) else nullcontext())
-        with (output / f"{bag.name}.jsonl").open("x") as stream, visual as display, \
+        result_path = output / f"{bag.name}.jsonl"
+        result_stream = (gzip.open(result_path.with_suffix(".jsonl.gz"), "xt", compresslevel=1)
+                         if compression == "gzip" else result_path.open("x"))
+        with result_stream as stream, visual as display, \
                 (output / f"{bag.name}-timing.jsonl").open("x") as timing_stream:
             while True:
                 frame_start = time.perf_counter()

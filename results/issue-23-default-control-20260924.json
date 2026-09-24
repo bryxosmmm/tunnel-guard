@@ -1,0 +1,13 @@
+{
+  "frames": 30,
+  "differences": [],
+  "before": "build/geometry-independent-full-20260923",
+  "after": "build/issue-23-default-smoke-20260924",
+  "fields": [
+    "status",
+    "objects",
+    "geometry",
+    "motion",
+    "pose"
+  ]
+}

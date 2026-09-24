@@ -1,0 +1,13 @@
+{
+  "hypothesis": "Independent measured-scan replay reproduces saved within-scan geometry and candidate support without needing temporal state.",
+  "criterion": "Require exact equality of geometry and per-component measured fields against the continuous baseline; reject support mapping for any mismatch. Fresh-state track IDs, poses and temporal confirmations are not replay-equivalent and must not be substituted.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "bag": "data/extended_full/new_data",
+  "reference_jsonl": "build/issue23-point-support-20260924/reference.jsonl",
+  "repetitions": 1,
+  "frames": [
+    5300
+  ],
+  "output": "build/issue23-point-support-smoke-20260924"
+}
