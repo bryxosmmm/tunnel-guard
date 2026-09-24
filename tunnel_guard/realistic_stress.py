@@ -252,13 +252,83 @@ def insert(pattern: dict, target_world: dict | None, pose: np.ndarray, rng: np.r
             "labelled_points": points[labelled]}
 
 
-def cases(config: dict):
-    """Every case places one object on the corridor, or none for a scene-negative."""
-    yield {"range_m": None, "lateral_m": None, "dimensions_m": None}
-    for distance, lateral, dims in itertools.product(config["ranges_m"], config["lateral_m"],
-                                                     config["object_dimensions_m"]):
-        yield {"range_m": distance, "lateral_m": lateral, "dimensions_m": dims,
-               "hazard": abs(lateral) < config["rail_gauge_m"] / 2}
+def contour_width_over_height(low: float, high: float, config: dict) -> float:
+    """Largest configured reference-contour half-width touched by a box height interval.
+
+    This is only geometry of the selected reference contour, not a vehicle swept
+    envelope or a field collision label. Its extrema are at the endpoints of
+    the overlapping piecewise-linear segments.
+    """
+    widths = []
+    for bottom, top, start, end in np.asarray(config["envelope_segments_m"], dtype=float):
+        left, right = max(low, bottom), min(high, top)
+        if left > right:
+            continue
+        for height in (left, right):
+            widths.append(float(start + (end - start) * (height - bottom) / (top - bottom)))
+    return max(widths) if widths else 0.0
+
+
+def contour_intersects(lateral_m: float, dimensions_m: tuple[float, float, float] | list[float],
+                       reference_config: dict, rest_height_m: float) -> bool:
+    """Whether the injected full box intersects the selected reference contour.
+
+    The previous panel used half the rail gauge as a proxy. That is narrower
+    than the configured contour and labels true edge cases as adjacent.
+    """
+    _, lateral_size, vertical_size = map(float, dimensions_m)
+    low = float(rest_height_m)
+    width = contour_width_over_height(low, low + vertical_size, reference_config)
+    nearest_lateral = max(0.0, abs(float(lateral_m)) - lateral_size / 2.0)
+    return bool(nearest_lateral <= width)
+
+
+def contour_laterals(dimensions_m: tuple[float, float, float] | list[float], scenario_config: dict,
+                     reference_config: dict, rest_height_m: float):
+    """Resolve frozen inside/edge/adjacent modes against the configured contour.
+
+    Existing recipes retain their literal ``lateral_m`` values. New recipes may
+    use modes so changing dimensions cannot silently make an edge panel empty.
+    """
+    modes = scenario_config.get("contour_lateral_modes")
+    if modes is None:
+        for lateral in scenario_config["lateral_m"]:
+            yield float(lateral), "explicit_lateral"
+        return
+    low = float(rest_height_m)
+    width = contour_width_over_height(low, low + float(dimensions_m[2]), reference_config)
+    half = float(dimensions_m[1]) / 2.0
+    overlap = float(scenario_config.get("contour_edge_overlap_m", 0.05))
+    clearance = float(scenario_config.get("contour_adjacent_clearance_m", 0.05))
+    for mode in modes:
+        if mode == "inside":
+            magnitude = 0.0
+        elif mode == "edge":
+            magnitude = width + half - overlap
+        elif mode == "adjacent":
+            magnitude = width + half + clearance
+        else:
+            raise ValueError(f"Unknown contour lateral mode: {mode}")
+        for side in scenario_config.get("contour_lateral_sides", [1.0]):
+            if float(side) not in (-1.0, 1.0):
+                raise ValueError("contour_lateral_sides must contain only -1 or 1")
+            yield float(side) * magnitude, mode
+
+
+def cases(config: dict, reference_config: dict | None = None):
+    """Every case records object presence and contour intersection separately."""
+    yield {"range_m": None, "lateral_m": None, "dimensions_m": None,
+           "object_present": False, "reference_contour_intersects": False,
+           "lateral_mode": "background"}
+    reference_config = config if reference_config is None else reference_config
+    heights = config.get("object_rest_heights_m", [config["object_rest_height_m"]])
+    for distance, dims, rest_height in itertools.product(config["ranges_m"], config["object_dimensions_m"], heights):
+        for lateral, mode in contour_laterals(dims, config, reference_config, float(rest_height)):
+            yield {"range_m": distance, "lateral_m": lateral, "dimensions_m": dims,
+                   "rest_height_m": float(rest_height), "object_present": True,
+                   "reference_contour_intersects": contour_intersects(
+                       lateral, dims, reference_config, float(rest_height)),
+                   "lateral_mode": mode}
 
 
 def load_poses(run: Path, bag: str) -> dict:
@@ -311,7 +381,7 @@ def run_case(case: dict, stress: dict, detector_config: dict, index: int, source
     rng = np.random.default_rng(np.random.SeedSequence([stress["seed"], index]))
     detector = Detector(detector_config)
     target = world_target(case, sources[0]["pose"], sources[0]["geometry"],
-                          stress["object_rest_height_m"])  # placed once, on the track
+                          case.get("rest_height_m", stress["object_rest_height_m"]))  # placed once, on the track
     if target is None and case.get("range_m") is not None:
         # No floor was observed at that station, so the object cannot be placed on the track there.
         # Reporting it as an unsupported case keeps a placement failure out of the miss count.
@@ -335,23 +405,28 @@ def run_case(case: dict, stress: dict, detector_config: dict, index: int, source
         if recorded is not None:
             inserted.append({"case": index, "frame": position, "points": recorded.tolist()})
         truth = []
-        if case.get("hazard", False):
-            if recorded is not None:
-                low = recorded.min(axis=0)
-                high = np.maximum(recorded.max(axis=0), low + 1e-3)
-                truth = [{"event_id": "inserted_object", "bbox_min": low.tolist(),
-                          "bbox_max": high.tolist()}]
-            else:
-                # Present in the world but not measured in this frame: a miss.
-                rotation = pose[:3, :3]
-                middle = (np.asarray(target["bbox_min"]) + np.asarray(target["bbox_max"])) / 2 - pose[:3, 3]
-                centre = rotation.T @ middle
-                half = np.abs(rotation.T @ (np.asarray(target["bbox_max"]) - np.asarray(target["bbox_min"]))) / 2
-                truth = [{"event_id": "inserted_object", "bbox_min": (centre - half).tolist(),
-                          "bbox_max": (centre + half).tolist()}]
+        observed_support_intersects = False
+        if recorded is not None:
+            # Ask the same current-frame classifier about the support actually
+            # created by the insertion. A full form can touch the contour while
+            # all its measured returns stay outside it; that is observability,
+            # not a detector miss.
+            support_masks, _ = source["geometry"].classify_with_section(
+                recorded, remove_background=False, include_boundary=True)
+            observed_support_intersects = bool(np.any(support_masks[4]))
+        if case["reference_contour_intersects"] and observed_support_intersects:
+            low = recorded.min(axis=0)
+            high = np.maximum(recorded.max(axis=0), low + 1e-3)
+            truth = [{"event_id": "inserted_object", "bbox_min": low.tolist(),
+                      "bbox_max": high.tolist()}]
         labels.append({"bag": row["bag"], "frame": position, "exhaustive": False, "objects": truth})
         statistics.append({"case": index, "frame": position, "range_m": case["range_m"],
                            "lateral_m": case["lateral_m"], "dimensions_m": case["dimensions_m"],
+                           "rest_height_m": case.get("rest_height_m"),
+                           "lateral_mode": case["lateral_mode"],
+                           "object_present": case["object_present"],
+                           "full_shape_reference_contour_intersects": case["reference_contour_intersects"],
+                           "observed_support_reference_contour_intersects": observed_support_intersects,
                            "rays_hitting_object": merged["rays_hitting_object"],
                            "returns_from_object": merged["returns_from_object"],
                            "detections": len(row["objects"]), "status": row["status"],
@@ -406,6 +481,7 @@ def main():
                {"background_bag": str(bag), "recorded_frames": profile,
                 "object_range_noise_m": stress["object_range_noise_m"],
                 "object_rest_height_m": stress["object_rest_height_m"],
+                "object_rest_heights_m": stress.get("object_rest_heights_m", [stress["object_rest_height_m"]]),
                 "empty_slots_return_object": bool(stress.get("empty_slots_return_object", False)),
                 "longest_demonstrated_range_m": float(max(np.max(s["pattern"]["ranges"]) for s in sources)),
                 "object_intensity": stress["object_intensity"]})
@@ -413,7 +489,7 @@ def main():
     unsupported_cases = []
     started = time.perf_counter()
     with (output / "predictions.jsonl").open("x") as stream:
-        for index, case in enumerate(cases(stress)):
+        for index, case in enumerate(cases(stress, detector_config)):
             rows, labels, statistics, inserted, supported = run_case(case, stress, detector_config,
                                                                      index, sources)
             if not supported:
@@ -437,7 +513,7 @@ def main():
     panel = {"label_status": "synthetic_exact", "prediction_scope": "collision_hazards",
              "minimum_iou": stress["minimum_iou"], "box_semantics": "observed_support", "frames": annotations}
     score = evaluate_frames(predictions, panel)
-    score.update(cases=sum(1 for _ in cases(stress)), frames_per_case=len(sources), background=str(bag),
+    score.update(cases=sum(1 for _ in cases(stress, detector_config)), frames_per_case=len(sources), background=str(bag),
                  elapsed_s=time.perf_counter() - started)
     write_json(output / "cases.json", records)
     write_json(output / "annotations.json", panel)
