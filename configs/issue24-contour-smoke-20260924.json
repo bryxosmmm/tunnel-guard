@@ -1,0 +1,35 @@
+{
+  "hypothesis": "Objects inserted into one frozen real scan retain full-form, observed-support and selected-reference-contour provenance. Edge labels use the configured contour rather than half the rail gauge.",
+  "criterion": "The smoke panel must contain nonzero full-form and observed-support contour intersections for inside and edge modes, adjacent cases, and explicit no-return/support-outside outcomes when they occur. It is a generator/label audit, not recall or field-range evidence.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/issue24-contour-smoke-retry2-20260924",
+  "background_bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+  "pose_run": "build/issue24-source-poses-smoke-retry1-20260924",
+  "source_frames": 1,
+  "frame_start": 40,
+  "frame_stride": 1,
+  "ranges_m": [20.0, 40.0],
+  "contour_lateral_modes": ["inside", "edge", "adjacent"],
+  "contour_lateral_sides": [-1.0, 1.0],
+  "contour_edge_overlap_m": 0.05,
+  "contour_adjacent_clearance_m": 0.05,
+  "object_dimensions_m": [
+    [0.3, 0.3, 0.4],
+    [0.1, 0.1, 1.2],
+    [3.0, 0.4, 0.6]
+  ],
+  "object_rest_height_m": 0.05,
+  "object_rest_heights_m": [0.05, 1.9],
+  "rail_gauge_m": 1.52,
+  "object_range_noise_m": 0.02,
+  "object_intensity": 30.0,
+  "minimum_iou": 0.1,
+  "empty_slots_return_object": false,
+  "prior_attempts": [
+    "build/issue24-contour-smoke-20260924 stopped before any detector case with KeyError: envelope_segments_m. The scenario recipe incorrectly read reference geometry from itself instead of the loaded detector recipe; the failed directory is retained.",
+    "build/issue24-contour-smoke-retry1-20260924 was interrupted before it wrote a complete report after 213/219 prediction rows. It is retained but not used; retry2 reduces this label smoke to one real source frame."
+  ],
+  "sensor_model_limit": "One measured return slot may be replaced only when the inserted box is closer. Empty emissions stay empty; this pessimistic rule does not model Pandar128 reflectivity, multiple returns or calibrated intensity.",
+  "scope_limit": "The panel has low, thin and longitudinally long boxes at two heights. It does not establish a wall-attached object's physical contact with a measured tunnel surface, field recall, safe range or vehicle clearance."
+}
