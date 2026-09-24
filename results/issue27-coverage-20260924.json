@@ -1,0 +1,191 @@
+{
+ "date": "2026-09-24",
+ "issue": 27,
+ "branch": "experiments/dolgov",
+ "panel": "split per configs/readiness-real-panel-20260924.json (PR #29): segments 0-139 development, 140-220 frozen evaluation",
+ "reference_provenance": "Rail anchors and the certified horizon are the detector's own output on the same scan, not survey truth. This is a report of what a lateral reference is AVAILABLE from, by range and section type. It is not accuracy, and it is not detection range: no claim of detecting at 100/200/300 m follows from beam density or from the tunnel axis.",
+ "splits": {
+  "development": {
+   "sample": "segments 100-129, contiguous",
+   "frames": 1530,
+   "geometry_valid": 1530,
+   "geometry_valid_share": 1.0,
+   "last_rail_anchor_m": {
+    "p10": 35.0,
+    "p50": 35.0,
+    "p90": 40.0
+   },
+   "certified_corridor_horizon_m": {
+    "p10": 52.0,
+    "p50": 52.0,
+    "p90": 57.0
+   },
+   "by_section": {
+    "straight": {
+     "frames": 1133,
+     "share": 0.7405,
+     "last_rail_anchor_p50_m": 35.0,
+     "bore_available_by_range": {
+      "30": 1.0,
+      "40": 1.0,
+      "50": 1.0,
+      "60": 1.0,
+      "70": 0.993,
+      "80": 0.996,
+      "90": 0.992,
+      "100": 0.986,
+      "110": 0.974,
+      "120": 0.951
+     }
+    },
+    "anchor_chain_unstable": {
+     "frames": 327,
+     "share": 0.2137,
+     "last_rail_anchor_p50_m": 35.0,
+     "bore_available_by_range": {
+      "30": 1.0,
+      "40": 1.0,
+      "50": 1.0,
+      "60": 1.0,
+      "70": 1.0,
+      "80": 1.0,
+      "90": 0.997,
+      "100": 0.804,
+      "110": 0.483,
+      "120": 0.232
+     }
+    },
+    "curve_400_800m": {
+     "frames": 62,
+     "share": 0.0405,
+     "last_rail_anchor_p50_m": 35.0,
+     "bore_available_by_range": {
+      "30": 1.0,
+      "40": 1.0,
+      "50": 1.0,
+      "60": 1.0,
+      "70": 1.0,
+      "80": 1.0,
+      "90": 1.0,
+      "100": 1.0,
+      "110": 0.919,
+      "120": 0.468
+     }
+    },
+    "curve_under_400m": {
+     "frames": 8,
+     "share": 0.0052,
+     "last_rail_anchor_p50_m": 35.0,
+     "bore_available_by_range": {
+      "30": 1.0,
+      "40": 1.0,
+      "50": 1.0,
+      "60": 1.0,
+      "70": 1.0,
+      "80": 1.0,
+      "90": 1.0,
+      "100": 1.0,
+      "110": 0.5,
+      "120": 0.0
+     }
+    }
+   },
+   "intervals_without_geometry": []
+  },
+  "evaluation": {
+   "sample": "segments 140-220, every third",
+   "frames": 1581,
+   "geometry_valid": 1581,
+   "geometry_valid_share": 1.0,
+   "last_rail_anchor_m": {
+    "p10": 35.0,
+    "p50": 40.0,
+    "p90": 45.0
+   },
+   "certified_corridor_horizon_m": {
+    "p10": 52.0,
+    "p50": 57.0,
+    "p90": 62.0
+   },
+   "by_section": {
+    "straight": {
+     "frames": 1034,
+     "share": 0.654,
+     "last_rail_anchor_p50_m": 40.0,
+     "bore_available_by_range": {
+      "30": 1.0,
+      "40": 1.0,
+      "50": 1.0,
+      "60": 1.0,
+      "70": 0.991,
+      "80": 0.989,
+      "90": 0.971,
+      "100": 0.831,
+      "110": 0.574,
+      "120": 0.486
+     }
+    },
+    "anchor_chain_unstable": {
+     "frames": 477,
+     "share": 0.3017,
+     "last_rail_anchor_p50_m": 35.0,
+     "bore_available_by_range": {
+      "30": 1.0,
+      "40": 1.0,
+      "50": 1.0,
+      "60": 1.0,
+      "70": 1.0,
+      "80": 1.0,
+      "90": 0.973,
+      "100": 0.881,
+      "110": 0.346,
+      "120": 0.18
+     }
+    },
+    "curve_400_800m": {
+     "frames": 51,
+     "share": 0.0323,
+     "last_rail_anchor_p50_m": 35.0,
+     "bore_available_by_range": {
+      "30": 1.0,
+      "40": 1.0,
+      "50": 1.0,
+      "60": 1.0,
+      "70": 1.0,
+      "80": 1.0,
+      "90": 1.0,
+      "100": 1.0,
+      "110": 0.804,
+      "120": 0.569
+     }
+    },
+    "curve_under_400m": {
+     "frames": 19,
+     "share": 0.012,
+     "last_rail_anchor_p50_m": 30.0,
+     "bore_available_by_range": {
+      "30": 1.0,
+      "40": 1.0,
+      "50": 1.0,
+      "60": 1.0,
+      "70": 1.0,
+      "80": 1.0,
+      "90": 0.895,
+      "100": 0.842,
+      "110": 0.211,
+      "120": 0.105
+     }
+    }
+   },
+   "intervals_without_geometry": []
+  }
+ },
+ "findings": [
+  "Geometry is available in 100 per cent of frames on both splits: there are no intervals of geometry loss to timestamp on these stretches.",
+  "Rails are measured to a median 35 m (development) and 40 m (evaluation); the corridor the detector certifies reaches a median 52 m and 57 m.",
+  "The bore's symmetry axis is available in 97-99 per cent of frames out to 90 m, then falls: on the evaluation split 83 per cent at 100 m, 57 at 110, 49 at 120.",
+  "21 per cent of development frames and 30 per cent of evaluation frames have an anchor chain that does not fit its own quadratic within 5 cm. Those frames keep their rail support to the same median range, so the instability is lateral, not a loss of reach.",
+  "Curved frames are 5 per cent of development and 4 per cent of evaluation on these stretches, so a metric pooled over the panel will not show curve behaviour."
+ ],
+ "limits": "Availability is not accuracy. The anchors are detector output, so this bounds where a lateral reference can exist at all, not how well it locates the track. The evaluation split is sampled every third segment, so it covers the range of the route but not continuous travel. No obstacle is present in this recording per the organizer statement recorded in issue #21, so nothing here speaks to detection."
+}
