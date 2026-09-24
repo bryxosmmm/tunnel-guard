@@ -1,0 +1,22 @@
+{
+  "hypothesis": "Paired control for the boundary-object synthetic challenge.",
+  "success_criterion": {"minimum_iou": 0.1},
+  "seed": 20260915,
+  "detector_config": "build/issue23-development-diagnostics/detector.json",
+  "output": "build/issue23-hybrid-boundary-baseline",
+  "background_bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+  "pose_run": "build/perf-cpp-hardware-20260917",
+  "source_frames": 2,
+  "frame_start": 40,
+  "frame_stride": 1,
+  "ranges_m": [10.0, 20.0, 40.0, 60.0],
+  "lateral_m": [0.9, 1.1, 1.3, 1.45, 1.6],
+  "object_dimensions_m": [[0.3, 0.3, 0.4], [0.6, 0.6, 1.7]],
+  "rail_gauge_m": 1.52,
+  "rail_height_m": 0.2,
+  "object_rest_height_m": 0.05,
+  "object_range_noise_m": 0.02,
+  "object_intensity": 30.0,
+  "minimum_iou": 0.1,
+  "note": "HYBRID SYNTHETIC paired baseline for boundary challenge."
+}

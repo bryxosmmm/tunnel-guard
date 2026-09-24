@@ -1,0 +1,13 @@
+{
+  "hypothesis": "Surface attribution changes only interior collision support and leaves the single observed adjacent person localized and tracked in all 36 annotated frames.",
+  "criterion": "Person present in all 36 annotated frames, one track, adjacent relation preserved; report observed-support AABB separately from amodal annotation IoU.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-issue23-surface.json",
+  "output": "build/issue23-person-candidate",
+  "every": 1,
+  "max_frames": 201,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [181],
+  "visualization": false,
+  "bags": [{"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "positive_observation_nonexhaustive"}]
+}
