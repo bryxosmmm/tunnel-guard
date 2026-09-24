@@ -708,6 +708,16 @@ safety probability.
   waits for the scan ahead of it. `prefetch_depth: 0` restores inline reading. No measurement and no
   decision changes either way; measured evidence and the equivalence check are in
   `results/reader-overlap-20260919.json` (`configs/perf-prefetch-on.json`).
+- Large offline replays can set `"result_compression": "gzip"` in the experiment recipe.
+  The runner then writes complete prediction records to `<bag>.jsonl.gz` with gzip level 1;
+  timing telemetry stays in `<bag>-timing.jsonl`. The default `"none"` retains plain JSONL.
+  This only changes storage, not detector inputs or evidence. Compression cost is included
+  in result-write/offline timing, so do not compare it as inference latency.
+  The issue-23 continuous evaluator and `object_evidence_report` read either format.
+  Consumers requiring `<bag>.jsonl` (including the recorded-run viewer) need a decompressed
+  copy; they must not be pointed at a gzip-only run as though plain results were present.
+  Actual three-frame plain/gzip replays retained identical objects, geometry, motion,
+  poses and statuses: `results/issue-23-compression-control-20260924.json`.
 
 ## View actual results in RViz2
 

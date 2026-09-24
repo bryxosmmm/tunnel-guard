@@ -1,0 +1,20 @@
+{
+  "plain": "build/issue-23-plain-smoke-20260924",
+  "gzip": "build/issue-23-gzip-smoke-20260924",
+  "frames_each": [
+    3,
+    3
+  ],
+  "differences_by_field": {
+    "frame": 0,
+    "source_scan_id": 0,
+    "status": 0,
+    "objects": 0,
+    "geometry": 0,
+    "motion": 0,
+    "pose": 0,
+    "raw_points": 0,
+    "invalid_points": 0
+  },
+  "scope": "Actual same-input detector replays; timing fields intentionally not compared. Both full prediction streams decoded through EOF."
+}

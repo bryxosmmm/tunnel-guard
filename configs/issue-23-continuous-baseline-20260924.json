@@ -1,0 +1,21 @@
+{
+  "hypothesis": "Current-scan shape recurrence does not increase negative-corpus confirmed alarms or unknown coverage versus the unchanged default detector.",
+  "criterion": "11271 unique acquisitions in each run; identical acquisition order, geometry and motion; no increase in confirmed-intersection frames, contiguous episodes or unknown frames. Evaluate full sequence and fixed development/evaluation partitions separately; gaps >0.5s break episodes and are excluded from exposure. No claim of nuisance reduction on a tie.",
+  "seed": 20260915,
+  "source_base": "0cd9f79454fc642159b7393f4a51c792a1a0771b",
+  "panel_manifest": "configs/readiness-real-panel-20260924.json",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [],
+  "visualization": false,
+  "result_compression": "gzip",
+  "bags": [
+    {
+      "path": "data/extended_full/new_data",
+      "split": "continuous_fixed_development_and_evaluation_partitions"
+    }
+  ],
+  "detector_config": "configs/detector.json",
+  "output": "build/issue-23-continuous-baseline-20260924"
+}
