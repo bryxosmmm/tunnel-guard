@@ -1,0 +1,17 @@
+{
+  "input_plan": "configs/organizer-synthetic-inspection-20260924.json",
+  "inspection": "build/organizer-synthetic-inspection-20260924",
+  "run": "build/organizer-synthetic-exact-fixed-20260924",
+  "output": "results/organizer-synthetic-exact-20260924.json",
+  "close_seed_forward_m": 8.0,
+  "close_seed_group_gap_frames": 5,
+  "backward_tracking_history": 8,
+  "backward_tracking_max_gap_frames": 80,
+  "backward_tracking_max_residual_m": 15.0,
+  "initial_backward_speed_m_per_frame": 1.5,
+  "bbox_numeric_tolerance_m": 1e-05,
+  "minimum_inserted_fraction_for_attributed_component": 0.5,
+  "diagnostic_stride_frames": 1,
+  "matching_contract": "Full-frame bbox overlap is a provisional localization candidate, not proof of inserted support. Sampled diagnostics establish exact original-point membership via cluster_source_indices. Components with at least 50% inserted support are distinguished from mixed background components; this is an evaluation attribution rule, not a detector setting.",
+  "limits": "Forensic source-support reconstruction, not organizer-provided labels or field accuracy. Every frame with inferred insertions is inspected through original-point provenance. First detections are actual frame onsets under the stated majority attribution rule; mixed infrastructure components are reported separately. No tuning of detector configuration."
+}

@@ -1,0 +1,219 @@
+{
+  "decision": "The bag is usable as an organizer-synthetic diagnostic panel, but the unchanged detector does not pass all ten scenarios. No field recall is established.",
+  "full_replay": {
+    "frames": 1510,
+    "duration_s": 150.899942994,
+    "status_frames": {
+      "no_obstacle_observed": 1110,
+      "obstacle": 282,
+      "unknown": 9,
+      "unresolved_obstacle": 39,
+      "candidate": 70
+    },
+    "summary_path": "build/organizer-synthetic-full-20260924/summary.json"
+  },
+  "verification": {
+    "frames": 804,
+    "compared_fields": [
+      "status",
+      "objects",
+      "geometry",
+      "motion",
+      "pose"
+    ],
+    "differences": [],
+    "identical": true
+  },
+  "attribution": {
+    "method": "Forensic contiguous intensity=1 suffix after zero-return boundary, tracked by raw geometry and temporal continuity, then original-point indices through detector. All ten trajectories accounted for. No supplied per-point labels.",
+    "component_rule": "At least 50% inserted support for standalone attribution; mixed components retained separately.",
+    "coverage": "Every frame containing inferred insertions through frame 803, not just every tenth frame.",
+    "detector_unchanged": true
+  },
+  "events": [
+    {
+      "event": 1,
+      "description": "посередине габарита крупный, 2х2 метра",
+      "reported_frames": 226,
+      "presence_frames": 226,
+      "intersection_frames": 75,
+      "first_confirmed_intersection": {
+        "frame": 144,
+        "source_forward_m": 64.73154067993164,
+        "object_distance_m": 64.7269287109375,
+        "relation": "intersecting"
+      }
+    },
+    {
+      "event": 2,
+      "description": "посередине габарита мелкий 0.3х0.3 м",
+      "reported_frames": 51,
+      "presence_frames": 51,
+      "intersection_frames": 32,
+      "first_confirmed_intersection": {
+        "frame": 336,
+        "source_forward_m": 57.50846290588379,
+        "object_distance_m": 57.49298858642578,
+        "relation": "intersecting"
+      }
+    },
+    {
+      "event": 3,
+      "description": "мелкий 0.3х0.3 м стоит на рельсах",
+      "reported_frames": 36,
+      "presence_frames": 35,
+      "intersection_frames": 21,
+      "first_confirmed_intersection": {
+        "frame": 393,
+        "source_forward_m": 60.333438873291016,
+        "object_distance_m": 60.31340026855469,
+        "relation": "intersecting"
+      }
+    },
+    {
+      "event": 4,
+      "description": "0.3х0.3 м скраю габарита",
+      "reported_frames": 44,
+      "presence_frames": 43,
+      "intersection_frames": 29,
+      "first_confirmed_intersection": {
+        "frame": 450,
+        "source_forward_m": 57.141136169433594,
+        "object_distance_m": 57.140140533447266,
+        "relation": "intersecting"
+      }
+    },
+    {
+      "event": 5,
+      "description": "0.3х0.3 м за пределами габарита, но близко",
+      "reported_frames": 41,
+      "presence_frames": 41,
+      "intersection_frames": 31,
+      "first_confirmed_intersection": {
+        "frame": 502,
+        "source_forward_m": 59.815555572509766,
+        "object_distance_m": 59.796119689941406,
+        "relation": "intersecting"
+      }
+    },
+    {
+      "event": 6,
+      "description": "2х2 метра скраю в пределах габарита",
+      "reported_frames": 107,
+      "presence_frames": 106,
+      "intersection_frames": 18,
+      "first_confirmed_intersection": {
+        "frame": 559,
+        "source_forward_m": 48.31601142883301,
+        "object_distance_m": 48.51374816894531,
+        "relation": "intersecting"
+      }
+    },
+    {
+      "event": 7,
+      "description": "2х2 за пределами габарита",
+      "reported_frames": 104,
+      "presence_frames": 103,
+      "intersection_frames": 22,
+      "first_confirmed_intersection": {
+        "frame": 606,
+        "source_forward_m": 56.35098648071289,
+        "object_distance_m": 57.587947845458984,
+        "relation": "intersecting"
+      }
+    },
+    {
+      "event": 8,
+      "description": "2х2 сверху габарита",
+      "reported_frames": 108,
+      "presence_frames": 98,
+      "intersection_frames": 32,
+      "first_confirmed_intersection": {
+        "frame": 649,
+        "source_forward_m": 67.66785430908203,
+        "object_distance_m": 67.40531921386719,
+        "relation": "intersecting"
+      }
+    },
+    {
+      "event": 9,
+      "description": "длинный низкий предмет лежит на рельсах (2х0.2)",
+      "reported_frames": 67,
+      "presence_frames": 2,
+      "intersection_frames": 0,
+      "first_confirmed_intersection": null
+    },
+    {
+      "event": 10,
+      "description": "узкий длинный свисает с потолка (ширина 0.05 м)",
+      "reported_frames": 29,
+      "presence_frames": 0,
+      "intersection_frames": 0,
+      "first_confirmed_intersection": null
+    }
+  ],
+  "failures": {
+    "9": {
+      "reported_majority_frames": 67,
+      "motion_rejected_reported_frames": 63,
+      "intersecting_unconfirmed_frames": 36,
+      "motion_rejected_intersecting_frames": 35,
+      "max_observed_inserted_returns": 1972
+    },
+    "10": {
+      "reported_majority_frames": 29,
+      "motion_rejected_reported_frames": 29,
+      "intersecting_unconfirmed_frames": 22,
+      "motion_rejected_intersecting_frames": 22,
+      "max_observed_inserted_returns": 27
+    }
+  },
+  "contour_disagreement": {
+    "events": [
+      5,
+      7
+    ],
+    "observation": "Organizer-described outside objects produce confirmed intersection. At frame 520 event 5 has measured lateral support approximately -1.31 to -0.98 m, height 1.09 to 1.37 m above estimated railhead; this is inside the current reference contour. At frame 620 parts of event 7 also fall inside that contour.",
+    "current_contour": "GOST 23961-80 M reference, not independently calibrated to organizer synthetic envelope or actual swept vehicle envelope.",
+    "decision": "Report disagreement rather than silently shrink contour or declare proven false alarms. Need generator contour/frame/object placement, not more field data."
+  },
+  "negative_tail": {
+    "frames": 706,
+    "status_frames": {
+      "no_obstacle_observed": 682,
+      "unresolved_obstacle": 10,
+      "candidate": 8,
+      "obstacle": 4,
+      "unknown": 2
+    },
+    "intersection_alarm_frames": 4,
+    "validity": "No inferred appended points; not independently exhaustively reviewed real negatives."
+  },
+  "performance": {
+    "processing_ms": {
+      "p50": 270.4321874771267,
+      "p95": 526.0582999384495,
+      "p99": 603.3414732746315
+    },
+    "wall_s": 686.7723539160797,
+    "scope": "Apple M3 offline diagnostic run, every-tenth-frame full arrays and concurrent input inspection. Not target Intel or live ROS end-to-end latency."
+  },
+  "artifacts": {
+    "sampled_report": "results/organizer-synthetic-20260924.json",
+    "all_frame_provenance_report": "results/organizer-synthetic-exact-20260924.json",
+    "input_validation": "results/organizer-synthetic-input-20260924.json",
+    "figure": "results/organizer-synthetic-20260924.png",
+    "scripts": "build/organizer-synthetic-inspection-20260924"
+  },
+  "next_actions": [
+    "Resolve organizer contour and supplied object poses/labels; preserve the current baseline.",
+    "Investigate odometry-gated temporal confirmation for low/very thin obstacles: detected component is not the same as confirmed hazard.",
+    "Investigate merged infrastructure and intermittent decisions separately from source visibility."
+  ],
+  "limitations": [
+    "Synthetic organizer data, not field accuracy or hardware detection range.",
+    "First object already visible at bag start; its maximum acquisition distance cannot be measured here.",
+    "Archive has no generator or timestamped labels. Approximate object descriptions do not settle all boundary cases.",
+    "No detector thresholds, source code or native binary changed for this evaluation."
+  ]
+}

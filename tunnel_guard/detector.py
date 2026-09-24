@@ -379,6 +379,7 @@ class Detector:
     def _associate(self, objects: list[dict], pose: np.ndarray, stamp: float, motion: dict):
         cfg = self.config
         motion_valid = bool(motion["valid"])
+        local_config = cfg.get("local_confirmation")
         # A rejected registration used to clear every track. Measured, the rejection is the tail
         # of one continuous residual distribution - accepted frames sit at a median residual of
         # 0.21 m against a 0.30 m gate, rejected ones at 0.36 m, and the overlap gate never
@@ -464,6 +465,38 @@ class Detector:
             track = self.tracks[key]
             support = obj.pop("_support_points")
             self.display_support[key] = support
+            local_hits = 0
+            local_overlap = None
+            if local_config is not None:
+                # Association proposes identity; only repeated measured shapes provide
+                # this evidence. No rejected pose enters the comparison or support count.
+                eligible = (obj["path_relation"] == "intersecting"
+                            and obj["certified_unexplained_voxels"] >= cfg["claim_min_support_voxels"]
+                            and len(support) >= cfg["evidence_min_points"])
+                if eligible:
+                    local_shape = support - centers[index]
+                    previous_shape = track.get("local_shape")
+                    consecutive = track.get("local_frame") == self.frame_number - 1
+                    if consecutive and previous_shape is not None:
+                        radius = float(local_config["shape_radius_m"])
+                        forward = accelerator.keep_outside_radius(
+                            local_shape, previous_shape, radius, self.native_kernels)
+                        backward = accelerator.keep_outside_radius(
+                            previous_shape, local_shape, radius, self.native_kernels)
+                        local_overlap = min(1.0 - float(forward.mean()),
+                                            1.0 - float(backward.mean()))
+                    local_hits = (min(track.get("local_hits", 0) + 1, cfg["confirmation_window"])
+                                  if local_overlap is not None
+                                  and local_overlap >= local_config["minimum_symmetric_overlap"] else 1)
+                    track.update(local_shape=local_shape, local_frame=self.frame_number,
+                                 local_hits=local_hits)
+                else:
+                    track.pop("local_shape", None)
+                    track.pop("local_frame", None)
+                    track["local_hits"] = 0
+                obj.update(sensor_frame_hits=local_hits, sensor_frame_shape_overlap=local_overlap)
+            local_confirmed = (not motion_valid and local_config is not None
+                               and local_hits >= cfg["confirmation_hits"])
             if self.diagnostic_arrays:
                 self.diagnostic_arrays[f"support_{key}"] = support
                 self.diagnostic_arrays[f"support_world_{key}"] = support @ pose[:3, :3].T + pose[:3, 3]
@@ -495,6 +528,7 @@ class Detector:
             # writes below keep their original order.
             pending.append({"obj": obj, "key": key, "hits": hits, "recent_interior": recent_interior,
                             "state": state, "covariance": covariance, "track": track,
+                            "local_confirmed": local_confirmed,
                             "evidence": (np.vstack([e[1] for e in track["evidence"]])
                                          if track["evidence"] else np.empty((0, 3)))})
         # One native call counts every track's accumulated evidence, instead of
@@ -511,9 +545,10 @@ class Detector:
             obj, key, hits = record["obj"], record["key"], record["hits"]
             recent_interior = record["recent_interior"]
             state, covariance, track = record["state"], record["covariance"], record["track"]
+            local_confirmed = record["local_confirmed"]
             # Presence is evidence for a measured component, not a corridor claim.
             # Dense adjacent objects may be present without becoming hazards.
-            presence_confirmed = (obj["immediate"]
+            presence_confirmed = (local_confirmed or obj["immediate"]
                                   or (hits >= cfg["confirmation_hits"]
                                       and int(record["count"]) >= cfg["evidence_min_points"]))
             # ADMISSION vs CERTIFICATION: `weak_min_voxels` decides what a component needs to be
@@ -528,28 +563,32 @@ class Detector:
             # a hazard on a single frame whatever its relation to the corridor - measured, that is
             # what put a 37-voxel component at 52 m into `nearest_obstacle_m` with one interior voxel.
             # A candidate whose interior evidence is thin waits for temporal evidence instead.
-            confirmed = (obj["intersection_immediate"]
+            confirmed = (local_confirmed or obj["intersection_immediate"]
                          or (int(obj["uncertain_voxels"]) >= cfg.get("claim_min_support_voxels",
                                                                      cfg["weak_min_voxels"])
                              and hits >= cfg["confirmation_hits"]
                              and int(record["count"]) >= cfg["evidence_min_points"]))
             intersection_confirmed = (confirmed and obj["path_relation"] == "intersecting"
-                                      and (obj["intersection_immediate"] or len(recent_interior) >= cfg["confirmation_hits"]))
+                                      and (local_confirmed or obj["intersection_immediate"]
+                                           or len(recent_interior) >= cfg["confirmation_hits"]))
             obj.update(track_id=key, hits=hits, confirmed=bool(confirmed),
                        presence_confirmed=bool(presence_confirmed),
-                       presence_confirmation=("immediate_geometry" if obj["immediate"]
+                       presence_confirmation=("sensor_frame_shape_recurrence" if local_confirmed
+                                              else "immediate_geometry" if obj["immediate"]
                                               else "temporal_evidence" if presence_confirmed else "pending"),
                        accumulated_support_voxels=int(record["count"]),
                        intersection_confirmed=bool(intersection_confirmed),
                        intersection_hits=len(recent_interior),
                        intersection_evidence_timestamps_s=[s for _, s in recent_interior],
-                       intersection_confirmation=("immediate_interior_geometry" if intersection_confirmed and obj["intersection_immediate"]
+                       intersection_confirmation=("sensor_frame_shape_recurrence" if local_confirmed
+                                                  else "immediate_interior_geometry" if intersection_confirmed and obj["intersection_immediate"]
                                                   else "temporal_interior_evidence" if intersection_confirmed else "pending"),
                        last_observed_s=stamp,
                        evidence_timestamps_s=[e[0] for e in track["evidence"]],
                        covariance_kind="heuristic_not_calibrated",
                        velocity_world_mps=state[3:].tolist(), position_covariance_m2=covariance[:3, :3].tolist(),
-                       confirmation=("immediate_interior_geometry" if obj["intersection_immediate"]
+                       confirmation=("sensor_frame_shape_recurrence" if local_confirmed
+                                     else "immediate_interior_geometry" if obj["intersection_immediate"]
                                      else "temporal_evidence" if confirmed else "pending"),
                        track_age_s=stamp - track["first_stamp"])
 

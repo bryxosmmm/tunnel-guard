@@ -1,0 +1,175 @@
+{
+  "domain": "Organizer synthetic bag inspection; source labels inferred, not supplied",
+  "spacing_between_visible_support_centers": {
+    "1-2": {
+      "simultaneous_frames": 69,
+      "median_euclidean_m": 200.27093688767812
+    },
+    "2-3": {
+      "simultaneous_frames": 55,
+      "median_euclidean_m": 100.67378886500182
+    },
+    "3-4": {
+      "simultaneous_frames": 43,
+      "median_euclidean_m": 99.41964554581722
+    },
+    "4-5": {
+      "simultaneous_frames": 61,
+      "median_euclidean_m": 99.89480340766987
+    },
+    "5-6": {
+      "simultaneous_frames": 101,
+      "median_euclidean_m": 99.17077509706311
+    },
+    "6-7": {
+      "simultaneous_frames": 102,
+      "median_euclidean_m": 102.2075655038984
+    },
+    "7-8": {
+      "simultaneous_frames": 101,
+      "median_euclidean_m": 97.96708062952328
+    },
+    "8-9": {
+      "simultaneous_frames": 65,
+      "median_euclidean_m": 100.61990027964018
+    },
+    "9-10": {
+      "simultaneous_frames": 10,
+      "median_euclidean_m": 100.11899517060064
+    }
+  },
+  "source_tracking": {
+    "tracks": 10,
+    "unassigned_clusters": 0
+  },
+  "motion_reason_counts": {
+    "first_frame": 2,
+    "registered": 1239,
+    "unavailable": 1,
+    "registration_rejected": 268
+  },
+  "unknown_frames": [
+    {
+      "frame": 225,
+      "raw_points": 291551,
+      "input_valid_points": 174071,
+      "invalid_points": 117480,
+      "reason": "weak_track_bed_plane"
+    },
+    {
+      "frame": 226,
+      "raw_points": 287860,
+      "input_valid_points": 170194,
+      "invalid_points": 117666,
+      "reason": "weak_track_bed_plane"
+    },
+    {
+      "frame": 227,
+      "raw_points": 282193,
+      "input_valid_points": 164691,
+      "invalid_points": 117502,
+      "reason": "weak_track_bed_plane"
+    },
+    {
+      "frame": 228,
+      "raw_points": 271816,
+      "input_valid_points": 154204,
+      "invalid_points": 117612,
+      "reason": "weak_track_bed_plane"
+    },
+    {
+      "frame": 229,
+      "raw_points": 252296,
+      "input_valid_points": 125622,
+      "invalid_points": 126674,
+      "reason": "weak_track_bed_plane"
+    },
+    {
+      "frame": 230,
+      "raw_points": 213988,
+      "input_valid_points": 96422,
+      "invalid_points": 117566,
+      "reason": "insufficient_track_bed_points"
+    },
+    {
+      "frame": 231,
+      "raw_points": 280724,
+      "input_valid_points": 25,
+      "invalid_points": 127726,
+      "reason": "insufficient_returns"
+    },
+    {
+      "frame": 925,
+      "raw_points": 307200,
+      "input_valid_points": 189994,
+      "invalid_points": 117206,
+      "reason": "insufficient_paired_rail_support"
+    },
+    {
+      "frame": 1105,
+      "raw_points": 307200,
+      "input_valid_points": 183062,
+      "invalid_points": 124138,
+      "reason": "insufficient_paired_rail_support"
+    }
+  ],
+  "post_insertion_alarm_frames": [
+    {
+      "frame": 915,
+      "nearest_obstacle_m": 2.0014302730560303
+    },
+    {
+      "frame": 929,
+      "nearest_obstacle_m": 37.69910430908203
+    },
+    {
+      "frame": 964,
+      "nearest_obstacle_m": 36.541168212890625
+    },
+    {
+      "frame": 1054,
+      "nearest_obstacle_m": 36.213069915771484
+    }
+  ],
+  "ceiling_same_direction_probe": {
+    "observations": [
+      {
+        "event": 8,
+        "frame": 670,
+        "inserted_points": 269,
+        "closer_background_same_direction": 0,
+        "angular_tolerance_rad": 1e-05,
+        "minimum_depth_difference_m": 0.5,
+        "nearest_angular_error_rad_quantiles": [
+          0.0004035291294011284,
+          0.00748383083106058,
+          0.027231196907753157
+        ]
+      },
+      {
+        "event": 10,
+        "frame": 790,
+        "inserted_points": 5,
+        "closer_background_same_direction": 0,
+        "angular_tolerance_rad": 1e-05,
+        "minimum_depth_difference_m": 0.5,
+        "nearest_angular_error_rad_quantiles": [
+          0.00047335621696393046,
+          0.001111797843338963,
+          0.0023621286668530587
+        ]
+      }
+    ],
+    "conclusion": "No exact-direction closer-background pairs at the recorded tolerance; this does not validate physical occlusion or the generator."
+  },
+  "forensic_runner_failed_attempt": {
+    "path": "build/organizer-synthetic-exact-20260924",
+    "failure": "KeyError: geometry in evaluation summary collection at frame 231; actual full detector replay had already completed. Retained failed artifacts; corrected collector uses absent-geometry state."
+  },
+  "limitations": [
+    "No generator, object poses, bounding labels or organizer contour supplied in archive.",
+    "First two observed insertion centers are about 200 m apart, remaining neighboring centers about 100 m. Distances of observed support centers are not surveyed object placement.",
+    "Acquisition timestamp epoch differs from recording timestamp epoch.",
+    "PointCloud2 contains only XYZI; suffix intensity=1 is used only for forensic evaluation, never detector inference."
+  ]
+}

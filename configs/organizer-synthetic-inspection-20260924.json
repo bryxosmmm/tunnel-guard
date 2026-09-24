@@ -1,0 +1,22 @@
+{
+  "bag": "data/cloud_with_fake_obj",
+  "archive": "/Users/mors1337/Downloads/cloud_with_fake_obj.zst",
+  "output": "build/organizer-synthetic-inspection-20260924",
+  "detector_config": "configs/detector.json",
+  "suffix_intensity": 1.0,
+  "longitudinal_cluster_gap_m": 20.0,
+  "provenance": "Provisional forensic extraction: contiguous intensity=1 suffix after the original zero-return tail, with regular ray-sampled surfaces. Not organizer-supplied point labels; never fed into detector.",
+  "organizer_order": [
+    "посередине габарита крупный, 2х2 метра",
+    "посередине габарита мелкий 0.3х0.3 м",
+    "мелкий 0.3х0.3 м стоит на рельсах",
+    "0.3х0.3 м скраю габарита",
+    "0.3х0.3 м за пределами габарита, но близко",
+    "2х2 метра скраю в пределах габарита",
+    "2х2 за пределами габарита",
+    "2х2 сверху габарита",
+    "длинный низкий предмет лежит на рельсах (2х0.2)",
+    "узкий длинный свисает с потолка (ширина 0.05 м)"
+  ],
+  "limitations": ["Dimensions are quoted verbatim; missing third dimensions are not inferred.", "Approximately 100 m spacing is descriptive, not surveyed ground truth.", "Association to the ordered list must be checked against raw geometry and temporal continuity."]
+}
