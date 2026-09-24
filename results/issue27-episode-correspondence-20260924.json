@@ -1,0 +1,374 @@
+{
+ "date": "2026-09-24",
+ "issue": 27,
+ "handoff_for": "issue #23 / MorS1337",
+ "shared_line": {
+  "pr": 29,
+  "commit": "988750f",
+  "artifact": "results/issue-23-continuous-20260924.json",
+  "frames": 11271,
+  "alarm_frames": 98,
+  "alarm_episodes": 88
+ },
+ "matching_key": "measurement acquisition timestamp; our subset frame numbers are local and do not equal the full replay's, which is why nothing here is keyed on frame index",
+ "coverage": {
+  "their_episodes_total": 88,
+  "inside_our_windows": 30,
+  "outside_our_windows": 58,
+  "note": "our two windows cover about 640 s of the 1200 s recording, so 58 episodes are simply outside them"
+ },
+ "correction_of_our_own_attribution": "Our earlier attribution used the on_track probe's cluster load. The correspondence table refutes it as a proxy for alarms: the interval we called dominant, 811-1350 of the development block with 4085 in-envelope clusters, contains exactly one confirmed episode, while the neighbouring interval 1354-1529 with 1735 clusters contains 15. On the evaluation window 22 of 31 episodes fall outside our intervals entirely. Diagnostic cluster load and confirmed alarms are different quantities, and the load was the wrong one to localise on.",
+ "episode_rate_by_geometry_state": {
+  "anchor_chain_unstable": {
+   "frames_in_windows": 804,
+   "episodes": 20,
+   "episodes_per_100_frames": 2.49
+  },
+  "straight": {
+   "frames_in_windows": 2167,
+   "episodes": 5,
+   "episodes_per_100_frames": 0.23
+  },
+  "curve_400_800m": {
+   "frames_in_windows": 113,
+   "episodes": 4,
+   "episodes_per_100_frames": 3.54
+  },
+  "curve_under_400m": {
+   "frames_in_windows": 27,
+   "episodes": 1,
+   "episodes_per_100_frames": 3.7
+  }
+ },
+ "confirmation_split": {
+  "immediate_interior_geometry": {
+   "episodes": 19,
+   "median_distance_m": 23.7,
+   "by_geometry_state": {
+    "anchor_chain_unstable": 19
+   }
+  },
+  "temporal_interior_evidence": {
+   "episodes": 11,
+   "median_distance_m": 54.6,
+   "by_geometry_state": {
+    "anchor_chain_unstable": 1,
+    "curve_400_800m": 4,
+    "curve_under_400m": 1,
+    "straight": 5
+   }
+  }
+ },
+ "two_separated_mechanisms": [
+  "immediate_interior_geometry: 19 episodes, median 23.7 m, every one of them in a frame whose anchor chain does not fit its own quadratic within 5 cm. Short range, and the corridor is measured there.",
+  "temporal_interior_evidence: 11 episodes, median 54.6 m, on straight and curved frames. 43 per cent of all matched episodes alarm beyond the last rail anchor, whose median is 35 m, so these sit in the extrapolated part of the corridor."
+ ],
+ "what_this_is_not": "An association measured on 30 episodes, not a proven cause. The unstable-chain class is our own construct, a 5 cm residual against the frame's own quadratic. No per-object support was inspected here, so surface merging versus attribution uncertainty versus an unestablished cause is not yet separated for individual episodes.",
+ "requested_from_the_shared_line": [
+  "For the 19 immediate_interior_geometry episodes: the rail anchors and the extrapolation start used in that frame, and the alarming component's own support points, so the displacement of the centre can be shown rather than inferred.",
+  "For the temporal_interior_evidence episodes beyond 35 m: the contour and support at the alarm range, to separate an observed intersection from a contour placed by extrapolation.",
+  "Both are available as the locally retained JSONL.GZ extracts; the acquisition timestamps are listed in this file."
+ ],
+ "episodes": [
+  {
+   "start_stamp_ns": 946687219233363986,
+   "start_frame_full_replay": 5300,
+   "distance_m": 25.88,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.1476278966393889,
+   "our_radius_m": 397.081917103623
+  },
+  {
+   "start_stamp_ns": 946687225233399987,
+   "start_frame_full_replay": 5360,
+   "distance_m": 35.58,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 40.0,
+   "our_chain_residual_m": 0.10499574926090705,
+   "our_radius_m": 504.2393312487679
+  },
+  {
+   "start_stamp_ns": 946687242333405972,
+   "start_frame_full_replay": 5531,
+   "distance_m": 23.22,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 40.0,
+   "our_chain_residual_m": 0.1387289148783124,
+   "our_radius_m": 389.80842864409294
+  },
+  {
+   "start_stamp_ns": 946687243333405972,
+   "start_frame_full_replay": 5541,
+   "distance_m": 37.42,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.15222173594108135,
+   "our_radius_m": 329.06398818477527
+  },
+  {
+   "start_stamp_ns": 946687244233329058,
+   "start_frame_full_replay": 5550,
+   "distance_m": 23.39,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 30.0,
+   "our_chain_residual_m": 0.1362515717352175,
+   "our_radius_m": 241.2123899339133
+  },
+  {
+   "start_stamp_ns": 946687333033326983,
+   "start_frame_full_replay": 6438,
+   "distance_m": 61.52,
+   "confirmation": "temporal_interior_evidence",
+   "our_geometry_state": "straight",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.007133378638361373,
+   "our_radius_m": 4257.518002004053
+  },
+  {
+   "start_stamp_ns": 946687334333433032,
+   "start_frame_full_replay": 6451,
+   "distance_m": 40.98,
+   "confirmation": "temporal_interior_evidence",
+   "our_geometry_state": "straight",
+   "our_last_anchor_m": 40.0,
+   "our_chain_residual_m": 0.02390487338681463,
+   "our_radius_m": 1696.6625935194522
+  },
+  {
+   "start_stamp_ns": 946687335333412051,
+   "start_frame_full_replay": 6461,
+   "distance_m": 48.58,
+   "confirmation": "temporal_interior_evidence",
+   "our_geometry_state": "straight",
+   "our_last_anchor_m": 40.0,
+   "our_chain_residual_m": 0.013847182257310672,
+   "our_radius_m": 2509.5324989567657
+  },
+  {
+   "start_stamp_ns": 946687338533447027,
+   "start_frame_full_replay": 6493,
+   "distance_m": 55.4,
+   "confirmation": "temporal_interior_evidence",
+   "our_geometry_state": "straight",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.009078212444573602,
+   "our_radius_m": 1181.7841168231062
+  },
+  {
+   "start_stamp_ns": 946687339333392024,
+   "start_frame_full_replay": 6501,
+   "distance_m": 54.36,
+   "confirmation": "temporal_interior_evidence",
+   "our_geometry_state": "straight",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.02252102482057683,
+   "our_radius_m": 1093.12893808127
+  },
+  {
+   "start_stamp_ns": 946687339633363962,
+   "start_frame_full_replay": 6504,
+   "distance_m": 55.65,
+   "confirmation": "temporal_interior_evidence",
+   "our_geometry_state": "curve_400_800m",
+   "our_last_anchor_m": 40.0,
+   "our_chain_residual_m": 0.03970109000328739,
+   "our_radius_m": 581.9185032777298
+  },
+  {
+   "start_stamp_ns": 946687340433375001,
+   "start_frame_full_replay": 6512,
+   "distance_m": 56.1,
+   "confirmation": "temporal_interior_evidence",
+   "our_geometry_state": "curve_400_800m",
+   "our_last_anchor_m": 45.0,
+   "our_chain_residual_m": 0.041477859484399165,
+   "our_radius_m": 469.6254901443508
+  },
+  {
+   "start_stamp_ns": 946687340933393955,
+   "start_frame_full_replay": 6517,
+   "distance_m": 56.32,
+   "confirmation": "temporal_interior_evidence",
+   "our_geometry_state": "curve_400_800m",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.032210097163132834,
+   "our_radius_m": 507.43710267711134
+  },
+  {
+   "start_stamp_ns": 946687342533388972,
+   "start_frame_full_replay": 6533,
+   "distance_m": 54.57,
+   "confirmation": "temporal_interior_evidence",
+   "our_geometry_state": "curve_400_800m",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.03076055110647928,
+   "our_radius_m": 509.36244270556347
+  },
+  {
+   "start_stamp_ns": 946687342733407974,
+   "start_frame_full_replay": 6535,
+   "distance_m": 48.22,
+   "confirmation": "temporal_interior_evidence",
+   "our_geometry_state": "curve_under_400m",
+   "our_last_anchor_m": 40.0,
+   "our_chain_residual_m": 0.03581627699115231,
+   "our_radius_m": 390.0067432373734
+  },
+  {
+   "start_stamp_ns": 946687345433416963,
+   "start_frame_full_replay": 6562,
+   "distance_m": 23.15,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 30.0,
+   "our_chain_residual_m": 0.1226888120888297,
+   "our_radius_m": 478.09824421976367
+  },
+  {
+   "start_stamp_ns": 946687345633402944,
+   "start_frame_full_replay": 6564,
+   "distance_m": 13.34,
+   "confirmation": "temporal_interior_evidence",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.08842551823809519,
+   "our_radius_m": 322.49877005705696
+  },
+  {
+   "start_stamp_ns": 946687346133301020,
+   "start_frame_full_replay": 6569,
+   "distance_m": 23.68,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.10105309243525484,
+   "our_radius_m": 309.88054984566054
+  },
+  {
+   "start_stamp_ns": 946687346633308053,
+   "start_frame_full_replay": 6574,
+   "distance_m": 25.22,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 40.0,
+   "our_chain_residual_m": 0.1878058815445387,
+   "our_radius_m": 218.25923841594133
+  },
+  {
+   "start_stamp_ns": 946687348333462954,
+   "start_frame_full_replay": 6591,
+   "distance_m": 33.91,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.12357986512186248,
+   "our_radius_m": 305.0713583997166
+  },
+  {
+   "start_stamp_ns": 946687350533447981,
+   "start_frame_full_replay": 6613,
+   "distance_m": 22.85,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.12338922588217471,
+   "our_radius_m": 290.9399165310275
+  },
+  {
+   "start_stamp_ns": 946687351933326006,
+   "start_frame_full_replay": 6627,
+   "distance_m": 40.91,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.10888708277129222,
+   "our_radius_m": 288.6294995384399
+  },
+  {
+   "start_stamp_ns": 946687486833399057,
+   "start_frame_full_replay": 7976,
+   "distance_m": 61.05,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 45.0,
+   "our_chain_residual_m": 0.14648889822951539,
+   "our_radius_m": 4502.831668710764
+  },
+  {
+   "start_stamp_ns": 946687511933447957,
+   "start_frame_full_replay": 8198,
+   "distance_m": 13.22,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.09504903700102307,
+   "our_radius_m": 518.8520985419751
+  },
+  {
+   "start_stamp_ns": 946687539033346057,
+   "start_frame_full_replay": 8424,
+   "distance_m": 27.62,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.10053996278969907,
+   "our_radius_m": 374.40283787034764
+  },
+  {
+   "start_stamp_ns": 946687542433349013,
+   "start_frame_full_replay": 8458,
+   "distance_m": 2.0,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.1339279947208779,
+   "our_radius_m": 598.4667771692153
+  },
+  {
+   "start_stamp_ns": 946687609133414030,
+   "start_frame_full_replay": 9028,
+   "distance_m": 22.64,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.12682676941217963,
+   "our_radius_m": 338.1500056058866
+  },
+  {
+   "start_stamp_ns": 946687629633417010,
+   "start_frame_full_replay": 9198,
+   "distance_m": 21.62,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.12015579536927706,
+   "our_radius_m": 406.4004782151485
+  },
+  {
+   "start_stamp_ns": 946687728133434057,
+   "start_frame_full_replay": 9993,
+   "distance_m": 33.96,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.07789260025121231,
+   "our_radius_m": 2445.011413963378
+  },
+  {
+   "start_stamp_ns": 946687780033334017,
+   "start_frame_full_replay": 10416,
+   "distance_m": 11.21,
+   "confirmation": "immediate_interior_geometry",
+   "our_geometry_state": "anchor_chain_unstable",
+   "our_last_anchor_m": 35.0,
+   "our_chain_residual_m": 0.13437439749812374,
+   "our_radius_m": 114.31538837958846
+  }
+ ]
+}
