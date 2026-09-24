@@ -1,0 +1,13 @@
+{
+  "hypothesis": "Fine current-scan surface correspondence reduces confirmed false-alarm episodes on the continuous 20-minute empty-tunnel recording without raising unresolved/unknown time or reducing supported geometry range.",
+  "criterion": "One complete 11271-frame recording; fewer confirmed episodes per acquisition minute than identical-source baseline under a predeclared 0.5-second episode merge, unchanged unknown/unresolved fractions or lower, unchanged supported range, no synthetic object/hazard regression. Report runtime penalty explicitly.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-native.json",
+  "output": "build/issue23-evaluation-candidate",
+  "every": 1,
+  "max_frames": 12000,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [],
+  "visualization": false,
+  "bags": [{"path": "data/new_data", "split": "evaluation_fixed_before_candidate_not_blind"}]
+}

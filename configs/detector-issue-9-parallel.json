@@ -258,6 +258,7 @@
   "background_refit_travel_m": 0.0,
   "obstacle_distance_mode": "envelope_support_min_x",
   "structure_cell_m": 0.1,
+  "structure_surface_cell_m": 0.15,
   "structure_station_m": 1.0,
   "structure_outward_margin_m": 0.2,
   "structure_support_cell_m": 0.4,

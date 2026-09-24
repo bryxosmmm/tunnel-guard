@@ -1,0 +1,15 @@
+{
+  "issue": 23,
+  "hypothesis": "Point-level continuity of actual longitudinal infrastructure, rather than occupancy of a coarse cross-section cell, can explain the measured interior returns responsible for empty-tunnel alarms without treating compact intrusions as infrastructure.",
+  "seed": 20260915,
+  "label_provenance": "Organizer statement reported in issue 21: only the first source recording contains a person; the other issued tunnels are empty. This is not exhaustive surface annotation.",
+  "development": ["doubleT_platform", "roundT_doubleT", "roundT_pressureGate_roundT", "roundT_squareT_pressureGate_squareT"],
+  "evaluation": ["new_data"],
+  "positive_observation": {"bag": "doubleT_obstacle", "annotation": "annotations/doubleT-obstacle-person.json", "frames": [165, 200], "expected_presence_frames": 36, "expected_relation": "adjacent"},
+  "nonblind_warning": "The extended replay and all six original recordings have already been inspected during earlier work; evaluation is fixed before this candidate, not a blind holdout. New_data is one continuous recording with acquisition gaps, not 221 independent recordings.",
+  "episode_rule": "Per recording, coalesce confirmed obstacle frames when successive confirmed frames are at most 0.5 seconds apart in measurement timestamps and there is no acquisition gap >0.5 seconds between them; ignore track ID. Cut at every gap; do not count frames as independent episodes.",
+  "criterion": "Accept only if confirmed false-alarm episodes per actual evaluated minute fall on the full evaluation recording, person presence remains 36/36 with separately reported localization, tracking and adjacent relation, and neither unresolved/unknown duration nor hybrid-synthetic object/hazard misses increase. Report supported range and runtime. No change to reference contour or confirmation thresholds.",
+  "baseline_artifacts": ["build/issue3-route-memory-control", "build/issue3-extended-trajectory"],
+  "candidate_artifacts": ["build/issue23-development-candidate", "build/issue23-evaluation-candidate", "build/issue23-person-candidate", "build/issue23-original-six-candidate", "build/issue23-hybrid-candidate", "build/issue23-hybrid-boundary-candidate"],
+  "diagnostic_artifacts": ["build/issue23-development-diagnostics", "build/issue23-measured-support.png"]
+}
