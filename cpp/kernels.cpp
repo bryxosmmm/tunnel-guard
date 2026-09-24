@@ -717,19 +717,24 @@ PyObject* ground_values(PyObject*, PyObject* args) {
     return payload;
 }
 
-// Returns core, context, height, observed, nominal_overlap, boundary.
+// Returns core, context, height, observed, nominal_overlap, boundary and the
+// rail-relative cross-section. An optional audit also returns conservative
+// lateral-margin bounds to the reference contour. These are not a vehicle
+// swept-volume or infrastructure-clearance calculation.
 PyObject* classify_geometry(PyObject*, PyObject* args) {
     PyObject *points_object, *plane_object, *ground_object, *rail_object, *envelope_object;
     double rail_head, ground_max_uncertainty, path_max_uncertainty, ground_max_extrapolation,
         path_max_extrapolation, rail_half_width, rail_vertical_margin, min_running_height,
         cluster_context_margin, segmentation_half_width, envelope_margin, rail_max_heading,
         path_curve_window, path_curvature_significance, nominal_gauge;
-    if (!PyArg_ParseTuple(args, "OOOOO" "ddddddddddddddd", &points_object, &plane_object, &ground_object,
+    int audit_reference_margin = 0;
+    if (!PyArg_ParseTuple(args, "OOOOO" "ddddddddddddddd" "|p", &points_object, &plane_object, &ground_object,
                           &rail_object, &envelope_object, &rail_head, &ground_max_uncertainty,
                           &path_max_uncertainty, &ground_max_extrapolation, &path_max_extrapolation,
                           &rail_half_width, &rail_vertical_margin, &min_running_height,
                           &cluster_context_margin, &segmentation_half_width, &envelope_margin,
-                          &rail_max_heading, &path_curve_window, &path_curvature_significance, &nominal_gauge))
+                          &rail_max_heading, &path_curve_window, &path_curvature_significance, &nominal_gauge,
+                          &audit_reference_margin))
         return nullptr;
     Buffer points(points_object);
     Buffer plane(plane_object);
@@ -765,6 +770,8 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
     auto& observed = workspace.b2;
     auto& overlap = workspace.b3;
     auto& boundary = workspace.b4;
+    // Only the explicit diagnostic path pays for these two per-return arrays.
+    std::vector<double> reference_margin_lower, reference_margin_upper;
     try {
         ReleaseGIL released;
         const auto size = static_cast<size_t>(n);
@@ -772,6 +779,10 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
                              &ground_uncertainty, &path_uncertainty, &scratch_x, &scratch_reach})
             vector->resize(size);
         for (auto* vector : {&core, &context, &observed, &overlap, &boundary}) vector->resize(size);
+        if (audit_reference_margin) {
+            reference_margin_lower.resize(size);
+            reference_margin_upper.resize(size);
+        }
         for (Py_ssize_t i = 0; i < n; ++i) scratch_x[static_cast<size_t>(i)] = data[3 * i];
         // Missing measurements are an ordinary unavailable-geometry state,
         // not a request for a different classifier or a fabricated plane.
@@ -989,6 +1000,17 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
             const double lateral_uncertainty = (observed[index] ? path_uncertainty[index] : 0.0) * lateral_scale
                 + std::abs(slope_plane) * bed_error / lateral_scale;
             const bool vertical = (low_height >= low_edge) && (high_height <= high_edge);
+            if (audit_reference_margin) {
+                // The interval encloses every lateral offset allowed by the same
+                // height/path uncertainty used for the production decision. A
+                // positive lower bound proves reference-contour penetration; a
+                // negative upper bound proves lateral separation. Neither says
+                // whether the return belongs to a vehicle or to infrastructure.
+                reference_margin_lower[index] = observed[index] && vertical
+                    ? min_width - (std::abs(lateral_value) + lateral_uncertainty) : NAN;
+                reference_margin_upper[index] = observed[index] && vertical
+                    ? max_width - std::max(0.0, std::abs(lateral_value) - lateral_uncertainty) : NAN;
+            }
             core[index] = (observed[index] && !on_rail && vertical
                            && (std::abs(lateral_value) + lateral_uncertainty <= min_width)) ? 1 : 0;
             const bool possible = (high_height >= low_edge) && (low_height <= high_edge)
@@ -1005,7 +1027,7 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
                               && (std::abs(lateral_value) <= half_width)) ? 1 : 0;
         }
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
-    PyObject* payload = PyTuple_New(9);
+    PyObject* payload = PyTuple_New(audit_reference_margin ? 11 : 9);
     if (payload == nullptr) return nullptr;
     std::vector<PyObject*> owned;
     if (!accept(bytes_of(core.data(), core.size()), owned, "core")
@@ -1019,7 +1041,12 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
             // risking a cell that falls on the other side of a bin edge.
             || !accept(bytes_of(lateral.data(), lateral.size() * sizeof(double)), owned, "lateral")
             || !accept(bytes_of(running.data(), running.size() * sizeof(double)), owned, "running height")
-            || !accept(bytes_of(gauge.data(), gauge.size() * sizeof(double)), owned, "gauge")) {
+            || !accept(bytes_of(gauge.data(), gauge.size() * sizeof(double)), owned, "gauge")
+            || (audit_reference_margin &&
+                (!accept(bytes_of(reference_margin_lower.data(), reference_margin_lower.size() * sizeof(double)),
+                         owned, "reference margin lower")
+                 || !accept(bytes_of(reference_margin_upper.data(), reference_margin_upper.size() * sizeof(double)),
+                            owned, "reference margin upper")))) {
         Py_DECREF(payload);
         for (PyObject* object : owned) Py_DECREF(object);
         return nullptr;

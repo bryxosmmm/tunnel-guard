@@ -40,9 +40,18 @@ def main():
         frame = points[(points[:, 0] >= config["min_forward_m"]) & (np.abs(points[:, 1]) < config["context_half_width_m"])]
         reduced = frame[voxel_representative_indices(frame, config["geometry_voxel_m"])]
         geometry = TrackGeometry(reduced, config)
-        masks, section = geometry.classify_with_section(reduced, remove_background=False, include_boundary=True)
+        masks, section = geometry.classify_with_section(
+            reduced, remove_background=False, include_boundary=True, audit_reference_margin=True)
         _core, _context, _height, observed, interior, boundary = masks
         structural = geometry.structural_mask(reduced, section)
+        lower, upper = section.reference_margin_lower_m, section.reference_margin_upper_m
+        measured_structure = structural & np.isfinite(lower) & np.isfinite(upper)
+        structure_margin = {
+            "measured_structure_returns": int(measured_structure.sum()),
+            "definitely_inside_reference": int((measured_structure & (lower > 0)).sum()),
+            "boundary_indeterminate": int((measured_structure & (lower <= 0) & (upper >= 0)).sum()),
+            "definitely_outside_reference": int((measured_structure & (upper < 0)).sum()),
+        }
         lateral, running, x = section.lateral, section.running_height, reduced[:, 0]
         claim = interior & observed & ~structural
         doubt = boundary & ~structural & ~claim
@@ -72,7 +81,9 @@ def main():
         args.output.parent.mkdir(parents=True, exist_ok=True)
         figure.tight_layout()
         figure.savefig(args.output, dpi=90)
-        print(f"wrote {args.output}: structural {int(structural.sum())} claim {int(claim.sum())} doubt {int(doubt.sum())}")
+        print(f"wrote {args.output}: structural {int(structural.sum())} claim {int(claim.sum())} "
+              f"doubt {int(doubt.sum())}; reference M diagnostic {structure_margin}; "
+              "this is not an infrastructure-compliance or collision assessment")
         return
 
 

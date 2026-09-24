@@ -1,0 +1,49 @@
+{
+  "issue": 6,
+  "base_commit": "e89d51065b4e58d1d29ed538ebe21b6a56dd8b09",
+  "source": {
+    "current_standard": "GOST 23961-2024 figures 10 and 11",
+    "prior_standard": "GOST 23961-80 figures 6 and 7",
+    "comparison": "Dimensioned main-outline coordinates checked visually; configured detector segment values unchanged. Lower special equipment outlines are not fully represented."
+  },
+  "historical_profile_sensitivity": {
+    "source": "results/corridor-claim-20260922.json; same 2488-frame panel, earlier detector version",
+    "gost_m": {"obstacle": 202, "unresolved_obstacle": 54, "no_obstacle_observed": 2216},
+    "organizer_2_1_by_3_m": {"obstacle": 112, "unresolved_obstacle": 25, "no_obstacle_observed": 2344},
+    "labelled_recording_obstacle_frames": {"gost_m": 166, "organizer_2_1_by_3_m": 102}
+  },
+  "current_cpp_replay": {
+    "command": "python -m tunnel_guard.run --experiment tmp/issue-6-replay-201.json",
+    "artifact": "build/issue-6-replay-201",
+    "config_sha256": "c43b85514c211b417570784ba6793e879c17d4d27ff2d521d81c48dba99adf61",
+    "native_binary_sha256": "80a7de1f9a3dd67303ceabed07364e859db631a847990e97513f11150b426651",
+    "bag_metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+    "seed": 20260915,
+    "frames": 201,
+    "status_frames": {
+      "obstacle": 166,
+      "unresolved_obstacle": 6,
+      "candidate": 4,
+      "no_obstacle_observed": 25
+    },
+    "output_contract_present_frames": 201,
+    "decision_geometry_changed": false
+  },
+  "reference_margin_diagnostic": {
+    "command": "python -m tunnel_guard.structural_view --bag data/sourcecraft_subset/for_hackathon/doubleT_platform --frame 0 --output build/issue-6-platform-frame0.png",
+    "artifact": "build/issue-6-platform-frame0.png",
+    "frame": 0,
+    "structural_returns": 51680,
+    "measured_structure_returns_in_full_reference_vertical_span": 31640,
+    "definitely_inside_reference": 0,
+    "boundary_indeterminate": 368,
+    "definitely_outside_reference": 31272,
+    "interpretation": "Reference M diagnostic only; not an infrastructure-compliance or collision assessment."
+  },
+  "limitations": [
+    "Organizer's 2.1 by 3 m oral statement has no dimensioned vehicle drawing or datum.",
+    "No vehicle-specific swept envelope, independent track cant/radius truth or infrastructure survey is available.",
+    "Repeated frames of one object are not independent detections; nonexhaustive labels do not establish precision.",
+    "The reference-margin diagnostic has been inspected on one platform frame only."
+  ]
+}

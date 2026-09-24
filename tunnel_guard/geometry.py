@@ -24,6 +24,8 @@ class CrossSection(NamedTuple):
     lateral: np.ndarray
     running_height: np.ndarray
     gauge: np.ndarray
+    reference_margin_lower_m: np.ndarray | None = None
+    reference_margin_upper_m: np.ndarray | None = None
 
 
 def voxel_representatives(points: np.ndarray, size: float) -> np.ndarray:
@@ -649,18 +651,21 @@ class TrackGeometry:
         return masks
 
     def classify_with_section(self, points: np.ndarray, *, remove_background: bool = True,
-                              include_boundary: bool = False, ground: tuple | None = None):
+                              include_boundary: bool = False, ground: tuple | None = None,
+                              audit_reference_margin: bool = False):
         if self.config.get("rail_frame_mode", "bed") != "bed":
             raise ValueError("rail_frame_mode must be bed; only the C++ bed classifier is supported")
-        native = accelerator.classify_geometry(points, self, accelerator.native(self.config))
-        core, context, height, observed, nominal_overlap, boundary, lateral, running, gauge = native
+        native = accelerator.classify_geometry(points, self, accelerator.native(self.config),
+                                               audit_reference_margin=audit_reference_margin)
+        core, context, height, observed, nominal_overlap, boundary, lateral, running, gauge = native[:9]
         if remove_background and self.background is not None:
             eligible = np.flatnonzero(context & ~((observed & nominal_overlap) | boundary))
             if len(eligible):
                 context[eligible] &= ~self.background.mask(points[eligible], np.zeros(len(eligible), dtype=bool))
         masks = (core, context, height, observed, nominal_overlap, boundary) if include_boundary else (
             core, context, height, observed, nominal_overlap)
-        return masks, CrossSection(lateral, running, gauge)
+        margins = native[9:] if audit_reference_margin else (None, None)
+        return masks, CrossSection(lateral, running, gauge, *margins)
 
 
     def supported_range_m(self) -> float | None:

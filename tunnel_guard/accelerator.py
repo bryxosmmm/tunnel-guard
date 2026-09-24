@@ -114,7 +114,7 @@ def ground_values(points, plane, ground_anchors, maximum, module):
 
 
 
-def classify_geometry(points, geometry, module):
+def classify_geometry(points, geometry, module, *, audit_reference_margin=False):
     if geometry.config.get("rail_frame_mode", "bed") != "bed":
         raise ValueError("rail_frame_mode must be bed; only the C++ bed classifier is supported")
     config = geometry.config
@@ -129,9 +129,9 @@ def classify_geometry(points, geometry, module):
         config["cluster_context_margin_m"], config["segmentation_context_half_width_m"],
         config["envelope_margin_m"], config["rail_max_heading"],
         config.get("path_curve_window_m", 30.0), config.get("path_curvature_significance", 4.0),
-        config["rail_gauge_m"])
+        config["rail_gauge_m"], bool(audit_reference_margin))
     return tuple(np.frombuffer(payload[i], dtype=np.uint8).astype(bool) if i in (0, 1, 3, 4, 5)
-                 else np.frombuffer(payload[i], dtype=np.float64) for i in range(9))
+                 else np.frombuffer(payload[i], dtype=np.float64) for i in range(len(payload)))
 
 
 
