@@ -1,0 +1,215 @@
+{
+ "date": "2026-09-25",
+ "for": "issue #27 / #23 handoff",
+ "why": "Bounding boxes place 60 of 70 alarming components beyond the last measured rail anchor, a median 15.9 m past it. A box cannot say whether the returns that raised the alarm lie inside the reference contour or whether the contour was carried over trackside infrastructure by extrapolation. Point membership of the alarming component is the one thing that separates those two, and it is absent from this run.",
+ "requests": [
+  {
+   "group": "deep_extrapolation",
+   "question": "Do the alarming component's own returns fall inside the contour at their own range, or does the intersection appear only because the contour there is extrapolated? These are the deepest cases, so if the extrapolated contour is the mechanism it should be visible here first.",
+   "items": [
+    {
+     "measurement_timestamp_ns": 946687339333392024,
+     "frame": 6501,
+     "component_id": 210,
+     "distance_m": 56.82,
+     "bbox_min": [
+      56.82,
+      0.02,
+      -1.42
+     ],
+     "bbox_max": [
+      57.01,
+      0.33,
+      -0.97
+     ],
+     "last_rail_anchor_m": 34.55,
+     "beyond_last_anchor_m": 22.27,
+     "confirmation": "temporal_interior_evidence"
+    },
+    {
+     "measurement_timestamp_ns": 946687333033326983,
+     "frame": 6438,
+     "component_id": 187,
+     "distance_m": 61.52,
+     "bbox_min": [
+      61.46,
+      -0.94,
+      -1.54
+     ],
+     "bbox_max": [
+      61.65,
+      -0.5,
+      -1.04
+     ],
+     "last_rail_anchor_m": 39.83,
+     "beyond_last_anchor_m": 21.63,
+     "confirmation": "temporal_interior_evidence"
+    },
+    {
+     "measurement_timestamp_ns": 946687335333412051,
+     "frame": 6461,
+     "component_id": 208,
+     "distance_m": 57.06,
+     "bbox_min": [
+      56.58,
+      -1.2,
+      -1.42
+     ],
+     "bbox_max": [
+      57.61,
+      -0.8,
+      0.2
+     ],
+     "last_rail_anchor_m": 35.0,
+     "beyond_last_anchor_m": 21.58,
+     "confirmation": "temporal_interior_evidence"
+    },
+    {
+     "measurement_timestamp_ns": 946687340433375001,
+     "frame": 6512,
+     "component_id": 231,
+     "distance_m": 56.1,
+     "bbox_min": [
+      56.1,
+      0.59,
+      -1.04
+     ],
+     "bbox_max": [
+      56.16,
+      0.72,
+      -0.95
+     ],
+     "last_rail_anchor_m": 34.58,
+     "beyond_last_anchor_m": 21.51,
+     "confirmation": "temporal_interior_evidence"
+    },
+    {
+     "measurement_timestamp_ns": 946687539033346057,
+     "frame": 8424,
+     "component_id": 136,
+     "distance_m": 37.16,
+     "bbox_min": [
+      37.16,
+      -0.28,
+      -0.7
+     ],
+     "bbox_max": [
+      38.52,
+      0.55,
+      2.0
+     ],
+     "last_rail_anchor_m": 15.77,
+     "beyond_last_anchor_m": 21.39,
+     "confirmation": "immediate_interior_geometry"
+    },
+    {
+     "measurement_timestamp_ns": 946687342733407974,
+     "frame": 6535,
+     "component_id": 221,
+     "distance_m": 53.3,
+     "bbox_min": [
+      53.14,
+      1.15,
+      -1.34
+     ],
+     "bbox_max": [
+      53.95,
+      1.81,
+      -0.9
+     ],
+     "last_rail_anchor_m": 31.81,
+     "beyond_last_anchor_m": 21.33,
+     "confirmation": "temporal_interior_evidence"
+    }
+   ]
+  },
+  {
+   "group": "measured_corridor_control",
+   "question": "Same question where the corridor is measured rather than extrapolated. These are the control: if point membership looks the same here as in the deep cases, extrapolation is not what distinguishes them.",
+   "items": [
+    {
+     "measurement_timestamp_ns": 946687609133414030,
+     "frame": 9028,
+     "component_id": 0,
+     "distance_m": 22.64,
+     "bbox_min": [
+      2.04,
+      -2.3,
+      -1.35
+     ],
+     "bbox_max": [
+      35.84,
+      0.45,
+      1.85
+     ],
+     "last_rail_anchor_m": 27.5,
+     "beyond_last_anchor_m": -25.46,
+     "confirmation": "immediate_interior_geometry"
+    },
+    {
+     "measurement_timestamp_ns": 946687542433349013,
+     "frame": 8458,
+     "component_id": 0,
+     "distance_m": 2.0,
+     "bbox_min": [
+      2.0,
+      -3.52,
+      -1.33
+     ],
+     "bbox_max": [
+      21.79,
+      -1.57,
+      2.8
+     ],
+     "last_rail_anchor_m": 25.0,
+     "beyond_last_anchor_m": -23.0,
+     "confirmation": "immediate_interior_geometry"
+    },
+    {
+     "measurement_timestamp_ns": 946687345633402944,
+     "frame": 6564,
+     "component_id": 60,
+     "distance_m": 13.34,
+     "bbox_min": [
+      11.61,
+      -1.17,
+      -1.33
+     ],
+     "bbox_max": [
+      13.49,
+      -0.61,
+      -0.73
+     ],
+     "last_rail_anchor_m": 30.0,
+     "beyond_last_anchor_m": -18.39,
+     "confirmation": "temporal_interior_evidence"
+    },
+    {
+     "measurement_timestamp_ns": 946687511933447957,
+     "frame": 8198,
+     "component_id": 0,
+     "distance_m": 13.22,
+     "bbox_min": [
+      2.0,
+      -2.54,
+      -1.34
+     ],
+     "bbox_max": [
+      27.94,
+      -0.4,
+      2.83
+     ],
+     "last_rail_anchor_m": 19.61,
+     "beyond_last_anchor_m": -17.61,
+     "confirmation": "immediate_interior_geometry"
+    }
+   ]
+  }
+ ],
+ "what_would_change": "If the deep cases show support outside the contour while the control shows support inside, the extrapolated corridor is implicated and the boundary policy should tighten rather than the geometry. If both show support inside the contour, the alarms are observed intersections with infrastructure and the question moves to what the contour is supposed to represent, which is issue #6.",
+ "not_requested": [
+  "a rerun of the corpus",
+  "a bbox crop of the cloud as a substitute for membership",
+  "point support for all 30 episodes; ten are enough to separate the two mechanisms"
+ ]
+}

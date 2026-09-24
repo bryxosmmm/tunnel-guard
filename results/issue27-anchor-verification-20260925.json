@@ -1,0 +1,1046 @@
+{
+ "date": "2026-09-25",
+ "for": "issue #27, on PR #29 commit 681dfb8",
+ "inputs": {
+  "records": 30,
+  "parsed": 30,
+  "source": "results/issue27-episode-inputs-20260924.jsonl.gz (handed over by MorS1337)"
+ },
+ "class_reproduction": {
+  "note": "Our anchor_chain_unstable class was computed from a main-based geometry pass. Checked here against the anchors the shipped line actually alarmed on, using the same quadratic-residual rule and threshold.",
+  "residual_threshold_m": 0.05,
+  "records_with_enough_anchors": 16,
+  "reproduces": 12,
+  "disagreements": [
+   {
+    "measurement_timestamp_ns": 946687225233399987,
+    "frame": 5360,
+    "anchors": 5,
+    "last_anchor_m": 26.24,
+    "their_chain_residual_m": 0.003,
+    "our_class": "anchor_chain_unstable",
+    "reproduces": false
+   },
+   {
+    "measurement_timestamp_ns": 946687243333405972,
+    "frame": 5541,
+    "anchors": 5,
+    "last_anchor_m": 23.76,
+    "their_chain_residual_m": 0.0289,
+    "our_class": "anchor_chain_unstable",
+    "reproduces": false
+   },
+   {
+    "measurement_timestamp_ns": 946687346633308053,
+    "frame": 6574,
+    "anchors": 5,
+    "last_anchor_m": 25.0,
+    "their_chain_residual_m": 0.0417,
+    "our_class": "anchor_chain_unstable",
+    "reproduces": false
+   },
+   {
+    "measurement_timestamp_ns": 946687728133434057,
+    "frame": 9993,
+    "anchors": 5,
+    "last_anchor_m": 21.97,
+    "their_chain_residual_m": 0.0153,
+    "our_class": "anchor_chain_unstable",
+    "reproduces": false
+   }
+  ],
+  "reading": "Every disagreement is a five-anchor chain ending at 22-26 m that we called unstable and whose residual on their anchors is 0.003-0.042 m. Their line places anchors with refine_rail_pair and a measured-support policy that our pass does not have, so the class was computed with a different rail estimator than the one that raised the alarms. The 11x rate quoted from it does not carry over and is withdrawn until recomputed on their geometry.",
+  "rows": [
+   {
+    "measurement_timestamp_ns": 946687225233399987,
+    "frame": 5360,
+    "anchors": 5,
+    "last_anchor_m": 26.24,
+    "their_chain_residual_m": 0.003,
+    "our_class": "anchor_chain_unstable",
+    "reproduces": false
+   },
+   {
+    "measurement_timestamp_ns": 946687243333405972,
+    "frame": 5541,
+    "anchors": 5,
+    "last_anchor_m": 23.76,
+    "their_chain_residual_m": 0.0289,
+    "our_class": "anchor_chain_unstable",
+    "reproduces": false
+   },
+   {
+    "measurement_timestamp_ns": 946687333033326983,
+    "frame": 6438,
+    "anchors": 8,
+    "last_anchor_m": 39.83,
+    "their_chain_residual_m": 0.0052,
+    "our_class": "straight",
+    "reproduces": true
+   },
+   {
+    "measurement_timestamp_ns": 946687334333433032,
+    "frame": 6451,
+    "anchors": 7,
+    "last_anchor_m": 34.09,
+    "their_chain_residual_m": 0.0061,
+    "our_class": "straight",
+    "reproduces": true
+   },
+   {
+    "measurement_timestamp_ns": 946687335333412051,
+    "frame": 6461,
+    "anchors": 7,
+    "last_anchor_m": 35.0,
+    "their_chain_residual_m": 0.0093,
+    "our_class": "straight",
+    "reproduces": true
+   },
+   {
+    "measurement_timestamp_ns": 946687338533447027,
+    "frame": 6493,
+    "anchors": 7,
+    "last_anchor_m": 35.0,
+    "their_chain_residual_m": 0.0092,
+    "our_class": "straight",
+    "reproduces": true
+   },
+   {
+    "measurement_timestamp_ns": 946687339333392024,
+    "frame": 6501,
+    "anchors": 7,
+    "last_anchor_m": 34.55,
+    "their_chain_residual_m": 0.0037,
+    "our_class": "straight",
+    "reproduces": true
+   },
+   {
+    "measurement_timestamp_ns": 946687339633363962,
+    "frame": 6504,
+    "anchors": 8,
+    "last_anchor_m": 37.89,
+    "their_chain_residual_m": 0.0041,
+    "our_class": "curve_400_800m",
+    "reproduces": true
+   },
+   {
+    "measurement_timestamp_ns": 946687340433375001,
+    "frame": 6512,
+    "anchors": 7,
+    "last_anchor_m": 34.58,
+    "their_chain_residual_m": 0.0103,
+    "our_class": "curve_400_800m",
+    "reproduces": true
+   },
+   {
+    "measurement_timestamp_ns": 946687340933393955,
+    "frame": 6517,
+    "anchors": 8,
+    "last_anchor_m": 37.3,
+    "their_chain_residual_m": 0.0125,
+    "our_class": "curve_400_800m",
+    "reproduces": true
+   },
+   {
+    "measurement_timestamp_ns": 946687342533388972,
+    "frame": 6533,
+    "anchors": 7,
+    "last_anchor_m": 33.83,
+    "their_chain_residual_m": 0.009,
+    "our_class": "curve_400_800m",
+    "reproduces": true
+   },
+   {
+    "measurement_timestamp_ns": 946687342733407974,
+    "frame": 6535,
+    "anchors": 7,
+    "last_anchor_m": 31.81,
+    "their_chain_residual_m": 0.0085,
+    "our_class": "curve_under_400m",
+    "reproduces": true
+   },
+   {
+    "measurement_timestamp_ns": 946687345633402944,
+    "frame": 6564,
+    "anchors": 6,
+    "last_anchor_m": 30.0,
+    "their_chain_residual_m": 0.0669,
+    "our_class": "anchor_chain_unstable",
+    "reproduces": true
+   },
+   {
+    "measurement_timestamp_ns": 946687346633308053,
+    "frame": 6574,
+    "anchors": 5,
+    "last_anchor_m": 25.0,
+    "their_chain_residual_m": 0.0417,
+    "our_class": "anchor_chain_unstable",
+    "reproduces": false
+   },
+   {
+    "measurement_timestamp_ns": 946687486833399057,
+    "frame": 7976,
+    "anchors": 7,
+    "last_anchor_m": 55.0,
+    "their_chain_residual_m": 0.1325,
+    "our_class": "anchor_chain_unstable",
+    "reproduces": true
+   },
+   {
+    "measurement_timestamp_ns": 946687728133434057,
+    "frame": 9993,
+    "anchors": 5,
+    "last_anchor_m": 21.97,
+    "their_chain_residual_m": 0.0153,
+    "our_class": "anchor_chain_unstable",
+    "reproduces": false
+   }
+  ]
+ },
+ "path_horizon_m_present": 0,
+ "anchor_support": {
+  "question": "Does extrapolation ever start from an anchor that measured support does not bracket?",
+  "anchors_total": 144,
+  "anchors_bracketed": 144,
+  "bracketed_share": 1.0,
+  "frames_with_last_anchor_bracketed": 30,
+  "frames": 30,
+  "last_anchor_minus_support_reach_m": {
+   "p50": -0.52,
+   "p90": 0.0
+  },
+  "answer": "No. All anchors are bracketed on both rails and every frame's last anchor is inside measured support, a median 0.52 m short of where support ends. The hypothesis that alarms start from an unsupported anchor is eliminated on these frames.",
+  "rows": [
+   {
+    "measurement_timestamp_ns": 946687219233363986,
+    "frame": 5300,
+    "anchors": 3,
+    "last_anchor_m": 25.0,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 33.86
+   },
+   {
+    "measurement_timestamp_ns": 946687225233399987,
+    "frame": 5360,
+    "anchors": 5,
+    "last_anchor_m": 26.24,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 27.16
+   },
+   {
+    "measurement_timestamp_ns": 946687242333405972,
+    "frame": 5531,
+    "anchors": 2,
+    "last_anchor_m": 7.45,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 7.45
+   },
+   {
+    "measurement_timestamp_ns": 946687243333405972,
+    "frame": 5541,
+    "anchors": 5,
+    "last_anchor_m": 23.76,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 23.76
+   },
+   {
+    "measurement_timestamp_ns": 946687244233329058,
+    "frame": 5550,
+    "anchors": 3,
+    "last_anchor_m": 20.0,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 23.44
+   },
+   {
+    "measurement_timestamp_ns": 946687333033326983,
+    "frame": 6438,
+    "anchors": 8,
+    "last_anchor_m": 39.83,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 39.83
+   },
+   {
+    "measurement_timestamp_ns": 946687334333433032,
+    "frame": 6451,
+    "anchors": 7,
+    "last_anchor_m": 34.09,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 34.09
+   },
+   {
+    "measurement_timestamp_ns": 946687335333412051,
+    "frame": 6461,
+    "anchors": 7,
+    "last_anchor_m": 35.0,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 35.75
+   },
+   {
+    "measurement_timestamp_ns": 946687338533447027,
+    "frame": 6493,
+    "anchors": 7,
+    "last_anchor_m": 35.0,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 37.77
+   },
+   {
+    "measurement_timestamp_ns": 946687339333392024,
+    "frame": 6501,
+    "anchors": 7,
+    "last_anchor_m": 34.55,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 34.55
+   },
+   {
+    "measurement_timestamp_ns": 946687339633363962,
+    "frame": 6504,
+    "anchors": 8,
+    "last_anchor_m": 37.89,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 37.89
+   },
+   {
+    "measurement_timestamp_ns": 946687340433375001,
+    "frame": 6512,
+    "anchors": 7,
+    "last_anchor_m": 34.58,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 34.58
+   },
+   {
+    "measurement_timestamp_ns": 946687340933393955,
+    "frame": 6517,
+    "anchors": 8,
+    "last_anchor_m": 37.3,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 37.3
+   },
+   {
+    "measurement_timestamp_ns": 946687342533388972,
+    "frame": 6533,
+    "anchors": 7,
+    "last_anchor_m": 33.83,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 33.83
+   },
+   {
+    "measurement_timestamp_ns": 946687342733407974,
+    "frame": 6535,
+    "anchors": 7,
+    "last_anchor_m": 31.81,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 31.81
+   },
+   {
+    "measurement_timestamp_ns": 946687345433416963,
+    "frame": 6562,
+    "anchors": 2,
+    "last_anchor_m": 8.42,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 8.42
+   },
+   {
+    "measurement_timestamp_ns": 946687345633402944,
+    "frame": 6564,
+    "anchors": 6,
+    "last_anchor_m": 30.0,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 30.32
+   },
+   {
+    "measurement_timestamp_ns": 946687346133301020,
+    "frame": 6569,
+    "anchors": 3,
+    "last_anchor_m": 25.0,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 31.07
+   },
+   {
+    "measurement_timestamp_ns": 946687346633308053,
+    "frame": 6574,
+    "anchors": 5,
+    "last_anchor_m": 25.0,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 26.79
+   },
+   {
+    "measurement_timestamp_ns": 946687348333462954,
+    "frame": 6591,
+    "anchors": 4,
+    "last_anchor_m": 22.62,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 25.99
+   },
+   {
+    "measurement_timestamp_ns": 946687350533447981,
+    "frame": 6613,
+    "anchors": 2,
+    "last_anchor_m": 25.0,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 30.18
+   },
+   {
+    "measurement_timestamp_ns": 946687351933326006,
+    "frame": 6627,
+    "anchors": 3,
+    "last_anchor_m": 35.0,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 40.14
+   },
+   {
+    "measurement_timestamp_ns": 946687486833399057,
+    "frame": 7976,
+    "anchors": 7,
+    "last_anchor_m": 55.0,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 55.71
+   },
+   {
+    "measurement_timestamp_ns": 946687511933447957,
+    "frame": 8198,
+    "anchors": 4,
+    "last_anchor_m": 19.61,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 19.61
+   },
+   {
+    "measurement_timestamp_ns": 946687539033346057,
+    "frame": 8424,
+    "anchors": 2,
+    "last_anchor_m": 15.77,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 17.3
+   },
+   {
+    "measurement_timestamp_ns": 946687542433349013,
+    "frame": 8458,
+    "anchors": 4,
+    "last_anchor_m": 25.0,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 27.43
+   },
+   {
+    "measurement_timestamp_ns": 946687609133414030,
+    "frame": 9028,
+    "anchors": 2,
+    "last_anchor_m": 27.5,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 27.5
+   },
+   {
+    "measurement_timestamp_ns": 946687629633417010,
+    "frame": 9198,
+    "anchors": 2,
+    "last_anchor_m": 7.71,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 7.71
+   },
+   {
+    "measurement_timestamp_ns": 946687728133434057,
+    "frame": 9993,
+    "anchors": 5,
+    "last_anchor_m": 21.97,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 27.88
+   },
+   {
+    "measurement_timestamp_ns": 946687780033334017,
+    "frame": 10416,
+    "anchors": 2,
+    "last_anchor_m": 15.52,
+    "last_anchor_bracketed": true,
+    "support_reach_m": 18.29
+   }
+  ]
+ },
+ "alarm_position": {
+  "question": "Is the alarming component inside the measured rails or in the extrapolated corridor?",
+  "beyond_last_anchor": {
+   "components": 60,
+   "distance_m": {
+    "p50": 42.3,
+    "p90": 55.7
+   },
+   "beyond_last_anchor_m": {
+    "p50": 15.89,
+    "p90": 21.33
+   }
+  },
+  "inside_measured_rails": {
+   "components": 10,
+   "distance_m": {
+    "p50": 20.32,
+    "p90": 23.9
+   },
+   "beyond_last_anchor_m": {
+    "p50": -10.71,
+    "p90": -2.57
+   }
+  },
+  "reading": "60 of 70 alarming components (86%) begin beyond the last measured anchor, a median 15.9 m past it, at a median alarm distance of 42.3 m. The other 10 sit inside the measured rails at a median 20.3 m. A bounding box cannot say whether the returns that raised the alarm lie inside the contour, so this locates the alarms without attributing them.",
+  "beyond_rows": [
+   {
+    "measurement_timestamp_ns": 946687225233399987,
+    "frame": 5360,
+    "component_id": 197,
+    "distance_m": 35.58,
+    "beyond_last_anchor_m": 8.45,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687225233399987,
+    "frame": 5360,
+    "component_id": 229,
+    "distance_m": 42.4,
+    "beyond_last_anchor_m": 16.16,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687225233399987,
+    "frame": 5360,
+    "component_id": 234,
+    "distance_m": 45.2,
+    "beyond_last_anchor_m": 18.96,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687242333405972,
+    "frame": 5531,
+    "component_id": 77,
+    "distance_m": 23.22,
+    "beyond_last_anchor_m": 15.76,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687243333405972,
+    "frame": 5541,
+    "component_id": 133,
+    "distance_m": 37.42,
+    "beyond_last_anchor_m": 13.65,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687244233329058,
+    "frame": 5550,
+    "component_id": 98,
+    "distance_m": 23.39,
+    "beyond_last_anchor_m": 3.39,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687333033326983,
+    "frame": 6438,
+    "component_id": 187,
+    "distance_m": 61.52,
+    "beyond_last_anchor_m": 21.63,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687334333433032,
+    "frame": 6451,
+    "component_id": 159,
+    "distance_m": 40.98,
+    "beyond_last_anchor_m": 6.85,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687334333433032,
+    "frame": 6451,
+    "component_id": 167,
+    "distance_m": 42.67,
+    "beyond_last_anchor_m": 8.46,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687334333433032,
+    "frame": 6451,
+    "component_id": 173,
+    "distance_m": 45.13,
+    "beyond_last_anchor_m": 10.95,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687334333433032,
+    "frame": 6451,
+    "component_id": 183,
+    "distance_m": 47.94,
+    "beyond_last_anchor_m": 13.85,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687334333433032,
+    "frame": 6451,
+    "component_id": 188,
+    "distance_m": 50.05,
+    "beyond_last_anchor_m": 15.96,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687334333433032,
+    "frame": 6451,
+    "component_id": 192,
+    "distance_m": 53.79,
+    "beyond_last_anchor_m": 18.26,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687334333433032,
+    "frame": 6451,
+    "component_id": 193,
+    "distance_m": 52.88,
+    "beyond_last_anchor_m": 18.79,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687334333433032,
+    "frame": 6451,
+    "component_id": 196,
+    "distance_m": 55.13,
+    "beyond_last_anchor_m": 21.04,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687335333412051,
+    "frame": 6461,
+    "component_id": 189,
+    "distance_m": 48.58,
+    "beyond_last_anchor_m": 13.58,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687335333412051,
+    "frame": 6461,
+    "component_id": 194,
+    "distance_m": 51.43,
+    "beyond_last_anchor_m": 16.43,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687335333412051,
+    "frame": 6461,
+    "component_id": 198,
+    "distance_m": 53.68,
+    "beyond_last_anchor_m": 18.65,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687335333412051,
+    "frame": 6461,
+    "component_id": 208,
+    "distance_m": 57.06,
+    "beyond_last_anchor_m": 21.58,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687338533447027,
+    "frame": 6493,
+    "component_id": 217,
+    "distance_m": 55.4,
+    "beyond_last_anchor_m": 20.38,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687339333392024,
+    "frame": 6501,
+    "component_id": 204,
+    "distance_m": 54.36,
+    "beyond_last_anchor_m": 19.5,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687339333392024,
+    "frame": 6501,
+    "component_id": 210,
+    "distance_m": 56.82,
+    "beyond_last_anchor_m": 22.27,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687339633363962,
+    "frame": 6504,
+    "component_id": 212,
+    "distance_m": 55.65,
+    "beyond_last_anchor_m": 17.75,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687340433375001,
+    "frame": 6512,
+    "component_id": 231,
+    "distance_m": 56.1,
+    "beyond_last_anchor_m": 21.51,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687340933393955,
+    "frame": 6517,
+    "component_id": 234,
+    "distance_m": 56.32,
+    "beyond_last_anchor_m": 18.7,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687342533388972,
+    "frame": 6533,
+    "component_id": 241,
+    "distance_m": 54.57,
+    "beyond_last_anchor_m": 20.74,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687342733407974,
+    "frame": 6535,
+    "component_id": 207,
+    "distance_m": 48.22,
+    "beyond_last_anchor_m": 15.69,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687342733407974,
+    "frame": 6535,
+    "component_id": 221,
+    "distance_m": 53.3,
+    "beyond_last_anchor_m": 21.33,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687345433416963,
+    "frame": 6562,
+    "component_id": 138,
+    "distance_m": 23.15,
+    "beyond_last_anchor_m": 10.73,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687346133301020,
+    "frame": 6569,
+    "component_id": 165,
+    "distance_m": 30.48,
+    "beyond_last_anchor_m": 4.91,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687346133301020,
+    "frame": 6569,
+    "component_id": 177,
+    "distance_m": 32.98,
+    "beyond_last_anchor_m": 7.64,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687346133301020,
+    "frame": 6569,
+    "component_id": 203,
+    "distance_m": 42.21,
+    "beyond_last_anchor_m": 17.21,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687346633308053,
+    "frame": 6574,
+    "component_id": 142,
+    "distance_m": 25.22,
+    "beyond_last_anchor_m": 0.22,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687346633308053,
+    "frame": 6574,
+    "component_id": 165,
+    "distance_m": 34.46,
+    "beyond_last_anchor_m": 9.46,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687346633308053,
+    "frame": 6574,
+    "component_id": 166,
+    "distance_m": 35.29,
+    "beyond_last_anchor_m": 10.29,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687346633308053,
+    "frame": 6574,
+    "component_id": 175,
+    "distance_m": 37.55,
+    "beyond_last_anchor_m": 12.55,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687348333462954,
+    "frame": 6591,
+    "component_id": 157,
+    "distance_m": 33.91,
+    "beyond_last_anchor_m": 11.02,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687348333462954,
+    "frame": 6591,
+    "component_id": 178,
+    "distance_m": 38.24,
+    "beyond_last_anchor_m": 15.62,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687348333462954,
+    "frame": 6591,
+    "component_id": 182,
+    "distance_m": 39.66,
+    "beyond_last_anchor_m": 17.04,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687348333462954,
+    "frame": 6591,
+    "component_id": 188,
+    "distance_m": 41.31,
+    "beyond_last_anchor_m": 18.69,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687348333462954,
+    "frame": 6591,
+    "component_id": 191,
+    "distance_m": 42.18,
+    "beyond_last_anchor_m": 19.56,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687348333462954,
+    "frame": 6591,
+    "component_id": 196,
+    "distance_m": 43.95,
+    "beyond_last_anchor_m": 21.33,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687350533447981,
+    "frame": 6613,
+    "component_id": 159,
+    "distance_m": 28.52,
+    "beyond_last_anchor_m": 2.95,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687350533447981,
+    "frame": 6613,
+    "component_id": 189,
+    "distance_m": 41.01,
+    "beyond_last_anchor_m": 16.01,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687350533447981,
+    "frame": 6613,
+    "component_id": 192,
+    "distance_m": 42.2,
+    "beyond_last_anchor_m": 17.2,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687350533447981,
+    "frame": 6613,
+    "component_id": 193,
+    "distance_m": 43.97,
+    "beyond_last_anchor_m": 18.97,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687350533447981,
+    "frame": 6613,
+    "component_id": 196,
+    "distance_m": 45.96,
+    "beyond_last_anchor_m": 20.96,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687351933326006,
+    "frame": 6627,
+    "component_id": 211,
+    "distance_m": 40.91,
+    "beyond_last_anchor_m": 5.67,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687351933326006,
+    "frame": 6627,
+    "component_id": 217,
+    "distance_m": 44.02,
+    "beyond_last_anchor_m": 9.02,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687351933326006,
+    "frame": 6627,
+    "component_id": 225,
+    "distance_m": 48.3,
+    "beyond_last_anchor_m": 13.3,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687351933326006,
+    "frame": 6627,
+    "component_id": 229,
+    "distance_m": 50.81,
+    "beyond_last_anchor_m": 15.81,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687486833399057,
+    "frame": 7976,
+    "component_id": 204,
+    "distance_m": 61.05,
+    "beyond_last_anchor_m": 5.9,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687539033346057,
+    "frame": 8424,
+    "component_id": 92,
+    "distance_m": 27.62,
+    "beyond_last_anchor_m": 8.51,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687539033346057,
+    "frame": 8424,
+    "component_id": 114,
+    "distance_m": 30.48,
+    "beyond_last_anchor_m": 14.71,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687539033346057,
+    "frame": 8424,
+    "component_id": 136,
+    "distance_m": 37.16,
+    "beyond_last_anchor_m": 21.39,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687609133414030,
+    "frame": 9028,
+    "component_id": 100,
+    "distance_m": 35.96,
+    "beyond_last_anchor_m": 8.46,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687629633417010,
+    "frame": 9198,
+    "component_id": 65,
+    "distance_m": 21.62,
+    "beyond_last_anchor_m": 10.92,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687629633417010,
+    "frame": 9198,
+    "component_id": 82,
+    "distance_m": 28.91,
+    "beyond_last_anchor_m": 21.2,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687728133434057,
+    "frame": 9993,
+    "component_id": 128,
+    "distance_m": 33.96,
+    "beyond_last_anchor_m": 11.65,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687728133434057,
+    "frame": 9993,
+    "component_id": 140,
+    "distance_m": 38.99,
+    "beyond_last_anchor_m": 17.02,
+    "confirmation": "immediate_interior_geometry"
+   }
+  ],
+  "inside_rows": [
+   {
+    "measurement_timestamp_ns": 946687219233363986,
+    "frame": 5300,
+    "component_id": 146,
+    "distance_m": 25.88,
+    "beyond_last_anchor_m": -0.87,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687345633402944,
+    "frame": 6564,
+    "component_id": 60,
+    "distance_m": 13.34,
+    "beyond_last_anchor_m": -18.39,
+    "confirmation": "temporal_interior_evidence"
+   },
+   {
+    "measurement_timestamp_ns": 946687346133301020,
+    "frame": 6569,
+    "component_id": 130,
+    "distance_m": 23.68,
+    "beyond_last_anchor_m": -2.76,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687350533447981,
+    "frame": 6613,
+    "component_id": 135,
+    "distance_m": 22.85,
+    "beyond_last_anchor_m": -2.81,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687511933447957,
+    "frame": 8198,
+    "component_id": 0,
+    "distance_m": 13.22,
+    "beyond_last_anchor_m": -17.61,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687542433349013,
+    "frame": 8458,
+    "component_id": 0,
+    "distance_m": 2.0,
+    "beyond_last_anchor_m": -23.0,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687542433349013,
+    "frame": 8458,
+    "component_id": 68,
+    "distance_m": 18.93,
+    "beyond_last_anchor_m": -7.9,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687542433349013,
+    "frame": 8458,
+    "component_id": 80,
+    "distance_m": 21.71,
+    "beyond_last_anchor_m": -3.29,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687609133414030,
+    "frame": 9028,
+    "component_id": 0,
+    "distance_m": 22.64,
+    "beyond_last_anchor_m": -25.46,
+    "confirmation": "immediate_interior_geometry"
+   },
+   {
+    "measurement_timestamp_ns": 946687780033334017,
+    "frame": 10416,
+    "component_id": 1,
+    "distance_m": 11.21,
+    "beyond_last_anchor_m": -13.52,
+    "confirmation": "immediate_interior_geometry"
+   }
+  ]
+ }
+}
