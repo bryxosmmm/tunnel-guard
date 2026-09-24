@@ -18,7 +18,7 @@ The [3D track and clearance literature review](docs/TRACK_GEOMETRY_LITERATURE_20
 
 The experimental `local_3d` rail frame was removed because classification had a Python-only fallback. The shipped `bed` frame remains the only detector mode; the historical experiments are retained in `docs/TRACK_LOCAL3D_ITERATION.md`.
 
-See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and ROS2 launch commands, and [iteration evidence](docs/GOAL_ITERATION.md) for all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
+See [ROS 2 release contract](docs/ROS2.md) and [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and launch commands, and [iteration evidence](docs/GOAL_ITERATION.md) for all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
 
 ## Native acceleration and calibration experiment
 
@@ -190,13 +190,12 @@ has no ROS 2 and no Docker daemon. They must be confirmed inside the container b
 
 ## Demonstration path, checked statically (2026-09-19)
 
-`rviz/tunnel_guard.rviz` and the node were consistent on topics - the config listens to `/perception/points_display` and
-`/perception/debug_markers`, which the node publishes - but the config's fixed frame, `tunnel_guard_local`, was published
-by nothing, so RViz would come up with a missing fixed frame and render nothing. The node now publishes an identity
-static transform from `tunnel_guard_local` to the frame the incoming clouds declare, once per source frame: the frame is
-the sensor frame its outputs are already expressed in, not an invented one, and mounting and extrinsics stay unverified.
-This change is standard tf2 usage but is **not exercised here** - no ROS 2 and no Docker daemon on the development
-machine - so it must be confirmed inside the container before the demonstration.
+`rviz/tunnel_guard.rviz` and the node use the same `/perception/...` topics.
+Every detector output is already expressed in `tunnel_guard_local`, so RViz uses
+that same fixed frame directly. The adapter publishes no identity TF: the name
+identifies processing-frame coordinates only and does not assert sensor mounting
+or vehicle extrinsics. Container/RViz execution still requires target-runtime
+verification.
 
 ## Where the frame time goes (2026-09-19)
 
