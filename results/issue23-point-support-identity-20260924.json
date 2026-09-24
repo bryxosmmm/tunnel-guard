@@ -1,0 +1,25 @@
+{
+  "source_commit": "681dfb81287cb0bd5ee9e881bbc7ef506c80fb78",
+  "baseline_run": "build/issue-23-continuous-baseline-retry-20260924",
+  "fresh_state_runner": "tunnel_guard.background_repro",
+  "source_files": {
+    "detector.py": {
+      "sha256": "a7732117c3c95c4598784612d0104a819e6f545eb867a11f9b6c6b369490f1a4",
+      "same_as_baseline": true
+    },
+    "geometry.py": {
+      "sha256": "da86a42ce860a58929d6efd36493fb019ed111e68764ee4f8b52e5c4155db9c6",
+      "same_as_baseline": true
+    },
+    "accelerator.py": {
+      "sha256": "439731143ed9bea6fca157a6ebb6c519ed2d7ab341303cca898f96784ccd7cd3",
+      "same_as_baseline": true
+    },
+    "io.py": {
+      "sha256": "4d3a86db018ba30bd64f1e25e3b41ee04add5a0efe3576476c8738400456fcd5",
+      "same_as_baseline": true
+    }
+  },
+  "native_binary_sha256": "aa79ed7154fcf7e40122814ef7b3ecfee111fcb97cf9fedac3d73aa3e534c2ec",
+  "native_same_as_baseline": true
+}
