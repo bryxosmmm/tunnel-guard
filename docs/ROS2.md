@@ -28,7 +28,8 @@ DDS loss cannot be counted without a source sequence number.
 | `/perception/points_display` | `sensor_msgs/msg/PointCloud2` | sampled display cloud |
 | `/perception/debug_markers` | `visualization_msgs/msg/MarkerArray` | supported contour, observed support and status |
 
-All output publishers are reliable `KEEP_LAST(1)`. `status` distinguishes
+All output publishers are reliable `KEEP_LAST(1)`; recorded RViz export writes
+the same five-topic set. `status` distinguishes
 confirmed, candidate and unresolved ranges; `no_obstacle_observed` never means
 the route is clear. The `attention_required` topic is only a fail-visible review
 signal, not a validated train-control decision.

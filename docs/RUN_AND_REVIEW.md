@@ -89,6 +89,9 @@ Outputs:
 - `/perception/nearest_obstacle_m` (`std_msgs/msg/Float32`): nearest confirmed
   reported hazard in the processing frame, or NaN.
 
+Recorded RViz export writes this same five-topic set; it is recorded inference,
+not a second detector implementation.
+
 The adapter uses the same `decode_cloud`, `Detector`, and `ResultMessages` as the
 offline path. Silence beyond `input_timeout_s` publishes `unknown` and clears
 cloud/markers and tracking. Duplicate acquisition times never add temporal

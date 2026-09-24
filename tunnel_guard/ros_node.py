@@ -44,13 +44,13 @@ class PerceptionNode(Node):
             "points_display": ("sensor_msgs/msg/PointCloud2", PointCloud2),
             "debug_markers": ("visualization_msgs/msg/MarkerArray", MarkerArray),
             "status": ("std_msgs/msg/String", String),
+            "attention_required": ("std_msgs/msg/Bool", Bool),
+            "nearest_obstacle_m": ("std_msgs/msg/Float32", Float32),
         }
         self.publishers_by_topic = {
             topic: self.create_publisher(kind, "/perception/" + topic, 1)
             for topic, (_, kind) in self.kinds.items()
         }
-        self.attention_pub = self.create_publisher(Bool, "/perception/attention_required", 1)
-        self.nearest_pub = self.create_publisher(Float32, "/perception/nearest_obstacle_m", 1)
         # A slow detector must not build an unbounded queue of obsolete scans.
         reliability = self.get_parameter("input_reliability").value
         if reliability not in ("reliable", "best_effort"):
@@ -89,11 +89,6 @@ class PerceptionNode(Node):
             self.publishers_by_topic[topic].publish(
                 deserialize_message(bytes(serialized), native)
             )
-        # Attention transport is not an automated braking or movement-authority
-        # decision. An unknown result must not look like a clear route.
-        self.attention_pub.publish(Bool(data=row["status"] != "no_obstacle_observed"))
-        nearest = row.get("nearest_obstacle_m")
-        self.nearest_pub.publish(Float32(data=float(nearest) if nearest is not None else float("nan")))
 
     def unavailable(self, reason, stamp=0):
         row = {
