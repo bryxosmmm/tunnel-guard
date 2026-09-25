@@ -158,7 +158,11 @@ class ResultMessages:
         payloads = {"points_display": point_message,
                     "debug_markers": m("visualization_msgs/msg/MarkerArray", markers),
                     "status": m("std_msgs/msg/String", json.dumps(row | {"presentation": self.presentation,
-                        "display_points": len(cloud), "distance_summary": distances}, allow_nan=False))}
+                        "display_points": len(cloud), "distance_summary": distances}, allow_nan=False)),
+                    "attention_required": m("std_msgs/msg/Bool", row["status"] != "no_obstacle_observed"),
+                    "nearest_obstacle_m": m("std_msgs/msg/Float32", float(
+                        row["nearest_obstacle_m"] if row["nearest_obstacle_m"] is not None else np.nan)),
+                    }
         return payloads
 
 
@@ -174,7 +178,9 @@ class ResultBag(ResultMessages):
         self.writer.open()
         for topic, kind in (("points_display", "sensor_msgs/msg/PointCloud2"),
                             ("debug_markers", "visualization_msgs/msg/MarkerArray"),
-                            ("status", "std_msgs/msg/String")):
+                            ("status", "std_msgs/msg/String"),
+                            ("attention_required", "std_msgs/msg/Bool"),
+                            ("nearest_obstacle_m", "std_msgs/msg/Float32")):
             self.connections[topic] = self.writer.add_connection("/perception/" + topic, kind, typestore=self.store)
         return self
 

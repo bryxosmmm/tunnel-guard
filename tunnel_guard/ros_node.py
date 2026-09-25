@@ -8,13 +8,12 @@ import time
 
 import numpy as np
 import rclpy
+from rclpy.clock import Clock, ClockType
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
 from rclpy.serialization import deserialize_message
-from geometry_msgs.msg import TransformStamped
 from sensor_msgs.msg import PointCloud2
-from std_msgs.msg import String
-from tf2_ros import StaticTransformBroadcaster
+from std_msgs.msg import Bool, Float32, String
 from visualization_msgs.msg import MarkerArray
 
 from .detector import Detector, load_config
@@ -40,20 +39,14 @@ class PerceptionNode(Node):
             self.get_parameter("display_max_points").value,
             presentation="live_detector",
         )
-        # The RViz configuration's fixed frame is `tunnel_guard_local`, and nothing published it: a
-        # demonstration would come up with a missing fixed frame and show nothing at all. The frame is
-        # real, not invented - it is the sensor frame of this node's own outputs - so it is published as
-        # an identity transform to whatever frame the incoming clouds declare, once per source frame.
-        # Mounting and extrinsics remain unverified, as the README says; this names the frame the messages
-        # are already expressed in rather than claiming a calibration.
-        self.static_broadcaster = StaticTransformBroadcaster(self)
-        self.broadcast_frames: set = set()
         self.rotation = np.asarray(self.config["sensor_rotation"])
         self.translation = np.asarray(self.config["sensor_translation"])
         self.kinds = {
             "points_display": ("sensor_msgs/msg/PointCloud2", PointCloud2),
             "debug_markers": ("visualization_msgs/msg/MarkerArray", MarkerArray),
             "status": ("std_msgs/msg/String", String),
+            "attention_required": ("std_msgs/msg/Bool", Bool),
+            "nearest_obstacle_m": ("std_msgs/msg/Float32", Float32),
         }
         self.publishers_by_topic = {
             topic: self.create_publisher(kind, "/perception/" + topic, 1)
@@ -80,8 +73,15 @@ class PerceptionNode(Node):
         self.source_frame = None
         self.processed = 0
         self.duplicates = 0
+        self.received = 0
+        self.invalid = 0
+        self.out_of_order = 0
         self.silent = False
-        self.timer = self.create_timer(min(self.timeout, 0.5), self.watchdog)
+        # Input freshness must keep expiring when bag playback /clock is paused.
+        self.timer = self.create_timer(
+            min(self.timeout, 0.5), self.watchdog,
+            clock=Clock(clock_type=ClockType.STEADY_TIME),
+        )
         self.get_logger().info(
             f"Ready. Reliability={reliability}, queue depth=1; use slow replay for complete evaluation."
         )
@@ -95,18 +95,28 @@ class PerceptionNode(Node):
                 deserialize_message(bytes(serialized), native)
             )
 
-    def unavailable(self, reason, stamp=0):
+    def unavailable(self, reason):
         row = {
             "coordinate_frame": "tunnel_guard_local",
             "status": "unknown",
             "objects": [],
             "nearest_obstacle_m": None,
+            "nearest_candidate_m": None,
+            "nearest_unresolved_range_m": None,
             "health": "unavailable",
             "health_reasons": [reason],
             "processed_scans": self.processed,
-            "measurement_timestamp_ns": stamp,
+            "input_received_scans": self.received,
+            "dropped_invalid_scans": self.invalid,
+            "dropped_duplicate_scans": self.duplicates,
+            "dropped_out_of_order_scans": self.out_of_order,
+            "input_loss_count": None,
+            "input_loss_note": "DDS has no source sequence counter; depth=1 retains only the newest queued scan.",
+            "measurement_timestamp_ns": None,
+            "result_age_s": None,
+            "result_age_note": "No current measurement exists; route clearance is unknown.",
         }
-        self.publish(row, np.empty((0, 3)), stamp)
+        self.publish(row, np.empty((0, 3)), 0)
 
     def watchdog(self):
         if not self.silent and time.monotonic() - self.last_received > self.timeout:
@@ -119,9 +129,9 @@ class PerceptionNode(Node):
             available = [name for name, kinds in self.get_topic_names_and_types()
                          if "sensor_msgs/msg/PointCloud2" in kinds]
             self.get_logger().error(
-                f"No cloud on {self.get_parameter('input_topic').value!r} for "
+                f"No fresh cloud on {self.get_parameter('input_topic').value!r} for "
                 f"{self.timeout:g} s. Point-cloud topics currently available: {available or 'none'}. "
-                "Restart with input_topic:=<one of those>."
+                "Check the input topic and acquisition timestamp progression."
             )
             self.detector = Detector(self.config)
             # Keep the acquisition watermark: silence does not turn an old
@@ -130,6 +140,8 @@ class PerceptionNode(Node):
 
     def on_cloud(self, message):
         received = time.monotonic()
+        self.received += 1
+        out_of_order = False
         stamp = message.header.stamp
         ns = stamp.sec * 1_000_000_000 + stamp.nanosec
         try:
@@ -145,6 +157,8 @@ class PerceptionNode(Node):
                 self.duplicates += 1
                 return
             if self.last_stamp is not None and ns < self.last_stamp:
+                self.out_of_order += 1
+                out_of_order = True
                 raise ValueError(
                     "measurement time moved backwards; restart for a new bag epoch"
                 )
@@ -160,18 +174,11 @@ class PerceptionNode(Node):
                 message, self.rotation, self.translation
             )
             decode_s = time.monotonic() - decode_started
-            self.last_received = received
-            self.silent = False
             row = self.detector.process(points, ns * 1e-9, times, point_attributes=attributes)
             self.last_stamp, self.source_frame = ns, message.header.frame_id
-            if message.header.frame_id and message.header.frame_id not in self.broadcast_frames:
-                transform = TransformStamped()
-                transform.header.stamp = self.get_clock().now().to_msg()
-                transform.header.frame_id = "tunnel_guard_local"
-                transform.child_frame_id = message.header.frame_id
-                transform.transform.rotation.w = 1.0
-                self.static_broadcaster.sendTransform(transform)
-                self.broadcast_frames.add(message.header.frame_id)
+            # Receiving a duplicate does not renew the last usable measurement.
+            self.last_received = received
+            self.silent = False
             self.processed += 1
             row.update(
                 measurement_timestamp_ns=ns,
@@ -179,15 +186,20 @@ class PerceptionNode(Node):
                 input_topic=self.get_parameter("input_topic").value,
                 invalid_points=invalid,
                 scan_duration_s=duration,
+                input_received_scans=self.received,
                 processed_scans=self.processed,
                 skipped_duplicate_scans=self.duplicates,
+                dropped_invalid_scans=self.invalid,
+                dropped_duplicate_scans=self.duplicates,
+                dropped_out_of_order_scans=self.out_of_order,
                 input_queue_depth=1,
                 input_reliability=self.get_parameter("input_reliability").value,
                 input_loss_count=None,
-                input_loss_note="DDS latest-scan policy; source has no sequence counter",
+                input_loss_note="DDS has no source sequence counter; depth=1 retains only the newest queued scan.",
                 decode_s=decode_s,
-                sensor_to_result_s=None,
-                latency_scope="Callback entry to result; excludes DDS queue and publication. Sensor/host clock relation unverified.",
+                result_age_s=None,
+                result_age_note="Not computed: acquisition and host clocks are not proven comparable.",
+                latency_scope="Callback entry to publication; excludes DDS queue. Sensor/host clock relation unverified.",
                 callback_processing_s=time.monotonic() - received,
             )
             if row["callback_processing_s"] > 0.1:
@@ -216,9 +228,11 @@ class PerceptionNode(Node):
                 )
             )
         except (ValueError, RuntimeError) as error:
+            if not out_of_order:
+                self.invalid += 1
             self.detector = Detector(self.config)
             self.get_logger().error(str(error))
-            self.unavailable(str(error), max(0, ns))
+            self.unavailable(str(error))
 
 
 def main(args=None):
