@@ -1,0 +1,13 @@
+diff --git a/tunnel_guard/detector.py b/tunnel_guard/detector.py
+index a8960bc..a3a1257 100644
+--- a/tunnel_guard/detector.py
++++ b/tunnel_guard/detector.py
+@@ -508,7 +508,7 @@ class Detector:
+             if motion_valid:
+                 # R(p-c), not (Rp+t)-(Rc+t): a point at its own center must
+                 # stay exactly zero, rather than creating cells across floor(0).
+-                track["evidence"].append((stamp, (support - centers[index]) @ pose[:3, :3].T))
++                track["evidence"].append((stamp, support @ pose[:3, :3].T + pose[:3, 3] - world[index]))
+                 while track["evidence"] and stamp - track["evidence"][0][0] > cfg["evidence_window_s"]:
+                     track["evidence"].popleft()
+                 if not track["history"] or track["history"][-1] != self.frame_number:
