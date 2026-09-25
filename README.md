@@ -5,6 +5,52 @@ Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 
 **Research baseline, not a validated collision-warning system.** Recall, infrastructure alarms, generalization, and runtime remain unresolved. `CASE.md` contains the original requirements. Recorded RViz2 export and a live ROS2 Humble adapter are implemented. The AMD64 Humble container processed a ten-scan real replay under Apple Silicon emulation; native target throughput and the RViz GUI remain unverified.
 
 The initial review and its two real 30-frame prefixes are documented in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). Subsequent iterations and historical results below are separate evidence.
+## Fixed issue #23 benchmark
+
+`bash autoresearch.sh` builds the required local C++ extension and executes the
+fixed recipe in `configs/autoresearch-issue23.json`: 30 diagnostic source scans,
+all six original real recordings, the uninterrupted 11,271-scan negative
+recording, and all 1,510 organizer-synthetic scans. No network or automated tests.
+Runs are sequential, use seed 20260915, and retain full compressed predictions,
+source/config/native identities, per-recording metrics and positive attribution
+under a new `build/autoresearch-issue23/run-NNNN` directory.
+
+The primary metric is `negative_alarm_episodes` (lower is better), with an episode
+ending at an observed non-alarm acquisition or a gap over 0.5 s. Per-recording and
+fixed-partition alarm/unknown/unresolved gates, per-frame positive retention, and
+person localization/continuity prevent trading a critical regression for a better
+total. Missing synthetic confirmation uses `-1` for first frame/range metrics.
+The frozen evaluation partition was previously inspected; it is not blind.
+
+The unchanged detector completed 15,269 recording frames plus the 30 diagnostic
+scans: 113 negative-panel episodes; the long recording retained 98 alarm frames,
+88 episodes, 23 unknown and 324 unresolved frames. Person presence remained
+36/36 with no track switches. Synthetic events 9 and 10 still have **zero**
+intersection confirmations: a valid benchmark baseline is not release acceptance.
+
+Separate evaluation of an already completed replay avoids repeating expensive
+inference merely to inspect its evidence:
+
+```bash
+PYTHONPATH=. .venv/bin/python scripts/benchmark_issue23.py \
+  configs/autoresearch-issue23.json --score build/autoresearch-issue23/run-0001
+PYTHONPATH=. .venv/bin/python scripts/audit_issue23_certification.py \
+  configs/autoresearch-issue23.json build/issue23-certification-new
+```
+
+The pointwise audit reproduces all 70 frozen components' certified support through
+the native classifier. It records original return indices and contour margins;
+near-zero fit covariance in a three-anchor quadratic and zero covariance in the
+two-anchor fallback are observability risks, not proof that every extrapolated
+detection is false. See `results/issue23-certification-mechanism-20260925.json`
+and its companion ZIP. Detector behavior and thresholds are unchanged.
+
+This instrumented offline run took about 3 h 21 min; long-recording inference
+p50/p95 was 629/1302 ms. These are not controlled target-hardware timings or
+sensor-to-display latency. PRs #28 (surface support), #34 (contour-labelled hybrid
+cases), and #33 (ROS contract) remain separate candidates requiring integration
+and acceptance; their historical claims are not silently included in this score.
+
 
 ## Extended dataset: initial real runs
 
