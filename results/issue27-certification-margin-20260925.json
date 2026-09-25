@@ -1,0 +1,1361 @@
+{
+ "date": "2026-09-25",
+ "for": "issue #27, on PR #29 commit a4789d9",
+ "input": {
+  "archive": "results/issue23-point-support-20260924.zip",
+  "frames": 30,
+  "alarming_components": 70,
+  "note": "Point support with original PointCloud2 source_indices, not a bbox crop. Interior membership, density core and observed flags are taken from the masks their own run saved; none of it is recomputed by us."
+ },
+ "control_that_failed": {
+  "what": "Reconstructing their path centre from the shipped geometry fields, to compare individual points against this baseline's anchors as asked.",
+  "result": "No centre rule reproduces the lateral extent the baseline itself reports per component. Quadratic continuation is closest (59 percent of components within 0.05 m, best rule for 43 of 70), endpoint tangent next (31 percent), centre held at the last anchor and centre at zero are both far worse. Largest miss of the best rule is 1.354 m.",
+  "consequence": "Every number below is therefore computed either from their own masks, or in a form that does not need their centre, and the centre-dependent result is bracketed by both candidate rules rather than asserted from one."
+ },
+ "their_correction_reproduced": {
+  "claim": "MorS1337: the 19 immediate / 11 temporal split cannot serve as a split between the observed and the extrapolated segment.",
+  "our_count": {
+   "immediate_interior_geometry": {
+    "components": 47,
+    "all_certifying_beyond_anchor": 39
+   },
+   "temporal_interior_evidence": {
+    "components": 23,
+    "all_certifying_beyond_anchor": 22
+   }
+  },
+  "verdict": "Reproduced exactly on their masks, including their own 39 and 22 of 23. The split is withdrawn as an observed-versus-extrapolated distinction. It was built on episode counts from our probe, and component-level point support contradicts it."
+ },
+ "where_the_certifying_points_are": {
+  "all_certifying_beyond_last_anchor": 61,
+  "components": 70,
+  "nearest_certifying_point_beyond_anchor_m": {
+   "p10": -2.264,
+   "p50": 14.715,
+   "max": 22.27
+  },
+  "mean_outreach_m": {
+   "p50": 16.06,
+   "p90": 21.748
+  },
+  "certifying_share_of_support": 0.372
+ },
+ "certification_margin": {
+  "method": "For each component, the set of path-centre positions that leave at least one certifying point interior is computed exactly -- the contour half-width depends on height above the rail head, not on the centre -- and the margin is the distance from a candidate centre to the edge of that set. The set's own width is close to the contour width plus the component's lateral spread and carries little information; the margin is the quantity that does.",
+  "measured_centre_error_source": "pair test in docs/CURVED_CORRIDOR_AND_RANGE.md, recorded in results/arc-retraction-20260922.json: tangent 0.198 m at 10 m and 0.664 m at 20 m of outreach, curvature continuation 0.090 m and 0.247 m",
+  "by_candidate_centre": {
+   "tangent": {
+    "components_with_centre_inside_admissible_set": 69,
+    "margin_m": {
+     "p10": 0.298,
+     "p50": 0.797,
+     "p90": 1.63
+    },
+    "share_margin_below_measured_error_tangent_continuation": 0.246,
+    "share_margin_below_measured_error_curvature_continuation": 0.014
+   },
+   "quadratic": {
+    "components_with_centre_inside_admissible_set": 54,
+    "margin_m": {
+     "p10": 0.272,
+     "p50": 0.536,
+     "p90": 1.26
+    },
+    "share_margin_below_measured_error_tangent_continuation": 0.389,
+    "share_margin_below_measured_error_curvature_continuation": 0.019
+   }
+  },
+  "reading": "Under tangent continuation 25 to 39 percent of these certifications sit inside the centre error measured at their own outreach; under curvature continuation 1 to 2 percent do. Which continuation the line actually runs therefore decides whether these alarms are robust, and their reported lateral extent is fit better by the curvature candidate. No causal claim is made either way."
+ },
+ "their_own_accounting": {
+  "path_relation_reason": {
+   "certified_interior_shared_with_structure": 49,
+   "inside_heuristic_path_and_ground_interval": 21
+  },
+  "certified_unexplained_voxels_zero": 49,
+  "claim_voxels_zero": 47,
+  "interior_unmeasured_voxels_zero": 68,
+  "margin_by_reason_tangent_candidate": {
+   "certified_interior_shared_with_structure": {
+    "components": 49,
+    "margin_p50_m": 0.62,
+    "share_inside_measured_error": 0.33
+   },
+   "inside_heuristic_path_and_ground_interval": {
+    "components": 20,
+    "margin_p50_m": 1.13,
+    "share_inside_measured_error": 0.05
+   }
+  },
+  "reading": "All 23 temporal components and 26 of 47 immediate ones are certified interior shared with structure, with no unexplained certified voxels. Those are also the ones with the thinner margin. The heuristic-interval components sit almost twice as far from the de-certifying edge."
+ },
+ "what_is_not_established": [
+  "That extrapolation causes these alarms. The margin being comparable to the centre error is not a cause.",
+  "That the components are infrastructure. Sharing certified interior with structure is their pipeline's accounting of overlap, not an identification.",
+  "Anything about the 58 episodes outside these 30 frames, or about later frames of these episodes.",
+  "Any basis for suppressing far alarms or filtering short episodes; nothing measured here supports either."
+ ],
+ "single_blocker_left": "The path centre their run used at the certifying x. Either the path() output per component, or the name of the continuation rule in force, settles the 25-39 versus 1-2 percent question without another replay.",
+ "components": [
+  {
+   "frame": 5300,
+   "component_id": 146,
+   "measurement_timestamp_ns": 946687219233363986,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 102,
+   "mean_outreach_m": 1.41,
+   "admissible_centre_m": [
+    -1.92,
+    1.42
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.498,
+   "margin_quadratic_m": 0.446,
+   "measured_centre_error_tangent_m": 0.074,
+   "measured_centre_error_curvature_m": 0.044
+  },
+  {
+   "frame": 5360,
+   "component_id": 197,
+   "measurement_timestamp_ns": 946687225233399987,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 34,
+   "mean_outreach_m": 9.61,
+   "admissible_centre_m": [
+    -1.03,
+    2.11
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.299,
+   "margin_quadratic_m": 0.373,
+   "measured_centre_error_tangent_m": 0.188,
+   "measured_centre_error_curvature_m": 0.086
+  },
+  {
+   "frame": 5360,
+   "component_id": 229,
+   "measurement_timestamp_ns": 946687225233399987,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 109,
+   "mean_outreach_m": 17.2,
+   "admissible_centre_m": [
+    -0.94,
+    3.02
+   ],
+   "certified_unexplained_voxels": 8,
+   "margin_tangent_m": 0.861,
+   "margin_quadratic_m": 1.151,
+   "measured_centre_error_tangent_m": 0.534,
+   "measured_centre_error_curvature_m": 0.203
+  },
+  {
+   "frame": 5360,
+   "component_id": 234,
+   "measurement_timestamp_ns": 946687225233399987,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 51,
+   "mean_outreach_m": 19.52,
+   "admissible_centre_m": [
+    -0.78,
+    3.28
+   ],
+   "certified_unexplained_voxels": 1,
+   "margin_tangent_m": 1.018,
+   "margin_quadratic_m": 1.398,
+   "measured_centre_error_tangent_m": 0.642,
+   "measured_centre_error_curvature_m": 0.24
+  },
+  {
+   "frame": 5531,
+   "component_id": 77,
+   "measurement_timestamp_ns": 946687242333405972,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 185,
+   "mean_outreach_m": 16.07,
+   "admissible_centre_m": [
+    -1.16,
+    2.37
+   ],
+   "certified_unexplained_voxels": 4,
+   "margin_tangent_m": 0.92,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.481,
+   "measured_centre_error_curvature_m": 0.185
+  },
+  {
+   "frame": 5541,
+   "component_id": 133,
+   "measurement_timestamp_ns": 946687243333405972,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 43,
+   "mean_outreach_m": 13.96,
+   "admissible_centre_m": [
+    -2.82,
+    0.34
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.37,
+   "margin_quadratic_m": 0.271,
+   "measured_centre_error_tangent_m": 0.383,
+   "measured_centre_error_curvature_m": 0.152
+  },
+  {
+   "frame": 5550,
+   "component_id": 98,
+   "measurement_timestamp_ns": 946687244233329058,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 172,
+   "mean_outreach_m": 3.71,
+   "admissible_centre_m": [
+    -1.32,
+    2.01
+   ],
+   "certified_unexplained_voxels": 146,
+   "margin_tangent_m": 0.63,
+   "margin_quadratic_m": 0.4,
+   "measured_centre_error_tangent_m": 0.074,
+   "measured_centre_error_curvature_m": 0.044
+  },
+  {
+   "frame": 6438,
+   "component_id": 187,
+   "measurement_timestamp_ns": 946687333033326983,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 2,
+   "mean_outreach_m": 21.74,
+   "admissible_centre_m": [
+    -1.85,
+    0.81
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.548,
+   "margin_quadratic_m": 0.45,
+   "measured_centre_error_tangent_m": 0.775,
+   "measured_centre_error_curvature_m": 0.282
+  },
+  {
+   "frame": 6451,
+   "component_id": 159,
+   "measurement_timestamp_ns": 946687334333433032,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 2,
+   "mean_outreach_m": 6.9,
+   "admissible_centre_m": [
+    -2.55,
+    0.12
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.195,
+   "margin_quadratic_m": 0.172,
+   "measured_centre_error_tangent_m": 0.121,
+   "measured_centre_error_curvature_m": 0.062
+  },
+  {
+   "frame": 6451,
+   "component_id": 167,
+   "measurement_timestamp_ns": 946687334333433032,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 2,
+   "mean_outreach_m": 8.58,
+   "admissible_centre_m": [
+    -2.52,
+    0.14
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.215,
+   "margin_quadratic_m": 0.186,
+   "measured_centre_error_tangent_m": 0.163,
+   "measured_centre_error_curvature_m": 0.077
+  },
+  {
+   "frame": 6451,
+   "component_id": 173,
+   "measurement_timestamp_ns": 946687334333433032,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 2,
+   "mean_outreach_m": 11.09,
+   "admissible_centre_m": [
+    -2.48,
+    0.23
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.305,
+   "margin_quadratic_m": 0.266,
+   "measured_centre_error_tangent_m": 0.249,
+   "measured_centre_error_curvature_m": 0.107
+  },
+  {
+   "frame": 6451,
+   "component_id": 183,
+   "measurement_timestamp_ns": 946687334333433032,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 2,
+   "mean_outreach_m": 13.88,
+   "admissible_centre_m": [
+    -2.41,
+    0.25
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.325,
+   "margin_quadratic_m": 0.273,
+   "measured_centre_error_tangent_m": 0.379,
+   "measured_centre_error_curvature_m": 0.151
+  },
+  {
+   "frame": 6451,
+   "component_id": 188,
+   "measurement_timestamp_ns": 946687334333433032,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 2,
+   "mean_outreach_m": 16.05,
+   "admissible_centre_m": [
+    -2.37,
+    0.34
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.415,
+   "margin_quadratic_m": 0.352,
+   "measured_centre_error_tangent_m": 0.48,
+   "measured_centre_error_curvature_m": 0.185
+  },
+  {
+   "frame": 6451,
+   "component_id": 192,
+   "measurement_timestamp_ns": 946687334333433032,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 4,
+   "mean_outreach_m": 19.84,
+   "admissible_centre_m": [
+    -2.6,
+    0.36
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.435,
+   "margin_quadratic_m": 0.35,
+   "measured_centre_error_tangent_m": 0.656,
+   "measured_centre_error_curvature_m": 0.244
+  },
+  {
+   "frame": 6451,
+   "component_id": 193,
+   "measurement_timestamp_ns": 946687334333433032,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 3,
+   "mean_outreach_m": 18.84,
+   "admissible_centre_m": [
+    -2.24,
+    0.48
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.555,
+   "margin_quadratic_m": 0.475,
+   "measured_centre_error_tangent_m": 0.61,
+   "measured_centre_error_curvature_m": 0.229
+  },
+  {
+   "frame": 6451,
+   "component_id": 196,
+   "measurement_timestamp_ns": 946687334333433032,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 3,
+   "mean_outreach_m": 21.06,
+   "admissible_centre_m": [
+    -2.28,
+    0.61
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.685,
+   "margin_quadratic_m": 0.592,
+   "measured_centre_error_tangent_m": 0.732,
+   "measured_centre_error_curvature_m": 0.269
+  },
+  {
+   "frame": 6461,
+   "component_id": 189,
+   "measurement_timestamp_ns": 946687335333412051,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 2,
+   "mean_outreach_m": 13.66,
+   "admissible_centre_m": [
+    -2.31,
+    0.37
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.346,
+   "margin_quadratic_m": 0.255,
+   "measured_centre_error_tangent_m": 0.369,
+   "measured_centre_error_curvature_m": 0.147
+  },
+  {
+   "frame": 6461,
+   "component_id": 194,
+   "measurement_timestamp_ns": 946687335333412051,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 3,
+   "mean_outreach_m": 16.46,
+   "admissible_centre_m": [
+    -2.22,
+    0.5
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.468,
+   "margin_quadratic_m": 0.351,
+   "measured_centre_error_tangent_m": 0.499,
+   "measured_centre_error_curvature_m": 0.191
+  },
+  {
+   "frame": 6461,
+   "component_id": 198,
+   "measurement_timestamp_ns": 946687335333412051,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 3,
+   "mean_outreach_m": 18.69,
+   "admissible_centre_m": [
+    -2.16,
+    0.56
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.521,
+   "margin_quadratic_m": 0.382,
+   "measured_centre_error_tangent_m": 0.603,
+   "measured_centre_error_curvature_m": 0.226
+  },
+  {
+   "frame": 6461,
+   "component_id": 208,
+   "measurement_timestamp_ns": 946687335333412051,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 5,
+   "mean_outreach_m": 22.34,
+   "admissible_centre_m": [
+    -2.35,
+    0.65
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.601,
+   "margin_quadratic_m": 0.421,
+   "measured_centre_error_tangent_m": 0.813,
+   "measured_centre_error_curvature_m": 0.294
+  },
+  {
+   "frame": 6493,
+   "component_id": 217,
+   "measurement_timestamp_ns": 946687338533447027,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 2,
+   "mean_outreach_m": 20.41,
+   "admissible_centre_m": [
+    -1.41,
+    1.25
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.587,
+   "margin_quadratic_m": 0.422,
+   "measured_centre_error_tangent_m": 0.69,
+   "measured_centre_error_curvature_m": 0.255
+  },
+  {
+   "frame": 6501,
+   "component_id": 204,
+   "measurement_timestamp_ns": 946687339333392024,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 2,
+   "mean_outreach_m": 19.82,
+   "admissible_centre_m": [
+    -1.29,
+    1.41
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.618,
+   "margin_quadratic_m": 0.417,
+   "measured_centre_error_tangent_m": 0.656,
+   "measured_centre_error_curvature_m": 0.244
+  },
+  {
+   "frame": 6501,
+   "component_id": 210,
+   "measurement_timestamp_ns": 946687339333392024,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 4,
+   "mean_outreach_m": 22.36,
+   "admissible_centre_m": [
+    -1.12,
+    1.64
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.784,
+   "margin_quadratic_m": 0.527,
+   "measured_centre_error_tangent_m": 0.815,
+   "measured_centre_error_curvature_m": 0.295
+  },
+  {
+   "frame": 6504,
+   "component_id": 212,
+   "measurement_timestamp_ns": 946687339633363962,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 3,
+   "mean_outreach_m": 17.77,
+   "admissible_centre_m": [
+    -1.09,
+    1.64
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.627,
+   "margin_quadratic_m": 0.399,
+   "measured_centre_error_tangent_m": 0.56,
+   "measured_centre_error_curvature_m": 0.212
+  },
+  {
+   "frame": 6512,
+   "component_id": 231,
+   "measurement_timestamp_ns": 946687340433375001,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 4,
+   "mean_outreach_m": 21.54,
+   "admissible_centre_m": [
+    -0.73,
+    2.03
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 1.011,
+   "margin_quadratic_m": 0.629,
+   "measured_centre_error_tangent_m": 0.762,
+   "measured_centre_error_curvature_m": 0.278
+  },
+  {
+   "frame": 6517,
+   "component_id": 234,
+   "measurement_timestamp_ns": 946687340933393955,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 3,
+   "mean_outreach_m": 19.25,
+   "admissible_centre_m": [
+    -0.33,
+    2.44
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.723,
+   "margin_quadratic_m": 0.592,
+   "measured_centre_error_tangent_m": 0.629,
+   "measured_centre_error_curvature_m": 0.235
+  },
+  {
+   "frame": 6533,
+   "component_id": 241,
+   "measurement_timestamp_ns": 946687342533388972,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 5,
+   "mean_outreach_m": 21.05,
+   "admissible_centre_m": [
+    0.34,
+    3.17
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 1.093,
+   "margin_quadratic_m": 0.583,
+   "measured_centre_error_tangent_m": 0.731,
+   "measured_centre_error_curvature_m": 0.268
+  },
+  {
+   "frame": 6535,
+   "component_id": 207,
+   "measurement_timestamp_ns": 946687342733407974,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 2,
+   "mean_outreach_m": 16.55,
+   "admissible_centre_m": [
+    -0.23,
+    2.49
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.54,
+   "margin_quadratic_m": 0.364,
+   "measured_centre_error_tangent_m": 0.503,
+   "measured_centre_error_curvature_m": 0.193
+  },
+  {
+   "frame": 6535,
+   "component_id": 221,
+   "measurement_timestamp_ns": 946687342733407974,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 4,
+   "mean_outreach_m": 21.82,
+   "admissible_centre_m": [
+    0.36,
+    3.13
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.869,
+   "margin_quadratic_m": 0.541,
+   "measured_centre_error_tangent_m": 0.78,
+   "measured_centre_error_curvature_m": 0.284
+  },
+  {
+   "frame": 6562,
+   "component_id": 138,
+   "measurement_timestamp_ns": 946687345433416963,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 488,
+   "mean_outreach_m": 18.8,
+   "admissible_centre_m": [
+    -2.56,
+    1.38
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 1.26,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.608,
+   "measured_centre_error_curvature_m": 0.228
+  },
+  {
+   "frame": 6564,
+   "component_id": 60,
+   "measurement_timestamp_ns": 946687345633402944,
+   "confirmation": "temporal_interior_evidence",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 2,
+   "mean_outreach_m": -16.62,
+   "admissible_centre_m": [
+    -2.22,
+    0.41
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.07,
+   "margin_quadratic_m": 0.027,
+   "measured_centre_error_tangent_m": 0.074,
+   "measured_centre_error_curvature_m": 0.044
+  },
+  {
+   "frame": 6569,
+   "component_id": 130,
+   "measurement_timestamp_ns": 946687346133301020,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 84,
+   "mean_outreach_m": -0.94,
+   "admissible_centre_m": [
+    -2.2,
+    0.97
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.294,
+   "margin_quadratic_m": 0.315,
+   "measured_centre_error_tangent_m": 0.074,
+   "measured_centre_error_curvature_m": 0.044
+  },
+  {
+   "frame": 6569,
+   "component_id": 165,
+   "measurement_timestamp_ns": 946687346133301020,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 44,
+   "mean_outreach_m": 6.04,
+   "admissible_centre_m": [
+    -1.71,
+    1.68
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.771,
+   "margin_quadratic_m": 0.562,
+   "measured_centre_error_tangent_m": 0.1,
+   "measured_centre_error_curvature_m": 0.054
+  },
+  {
+   "frame": 6569,
+   "component_id": 177,
+   "measurement_timestamp_ns": 946687346133301020,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 153,
+   "mean_outreach_m": 10.76,
+   "admissible_centre_m": [
+    -1.5,
+    2.37
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 1.243,
+   "margin_quadratic_m": 0.68,
+   "measured_centre_error_tangent_m": 0.233,
+   "measured_centre_error_curvature_m": 0.102
+  },
+  {
+   "frame": 6569,
+   "component_id": 203,
+   "measurement_timestamp_ns": 946687346133301020,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 99,
+   "mean_outreach_m": 19.37,
+   "admissible_centre_m": [
+    -0.52,
+    3.22
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 1.86,
+   "margin_quadratic_m": 0.845,
+   "measured_centre_error_tangent_m": 0.635,
+   "measured_centre_error_curvature_m": 0.237
+  },
+  {
+   "frame": 6574,
+   "component_id": 142,
+   "measurement_timestamp_ns": 946687346633308053,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 754,
+   "mean_outreach_m": 4.84,
+   "admissible_centre_m": [
+    -2.42,
+    1.96
+   ],
+   "certified_unexplained_voxels": 42,
+   "margin_tangent_m": 1.314,
+   "margin_quadratic_m": 1.536,
+   "measured_centre_error_tangent_m": 0.074,
+   "measured_centre_error_curvature_m": 0.044
+  },
+  {
+   "frame": 6574,
+   "component_id": 165,
+   "measurement_timestamp_ns": 946687346633308053,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 41,
+   "mean_outreach_m": 9.87,
+   "admissible_centre_m": [
+    -1.78,
+    1.67
+   ],
+   "certified_unexplained_voxels": 6,
+   "margin_tangent_m": 1.024,
+   "margin_quadratic_m": 1.526,
+   "measured_centre_error_tangent_m": 0.195,
+   "measured_centre_error_curvature_m": 0.089
+  },
+  {
+   "frame": 6574,
+   "component_id": 166,
+   "measurement_timestamp_ns": 946687346633308053,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 45,
+   "mean_outreach_m": 11.32,
+   "admissible_centre_m": [
+    -1.55,
+    1.87
+   ],
+   "certified_unexplained_voxels": 5,
+   "margin_tangent_m": 1.223,
+   "margin_quadratic_m": 1.562,
+   "measured_centre_error_tangent_m": 0.26,
+   "measured_centre_error_curvature_m": 0.111
+  },
+  {
+   "frame": 6574,
+   "component_id": 175,
+   "measurement_timestamp_ns": 946687346633308053,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 124,
+   "mean_outreach_m": 14.45,
+   "admissible_centre_m": [
+    -1.41,
+    2.34
+   ],
+   "certified_unexplained_voxels": 104,
+   "margin_tangent_m": 1.693,
+   "margin_quadratic_m": 1.166,
+   "measured_centre_error_tangent_m": 0.405,
+   "measured_centre_error_curvature_m": 0.16
+  },
+  {
+   "frame": 6591,
+   "component_id": 157,
+   "measurement_timestamp_ns": 946687348333462954,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 52,
+   "mean_outreach_m": 11.65,
+   "admissible_centre_m": [
+    -0.93,
+    2.26
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.344,
+   "margin_quadratic_m": 0.391,
+   "measured_centre_error_tangent_m": 0.275,
+   "measured_centre_error_curvature_m": 0.116
+  },
+  {
+   "frame": 6591,
+   "component_id": 178,
+   "measurement_timestamp_ns": 946687348333462954,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 87,
+   "mean_outreach_m": 16.15,
+   "admissible_centre_m": [
+    -0.72,
+    2.97
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.797,
+   "margin_quadratic_m": 0.904,
+   "measured_centre_error_tangent_m": 0.485,
+   "measured_centre_error_curvature_m": 0.187
+  },
+  {
+   "frame": 6591,
+   "component_id": 182,
+   "measurement_timestamp_ns": 946687348333462954,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 70,
+   "mean_outreach_m": 17.65,
+   "admissible_centre_m": [
+    -0.63,
+    3.31
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 1.053,
+   "margin_quadratic_m": 1.185,
+   "measured_centre_error_tangent_m": 0.554,
+   "measured_centre_error_curvature_m": 0.21
+  },
+  {
+   "frame": 6591,
+   "component_id": 188,
+   "measurement_timestamp_ns": 946687348333462954,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 39,
+   "mean_outreach_m": 19.06,
+   "admissible_centre_m": [
+    -0.53,
+    2.95
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.62,
+   "margin_quadratic_m": 0.775,
+   "measured_centre_error_tangent_m": 0.62,
+   "measured_centre_error_curvature_m": 0.232
+  },
+  {
+   "frame": 6591,
+   "component_id": 191,
+   "measurement_timestamp_ns": 946687348333462954,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 39,
+   "mean_outreach_m": 19.75,
+   "admissible_centre_m": [
+    0.19,
+    3.47
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 1.091,
+   "margin_quadratic_m": 1.263,
+   "measured_centre_error_tangent_m": 0.653,
+   "measured_centre_error_curvature_m": 0.243
+  },
+  {
+   "frame": 6591,
+   "component_id": 196,
+   "measurement_timestamp_ns": 946687348333462954,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 42,
+   "mean_outreach_m": 21.95,
+   "admissible_centre_m": [
+    -0.36,
+    3.53
+   ],
+   "certified_unexplained_voxels": 1,
+   "margin_tangent_m": 1.037,
+   "margin_quadratic_m": 1.252,
+   "measured_centre_error_tangent_m": 0.789,
+   "measured_centre_error_curvature_m": 0.287
+  },
+  {
+   "frame": 6613,
+   "component_id": 135,
+   "measurement_timestamp_ns": 946687350533447981,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 111,
+   "mean_outreach_m": -1.78,
+   "admissible_centre_m": [
+    -2.06,
+    1.13
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.294,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.074,
+   "measured_centre_error_curvature_m": 0.044
+  },
+  {
+   "frame": 6613,
+   "component_id": 159,
+   "measurement_timestamp_ns": 946687350533447981,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 572,
+   "mean_outreach_m": 9.78,
+   "admissible_centre_m": [
+    -1.86,
+    2.82
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 1.569,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.192,
+   "measured_centre_error_curvature_m": 0.088
+  },
+  {
+   "frame": 6613,
+   "component_id": 189,
+   "measurement_timestamp_ns": 946687350533447981,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 50,
+   "mean_outreach_m": 16.57,
+   "admissible_centre_m": [
+    -0.67,
+    2.94
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 1.478,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.504,
+   "measured_centre_error_curvature_m": 0.193
+  },
+  {
+   "frame": 6613,
+   "component_id": 192,
+   "measurement_timestamp_ns": 946687350533447981,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 74,
+   "mean_outreach_m": 18.02,
+   "admissible_centre_m": [
+    -0.51,
+    3.63
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 2.023,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.572,
+   "measured_centre_error_curvature_m": 0.216
+  },
+  {
+   "frame": 6613,
+   "component_id": 193,
+   "measurement_timestamp_ns": 946687350533447981,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 69,
+   "mean_outreach_m": 19.82,
+   "admissible_centre_m": [
+    -0.26,
+    3.46
+   ],
+   "certified_unexplained_voxels": 6,
+   "margin_tangent_m": 1.835,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.656,
+   "measured_centre_error_curvature_m": 0.244
+  },
+  {
+   "frame": 6613,
+   "component_id": 196,
+   "measurement_timestamp_ns": 946687350533447981,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 83,
+   "mean_outreach_m": 21.91,
+   "admissible_centre_m": [
+    0.03,
+    3.91
+   ],
+   "certified_unexplained_voxels": 21,
+   "margin_tangent_m": 1.622,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.786,
+   "measured_centre_error_curvature_m": 0.286
+  },
+  {
+   "frame": 6627,
+   "component_id": 211,
+   "measurement_timestamp_ns": 946687351933326006,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 43,
+   "mean_outreach_m": 7.53,
+   "admissible_centre_m": [
+    -0.29,
+    3.13
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.588,
+   "margin_quadratic_m": 0.384,
+   "measured_centre_error_tangent_m": 0.137,
+   "measured_centre_error_curvature_m": 0.067
+  },
+  {
+   "frame": 6627,
+   "component_id": 217,
+   "measurement_timestamp_ns": 946687351933326006,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 116,
+   "mean_outreach_m": 10.28,
+   "admissible_centre_m": [
+    0.07,
+    4.01
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 1.233,
+   "margin_quadratic_m": 0.897,
+   "measured_centre_error_tangent_m": 0.211,
+   "measured_centre_error_curvature_m": 0.094
+  },
+  {
+   "frame": 6627,
+   "component_id": 225,
+   "measurement_timestamp_ns": 946687351933326006,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 45,
+   "mean_outreach_m": 14.54,
+   "admissible_centre_m": [
+    0.66,
+    4.37
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 1.36,
+   "margin_quadratic_m": 0.869,
+   "measured_centre_error_tangent_m": 0.41,
+   "measured_centre_error_curvature_m": 0.161
+  },
+  {
+   "frame": 6627,
+   "component_id": 229,
+   "measurement_timestamp_ns": 946687351933326006,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 89,
+   "mean_outreach_m": 16.52,
+   "admissible_centre_m": [
+    0.89,
+    4.84
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 1.695,
+   "margin_quadratic_m": 1.105,
+   "measured_centre_error_tangent_m": 0.502,
+   "measured_centre_error_curvature_m": 0.192
+  },
+  {
+   "frame": 7976,
+   "component_id": 204,
+   "measurement_timestamp_ns": 946687486833399057,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 78,
+   "mean_outreach_m": 7.31,
+   "admissible_centre_m": [
+    -2.23,
+    1.79
+   ],
+   "certified_unexplained_voxels": 38,
+   "margin_tangent_m": 1.664,
+   "margin_quadratic_m": 1.84,
+   "measured_centre_error_tangent_m": 0.131,
+   "measured_centre_error_curvature_m": 0.065
+  },
+  {
+   "frame": 8198,
+   "component_id": 0,
+   "measurement_timestamp_ns": 946687511933447957,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 1479,
+   "mean_outreach_m": -0.48,
+   "admissible_centre_m": [
+    -3.49,
+    0.41
+   ],
+   "certified_unexplained_voxels": 45,
+   "margin_tangent_m": 1.025,
+   "margin_quadratic_m": 1.079,
+   "measured_centre_error_tangent_m": 0.074,
+   "measured_centre_error_curvature_m": 0.044
+  },
+  {
+   "frame": 8424,
+   "component_id": 92,
+   "measurement_timestamp_ns": 946687539033346057,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 246,
+   "mean_outreach_m": 12.86,
+   "admissible_centre_m": [
+    -1.53,
+    2.16
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.933,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.331,
+   "measured_centre_error_curvature_m": 0.135
+  },
+  {
+   "frame": 8424,
+   "component_id": 114,
+   "measurement_timestamp_ns": 946687539033346057,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 100,
+   "mean_outreach_m": 15.57,
+   "admissible_centre_m": [
+    -1.6,
+    2.05
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 1.021,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.457,
+   "measured_centre_error_curvature_m": 0.177
+  },
+  {
+   "frame": 8424,
+   "component_id": 136,
+   "measurement_timestamp_ns": 946687539033346057,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 135,
+   "mean_outreach_m": 22.08,
+   "admissible_centre_m": [
+    -1.8,
+    2.04
+   ],
+   "certified_unexplained_voxels": 8,
+   "margin_tangent_m": 1.255,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.796,
+   "measured_centre_error_curvature_m": 0.289
+  },
+  {
+   "frame": 8458,
+   "component_id": 0,
+   "measurement_timestamp_ns": 946687542433349013,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 4035,
+   "mean_outreach_m": -20.32,
+   "admissible_centre_m": [
+    -4.44,
+    -0.94
+   ],
+   "certified_unexplained_voxels": 1233,
+   "margin_tangent_m": null,
+   "margin_quadratic_m": 0.955,
+   "measured_centre_error_tangent_m": 0.074,
+   "measured_centre_error_curvature_m": 0.044
+  },
+  {
+   "frame": 8458,
+   "component_id": 68,
+   "measurement_timestamp_ns": 946687542433349013,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 134,
+   "mean_outreach_m": -5.81,
+   "admissible_centre_m": [
+    -0.92,
+    2.42
+   ],
+   "certified_unexplained_voxels": 76,
+   "margin_tangent_m": 0.572,
+   "margin_quadratic_m": 0.53,
+   "measured_centre_error_tangent_m": 0.074,
+   "measured_centre_error_curvature_m": 0.044
+  },
+  {
+   "frame": 8458,
+   "component_id": 80,
+   "measurement_timestamp_ns": 946687542433349013,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 119,
+   "mean_outreach_m": -2.43,
+   "admissible_centre_m": [
+    -1.09,
+    2.34
+   ],
+   "certified_unexplained_voxels": 5,
+   "margin_tangent_m": 0.643,
+   "margin_quadratic_m": 0.674,
+   "measured_centre_error_tangent_m": 0.074,
+   "measured_centre_error_curvature_m": 0.044
+  },
+  {
+   "frame": 9028,
+   "component_id": 0,
+   "measurement_timestamp_ns": 946687609133414030,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 966,
+   "mean_outreach_m": 1.74,
+   "admissible_centre_m": [
+    -2.8,
+    1.68
+   ],
+   "certified_unexplained_voxels": 253,
+   "margin_tangent_m": 1.704,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.074,
+   "measured_centre_error_curvature_m": 0.044
+  },
+  {
+   "frame": 9028,
+   "component_id": 100,
+   "measurement_timestamp_ns": 946687609133414030,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 308,
+   "mean_outreach_m": 12.05,
+   "admissible_centre_m": [
+    -1.73,
+    2.29
+   ],
+   "certified_unexplained_voxels": 94,
+   "margin_tangent_m": 1.327,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.293,
+   "measured_centre_error_curvature_m": 0.122
+  },
+  {
+   "frame": 9198,
+   "component_id": 65,
+   "measurement_timestamp_ns": 946687629633417010,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 319,
+   "mean_outreach_m": 17.52,
+   "admissible_centre_m": [
+    -2.61,
+    0.97
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.816,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.548,
+   "measured_centre_error_curvature_m": 0.208
+  },
+  {
+   "frame": 9198,
+   "component_id": 82,
+   "measurement_timestamp_ns": 946687629633417010,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 85,
+   "mean_outreach_m": 22.03,
+   "admissible_centre_m": [
+    -2.44,
+    1.08
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.963,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.794,
+   "measured_centre_error_curvature_m": 0.288
+  },
+  {
+   "frame": 9993,
+   "component_id": 128,
+   "measurement_timestamp_ns": 946687728133434057,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "certified_interior_shared_with_structure",
+   "certifying_points": 52,
+   "mean_outreach_m": 12.94,
+   "admissible_centre_m": [
+    -4.94,
+    -1.52
+   ],
+   "certified_unexplained_voxels": 0,
+   "margin_tangent_m": 0.205,
+   "margin_quadratic_m": 0.523,
+   "measured_centre_error_tangent_m": 0.335,
+   "measured_centre_error_curvature_m": 0.136
+  },
+  {
+   "frame": 9993,
+   "component_id": 140,
+   "measurement_timestamp_ns": 946687728133434057,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 47,
+   "mean_outreach_m": 17.88,
+   "admissible_centre_m": [
+    -5.45,
+    -2.02
+   ],
+   "certified_unexplained_voxels": 17,
+   "margin_tangent_m": 0.126,
+   "margin_quadratic_m": 0.809,
+   "measured_centre_error_tangent_m": 0.565,
+   "measured_centre_error_curvature_m": 0.214
+  },
+  {
+   "frame": 10416,
+   "component_id": 1,
+   "measurement_timestamp_ns": 946687780033334017,
+   "confirmation": "immediate_interior_geometry",
+   "path_relation_reason": "inside_heuristic_path_and_ground_interval",
+   "certifying_points": 2655,
+   "mean_outreach_m": 6.52,
+   "admissible_centre_m": [
+    -0.42,
+    3.63
+   ],
+   "certified_unexplained_voxels": 257,
+   "margin_tangent_m": 1.48,
+   "margin_quadratic_m": null,
+   "measured_centre_error_tangent_m": 0.112,
+   "measured_centre_error_curvature_m": 0.058
+  }
+ ]
+}
