@@ -25,7 +25,7 @@ Visualization Manager:
     - Class: rviz_default_plugins/MarkerArray
       Name: Reference envelope, objects, quality
       Enabled: true
-      Marker Topic:
+      Topic:
         Value: /perception/debug_markers
         Reliability Policy: Reliable
         Durability Policy: Volatile

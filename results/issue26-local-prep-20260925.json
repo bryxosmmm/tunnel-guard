@@ -1,0 +1,182 @@
+{
+  "purpose": "Local preparation for issue 26; offline real-data detector and shared visualization export only",
+  "base_commit": "065cf3728d766b8e17384a833594312afa563188",
+  "host": "macOS 15.7.4 arm64, Python 3.12.14; no local ROS 2, RViz2 or Docker daemon",
+  "command": "/Users/pbuyanov/Projects/tunnel-guard/.venv/bin/python -m tunnel_guard.run --experiment build/issue26-local/experiment.json",
+  "source": {
+    "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+    "topic": "/sensing/lidar/hesai128/pointcloud",
+    "metadata_message_count": 201,
+    "metadata_sha256": "90f3314528232a912a0a2a1de8e90e1d155a814ab59a130aec3fcf65d76a6c09",
+    "db3_sha256": "05f1d7f7d1bbbc5e9453877416cc9f7367c19e31d35a5291271d863fc89c5ad9"
+  },
+  "config_sha256": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa",
+  "experiment": {
+    "seed": 20260915,
+    "detector_config": "configs/detector.json",
+    "output": "build/issue26-local/real-prefix",
+    "every": 1,
+    "max_frames": 30,
+    "visualization": true,
+    "diagnostic_frames": [],
+    "bags": [
+      {
+        "path": "/Users/pbuyanov/Projects/tunnel-guard/data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+        "split": "real_delivery_prefix",
+        "topic": "/sensing/lidar/hesai128/pointcloud"
+      }
+    ],
+    "hypothesis": "Actual detector and shared visualization export run on 30 sequential real acquisitions from the accepted integration source."
+  },
+  "offline_summary": {
+    "frames": 30,
+    "recording_duration_s": 2.900183916091919,
+    "status_frames": {
+      "no_obstacle_observed": 6,
+      "unresolved_obstacle": 2,
+      "obstacle": 22
+    },
+    "geometry_valid_frames": 30,
+    "motion_valid_frames": 29,
+    "processing_ms": {
+      "p50": 273.03131249936996,
+      "p95": 363.4253670017642,
+      "p99": 1689.6266443211077
+    },
+    "read_and_process_ms": {
+      "p50": 275.09214600104315,
+      "p95": 365.2688687518093,
+      "p99": 1768.4970450005148
+    },
+    "inference_ms": {
+      "p50": 274.24156300003233,
+      "p95": 364.6327918526366,
+      "p99": 1690.3274807514042
+    },
+    "ingestion_wait_ms": {
+      "p50": 0.6055835001461674,
+      "p95": 1.2303707993851274,
+      "p99": 78.32326799965821
+    },
+    "prefetch_depth": 1,
+    "alarm_episodes_unlabelled": [
+      {
+        "start_frame": 6,
+        "start_s": 946687297.800018,
+        "end_s": 946687300.1001171,
+        "frames": 24
+      }
+    ],
+    "accuracy": null,
+    "accuracy_validity": "No ground truth implied by bag name or alarm count",
+    "bag": "doubleT_obstacle",
+    "split": "real_delivery_prefix",
+    "wall_s": 14.246049957997457,
+    "ingestion": {
+      "source_messages": 30,
+      "duplicate_measurements": 0,
+      "subsampled_measurements": 0,
+      "emitted_scans": 30
+    },
+    "process_peak_rss_bytes": 824524800,
+    "diagnostic_write_total_s": 0,
+    "visualization_total_s": 3.331932916000369,
+    "stage_ms": {
+      "decode_s": {
+        "p50": 61.51608299842337,
+        "p95": 77.31103764836007
+      },
+      "offline_iteration_s": {
+        "p50": 402.593374998105,
+        "p95": 510.0111524512612
+      }
+    },
+    "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+  },
+  "export_topic_counts": {
+    "/perception/points_display": 30,
+    "/perception/debug_markers": 30,
+    "/perception/status": 30,
+    "/perception/attention_required": 30,
+    "/perception/nearest_obstacle_m": 30
+  },
+  "inspected_frames": [
+    {
+      "frame": 0,
+      "measurement_timestamp_ns": 946687297199933052,
+      "status": "no_obstacle_observed",
+      "nearest_obstacle_m": null,
+      "display_cloud_points": 85685,
+      "frame_id": "tunnel_guard_local",
+      "confirmed_intersections": 0,
+      "marker_namespaces": [
+        "candidate_measurements",
+        "object_labels",
+        "observed_support",
+        "quality",
+        "railhead_support_for_mounting",
+        "reference_envelope"
+      ]
+    },
+    {
+      "frame": 10,
+      "measurement_timestamp_ns": 946687298200121999,
+      "status": "obstacle",
+      "nearest_obstacle_m": 55.46978759765625,
+      "display_cloud_points": 85675,
+      "frame_id": "tunnel_guard_local",
+      "confirmed_intersections": 1,
+      "marker_namespaces": [
+        "candidate_measurements",
+        "distance_witness",
+        "object_labels",
+        "observed_support",
+        "quality",
+        "railhead_support_for_mounting",
+        "reference_envelope"
+      ]
+    },
+    {
+      "frame": 20,
+      "measurement_timestamp_ns": 946687299200095057,
+      "status": "obstacle",
+      "nearest_obstacle_m": 55.66051483154297,
+      "display_cloud_points": 85344,
+      "frame_id": "tunnel_guard_local",
+      "confirmed_intersections": 1,
+      "marker_namespaces": [
+        "candidate_measurements",
+        "distance_witness",
+        "object_labels",
+        "observed_support",
+        "quality",
+        "railhead_support_for_mounting",
+        "reference_envelope"
+      ]
+    },
+    {
+      "frame": 29,
+      "measurement_timestamp_ns": 946687300100116968,
+      "status": "obstacle",
+      "nearest_obstacle_m": 55.69472885131836,
+      "display_cloud_points": 85586,
+      "frame_id": "tunnel_guard_local",
+      "confirmed_intersections": 1,
+      "marker_namespaces": [
+        "candidate_measurements",
+        "distance_witness",
+        "object_labels",
+        "observed_support",
+        "quality",
+        "railhead_support_for_mounting",
+        "reference_envelope"
+      ]
+    }
+  ],
+  "limitations": [
+    "The RViz config was edited but no RViz GUI was available to load it.",
+    "The export is not live ROS 2 DDS delivery or target-host runtime.",
+    "The 30-frame prefix is not a full-bag or full-corpus acceptance run.",
+    "Bag names and nonexhaustive annotations do not establish precision or field safety."
+  ]
+}

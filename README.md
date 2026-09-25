@@ -190,7 +190,7 @@ panel and the corrected metric definitions are in
 The node subscribes to `/lidar_points` by default. Our own recordings do not share one topic: `doubleT_obstacle`
 publishes on `/sensing/lidar/hesai128/pointcloud`, while the tunnel recordings and the extended run use `/lidar_points`.
 Run with `input_topic:=<the bag's topic>` when they differ - `ros2 bag info <bag>` prints it. If nothing arrives within
-`input_timeout_s`, the node degrades to `unavailable` and now logs an error naming the configured topic, the point-cloud
+`input_timeout_s`, the node publishes `status=unknown`, `health=unavailable` and logs an error naming the configured topic, the point-cloud
 topics that are actually present, and the parameter to restart with, so the cause is visible rather than silent.
 
 ### The audit behind those instructions
@@ -201,40 +201,19 @@ absence of these container instructions together with the host-networking requir
 the exact commands to run first, and everything that remains unverified are in
 [docs/DELIVERY_PATH_AUDIT.md](docs/DELIVERY_PATH_AUDIT.md).
 
-## Running it in the container (2026-09-19)
+## ROS 2 container and RViz
 
-The submission requires build and run instructions for the container, and the README carried none: it documented the
-offline runner and the ROS adapter separately, but never the sequence an evaluator actually performs. That is now here,
-together with the one requirement that is easy to miss.
+Use the single [target acceptance recipe](docs/TARGET_ACCEPTANCE.md) for the
+Docker build, live detector, real-bag playback at `--rate 1.0`, five-topic
+recording, RViz and stale-input scenarios. The live topic contract and its
+limits are in [docs/ROS2.md](docs/ROS2.md). For `doubleT_obstacle`, set
+`input_topic:=/sensing/lidar/hesai128/pointcloud`; other bags may use
+`/lidar_points`. Confirm the topic with `ros2 bag info` before launch.
 
-```sh
-# 1. build (the image installs rviz2 and tf2, builds the native extension and imports the node, so a missing
-#    dependency fails the build rather than the demonstration)
-docker build -t tunnel-guard .
-
-# 2. run the detector. --network host is REQUIRED: the node discovers ROS 2 traffic over DDS on the host
-#    network, so without it `ros2 bag play` on the host is invisible to the container and nothing arrives.
-docker run --rm -it --network host tunnel-guard
-
-# 3. on the host, find the bag's point-cloud topic and play it (topics differ between recordings:
-#    the tunnel recordings use /lidar_points, doubleT_obstacle uses /sensing/lidar/hesai128/pointcloud)
-ros2 bag info <bag>
-ros2 bag play <bag>
-```
-
-If the bag's topic differs from the node's default, run the node with the override - inside the container, or through the
-launch file, which exposes the same parameters:
-
-```sh
-python3 -m tunnel_guard.ros_node --ros-args -p input_topic:=/sensing/lidar/hesai128/pointcloud
-ros2 launch /opt/tunnel-guard/launch/tunnel_guard.launch.py input_topic:=/sensing/lidar/hesai128/pointcloud rviz:=true
-```
-
-`rviz:=true` starts RViz inside the container with `rviz/tunnel_guard.rviz`, which shows measured points, the reference
-envelope, candidates, confirmed intrusions and their distances. For a machine without a display, run `rviz2` on the host
-instead: it subscribes to the same `/perception/...` topics over the shared DDS network. Use slow replay
-(`ros2 bag play -r 0.3 <bag>`) for a complete evaluation: the queue is depth 1 and the offline frame time is above the
-10 Hz stream rate, so fast replay drops scans by design rather than silently.
+At nominal playback speed the depth-1 input queue can omit scans while
+inference runs. Keep the offered/received/processed counts and do not replace
+this delivery check with slowed playback. Slower playback can be useful for
+separate detector evaluation, with its rate stated explicitly.
 
 Without ROS at all, the same detector runs offline and writes per-frame JSON with the measurement timestamp:
 
