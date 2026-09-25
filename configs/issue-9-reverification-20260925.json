@@ -1,0 +1,96 @@
+{
+  "seed": 20260915,
+  "output": "build/issue-9-reverification-20260925",
+  "voxel_m": 0.05,
+  "trace_frames": [
+    0,
+    1,
+    2,
+    3,
+    291
+  ],
+  "hypothesis": "The centre-subtracted support formula and single-thread registration keep the accumulated integer support reproducible on the shipped C++-only line, while parallel registration stays schedule-dependent. Re-executed on commit a4789d9 with fresh arms.",
+  "comparisons": {
+    "control_repeat": {
+      "before": "build/issue-9-trace-a",
+      "after": "build/issue-9-trace-b",
+      "bags": [
+        "doubleT_platform"
+      ],
+      "expected_frames": 345
+    },
+    "fixed_smoke": {
+      "before": "build/issue-9-trace-a",
+      "after": "build/issue-9-relative-smoke",
+      "bags": [
+        "doubleT_platform"
+      ],
+      "expected_frames": 345
+    },
+    "fix_repeat": {
+      "before": "build/issue-9-serial-a",
+      "after": "build/issue-9-serial-b",
+      "bags": [
+        "doubleT_obstacle",
+        "doubleT_platform",
+        "roundT_doubleT",
+        "roundT_pressureGate_roundT",
+        "roundT_squareT_pressureGate_squareT",
+        "squareT_platform_squareT_switch"
+      ],
+      "expected_frames": 2488
+    },
+    "before_fix": {
+      "before": "../lct-issue9-prefix/build/issue-9-prefix-20260925",
+      "after": "build/issue-9-serial-a",
+      "bags": [
+        "doubleT_obstacle",
+        "doubleT_platform",
+        "roundT_doubleT",
+        "roundT_pressureGate_roundT",
+        "roundT_squareT_pressureGate_squareT",
+        "squareT_platform_squareT_switch"
+      ],
+      "expected_frames": 2488
+    },
+    "parallel_fixed_repeat": {
+      "before": "build/issue-9-relative-a",
+      "after": "build/issue-9-relative-b",
+      "bags": [
+        "doubleT_obstacle",
+        "doubleT_platform",
+        "roundT_doubleT",
+        "roundT_pressureGate_roundT",
+        "roundT_squareT_pressureGate_squareT",
+        "squareT_platform_squareT_switch"
+      ],
+      "expected_frames": 2488
+    },
+    "serial_vs_parallel": {
+      "before": "build/issue-9-relative-a",
+      "after": "build/issue-9-serial-a",
+      "bags": [
+        "doubleT_obstacle",
+        "doubleT_platform",
+        "roundT_doubleT",
+        "roundT_pressureGate_roundT",
+        "roundT_squareT_pressureGate_squareT",
+        "squareT_platform_squareT_switch"
+      ],
+      "expected_frames": 2488
+    }
+  },
+  "registration_reports": {
+    "serial": "build/issue-9-registration-serial-public/summary.json",
+    "parallel": "build/issue-9-registration-parallel-public/summary.json"
+  },
+  "require_identical_poses": true,
+  "reverification_of": "configs/issue-9-final-report.json (produced at commit f2dd7c4, 2026-09-23, on the pre-cutover line)",
+  "criterion": "Identical to the referenced plan: every declared comparison must report zero integer differences, geometry and alarms preserved against the pre-fix arm, and bitwise-identical serial poses. Acceptance is decided by issue #9; failures are reported, not cleaned up.",
+  "arm_notes": {
+    "fix_repeat": "build/issue-9-serial-{a,b}: unmodified a4789d9, detector-issue-9-serial.json (identical in content to configs/detector.json), one registration thread",
+    "parallel_fixed_repeat": "build/issue-9-relative-{a,b}: unmodified a4789d9, detector-issue-9-parallel.json (eight registration threads)",
+    "control_repeat": "build/issue-9-trace-{a,b}: unmodified a4789d9, eight threads, 345-frame doubleT_platform arm",
+    "before_fix": "before = a4789d9 with results/issue-9-prefix-revert-20260925.patch applied (pre-fix (Rp+t)-(Rc+t) accumulation only, recipe configs/issue-9-prefix-20260925.json); after = the unmodified fix arm. The historical plan used the pre-#13 object-evidence line as the before arm, which on this commit would measure five days of other changes instead of the fix."
+  }
+}
