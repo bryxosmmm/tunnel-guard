@@ -1,0 +1,863 @@
+{
+  "hypothesis": "Rejected prior event identities may pass the unchanged native symmetric point-shape gate, but competing shapes may make identity ambiguous.",
+  "criterion": "Require replay scientific identity with best; enumerate existing-threshold matches in both directions, including global-gate rejection. No association changes or promotion from shape similarity alone.",
+  "identity": {
+    "frames": 804,
+    "expected_frames": 804,
+    "ignored_elapsed_fields": [
+      "processing_s",
+      "motion_s",
+      "mounting_observation_s"
+    ],
+    "changed_scientific_frames": [],
+    "valid": true
+  },
+  "events": {
+    "9": {
+      "observed_event_frames": 45,
+      "target_components": 53,
+      "current_ineligible_components": 17,
+      "current_eligible_components": 36,
+      "eligible_with_zero_shape_matches": 20,
+      "eligible_with_one_shape_matches": 16,
+      "selected_identity_passes_shape": 12,
+      "alternative_prior_event_shape_matches": 4,
+      "immediate_prior_passes_selected_fails_pairs": 4,
+      "immediate_prior_mutually_unique_pairs": 4,
+      "immediate_prior_global_allowed_pairs": 3,
+      "immediate_prior_global_rejected_pairs": 1
+    },
+    "10": {
+      "observed_event_frames": 44,
+      "no_attributed_target_component_frames": 15,
+      "target_components": 30,
+      "current_ineligible_components": 10,
+      "current_eligible_components": 20,
+      "eligible_with_zero_shape_matches": 14,
+      "eligible_with_one_shape_matches": 6,
+      "selected_identity_passes_shape": 5,
+      "alternative_prior_event_shape_matches": 1,
+      "immediate_prior_passes_selected_fails_pairs": 1,
+      "immediate_prior_mutually_unique_pairs": 1,
+      "immediate_prior_global_rejected_pairs": 1
+    }
+  },
+  "alternative_prior_matches": [
+    {
+      "frame": 714,
+      "event": 9,
+      "component_id": 175,
+      "previous_event_track": 7370,
+      "previous_attributed_frame": 713,
+      "immediately_previous_attribution": true,
+      "selected_track": 7277,
+      "selected_passes_shape": false,
+      "selected_overlap": null,
+      "prior_pair": {
+        "track_id": 7370,
+        "component_id": 175,
+        "consecutive_previous_shape": true,
+        "current_eligible": true,
+        "previous_hits": 1,
+        "symmetric_overlap": 0.8,
+        "passes_existing_shape_gate": true,
+        "would_reach_existing_hit_gate": true,
+        "global_allowed": true,
+        "global_cost": 11.208064833298044,
+        "mahalanobis": 11.151564390610776,
+        "extent_log_difference": 0.056500442687268636,
+        "selected_by_global_assignment": false,
+        "previous_points": 30,
+        "current_points": 35
+      },
+      "all_passing_previous_tracks": [
+        7370
+      ],
+      "all_current_components_matching_prior_track": [
+        175
+      ],
+      "mutually_unique_shape_match": true,
+      "motion_valid": false
+    },
+    {
+      "frame": 725,
+      "event": 9,
+      "component_id": 121,
+      "previous_event_track": 8007,
+      "previous_attributed_frame": 724,
+      "immediately_previous_attribution": true,
+      "selected_track": 7743,
+      "selected_passes_shape": false,
+      "selected_overlap": null,
+      "prior_pair": {
+        "track_id": 8007,
+        "component_id": 121,
+        "consecutive_previous_shape": true,
+        "current_eligible": true,
+        "previous_hits": 1,
+        "symmetric_overlap": 0.9803921568627451,
+        "passes_existing_shape_gate": true,
+        "would_reach_existing_hit_gate": true,
+        "global_allowed": true,
+        "global_cost": 13.139248972797962,
+        "mahalanobis": 12.859438629977463,
+        "extent_log_difference": 0.27981034282049894,
+        "selected_by_global_assignment": false,
+        "previous_points": 51,
+        "current_points": 60
+      },
+      "all_passing_previous_tracks": [
+        8007
+      ],
+      "all_current_components_matching_prior_track": [
+        121
+      ],
+      "mutually_unique_shape_match": true,
+      "motion_valid": false
+    },
+    {
+      "frame": 738,
+      "event": 9,
+      "component_id": 54,
+      "previous_event_track": 7970,
+      "previous_attributed_frame": 737,
+      "immediately_previous_attribution": true,
+      "selected_track": 7250,
+      "selected_passes_shape": false,
+      "selected_overlap": null,
+      "prior_pair": {
+        "track_id": 7970,
+        "component_id": 54,
+        "consecutive_previous_shape": true,
+        "current_eligible": true,
+        "previous_hits": 1,
+        "symmetric_overlap": 0.8162162162162162,
+        "passes_existing_shape_gate": true,
+        "would_reach_existing_hit_gate": true,
+        "global_allowed": true,
+        "global_cost": 10.002469313823756,
+        "mahalanobis": 9.522814538016542,
+        "extent_log_difference": 0.4796547758072146,
+        "selected_by_global_assignment": false,
+        "previous_points": 185,
+        "current_points": 181
+      },
+      "all_passing_previous_tracks": [
+        7970
+      ],
+      "all_current_components_matching_prior_track": [
+        54
+      ],
+      "mutually_unique_shape_match": true,
+      "motion_valid": false
+    },
+    {
+      "frame": 743,
+      "event": 9,
+      "component_id": 17,
+      "previous_event_track": 7250,
+      "previous_attributed_frame": 742,
+      "immediately_previous_attribution": true,
+      "selected_track": 3328,
+      "selected_passes_shape": false,
+      "selected_overlap": null,
+      "prior_pair": {
+        "track_id": 7250,
+        "component_id": 17,
+        "consecutive_previous_shape": true,
+        "current_eligible": true,
+        "previous_hits": 2,
+        "symmetric_overlap": 0.8109452736318408,
+        "passes_existing_shape_gate": true,
+        "would_reach_existing_hit_gate": true,
+        "global_allowed": false,
+        "global_cost": 1000000.0,
+        "mahalanobis": 15.324946226298367,
+        "extent_log_difference": 0.34742025775584845,
+        "selected_by_global_assignment": false,
+        "previous_points": 163,
+        "current_points": 201
+      },
+      "all_passing_previous_tracks": [
+        7250
+      ],
+      "all_current_components_matching_prior_track": [
+        17
+      ],
+      "mutually_unique_shape_match": true,
+      "motion_valid": false
+    },
+    {
+      "frame": 793,
+      "event": 10,
+      "component_id": 838,
+      "previous_event_track": 8948,
+      "previous_attributed_frame": 792,
+      "immediately_previous_attribution": true,
+      "selected_track": null,
+      "selected_passes_shape": false,
+      "selected_overlap": null,
+      "prior_pair": {
+        "track_id": 8948,
+        "component_id": 838,
+        "consecutive_previous_shape": true,
+        "current_eligible": true,
+        "previous_hits": 1,
+        "symmetric_overlap": 1.0,
+        "passes_existing_shape_gate": true,
+        "would_reach_existing_hit_gate": true,
+        "global_allowed": false,
+        "global_cost": 1000000.0,
+        "mahalanobis": 16.227218210622702,
+        "extent_log_difference": 0.06271841388813834,
+        "selected_by_global_assignment": false,
+        "previous_points": 8,
+        "current_points": 8
+      },
+      "all_passing_previous_tracks": [
+        8948
+      ],
+      "all_current_components_matching_prior_track": [
+        838
+      ],
+      "mutually_unique_shape_match": true,
+      "motion_valid": false
+    }
+  ],
+  "examples": [
+    {
+      "frame": 714,
+      "event": 9,
+      "motion_valid": false,
+      "shape_radius_m": 0.1,
+      "minimum_symmetric_overlap": 0.8,
+      "eligible_current_components": 1,
+      "consecutive_previous_shapes": 1,
+      "targets": [
+        {
+          "component_id": 175,
+          "assigned_track": 7277,
+          "current_eligible": true,
+          "passing_track_ids": [
+            7370
+          ],
+          "pairs": [
+            {
+              "track_id": 7277,
+              "component_id": 175,
+              "consecutive_previous_shape": false,
+              "current_eligible": true,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": true,
+              "global_cost": 7.08876571137022,
+              "mahalanobis": 4.7761080362933805,
+              "extent_log_difference": 2.3126576750768395,
+              "selected_by_global_assignment": true
+            },
+            {
+              "track_id": 7370,
+              "component_id": 175,
+              "consecutive_previous_shape": true,
+              "current_eligible": true,
+              "previous_hits": 1,
+              "symmetric_overlap": 0.8,
+              "passes_existing_shape_gate": true,
+              "would_reach_existing_hit_gate": true,
+              "global_allowed": true,
+              "global_cost": 11.208064833298044,
+              "mahalanobis": 11.151564390610776,
+              "extent_log_difference": 0.056500442687268636,
+              "selected_by_global_assignment": false,
+              "previous_points": 30,
+              "current_points": 35
+            }
+          ]
+        }
+      ],
+      "previous_event_tracks": [
+        {
+          "track_id": 7370,
+          "retained": true,
+          "passing_component_ids": [
+            175
+          ],
+          "pairs": [
+            {
+              "track_id": 7370,
+              "component_id": 175,
+              "consecutive_previous_shape": true,
+              "current_eligible": true,
+              "previous_hits": 1,
+              "symmetric_overlap": 0.8,
+              "passes_existing_shape_gate": true,
+              "would_reach_existing_hit_gate": true,
+              "global_allowed": true,
+              "global_cost": 11.208064833298044,
+              "mahalanobis": 11.151564390610776,
+              "extent_log_difference": 0.056500442687268636,
+              "selected_by_global_assignment": false,
+              "previous_points": 30,
+              "current_points": 35
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 742,
+      "event": 9,
+      "motion_valid": true,
+      "shape_radius_m": 0.1,
+      "minimum_symmetric_overlap": 0.8,
+      "eligible_current_components": 1,
+      "consecutive_previous_shapes": 1,
+      "targets": [
+        {
+          "component_id": 24,
+          "assigned_track": 7250,
+          "current_eligible": true,
+          "passing_track_ids": [
+            7250
+          ],
+          "pairs": [
+            {
+              "track_id": 3283,
+              "component_id": 24,
+              "consecutive_previous_shape": false,
+              "current_eligible": true,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": false,
+              "global_cost": 1000000.0,
+              "mahalanobis": 10.429516423922738,
+              "extent_log_difference": 2.8899785155636044,
+              "selected_by_global_assignment": false
+            },
+            {
+              "track_id": 7001,
+              "component_id": 24,
+              "consecutive_previous_shape": false,
+              "current_eligible": true,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": true,
+              "global_cost": 11.424778443261967,
+              "mahalanobis": 9.296214278014157,
+              "extent_log_difference": 2.1285641652478104,
+              "selected_by_global_assignment": false
+            },
+            {
+              "track_id": 7250,
+              "component_id": 24,
+              "consecutive_previous_shape": true,
+              "current_eligible": true,
+              "previous_hits": 1,
+              "symmetric_overlap": 0.8588957055214724,
+              "passes_existing_shape_gate": true,
+              "would_reach_existing_hit_gate": true,
+              "global_allowed": true,
+              "global_cost": 11.825659744036942,
+              "mahalanobis": 11.360752399608627,
+              "extent_log_difference": 0.46490734442831455,
+              "selected_by_global_assignment": true,
+              "previous_points": 93,
+              "current_points": 163
+            },
+            {
+              "track_id": 7533,
+              "component_id": 24,
+              "consecutive_previous_shape": false,
+              "current_eligible": true,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": false,
+              "global_cost": 1000000.0,
+              "mahalanobis": 7.610850968509498,
+              "extent_log_difference": 2.9981257861984143,
+              "selected_by_global_assignment": false
+            }
+          ]
+        },
+        {
+          "component_id": 338,
+          "assigned_track": 7533,
+          "current_eligible": false,
+          "passing_track_ids": [],
+          "pairs": [
+            {
+              "track_id": 3283,
+              "component_id": 338,
+              "consecutive_previous_shape": false,
+              "current_eligible": false,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": false,
+              "global_cost": 1000000.0,
+              "mahalanobis": 26.771042052209022,
+              "extent_log_difference": 0.46653737273365525,
+              "selected_by_global_assignment": false
+            },
+            {
+              "track_id": 7001,
+              "component_id": 338,
+              "consecutive_previous_shape": false,
+              "current_eligible": false,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": true,
+              "global_cost": 4.278515052426646,
+              "mahalanobis": 3.067894975353994,
+              "extent_log_difference": 1.2106200770726516,
+              "selected_by_global_assignment": false
+            },
+            {
+              "track_id": 7250,
+              "component_id": 338,
+              "consecutive_previous_shape": true,
+              "current_eligible": false,
+              "previous_hits": 1,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": false,
+              "global_cost": 1000000.0,
+              "mahalanobis": 15.039181144984061,
+              "extent_log_difference": 2.9846862110784587,
+              "selected_by_global_assignment": false
+            },
+            {
+              "track_id": 7533,
+              "component_id": 338,
+              "consecutive_previous_shape": false,
+              "current_eligible": false,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": true,
+              "global_cost": 1.3393107319297934,
+              "mahalanobis": 0.8286930297227434,
+              "extent_log_difference": 0.5106177022070499,
+              "selected_by_global_assignment": true
+            }
+          ]
+        },
+        {
+          "component_id": 346,
+          "assigned_track": 3283,
+          "current_eligible": false,
+          "passing_track_ids": [],
+          "pairs": [
+            {
+              "track_id": 3283,
+              "component_id": 346,
+              "consecutive_previous_shape": false,
+              "current_eligible": false,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": true,
+              "global_cost": 2.769578037264153,
+              "mahalanobis": 1.2359119088823642,
+              "extent_log_difference": 1.533666128381789,
+              "selected_by_global_assignment": true
+            },
+            {
+              "track_id": 7001,
+              "component_id": 346,
+              "consecutive_previous_shape": false,
+              "current_eligible": false,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": false,
+              "global_cost": 1000000.0,
+              "mahalanobis": 23.2704384110339,
+              "extent_log_difference": 0.7604730454283088,
+              "selected_by_global_assignment": false
+            },
+            {
+              "track_id": 7250,
+              "component_id": 346,
+              "consecutive_previous_shape": true,
+              "current_eligible": false,
+              "previous_hits": 1,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": true,
+              "global_cost": 14.69852114787192,
+              "mahalanobis": 13.61939013629044,
+              "extent_log_difference": 1.0791310115814807,
+              "selected_by_global_assignment": false
+            },
+            {
+              "track_id": 7533,
+              "component_id": 346,
+              "consecutive_previous_shape": false,
+              "current_eligible": false,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": false,
+              "global_cost": 1000000.0,
+              "mahalanobis": 22.853154385848487,
+              "extent_log_difference": 1.6558160813841476,
+              "selected_by_global_assignment": false
+            }
+          ]
+        }
+      ],
+      "previous_event_tracks": [
+        {
+          "track_id": 7001,
+          "retained": true,
+          "passing_component_ids": [],
+          "pairs": [
+            {
+              "track_id": 7001,
+              "component_id": 24,
+              "consecutive_previous_shape": false,
+              "current_eligible": true,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": true,
+              "global_cost": 11.424778443261967,
+              "mahalanobis": 9.296214278014157,
+              "extent_log_difference": 2.1285641652478104,
+              "selected_by_global_assignment": false
+            }
+          ]
+        },
+        {
+          "track_id": 7250,
+          "retained": true,
+          "passing_component_ids": [
+            24
+          ],
+          "pairs": [
+            {
+              "track_id": 7250,
+              "component_id": 24,
+              "consecutive_previous_shape": true,
+              "current_eligible": true,
+              "previous_hits": 1,
+              "symmetric_overlap": 0.8588957055214724,
+              "passes_existing_shape_gate": true,
+              "would_reach_existing_hit_gate": true,
+              "global_allowed": true,
+              "global_cost": 11.825659744036942,
+              "mahalanobis": 11.360752399608627,
+              "extent_log_difference": 0.46490734442831455,
+              "selected_by_global_assignment": true,
+              "previous_points": 93,
+              "current_points": 163
+            }
+          ]
+        },
+        {
+          "track_id": 7533,
+          "retained": true,
+          "passing_component_ids": [],
+          "pairs": [
+            {
+              "track_id": 7533,
+              "component_id": 24,
+              "consecutive_previous_shape": false,
+              "current_eligible": true,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": false,
+              "global_cost": 1000000.0,
+              "mahalanobis": 7.610850968509498,
+              "extent_log_difference": 2.9981257861984143,
+              "selected_by_global_assignment": false
+            }
+          ]
+        },
+        {
+          "track_id": 3283,
+          "retained": true,
+          "passing_component_ids": [],
+          "pairs": [
+            {
+              "track_id": 3283,
+              "component_id": 24,
+              "consecutive_previous_shape": false,
+              "current_eligible": true,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": false,
+              "global_cost": 1000000.0,
+              "mahalanobis": 10.429516423922738,
+              "extent_log_difference": 2.8899785155636044,
+              "selected_by_global_assignment": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 793,
+      "event": 10,
+      "motion_valid": false,
+      "shape_radius_m": 0.1,
+      "minimum_symmetric_overlap": 0.8,
+      "eligible_current_components": 1,
+      "consecutive_previous_shapes": 1,
+      "targets": [
+        {
+          "component_id": 838,
+          "assigned_track": null,
+          "current_eligible": true,
+          "passing_track_ids": [
+            8948
+          ],
+          "pairs": [
+            {
+              "track_id": 8948,
+              "component_id": 838,
+              "consecutive_previous_shape": true,
+              "current_eligible": true,
+              "previous_hits": 1,
+              "symmetric_overlap": 1.0,
+              "passes_existing_shape_gate": true,
+              "would_reach_existing_hit_gate": true,
+              "global_allowed": false,
+              "global_cost": 1000000.0,
+              "mahalanobis": 16.227218210622702,
+              "extent_log_difference": 0.06271841388813834,
+              "selected_by_global_assignment": false,
+              "previous_points": 8,
+              "current_points": 8
+            }
+          ]
+        }
+      ],
+      "previous_event_tracks": [
+        {
+          "track_id": 8948,
+          "retained": true,
+          "passing_component_ids": [
+            838
+          ],
+          "pairs": [
+            {
+              "track_id": 8948,
+              "component_id": 838,
+              "consecutive_previous_shape": true,
+              "current_eligible": true,
+              "previous_hits": 1,
+              "symmetric_overlap": 1.0,
+              "passes_existing_shape_gate": true,
+              "would_reach_existing_hit_gate": true,
+              "global_allowed": false,
+              "global_cost": 1000000.0,
+              "mahalanobis": 16.227218210622702,
+              "extent_log_difference": 0.06271841388813834,
+              "selected_by_global_assignment": false,
+              "previous_points": 8,
+              "current_points": 8
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 797,
+      "event": 10,
+      "motion_valid": false,
+      "shape_radius_m": 0.1,
+      "minimum_symmetric_overlap": 0.8,
+      "eligible_current_components": 1,
+      "consecutive_previous_shapes": 1,
+      "targets": [
+        {
+          "component_id": 64,
+          "assigned_track": 9053,
+          "current_eligible": true,
+          "passing_track_ids": [],
+          "pairs": [
+            {
+              "track_id": 9025,
+              "component_id": 64,
+              "consecutive_previous_shape": true,
+              "current_eligible": true,
+              "previous_hits": 3,
+              "symmetric_overlap": 0.5517241379310345,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": true,
+              "global_cost": 14.024166117721235,
+              "mahalanobis": 12.364621656863939,
+              "extent_log_difference": 1.6595444608572956,
+              "selected_by_global_assignment": false,
+              "previous_points": 12,
+              "current_points": 29
+            },
+            {
+              "track_id": 9053,
+              "component_id": 64,
+              "consecutive_previous_shape": false,
+              "current_eligible": true,
+              "previous_hits": 0,
+              "symmetric_overlap": null,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": true,
+              "global_cost": 7.899346085355534,
+              "mahalanobis": 5.867189263644064,
+              "extent_log_difference": 2.03215682171147,
+              "selected_by_global_assignment": true
+            }
+          ]
+        }
+      ],
+      "previous_event_tracks": [
+        {
+          "track_id": 9025,
+          "retained": true,
+          "passing_component_ids": [],
+          "pairs": [
+            {
+              "track_id": 9025,
+              "component_id": 64,
+              "consecutive_previous_shape": true,
+              "current_eligible": true,
+              "previous_hits": 3,
+              "symmetric_overlap": 0.5517241379310345,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": true,
+              "global_cost": 14.024166117721235,
+              "mahalanobis": 12.364621656863939,
+              "extent_log_difference": 1.6595444608572956,
+              "selected_by_global_assignment": false,
+              "previous_points": 12,
+              "current_points": 29
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 798,
+      "event": 10,
+      "motion_valid": false,
+      "shape_radius_m": 0.1,
+      "minimum_symmetric_overlap": 0.8,
+      "eligible_current_components": 1,
+      "consecutive_previous_shapes": 1,
+      "targets": [
+        {
+          "component_id": 57,
+          "assigned_track": null,
+          "current_eligible": true,
+          "passing_track_ids": [],
+          "pairs": [
+            {
+              "track_id": 9053,
+              "component_id": 57,
+              "consecutive_previous_shape": true,
+              "current_eligible": true,
+              "previous_hits": 1,
+              "symmetric_overlap": 0.6206896551724138,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": true,
+              "global_cost": 13.384656518037067,
+              "mahalanobis": 11.681900757971063,
+              "extent_log_difference": 1.7027557600660048,
+              "selected_by_global_assignment": false,
+              "previous_points": 29,
+              "current_points": 16
+            }
+          ]
+        }
+      ],
+      "previous_event_tracks": [
+        {
+          "track_id": 9053,
+          "retained": true,
+          "passing_component_ids": [],
+          "pairs": [
+            {
+              "track_id": 9053,
+              "component_id": 57,
+              "consecutive_previous_shape": true,
+              "current_eligible": true,
+              "previous_hits": 1,
+              "symmetric_overlap": 0.6206896551724138,
+              "passes_existing_shape_gate": false,
+              "would_reach_existing_hit_gate": false,
+              "global_allowed": true,
+              "global_cost": 13.384656518037067,
+              "mahalanobis": 11.681900757971063,
+              "extent_log_difference": 1.7027557600660048,
+              "selected_by_global_assignment": false,
+              "previous_points": 29,
+              "current_points": 16
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "limits": [
+    "Forensic inserted-return attribution is an evaluation label, not a detector input or field-recall denominator.",
+    "Shape matching uses the unchanged 0.1m radius and 0.8 symmetric overlap; translation centering removes identity information.",
+    "A shape match alone does not establish physical identity or safe temporal confirmation.",
+    "No association modification, negative-panel replay, primary-metric measurement or promotion is performed.",
+    "Previous event track may have stale attribution; immediate-attribution cases are reported separately.",
+    "Counters are component/pair counts, not independent events."
+  ],
+  "decision": {
+    "production_change": false,
+    "promotion": false,
+    "formal_primary_runs": 2,
+    "conclusion": "Five immediately consecutive, mutually unique prior-event shape matches are lost by global association. This confirms a specific association coupling, not general correctness of pose-independent identity.",
+    "qualified_next_experiment": "Separate local point-shape recurrence from rejected-pose global identity, without forcing global IDs or relaxing overlap; require label-free negative-panel ambiguity and alarm evaluation plus preservation of all best positives before adoption.",
+    "remaining_failure": "34 of 56 eligible target components have no passing consecutive prior shape at the existing threshold; identity reassignment cannot repair those instantaneous gaps.",
+    "limitations": "Uniqueness is within eligible observed components, not proof of physical identity; no negative candidate replay or primary improvement measured."
+  },
+  "run_summary": {
+    "frames": 804,
+    "status_frames": {
+      "no_obstacle_observed": 428,
+      "obstacle": 295,
+      "unknown": 7,
+      "unresolved_obstacle": 29,
+      "candidate": 45
+    },
+    "wall_s": 219.83607391710393
+  },
+  "seed": 20260915,
+  "best_detector_commit": "ec311a0bc783",
+  "config_sha256": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa",
+  "artifact_paths": {
+    "local_full_rows": "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/build/issue23-shape-identity/replay/cloud_with_fake_obj.jsonl.gz",
+    "local_pairs": "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/build/issue23-shape-identity/pairs.jsonl"
+  }
+}
