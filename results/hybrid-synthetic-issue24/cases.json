@@ -1,0 +1,2407 @@
+[
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "tuning",
+    "case": 0,
+    "shape": "tuning_medium",
+    "dimensions_m": [
+      0.7,
+      0.7,
+      1.2
+    ],
+    "range_m": 30,
+    "position": "inside",
+    "lateral_m": 0.0,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      120,
+      125,
+      132
+    ],
+    "intersecting_rays_per_frame": [
+      240,
+      250,
+      264
+    ],
+    "foreground_occluded_rays_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "removed_returns_per_frame": [
+      244,
+      256,
+      270
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 1,
+    "first_hazard_frame": 1,
+    "detection_latency_s": 0.0999981164932251,
+    "hazard_latency_s": 0.0999981164932251,
+    "object_detected": true,
+    "hazard_confirmed": true,
+    "statuses": [
+      "obstacle",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      "intersecting",
+      "intersecting"
+    ],
+    "matched_distances_m": [
+      null,
+      29.933912135167322,
+      29.938622522798592
+    ],
+    "baseline_statuses": [
+      "unresolved_obstacle",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 3,
+    "unmatched_alarm_frames": 1
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 0,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 30,
+    "position": "inside",
+    "lateral_m": 0.0,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      106,
+      108,
+      96
+    ],
+    "intersecting_rays_per_frame": [
+      212,
+      216,
+      192
+    ],
+    "foreground_occluded_rays_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "removed_returns_per_frame": [
+      212,
+      216,
+      192
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 1,
+    "first_hazard_frame": 1,
+    "detection_latency_s": 0.10001516342163086,
+    "hazard_latency_s": 0.10001516342163086,
+    "object_detected": true,
+    "hazard_confirmed": true,
+    "statuses": [
+      "obstacle",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      "intersecting",
+      "intersecting"
+    ],
+    "matched_distances_m": [
+      null,
+      30.197851186349723,
+      30.364053879272905
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 1
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 1,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 30,
+    "position": "inside",
+    "lateral_m": 0.0,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      106,
+      105,
+      96
+    ],
+    "intersecting_rays_per_frame": [
+      212,
+      210,
+      192
+    ],
+    "foreground_occluded_rays_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "removed_returns_per_frame": [
+      212,
+      210,
+      192
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 1,
+    "first_hazard_frame": 1,
+    "detection_latency_s": 0.10001516342163086,
+    "hazard_latency_s": 0.10001516342163086,
+    "object_detected": true,
+    "hazard_confirmed": true,
+    "statuses": [
+      "obstacle",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      "intersecting",
+      "intersecting"
+    ],
+    "matched_distances_m": [
+      null,
+      30.19797820001581,
+      30.364410289751827
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 1
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 2,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 30,
+    "position": "edge",
+    "lateral_m": 1.3,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      98,
+      98,
+      103
+    ],
+    "intersecting_rays_per_frame": [
+      196,
+      196,
+      206
+    ],
+    "foreground_occluded_rays_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "removed_returns_per_frame": [
+      196,
+      196,
+      206
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 1,
+    "first_hazard_frame": 1,
+    "detection_latency_s": 0.10001516342163086,
+    "hazard_latency_s": 0.10001516342163086,
+    "object_detected": true,
+    "hazard_confirmed": true,
+    "statuses": [
+      "obstacle",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      "intersecting",
+      "intersecting"
+    ],
+    "matched_distances_m": [
+      null,
+      30.201063992426164,
+      30.370017574477632
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 1
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 3,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 30,
+    "position": "edge",
+    "lateral_m": 1.3,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      98,
+      102,
+      108
+    ],
+    "intersecting_rays_per_frame": [
+      196,
+      204,
+      216
+    ],
+    "foreground_occluded_rays_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "removed_returns_per_frame": [
+      196,
+      204,
+      216
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 1,
+    "first_hazard_frame": 1,
+    "detection_latency_s": 0.10001516342163086,
+    "hazard_latency_s": 0.10001516342163086,
+    "object_detected": true,
+    "hazard_confirmed": true,
+    "statuses": [
+      "obstacle",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      "intersecting",
+      "intersecting"
+    ],
+    "matched_distances_m": [
+      null,
+      30.2011544612318,
+      30.370505137353096
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 1
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 4,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 30,
+    "position": "adjacent",
+    "lateral_m": 3.0,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      47,
+      55,
+      52
+    ],
+    "intersecting_rays_per_frame": [
+      244,
+      242,
+      240
+    ],
+    "foreground_occluded_rays_per_frame": [
+      150,
+      132,
+      136
+    ],
+    "removed_returns_per_frame": [
+      94,
+      110,
+      104
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      "adjacent",
+      "adjacent",
+      "adjacent"
+    ],
+    "matched_distances_m": [
+      29.922719955444336,
+      29.960067749023438,
+      28.89136505126953
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 5,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 30,
+    "position": "adjacent",
+    "lateral_m": 3.0,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      47,
+      46,
+      35
+    ],
+    "intersecting_rays_per_frame": [
+      244,
+      242,
+      244
+    ],
+    "foreground_occluded_rays_per_frame": [
+      150,
+      150,
+      174
+    ],
+    "removed_returns_per_frame": [
+      94,
+      92,
+      70
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      "adjacent",
+      "adjacent",
+      "adjacent"
+    ],
+    "matched_distances_m": [
+      29.922719955444336,
+      30.028902053833008,
+      29.145483016967773
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 6,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 100,
+    "position": "inside",
+    "lateral_m": 0.0,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      16,
+      12,
+      16
+    ],
+    "foreground_occluded_rays_per_frame": [
+      16,
+      12,
+      16
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 7,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 100,
+    "position": "inside",
+    "lateral_m": 0.0,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      16,
+      12,
+      16
+    ],
+    "foreground_occluded_rays_per_frame": [
+      16,
+      12,
+      16
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 8,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 100,
+    "position": "edge",
+    "lateral_m": 1.3,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      1,
+      2,
+      3
+    ],
+    "intersecting_rays_per_frame": [
+      10,
+      16,
+      12
+    ],
+    "foreground_occluded_rays_per_frame": [
+      8,
+      12,
+      6
+    ],
+    "removed_returns_per_frame": [
+      2,
+      4,
+      6
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 1,
+    "first_hazard_frame": null,
+    "detection_latency_s": 0.10001516342163086,
+    "hazard_latency_s": null,
+    "object_detected": true,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      "unresolved",
+      "adjacent"
+    ],
+    "matched_distances_m": [
+      null,
+      100.20127090235508,
+      100.36948299463444
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 9,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 100,
+    "position": "edge",
+    "lateral_m": 1.3,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      1,
+      2,
+      2
+    ],
+    "intersecting_rays_per_frame": [
+      10,
+      12,
+      8
+    ],
+    "foreground_occluded_rays_per_frame": [
+      8,
+      8,
+      4
+    ],
+    "removed_returns_per_frame": [
+      2,
+      4,
+      4
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 1,
+    "first_hazard_frame": null,
+    "detection_latency_s": 0.10001516342163086,
+    "hazard_latency_s": null,
+    "object_detected": true,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      "unresolved",
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      100.20127090235508,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 10,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 100,
+    "position": "adjacent",
+    "lateral_m": 3.0,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      2,
+      1,
+      2
+    ],
+    "intersecting_rays_per_frame": [
+      6,
+      14,
+      8
+    ],
+    "foreground_occluded_rays_per_frame": [
+      2,
+      12,
+      4
+    ],
+    "removed_returns_per_frame": [
+      4,
+      2,
+      4
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 11,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 100,
+    "position": "adjacent",
+    "lateral_m": 3.0,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      2,
+      1,
+      1
+    ],
+    "intersecting_rays_per_frame": [
+      6,
+      14,
+      6
+    ],
+    "foreground_occluded_rays_per_frame": [
+      2,
+      12,
+      4
+    ],
+    "removed_returns_per_frame": [
+      4,
+      2,
+      2
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 12,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 200,
+    "position": "inside",
+    "lateral_m": 0.0,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      2,
+      2,
+      8
+    ],
+    "foreground_occluded_rays_per_frame": [
+      2,
+      2,
+      8
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 13,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 200,
+    "position": "inside",
+    "lateral_m": 0.0,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      2,
+      2,
+      4
+    ],
+    "foreground_occluded_rays_per_frame": [
+      2,
+      2,
+      4
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 14,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 200,
+    "position": "edge",
+    "lateral_m": 1.3,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      4,
+      6,
+      6
+    ],
+    "foreground_occluded_rays_per_frame": [
+      4,
+      6,
+      6
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 15,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 200,
+    "position": "edge",
+    "lateral_m": 1.3,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      4,
+      4,
+      8
+    ],
+    "foreground_occluded_rays_per_frame": [
+      4,
+      4,
+      8
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 16,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 200,
+    "position": "adjacent",
+    "lateral_m": 3.0,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      2,
+      8,
+      4
+    ],
+    "foreground_occluded_rays_per_frame": [
+      2,
+      8,
+      4
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 17,
+    "shape": "small_narrow",
+    "dimensions_m": [
+      0.4,
+      0.5,
+      0.8
+    ],
+    "range_m": 200,
+    "position": "adjacent",
+    "lateral_m": 3.0,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      2,
+      8,
+      4
+    ],
+    "foreground_occluded_rays_per_frame": [
+      2,
+      8,
+      4
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 18,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 30,
+    "position": "inside",
+    "lateral_m": 0.0,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      364,
+      359,
+      344
+    ],
+    "intersecting_rays_per_frame": [
+      750,
+      742,
+      710
+    ],
+    "foreground_occluded_rays_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "removed_returns_per_frame": [
+      750,
+      742,
+      710
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 1,
+    "first_hazard_frame": 1,
+    "detection_latency_s": 0.10001516342163086,
+    "hazard_latency_s": 0.10001516342163086,
+    "object_detected": true,
+    "hazard_confirmed": true,
+    "statuses": [
+      "obstacle",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      "intersecting",
+      "intersecting"
+    ],
+    "matched_distances_m": [
+      null,
+      30.19708635415363,
+      30.362733059274376
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 1
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 19,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 30,
+    "position": "inside",
+    "lateral_m": 0.0,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      364,
+      351,
+      326
+    ],
+    "intersecting_rays_per_frame": [
+      750,
+      724,
+      672
+    ],
+    "foreground_occluded_rays_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "removed_returns_per_frame": [
+      750,
+      724,
+      672
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 1,
+    "first_hazard_frame": 1,
+    "detection_latency_s": 0.10001516342163086,
+    "hazard_latency_s": 0.10001516342163086,
+    "object_detected": true,
+    "hazard_confirmed": true,
+    "statuses": [
+      "obstacle",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      "intersecting",
+      "intersecting"
+    ],
+    "matched_distances_m": [
+      null,
+      30.197213391437597,
+      30.363224963386557
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 1
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 20,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 30,
+    "position": "edge",
+    "lateral_m": 1.3,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      292,
+      308,
+      297
+    ],
+    "intersecting_rays_per_frame": [
+      596,
+      640,
+      608
+    ],
+    "foreground_occluded_rays_per_frame": [
+      2,
+      2,
+      0
+    ],
+    "removed_returns_per_frame": [
+      594,
+      638,
+      608
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 0,
+    "first_hazard_frame": 0,
+    "detection_latency_s": 0.0,
+    "hazard_latency_s": 0.0,
+    "object_detected": true,
+    "hazard_confirmed": true,
+    "statuses": [
+      "obstacle",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      "intersecting",
+      "intersecting",
+      "intersecting"
+    ],
+    "matched_distances_m": [
+      30.0,
+      30.200311146097096,
+      30.368884125742348
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 0
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 21,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 30,
+    "position": "edge",
+    "lateral_m": 1.3,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      292,
+      309,
+      309
+    ],
+    "intersecting_rays_per_frame": [
+      596,
+      642,
+      634
+    ],
+    "foreground_occluded_rays_per_frame": [
+      2,
+      2,
+      0
+    ],
+    "removed_returns_per_frame": [
+      594,
+      640,
+      634
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 0,
+    "first_hazard_frame": 0,
+    "detection_latency_s": 0.0,
+    "hazard_latency_s": 0.0,
+    "object_detected": true,
+    "hazard_confirmed": true,
+    "statuses": [
+      "obstacle",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      "intersecting",
+      "intersecting",
+      "intersecting"
+    ],
+    "matched_distances_m": [
+      30.0,
+      30.20038928534597,
+      30.36936820741939
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 1
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 22,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 30,
+    "position": "adjacent",
+    "lateral_m": 3.0,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      230,
+      246,
+      207
+    ],
+    "intersecting_rays_per_frame": [
+      926,
+      928,
+      920
+    ],
+    "foreground_occluded_rays_per_frame": [
+      440,
+      408,
+      496
+    ],
+    "removed_returns_per_frame": [
+      488,
+      522,
+      424
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "obstacle",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      "intersecting",
+      "adjacent",
+      "adjacent"
+    ],
+    "matched_distances_m": [
+      29.758209228515625,
+      29.82994842529297,
+      29.120620727539062
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 3
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 23,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 30,
+    "position": "adjacent",
+    "lateral_m": 3.0,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      230,
+      231,
+      175
+    ],
+    "intersecting_rays_per_frame": [
+      926,
+      930,
+      908
+    ],
+    "foreground_occluded_rays_per_frame": [
+      440,
+      442,
+      552
+    ],
+    "removed_returns_per_frame": [
+      488,
+      490,
+      356
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "obstacle",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      "intersecting",
+      "adjacent",
+      "adjacent"
+    ],
+    "matched_distances_m": [
+      29.758209228515625,
+      29.55014991760254,
+      29.4936466217041
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 3
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 24,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 100,
+    "position": "inside",
+    "lateral_m": 0.0,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      54,
+      50,
+      56
+    ],
+    "foreground_occluded_rays_per_frame": [
+      54,
+      50,
+      56
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 25,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 100,
+    "position": "inside",
+    "lateral_m": 0.0,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      54,
+      46,
+      56
+    ],
+    "foreground_occluded_rays_per_frame": [
+      54,
+      46,
+      56
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 26,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 100,
+    "position": "edge",
+    "lateral_m": 1.3,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      7,
+      12,
+      14
+    ],
+    "intersecting_rays_per_frame": [
+      58,
+      64,
+      56
+    ],
+    "foreground_occluded_rays_per_frame": [
+      42,
+      34,
+      24
+    ],
+    "removed_returns_per_frame": [
+      16,
+      30,
+      32
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 1,
+    "first_hazard_frame": null,
+    "detection_latency_s": 0.10001516342163086,
+    "hazard_latency_s": null,
+    "object_detected": true,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      "unresolved",
+      "unresolved"
+    ],
+    "matched_distances_m": [
+      null,
+      100.20072527551369,
+      100.36798110044766
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 27,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 100,
+    "position": "edge",
+    "lateral_m": 1.3,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      7,
+      12,
+      13
+    ],
+    "intersecting_rays_per_frame": [
+      58,
+      64,
+      54
+    ],
+    "foreground_occluded_rays_per_frame": [
+      42,
+      34,
+      24
+    ],
+    "removed_returns_per_frame": [
+      16,
+      30,
+      30
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 1,
+    "first_hazard_frame": null,
+    "detection_latency_s": 0.10001516342163086,
+    "hazard_latency_s": null,
+    "object_detected": true,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      "unresolved",
+      "unresolved"
+    ],
+    "matched_distances_m": [
+      null,
+      100.20072527551369,
+      100.36879396779783
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 28,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 100,
+    "position": "adjacent",
+    "lateral_m": 3.0,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      3,
+      2,
+      4
+    ],
+    "intersecting_rays_per_frame": [
+      14,
+      26,
+      14
+    ],
+    "foreground_occluded_rays_per_frame": [
+      8,
+      22,
+      6
+    ],
+    "removed_returns_per_frame": [
+      6,
+      4,
+      8
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 1,
+    "first_hazard_frame": null,
+    "detection_latency_s": 0.10001516342163086,
+    "hazard_latency_s": null,
+    "object_detected": true,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      "unresolved",
+      "unresolved"
+    ],
+    "matched_distances_m": [
+      null,
+      100.2046436225488,
+      100.37924164249048
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 29,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 100,
+    "position": "adjacent",
+    "lateral_m": 3.0,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      3,
+      2,
+      4
+    ],
+    "intersecting_rays_per_frame": [
+      14,
+      26,
+      16
+    ],
+    "foreground_occluded_rays_per_frame": [
+      8,
+      22,
+      8
+    ],
+    "removed_returns_per_frame": [
+      6,
+      4,
+      8
+    ],
+    "first_visible_frame": 0,
+    "first_detection_frame": 1,
+    "first_hazard_frame": null,
+    "detection_latency_s": 0.10001516342163086,
+    "hazard_latency_s": null,
+    "object_detected": true,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      "unresolved",
+      "unresolved"
+    ],
+    "matched_distances_m": [
+      null,
+      100.2046436225488,
+      100.37924164249048
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 30,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 200,
+    "position": "inside",
+    "lateral_m": 0.0,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      14,
+      8,
+      14
+    ],
+    "foreground_occluded_rays_per_frame": [
+      14,
+      8,
+      14
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 31,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 200,
+    "position": "inside",
+    "lateral_m": 0.0,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      14,
+      8,
+      16
+    ],
+    "foreground_occluded_rays_per_frame": [
+      14,
+      8,
+      16
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 32,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 200,
+    "position": "edge",
+    "lateral_m": 1.3,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      22,
+      20,
+      22
+    ],
+    "foreground_occluded_rays_per_frame": [
+      22,
+      20,
+      22
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 33,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 200,
+    "position": "edge",
+    "lateral_m": 1.3,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      22,
+      20,
+      20
+    ],
+    "foreground_occluded_rays_per_frame": [
+      22,
+      20,
+      20
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 34,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 200,
+    "position": "adjacent",
+    "lateral_m": 3.0,
+    "motion": "stationary_world",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      12,
+      18,
+      16
+    ],
+    "foreground_occluded_rays_per_frame": [
+      12,
+      18,
+      16
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  },
+  {
+    "label": "HYBRID SYNTHETIC",
+    "split": "evaluation",
+    "case": 35,
+    "shape": "large_wide",
+    "dimensions_m": [
+      1.0,
+      1.0,
+      1.5
+    ],
+    "range_m": 200,
+    "position": "adjacent",
+    "lateral_m": 3.0,
+    "motion": "moving_world_lateral",
+    "visibility_mode": "measured_foreground_returns_and_opaque_box_self_occlusion",
+    "visible_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "intersecting_rays_per_frame": [
+      12,
+      16,
+      14
+    ],
+    "foreground_occluded_rays_per_frame": [
+      12,
+      16,
+      14
+    ],
+    "removed_returns_per_frame": [
+      0,
+      0,
+      0
+    ],
+    "first_visible_frame": null,
+    "first_detection_frame": null,
+    "first_hazard_frame": null,
+    "detection_latency_s": null,
+    "hazard_latency_s": null,
+    "object_detected": false,
+    "hazard_confirmed": false,
+    "statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "matched_path_relations": [
+      null,
+      null,
+      null
+    ],
+    "matched_distances_m": [
+      null,
+      null,
+      null
+    ],
+    "baseline_statuses": [
+      "candidate",
+      "obstacle",
+      "obstacle"
+    ],
+    "background_alarm_frames": 2,
+    "unmatched_alarm_frames": 2
+  }
+]

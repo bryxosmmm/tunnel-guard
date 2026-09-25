@@ -1,0 +1,19 @@
+{
+  "label": "HYBRID SYNTHETIC",
+  "review": "Independent artifact inspection of emitted scenes, not an automated test suite",
+  "scenes": 37,
+  "frames": 111,
+  "source_return_causality_failures": 0,
+  "behind_inserted_return_failures": 0,
+  "count_failures": 0,
+  "timestamp_gaps_s": {
+    "tuning": [
+      0.0999981164932251,
+      0.09999799728393555
+    ],
+    "evaluation": [
+      0.10001516342163086,
+      0.10000789165496826
+    ]
+  }
+}

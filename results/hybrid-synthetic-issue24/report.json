@@ -1,0 +1,439 @@
+{
+  "label": "HYBRID SYNTHETIC",
+  "hypothesis": "Measured empty-tunnel backgrounds plus first-return ray-consistent opaque box insertions reveal where the current detector has support for nominal in-path objects, while adjacent controls and paired backgrounds expose nuisance alarms.",
+  "criterion": {
+    "minimum_object_detection_all_cases": 0.8,
+    "minimum_inside_hazard_confirmation_all_cases": 0.7,
+    "maximum_adjacent_hazard_confirmation_cases": 0.0,
+    "maximum_evaluation_background_alarm_frames": 0
+  },
+  "criterion_result": false,
+  "evaluation_cases": 36,
+  "visible_cases": 20,
+  "zero_visibility_cases": 16,
+  "object_detection_all_cases": 0.3888888888888889,
+  "hazard_confirmation_all_cases": 0.2222222222222222,
+  "object_detection_given_support": 0.7,
+  "hazard_confirmation_given_support": 0.4,
+  "inside_hazard_confirmation_all_cases": 0.3333333333333333,
+  "adjacent_hazard_confirmation_cases": 0.0,
+  "background": {
+    "tuning": {
+      "frames": 3,
+      "status_counts": {
+        "obstacle": 2,
+        "unresolved_obstacle": 1
+      },
+      "alarm_frames": 3,
+      "unknown_frames": 0,
+      "duration_s": 0.19999611377716064
+    },
+    "evaluation": {
+      "frames": 3,
+      "status_counts": {
+        "candidate": 1,
+        "obstacle": 2
+      },
+      "alarm_frames": 2,
+      "unknown_frames": 0,
+      "duration_s": 0.20002305507659912
+    }
+  },
+  "validity": "Measured empty-development backgrounds with modeled box returns; no field recall, hardware range, private recall, or calibrated probability.",
+  "failures": [
+    {
+      "case": 4,
+      "range_m": 30,
+      "shape": "small_narrow",
+      "position": "adjacent",
+      "visible_returns_per_frame": [
+        47,
+        55,
+        52
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 5,
+      "range_m": 30,
+      "shape": "small_narrow",
+      "position": "adjacent",
+      "visible_returns_per_frame": [
+        47,
+        46,
+        35
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 6,
+      "range_m": 100,
+      "shape": "small_narrow",
+      "position": "inside",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 7,
+      "range_m": 100,
+      "shape": "small_narrow",
+      "position": "inside",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 8,
+      "range_m": 100,
+      "shape": "small_narrow",
+      "position": "edge",
+      "visible_returns_per_frame": [
+        1,
+        2,
+        3
+      ],
+      "object_detected": true,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 9,
+      "range_m": 100,
+      "shape": "small_narrow",
+      "position": "edge",
+      "visible_returns_per_frame": [
+        1,
+        2,
+        2
+      ],
+      "object_detected": true,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 10,
+      "range_m": 100,
+      "shape": "small_narrow",
+      "position": "adjacent",
+      "visible_returns_per_frame": [
+        2,
+        1,
+        2
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 11,
+      "range_m": 100,
+      "shape": "small_narrow",
+      "position": "adjacent",
+      "visible_returns_per_frame": [
+        2,
+        1,
+        1
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 12,
+      "range_m": 200,
+      "shape": "small_narrow",
+      "position": "inside",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 13,
+      "range_m": 200,
+      "shape": "small_narrow",
+      "position": "inside",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 14,
+      "range_m": 200,
+      "shape": "small_narrow",
+      "position": "edge",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 15,
+      "range_m": 200,
+      "shape": "small_narrow",
+      "position": "edge",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 16,
+      "range_m": 200,
+      "shape": "small_narrow",
+      "position": "adjacent",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 17,
+      "range_m": 200,
+      "shape": "small_narrow",
+      "position": "adjacent",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 22,
+      "range_m": 30,
+      "shape": "large_wide",
+      "position": "adjacent",
+      "visible_returns_per_frame": [
+        230,
+        246,
+        207
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 23,
+      "range_m": 30,
+      "shape": "large_wide",
+      "position": "adjacent",
+      "visible_returns_per_frame": [
+        230,
+        231,
+        175
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 24,
+      "range_m": 100,
+      "shape": "large_wide",
+      "position": "inside",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 25,
+      "range_m": 100,
+      "shape": "large_wide",
+      "position": "inside",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 26,
+      "range_m": 100,
+      "shape": "large_wide",
+      "position": "edge",
+      "visible_returns_per_frame": [
+        7,
+        12,
+        14
+      ],
+      "object_detected": true,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 27,
+      "range_m": 100,
+      "shape": "large_wide",
+      "position": "edge",
+      "visible_returns_per_frame": [
+        7,
+        12,
+        13
+      ],
+      "object_detected": true,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 28,
+      "range_m": 100,
+      "shape": "large_wide",
+      "position": "adjacent",
+      "visible_returns_per_frame": [
+        3,
+        2,
+        4
+      ],
+      "object_detected": true,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 29,
+      "range_m": 100,
+      "shape": "large_wide",
+      "position": "adjacent",
+      "visible_returns_per_frame": [
+        3,
+        2,
+        4
+      ],
+      "object_detected": true,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 30,
+      "range_m": 200,
+      "shape": "large_wide",
+      "position": "inside",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 31,
+      "range_m": 200,
+      "shape": "large_wide",
+      "position": "inside",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 32,
+      "range_m": 200,
+      "shape": "large_wide",
+      "position": "edge",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 33,
+      "range_m": 200,
+      "shape": "large_wide",
+      "position": "edge",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 34,
+      "range_m": 200,
+      "shape": "large_wide",
+      "position": "adjacent",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    },
+    {
+      "case": 35,
+      "range_m": 200,
+      "shape": "large_wide",
+      "position": "adjacent",
+      "visible_returns_per_frame": [
+        0,
+        0,
+        0
+      ],
+      "object_detected": false,
+      "hazard_confirmed": false
+    }
+  ],
+  "manifest_sources": [
+    {
+      "split": "tuning",
+      "bag": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "source_frame_indices": [
+        0,
+        1,
+        2
+      ],
+      "baseline_pose_valid": [
+        false,
+        true,
+        true
+      ]
+    },
+    {
+      "split": "evaluation",
+      "bag": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "source_frame_indices": [
+        0,
+        1,
+        2
+      ],
+      "baseline_pose_valid": [
+        false,
+        true,
+        true
+      ]
+    }
+  ]
+}

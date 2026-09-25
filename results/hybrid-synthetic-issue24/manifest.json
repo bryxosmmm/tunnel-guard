@@ -1,0 +1,126 @@
+{
+  "label": "HYBRID SYNTHETIC",
+  "command": [
+    "/private/tmp/tunnel-guard-issue24/tunnel_guard/realistic_stress.py",
+    "--experiment",
+    "configs/hybrid-synthetic-issue24.json"
+  ],
+  "started_unix_s": 1790336448.190094,
+  "git_revision": "661e7aed4292b2f398c0c230e1aad47222f80e3d",
+  "git_status": "?? configs/hybrid-synthetic-issue24.json\n?? data\n?? tunnel_guard/realistic_report.py\n?? tunnel_guard/realistic_stress.py\n",
+  "recipe_sha256": "fe72096dd79359ec6166d741af1c8ca2b1dc9c4862dd44b1a4523ec0e9e8f980",
+  "detector_sha256": "a912f18cd11d9db6f3d6e4a6071df9f50edbb5fc2a5011db83dd01d75acc3aab",
+  "environment": {
+    "python": "3.12.13 (main, Apr  7 2026, 21:09:58) [Clang 22.1.1 ]",
+    "platform": "macOS-26.5.2-arm64-arm-64bit",
+    "machine": "arm64",
+    "cpu_count": 8,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "rosbags": "0.11.5",
+      "kiss-icp": "1.3.0",
+      "open3d": "0.19.0",
+      "travel-seg": null,
+      "hdbscan": null,
+      "pypatchworkpp": null
+    },
+    "source_sha256": {
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/background.py": "fcbbaa5c01b165da3ddca8dee326f00b6964546454c327d283de758648e80af0",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/detector.py": "8354bda81a9c8d543210226513e94573deb808bf7f8661436d2032bda5ff83aa",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/evaluate.py": "fc8a9264232d2b685951495b62f0a3b2dddf166934fcb709e6993a4accc34034",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/geometry.py": "ecce5b4deade96ae03d03b37a2a582b4f07565452a50e02909eb3f0bf5707c54",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/inspect_bag.py": "ccb30abe90954ab9e7862bcc914b9803ff538c5e4dd4695c97f189d04b766374",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/io.py": "f1634ee30f4fac7b82bbe811eb3dc5320493eae32cbc63e6b0520ddd4bba6651",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/on_track.py": "52ac512affd2102a788a8e1eb98db05259212d7c1ef55f821cc57ea6b067d07b",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/realistic_report.py": "4cc838206aaad1c2a12d67f435937402fc89cce58e137725acbe66b98e8927af",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/realistic_stress.py": "ac1a55146d58f9369ae08874b4c8c48d5dd9b2fffe5c1991d9df779f1f286899",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/render_annotation_review.py": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/run.py": "d9ba449c082b68d2167e71d4431c0b63870e3846058da0e728930101a5d24057",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/segmentation.py": "01b9e24f8e7a416558ea99eb96af0ac4963cf6cf3e53869e70513b6b0017bc56",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/stress.py": "fb3fd10784fcde34a80fa1819386428d8770a5b996f2baae8588567e3651b700",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/surface_evaluate.py": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/sustech.py": "103e7c167550022a86f37973a11dabfc476d0acdfc9eb1ca08212b6f4c615392",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/sustech_import.py": "adba80ec5aa9bfa31d8ec3321ed5f2d3ef97c55a77db7c0bd2addc7fb0f84700",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/trace_analysis.py": "ccaea517a3aae46263b5396897174caca29ffcb8d61af72f3edac0b2734577be",
+      "/private/tmp/tunnel-guard-issue24/tunnel_guard/visualization.py": "a83d598324cfd9fb0e844b3628ca46b015ffa4e3cc1f0e3281a4ee68f3d0436d"
+    }
+  },
+  "sources": [
+    {
+      "split": "tuning",
+      "bag": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+      "db3": [
+        {
+          "name": "doubleT_platform_0.db3",
+          "bytes": 2758447104,
+          "sha256": "826e4161822ac39953acbda84d813f77061abbfdd9b47eea3327164ff05ee2c3"
+        }
+      ],
+      "source_frame_indices": [
+        0,
+        1,
+        2
+      ],
+      "measurement_timestamp_ns": [
+        946693350333430052,
+        946693350433428049,
+        946693350533426046
+      ],
+      "baseline_pose_valid": [
+        false,
+        true,
+        true
+      ],
+      "ground_plane_at_first_frame": [
+        -0.003301240311884588,
+        0.023998483563212686,
+        -1.305199510391984
+      ],
+      "rail_height_m_at_first_frame": 0.20163629523204604,
+      "source_frame_id": "hesai_lidar",
+      "topic": "/lidar_points"
+    },
+    {
+      "split": "evaluation",
+      "bag": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "metadata_sha256": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d",
+      "db3": [
+        {
+          "name": "roundT_doubleT_0.db3",
+          "bytes": 2014867456,
+          "sha256": "6b5d3780bb8e373fae9c1a72080c34084f5a743efca5899526eb15c148a2b90d"
+        }
+      ],
+      "source_frame_indices": [
+        0,
+        1,
+        2
+      ],
+      "measurement_timestamp_ns": [
+        946692931633399963,
+        946692931733415008,
+        946692931833423018
+      ],
+      "baseline_pose_valid": [
+        false,
+        true,
+        true
+      ],
+      "ground_plane_at_first_frame": [
+        0.0012448569618323684,
+        0.04425712088159947,
+        -1.319181329998438
+      ],
+      "rail_height_m_at_first_frame": 0.22182404404117181,
+      "source_frame_id": "hesai_lidar",
+      "topic": "/lidar_points"
+    }
+  ],
+  "finished_unix_s": 1790336505.9939358
+}
