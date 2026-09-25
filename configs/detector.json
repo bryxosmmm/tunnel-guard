@@ -267,5 +267,9 @@
     "history": 4
   },
   "structure_outward_gap_m": 0.3,
-  "structure_min_length_m": 5.0
+  "structure_min_length_m": 5.0,
+  "local_confirmation": {
+    "shape_radius_m": 0.1,
+    "minimum_symmetric_overlap": 0.8
+  }
 }

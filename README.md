@@ -22,18 +22,31 @@ person localization/continuity prevent trading a critical regression for a bette
 total. Missing synthetic confirmation uses `-1` for first frame/range metrics.
 The frozen evaluation partition was previously inspected; it is not blind.
 
-The unchanged detector completed 15,269 recording frames plus the 30 diagnostic
-scans: 113 negative-panel episodes; the long recording retained 98 alarm frames,
-88 episodes, 23 unknown and 324 unresolved frames. Person presence remained
-36/36 with no track switches. Synthetic events 9 and 10 still have **zero**
-intersection confirmations: a valid benchmark baseline is not release acceptance.
+The unchanged `a4789d9` baseline completed 15,269 recording frames plus the 30
+diagnostic scans: 113 negative-panel episodes; the long recording retained 98
+alarm frames, 88 episodes, 23 unknown and 324 unresolved frames. Person presence
+remained 36/36 with no track switches. That baseline had zero intersection
+confirmations for synthetic events 9 and 10.
+
+The selected default now enables the existing `local_confirmation` profile
+(0.1 m shape radius, 0.8 symmetric overlap). A new complete fixed-panel replay
+retained every earlier positive and all negative-panel gates. Exact-provenance
+intersection confirmations rose to 11 frames for event 9 and 5 for event 10,
+with longest runs of 4 and 3 acquisitions; first confirmations were at 57.16 m
+and 49.83 m. Detection is intermittent and synthetic, not a field-range claim.
+Person presence/localization/continuity remained intact. A paired comparison
+of all 15,269 rows preserved geometry, poses, component geometry/IDs, supported
+range and per-bin supported returns exactly. Negative episodes remain **113**:
+this restores small-object evidence, not nuisance reduction or release safety.
+Current replay: `build/autoresearch-issue23/run-0002`; attribution/coverage
+comparison: `build/issue23-local-promotion/`.
 
 Separate evaluation of an already completed replay avoids repeating expensive
 inference merely to inspect its evidence:
 
 ```bash
 PYTHONPATH=. .venv/bin/python scripts/benchmark_issue23.py \
-  configs/autoresearch-issue23.json --score build/autoresearch-issue23/run-0001
+  configs/autoresearch-issue23.json --score build/autoresearch-issue23/run-0002
 PYTHONPATH=. .venv/bin/python scripts/audit_issue23_certification.py \
   configs/autoresearch-issue23.json build/issue23-certification-new
 ```
@@ -43,7 +56,7 @@ the native classifier. It records original return indices and contour margins;
 near-zero fit covariance in a three-anchor quadratic and zero covariance in the
 two-anchor fallback are observability risks, not proof that every extrapolated
 detection is false. See `results/issue23-certification-mechanism-20260925.json`
-and its companion ZIP. Detector behavior and thresholds are unchanged.
+and its companion ZIP. That audit did not change the geometry classifier.
 
 This instrumented offline run took about 3 h 21 min; long-recording inference
 p50/p95 was 629/1302 ms. These are not controlled target-hardware timings or
