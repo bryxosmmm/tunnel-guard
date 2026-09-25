@@ -531,6 +531,37 @@ class TrackGeometry:
         fraction = np.clip((running_height - segment[:, 0]) / (segment[:, 1] - segment[:, 0]), 0, 1)
         return segment[:, 2] + fraction * (segment[:, 3] - segment[:, 2])
 
+    def longitudinal_surface_mask(self, points: np.ndarray, section: "CrossSection") -> np.ndarray:
+        """Fine cross-section cells supported at several distinct longitudinal stations.
+
+        A coarse structural cell can contain both a compact obstruction and a wall/bed
+        elsewhere in the scan. Require support in the point's *own* narrow lateral
+        and height cell before treating an interior return as an explained surface.
+        This is only used together with structural_mask's outward-reach condition.
+        """
+        cfg = self.config
+        if not len(points):
+            return np.zeros(0, dtype=bool)
+        cell = float(cfg["structure_surface_cell_m"])
+        station_m = float(cfg["structure_station_m"])
+        stations = np.floor(points[:, 0] / station_m).astype(np.int64)
+        supported = np.zeros(len(points), dtype=bool)
+        for offset in (0.0, cell / 2):
+            lateral = np.floor((section.lateral + offset) / cell).astype(np.int64)
+            height = np.floor((section.running_height + offset) / cell).astype(np.int64)
+            order = np.lexsort((stations, height, lateral))
+            lat, high, x = lateral[order], height[order], stations[order]
+            cells = np.r_[True, (lat[1:] != lat[:-1]) | (high[1:] != high[:-1])]
+            starts = np.flatnonzero(cells)
+            stops = np.r_[starts[1:], len(points)]
+            distinct = np.r_[True, cells[1:] | (x[1:] != x[:-1])]
+            counts = np.add.reduceat(distinct, starts)
+            span = (x[stops - 1] - x[starts] + 1) * station_m
+            surface = ((counts >= cfg["structure_min_stations"])
+                       & (span >= cfg["structure_min_length_m"]))
+            supported[order] |= np.repeat(surface, stops - starts)
+        return supported
+
     def structural_mask(self, points: np.ndarray, section: "CrossSection | None" = None) -> np.ndarray:
         """Returns that belong to the tunnel's own cross-section rather than to an object.
 
@@ -554,9 +585,10 @@ class TrackGeometry:
           between them is one cell - and thickened by one row, because a vertical face and
           the top surface it carries are adjacent rows of a 10 cm grid.
 
-        This gates the envelope CLAIM only. A return is never removed from the object pool,
-        so an object whose interior evidence is structural is still reported, with its
-        evidence and this reason, and never silently disappears.
+        This coarse mask gates only the nominal envelope claim. When the optional
+        fine-surface mode is enabled, a second longitudinal mask may also exclude
+        matching returns from certified interior support. Raw returns are retained,
+        but a weak component may then fail candidate admission.
         """
         cfg = self.config
         if section is None:

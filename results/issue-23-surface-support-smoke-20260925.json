@@ -1,0 +1,95 @@
+{
+  "scope": "Handoff of the PR #28 surface-support change onto the PR #29 base for issue #23. Smoke evidence on one real recording only: this is not the fixed-panel acceptance and not a field-recall or false-alarm statement.",
+  "requested_by": "@MorS1337 in https://github.com/bryxosmmm/tunnel-guard/pull/28#issuecomment-5821499968: a separate branch with only the surface-support change on the PR #29 reference line, its own recipe, no route-memory, no odometry-setting changes, default unchanged. The full acceptance replay and local_confirmation compatibility stay with him (#21/#23).",
+  "base": {
+    "reference_line": "fix/issue-23-pose-independent-evidence",
+    "commit": "a4789d9127906a0270a218a7ffbe0a5565592979",
+    "note": "988750f, the commit named in the request, is an ancestor of this head; the commits in between add only configs and results, no tunnel_guard source, so the detector behaviour of this branch is the behaviour of the named commit plus the patch below.",
+    "detector_source_changed": ["tunnel_guard/geometry.py (longitudinal_surface_mask added)", "tunnel_guard/detector.py (optional key validation, mask wiring, per-object report field)"]
+  },
+  "patch_conformance": {
+    "method": "The surface-support code change of 979ba33 was applied onto the PR #29 base; the only conflict was the geometry-validity guard PR #29 added to the same statement, resolved by keeping that guard and making the optional rule inert on frames whose own geometry is unavailable.",
+    "route_memory": "absent from this branch",
+    "odometry_settings": "unchanged from configs/detector.json of the PR #29 base",
+    "contour_and_threshold_changes": "none; confirmation, envelope, association and threshold keys are byte-identical to the base recipe",
+    "default_recipe": "configs/detector.json unchanged in this branch"
+  },
+  "recipes": {
+    "variant_profile": {
+      "path": "configs/detector-issue23-surface.json",
+      "sha256": "06995eed3c78fa3921695a7527a04f02244cfb8168d335366daaa04f325acbd0",
+      "difference_from_default": "exactly one added key: structure_surface_cell_m = 0.15; every other key has the same value and order as configs/detector.json (sha256 68e3515671a8a0bd7c6998a8aac59a8f7cff5153d964739edc266ae794c59834)",
+      "inherited_keys": "structure_min_stations = 3 and structure_min_length_m = 5.0 already exist in the base recipe; the cell size is the only new setting"
+    },
+    "option_off_control": "configs/issue-23-surface-support-control-20260925.json",
+    "variant_smoke": "configs/issue-23-surface-support-smoke-20260925.json",
+    "fixed_panel_candidate": "configs/issue-23-continuous-surface-20260925.json (paired with the committed baseline configs/issue-23-continuous-baseline-retry-20260924.json; not run here)",
+    "seed": 20260915,
+    "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle, all 201 frames",
+    "command": "uv run python -m tunnel_guard.run --experiment configs/issue-23-surface-support-{control,smoke}-20260925.json"
+  },
+  "option_off_identity_control": {
+    "runs": [
+      "unpatched a4789d9 build, configs/detector.json, 201 frames",
+      "this branch, configs/detector.json, same 201 frames"
+    ],
+    "result": "201/201 frames compared field by field: zero differences in every non-timing field, including objects, statuses, geometry, poses, motion, evidence counters and reported distances; no surface_explained_voxels field is added when the key is absent. Only per-frame timing fields differ, which is expected between two runs.",
+    "timing_fields_excluded": ["decode_s", "deserialize_s", "inference_s", "ingestion_s", "motion_s", "mounting_observation_s", "processing_s", "read_and_process_s"],
+    "native_binary_note": "Both builds come from identical sources at a4789d9 with the same build command, but the .so digests differ between checkouts (e0a95374... vs 4598441f...) because the build path is embedded. This is not an identical-binary control; the equality above is an output-equality control on the same frames.",
+    "output_sha256": {
+      "unpatched": "112092a97ca7e6f7f08112a2dc8d08702f6331a2e33b7a510a20f24ecddb5cf8",
+      "branch": "7e1aaf8645a080d6bd4d55e43690ce6a66148a1a2ca1f38cc27d91c897eedeb4"
+    }
+  },
+  "variant_smoke_on_the_person_recording": {
+    "frames": 201,
+    "status_frames": {
+      "before": {"obstacle": 166, "unresolved_obstacle": 6, "candidate": 4, "no_obstacle_observed": 25},
+      "after": {"obstacle": 84, "unresolved_obstacle": 21, "candidate": 1, "no_obstacle_observed": 95}
+    },
+    "status_transitions": {
+      "obstacle -> obstacle": 84,
+      "obstacle -> no_obstacle_observed": 65,
+      "obstacle -> unresolved_obstacle": 17,
+      "no_obstacle_observed -> no_obstacle_observed": 25,
+      "unresolved_obstacle -> unresolved_obstacle": 4,
+      "unresolved_obstacle -> no_obstacle_observed": 2,
+      "candidate -> no_obstacle_observed": 3,
+      "candidate -> candidate": 1
+    },
+    "confirmed_observations": {"before": 203, "after": 111},
+    "objects_by_relation": {
+      "before": {"adjacent": 62036, "intersecting": 209, "unresolved": 2},
+      "after": {"adjacent": 62133, "intersecting": 110, "unresolved": 2}
+    },
+    "mask_activity": {
+      "frames_with_explained_voxels": 135,
+      "explained_voxels_total": 300,
+      "max_per_frame": 13
+    },
+    "annotated_person": {
+      "track_id": 2535,
+      "frames_present": "36/36 on frames 165-200 in both variants",
+      "relation": "adjacent throughout, confirmed false, certified_unexplained_voxels 0 — the same as before the change, and consistent with results/person-specific-20260923.json",
+      "fields_identical_across_variants": ["path_relation", "confirmed", "certified_unexplained_voxels", "bbox_min", "bbox_max", "support_voxels", "height_above_railhead_m"],
+      "note": "This is one annotated event, not 36 independent positives, and it is not a verified on-track hazard."
+    },
+    "driving_component": {
+      "track_id": 2726,
+      "range_m": "about 56.1-56.5",
+      "explained_voxels_on_this_track": {"frames": 17, "min": 1, "max": 2, "total": 25},
+      "mechanism": "The fine cell explains 0-2 interior voxels of this component per frame. The claim needs claim_min_support_voxels = 2 and confirmation_hits = 2, so one or two explained voxels are enough to drop intersection_confirmed and turn an obstacle frame into unresolved_obstacle or no_obstacle_observed. The reduction therefore sits on the claim threshold, not on a large measured support difference.",
+      "reason_before_and_after": "certified_interior_shared_with_structure (certified_unexplained_voxels 0 in both), i.e. the object's certified interior support was already carried by cell sharing with the tunnel surface"
+    },
+    "output_sha256": "72cf56cec045e4e7c15e0b56535de233ee1c18044be90c4602856de82396b2b4",
+    "full_prediction_streams": "kept locally; the run directory also records the applied working-tree patch in working-tree.patch"
+  },
+  "limits": [
+    "One recording, 201 frames of a standing train with one annotated person; the six empty recordings and the 11271-frame continuous recording were not replayed here. No nuisance-reduction claim for this branch is made from this smoke.",
+    "unresolved_obstacle frames grew 6 -> 21 on this recording. Part of the alarm reduction is replaced by unresolved, exactly the substitution issue #23 requires to be reported separately; it is not a nuisance reduction by itself.",
+    "The gain rides on the claim threshold: a component whose only interior evidence is 1-2 voxels loses its claim when those voxels are explained by the fine cell. Sparse but genuine obstacles sit in the same margin.",
+    "An object whose own narrow lateral/height cell is occupied longitudinally by a surface (lying against a walkway or cable tray) loses interior support by the same rule. Neither a long infrastructure-attached object nor the organizer synthetic low and hanging objects were tested here.",
+    "The historical 89 -> 57 episode comparison was produced before this base, with route-memory in the configuration and eight odometry threads, so it is not verification of this branch.",
+    "No target-platform runtime, no 10 Hz claim, no calibrated probability, no field recall."
+  ]
+}

@@ -1,0 +1,21 @@
+{
+  "hypothesis": "Requiring a return's own narrow lateral and height cell to persist over at least 3 distinct longitudinal stations spanning 5 m removes tunnel-surface returns from certified interior support and lowers background confirmed-alarm episodes on organizer-declared empty tunnels, without losing the person, the low object or the hanging object.",
+  "criterion": "Acceptance for this candidate is MorS1337's (#23, handoff of PR #28): fewer background episodes without growth in unknown or unresolved, no loss of the person, the low object or the hanging object, and no new risky positive cases. Run requirement: this recipe covers the same panel as the committed baseline configs/issue-23-continuous-baseline-retry-20260924.json, with identical acquisition coverage and identical component geometry/identity, poses and motion; gaps above 0.5 s break episodes and are excluded from exposure. Acceptance is decided through #21/#23; this recipe only defines the run and no full-panel result for this branch exists at handoff.",
+  "seed": 20260915,
+  "source_base": "a4789d9127906a0270a218a7ffbe0a5565592979",
+  "panel_manifest": "configs/readiness-real-panel-20260924.json",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [],
+  "visualization": false,
+  "result_compression": "gzip",
+  "bags": [
+    {
+      "path": "data/extended_full/new_data",
+      "split": "continuous_fixed_development_and_evaluation_partitions"
+    }
+  ],
+  "detector_config": "configs/detector-issue23-surface.json",
+  "output": "build/issue-23-continuous-surface-20260925"
+}
