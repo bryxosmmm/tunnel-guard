@@ -1,0 +1,209 @@
+{
+  "experiment": "Batch repeated per-object path-uncertainty reporting, isolated performance candidate",
+  "production_change": false,
+  "source_change": "Only detector.py: evaluate the same geometry.path at all reported distances together, preserve unavailable bounds; remove unused scalar helper.",
+  "config_sha256": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa",
+  "native_sha256": "daeeb70c5e93225be0695fa5a1c2edddd00b3ea61dc6729bc76269fc1c2e8cf7",
+  "profile": {
+    "new_data": {
+      "frames": 100,
+      "scientific_identity": true,
+      "wall_s": 26.096150334225968,
+      "stage_profile_s": {
+        "decode": 3.682881687,
+        "detector": 16.882768099999844,
+        "gzip_write": 1.7631798330000001
+      }
+    },
+    "doubleT_platform": {
+      "frames": 100,
+      "scientific_identity": true,
+      "wall_s": 25.32163554104045,
+      "stage_profile_s": {
+        "decode": 1.2671859070000007,
+        "detector": 19.526710774000012,
+        "gzip_write": 1.089896206
+      }
+    }
+  },
+  "profile_limits": {
+    "instrumented_timing": true,
+    "parent_profile_entries_missing": [
+      "Detector.process",
+      "Detector._motion",
+      "TrackGeometry.__init__"
+    ],
+    "interpretation": "Use observed leaf/helper costs to locate repeated work, not profiler self totals as complete elapsed latency. Actual row processing_s sums differ.",
+    "profile_writer_compression_level": 9,
+    "canonical_harness_compression_level": 1,
+    "writer_limit": "The diagnostic writer uses gzip default9, while the frozen canonical harness explicitly uses1. Do not attribute measured gzip9 cost to canonical logging. No compression change is proposed.",
+    "paired_runtime_scope": "Separate active ABBA experiment measures only unprofiled Detector.process; its fixed gzip6 writing is outside the timed region and identical across variants."
+  },
+  "paired_runtime": {
+    "actual_processed_acquisitions": 800,
+    "distinct_acquisitions": 200,
+    "scientific_identity": true,
+    "run_order": [
+      {
+        "plan": "build/issue23-batched-bounds/baseline-first.json",
+        "variant": "baseline",
+        "processing_elapsed_s": 33.404051123,
+        "processing_cpu_s": 38.83622200000001
+      },
+      {
+        "plan": "build/issue23-batched-bounds/candidate-first.json",
+        "variant": "candidate",
+        "processing_elapsed_s": 32.955481419,
+        "processing_cpu_s": 38.375214
+      },
+      {
+        "plan": "build/issue23-batched-bounds/candidate-second.json",
+        "variant": "candidate",
+        "processing_elapsed_s": 33.065851168,
+        "processing_cpu_s": 38.295419
+      },
+      {
+        "plan": "build/issue23-batched-bounds/baseline-second.json",
+        "variant": "baseline",
+        "processing_elapsed_s": 33.644014671,
+        "processing_cpu_s": 38.912853
+      }
+    ],
+    "comparisons": {
+      "new_data": {
+        "runs": {
+          "baseline": [
+            {
+              "elapsed_s": 14.960108541,
+              "cpu_s": 18.105935000000002,
+              "p50_s": 0.1664418745,
+              "p95_s": 0.20580893155
+            },
+            {
+              "elapsed_s": 14.970496171,
+              "cpu_s": 18.042059000000002,
+              "p50_s": 0.1693794795,
+              "p95_s": 0.20474035449999997
+            }
+          ],
+          "candidate": [
+            {
+              "elapsed_s": 14.519654336,
+              "cpu_s": 17.698163,
+              "p50_s": 0.161619833,
+              "p95_s": 0.20100672949999998
+            },
+            {
+              "elapsed_s": 14.498291163000001,
+              "cpu_s": 17.546848,
+              "p50_s": 0.1628352505,
+              "p95_s": 0.20005340435
+            }
+          ]
+        },
+        "elapsed_ratio_of_means": 0.9695074916867921,
+        "cpu_ratio_of_means": 0.9750198309759596,
+        "every_candidate_elapsed_below_every_baseline": true
+      },
+      "doubleT_platform": {
+        "runs": {
+          "baseline": [
+            {
+              "elapsed_s": 18.443942582000002,
+              "cpu_s": 20.730287,
+              "p50_s": 0.1963855625,
+              "p95_s": 0.29791692470000003
+            },
+            {
+              "elapsed_s": 18.6735185,
+              "cpu_s": 20.870794,
+              "p50_s": 0.198129,
+              "p95_s": 0.30564405785
+            }
+          ],
+          "candidate": [
+            {
+              "elapsed_s": 18.435827083,
+              "cpu_s": 20.677051000000002,
+              "p50_s": 0.19713679150000002,
+              "p95_s": 0.2996259705
+            },
+            {
+              "elapsed_s": 18.567560005,
+              "cpu_s": 20.748571000000002,
+              "p50_s": 0.1933731045,
+              "p95_s": 0.30955444649999997
+            }
+          ]
+        },
+        "elapsed_ratio_of_means": 0.9969266757295712,
+        "cpu_ratio_of_means": 0.9957823451751171,
+        "every_candidate_elapsed_below_every_baseline": false
+      },
+      "combined": {
+        "runs": {
+          "baseline": [
+            {
+              "elapsed_s": 33.404051123,
+              "cpu_s": 38.83622200000001
+            },
+            {
+              "elapsed_s": 33.644014671,
+              "cpu_s": 38.912853
+            }
+          ],
+          "candidate": [
+            {
+              "elapsed_s": 32.955481419,
+              "cpu_s": 38.375214
+            },
+            {
+              "elapsed_s": 33.065851168,
+              "cpu_s": 38.295419
+            }
+          ]
+        },
+        "elapsed_ratio_of_means": 0.9846866096010204,
+        "cpu_ratio_of_means": 0.9861291983216521,
+        "every_candidate_elapsed_below_every_baseline": true
+      }
+    },
+    "limits": [
+      "Only two100frame prefixes, two executions per variant, not independent detection events.",
+      "Timing is unprofiled local Detector.process, not full harness runtime or live latency.",
+      "No primary-metric improvement or production promotion claimed; full panel not rerun."
+    ]
+  },
+  "complete_positive_person": {
+    "cloud_with_fake_obj": {
+      "frames": 1510,
+      "timed_frames": 1510,
+      "scientific_identity": true,
+      "processing_elapsed_s": 427.15897236300003,
+      "processing_cpu_s": 470.800199
+    },
+    "doubleT_obstacle": {
+      "frames": 201,
+      "timed_frames": 201,
+      "scientific_identity": true,
+      "processing_elapsed_s": 37.924325414,
+      "processing_cpu_s": 47.4287
+    }
+  },
+  "unavailable_geometry_observation": {
+    "frame": 225,
+    "status": "unknown",
+    "objects": 543,
+    "all_bounds_unavailable": true
+  },
+  "actual_processed_acquisitions": 2721,
+  "distinct_acquisitions": 1911,
+  "decision": "Measured small processing improvement on fixed prefixes with exact scientific outputs; complete positive/person outputs also exact. Retain isolated patch, not production promotion or nuisance reduction.",
+  "limits": [
+    "Combined unprofiled processing time was1.53%lower in these twoABBArepeats; new_data3.05%lower, platform0.31%withoverlappingrunranges. No universal speed or live latency claim.",
+    "Full13558negative-panel replay not performed for this reporting-only candidate.",
+    "Positive qualification overlapped a short independent30scan correctness probe; its elapsed time is not comparative performance evidence.",
+    "Full raw output rows retained locally; portable bundle contains source, scripts, recipes, complete digests/timings and summaries.",
+    "Formal primary runs remain2/6; best nuisance metric remains113episodes."
+  ]
+}
