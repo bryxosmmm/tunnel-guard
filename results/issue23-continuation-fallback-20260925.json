@@ -363,7 +363,7 @@
       "No production edit, threshold selection, detector replay, or promotion."
     ]
   },
-  "three_anchor_regressions": [
+  "three_anchor_pairs_sorted_by_error_increase": [
     {
       "recording": "new_data",
       "frame": 6734,
@@ -1014,6 +1014,6 @@
       "fallback_uncertainty_m": 0.18340700435495821
     }
   ],
-  "decision": "Do not replace three-anchor curvature with a straight line solely because residual variance is underidentified. Mean error decreases but 26/59 paired held-out predictions worsen, median discrepancy increases, and measured curved sequences lose consistency. This does not establish a nuisance-safe detector candidate.",
-  "next_hypothesis": "Inspect already-measured paired-rail heading_slope, currently omitted from continuation fitting. Evaluate its prediction consistency against the same fixed holdouts, acknowledging shared-return correlation and no physical ground truth."
+  "decision": "Do not replace three-anchor curvature with a straight line solely because residual variance is underidentified. Mean error decreases but 26/59 paired held-out predictions worsen, median discrepancy increases, and sequences of accepted anchor measurements lose consistency. This does not establish a nuisance-safe detector candidate.",
+  "next_hypothesis": "Inspect stored rail heading_slope, currently omitted from continuation fitting. Source inspection shows it may be a paired-line fit OR an inherited heading when refinement is not accepted; distinguish that provenance before calling it a measured tangent. Compare on the same fixed holdouts, acknowledging shared-return correlation and no physical ground truth."
 }
