@@ -1,0 +1,19 @@
+{
+  "hypothesis": "The optional fine-surface rule is inert where structure_surface_cell_m is absent: the patched detector must reproduce the unpatched a4789d9 build output on the same real frames.",
+  "criterion": "Run the same recipe on the unpatched base build over the same 201 frames and require identical recorded fields, integer for integer, with no added object fields. This is the option-off control; it is not an acceptance panel and says nothing about the annotated person's semantics.",
+  "seed": 20260915,
+  "source_base": "a4789d9127906a0270a218a7ffbe0a5565592979",
+  "detector_config": "configs/detector.json",
+  "output": "build/issue-23-surface-support-control-20260925",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_previously_inspected"
+    }
+  ]
+}

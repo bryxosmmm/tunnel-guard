@@ -41,6 +41,11 @@ def load_config(path: str | Path) -> dict:
                  "odometry_voxel_m", "frame_max_gap_s", "track_max_gap_s"):
         if not np.isfinite(config[name]) or config[name] <= 0:
             raise ValueError(f"{name} must be positive and finite")
+    if "structure_surface_cell_m" in config:
+        cell = config["structure_surface_cell_m"]
+        if (not isinstance(cell, (int, float)) or not np.isfinite(cell)
+                or cell <= 0 or cell > config["structure_support_cell_m"]):
+            raise ValueError("structure_surface_cell_m must be positive and no larger than the coarse support cell")
     if not 0 <= config["min_range_m"] < config["max_range_m"]:
         raise ValueError("Invalid sensor range bounds")
     if not isinstance(config.get("deskew_enabled", False), bool):
@@ -157,6 +162,14 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     # left of it. The verdict is then carried onto the pool rows.
     structural_full = (geometry.structural_mask(points, section) if geometry.valid
                        else np.zeros(len(points), dtype=bool))
+    # A coarse cell alone cannot tell a compact return from the surface occupying
+    # that cell at other stations. The fine, two-grid cell requires distinct
+    # longitudinal stations at the return's own lateral AND height; outward
+    # structural reach is still required. Neither mask deletes candidate points.
+    # When the frame's own geometry is unavailable there is no measured section to
+    # test against, so the option is inert on that frame rather than guessed.
+    surface_full = (structural_full & geometry.longitudinal_surface_mask(points, section)
+                    if config.get("structure_surface_cell_m") and geometry.valid else None)
     if voxel_unique_at(config, reduced_on_grid_m):
         # The context cloud is already one point per cluster voxel in key order,
         # so the reduction below would only reproduce the same rows in the same
@@ -166,6 +179,7 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
         cloud_section = CrossSection(section.lateral[context], section.running_height[context],
                                      section.gauge[context])
         structural = structural_full[context]
+        surface = surface_full[context] if surface_full is not None else None
     else:
         chosen = voxel_representative_indices(points[context], config["cluster_voxel_m"])
         cluster_rows = np.flatnonzero(context)[chosen]
@@ -173,6 +187,7 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
         cloud_section = CrossSection(section.lateral[cluster_rows], section.running_height[cluster_rows],
                                      section.gauge[cluster_rows])
         structural = structural_full[cluster_rows]
+        surface = surface_full[cluster_rows] if surface_full is not None else None
     if cluster_rows_out is not None:
         # Exact source rows selected by the native voxel reducer.
         cluster_rows_out.append(cluster_rows)
@@ -187,6 +202,9 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     masks, _ = geometry.classify_with_section(
         cloud, remove_background=False, include_boundary=True)
     core, _, heights, observed, nominal_overlap, boundary = masks
+    raw_core = core
+    if surface is not None:
+        core = core & ~surface
     # The rail-relative coordinates and the tunnel's own cross-section, both computed from
     # this scan alone. `interior` is the point estimate: the return's nominal position is
     # inside the reference contour. A claim on the corridor needs that AND a measured
@@ -197,9 +215,9 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     #   is a statement about our model, not about the corridor: measured, 94-98 per cent of
     #   the nominal-interior returns on real frames sit beyond that horizon, and they are
     #   what made the tunnel's own arch read as an intrusion at 60-200 m.
-    # * `~structural` - a surface of the tunnel itself (wall, arch, ceiling, floor, walkway
-    #   edge, cable tray) that the contour merely clips at its edge is a reference-contour
-    #   interaction, not an object. The returns stay in the output with this reason.
+    # * `~structural` - a tunnel surface intersecting the reference contour is
+    #   not by itself evidence of an independent object. This coarse-cell mask
+    #   gates only the nominal claim; certified interior support is treated below.
     #
     # `boundary` (the uncertainty interval crosses the edge) is still computed and reported
     # per object, but it is evidence of doubt, not a claim of intrusion: it is the reason a
@@ -207,15 +225,15 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     lateral, running_height = cloud_section.lateral, cloud_section.running_height
     claim = nominal_overlap & observed & ~structural
     unmeasured = nominal_overlap & ~observed
-    # CERTIFIED interior support is deliberately NOT gated by `~structural`, and the asymmetry
-    # is measured rather than aesthetic. `unresolved` rests on the uncertainty interval, so it
-    # needs the strongest exclusion - without it, the tunnel's own edge raised the alarm on
-    # 98 % of frames. `intersecting` rests on a whole interval lying inside the contour, and
-    # cross-section cell sharing cannot prove that a compact measured group is
-    # infrastructure: an object may share cells with the bed or walkway elsewhere.
-    # Suppressing certified interior evidence on that basis would conflate cell
-    # occupancy with physical identity. Preserve the evidence and expose its split
-    # through `certified_unexplained_voxels`, without claiming a verified object class.
+    # Certified interior support is NOT gated by coarse `~structural` alone:
+    # a compact object can share a cross-section cell with bed or walkway returns
+    # elsewhere along the tunnel. Previous coarse-cell suppression removed 108/172
+    # generic alarm frames of one cluster mistakenly attributed to the labelled
+    # person; that person is actually adjacent on its annotated frames. In the
+    # optional fine-surface mode, only returns whose own narrow lateral/height cell
+    # persists longitudinally AND has outward structural reach lose certified
+    # interior support. Other points and uncertainty-boundary evidence are kept;
+    # a weak component may still fail normal candidate admission.
     # Mixed evidence (one interior + one boundary return) must not disappear
     # merely because neither subset separately reaches weak_min_voxels.
     uncertain_support = core | claim
@@ -231,6 +249,8 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     if arrays is not None:
         arrays.update(cluster_labels=labels, cluster_core=core, cluster_observed=observed,
                       cluster_nominal_overlap=nominal_overlap, cluster_boundary_uncertain=boundary)
+        if surface is not None:
+            arrays["cluster_surface_explained"] = surface
     native = accelerator.native(config)
     if len(cloud):
         objects, rejected_counts, rows = accelerator.cluster_objects(
@@ -257,6 +277,8 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
                                           float(running_height[rows].max())]
                                          if geometry.valid else [None, None])
         obj["interior_voxels"] = int(np.count_nonzero(nominal_overlap[rows]))
+        if surface is not None:
+            obj["surface_explained_voxels"] = int(np.count_nonzero(raw_core[rows] & surface[rows]))
         obj["certified_unexplained_voxels"] = int(np.count_nonzero(core[rows] & ~structural[rows]))
         obj["interior_structural_voxels"] = int(np.count_nonzero(nominal_overlap[rows] & structural[rows]))
         obj["interior_unmeasured_voxels"] = int(np.count_nonzero(unmeasured[rows] & ~structural[rows]))
