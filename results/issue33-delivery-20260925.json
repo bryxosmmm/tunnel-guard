@@ -1,0 +1,550 @@
+{
+  "date": "2026-09-25",
+  "kind": "actual_offline_and_ROS2_DDS_delivery_evaluation",
+  "core_baseline": "ec311a0bc783",
+  "config": "configs/detector.json",
+  "config_sha256": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa",
+  "config_identical_to_verified_best": true,
+  "core_identity": {
+    "tunnel_guard/detector.py": {
+      "sha256": "a7732117c3c95c4598784612d0104a819e6f545eb867a11f9b6c6b369490f1a4",
+      "identical_to_verified_best": true
+    },
+    "tunnel_guard/geometry.py": {
+      "sha256": "da86a42ce860a58929d6efd36493fb019ed111e68764ee4f8b52e5c4155db9c6",
+      "identical_to_verified_best": true
+    },
+    "tunnel_guard/accelerator.py": {
+      "sha256": "439731143ed9bea6fca157a6ebb6c519ed2d7ab341303cca898f96784ccd7cd3",
+      "identical_to_verified_best": true
+    },
+    "cpp/kernels.cpp": {
+      "sha256": "ab1f038ed0eb3b004bfbc35a594cb69d939ccadddb8b2c3dd25a15a7496637f1",
+      "identical_to_verified_best": true
+    },
+    "cpp/voxel.cpp": {
+      "sha256": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+      "identical_to_verified_best": true
+    },
+    "cpp/native.h": {
+      "sha256": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+      "identical_to_verified_best": true
+    }
+  },
+  "changes": [
+    "PR33 five-topic live/recorded contract; no identity TF",
+    "Fresh successfully processed acquisitions renew watchdog; duplicates do not",
+    "Steady-clock timer remains active with paused simulation time",
+    "Out-of-order and invalid rejections counted separately",
+    "Container builds native extension in source working directory and sources ROS during import verification"
+  ],
+  "quality_reference": {
+    "negative_alarm_episodes": 113,
+    "person_presence_frames": 36,
+    "person_labelled_frames": 36,
+    "person_track_switches": 0,
+    "synthetic9_intersection_frames": 11,
+    "synthetic10_intersection_frames": 5,
+    "note": "Previously measured full fixed panel; not rerun for unchanged detector core/config. No nuisance improvement claimed."
+  },
+  "offline": {
+    "frames": 30,
+    "differences_from_verified_detector": {
+      "status": [],
+      "objects": [],
+      "geometry": [],
+      "pose": [],
+      "measurement_timestamp_ns": [],
+      "source_scan_id": [],
+      "supported_range_m": [],
+      "range_observability": []
+    },
+    "topics": {
+      "/perception/points_display": "sensor_msgs/msg/PointCloud2",
+      "/perception/debug_markers": "visualization_msgs/msg/MarkerArray",
+      "/perception/status": "std_msgs/msg/String",
+      "/perception/attention_required": "std_msgs/msg/Bool",
+      "/perception/nearest_obstacle_m": "std_msgs/msg/Float32"
+    },
+    "message_counts": {
+      "/perception/points_display": 30,
+      "/perception/debug_markers": 30,
+      "/perception/status": 30,
+      "/perception/attention_required": 30,
+      "/perception/nearest_obstacle_m": 30
+    },
+    "status_rows": [
+      {
+        "bag_timestamp_ns": 946687297199933052,
+        "measurement_timestamp_ns": 946687297199933052,
+        "status": "no_obstacle_observed",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687297299934030,
+        "measurement_timestamp_ns": 946687297299934030,
+        "status": "no_obstacle_observed",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687297399942040,
+        "measurement_timestamp_ns": 946687297399942040,
+        "status": "no_obstacle_observed",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687297499959946,
+        "measurement_timestamp_ns": 946687297499959946,
+        "status": "no_obstacle_observed",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687297599974036,
+        "measurement_timestamp_ns": 946687297599974036,
+        "status": "no_obstacle_observed",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687297699993014,
+        "measurement_timestamp_ns": 946687297699993014,
+        "status": "no_obstacle_observed",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687297800017953,
+        "measurement_timestamp_ns": 946687297800017953,
+        "status": "unresolved_obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687297900048018,
+        "measurement_timestamp_ns": 946687297900048018,
+        "status": "unresolved_obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687298000077009,
+        "measurement_timestamp_ns": 946687298000077009,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687298100100994,
+        "measurement_timestamp_ns": 946687298100100994,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687298200121999,
+        "measurement_timestamp_ns": 946687298200121999,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687298300140977,
+        "measurement_timestamp_ns": 946687298300140977,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687298400149941,
+        "measurement_timestamp_ns": 946687298400149941,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687298500156999,
+        "measurement_timestamp_ns": 946687298500156999,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687298600157976,
+        "measurement_timestamp_ns": 946687298600157976,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687298700158000,
+        "measurement_timestamp_ns": 946687298700158000,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687298800153017,
+        "measurement_timestamp_ns": 946687298800153017,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687298900141001,
+        "measurement_timestamp_ns": 946687298900141001,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687299000125051,
+        "measurement_timestamp_ns": 946687299000125051,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687299100110054,
+        "measurement_timestamp_ns": 946687299100110054,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687299200095057,
+        "measurement_timestamp_ns": 946687299200095057,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687299300089002,
+        "measurement_timestamp_ns": 946687299300089002,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687299400082946,
+        "measurement_timestamp_ns": 946687299400082946,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687299500080943,
+        "measurement_timestamp_ns": 946687299500080943,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687299600083947,
+        "measurement_timestamp_ns": 946687299600083947,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687299700081944,
+        "measurement_timestamp_ns": 946687299700081944,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687299800084949,
+        "measurement_timestamp_ns": 946687299800084949,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687299900094986,
+        "measurement_timestamp_ns": 946687299900094986,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687300000107050,
+        "measurement_timestamp_ns": 946687300000107050,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      },
+      {
+        "bag_timestamp_ns": 946687300100116968,
+        "measurement_timestamp_ns": 946687300100116968,
+        "status": "obstacle",
+        "coordinate_frame": "tunnel_guard_local"
+      }
+    ],
+    "timestamp_identity": true,
+    "limits": "Actual offline detector and serialized output, not live DDS or GUI acceptance. Concurrent build makes speed comparisons invalid."
+  },
+  "live": {
+    "experiments": {
+      "pr33-original": {
+        "use_sim_time": false,
+        "output_counts": {
+          "points_display": 35,
+          "attention_required": 35,
+          "nearest_obstacle_m": 35,
+          "debug_markers": 35,
+          "status": 35
+        },
+        "all_five_output_counts_equal": true,
+        "unknown_outputs": [
+          {
+            "phase": "sequential",
+            "elapsed_s": 4.840087169082835,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          },
+          {
+            "phase": "silence",
+            "elapsed_s": 40.364243018091656,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          },
+          {
+            "phase": "out_of_order",
+            "elapsed_s": 42.13425189408008,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          },
+          {
+            "phase": "invalid_header",
+            "elapsed_s": 43.18457606108859,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          }
+        ],
+        "unknown_during_duplicate_stream": false,
+        "all_unknown_outputs_fail_visible": true,
+        "counters": {
+          "input_received_scans": 55,
+          "processed_scans": 31,
+          "dropped_invalid_scans": 2,
+          "dropped_duplicate_scans": 22,
+          "dropped_out_of_order_scans": 1
+        },
+        "accounted_callbacks": 56,
+        "counters_partition_received": false,
+        "sent_not_observed_in_callbacks": 2,
+        "duplicate_processed_acquisitions": [],
+        "all_result_acquisitions_came_from_sent_scans": true,
+        "recovered_on_new_measurement": true,
+        "tf_topics": []
+      },
+      "pr33-frozen-original": {
+        "use_sim_time": true,
+        "output_counts": {
+          "points_display": 6,
+          "attention_required": 6,
+          "nearest_obstacle_m": 6,
+          "debug_markers": 6,
+          "status": 6
+        },
+        "all_five_output_counts_equal": true,
+        "unknown_outputs": [
+          {
+            "phase": "out_of_order",
+            "elapsed_s": 12.847465255996212,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          },
+          {
+            "phase": "invalid_header",
+            "elapsed_s": 13.931041964911856,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          }
+        ],
+        "unknown_during_duplicate_stream": false,
+        "all_unknown_outputs_fail_visible": true,
+        "counters": {
+          "input_received_scans": 22,
+          "processed_scans": 4,
+          "dropped_invalid_scans": 2,
+          "dropped_duplicate_scans": 16,
+          "dropped_out_of_order_scans": 1
+        },
+        "accounted_callbacks": 23,
+        "counters_partition_received": false,
+        "sent_not_observed_in_callbacks": 6,
+        "duplicate_processed_acquisitions": [],
+        "all_result_acquisitions_came_from_sent_scans": true,
+        "recovered_on_new_measurement": true,
+        "tf_topics": []
+      },
+      "fixed": {
+        "use_sim_time": false,
+        "output_counts": {
+          "points_display": 35,
+          "attention_required": 35,
+          "nearest_obstacle_m": 35,
+          "debug_markers": 35,
+          "status": 34
+        },
+        "all_five_output_counts_equal": false,
+        "unknown_outputs": null,
+        "unknown_during_duplicate_stream": true,
+        "all_unknown_outputs_fail_visible": null,
+        "counters": {
+          "input_received_scans": 55,
+          "processed_scans": 31,
+          "dropped_invalid_scans": 1,
+          "dropped_duplicate_scans": 22,
+          "dropped_out_of_order_scans": 1
+        },
+        "accounted_callbacks": 55,
+        "counters_partition_received": true,
+        "sent_not_observed_in_callbacks": 2,
+        "duplicate_processed_acquisitions": [],
+        "all_result_acquisitions_came_from_sent_scans": true,
+        "recovered_on_new_measurement": true,
+        "tf_topics": []
+      },
+      "fixed-frozen": {
+        "use_sim_time": true,
+        "output_counts": {
+          "points_display": 8,
+          "attention_required": 8,
+          "nearest_obstacle_m": 8,
+          "debug_markers": 8,
+          "status": 8
+        },
+        "all_five_output_counts_equal": true,
+        "unknown_outputs": [
+          {
+            "phase": "duplicate_stream",
+            "elapsed_s": 4.418427668977529,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          },
+          {
+            "phase": "duplicate_stream",
+            "elapsed_s": 6.7075426280498505,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          },
+          {
+            "phase": "out_of_order",
+            "elapsed_s": 12.67014413094148,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          },
+          {
+            "phase": "invalid_header",
+            "elapsed_s": 13.732133297948167,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          }
+        ],
+        "unknown_during_duplicate_stream": true,
+        "all_unknown_outputs_fail_visible": true,
+        "counters": {
+          "input_received_scans": 22,
+          "processed_scans": 4,
+          "dropped_invalid_scans": 1,
+          "dropped_duplicate_scans": 16,
+          "dropped_out_of_order_scans": 1
+        },
+        "accounted_callbacks": 22,
+        "counters_partition_received": true,
+        "sent_not_observed_in_callbacks": 7,
+        "duplicate_processed_acquisitions": [],
+        "all_result_acquisitions_came_from_sent_scans": true,
+        "recovered_on_new_measurement": true,
+        "tf_topics": []
+      },
+      "fixed-ready": {
+        "use_sim_time": false,
+        "output_counts": {
+          "points_display": 33,
+          "attention_required": 33,
+          "nearest_obstacle_m": 33,
+          "debug_markers": 33,
+          "status": 33
+        },
+        "all_five_output_counts_equal": true,
+        "unknown_outputs": [
+          {
+            "phase": "sequential",
+            "elapsed_s": 7.656745462096296,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          },
+          {
+            "phase": "duplicate_stream",
+            "elapsed_s": 37.789378184010275,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          },
+          {
+            "phase": "out_of_order",
+            "elapsed_s": 45.06796689599287,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          },
+          {
+            "phase": "invalid_header",
+            "elapsed_s": 46.114934395998716,
+            "cloud_empty": true,
+            "deleteall_present": true,
+            "attention": true,
+            "distance_nan": true,
+            "no_fabricated_acquisition_or_age": true
+          }
+        ],
+        "unknown_during_duplicate_stream": true,
+        "all_unknown_outputs_fail_visible": true,
+        "counters": {
+          "input_received_scans": 51,
+          "processed_scans": 29,
+          "dropped_invalid_scans": 1,
+          "dropped_duplicate_scans": 20,
+          "dropped_out_of_order_scans": 1
+        },
+        "accounted_callbacks": 51,
+        "counters_partition_received": true,
+        "sent_not_observed_in_callbacks": 6,
+        "duplicate_processed_acquisitions": [],
+        "all_result_acquisitions_came_from_sent_scans": true,
+        "recovered_on_new_measurement": true,
+        "tf_topics": []
+      }
+    },
+    "limits": "Actual ROS2 Humble DDS delivery in linux/amd64 Docker on Apple Silicon. Input KEEP_LAST1 can omit offered scans; sent-minus-received is not an attributed DDS loss count. No target-host speed, full-panel quality, GUI or field safety claim."
+  },
+  "accepted_live_evidence": [
+    "fixed-ready",
+    "fixed-frozen"
+  ],
+  "retained_incomplete_evidence": "fixed/ missed its first status publication in recording; source node logged it. Cross-topic clearing is unassessed for that incomplete recording, not silently passed. Ready replay waits for all output endpoints.",
+  "fixed_image": "sha256:e28f2a6d56057041584792577dca6ead707402b8b7b24be7e25bceb53b797487",
+  "artifact_root": "build/issue33-live",
+  "limitations": [
+    "Linux/amd64 under Apple Silicon emulation, not Intel target-host performance",
+    "Input KEEP_LAST1 omitted offered scans; complete-input ROS replay is not established",
+    "No RViz GUI or full-bag target acceptance",
+    "Single-threaded watchdog cannot preempt blocked inference; not a hard real-time deadline",
+    "Synthetic, short delivery and offline evidence do not establish field safety or precision"
+  ]
+}
