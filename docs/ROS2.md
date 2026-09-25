@@ -34,7 +34,8 @@ confirmed, candidate and unresolved ranges; `no_obstacle_observed` never means
 the route is clear. The `attention_required` topic is only a fail-visible review
 signal, not a validated train-control decision.
 
-On silence beyond `input_timeout_s`, the watchdog resets detector state and
+When no strictly newer valid acquisition arrives for `input_timeout_s`, the
+steady-clock watchdog resets detector state and
 publishes `unknown` with an empty cloud and `DELETEALL` markers. It reports
 received, processed, invalid, duplicate and out-of-order counters. `result_age_s`
 is deliberately null: acquisition and host clocks have not been proven

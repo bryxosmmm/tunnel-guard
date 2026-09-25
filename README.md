@@ -149,7 +149,7 @@ offline runner and the ROS adapter separately, but never the sequence an evaluat
 together with the one requirement that is easy to miss.
 
 ```sh
-# 1. build (the image installs rviz2 and tf2, builds the native extension and imports the node, so a missing
+# 1. build (the image installs rviz2, builds the native extension in place and imports the node, so a missing
 #    dependency fails the build rather than the demonstration)
 docker build -t tunnel-guard .
 
