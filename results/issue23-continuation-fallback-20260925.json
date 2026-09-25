@@ -1,0 +1,1019 @@
+{
+  "experiment": "Paired comparison of existing linear fallback on retained-anchor holdouts",
+  "production_change": false,
+  "raw_detector_replay": false,
+  "comparison": {
+    "groups": {
+      "all": {
+        "paired_holdouts": 15197,
+        "fallback_lower_error": 8101,
+        "fallback_higher_error": 7058,
+        "equal_error": 38,
+        "original_absolute_error_quantiles_m": [
+          0.010489916342266703,
+          0.05605268948916944,
+          0.15521494805506866,
+          1.831761028588367
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.0093095904546584,
+          0.052342882548407396,
+          0.13676917470327057,
+          2.9843052471546825
+        ],
+        "original_mean_absolute_error_m": 0.024188622863776488,
+        "fallback_mean_absolute_error_m": 0.021497080188750694
+      },
+      "selected:7": {
+        "paired_holdouts": 9767,
+        "fallback_lower_error": 5328,
+        "fallback_higher_error": 4439,
+        "equal_error": 0,
+        "original_absolute_error_quantiles_m": [
+          0.008266910104522102,
+          0.03475520236324368,
+          0.09046312369167538,
+          1.050250903943783
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.007129030553924165,
+          0.03994737839789936,
+          0.09495398568224635,
+          2.9843052471546825
+        ],
+        "original_mean_absolute_error_m": 0.014805325090712458,
+        "fallback_mean_absolute_error_m": 0.015245523988673775
+      },
+      "recording:doubleT_obstacle": {
+        "paired_holdouts": 201,
+        "fallback_lower_error": 120,
+        "fallback_higher_error": 81,
+        "equal_error": 0,
+        "original_absolute_error_quantiles_m": [
+          0.02284924605496763,
+          0.053053582601270355,
+          0.08935978939350187,
+          0.18655962508515755
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.012331208022935414,
+          0.06264879903161136,
+          0.08948412448676168,
+          0.09691614810433036
+        ],
+        "original_mean_absolute_error_m": 0.028009945609377414,
+        "fallback_mean_absolute_error_m": 0.024296706672615086
+      },
+      "selected:6": {
+        "paired_holdouts": 4190,
+        "fallback_lower_error": 2009,
+        "fallback_higher_error": 2181,
+        "equal_error": 0,
+        "original_absolute_error_quantiles_m": [
+          0.013135815201589962,
+          0.0718380346636071,
+          0.14758390930996315,
+          1.831761028588367
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.014578739234346593,
+          0.05894755166065396,
+          0.13825634304494316,
+          1.4849999999999994
+        ],
+        "original_mean_absolute_error_m": 0.0293613114628752,
+        "fallback_mean_absolute_error_m": 0.026848983779069465
+      },
+      "selected:5": {
+        "paired_holdouts": 934,
+        "fallback_lower_error": 615,
+        "fallback_higher_error": 319,
+        "equal_error": 0,
+        "original_absolute_error_quantiles_m": [
+          0.04781191774186966,
+          0.12625297163938454,
+          0.39341255651938256,
+          1.6804207811048157
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.023625912822138107,
+          0.08014081536481936,
+          0.21600948910598539,
+          1.272738009113036
+        ],
+        "original_mean_absolute_error_m": 0.06592638482937788,
+        "fallback_mean_absolute_error_m": 0.03696337784379396
+      },
+      "recording:doubleT_platform": {
+        "paired_holdouts": 345,
+        "fallback_lower_error": 198,
+        "fallback_higher_error": 147,
+        "equal_error": 0,
+        "original_absolute_error_quantiles_m": [
+          0.009660580700412286,
+          0.03633686422277218,
+          0.06056843389958208,
+          0.10285392817050776
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.0067729947471827645,
+          0.03787150903997634,
+          0.07031276965314513,
+          0.10492398407081022
+        ],
+        "original_mean_absolute_error_m": 0.014077753111956286,
+        "fallback_mean_absolute_error_m": 0.013975288159265615
+      },
+      "recording:roundT_doubleT": {
+        "paired_holdouts": 252,
+        "fallback_lower_error": 141,
+        "fallback_higher_error": 107,
+        "equal_error": 4,
+        "original_absolute_error_quantiles_m": [
+          0.012731442223867503,
+          0.09749897815040025,
+          0.3630765177800964,
+          0.6058191520664737
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.013058887686999782,
+          0.07838359895661903,
+          0.25988609032763604,
+          0.6058191520664737
+        ],
+        "original_mean_absolute_error_m": 0.03787173719765601,
+        "fallback_mean_absolute_error_m": 0.03159786038898372
+      },
+      "selected:4": {
+        "paired_holdouts": 207,
+        "fallback_lower_error": 115,
+        "fallback_higher_error": 92,
+        "equal_error": 0,
+        "original_absolute_error_quantiles_m": [
+          0.04838613368563616,
+          0.14037334899694,
+          0.5503475576865025,
+          1.4087199811238382
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.040714517948929885,
+          0.12340172054396925,
+          0.2316814312351103,
+          0.3649731975252153
+        ],
+        "original_mean_absolute_error_m": 0.0730155756615794,
+        "fallback_mean_absolute_error_m": 0.059334550162429445
+      },
+      "selected:2": {
+        "paired_holdouts": 38,
+        "fallback_lower_error": 0,
+        "fallback_higher_error": 0,
+        "equal_error": 38,
+        "original_absolute_error_quantiles_m": [
+          0.20063450207729416,
+          0.7202291730704458,
+          0.9445987406492969,
+          1.0241720724116432
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.20063450207729416,
+          0.7202291730704458,
+          0.9445987406492969,
+          1.0241720724116432
+        ],
+        "original_mean_absolute_error_m": 0.3146950291929707,
+        "fallback_mean_absolute_error_m": 0.3146950291929707
+      },
+      "recording:roundT_pressureGate_roundT": {
+        "paired_holdouts": 264,
+        "fallback_lower_error": 105,
+        "fallback_higher_error": 159,
+        "equal_error": 0,
+        "original_absolute_error_quantiles_m": [
+          0.011125480825512388,
+          0.05234626831958845,
+          0.14161550907600012,
+          0.17323099907348904
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.013699348967891045,
+          0.05656192335135983,
+          0.14737192717821684,
+          0.30816336910096087
+        ],
+        "original_mean_absolute_error_m": 0.022062268615017883,
+        "fallback_mean_absolute_error_m": 0.025267373765027967
+      },
+      "recording:roundT_squareT_pressureGate_squareT": {
+        "paired_holdouts": 541,
+        "fallback_lower_error": 267,
+        "fallback_higher_error": 273,
+        "equal_error": 1,
+        "original_absolute_error_quantiles_m": [
+          0.009495993886660642,
+          0.05564893026440032,
+          0.2949958043634876,
+          1.5576610183524902
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.010115955410081784,
+          0.06560163297599741,
+          0.18893016247879904,
+          1.2464598094569315
+        ],
+        "original_mean_absolute_error_m": 0.03221760720979346,
+        "fallback_mean_absolute_error_m": 0.0318923389654011
+      },
+      "recording:squareT_platform_squareT_switch": {
+        "paired_holdouts": 877,
+        "fallback_lower_error": 535,
+        "fallback_higher_error": 342,
+        "equal_error": 0,
+        "original_absolute_error_quantiles_m": [
+          0.00857109156960792,
+          0.07869303829190771,
+          0.09630788554953805,
+          0.36100575062069573
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.007639105078673769,
+          0.07500000000000001,
+          0.09948456266482604,
+          0.13022292511886296
+        ],
+        "original_mean_absolute_error_m": 0.019924312627703947,
+        "fallback_mean_absolute_error_m": 0.018580499561525715
+      },
+      "selected:8": {
+        "paired_holdouts": 2,
+        "fallback_lower_error": 1,
+        "fallback_higher_error": 1,
+        "equal_error": 0,
+        "original_absolute_error_quantiles_m": [
+          0.17634587191675535,
+          0.3031334621786299,
+          0.33166066998755167,
+          0.3348303597440985
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.07260591501829694,
+          0.07285423629228127,
+          0.07291010857892774,
+          0.07291631661077735
+        ],
+        "original_mean_absolute_error_m": 0.17634587191675535,
+        "fallback_mean_absolute_error_m": 0.07260591501829694
+      },
+      "recording:new_data": {
+        "paired_holdouts": 11221,
+        "fallback_lower_error": 5951,
+        "fallback_higher_error": 5243,
+        "equal_error": 27,
+        "original_absolute_error_quantiles_m": [
+          0.011166821129769883,
+          0.057351148550780474,
+          0.16507508621307124,
+          1.831761028588367
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.00988100171502232,
+          0.05053876539032709,
+          0.1389471865152394,
+          2.9843052471546825
+        ],
+        "original_mean_absolute_error_m": 0.024770756710318573,
+        "fallback_mean_absolute_error_m": 0.021510012450091456
+      },
+      "selected:3": {
+        "paired_holdouts": 59,
+        "fallback_lower_error": 33,
+        "fallback_higher_error": 26,
+        "equal_error": 0,
+        "original_absolute_error_quantiles_m": [
+          0.04888581793410651,
+          0.5481742690464753,
+          0.8981151832913189,
+          1.269005626614604
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.0629621514081058,
+          0.250695591545735,
+          0.47950395240961796,
+          0.5991458713676687
+        ],
+        "original_mean_absolute_error_m": 0.18587162753598865,
+        "fallback_mean_absolute_error_m": 0.1081556452147544
+      },
+      "negative_alarm_selected_three": {
+        "paired_holdouts": 12,
+        "fallback_lower_error": 6,
+        "fallback_higher_error": 6,
+        "equal_error": 0,
+        "original_absolute_error_quantiles_m": [
+          0.0412171070257249,
+          0.40632259842710583,
+          0.605278987983445,
+          0.6295393450227313
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.0380864429827405,
+          0.3322478236149238,
+          0.38824081428891444,
+          0.3928667007503392
+        ],
+        "original_mean_absolute_error_m": 0.14988699316089638,
+        "fallback_mean_absolute_error_m": 0.108421523144738
+      },
+      "recording:cloud_with_fake_obj": {
+        "paired_holdouts": 1496,
+        "fallback_lower_error": 784,
+        "fallback_higher_error": 706,
+        "equal_error": 6,
+        "original_absolute_error_quantiles_m": [
+          0.007334956750716687,
+          0.039920411797597755,
+          0.11490955815128362,
+          1.6949990054276682
+        ],
+        "fallback_absolute_error_quantiles_m": [
+          0.006722866667971034,
+          0.045895010380672674,
+          0.10792679874943327,
+          1.272738009113036
+        ],
+        "original_mean_absolute_error_m": 0.01930718740644926,
+        "fallback_mean_absolute_error_m": 0.018342289092309113
+      }
+    },
+    "quantile_order": [
+      "median",
+      "p90",
+      "p99",
+      "max"
+    ],
+    "decision": "No detector change or promotion. This paired internal measurement comparison is not physical ground truth or fixed-panel acceptance.",
+    "limits": [
+      "Saved-state numerical estimator evaluation, not a fresh raw detector replay.",
+      "One holdout per frame. Adjacent frames correlated; no binomial precision or independent trial claim.",
+      "Anchor measurements were already accepted by overlapping-window and trailing-consistency filters; holdout is not independent physical ground truth.",
+      "Reported path uncertainty is heuristic; ratio to measurement discrepancy is not calibrated Gaussian coverage.",
+      "Post-hoc model comparison motivated by the completed uncertainty audit; no blind evaluation claim.",
+      "Uses every recorded holdout, not selected favorable examples. All errors and regressions retained.",
+      "A lower internal anchor error does not justify a clearance claim or unchanged range coverage.",
+      "No production edit, threshold selection, detector replay, or promotion."
+    ]
+  },
+  "three_anchor_regressions": [
+    {
+      "recording": "new_data",
+      "frame": 6734,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.012604802494861733,
+      "fallback_signed_discrepancy_m": -0.19608288042164634,
+      "original_uncertainty_m": 0.16271966806099955,
+      "fallback_uncertainty_m": 0.16271966806099955
+    },
+    {
+      "recording": "new_data",
+      "frame": 6705,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.03020884635989307,
+      "fallback_signed_discrepancy_m": -0.19322540908625796,
+      "original_uncertainty_m": 0.15204617539101564,
+      "fallback_uncertainty_m": 0.15204617539101564
+    },
+    {
+      "recording": "new_data",
+      "frame": 6799,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.040463586702812915,
+      "fallback_signed_discrepancy_m": -0.19530881060918803,
+      "original_uncertainty_m": 0.1607128368298683,
+      "fallback_uncertainty_m": 0.1607128368298683
+    },
+    {
+      "recording": "new_data",
+      "frame": 10403,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.01544183285909373,
+      "fallback_signed_discrepancy_m": 0.14495235386716376,
+      "original_uncertainty_m": 0.10750000000000001,
+      "fallback_uncertainty_m": 0.10750000000000001
+    },
+    {
+      "recording": "new_data",
+      "frame": 6716,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.0060032976741044575,
+      "fallback_signed_discrepancy_m": -0.11589296320138254,
+      "original_uncertainty_m": 0.1120448561283527,
+      "fallback_uncertainty_m": 0.1120448561283527
+    },
+    {
+      "recording": "new_data",
+      "frame": 6614,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.04828339885749,
+      "fallback_signed_discrepancy_m": -0.13644962929376514,
+      "original_uncertainty_m": 0.11307984948915073,
+      "fallback_uncertainty_m": 0.11307984948915073
+    },
+    {
+      "recording": "new_data",
+      "frame": 6758,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.0369186270574311,
+      "fallback_signed_discrepancy_m": -0.1173465336916586,
+      "original_uncertainty_m": 0.11518829826663823,
+      "fallback_uncertainty_m": 0.11518829826663823
+    },
+    {
+      "recording": "new_data",
+      "frame": 6722,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.11316093439200303,
+      "fallback_signed_discrepancy_m": -0.18875793957019482,
+      "original_uncertainty_m": 0.15979513020900304,
+      "fallback_uncertainty_m": 0.15979513020900304
+    },
+    {
+      "recording": "new_data",
+      "frame": 9227,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.028852875059306227,
+      "fallback_signed_discrepancy_m": -0.08202548398811937,
+      "original_uncertainty_m": 0.10050727387919432,
+      "fallback_uncertainty_m": 0.10050727387919432
+    },
+    {
+      "recording": "new_data",
+      "frame": 9239,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.2593717793028145,
+      "fallback_signed_discrepancy_m": -0.3085753380654779,
+      "original_uncertainty_m": 0.15648713370496142,
+      "fallback_uncertainty_m": 0.15648713370496142
+    },
+    {
+      "recording": "new_data",
+      "frame": 6779,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.1109341025351478,
+      "fallback_signed_discrepancy_m": -0.15611895192700587,
+      "original_uncertainty_m": 0.15262552531018556,
+      "fallback_uncertainty_m": 0.15262552531018556
+    },
+    {
+      "recording": "new_data",
+      "frame": 7942,
+      "role": "continuous_negative",
+      "negative_alarm": true,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.0006350760185377391,
+      "fallback_signed_discrepancy_m": -0.037360076633366934,
+      "original_uncertainty_m": 0.07610167034775185,
+      "fallback_uncertainty_m": 0.07610167034775185
+    },
+    {
+      "recording": "new_data",
+      "frame": 799,
+      "role": "continuous_negative",
+      "negative_alarm": true,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.0562339693694891,
+      "fallback_signed_discrepancy_m": 0.09166070817190475,
+      "original_uncertainty_m": 0.10750000000000001,
+      "fallback_uncertainty_m": 0.10750000000000001
+    },
+    {
+      "recording": "new_data",
+      "frame": 7937,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.02134977873751387,
+      "fallback_signed_discrepancy_m": 0.05602924465436554,
+      "original_uncertainty_m": 0.10750000000000001,
+      "fallback_uncertainty_m": 0.10750000000000001
+    },
+    {
+      "recording": "new_data",
+      "frame": 10278,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.002117484279478443,
+      "fallback_signed_discrepancy_m": 0.030109867742941443,
+      "original_uncertainty_m": 0.08107544347482618,
+      "fallback_uncertainty_m": 0.08107544347482618
+    },
+    {
+      "recording": "new_data",
+      "frame": 6652,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.05724964038738589,
+      "fallback_signed_discrepancy_m": -0.08226117872330563,
+      "original_uncertainty_m": 0.0906935439185425,
+      "fallback_uncertainty_m": 0.0906935439185425
+    },
+    {
+      "recording": "new_data",
+      "frame": 5571,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.1169327914256384,
+      "fallback_signed_discrepancy_m": 0.13458862549493777,
+      "original_uncertainty_m": 0.10079883831992448,
+      "fallback_uncertainty_m": 0.10079883831992448
+    },
+    {
+      "recording": "new_data",
+      "frame": 813,
+      "role": "continuous_negative",
+      "negative_alarm": true,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.02426855031826558,
+      "fallback_signed_discrepancy_m": 0.03881280933211406,
+      "original_uncertainty_m": 0.07014420639822601,
+      "fallback_uncertainty_m": 0.07014420639822601
+    },
+    {
+      "recording": "new_data",
+      "frame": 8996,
+      "role": "continuous_negative",
+      "negative_alarm": true,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.001031495283937478,
+      "fallback_signed_discrepancy_m": 0.01439511539078503,
+      "original_uncertainty_m": 0.06293897674457839,
+      "fallback_uncertainty_m": 0.06293897674457839
+    },
+    {
+      "recording": "new_data",
+      "frame": 499,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.03276933978502816,
+      "fallback_signed_discrepancy_m": -0.04578950942163518,
+      "original_uncertainty_m": 0.11620144377283287,
+      "fallback_uncertainty_m": 0.11620144377283287
+    },
+    {
+      "recording": "new_data",
+      "frame": 10295,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.026858079135535284,
+      "fallback_signed_discrepancy_m": 0.03752942506929946,
+      "original_uncertainty_m": 0.10750000000000001,
+      "fallback_uncertainty_m": 0.10750000000000001
+    },
+    {
+      "recording": "new_data",
+      "frame": 5572,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.05322003027585276,
+      "fallback_signed_discrepancy_m": -0.0629621514081058,
+      "original_uncertainty_m": 0.06885219835889693,
+      "fallback_uncertainty_m": 0.06885219835889693
+    },
+    {
+      "recording": "new_data",
+      "frame": 10252,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.0206394863630619,
+      "fallback_signed_discrepancy_m": -0.030000000000000027,
+      "original_uncertainty_m": 0.10750000000000001,
+      "fallback_uncertainty_m": 0.10750000000000001
+    },
+    {
+      "recording": "new_data",
+      "frame": 6591,
+      "role": "continuous_negative",
+      "negative_alarm": true,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.016060134123520253,
+      "fallback_signed_discrepancy_m": 0.02289472781426749,
+      "original_uncertainty_m": 0.08301626086407742,
+      "fallback_uncertainty_m": 0.08301626086407742
+    },
+    {
+      "recording": "new_data",
+      "frame": 804,
+      "role": "continuous_negative",
+      "negative_alarm": true,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.03204792064748263,
+      "fallback_signed_discrepancy_m": 0.03575481910138412,
+      "original_uncertainty_m": 0.09709751378215586,
+      "fallback_uncertainty_m": 0.09709751378215586
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 215,
+      "role": "synthetic",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.006185158534534205,
+      "fallback_signed_discrepancy_m": -0.006362366752805701,
+      "original_uncertainty_m": 0.06243176030590866,
+      "fallback_uncertainty_m": 0.06243176030590866
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 214,
+      "role": "synthetic",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.004421122319820295,
+      "fallback_signed_discrepancy_m": 0.003799612913546288,
+      "original_uncertainty_m": 0.07011790717959339,
+      "fallback_uncertainty_m": 0.07011790717959339
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 210,
+      "role": "synthetic",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.003654077645587492,
+      "fallback_signed_discrepancy_m": 0.001823982557501505,
+      "original_uncertainty_m": 0.10512317711577744,
+      "fallback_uncertainty_m": 0.10512317711577744
+    },
+    {
+      "recording": "new_data",
+      "frame": 5539,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.6010218483183829,
+      "fallback_signed_discrepancy_m": 0.5991458713676687,
+      "original_uncertainty_m": 0.1937619837557879,
+      "fallback_uncertainty_m": 0.1937619837557879
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 211,
+      "role": "synthetic",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.0023692319113928495,
+      "fallback_signed_discrepancy_m": -0.0002054493428505222,
+      "original_uncertainty_m": 0.09570050804734201,
+      "fallback_uncertainty_m": 0.09570050804734201
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 212,
+      "role": "synthetic",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.007285267349344246,
+      "fallback_signed_discrepancy_m": 0.0032077588563160925,
+      "original_uncertainty_m": 0.08674995286045596,
+      "fallback_uncertainty_m": 0.08674995286045596
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 213,
+      "role": "synthetic",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.021263573239352906,
+      "fallback_signed_discrepancy_m": 0.009923807696642514,
+      "original_uncertainty_m": 0.0782183750731736,
+      "fallback_uncertainty_m": 0.0782183750731736
+    },
+    {
+      "recording": "new_data",
+      "frame": 4099,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.02899282473270004,
+      "fallback_signed_discrepancy_m": -0.00871362674672116,
+      "original_uncertainty_m": 0.10750000000000001,
+      "fallback_uncertainty_m": 0.10750000000000001
+    },
+    {
+      "recording": "new_data",
+      "frame": 6862,
+      "role": "continuous_negative",
+      "negative_alarm": true,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.03354839611734328,
+      "fallback_signed_discrepancy_m": 0.010439158831987205,
+      "original_uncertainty_m": 0.10750000000000001,
+      "fallback_uncertainty_m": 0.10750000000000001
+    },
+    {
+      "recording": "new_data",
+      "frame": 5557,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.03324973336430537,
+      "fallback_signed_discrepancy_m": 0.00725693762601165,
+      "original_uncertainty_m": 0.06978278760147331,
+      "fallback_uncertainty_m": 0.06978278760147331
+    },
+    {
+      "recording": "new_data",
+      "frame": 1285,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.03119778908790871,
+      "fallback_signed_discrepancy_m": 0.0030243868492887405,
+      "original_uncertainty_m": 0.10750000000000001,
+      "fallback_uncertainty_m": 0.10750000000000001
+    },
+    {
+      "recording": "new_data",
+      "frame": 4072,
+      "role": "continuous_negative",
+      "negative_alarm": true,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.04888581793410651,
+      "fallback_signed_discrepancy_m": -0.017935899694436763,
+      "original_uncertainty_m": 0.10750000000000001,
+      "fallback_uncertainty_m": 0.10750000000000001
+    },
+    {
+      "recording": "new_data",
+      "frame": 8458,
+      "role": "continuous_negative",
+      "negative_alarm": true,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.38231018228082214,
+      "fallback_signed_discrepancy_m": 0.3508131874646595,
+      "original_uncertainty_m": 0.10750000000000001,
+      "fallback_uncertainty_m": 0.10750000000000001
+    },
+    {
+      "recording": "new_data",
+      "frame": 5619,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.08886587564919624,
+      "fallback_signed_discrepancy_m": 0.05585790566738069,
+      "original_uncertainty_m": 0.10750000000000001,
+      "fallback_uncertainty_m": 0.10750000000000001
+    },
+    {
+      "recording": "new_data",
+      "frame": 10501,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.03876888506526299,
+      "fallback_signed_discrepancy_m": 0.0019519769130003084,
+      "original_uncertainty_m": 0.09264278002277825,
+      "fallback_uncertainty_m": 0.09264278002277825
+    },
+    {
+      "recording": "new_data",
+      "frame": 8198,
+      "role": "continuous_negative",
+      "negative_alarm": true,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.16509238614893884,
+      "fallback_signed_discrepancy_m": -0.1229655255843094,
+      "original_uncertainty_m": 0.0671821196535413,
+      "fallback_uncertainty_m": 0.0671821196535413
+    },
+    {
+      "recording": "new_data",
+      "frame": 9259,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.11701595398372922,
+      "fallback_signed_discrepancy_m": -0.015587007231669059,
+      "original_uncertainty_m": 0.10750000000000001,
+      "fallback_uncertainty_m": 0.10750000000000001
+    },
+    {
+      "recording": "new_data",
+      "frame": 6745,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.3057841269767452,
+      "fallback_signed_discrepancy_m": -0.19680746631971457,
+      "original_uncertainty_m": 0.15976635467261077,
+      "fallback_uncertainty_m": 0.15976635467261077
+    },
+    {
+      "recording": "new_data",
+      "frame": 10598,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.18270215958764746,
+      "fallback_signed_discrepancy_m": 0.061002670601395526,
+      "original_uncertainty_m": 0.11877407071298804,
+      "fallback_uncertainty_m": 0.11877407071298804
+    },
+    {
+      "recording": "new_data",
+      "frame": 6686,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.3748403456431131,
+      "fallback_signed_discrepancy_m": -0.24762263459819067,
+      "original_uncertainty_m": 0.1793820731404685,
+      "fallback_uncertainty_m": 0.1793820731404685
+    },
+    {
+      "recording": "new_data",
+      "frame": 5570,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.22189937644105373,
+      "fallback_signed_discrepancy_m": 0.07542106141426075,
+      "original_uncertainty_m": 0.0990770828625984,
+      "fallback_uncertainty_m": 0.0990770828625984
+    },
+    {
+      "recording": "new_data",
+      "frame": 6757,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.4822487158646038,
+      "fallback_signed_discrepancy_m": -0.27005061477664993,
+      "original_uncertainty_m": 0.1804593204674438,
+      "fallback_uncertainty_m": 0.1804593204674438
+    },
+    {
+      "recording": "new_data",
+      "frame": 9004,
+      "role": "continuous_negative",
+      "negative_alarm": true,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.6295393450227313,
+      "fallback_signed_discrepancy_m": -0.3928667007503392,
+      "original_uncertainty_m": 0.09482785990369011,
+      "fallback_uncertainty_m": 0.09482785990369011
+    },
+    {
+      "recording": "new_data",
+      "frame": 6575,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.3326314858672559,
+      "fallback_signed_discrepancy_m": 0.09339135158455258,
+      "original_uncertainty_m": 0.09372928984084974,
+      "fallback_uncertainty_m": 0.09372928984084974
+    },
+    {
+      "recording": "new_data",
+      "frame": 4106,
+      "role": "continuous_negative",
+      "negative_alarm": true,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.40899064466558177,
+      "fallback_signed_discrepancy_m": 0.16515954896730145,
+      "original_uncertainty_m": 0.1653318365771949,
+      "fallback_uncertainty_m": 0.1653318365771949
+    },
+    {
+      "recording": "new_data",
+      "frame": 7031,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.28355118795909195,
+      "fallback_signed_discrepancy_m": -0.029527133689066343,
+      "original_uncertainty_m": 0.17,
+      "fallback_uncertainty_m": 0.17
+    },
+    {
+      "recording": "new_data",
+      "frame": 6833,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.4881645396244685,
+      "fallback_signed_discrepancy_m": -0.23366675722974817,
+      "original_uncertainty_m": 0.17822756906283754,
+      "fallback_uncertainty_m": 0.17822756906283754
+    },
+    {
+      "recording": "new_data",
+      "frame": 6605,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.32760204472456667,
+      "fallback_signed_discrepancy_m": -0.05434827630631989,
+      "original_uncertainty_m": 0.16851510522984425,
+      "fallback_uncertainty_m": 0.16851510522984425
+    },
+    {
+      "recording": "new_data",
+      "frame": 9240,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.5264055203239568,
+      "fallback_signed_discrepancy_m": -0.24793094975148522,
+      "original_uncertainty_m": 0.2036056808754802,
+      "fallback_uncertainty_m": 0.2036056808754802
+    },
+    {
+      "recording": "new_data",
+      "frame": 6655,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.6118272742437296,
+      "fallback_signed_discrepancy_m": -0.2617541587227339,
+      "original_uncertainty_m": 0.1823129475344147,
+      "fallback_uncertainty_m": 0.1823129475344147
+    },
+    {
+      "recording": "new_data",
+      "frame": 10495,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.535919587362838,
+      "fallback_signed_discrepancy_m": 0.09136937675331458,
+      "original_uncertainty_m": 0.18368110489707323,
+      "fallback_uncertainty_m": 0.18368110489707323
+    },
+    {
+      "recording": "new_data",
+      "frame": 6798,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 0.5971929957810238,
+      "fallback_signed_discrepancy_m": -0.13728235238510855,
+      "original_uncertainty_m": 0.142107127395102,
+      "fallback_uncertainty_m": 0.142107127395102
+    },
+    {
+      "recording": "new_data",
+      "frame": 7893,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": -0.6103350647919065,
+      "fallback_signed_discrepancy_m": 0.03195642886031147,
+      "original_uncertainty_m": 0.17157399673187929,
+      "fallback_uncertainty_m": 0.17157399673187929
+    },
+    {
+      "recording": "new_data",
+      "frame": 5349,
+      "role": "continuous_negative",
+      "negative_alarm": false,
+      "training_selected_anchors": 3,
+      "original_signed_discrepancy_m": 1.269005626614604,
+      "fallback_signed_discrepancy_m": -0.017126570182947498,
+      "original_uncertainty_m": 0.18340700435495821,
+      "fallback_uncertainty_m": 0.18340700435495821
+    }
+  ],
+  "decision": "Do not replace three-anchor curvature with a straight line solely because residual variance is underidentified. Mean error decreases but 26/59 paired held-out predictions worsen, median discrepancy increases, and measured curved sequences lose consistency. This does not establish a nuisance-safe detector candidate.",
+  "next_hypothesis": "Inspect already-measured paired-rail heading_slope, currently omitted from continuation fitting. Evaluate its prediction consistency against the same fixed holdouts, acknowledging shared-return correlation and no physical ground truth."
+}
