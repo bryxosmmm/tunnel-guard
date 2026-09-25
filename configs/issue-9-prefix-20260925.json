@@ -1,0 +1,43 @@
+{
+  "hypothesis": "With the pre-fix accumulation expression the accumulated integer support changes at cell boundaries relative to the shipped centering, while geometry, confirmations and alarms do not.",
+  "criterion": "Compared against build/issue-9-serial-a from the unmodified checkout of a4789d9 in configs/issue-9-reverification-20260925.json; every integer difference is reported, none is tolerated.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-issue-9-serial.json",
+  "output": "build/issue-9-prefix-20260925",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [
+    0,
+    1,
+    291
+  ],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+      "split": "development"
+    }
+  ],
+  "control_arm": "Run only in a checkout of a4789d9 with results/issue-9-prefix-revert-20260925.patch applied: the pre-fix support-accumulation expression (Rp+t)-(Rc+t) restored, everything else the shipped code. It is the before arm of the \"geometry_and_alarms_preserved\" comparison in configs/issue-9-reverification-20260925.json."
+}
