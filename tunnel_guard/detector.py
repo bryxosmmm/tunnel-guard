@@ -220,8 +220,16 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     # merely because neither subset separately reaches weak_min_voxels.
     uncertain_support = core | claim
     method = config["segmentation_method"]
+    split_groups = {}
     if method == "density":
-        labels, density_core = density_labels(cloud, config)
+        if geometry.valid:
+            _, ground_uncertainty = geometry.ground(cloud)
+            surface_contact = ((ground_uncertainty <= config["ground_max_uncertainty_m"])
+                               & (heights - geometry.rail_head_height_m <= ground_uncertainty))
+        else:
+            surface_contact = np.zeros(len(cloud), dtype=bool)
+        labels, density_core, split_groups = density_labels(
+            cloud, config, surface_contact=surface_contact, surface_plane=geometry.plane)
     else:
         labels = published_labels(cloud, geometry.plane, config, method)
         density_core = labels >= 0
@@ -250,6 +258,16 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     # different code. `_support_indices` indexes this cluster cloud, the same array the masks
     # above index.
     for obj in objects:
+        group = split_groups.get(obj["component_id"])
+        secondary = group is not None and group["parent"] != obj["component_id"]
+        obj["_split_secondary"] = secondary
+        obj["_association_reference"] = group if group is not None and not secondary else None
+        obj["tracking_reference"] = ("split_component" if secondary else
+                                     "unsplit_density_component" if group is not None else
+                                     "observed_component")
+        if group is not None and not secondary:
+            obj["tracking_reference_bounds"] = {
+                "bbox_min": group["bbox_min"], "bbox_max": group["bbox_max"]}
         rows = obj.pop("_support_indices")
         obj["lateral_m"] = ([float(lateral[rows].min()), float(lateral[rows].max())]
                             if geometry.valid else [None, None])
@@ -390,8 +408,17 @@ class Detector:
         # independent evidence. `track_max_gap_s` still ages out anything longer.
         self.tracks = {key: t for key, t in self.tracks.items() if stamp - t["stamp"] <= cfg["track_max_gap_s"]}
         ids = list(self.tracks)
+        secondary = np.fromiter((obj.pop("_split_secondary") for obj in objects),
+                                dtype=bool, count=len(objects))
+        references = [obj.pop("_association_reference") for obj in objects]
         centers = np.array([o["center"] for o in objects], dtype=float).reshape(-1, 3)
-        world = centers @ pose[:3, :3].T + pose[:3, 3]
+        association_centers = (np.asarray([
+            reference["center"] if reference is not None else obj["center"]
+            for reference, obj in zip(references, objects)], dtype=float).reshape(-1, 3)
+            if any(reference is not None for reference in references) else centers)
+        association_extents = [reference["extent_m"] if reference is not None else obj["extent_m"]
+                               for reference, obj in zip(references, objects)]
+        world = association_centers @ pose[:3, :3].T + pose[:3, 3]
         if self.diagnostic_arrays:
             self.diagnostic_arrays["association_centers_world"] = world.copy()
         # The measured registration residual enters the association covariance, so a frame whose
@@ -425,24 +452,31 @@ class Detector:
                 # routine than the batched matrix-matrix form.
                 predicted[key] = (transitions[row] @ states[row], advanced[row])
         matched = {}
-        if ids and len(world):
-            cost = np.full((len(ids), len(world)), 1e6)
-            extents = np.asarray([o["extent_m"] for o in objects]) + .1
-            track_extents = np.asarray([self.tracks[key]["extent"] for key in ids]) + .1
-            positions = np.stack([predicted[key][0][:3] for key in ids])
-            covariances = np.stack([predicted[key][1][:3, :3] for key in ids])
+        # Added fragments must not change assignments among the original density
+        # groups. Solve the two pools independently, including unmatched columns,
+        # so even assignment tie-breaking cannot couple the pools.
+        for fragment_pool in (False, True):
+            pool_ids = [key for key in ids if self.tracks[key]["split_secondary"] == fragment_pool]
+            pool_columns = np.flatnonzero(secondary == fragment_pool)
+            if not pool_ids or not len(pool_columns):
+                continue
+            cost = np.full((len(pool_ids), len(pool_columns)), 1e6)
+            extents = np.asarray([association_extents[index] for index in pool_columns]) + .1
+            track_extents = np.asarray([self.tracks[key]["extent"] for key in pool_ids]) + .1
+            positions = np.stack([predicted[key][0][:3] for key in pool_ids])
+            covariances = np.stack([predicted[key][1][:3, :3] for key in pool_ids])
             inverse = np.linalg.inv(covariances + measurement_cov)
-            residual = world[None, :, :] - positions[:, None, :]
+            residual = world[pool_columns][None, :, :] - positions[:, None, :]
             mahalanobis = np.einsum("tni,tij,tnj->tn", residual, inverse, residual)
             shape = np.linalg.norm(np.log(extents[None, :, :] / track_extents[:, None, :]), axis=2)
             allowed = (mahalanobis <= cfg["tracking_mahalanobis_gate"]) & (shape <= cfg["tracking_extent_log_gate"])
             cost[allowed] = mahalanobis[allowed] + shape[allowed]
-            # Add unmatched assignments: an impossible pair cannot steal a valid match.
-            padded = np.column_stack((cost, np.full((len(ids), len(ids)), cfg["tracking_mahalanobis_gate"] + cfg["tracking_extent_log_gate"] + 1)))
+            padded = np.column_stack((cost, np.full((len(pool_ids), len(pool_ids)),
+                cfg["tracking_mahalanobis_gate"] + cfg["tracking_extent_log_gate"] + 1)))
             rows, columns = linear_sum_assignment(padded)
             for row, column in zip(rows, columns):
-                if column < len(world) and cost[row, column] < 1e6:
-                    matched[int(column)] = ids[row]
+                if column < len(pool_columns) and cost[row, column] < 1e6:
+                    matched[int(pool_columns[column])] = pool_ids[row]
         pending: list[dict] = []
         for index, obj in enumerate(objects):
             key = matched.get(index)
@@ -522,7 +556,8 @@ class Detector:
                 interior_history.append((self.frame_number, stamp))
             recent_interior = [(f, s) for f, s in interior_history
                                if f > self.frame_number - cfg["confirmation_window"]]
-            track.update(state=state, covariance=covariance, stamp=stamp, extent=np.asarray(obj["extent_m"]))
+            track.update(state=state, covariance=covariance, stamp=stamp,
+                         extent=np.asarray(association_extents[index]), split_secondary=bool(secondary[index]))
             # Accumulated support is the one quantity that needs its own call per
             # track; the stacks are counted together after this loop, so the field
             # writes below keep their original order.
