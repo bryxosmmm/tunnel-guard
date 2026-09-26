@@ -152,7 +152,6 @@ def classify(label: dict, objects: list[dict], returns_from_object: int, minimum
 def bucket_of(case: dict) -> dict:
     dims = case["dimensions_m"]
     return {"range_m": case["range_m"], "lateral_m": case["lateral_m"],
-            "lateral_mode": case.get("lateral_mode"),
             "size": None if dims is None else "x".join(f"{value:g}" for value in dims)}
 
 
@@ -191,13 +190,11 @@ def main() -> None:
         if (args.run / "inserted.jsonl").is_file() else {}
 
     records = []
-    by_kind, by_range, by_size, by_lateral, by_lateral_mode = Counter(), defaultdict(Counter), \
-        defaultdict(Counter), defaultdict(Counter), defaultdict(Counter)
+    by_kind, by_range, by_size, by_lateral = Counter(), defaultdict(Counter), defaultdict(Counter), \
+        defaultdict(Counter)
     negative_status, negative_relations = Counter(), Counter()
     negative_frames = negative_hazard_frames = 0
     unexplained_by_relation = Counter()
-    synthetic = Counter()
-    adjacent_hazard_frames = 0
 
     for frame in sorted(annotations["frames"], key=lambda f: (f["bag"], f["frame"])):
         key = (frame["bag"], frame["frame"])
@@ -212,25 +209,7 @@ def main() -> None:
         matched_indices = {hazard_pairs[index][0] for index, _, _ in matched}
         unexplained = [(index, obj) for index, obj in enumerate(objects) if index not in matched_indices]
 
-        injected = bool(case.get("object_present", case["range_m"] is not None))
-        # Historical outputs have only the old gauge-based label; retain their
-        # interpretation when inspecting them, while every newly generated row
-        # carries the explicit contour fields.
-        full_intersection = bool(case.get("full_shape_reference_contour_intersects", bool(labels)))
-        observed_intersection = bool(case.get("observed_support_reference_contour_intersects", bool(labels)))
         if not labels:
-            if injected:
-                synthetic["injected_frames"] += 1
-                synthetic["full_shape_reference_contour_intersections"] += int(full_intersection)
-                synthetic["observed_support_reference_contour_intersections"] += int(observed_intersection)
-                if full_intersection and not int(case["returns_from_object"]):
-                    synthetic["full_shape_intersection_without_returns"] += 1
-                elif full_intersection and not observed_intersection:
-                    synthetic["full_shape_intersection_support_outside_contour"] += 1
-                elif not full_intersection:
-                    synthetic["adjacent_frames"] += 1
-                    adjacent_hazard_frames += int(row["status"] in ALARM_STATUSES)
-                continue
             negative_frames += 1
             negative_status[row["status"]] += 1
             if row["status"] in ALARM_STATUSES:
@@ -241,10 +220,6 @@ def main() -> None:
                     unexplained_by_relation["confirmed_hazard"] += 1
                 negative_relations[obj["path_relation"]] += 1
             continue
-
-        synthetic["injected_frames"] += 1
-        synthetic["full_shape_reference_contour_intersections"] += int(full_intersection)
-        synthetic["observed_support_reference_contour_intersections"] += int(observed_intersection)
 
         decision = classify(labels[0], objects, int(case["returns_from_object"]), minimum_iou,
                             inserted.get((case["case"], case["frame"])), args.extent_factor,
@@ -260,8 +235,7 @@ def main() -> None:
         records.append(decision)
         by_kind[decision["kind"]] += 1
         for table, name in ((by_range, decision["range_m"]), (by_size, decision["size"]),
-                            (by_lateral, decision["lateral_m"]),
-                            (by_lateral_mode, decision["lateral_mode"])):
+                            (by_lateral, decision["lateral_m"])):
             table[name]["total"] += 1
             table[name][decision["kind"]] += 1
             table[name]["coverage_any_sum"] += decision["coverage_any"]
@@ -284,19 +258,9 @@ def main() -> None:
         "point_criterion": {"point_threshold": args.point_threshold, "extent_factor": args.extent_factor,
                             "definition": ("fraction of the object's own returns contained in a reported box whose "
                                            "extent stays within extent_factor of the object's own extent")},
-        "frames": {"scored_observed_support_intersections": len(records),
-                   "injection_free": negative_frames},
-        "objects": {"scored_observed_support_intersections": len(records),
-                    "with_returns": len(visible), "no_returns_visibility_outcome": 0},
-        "synthetic_provenance": {
-            "full_shape_and_observed_support_are_separate": True,
-            "reference_relation": ("Intersection is with the configured reference contour, not a validated "
-                                   "vehicle swept envelope or a field collision label."),
-            "counts": dict(synthetic),
-            "adjacent_frames_claiming_hazard": adjacent_hazard_frames,
-            "conditional_scoring": ("Recall is conditioned on an injected full shape and observed support that "
-                                    "both intersect the selected reference contour."),
-        },
+        "frames": {"with_injection": len(records), "without_injection": negative_frames},
+        "objects": {"injected": len(records), "with_returns": len(visible),
+                    "no_returns_visibility_outcome": len(records) - len(visible)},
         "outcome_kinds": {kind: by_kind[kind] for kind in KINDS},
         "recall": {
             "strict_matched_of_all_injected": round(sum(r["strict_matched"] for r in records) / len(records), 4),
@@ -312,7 +276,6 @@ def main() -> None:
         "by_range_m": summarise(by_range),
         "by_size_m": summarise(by_size),
         "by_lateral_m": summarise(by_lateral),
-        "by_lateral_mode": summarise(by_lateral_mode),
         "nuisance": {
             "injection_free_frames": negative_frames,
             "frames_claiming_an_obstacle": negative_hazard_frames,
