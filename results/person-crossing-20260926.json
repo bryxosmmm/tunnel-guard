@@ -1,0 +1,418 @@
+{
+  "decision": "Person presence and ID continuity retained across all105labelled frames; intrusion sequence agrees with author contour-derived description except one acquisition required for confirmation. Localization is imperfect:88/105at unchangedIoU0.25;17component-extension failures preserved. No detector changes.",
+  "annotation_binding": {
+    "annotation_revision": "958cdb0db317cdb72006b6f75a8e138087946daa",
+    "original_annotation_sha256": "92c67e2d3db81d66b9b6d1f09867dbfd00e861db7a382ea2589b25e0d4b15b0b",
+    "derived_annotation_sha256": "54a1e8aeec536a82a0e6241ea34e55660ab2ba4099d1991dcfbaec696cb9e2d8",
+    "sole_derivation": "Replace scene alias doubleT_obstacle_person with physical recording doubleT_obstacle in frame bag fields. Coordinates, frame indices, IDs, threshold, class, status and exhaustiveness remain unchanged.",
+    "source_of_alias": "Exact authored provenance in both annotation and export config; actual first three scans contain83\u2013103box returns and centroid offsets0.095\u20130.146m.",
+    "raw_files": 106,
+    "raw_hash_and_psr_errors": []
+  },
+  "replay": {
+    "frames": 201,
+    "config_sha256": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa",
+    "native_binary_sha256": "daeeb70c5e93225be0695fa5a1c2edddd00b3ea61dc6729bc76269fc1c2e8cf7",
+    "scientific_equality_to_prior_accepted_cli": {
+      "frames": 201,
+      "changed_frames": [],
+      "excluded_root_fields": [
+        "decode_s",
+        "deserialize_s",
+        "diagnostic_points",
+        "diagnostic_write_s",
+        "inference_s",
+        "ingestion_s",
+        "motion_s",
+        "mounting_observation_s",
+        "processing_s",
+        "read_and_process_s",
+        "visualization_s"
+      ],
+      "excluded_nested_fields": [
+        "pipeline.segmentation.components"
+      ],
+      "exclusion_reason": "Timing/export telemetry and intentionally added per-component diagnostic trace; emitted objects, geometry, pose, range and decision fields all compared."
+    }
+  },
+  "person": {
+    "person_observations": 105,
+    "frames_with_measured_component": 105,
+    "presence_confirmed_frames": 105,
+    "person_intersection_confirmed_frames": 61,
+    "person_tracks": {
+      "176": 105
+    },
+    "person_id_switches": 0,
+    "person_relations": {
+      "adjacent": 41,
+      "unresolved": 2,
+      "intersecting": 62
+    },
+    "aabb_iou_pass_frames": 88,
+    "oriented_iou_pass_frames": 88,
+    "center_error_median_m": 0.16827307542049594
+  },
+  "fixed_iou_evaluation": {
+    "label_status": "provisional_geometry",
+    "prediction_scope": "near_track_objects",
+    "annotation_origins": {
+      "reviewer_hand_anchor_frame_0": 1,
+      "registration_propagation_from_frame_0": 24,
+      "reviewer_hand_adjusted_after_registration_propagation": 3,
+      "reviewer_hand_anchor_frame_28": 1,
+      "registration_propagation_from_frame_28": 18,
+      "reviewer_hand_anchor_frame_47": 1,
+      "registration_propagation_from_frame_47": 57
+    },
+    "box_semantics": "reviewer_authored_person_volume_not_observed_support",
+    "minimum_3d_iou": 0.25,
+    "evaluated_frames": 106,
+    "missing_frames": [],
+    "exhaustive_frames": 0,
+    "tp": 88,
+    "fn": 17,
+    "fp_exhaustive_only": 0,
+    "annotated_object_recall": 0.8380952380952381,
+    "precision_exhaustive_only": null,
+    "recall_exhaustive_only": null,
+    "f1_exhaustive_only": null,
+    "event_recall": 1.0,
+    "distance_mae_m": 0.1145757200427065,
+    "matched_mean_3d_iou": 0.40889317223732546,
+    "validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric"
+    ],
+    "annotations_sha256": "54a1e8aeec536a82a0e6241ea34e55660ab2ba4099d1991dcfbaec696cb9e2d8",
+    "run": "build/person-crossing-20260926/replay"
+  },
+  "qualification": {
+    "annotation_revision": "958cdb0db317cdb72006b6f75a8e138087946daa",
+    "detector_changed": false,
+    "threshold_changed": false,
+    "replayed_frames": 201,
+    "positive_label_frames": 105,
+    "empty_nonexhaustive_frame_unscored": 105,
+    "independent_events": 1,
+    "scientific_comparison": {
+      "frames": 201,
+      "changed_frames": [],
+      "excluded_root_fields": [
+        "decode_s",
+        "deserialize_s",
+        "diagnostic_points",
+        "diagnostic_write_s",
+        "inference_s",
+        "ingestion_s",
+        "motion_s",
+        "mounting_observation_s",
+        "processing_s",
+        "read_and_process_s",
+        "visualization_s"
+      ],
+      "excluded_nested_fields": [
+        "pipeline.segmentation.components"
+      ],
+      "exclusion_reason": "Timing/export telemetry and intentionally added per-component diagnostic trace; emitted objects, geometry, pose, range and decision fields all compared."
+    },
+    "raw_points_in_obb": {
+      "min": 73,
+      "median": 97.0,
+      "max": 132
+    },
+    "raw_centroid_error_m": {
+      "min": 0.014383717793982082,
+      "median": 0.0650639252919855,
+      "max": 0.146988225561369
+    },
+    "support_inside_fraction": {
+      "min": 0.5588235294117647,
+      "median": 0.6811594202898551,
+      "max": 0.8518518518518519
+    },
+    "support_center_error_m": {
+      "min": 0.025249891221070575,
+      "median": 0.16827307542049594,
+      "max": 0.7907831011031098
+    },
+    "strict_iou_match_frames": 88,
+    "strict_iou_miss_spans": [
+      [
+        39,
+        50
+      ],
+      [
+        52,
+        52
+      ],
+      [
+        76,
+        76
+      ],
+      [
+        89,
+        89
+      ],
+      [
+        95,
+        96
+      ]
+    ],
+    "strict_track_counts": {
+      "176": 88
+    },
+    "strict_track_switches_across_matched_observations": 0,
+    "support_presence_spans": [
+      [
+        0,
+        104
+      ]
+    ],
+    "support_intersection_spans": [
+      [
+        8,
+        68
+      ]
+    ],
+    "intersection_without_label_certified_witness_frames": [],
+    "author_description_comparison_not_independent_ground_truth": {
+      "author_contour_outside_start": {
+        "bounds_inclusive": [
+          0,
+          6
+        ],
+        "frames": 7,
+        "strict_iou_matches": 7,
+        "support_presence_confirmed": 7,
+        "support_intersection_confirmed": 0,
+        "relations": {
+          "adjacent": 6,
+          "unresolved": 1
+        }
+      },
+      "author_contour_inside": {
+        "bounds_inclusive": [
+          7,
+          68
+        ],
+        "frames": 62,
+        "strict_iou_matches": 49,
+        "support_presence_confirmed": 62,
+        "support_intersection_confirmed": 61,
+        "relations": {
+          "intersecting": 62
+        }
+      },
+      "author_transition_unspecified": {
+        "bounds_inclusive": [
+          69,
+          69
+        ],
+        "frames": 1,
+        "strict_iou_matches": 1,
+        "support_presence_confirmed": 1,
+        "support_intersection_confirmed": 0,
+        "relations": {
+          "unresolved": 1
+        }
+      },
+      "author_contour_outside_end": {
+        "bounds_inclusive": [
+          70,
+          104
+        ],
+        "frames": 35,
+        "strict_iou_matches": 31,
+        "support_presence_confirmed": 35,
+        "support_intersection_confirmed": 0,
+        "relations": {
+          "adjacent": 35
+        }
+      },
+      "author_outside_beyond_one_sigma": {
+        "bounds_inclusive": [
+          78,
+          104
+        ],
+        "frames": 27,
+        "strict_iou_matches": 24,
+        "support_presence_confirmed": 27,
+        "support_intersection_confirmed": 0,
+        "relations": {
+          "adjacent": 27
+        }
+      }
+    },
+    "limits": [
+      "This is one reviewed object, not 105 independent events.",
+      "Object class is reviewer judgement; detector is geometric and does not classify people.",
+      "The authors crossing description uses the project reference contour and is not independent rail/envelope ground truth.",
+      "Raw or clustered point membership in a full-person OBB can include background; inspect IoU and support fraction separately.",
+      "Nonexhaustive labels do not establish precision or prove other alarms false.",
+      "The observed-support detector box and reviewer-authored full-person volume have different semantics; no padding or threshold relaxation was used."
+    ],
+    "config_sha256": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa",
+    "manifest_sha256": "b0d8b05b955ca4d6f6c6ce59114239b461300b4c3bc448266d0b555ba51211ff",
+    "rows_sha256": "640915ff887ee230ac72c959c4a342fba5d7a65fe8d6855314239c979ab56ce3"
+  },
+  "visual_review": {
+    "reviewed_plot_frames_start": [
+      0,
+      6,
+      36,
+      42,
+      48,
+      66,
+      72,
+      84,
+      90,
+      96
+    ],
+    "all_iou_misses_visually_inspected": [
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      52,
+      76,
+      89,
+      95,
+      96
+    ],
+    "finding": "All17IoU misses retain measured person support and track176. Overlays show a lower/lateral extension of the selected component outside the authored volume. This is not a lost person track; extended component support degrades the bounding box. Physical identity of every extra point is not established.",
+    "manual_anchor_47": {
+      "predicted_bbox_min": [
+        55.78358459472656,
+        -3.289202928543091,
+        -2.697046995162964
+      ],
+      "predicted_bbox_max": [
+        56.41493225097656,
+        -1.2477558851242065,
+        -1.2969633340835571
+      ],
+      "authored_bbox_min": [
+        55.724000000000004,
+        -2.078,
+        -2.428
+      ],
+      "authored_bbox_max": [
+        56.194,
+        -1.298,
+        -1.3279999999999998
+      ],
+      "aabb_iou": 0.18976554893635858,
+      "points_in_obb": 59,
+      "component_points": 88,
+      "center_error_m": 0.6089261007263204
+    },
+    "intrusion_confirmation_delay_from_first_intersecting_s": 0.1000291109085083,
+    "hazard_warning_frames": [
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32,
+      33,
+      34,
+      35,
+      36,
+      37,
+      38,
+      39,
+      40,
+      41,
+      42,
+      43,
+      44,
+      45,
+      46,
+      47,
+      48,
+      49,
+      50,
+      51,
+      52,
+      53,
+      54,
+      55,
+      56,
+      57,
+      58,
+      59,
+      60,
+      61,
+      62,
+      63,
+      64,
+      65,
+      66,
+      67,
+      68,
+      69
+    ],
+    "boundary_warning_frames": [
+      6,
+      69
+    ],
+    "confirmed_intrusion_has_label_certified_witness_every_frame": true,
+    "endpoint_caveat": {
+      "empty_frame": 105,
+      "exhaustive": false,
+      "track176_still_measured_at105": true,
+      "last_measured_track176_frame": 164,
+      "interpretation": "The authored empty nonexhaustive frame is unscored. Track ID persistence after104does not establish continued physical identity outside the annotated panel."
+    },
+    "decision": "No detector/config/native change. Preserve localization failures. Any future instance-separation change must be qualified on the fixed panels; do not clip observed support to annotations or relax overlap thresholds."
+  },
+  "local_full_evidence": "build/person-crossing-20260926",
+  "limitations": [
+    "This is one reviewed object, not 105 independent events.",
+    "Object class is reviewer judgement; detector is geometric and does not classify people.",
+    "The authors crossing description uses the project reference contour and is not independent rail/envelope ground truth.",
+    "Raw or clustered point membership in a full-person OBB can include background; inspect IoU and support fraction separately.",
+    "Nonexhaustive labels do not establish precision or prove other alarms false.",
+    "The observed-support detector box and reviewer-authored full-person volume have different semantics; no padding or threshold relaxation was used."
+  ],
+  "production_source_unchanged": true,
+  "formal_autoresearch_primary_unchanged": 113,
+  "portable_bundle": {
+    "path": "results/person-crossing-20260926.zip",
+    "bytes": 4335881,
+    "sha256": "7fc822e8df5718c5898aa34ab47d79aba7c0d47efccf5512a89b8a689fa00df2",
+    "files": 158,
+    "all_recorded_entry_digests_match": true,
+    "excludes": "Full row streams, per-frame diagnostic NPZ, pointcloud bag, native shared object. These remain locally with manifest provenance."
+  }
+}

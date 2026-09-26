@@ -1,0 +1,174 @@
+{
+  "detector_baseline": "ec311a0",
+  "source_binding": {
+    "tunnel_guard/detector.py": {
+      "sha256": "a7732117c3c95c4598784612d0104a819e6f545eb867a11f9b6c6b369490f1a4",
+      "equals_accepted_source": true
+    },
+    "tunnel_guard/geometry.py": {
+      "sha256": "da86a42ce860a58929d6efd36493fb019ed111e68764ee4f8b52e5c4155db9c6",
+      "equals_accepted_source": true
+    },
+    "tunnel_guard/accelerator.py": {
+      "sha256": "439731143ed9bea6fca157a6ebb6c519ed2d7ab341303cca898f96784ccd7cd3",
+      "equals_accepted_source": true
+    },
+    "cpp/kernels.cpp": {
+      "sha256": "ab1f038ed0eb3b004bfbc35a594cb69d939ccadddb8b2c3dd25a15a7496637f1",
+      "equals_accepted_source": true
+    },
+    "cpp/voxel.cpp": {
+      "sha256": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+      "equals_accepted_source": true
+    },
+    "cpp/native.h": {
+      "sha256": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+      "equals_accepted_source": true
+    },
+    "configs/detector.json": {
+      "sha256": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa",
+      "equals_accepted_config": true
+    },
+    "native_sha256": "daeeb70c5e93225be0695fa5a1c2edddd00b3ea61dc6729bc76269fc1c2e8cf7"
+  },
+  "new_actual_replay": [
+    {
+      "bag": "doubleT_obstacle",
+      "frames": 201,
+      "differences": []
+    },
+    {
+      "bag": "doubleT_platform",
+      "frames": 345,
+      "differences": []
+    }
+  ],
+  "recorded_ros_readback": [
+    {
+      "recording": "doubleT_obstacle",
+      "frames": 201,
+      "topics": {
+        "/perception/points_display": "sensor_msgs/msg/PointCloud2",
+        "/perception/debug_markers": "visualization_msgs/msg/MarkerArray",
+        "/perception/status": "std_msgs/msg/String",
+        "/perception/attention_required": "std_msgs/msg/Bool",
+        "/perception/nearest_obstacle_m": "std_msgs/msg/Float32"
+      },
+      "counts": {
+        "/perception/points_display": 201,
+        "/perception/debug_markers": 201,
+        "/perception/status": 201,
+        "/perception/attention_required": 201,
+        "/perception/nearest_obstacle_m": 201
+      },
+      "all_topics_one_message_per_acquisition": true,
+      "errors": []
+    },
+    {
+      "recording": "doubleT_platform",
+      "frames": 345,
+      "topics": {
+        "/perception/points_display": "sensor_msgs/msg/PointCloud2",
+        "/perception/debug_markers": "visualization_msgs/msg/MarkerArray",
+        "/perception/status": "std_msgs/msg/String",
+        "/perception/attention_required": "std_msgs/msg/Bool",
+        "/perception/nearest_obstacle_m": "std_msgs/msg/Float32"
+      },
+      "counts": {
+        "/perception/points_display": 345,
+        "/perception/debug_markers": 345,
+        "/perception/status": 345,
+        "/perception/attention_required": 345,
+        "/perception/nearest_obstacle_m": 345
+      },
+      "all_topics_one_message_per_acquisition": true,
+      "errors": []
+    }
+  ],
+  "viewer_fix": {
+    "file": "tunnel_guard/review.html",
+    "problem": "Object column showed hazard confirmation instead of presence, displaying pending for a detected adjacent person.",
+    "change": "Display presence_confirmation separately from hazard confirmation and intersection_confirmation. No detector change.",
+    "actual_ui_evidence": {
+      "person_frame": 181,
+      "track_id": 2535,
+      "presence": "immediate_geometry",
+      "hazard": "pending",
+      "intersection": "pending",
+      "relation": "adjacent",
+      "exact_support_points_rendered": 384,
+      "platform_alarm_frame": 262,
+      "platform_alarm_range_m": 53.8,
+      "fresh_person_page_errors": 0,
+      "platform_page_errors": 0
+    },
+    "earlier_automation_issue": "An earlier browser session had injected anonymous fillText recursion; fresh-session rendering succeeded without page errors. Initial direct input helpers also timed out; observed controls and fresh DOM interaction succeeded."
+  },
+  "target_provenance": {
+    "teammate_person": {
+      "annotation": "annotations/doubleT-obstacle-person.json",
+      "frames": [
+        165,
+        200
+      ],
+      "user_confirmed_outside_envelope": true,
+      "expected": "presence and continuity without intrusion"
+    },
+    "possible_far_person": {
+      "candidate_annotation": "annotations/sourcecraft-provisional.json",
+      "range_m": 17,
+      "frames": [
+        0,
+        50,
+        100,
+        150,
+        200
+      ],
+      "class_in_file": "unclassified_upright_structure",
+      "intersection_in_file": "unverified",
+      "deepseek_authorship": "not established by available files or Git log search",
+      "same_as_user_mentioned_person": "not established"
+    },
+    "available_positive_recording": {
+      "path": "data/cloud_with_fake_obj",
+      "events": 10,
+      "kind": "organizer recording with inserted synthetic objects",
+      "accepted_full_replay": "build/autoresearch-issue23/run-0002",
+      "another_confirmed_positive_recording": "not identified among available data collections"
+    }
+  },
+  "accepted_positive_panel": {
+    "recording": "cloud_with_fake_obj",
+    "frames": 1510,
+    "basis": "Existing accepted full replay, not rerun during this final-demo check",
+    "events_with_intersection_confirmation": 10,
+    "intersection_frames_by_event": {
+      "1": 75,
+      "2": 32,
+      "3": 21,
+      "4": 29,
+      "5": 31,
+      "6": 18,
+      "7": 22,
+      "8": 33,
+      "9": 11,
+      "10": 5
+    },
+    "limitations": "Inserted-object events; does not establish field recall or hardware range. Events9/10 still have short confirmation sequences."
+  },
+  "limits": [
+    "No new reduction of the113negative-alarm episodes.",
+    "No Intel target or native RViz GUI acceptance; available Docker images do not include ROS. Browser and offline recorded exports verified instead.",
+    "ROS/RViz object label formatting was not changed; RViz integration remains externally owned.",
+    "Possible farther DeepSeek-labelled person not identified conclusively; no reclassification of all other objects as false alarms.",
+    "Another confirmed-positive recording, if distinct from cloud_with_fake_obj, needs an identifiable source path.",
+    "CLI timing includes visualization export and is not a controlled optimization benchmark or live latency."
+  ],
+  "artifacts": {
+    "person_run": "build/demo-person-20260926",
+    "platform_run": "build/demo-platform-20260926",
+    "acceptance": "build/demo-acceptance-20260926",
+    "person_recipe": "configs/demo-person-20260926.json",
+    "platform_recipe": "configs/demo-platform-20260926.json"
+  }
+}

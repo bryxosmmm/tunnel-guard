@@ -1,0 +1,497 @@
+{
+  "decision": "Reject this rebased PR28 candidate before costly negative replay; retain best core/config.",
+  "pr_head": "216bbae0bf7e81abf80b7b849f31cdd6351d9065",
+  "provenance": {
+    "pr_head": "216bbae0bf7e81abf80b7b849f31cdd6351d9065",
+    "method_ast_identical": true,
+    "config_changed_keys": [
+      "structure_surface_cell_m"
+    ],
+    "native_binary_identical": true,
+    "integration_difference": "Skip optional surface classification when current baseline geometry is invalid; preserve current missing-geometry handling. All best local_confirmation settings retained."
+  },
+  "comparison": {
+    "frames": 1510,
+    "status_counts": {
+      "candidate": {
+        "no_obstacle_observed": 1116,
+        "obstacle": 299,
+        "unknown": 9,
+        "unresolved_obstacle": 34,
+        "candidate": 52
+      },
+      "best": {
+        "no_obstacle_observed": 1110,
+        "obstacle": 299,
+        "unknown": 9,
+        "unresolved_obstacle": 39,
+        "candidate": 53
+      }
+    },
+    "changed_frames": {
+      "status": [
+        277,
+        304,
+        359,
+        400,
+        403,
+        406,
+        407,
+        408,
+        412,
+        417,
+        425,
+        717,
+        725,
+        738,
+        974,
+        1083,
+        1112,
+        1433
+      ],
+      "geometry": [],
+      "pose": [],
+      "motion": [],
+      "supported_range_m": [],
+      "range_observability": [],
+      "unresolved_range_objects": [],
+      "nearest_unresolved_range_m": []
+    },
+    "valid_geometry_changed_frames": [],
+    "object_geometry_changed_frames": [
+      265,
+      277,
+      301,
+      304,
+      309,
+      671,
+      679,
+      741,
+      915,
+      964,
+      974,
+      989,
+      1054,
+      1118,
+      1122
+    ],
+    "unknown_as_clear_frames": [],
+    "missing_geometry_frames": [
+      {
+        "frame": 225,
+        "status": "unknown",
+        "reason": "weak_track_bed_plane",
+        "supported_range_m": null
+      },
+      {
+        "frame": 226,
+        "status": "unknown",
+        "reason": "weak_track_bed_plane",
+        "supported_range_m": null
+      },
+      {
+        "frame": 227,
+        "status": "unknown",
+        "reason": "weak_track_bed_plane",
+        "supported_range_m": null
+      },
+      {
+        "frame": 228,
+        "status": "unknown",
+        "reason": "weak_track_bed_plane",
+        "supported_range_m": null
+      },
+      {
+        "frame": 229,
+        "status": "unknown",
+        "reason": "weak_track_bed_plane",
+        "supported_range_m": null
+      },
+      {
+        "frame": 230,
+        "status": "unknown",
+        "reason": "insufficient_track_bed_points",
+        "supported_range_m": null
+      },
+      {
+        "frame": 231,
+        "status": "unknown",
+        "reason": "insufficient_returns",
+        "supported_range_m": null
+      },
+      {
+        "frame": 925,
+        "status": "unknown",
+        "reason": "insufficient_paired_rail_support",
+        "supported_range_m": null
+      },
+      {
+        "frame": 1105,
+        "status": "unknown",
+        "reason": "insufficient_paired_rail_support",
+        "supported_range_m": null
+      }
+    ],
+    "historical_failure_frame_after_repair": {
+      "frame": 225,
+      "status": "unknown",
+      "reason": "weak_track_bed_plane",
+      "supported_range_m": null,
+      "geometry": {
+        "valid": false,
+        "reason": "weak_track_bed_plane",
+        "ground_quality": {
+          "sample_points": 1850,
+          "valid": false,
+          "support": 858,
+          "fraction": 0.46378378378378377,
+          "median_residual_m": 0.022927682458012133,
+          "span_m": [
+            7.2915894985198975,
+            3.829878807067871
+          ],
+          "reason": "weak_track_bed_plane"
+        },
+        "lateral_boundary_policy": "heuristic_path_and_ground_interval",
+        "boundary_uncertainty_scope": "path_center_and_bed_height_only_not_full_extrinsics",
+        "ground_plane": null,
+        "rail_center_estimator": "paired_line",
+        "rail_anchor_support": "measured",
+        "rail_support_diagnostics": [],
+        "rail_frame_mode": "bed",
+        "rail_rejections": [],
+        "rail_head_height_m": null,
+        "ground_anchors": [],
+        "rail_anchors": [],
+        "background": null
+      }
+    },
+    "events": {
+      "1": {
+        "contour_disagreement_not_clean_negative": false,
+        "presence_confirmed": {
+          "candidate_frames": 226,
+          "best_frames": 226,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 225,
+          "best_longest_consecutive": 225,
+          "candidate_first_forward_m": 98.69306945800781
+        },
+        "intersection_confirmed": {
+          "candidate_frames": 75,
+          "best_frames": 75,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 71,
+          "best_longest_consecutive": 71,
+          "candidate_first_forward_m": 64.73154067993164
+        }
+      },
+      "2": {
+        "contour_disagreement_not_clean_negative": false,
+        "presence_confirmed": {
+          "candidate_frames": 51,
+          "best_frames": 51,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 39,
+          "best_longest_consecutive": 39,
+          "candidate_first_forward_m": 102.64607238769531
+        },
+        "intersection_confirmed": {
+          "candidate_frames": 33,
+          "best_frames": 32,
+          "lost_best_frames": [],
+          "gained_frames": [
+            359
+          ],
+          "candidate_longest_consecutive": 33,
+          "best_longest_consecutive": 23,
+          "candidate_first_forward_m": 57.50846290588379
+        }
+      },
+      "3": {
+        "contour_disagreement_not_clean_negative": false,
+        "presence_confirmed": {
+          "candidate_frames": 34,
+          "best_frames": 35,
+          "lost_best_frames": [
+            406
+          ],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 14,
+          "best_longest_consecutive": 14,
+          "candidate_first_forward_m": 81.37056732177734
+        },
+        "intersection_confirmed": {
+          "candidate_frames": 20,
+          "best_frames": 21,
+          "lost_best_frames": [
+            403,
+            406,
+            417,
+            425
+          ],
+          "gained_frames": [
+            400,
+            407,
+            412
+          ],
+          "candidate_longest_consecutive": 10,
+          "best_longest_consecutive": 7,
+          "candidate_first_forward_m": 60.333438873291016
+        }
+      },
+      "4": {
+        "contour_disagreement_not_clean_negative": false,
+        "presence_confirmed": {
+          "candidate_frames": 43,
+          "best_frames": 43,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 41,
+          "best_longest_consecutive": 41,
+          "candidate_first_forward_m": 84.80479431152344
+        },
+        "intersection_confirmed": {
+          "candidate_frames": 29,
+          "best_frames": 29,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 19,
+          "best_longest_consecutive": 19,
+          "candidate_first_forward_m": 57.141136169433594
+        }
+      },
+      "5": {
+        "contour_disagreement_not_clean_negative": true,
+        "presence_confirmed": {
+          "candidate_frames": 41,
+          "best_frames": 41,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 38,
+          "best_longest_consecutive": 38,
+          "candidate_first_forward_m": 93.8915023803711
+        },
+        "intersection_confirmed": {
+          "candidate_frames": 31,
+          "best_frames": 31,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 31,
+          "best_longest_consecutive": 31,
+          "candidate_first_forward_m": 59.815555572509766
+        }
+      },
+      "6": {
+        "contour_disagreement_not_clean_negative": false,
+        "presence_confirmed": {
+          "candidate_frames": 106,
+          "best_frames": 106,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 104,
+          "best_longest_consecutive": 104,
+          "candidate_first_forward_m": 217.33583068847656
+        },
+        "intersection_confirmed": {
+          "candidate_frames": 18,
+          "best_frames": 18,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 16,
+          "best_longest_consecutive": 16,
+          "candidate_first_forward_m": 48.31601142883301
+        }
+      },
+      "7": {
+        "contour_disagreement_not_clean_negative": true,
+        "presence_confirmed": {
+          "candidate_frames": 103,
+          "best_frames": 103,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 102,
+          "best_longest_consecutive": 102,
+          "candidate_first_forward_m": 216.9359359741211
+        },
+        "intersection_confirmed": {
+          "candidate_frames": 22,
+          "best_frames": 22,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 21,
+          "best_longest_consecutive": 21,
+          "candidate_first_forward_m": 56.35098648071289
+        }
+      },
+      "8": {
+        "contour_disagreement_not_clean_negative": false,
+        "presence_confirmed": {
+          "candidate_frames": 99,
+          "best_frames": 99,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 75,
+          "best_longest_consecutive": 75,
+          "candidate_first_forward_m": 216.4998321533203
+        },
+        "intersection_confirmed": {
+          "candidate_frames": 33,
+          "best_frames": 33,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 33,
+          "best_longest_consecutive": 33,
+          "candidate_first_forward_m": 67.66785430908203
+        }
+      },
+      "9": {
+        "contour_disagreement_not_clean_negative": false,
+        "presence_confirmed": {
+          "candidate_frames": 13,
+          "best_frames": 12,
+          "lost_best_frames": [
+            717
+          ],
+          "gained_frames": [
+            725,
+            738
+          ],
+          "candidate_longest_consecutive": 3,
+          "best_longest_consecutive": 4,
+          "candidate_first_forward_m": 214.2925796508789
+        },
+        "intersection_confirmed": {
+          "candidate_frames": 12,
+          "best_frames": 11,
+          "lost_best_frames": [
+            717
+          ],
+          "gained_frames": [
+            725,
+            738
+          ],
+          "candidate_longest_consecutive": 3,
+          "best_longest_consecutive": 4,
+          "candidate_first_forward_m": 57.16234016418457
+        }
+      },
+      "10": {
+        "contour_disagreement_not_clean_negative": false,
+        "presence_confirmed": {
+          "candidate_frames": 5,
+          "best_frames": 5,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 3,
+          "best_longest_consecutive": 3,
+          "candidate_first_forward_m": 49.827972412109375
+        },
+        "intersection_confirmed": {
+          "candidate_frames": 5,
+          "best_frames": 5,
+          "lost_best_frames": [],
+          "gained_frames": [],
+          "candidate_longest_consecutive": 3,
+          "best_longest_consecutive": 3,
+          "candidate_first_forward_m": 49.827972412109375
+        }
+      }
+    },
+    "retains_every_best_positive_frame": false,
+    "limits": [
+      "Recorded best run reused, not rerun. Timing is not a controlled speed comparison.",
+      "Organizer synthetic attribution is not field recall; events5/7 retain contour disagreement."
+    ]
+  },
+  "audit_summary": {
+    "complete": true,
+    "positive_component_gate_passed": false,
+    "invariant_changes": {},
+    "retains_every_best_positive_frame": false,
+    "range_unresolved_changed_frames": [],
+    "decision": "Reject this rebased PR28 candidate before costly negative replay; retain best core/config.",
+    "limits": [
+      "Original component IDs identify unchanged clustering, not independently labelled physical object identities.",
+      "Track-break counter only covers consecutive baseline-present component correspondences.",
+      "Events5/7 preserve contour disagreement; all regressions are still reported, not silently excluded.",
+      "No new field-safety or negative nuisance reduction claim."
+    ]
+  },
+  "counts": {
+    "lost_component_confirmations": 34,
+    "missing_positive_components": 3,
+    "positive_localization_changes": 0,
+    "induced_baseline_track_continuity_breaks": 62
+  },
+  "critical_losses": [
+    {
+      "event": "3",
+      "frame": 403,
+      "component_id": 184,
+      "surface_explained_voxels": 0,
+      "before_intersection_hits": 3,
+      "after_intersection_hits": 1,
+      "before_local_hits": 0,
+      "after_local_hits": 0
+    },
+    {
+      "event": "3",
+      "frame": 406,
+      "component_id": 165,
+      "surface_explained_voxels": 0,
+      "before_intersection_hits": 3,
+      "after_intersection_hits": 1,
+      "before_local_hits": 0,
+      "after_local_hits": 0
+    },
+    {
+      "event": "3",
+      "frame": 417,
+      "component_id": 67,
+      "surface_explained_voxels": 0,
+      "before_intersection_hits": 2,
+      "after_intersection_hits": 1,
+      "before_local_hits": 1,
+      "after_local_hits": 1
+    },
+    {
+      "event": "3",
+      "frame": 425,
+      "component_id": 5,
+      "surface_explained_voxels": 2,
+      "before_intersection_hits": 3,
+      "after_intersection_hits": 1,
+      "before_local_hits": 1,
+      "after_local_hits": 1
+    },
+    {
+      "event": "9",
+      "frame": 717,
+      "component_id": 184,
+      "surface_explained_voxels": 0,
+      "before_intersection_hits": 0,
+      "after_intersection_hits": 0,
+      "before_local_hits": 3,
+      "after_local_hits": 1
+    }
+  ],
+  "execution": {
+    "frames": 1510,
+    "status_frames": {
+      "no_obstacle_observed": 1116,
+      "obstacle": 299,
+      "unknown": 9,
+      "unresolved_obstacle": 34,
+      "candidate": 52
+    },
+    "wall_s": 486.97764562489465
+  },
+  "skipped": "Person, remaining negatives and edge/long-object replay not run after positive gate failure. No formal primary-metric run.",
+  "production_changed": false,
+  "formal_primary_runs": 2,
+  "interpretation": "Net event9 count12vs11 hides loss717 and longest-series4to3. Some lost components have zero current-frame surface removal; changed association/history is observed, but exact alternative assignment costs were not instrumented."
+}

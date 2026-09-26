@@ -11,9 +11,9 @@ sampled; candidate boxes and detector decisions are unchanged.
 From the repository root, with the existing environment and real data:
 
 ```bash
-.venv-iteration/bin/python -m tunnel_guard.review_viewer \
-  --run build/goal-final-real \
-  --bag data/sourcecraft_subset/for_hackathon/doubleT_platform
+.venv/bin/python -m tunnel_guard.review_viewer \
+  --run build/demo-person-20260926 \
+  --bag data/sourcecraft_subset/for_hackathon/doubleT_obstacle
 ```
 
 Open `http://127.0.0.1:8765`. Use the slider/number field for any recorded frame,
@@ -44,6 +44,38 @@ The `--run` directory must contain `<bag-name>.jsonl`, `detector.json`, and
 Arbitrary seeking works through bag record timestamps; inference uses acquisition
 timestamps. Both identities are checked. Deskew-enabled runs require the recorded
 RViz export instead: the original raw cloud would not match deskewed boxes.
+
+### Frozen demonstration replay — 2026-09-26
+
+Generate the two complete recordings with the accepted detector configuration:
+
+```bash
+.venv/bin/python -m tunnel_guard.run --experiment configs/demo-person-20260926.json
+.venv/bin/python -m tunnel_guard.run --experiment configs/demo-platform-20260926.json
+```
+
+The output directories must not already exist. The measured runs contain all
+201 person-recording acquisitions and all 345 platform acquisitions; no nuisance
+alarm frames were removed. The recipes also write recorded RViz bags. They do
+not establish live throughput or target-machine RViz acceptance.
+
+For the platform viewer, use `--run build/demo-platform-20260926`,
+`--bag data/sourcecraft_subset/for_hackathon/doubleT_platform`, and an unused
+`--port`, for example `8876`.
+
+The teammate-labelled person at frames 165–200 is outside the envelope, as
+clarified by the user on 2026-09-26. Correct behavior is confirmed presence and
+stable association **without** confirmed intrusion. At frame 181, selecting
+track 2535 shows its measured support and these separate states. The table uses
+`presence_confirmation`, not the hazard field `confirmation`, for presence.
+Enable “рядом” to show adjacent boxes in the overview.
+
+Do not attribute every alarm in that recording to this person, or classify
+every other object as a nuisance. A separately mentioned distant person has not
+yet been tied to a verified annotation. `annotations/sourcecraft-provisional.json`
+describes an unclassified structure around 17 m, not a confirmed person or
+intrusion. The organizer's `cloud_with_fake_obj` is a separate positive panel
+with inserted objects, not field evidence from the teammate-labelled person.
 
 ## ROS2 Humble container
 
@@ -83,13 +115,25 @@ Outputs:
 - `/perception/debug_markers`: reference contour, measured support boxes, IDs,
   support points, distances, confirmation, and data quality.
 - `/perception/status`: full result JSON with exact acquisition nanoseconds.
+- `/perception/attention_required` (`std_msgs/msg/Bool`): true for every state
+  except `no_obstacle_observed`, including `unknown`; this is not a braking
+  command or movement authority.
+- `/perception/nearest_obstacle_m` (`std_msgs/msg/Float32`): nearest confirmed
+  reported hazard in the processing frame, or NaN.
+
+Recorded RViz export writes this same five-topic set; it is recorded inference,
+not a second detector implementation.
 
 The adapter uses the same `decode_cloud`, `Detector`, and `ResultMessages` as the
-offline path. Silence beyond `input_timeout_s` publishes `unknown` and clears
-cloud/markers and tracking. Duplicate acquisition times never add temporal
-confirmation; the watermark survives silence. Backward time or a source-frame
+offline path. Lack of fresh acquisitions beyond `input_timeout_s` publishes `unknown`
+and clears cloud/markers and tracking. Duplicate acquisition times never renew the
+watchdog or add temporal confirmation; the watermark survives silence. The watchdog
+uses a steady clock even with paused simulation time. Backward time or a source-frame
 change requires restarting with the appropriate config/epoch. Raw measurement
-time is never subtracted from wall-clock time to invent a latency value.
+time is never subtracted from wall-clock time to invent a latency value. The JSON
+records callback elapsed time, ingress/drop counters and separate
+confirmed/candidate/unresolved ranges. It leaves `result_age_s` null until the
+acquisition and host clocks are proven comparable.
 
 On Ubuntu with an existing graphical session, pass its display and Xauthority
 using your normal container GUI setup, then launch with `rviz:=true`. This image
@@ -125,6 +169,8 @@ rate they can disappear between messages unless RViz uses the bag playback clock
 (`use_sim_time:=true` and `ros2 bag play --clock`). The browser viewer retains the
 selected recorded frame and is the verified interactive review interface here.
 The live watchdog is wall-clock based and is independent of the playback clock.
+All published detector outputs already use `tunnel_guard_local`; the adapter
+publishes no identity TF and makes no mounting/extrinsic calibration claim.
 
 The offline CLI also works in an installed image without a Git checkout. Its
 manifest then records `git_revision: null` and `git_status: null`; source/config

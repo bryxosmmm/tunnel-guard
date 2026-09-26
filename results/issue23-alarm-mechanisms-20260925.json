@@ -1,0 +1,237 @@
+{
+  "source_run": "build/autoresearch-issue23/run-0002",
+  "config_sha256": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa",
+  "method": "Read-only accounting of complete saved actual replay; no new detector run or counterfactual suppression.",
+  "valid": true,
+  "counts": {
+    "frames": 13558,
+    "alarm_frames": 134,
+    "alarm_episodes": 113,
+    "alarm_components": 324,
+    "all_components_shared_structure_frames": 88,
+    "all_components_after_last_anchor_frames": 85,
+    "motion_invalid_alarm_frames": 0,
+    "components_without_unexplained_certified_support": 241,
+    "components_wholly_after_last_anchor": 249
+  },
+  "component_confirmation_mechanisms": {
+    "temporal_interior_evidence": 157,
+    "immediate_interior_geometry": 167
+  },
+  "component_relation_reasons": {
+    "certified_interior_shared_with_structure": 241,
+    "inside_heuristic_path_and_ground_interval": 83
+  },
+  "recordings": {
+    "doubleT_platform": {
+      "counts": {
+        "frames": 345,
+        "alarm_frames": 22,
+        "alarm_episodes": 11,
+        "alarm_components": 63,
+        "all_components_shared_structure_frames": 22,
+        "all_components_after_last_anchor_frames": 22,
+        "motion_invalid_alarm_frames": 0,
+        "components_without_unexplained_certified_support": 63,
+        "components_wholly_after_last_anchor": 63
+      },
+      "input_sha256": "aab92b89179e1905731eed3a27e8103e636fb519066864dc84731dc7fd901af8",
+      "input": "build/autoresearch-issue23/run-0002/doubleT_platform.jsonl.gz"
+    },
+    "roundT_doubleT": {
+      "counts": {
+        "frames": 252,
+        "alarm_frames": 4,
+        "alarm_episodes": 4,
+        "alarm_components": 5,
+        "all_components_shared_structure_frames": 2,
+        "all_components_after_last_anchor_frames": 4,
+        "motion_invalid_alarm_frames": 0,
+        "components_without_unexplained_certified_support": 3,
+        "components_wholly_after_last_anchor": 5
+      },
+      "input_sha256": "57257cdbc181536b42f22902338d1feb191b47eff2be17d6a945a40d9817a5c6",
+      "input": "build/autoresearch-issue23/run-0002/roundT_doubleT.jsonl.gz"
+    },
+    "roundT_pressureGate_roundT": {
+      "counts": {
+        "frames": 268,
+        "alarm_frames": 1,
+        "alarm_episodes": 1,
+        "alarm_components": 1,
+        "all_components_shared_structure_frames": 1,
+        "all_components_after_last_anchor_frames": 0,
+        "motion_invalid_alarm_frames": 0,
+        "components_without_unexplained_certified_support": 1,
+        "components_wholly_after_last_anchor": 0
+      },
+      "input_sha256": "563f73d18ed1200f3c5e2497d3c9f471cee4cf813afb4f5dd0a57f23100b79bb",
+      "input": "build/autoresearch-issue23/run-0002/roundT_pressureGate_roundT.jsonl.gz"
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "counts": {
+        "frames": 545,
+        "alarm_frames": 9,
+        "alarm_episodes": 9,
+        "alarm_components": 24,
+        "all_components_shared_structure_frames": 2,
+        "all_components_after_last_anchor_frames": 2,
+        "motion_invalid_alarm_frames": 0,
+        "components_without_unexplained_certified_support": 7,
+        "components_wholly_after_last_anchor": 14
+      },
+      "input_sha256": "d774ec31fa42773cb279a90fb1e0ecab6572fa2c73dce0e5c68cf3ee0736a4cd",
+      "input": "build/autoresearch-issue23/run-0002/roundT_squareT_pressureGate_squareT.jsonl.gz"
+    },
+    "squareT_platform_squareT_switch": {
+      "counts": {
+        "frames": 877
+      },
+      "input_sha256": "834803c7b6ed225836cfde5694e8d5c079b947103e5410d2c940e9d1687b3885",
+      "input": "build/autoresearch-issue23/run-0002/squareT_platform_squareT_switch.jsonl.gz"
+    },
+    "new_data": {
+      "counts": {
+        "frames": 11271,
+        "alarm_frames": 98,
+        "alarm_episodes": 88,
+        "alarm_components": 231,
+        "all_components_shared_structure_frames": 61,
+        "all_components_after_last_anchor_frames": 57,
+        "motion_invalid_alarm_frames": 0,
+        "components_without_unexplained_certified_support": 167,
+        "components_wholly_after_last_anchor": 167
+      },
+      "input_sha256": "1672a15e47d1969cc3dfa67dba14e47a0c7aaed237adec0e5156a3d73c501f22",
+      "input": "build/autoresearch-issue23/run-0002/new_data.jsonl.gz"
+    }
+  },
+  "limitations": [
+    "Components and frames are not independent physical events.",
+    "Extrapolation is not proof of wrong geometry.",
+    "Shared structural support is ambiguity, not proof of infrastructure; suppressing it may erase real obstacles.",
+    "No threshold, production source or configuration changed."
+  ],
+  "positive_risk": {
+    "method": "Read-only description of frozen majority-original-return synthetic attribution and authored person correspondence; no detector modification or suppression applied.",
+    "synthetic": {
+      "1": {
+        "counts": {
+          "intersection_confirmed_frames": 75,
+          "intersection_confirmed_components": 75,
+          "shared_structure_components": 0
+        },
+        "all_confirmed_components_shared_structure_frames": []
+      },
+      "2": {
+        "counts": {
+          "intersection_confirmed_frames": 32,
+          "intersection_confirmed_components": 35,
+          "shared_structure_components": 3
+        },
+        "all_confirmed_components_shared_structure_frames": [
+          339,
+          340,
+          347
+        ]
+      },
+      "3": {
+        "counts": {
+          "intersection_confirmed_frames": 21,
+          "intersection_confirmed_components": 21,
+          "shared_structure_components": 3
+        },
+        "all_confirmed_components_shared_structure_frames": [
+          403,
+          406,
+          413
+        ]
+      },
+      "4": {
+        "counts": {
+          "intersection_confirmed_frames": 29,
+          "intersection_confirmed_components": 33,
+          "shared_structure_components": 8
+        },
+        "all_confirmed_components_shared_structure_frames": [
+          450,
+          451,
+          471,
+          473,
+          474,
+          476
+        ]
+      },
+      "5": {
+        "counts": {
+          "intersection_confirmed_frames": 31,
+          "intersection_confirmed_components": 35,
+          "shared_structure_components": 4
+        },
+        "all_confirmed_components_shared_structure_frames": [
+          525,
+          530,
+          531,
+          532
+        ]
+      },
+      "6": {
+        "counts": {
+          "intersection_confirmed_frames": 18,
+          "intersection_confirmed_components": 20,
+          "shared_structure_components": 0
+        },
+        "all_confirmed_components_shared_structure_frames": []
+      },
+      "7": {
+        "counts": {
+          "intersection_confirmed_frames": 22,
+          "intersection_confirmed_components": 65,
+          "shared_structure_components": 3
+        },
+        "all_confirmed_components_shared_structure_frames": []
+      },
+      "8": {
+        "counts": {
+          "intersection_confirmed_frames": 33,
+          "intersection_confirmed_components": 132,
+          "shared_structure_components": 40
+        },
+        "all_confirmed_components_shared_structure_frames": [
+          677,
+          679
+        ]
+      },
+      "9": {
+        "counts": {
+          "intersection_confirmed_frames": 11,
+          "intersection_confirmed_components": 11,
+          "shared_structure_components": 0
+        },
+        "all_confirmed_components_shared_structure_frames": []
+      },
+      "10": {
+        "counts": {
+          "intersection_confirmed_frames": 5,
+          "intersection_confirmed_components": 5,
+          "shared_structure_components": 0
+        },
+        "all_confirmed_components_shared_structure_frames": []
+      }
+    },
+    "inputs": {
+      "synthetic.json": "134220f821a345ff90d4be83c2efa32de6a037fc3348a488a6431439e340957d",
+      "person.json": "530a1c338b25d53ea98f7d1a0e27d60a9536a069ceb5e6cebe166e7689a85d52"
+    },
+    "person": {
+      "labelled_frames": 36,
+      "presence_confirmed_frames": 36,
+      "intersection_confirmed_frames": 0
+    },
+    "limitation": "A zero count would not establish safety on real long or edge obstacles. Shared tunnel cross-section cells do not establish that the measured object is infrastructure."
+  },
+  "decision": "Do not suppress shared-structure confirmations: 18 existing positive intersection frames across five synthetic events depend entirely on them. All 134 baseline negative alarm frames have accepted motion. Investigate geometric separation/observability rather than rejected-motion recurrence or indiscriminate structure suppression.",
+  "positive_frames_exposed": 18,
+  "formal_primary_runs": 2,
+  "production_changed": false
+}

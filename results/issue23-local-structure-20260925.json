@@ -1,0 +1,238 @@
+{
+  "valid": true,
+  "recordings": {
+    "doubleT_platform": {
+      "counts": {
+        "frames": 345,
+        "target_frames": 22,
+        "target_components": 63
+      },
+      "scientific_identity": true,
+      "wall_s": 90.77612162497826,
+      "reference_sha256": "aab92b89179e1905731eed3a27e8103e636fb519066864dc84731dc7fd901af8"
+    },
+    "cloud_with_fake_obj": {
+      "counts": {
+        "frames": 1510,
+        "target_frames": 277,
+        "target_components": 432
+      },
+      "scientific_identity": true,
+      "wall_s": 484.09547358285636,
+      "reference_sha256": "195fde101c16c4fef5cbbfb85ed889b5d39603382c2f91cc0300918ef0e8854f"
+    }
+  },
+  "counts": {
+    "negative_alarm": {
+      "confirmed_components": 63,
+      "shared_structure_components": 63,
+      "all_certified_queries_locally_outward_components": 19,
+      "shared_and_locally_outward_components": 19,
+      "certified_queries": 164,
+      "same_station_outward_queries": 40,
+      "confirmed_frames": 22
+    },
+    "synthetic_event_1": {
+      "confirmed_components": 75,
+      "shared_structure_components": 0,
+      "all_certified_queries_locally_outward_components": 0,
+      "shared_and_locally_outward_components": 0,
+      "certified_queries": 45449,
+      "same_station_outward_queries": 8631,
+      "confirmed_frames": 75
+    },
+    "synthetic_event_2": {
+      "confirmed_components": 35,
+      "shared_structure_components": 3,
+      "all_certified_queries_locally_outward_components": 0,
+      "shared_and_locally_outward_components": 0,
+      "certified_queries": 951,
+      "same_station_outward_queries": 0,
+      "confirmed_frames": 32
+    },
+    "synthetic_event_3": {
+      "confirmed_components": 21,
+      "shared_structure_components": 3,
+      "all_certified_queries_locally_outward_components": 8,
+      "shared_and_locally_outward_components": 1,
+      "certified_queries": 371,
+      "same_station_outward_queries": 281,
+      "confirmed_frames": 21,
+      "all_confirmed_components_exposed_frames": 1
+    },
+    "synthetic_event_4": {
+      "confirmed_components": 33,
+      "shared_structure_components": 8,
+      "all_certified_queries_locally_outward_components": 18,
+      "shared_and_locally_outward_components": 2,
+      "certified_queries": 741,
+      "same_station_outward_queries": 215,
+      "confirmed_frames": 29,
+      "all_confirmed_components_exposed_frames": 2
+    },
+    "synthetic_event_5": {
+      "confirmed_components": 35,
+      "shared_structure_components": 4,
+      "all_certified_queries_locally_outward_components": 11,
+      "shared_and_locally_outward_components": 4,
+      "certified_queries": 917,
+      "same_station_outward_queries": 684,
+      "confirmed_frames": 31,
+      "all_confirmed_components_exposed_frames": 4
+    },
+    "synthetic_event_6": {
+      "confirmed_components": 20,
+      "shared_structure_components": 0,
+      "all_certified_queries_locally_outward_components": 17,
+      "shared_and_locally_outward_components": 0,
+      "certified_queries": 2601,
+      "same_station_outward_queries": 2248,
+      "confirmed_frames": 18
+    },
+    "synthetic_event_7": {
+      "confirmed_components": 65,
+      "shared_structure_components": 3,
+      "all_certified_queries_locally_outward_components": 23,
+      "shared_and_locally_outward_components": 2,
+      "certified_queries": 2376,
+      "same_station_outward_queries": 1264,
+      "confirmed_frames": 22
+    },
+    "synthetic_event_8": {
+      "confirmed_components": 132,
+      "shared_structure_components": 40,
+      "all_certified_queries_locally_outward_components": 0,
+      "shared_and_locally_outward_components": 0,
+      "certified_queries": 4226,
+      "same_station_outward_queries": 1177,
+      "confirmed_frames": 33
+    },
+    "synthetic_event_9": {
+      "confirmed_components": 11,
+      "shared_structure_components": 0,
+      "all_certified_queries_locally_outward_components": 0,
+      "shared_and_locally_outward_components": 0,
+      "certified_queries": 602,
+      "same_station_outward_queries": 341,
+      "confirmed_frames": 11
+    },
+    "synthetic_event_10": {
+      "confirmed_components": 5,
+      "shared_structure_components": 0,
+      "all_certified_queries_locally_outward_components": 0,
+      "shared_and_locally_outward_components": 0,
+      "certified_queries": 41,
+      "same_station_outward_queries": 0,
+      "confirmed_frames": 5
+    }
+  },
+  "exposed_frames": [
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 406,
+      "role": "synthetic_event_3",
+      "component_ids": [
+        165
+      ]
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 450,
+      "role": "synthetic_event_4",
+      "component_ids": [
+        246
+      ]
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 451,
+      "role": "synthetic_event_4",
+      "component_ids": [
+        244
+      ]
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 525,
+      "role": "synthetic_event_5",
+      "component_ids": [
+        61
+      ]
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 530,
+      "role": "synthetic_event_5",
+      "component_ids": [
+        18
+      ]
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 531,
+      "role": "synthetic_event_5",
+      "component_ids": [
+        10
+      ]
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 532,
+      "role": "synthetic_event_5",
+      "component_ids": [
+        11
+      ]
+    }
+  ],
+  "positive_event_frames_exposed": 7,
+  "decision": "Reject shared-and-local-outward suppression: it would erase retained positive event-frame intersections.",
+  "limitations": [
+    "No detector decisions changed. Counterfactual component removal is exposure accounting, not an actual candidate replay.",
+    "Station membership is one-meter quantization, not a proof of connected physical surface.",
+    "Native outward algorithm uses morphological gap allowance; outward occupancy does not establish object identity.",
+    "No absent local support is reclassified as clear or as proven isolation.",
+    "Observed synthetic event-frames are correlated and not field safety evidence."
+  ],
+  "decision_record": {
+    "decision": "Reject shared-structure plus same-station outward suppression before remaining negative replay.",
+    "positive_event_frames_exposed": 7,
+    "negative_pilot_frames_erased": 0,
+    "executed_frames": 1855,
+    "production_changes": false,
+    "remaining_negative_replay": "Not executed: preregistered positive gate failed.",
+    "formal_primary_runs": 2,
+    "failed_observation_attempts": [
+      "pilot (diagnostic layout mismatch at262)",
+      "positive (diagnostic layout mismatch at232)"
+    ],
+    "corrected_identity_contract": "Every scientific field exact; only the original three elapsed times excluded. Canonical per-frame diagnostic mode restored, not comparison loosened."
+  },
+  "config_sha256": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa",
+  "source_sha256": {
+    "tunnel_guard/detector.py": "a7732117c3c95c4598784612d0104a819e6f545eb867a11f9b6c6b369490f1a4",
+    "tunnel_guard/geometry.py": "da86a42ce860a58929d6efd36493fb019ed111e68764ee4f8b52e5c4155db9c6",
+    "tunnel_guard/accelerator.py": "439731143ed9bea6fca157a6ebb6c519ed2d7ab341303cca898f96784ccd7cd3",
+    "tunnel_guard/io.py": "4d3a86db018ba30bd64f1e25e3b41ee04add5a0efe3576476c8738400456fcd5",
+    "cpp/kernels.cpp": "ab1f038ed0eb3b004bfbc35a594cb69d939ccadddb8b2c3dd25a15a7496637f1",
+    "configs/detector.json": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa"
+  },
+  "native_sha256": "daeeb70c5e93225be0695fa5a1c2edddd00b3ea61dc6729bc76269fc1c2e8cf7",
+  "pilot_explanation": {
+    "frame": 262,
+    "changed_fields": [
+      "pipeline"
+    ],
+    "correction": "Keep original per-recording diagnostic mode; observe the existing voxel-unique index selection when it is not materialized. Scientific identity contract remains unchanged; failed run/source retained."
+  },
+  "positive_failure_explanation": {
+    "frame": 232,
+    "changed_fields": [
+      "pipeline"
+    ],
+    "actual_segmentation_has_component_diagnostics": true,
+    "expected_segmentation_has_component_diagnostics": false,
+    "all_other_scientific_fields_equal": true,
+    "correction": "Enable diagnostics on exact frozen original-return event frame inventory, not entire synthetic recording. Strict full-field comparison unchanged; failed source and output retained.",
+    "diagnostic_frames": 758
+  }
+}

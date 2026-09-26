@@ -18,7 +18,9 @@
 /.direnv/
 /.uv-cache/
 /.venv/
-/scripts/
+/scripts/*
+!/scripts/benchmark_issue23.py
+!/scripts/audit_issue23_certification.py
 /experiments/
 .env
 .env.*

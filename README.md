@@ -5,6 +5,65 @@ Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 
 **Research baseline, not a validated collision-warning system.** Recall, infrastructure alarms, generalization, and runtime remain unresolved. `CASE.md` contains the original requirements. Recorded RViz2 export and a live ROS2 Humble adapter are implemented. The AMD64 Humble container processed a ten-scan real replay under Apple Silicon emulation; native target throughput and the RViz GUI remain unverified.
 
 The initial review and its two real 30-frame prefixes are documented in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). Subsequent iterations and historical results below are separate evidence.
+## Fixed issue #23 benchmark
+
+`bash autoresearch.sh` builds the required local C++ extension and executes the
+fixed recipe in `configs/autoresearch-issue23.json`: 30 diagnostic source scans,
+all six original real recordings, the uninterrupted 11,271-scan negative
+recording, and all 1,510 organizer-synthetic scans. No network or automated tests.
+Runs are sequential, use seed 20260915, and retain full compressed predictions,
+source/config/native identities, per-recording metrics and positive attribution
+under a new `build/autoresearch-issue23/run-NNNN` directory.
+
+The primary metric is `negative_alarm_episodes` (lower is better), with an episode
+ending at an observed non-alarm acquisition or a gap over 0.5 s. Per-recording and
+fixed-partition alarm/unknown/unresolved gates, per-frame positive retention, and
+person localization/continuity prevent trading a critical regression for a better
+total. Missing synthetic confirmation uses `-1` for first frame/range metrics.
+The frozen evaluation partition was previously inspected; it is not blind.
+
+The unchanged `a4789d9` baseline completed 15,269 recording frames plus the 30
+diagnostic scans: 113 negative-panel episodes; the long recording retained 98
+alarm frames, 88 episodes, 23 unknown and 324 unresolved frames. Person presence
+remained 36/36 with no track switches. That baseline had zero intersection
+confirmations for synthetic events 9 and 10.
+
+The selected default now enables the existing `local_confirmation` profile
+(0.1 m shape radius, 0.8 symmetric overlap). A new complete fixed-panel replay
+retained every earlier positive and all negative-panel gates. Exact-provenance
+intersection confirmations rose to 11 frames for event 9 and 5 for event 10,
+with longest runs of 4 and 3 acquisitions; first confirmations were at 57.16 m
+and 49.83 m. Detection is intermittent and synthetic, not a field-range claim.
+Person presence/localization/continuity remained intact. A paired comparison
+of all 15,269 rows preserved geometry, poses, component geometry/IDs, supported
+range and per-bin supported returns exactly. Negative episodes remain **113**:
+this restores small-object evidence, not nuisance reduction or release safety.
+Current replay: `build/autoresearch-issue23/run-0002`; attribution/coverage
+comparison: `build/issue23-local-promotion/`.
+
+Separate evaluation of an already completed replay avoids repeating expensive
+inference merely to inspect its evidence:
+
+```bash
+PYTHONPATH=. .venv/bin/python scripts/benchmark_issue23.py \
+  configs/autoresearch-issue23.json --score build/autoresearch-issue23/run-0002
+PYTHONPATH=. .venv/bin/python scripts/audit_issue23_certification.py \
+  configs/autoresearch-issue23.json build/issue23-certification-new
+```
+
+The pointwise audit reproduces all 70 frozen components' certified support through
+the native classifier. It records original return indices and contour margins;
+near-zero fit covariance in a three-anchor quadratic and zero covariance in the
+two-anchor fallback are observability risks, not proof that every extrapolated
+detection is false. See `results/issue23-certification-mechanism-20260925.json`
+and its companion ZIP. That audit did not change the geometry classifier.
+
+This instrumented offline run took about 3 h 21 min; long-recording inference
+p50/p95 was 629/1302 ms. These are not controlled target-hardware timings or
+sensor-to-display latency. PRs #28 (surface support), #34 (contour-labelled hybrid
+cases), and #33 (ROS contract) remain separate candidates requiring integration
+and acceptance; their historical claims are not silently included in this score.
+
 
 ## Extended dataset: initial real runs
 
@@ -18,7 +77,7 @@ The [3D track and clearance literature review](docs/TRACK_GEOMETRY_LITERATURE_20
 
 The experimental `local_3d` rail frame was removed because classification had a Python-only fallback. The shipped `bed` frame remains the only detector mode; the historical experiments are retained in `docs/TRACK_LOCAL3D_ITERATION.md`.
 
-See [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and ROS2 launch commands, and [iteration evidence](docs/GOAL_ITERATION.md) for all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
+See [ROS 2 release contract](docs/ROS2.md), the [target deployment acceptance record](docs/TARGET_ACCEPTANCE.md), and [run and review](docs/RUN_AND_REVIEW.md) for the local browser viewer and launch commands. [Iteration evidence](docs/GOAL_ITERATION.md) covers all six supplied recordings (2,488 scans), background repeatability, and remaining limitations. The browser shows original clouds, the reference corridor, candidates, confirmed intersections, distances and data quality. [Q&A implications](docs/QA_IMPLICATIONS.md) separates organizer statements from unresolved calibration assumptions.
 
 ## Native acceleration and calibration experiment
 
@@ -183,20 +242,23 @@ Without ROS at all, the same detector runs offline and writes per-frame JSON wit
 uv run python -m tunnel_guard.run --experiment configs/<recipe>.json
 ```
 
-**What is verified and what is not:** the container path has been exercised only for a ten-scan replay under emulation,
-and the changes of 2026-09-19 in it - the published fixed frame, the input-topic error message, the declared tf2
-dependency and the build-time node import - are standard usage that this development machine cannot execute, because it
-has no ROS 2 and no Docker daemon. They must be confirmed inside the container before the demonstration.
+**Verification boundary:** the recorded five-topic contract was exercised on 30 real scans
+on 2026-09-25, preserving detector objects, geometry, poses, acquisition timestamps and
+range coverage against the verified baseline. Actual ROS2 Humble DDS replay under
+linux/amd64 emulation also verified duplicate-stream timeout, paused-clock timeout,
+fail-visible unknown outputs and monotonic recovery. Input delivery was not exhaustive;
+target-host timing and RViz acceptance remain separate. See the
+[ROS evidence](docs/ROS2.md#measured-delivery-evidence--2026-09-25) and
+[deployment record](docs/TARGET_ACCEPTANCE.md).
 
 ## Demonstration path, checked statically (2026-09-19)
 
-`rviz/tunnel_guard.rviz` and the node were consistent on topics - the config listens to `/perception/points_display` and
-`/perception/debug_markers`, which the node publishes - but the config's fixed frame, `tunnel_guard_local`, was published
-by nothing, so RViz would come up with a missing fixed frame and render nothing. The node now publishes an identity
-static transform from `tunnel_guard_local` to the frame the incoming clouds declare, once per source frame: the frame is
-the sensor frame its outputs are already expressed in, not an invented one, and mounting and extrinsics stay unverified.
-This change is standard tf2 usage but is **not exercised here** - no ROS 2 and no Docker daemon on the development
-machine - so it must be confirmed inside the container before the demonstration.
+`rviz/tunnel_guard.rviz` and the node use the same `/perception/...` topics.
+Every detector output is already expressed in `tunnel_guard_local`, so RViz uses
+that same fixed frame directly. The adapter publishes no identity TF: the name
+identifies processing-frame coordinates only and does not assert sensor mounting
+or vehicle extrinsics. Container/RViz execution still requires target-runtime
+verification.
 
 ## Where the frame time goes (2026-09-19)
 
@@ -650,6 +712,10 @@ Pipeline: validated points → KISS-ICP pose (optional deskew) → local bed and
 The required `tunnel_guard._native` extension handles radial selection, voxel representatives, mutual-radius connectivity, ground profile and reference, envelope classification, background masks, component assembly, normal statistics and evidence counts. Python retains the single-implementation work for rail-anchor search, robust plane fitting, tunnel-surface proposals, path continuation, range support, object association and mounting observation. Build with `python setup.py build_ext --inplace`. Earlier equivalence panels and Python/native timing results were produced before this revision and do not establish output identity for the consolidated source. Open3D plane proposals remain serial for repeatability. See [integration evidence and limitations](docs/NATIVE_INTEGRATION.md).
 
 Segmentation preserves object portions outside the clearance gate. Dense instances cannot merge through a thin chain of border points. Temporal matching uses velocity, heuristic covariance, shape, and distinct-frame evidence. Missing path support must not turn rail removal into an infinite-width exclusion zone.
+
+Density components can also split at the measured running-surface contact interval when an independently dense upright body satisfies the existing geometric-presence requirements. Each separated part needs its own density and object-admission support; unsupported fragments are reattached, overlapping bed-plane footprints reunited, and no observed support is discarded. Contact is not proof of physical ground or a clear route. The largest part retains the original group's association reference; additional parts use a separate assignment pool, without inheriting confirmation. `tracking_reference` and, when applicable, `tracking_reference_bounds` identify this distinction: reported velocity/covariance for the largest split part describe the original group's motion reference, not calibrated person-centre motion. Secondary-fragment identity across later group merges/splits remains unqualified.
+
+The [2026-09-26 person-localization repair](results/person-instance-separation-20260926.json) passed 15,269 sequential frames plus 30 support probes, followed by 54 ordinary production-CLI frames matching the qualified candidate. Far-person boxes improved from 88/105 to 99/105 at unchanged IoU ≥ 0.25; presence stayed 105/105 with no identity switches, and all previously confirmed small-obstacle frames were retained. Six localization misses remain. Negative episodes stayed 113: this is not nuisance-alarm reduction or field-safety evidence. Measured geometry and emitted support were preserved; partition-dependent unresolved-object counts changed in one frame and nearest unresolved-object ranges in two. Recipes, source identities, rejected variants and these exceptions are retained with the evidence.
 
 Tunnel-background rejection uses Open3D plane fitting and local normals. Only observed longitudinal surface strips are removed; cross-track panels, supported clearance intersections, protruding faces and their attachment edges are protected. No generic sparse-outlier deletion is applied. It is a local planar approximation, not a complete curved-tunnel model.
 
