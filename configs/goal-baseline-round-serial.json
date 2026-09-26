@@ -1,0 +1,24 @@
+{
+  "seed": 20260915,
+  "detector_config": "detector.json",
+  "output": "../goal-baseline-round-serial",
+  "every": 1,
+  "max_frames": null,
+  "visualization": false,
+  "diagnostic_frames": [
+    0,
+    100,
+    200
+  ],
+  "bags": [
+    {
+      "path": "../../data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Original neighborhood algorithm with serial OpenMP execution to separate RANSAC scheduling from graph optimization.",
+  "criterion": "Process every scan, retain status, motion, geometry and measured support; report failures without accuracy claims.",
+  "environment": {
+    "OMP_NUM_THREADS": "1"
+  }
+}

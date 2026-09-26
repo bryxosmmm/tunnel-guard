@@ -1,0 +1,509 @@
+{
+  "hypothesis": "Mutually unique native point-shape recurrence independent of rejected-pose global assignment may create additional non-target confirmations on the fixed real negative panel.",
+  "criterion": "Complete all 13558 acquisitions with exact scientific identity versus run0002. Any additional component confirmation rejects direct adoption; alarm frames and episodes reported separately, with no credit for bridging existing episodes.",
+  "shadow_contract": "Additive two-frame local confirmation only when motion is invalid and correspondence is unique in both directions across all consecutive eligible shapes. Baseline confirmations retained. Shapes/IDs/decisions are observed, never mutated. With confirmation_hits=2, prior eligible shape is sufficient; no hypothetical recurrent track state is propagated.",
+  "valid": true,
+  "violations": [],
+  "frames": 13558,
+  "additional_component_confirmations": 0,
+  "new_alarm_frames": 0,
+  "baseline_alarm_episodes": 113,
+  "shadow_alarm_episodes": 113,
+  "baseline_alarm_frames": 134,
+  "shadow_alarm_frames": 134,
+  "recordings": {
+    "doubleT_platform": {
+      "counts": {
+        "frames": 345,
+        "no_assignment_invocation": 1,
+        "frames_current_eligible": 0,
+        "frames_previous_eligible": 0,
+        "frames_with_pairs": 0,
+        "frames_with_matching_pairs": 0,
+        "unique_pair_frames": 0,
+        "new_alarm_frames": 0,
+        "additional_components": 0,
+        "scientific_equal_frames": 345
+      },
+      "baseline": {
+        "frames": 345,
+        "alarm_frames": 22,
+        "alarm_episodes": 11,
+        "status_frames": {
+          "candidate": 2,
+          "no_obstacle_observed": 302,
+          "unresolved_obstacle": 19,
+          "obstacle": 22
+        },
+        "observed_duration_s": 34.399956941,
+        "excluded_gap_duration_s": 0.0,
+        "status_duration_s": {
+          "candidate": 0.199989914,
+          "no_obstacle_observed": 30.100037216,
+          "unresolved_obstacle": 1.900012969,
+          "obstacle": 2.199916842
+        }
+      },
+      "shadow": {
+        "frames": 345,
+        "alarm_frames": 22,
+        "alarm_episodes": 11,
+        "status_frames": {
+          "candidate": 2,
+          "no_obstacle_observed": 302,
+          "unresolved_obstacle": 19,
+          "obstacle": 22
+        },
+        "observed_duration_s": 34.399956941,
+        "excluded_gap_duration_s": 0.0,
+        "status_duration_s": {
+          "candidate": 0.199989914,
+          "no_obstacle_observed": 30.100037216,
+          "unresolved_obstacle": 1.900012969,
+          "obstacle": 2.199916842
+        }
+      },
+      "additional_frames": [],
+      "exposure_examples": [],
+      "wall_s": 93.02691270806827
+    },
+    "roundT_doubleT": {
+      "counts": {
+        "frames": 252,
+        "no_assignment_invocation": 1,
+        "frames_current_eligible": 4,
+        "frames_previous_eligible": 4,
+        "frames_with_pairs": 0,
+        "frames_with_matching_pairs": 0,
+        "unique_pair_frames": 0,
+        "new_alarm_frames": 0,
+        "additional_components": 0,
+        "scientific_equal_frames": 252
+      },
+      "baseline": {
+        "frames": 252,
+        "alarm_frames": 4,
+        "alarm_episodes": 4,
+        "status_frames": {
+          "no_obstacle_observed": 234,
+          "unresolved_obstacle": 14,
+          "obstacle": 4
+        },
+        "observed_duration_s": 25.099918008,
+        "excluded_gap_duration_s": 0.0,
+        "status_duration_s": {
+          "no_obstacle_observed": 23.299888016,
+          "unresolved_obstacle": 1.400030015,
+          "obstacle": 0.399999977
+        }
+      },
+      "shadow": {
+        "frames": 252,
+        "alarm_frames": 4,
+        "alarm_episodes": 4,
+        "status_frames": {
+          "no_obstacle_observed": 234,
+          "unresolved_obstacle": 14,
+          "obstacle": 4
+        },
+        "observed_duration_s": 25.099918008,
+        "excluded_gap_duration_s": 0.0,
+        "status_duration_s": {
+          "no_obstacle_observed": 23.299888016,
+          "unresolved_obstacle": 1.400030015,
+          "obstacle": 0.399999977
+        }
+      },
+      "additional_frames": [],
+      "exposure_examples": [],
+      "wall_s": 63.979780916823074
+    },
+    "roundT_pressureGate_roundT": {
+      "counts": {
+        "frames": 268,
+        "no_assignment_invocation": 1,
+        "frames_current_eligible": 0,
+        "frames_previous_eligible": 0,
+        "frames_with_pairs": 0,
+        "frames_with_matching_pairs": 0,
+        "unique_pair_frames": 0,
+        "new_alarm_frames": 0,
+        "additional_components": 0,
+        "scientific_equal_frames": 268
+      },
+      "baseline": {
+        "frames": 268,
+        "alarm_frames": 1,
+        "alarm_episodes": 1,
+        "status_frames": {
+          "no_obstacle_observed": 253,
+          "unknown": 2,
+          "unresolved_obstacle": 9,
+          "obstacle": 1,
+          "candidate": 3
+        },
+        "observed_duration_s": 26.699988007,
+        "excluded_gap_duration_s": 0.0,
+        "status_duration_s": {
+          "no_obstacle_observed": 25.200024846,
+          "unknown": 0.19999194,
+          "unresolved_obstacle": 0.899967072,
+          "obstacle": 0.100001097,
+          "candidate": 0.300003052
+        }
+      },
+      "shadow": {
+        "frames": 268,
+        "alarm_frames": 1,
+        "alarm_episodes": 1,
+        "status_frames": {
+          "no_obstacle_observed": 253,
+          "unknown": 2,
+          "unresolved_obstacle": 9,
+          "obstacle": 1,
+          "candidate": 3
+        },
+        "observed_duration_s": 26.699988007,
+        "excluded_gap_duration_s": 0.0,
+        "status_duration_s": {
+          "no_obstacle_observed": 25.200024846,
+          "unknown": 0.19999194,
+          "unresolved_obstacle": 0.899967072,
+          "obstacle": 0.100001097,
+          "candidate": 0.300003052
+        }
+      },
+      "additional_frames": [],
+      "exposure_examples": [],
+      "wall_s": 149.42845145892352
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "counts": {
+        "frames": 545,
+        "no_assignment_invocation": 2,
+        "frames_current_eligible": 8,
+        "frames_previous_eligible": 8,
+        "frames_with_pairs": 0,
+        "frames_with_matching_pairs": 0,
+        "unique_pair_frames": 0,
+        "new_alarm_frames": 0,
+        "additional_components": 0,
+        "scientific_equal_frames": 545
+      },
+      "baseline": {
+        "frames": 545,
+        "alarm_frames": 9,
+        "alarm_episodes": 9,
+        "status_frames": {
+          "no_obstacle_observed": 530,
+          "candidate": 3,
+          "unresolved_obstacle": 3,
+          "obstacle": 9
+        },
+        "observed_duration_s": 54.299948931,
+        "excluded_gap_duration_s": 1.099941015,
+        "status_duration_s": {
+          "no_obstacle_observed": 52.799967885,
+          "candidate": 0.300007939,
+          "unresolved_obstacle": 0.299983979,
+          "obstacle": 0.899989128
+        }
+      },
+      "shadow": {
+        "frames": 545,
+        "alarm_frames": 9,
+        "alarm_episodes": 9,
+        "status_frames": {
+          "no_obstacle_observed": 530,
+          "candidate": 3,
+          "unresolved_obstacle": 3,
+          "obstacle": 9
+        },
+        "observed_duration_s": 54.299948931,
+        "excluded_gap_duration_s": 1.099941015,
+        "status_duration_s": {
+          "no_obstacle_observed": 52.799967885,
+          "candidate": 0.300007939,
+          "unresolved_obstacle": 0.299983979,
+          "obstacle": 0.899989128
+        }
+      },
+      "additional_frames": [],
+      "exposure_examples": [],
+      "wall_s": 517.1046562918928
+    },
+    "squareT_platform_squareT_switch": {
+      "counts": {
+        "frames": 877,
+        "no_assignment_invocation": 2,
+        "frames_current_eligible": 0,
+        "frames_previous_eligible": 0,
+        "frames_with_pairs": 0,
+        "frames_with_matching_pairs": 0,
+        "unique_pair_frames": 0,
+        "new_alarm_frames": 0,
+        "additional_components": 0,
+        "scientific_equal_frames": 877
+      },
+      "baseline": {
+        "frames": 877,
+        "alarm_frames": 0,
+        "alarm_episodes": 0,
+        "status_frames": {
+          "no_obstacle_observed": 872,
+          "candidate": 2,
+          "unresolved_obstacle": 3
+        },
+        "observed_duration_s": 87.500020027,
+        "excluded_gap_duration_s": 0.700093031,
+        "status_duration_s": {
+          "no_obstacle_observed": 87.000009179,
+          "candidate": 0.200008988,
+          "unresolved_obstacle": 0.30000186
+        }
+      },
+      "shadow": {
+        "frames": 877,
+        "alarm_frames": 0,
+        "alarm_episodes": 0,
+        "status_frames": {
+          "no_obstacle_observed": 872,
+          "candidate": 2,
+          "unresolved_obstacle": 3
+        },
+        "observed_duration_s": 87.500020027,
+        "excluded_gap_duration_s": 0.700093031,
+        "status_duration_s": {
+          "no_obstacle_observed": 87.000009179,
+          "candidate": 0.200008988,
+          "unresolved_obstacle": 0.30000186
+        }
+      },
+      "additional_frames": [],
+      "exposure_examples": [],
+      "wall_s": 304.62708095810376
+    },
+    "new_data": {
+      "counts": {
+        "frames": 11271,
+        "no_assignment_invocation": 24,
+        "frames_current_eligible": 52,
+        "frames_previous_eligible": 51,
+        "frames_with_pairs": 1,
+        "frames_with_matching_pairs": 0,
+        "unique_pair_frames": 0,
+        "new_alarm_frames": 0,
+        "additional_components": 0,
+        "scientific_equal_frames": 11271
+      },
+      "baseline": {
+        "frames": 11271,
+        "alarm_frames": 98,
+        "alarm_episodes": 88,
+        "status_frames": {
+          "no_obstacle_observed": 10773,
+          "unresolved_obstacle": 324,
+          "candidate": 53,
+          "obstacle": 98,
+          "unknown": 23
+        },
+        "observed_duration_s": 1124.699756621,
+        "excluded_gap_duration_s": 75.100193382,
+        "status_duration_s": {
+          "no_obstacle_observed": 1074.999748347,
+          "unresolved_obstacle": 32.399938703,
+          "candidate": 5.299999356,
+          "obstacle": 9.700082064,
+          "unknown": 2.299988151
+        }
+      },
+      "shadow": {
+        "frames": 11271,
+        "alarm_frames": 98,
+        "alarm_episodes": 88,
+        "status_frames": {
+          "no_obstacle_observed": 10773,
+          "unresolved_obstacle": 324,
+          "candidate": 53,
+          "obstacle": 98,
+          "unknown": 23
+        },
+        "observed_duration_s": 1124.699756621,
+        "excluded_gap_duration_s": 75.100193382,
+        "status_duration_s": {
+          "no_obstacle_observed": 1074.999748347,
+          "unresolved_obstacle": 32.399938703,
+          "candidate": 5.299999356,
+          "obstacle": 9.700082064,
+          "unknown": 2.299988151
+        }
+      },
+      "additional_frames": [],
+      "exposure_examples": [],
+      "wall_s": 4073.936565000098
+    }
+  },
+  "partitions": {
+    "development_previously_inspected": {
+      "baseline": {
+        "frames": 9427,
+        "alarm_frames": 99,
+        "alarm_episodes": 82
+      },
+      "shadow": {
+        "frames": 9427,
+        "alarm_frames": 99,
+        "alarm_episodes": 82
+      }
+    },
+    "frozen_evaluation_not_claimed_blind": {
+      "baseline": {
+        "frames": 4131,
+        "alarm_frames": 35,
+        "alarm_episodes": 31
+      },
+      "shadow": {
+        "frames": 4131,
+        "alarm_frames": 35,
+        "alarm_episodes": 31
+      }
+    }
+  },
+  "decision": {
+    "negative_exposure_gate_passed": true,
+    "production_change": false,
+    "promotion": false,
+    "next_action": "An isolated candidate may be measured on retained positives, but negative audit has zero fallback activation opportunities and cannot establish false-correspondence safety. No promotion or nuisance improvement.",
+    "primary_metric_claim": "No actual modified candidate or primary improvement measured. Shadow episodes are admission exposure only."
+  },
+  "seed": 20260915,
+  "local_confirmation": {
+    "shape_radius_m": 0.1,
+    "minimum_symmetric_overlap": 0.8
+  },
+  "manifest": {
+    "python": "3.12.8 (v3.12.8:2dc476bcb91, Dec  3 2024, 14:43:19) [Clang 13.0.0 (clang-1300.0.29.30)]",
+    "platform": "macOS-26.5-arm64-arm-64bit",
+    "machine": "arm64",
+    "cpu_count": 8,
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "rosbags": "0.11.5",
+      "kiss-icp": "1.3.0",
+      "open3d": "0.19.0",
+      "travel-seg": null,
+      "hdbscan": null,
+      "pypatchworkpp": null
+    },
+    "source_sha256": {
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/accelerator.py": "439731143ed9bea6fca157a6ebb6c519ed2d7ab341303cca898f96784ccd7cd3",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/alarm_anatomy.py": "9579c8830b427b440d3d696dad20a0114a780bc92cf9a2e5205e174a10b21f81",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/alignment.py": "37019d4fa19e6186d89a1f8392d60eeadaf7b706eb602e91850d2fb86870fb08",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/alignment_probe.py": "e8fc2e1844b8365fec1d9bca71f92557db3f6391db0a689b21d3cd5a6b0b705a",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/background.py": "74a041271a8537cd94401f665134cd7d912b10c8debaa49496e437d3bfecb148",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/background_repro.py": "2f1a23ce474659084c3de1213519b8946e23338deadd2c50ea630832efc315b6",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/calibrate.py": "83dfd35c841ac3db596a7b93e88643001b4d3aa8f3610f13770db1096289debe",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/compare_alarm_runs.py": "ce39621d4cea9ee07617f882f1d1f7035f006f16b252b74c2b5f63d2f1ad36d0",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/config_audit.py": "2dd2a1279c2b9a01ab956ef2d4d1b66e203ff667aad09a9b92ca1c33e8669cd7",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/corridor_report.py": "d245b7d57fc996faa4315b41f9f9d8775becd7c91968d6fbcfdacb633ccdc4fd",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/curve_audit.py": "26cfd35306aa438d39d23a3123f0ac38b860d90f2945bea43dd42c2337133be0",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/curved_stress.py": "0bcada82de0d22b9d50feef464635c334ef57cd7883f461fe1ea27a676a2a078",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/decode_benchmark.py": "e4a1f1270b180276d12347557db88048137687989900d1c5f14c29e102a1f4fa",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/detector.py": "a7732117c3c95c4598784612d0104a819e6f545eb867a11f9b6c6b369490f1a4",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/episode_report.py": "dc932d8a30294a887e7a143e852c1e2c9d7a95e46aea72f341d780a33d584501",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/evaluate.py": "561754ec856ecd5529c7d59fddaff004ffa9d56b5b782e89384a27bdbcd0efc2",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/expansion_report.py": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/extended_subset.py": "feaf7c41ab3ccd9b9d0497128353c7b36eedbd33aff8f46c2cae8193da9279ce",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/geometry.py": "da86a42ce860a58929d6efd36493fb019ed111e68764ee4f8b52e5c4155db9c6",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/geometry_loss_report.py": "0f8c812e385332e4851fb2d5a1b49ee6dcdb2710b037a2da49327a9cdbda00c9",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/history_probe.py": "3cd13e291fd643150282c74f63c66f94566045e4406958278805856fbf62f76c",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/hmm_mos_probe.py": "2f4c5a9f47ecedcb40457a5c64f3d606965a1db5178dacd85839d4df5070547f",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/injection_experiment.py": "9887b6985e3e90de90c0505c4cca787f05703d7bd9f487041e84b89a8b5841c1",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/inspect_bag.py": "18018c587fea64f8e3d35591944809b162fb31d3aab301b5fc708796c3c9700f",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/inspect_recording_headers.py": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/intrusion_audit.py": "e04ec075a2cc9ddcf6d844e6ddfda6657e275b562ec6de7728f11732c7cdcf84",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/io.py": "4d3a86db018ba30bd64f1e25e3b41ee04add5a0efe3576476c8738400456fcd5",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/motion_audit.py": "d2d49f0bcff1af6bb7ba97c6d7047c59f6ab4605bb485cfac61e6f298c94a8c7",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/motion_scenarios.py": "2d928846e973b163471f3293ba1af4ae79fdede55159b5c515cb8c2f6cc0d897",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/mounting.py": "568b2716fafef9775d18e1105c0d1365aff1b32409d6cfcf82f22840bab33a2c",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/mounting_replay.py": "be2e6d666fbd51d0ecd4614369651b7f5c65779ddbe796751a4824d5194e37f4",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/mounting_report.py": "c7547ee3d650de0f35f4d5a86ab855b0db1214e4860bada9082619c0fb44e41f",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/native_benchmark.py": "3ff29f3e9107f8bcd145e906e5d5421b6cdd31e6c5c64615c50262d77ccb442b",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/object_evidence_report.py": "ceae0cbb2f8841fac8eed0ef870341184861e3dd3c61e1fe2d04c49e987a7dc0",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/on_track.py": "b5b8f3f2eff1bf8c6d51b7ad47f9591b4f92fb685c9131a183f6ec917b8b70fb",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/panel_report.py": "f5fbf5612985fa008b580bb7446f445c5017d1170a04a7180b73b4e7dc38c505",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/person_evidence_report.py": "2405d412b8c4a264c148c70cb090c40ef729c1b12c1458abcdb8ddcddb95e7a4",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/plot_track_geometry.py": "b19aee7b6846a74b38cc9bec7ba0158443f473168b4fb6a18fe95014b6716113",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/prepare_segment.py": "154f5d0772d56473e82704d217723132c292efa0681d5df32f8bf6b1c355cf7a",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/profile_run.py": "5ad54b41e5a681182281d0714017c06c628fbb65deada92a5e4cd04127a956fb",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/rail_fit_report.py": "3bae4132006f5b72b7620be0e13fb76aebd413bfcce733c1d2c6738542f6bb44",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/rail_geometry_audit.py": "132e5f7772c56e3e204b2ba372f89d003d0551616c4d22d65238b011880a930a",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/realistic_report.py": "163806fdb60df8b981187b14e803ff921fdf1a9d14700b0e5ae4d30b0f0989d8",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/realistic_stress.py": "e6468a325619d0a2e54f714fe0a98c03dd8631802ea83d771070fff869f3deac",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/registration_repeat.py": "bff8c9f38d3a0cd319f7071a4d5741950976fb7a8994fd38268ad7cd7e06ef9c",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/render_alarm_cases.py": "95b510a7143f7250ec718749ed654e95c225f1b5a9ce20aa054f3b0df9cd0cc7",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/render_annotation_review.py": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/review_remaining_alerts.py": "0fe5e93952e1a275a81b2b04d203ebe899fe4d1e304ef7d347e026cc87d4448b",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/review_viewer.py": "4bad77dd7e102f75f572ed34cd232e59c649d7e6bc74efd139e6266709e77c45",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/ros_node.py": "db1ca82c366d39a4d73a4f57e6e79054bc4525ed59a49f420df1f0b9637084f3",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/run.py": "54f78aeb6843812588bfc1dd0cdc1226c3dc18439b3cbcb3e60b70a06c58d4ae",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/segmentation.py": "9787d0210c3345aec8089b821d290f7a1256504674ab4347352d1f52857b468a",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/sensor_profile.py": "4ff47460df305986034ba03e45e9c892e3559ccceffff61412c5d1ebadfb3c03",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/structural_view.py": "3ee1b69f8d320ed23ee86d5ddd1e142d74e420df0d6c5d4510e8e443838ef9f8",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/support_stability_report.py": "9023ddb2443fe0a229e5aafa795a1612f5df323f27159540cacf5843a9cceb86",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/surface_evaluate.py": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/sustech.py": "103e7c167550022a86f37973a11dabfc476d0acdfc9eb1ca08212b6f4c615392",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/sustech_import.py": "1b6eaa071db373203e3908abafe6d0d018949920266e80fee94fd01826cead98",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/trace_analysis.py": "be1eef8bd26e30c9efc432304c292f2f1db34f2ecb6fba7248c3d2b081ef07eb",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/track_scene_experiment.py": "9352b34c678d220c25eea79a80ce25d14ecffd5780dd86162606ff3d091e2f85",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/uncertainty_probe.py": "78bf9156edf3f126724959104a89a1fc18ab14b8ba2717000186ade99bfb2560",
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/visualization.py": "4d39ed8681595103f4d29c3b4d76f16a36c8cd4b9b79ee910fa0eff477ad5bc8"
+    },
+    "git_revision": "07bc778a8e334062b5fc643f983907a0231cdaa4",
+    "command": [
+      "build/issue23-negative-shape/replay.py",
+      "build/issue23-negative-shape/experiment.json"
+    ],
+    "recipe_sha256": "1db53aa8411da2a50740dbd759383960e8f684ebec262d78a5caab9be021d1b7",
+    "config_sha256": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa",
+    "panel_sha256": "5c8c136b67d8b13f642532c2186884261d1f8163cb238f54bb7604619bfc1bcc",
+    "native_binary_sha256": "daeeb70c5e93225be0695fa5a1c2edddd00b3ea61dc6729bc76269fc1c2e8cf7",
+    "reference_recordings_sha256": "e9f48c6066fe797ff95d90a3a3a955eacde8f2420667b03b69f136085b45985a",
+    "thread_environment": {
+      "OMP_NUM_THREADS": "1",
+      "OPENBLAS_NUM_THREADS": "1",
+      "MKL_NUM_THREADS": "1",
+      "VECLIB_MAXIMUM_THREADS": "1",
+      "NUMEXPR_NUM_THREADS": "1",
+      "PYTHONHASHSEED": "20260915"
+    },
+    "provenance_limit": "Metadata hash and retained file sizes checked; original bag bytes not rehashed."
+  },
+  "limits": [
+    "Negative roles are organizer statements, not exhaustive pointwise semantic labels or field precision.",
+    "Actual detector outputs must remain unchanged; shadow alarms are deterministic admission exposure, not an executed modified candidate.",
+    "No positive-panel acceptance or primary-metric improvement claimed.",
+    "Episode counts can decrease by joining alarm intervals despite more false-positive frames; never interpret that as improvement.",
+    "Unique means unique among observed eligible shapes; translation-centering discards identity information.",
+    "Eligible-pair counts cover actual assignment invocations; without such invocation no consecutive retained shape pair can add evidence.",
+    "Metadata hashes and retained file sizes verified, not all bag bytes rehashed.",
+    "No new full replay-row copies: scientific identity checked online, per-frame scientific digests and exposure geometry/shapes preserved to limit disk use.",
+    "Only five native shape comparisons occurred, all on frame9993 with valid motion. No eligible consecutive shape pair occurred while motion was rejected; therefore the intended fallback has zero observed activation opportunities on this negative panel. This is weak evidence about general false correspondence risk, not proof of safety."
+  ],
+  "pair_opportunities": [
+    {
+      "recording": "new_data",
+      "frame": 9993,
+      "motion_valid": true,
+      "pairs": 5,
+      "matching_pairs": 0,
+      "split": "frozen_evaluation_not_claimed_blind"
+    }
+  ]
+}

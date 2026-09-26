@@ -1,0 +1,2618 @@
+{
+  "hypothesis": "Frozen certified support is reproducible through the native classifier and explainable by its path/bed interval inequalities; extrapolation alone does not establish error.",
+  "criterion": "Every frozen certified point must be native-core under its original saved geometry; retain source return indices and numerical margins.",
+  "source_support_report": "results/issue23-point-support-20260924.json",
+  "config_sha256": "68e3515671a8a0bd7c6998a8aac59a8f7cff5153d964739edc266ae794c59834",
+  "source_sha256": {
+    "tunnel_guard/geometry.py": "da86a42ce860a58929d6efd36493fb019ed111e68764ee4f8b52e5c4155db9c6",
+    "tunnel_guard/accelerator.py": "439731143ed9bea6fca157a6ebb6c519ed2d7ab341303cca898f96784ccd7cd3",
+    "cpp/kernels.cpp": "ab1f038ed0eb3b004bfbc35a594cb69d939ccadddb8b2c3dd25a15a7496637f1",
+    "tunnel_guard/_native.cpython-312-darwin.so": "570ed2fa34d5f1b6f630182a78dcb343259c600cf918d6893061d267a7c5a20c"
+  },
+  "all_core_reproduced": true,
+  "components": 70,
+  "immediate_components": 47,
+  "immediate_components_wholly_beyond_last_anchor": 39,
+  "records": [
+    {
+      "frame": 5300,
+      "component_id": 146,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.87,
+        0.0693450619498456,
+        0.001861041774052103,
+        2.942658962556873e-14,
+        1.5408873702457017e-15,
+        4.5275775031645884e-29
+      ],
+      "certified_points": 102,
+      "after_last_anchor": 102,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 3,
+      "measured_ranges": {
+        "path_error_m": [
+          0.06726245612769961,
+          0.07663739196937967
+        ],
+        "bed_error_m": [
+          0.07383316129856092,
+          0.0828829419005596
+        ],
+        "certified_lateral_margin_m": [
+          0.0016859950989659839,
+          0.4170009433233345
+        ],
+        "running_height_m": [
+          0.17628319539892165,
+          1.575702656966049
+        ]
+      }
+    },
+    {
+      "frame": 5360,
+      "component_id": 197,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 26.23824119567871,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        26.23824119567871,
+        1.3755797481536864,
+        0.047431979241639576,
+        -0.001169473427048958,
+        0.0006651604909885452,
+        4.6486906619204375e-05,
+        3.003461847306481e-08
+      ],
+      "certified_points": 34,
+      "after_last_anchor": 34,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 5,
+      "measured_ranges": {
+        "path_error_m": [
+          0.16117572662650112,
+          0.16851539845754931
+        ],
+        "bed_error_m": [
+          0.07431904022257464,
+          0.07968522736191407
+        ],
+        "certified_lateral_margin_m": [
+          0.007758237865464118,
+          0.23431618326547107
+        ],
+        "running_height_m": [
+          0.5392315338177079,
+          1.4973329860258384
+        ]
+      }
+    },
+    {
+      "frame": 5360,
+      "component_id": 229,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 26.23824119567871,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        26.23824119567871,
+        1.3755797481536864,
+        0.047431979241639576,
+        -0.001169473427048958,
+        0.0006651604909885452,
+        4.6486906619204375e-05,
+        3.003461847306481e-08
+      ],
+      "certified_points": 109,
+      "after_last_anchor": 109,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 5,
+      "measured_ranges": {
+        "path_error_m": [
+          0.26853963499741906,
+          0.3071668634975904
+        ],
+        "bed_error_m": [
+          0.0630211972294113,
+          0.08776458119750441
+        ],
+        "certified_lateral_margin_m": [
+          0.0012463773088843277,
+          0.8811774599900755
+        ],
+        "running_height_m": [
+          0.16968463011955418,
+          2.6525100828006662
+        ]
+      }
+    },
+    {
+      "frame": 5360,
+      "component_id": 234,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 26.23824119567871,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        26.23824119567871,
+        1.3755797481536864,
+        0.047431979241639576,
+        -0.001169473427048958,
+        0.0006651604909885452,
+        4.6486906619204375e-05,
+        3.003461847306481e-08
+      ],
+      "certified_points": 51,
+      "after_last_anchor": 51,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 5,
+      "measured_ranges": {
+        "path_error_m": [
+          0.32082456004873194,
+          0.3433597553667344
+        ],
+        "bed_error_m": [
+          0.06029014070639631,
+          0.0812765568635274
+        ],
+        "certified_lateral_margin_m": [
+          0.020229209127233083,
+          0.94581887306268
+        ],
+        "running_height_m": [
+          0.2071062277197141,
+          2.366957355028201
+        ]
+      }
+    },
+    {
+      "frame": 5531,
+      "component_id": 77,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 7.452715873718262,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        7.452715873718262,
+        -0.24,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 185,
+      "after_last_anchor": 185,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.2607600011565776,
+          0.27159749836895813
+        ],
+        "bed_error_m": [
+          0.045876956959189606,
+          0.05078966831532052
+        ],
+        "certified_lateral_margin_m": [
+          0.11866644364365642,
+          0.6629529250193876
+        ],
+        "running_height_m": [
+          0.10759184929049344,
+          3.0041027504191704
+        ]
+      }
+    },
+    {
+      "frame": 5541,
+      "component_id": 133,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 23.76407814025879,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        23.76407814025879,
+        -1.4607132505851896,
+        -0.07193612533130907,
+        0.0,
+        0.0036431389822173038,
+        0.00022491123968150235,
+        7.950028586355775e-07
+      ],
+      "certified_points": 43,
+      "after_last_anchor": 43,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 5,
+      "measured_ranges": {
+        "path_error_m": [
+          0.24289235368081832,
+          0.2542361952746836
+        ],
+        "bed_error_m": [
+          0.0678205283149736,
+          0.07014672240199978
+        ],
+        "certified_lateral_margin_m": [
+          0.0020032210957077468,
+          0.11058385759491524
+        ],
+        "running_height_m": [
+          0.548835765202956,
+          2.8151900331934185
+        ]
+      }
+    },
+    {
+      "frame": 5550,
+      "component_id": 98,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 20.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        20.0,
+        -0.6068447111799081,
+        -0.07590809679094618,
+        -0.0038600542811215947,
+        8.640097401614525e-15,
+        6.024913911511762e-16,
+        5.198346661763706e-30
+      ],
+      "certified_points": 172,
+      "after_last_anchor": 172,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 3,
+      "measured_ranges": {
+        "path_error_m": [
+          0.09059727177608692,
+          0.09710730953197452
+        ],
+        "bed_error_m": [
+          0.04139141029000886,
+          0.046293980732811185
+        ],
+        "certified_lateral_margin_m": [
+          0.0009477568456276037,
+          0.2831282987301576
+        ],
+        "running_height_m": [
+          0.13302009718319568,
+          3.4452075076772672
+        ]
+      }
+    },
+    {
+      "frame": 6438,
+      "component_id": 187,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 39.83480453491211,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        39.83480453491211,
+        0.024948610619566727,
+        0.011224912260196023,
+        0.00028482106422150256,
+        0.0003389256490438924,
+        1.3631210676033287e-05,
+        4.477142598156579e-09
+      ],
+      "certified_points": 2,
+      "after_last_anchor": 2,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 8,
+      "measured_ranges": {
+        "path_error_m": [
+          0.37478507708652153,
+          0.3774399634431355
+        ],
+        "bed_error_m": [
+          0.11202173415776623,
+          0.11285637168356075
+        ],
+        "certified_lateral_margin_m": [
+          0.004815817774460829,
+          0.03414150688628842
+        ],
+        "running_height_m": [
+          0.2773901627763635,
+          0.372898577900055
+        ]
+      }
+    },
+    {
+      "frame": 6451,
+      "component_id": 159,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 34.089778900146484,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        34.089778900146484,
+        -0.07493850682060113,
+        0.001530324123454848,
+        9.259298291596781e-05,
+        0.00042441317816284727,
+        1.7474507181386342e-05,
+        7.1878829617566605e-09
+      ],
+      "certified_points": 2,
+      "after_last_anchor": 2,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.12936387765128995,
+          0.12976728999444212
+        ],
+        "bed_error_m": [
+          0.08902197958611863,
+          0.0893135730022539
+        ],
+        "certified_lateral_margin_m": [
+          0.019446699155937053,
+          0.052045969716154744
+        ],
+        "running_height_m": [
+          0.27228865626331045,
+          0.35095509775518857
+        ]
+      }
+    },
+    {
+      "frame": 6451,
+      "component_id": 167,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 34.089778900146484,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        34.089778900146484,
+        -0.07493850682060113,
+        0.001530324123454848,
+        9.259298291596781e-05,
+        0.00042441317816284727,
+        1.7474507181386342e-05,
+        7.1878829617566605e-09
+      ],
+      "certified_points": 2,
+      "after_last_anchor": 2,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.15074989042318457,
+          0.15078729830562387
+        ],
+        "bed_error_m": [
+          0.10120087123442992,
+          0.1012213726447993
+        ],
+        "certified_lateral_margin_m": [
+          0.018122996086817805,
+          0.05037983551135705
+        ],
+        "running_height_m": [
+          0.23451437691061616,
+          0.3155785004695788
+        ]
+      }
+    },
+    {
+      "frame": 6451,
+      "component_id": 173,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 34.089778900146484,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        34.089778900146484,
+        -0.07493850682060113,
+        0.001530324123454848,
+        9.259298291596781e-05,
+        0.00042441317816284727,
+        1.7474507181386342e-05,
+        7.1878829617566605e-09
+      ],
+      "certified_points": 2,
+      "after_last_anchor": 2,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.18505533091067103,
+          0.18649207134556284
+        ],
+        "bed_error_m": [
+          0.0856560919330863,
+          0.08659440769635114
+        ],
+        "certified_lateral_margin_m": [
+          0.01869648771976229,
+          0.09336501298589786
+        ],
+        "running_height_m": [
+          0.2626651751033004,
+          0.2646296298648076
+        ]
+      }
+    },
+    {
+      "frame": 6451,
+      "component_id": 183,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 34.089778900146484,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        34.089778900146484,
+        -0.07493850682060113,
+        0.001530324123454848,
+        9.259298291596781e-05,
+        0.00042441317816284727,
+        1.7474507181386342e-05,
+        7.1878829617566605e-09
+      ],
+      "certified_points": 2,
+      "after_last_anchor": 2,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.22858848801608733,
+          0.22952917140047557
+        ],
+        "bed_error_m": [
+          0.10512816825193806,
+          0.10549725163203245
+        ],
+        "certified_lateral_margin_m": [
+          0.03187763303912508,
+          0.05909250277517497
+        ],
+        "running_height_m": [
+          0.21558027623346088,
+          0.3110900373501309
+        ]
+      }
+    },
+    {
+      "frame": 6451,
+      "component_id": 188,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 34.089778900146484,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        34.089778900146484,
+        -0.07493850682060113,
+        0.001530324123454848,
+        9.259298291596781e-05,
+        0.00042441317816284727,
+        1.7474507181386342e-05,
+        7.1878829617566605e-09
+      ],
+      "certified_points": 2,
+      "after_last_anchor": 2,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.2642610198744778,
+          0.2672563085634022
+        ],
+        "bed_error_m": [
+          0.09271772955990897,
+          0.09426005945740348
+        ],
+        "certified_lateral_margin_m": [
+          0.029016755527710436,
+          0.10934516039202258
+        ],
+        "running_height_m": [
+          0.2773246044458469,
+          0.2797333718906381
+        ]
+      }
+    },
+    {
+      "frame": 6451,
+      "component_id": 192,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 34.089778900146484,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        34.089778900146484,
+        -0.07493850682060113,
+        0.001530324123454848,
+        9.259298291596781e-05,
+        0.00042441317816284727,
+        1.7474507181386342e-05,
+        7.1878829617566605e-09
+      ],
+      "certified_points": 4,
+      "after_last_anchor": 4,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.3344211860340181,
+          0.33975332931037894
+        ],
+        "bed_error_m": [
+          0.10423932456689901,
+          0.10608834082566371
+        ],
+        "certified_lateral_margin_m": [
+          0.004675018565976241,
+          0.03883724597353494
+        ],
+        "running_height_m": [
+          0.8317387642875074,
+          1.5609836006871163
+        ]
+      }
+    },
+    {
+      "frame": 6451,
+      "component_id": 193,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 34.089778900146484,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        34.089778900146484,
+        -0.07493850682060113,
+        0.001530324123454848,
+        9.259298291596781e-05,
+        0.00042441317816284727,
+        1.7474507181386342e-05,
+        7.1878829617566605e-09
+      ],
+      "certified_points": 3,
+      "after_last_anchor": 3,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.31655672703122517,
+          0.31838746626393194
+        ],
+        "bed_error_m": [
+          0.11174082695339302,
+          0.11239538751521613
+        ],
+        "certified_lateral_margin_m": [
+          0.08797955541323593,
+          0.17653840080755206
+        ],
+        "running_height_m": [
+          0.24266774038277003,
+          0.3771142414777164
+        ]
+      }
+    },
+    {
+      "frame": 6451,
+      "component_id": 196,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 34.089778900146484,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        34.089778900146484,
+        -0.07493850682060113,
+        0.001530324123454848,
+        9.259298291596781e-05,
+        0.00042441317816284727,
+        1.7474507181386342e-05,
+        7.1878829617566605e-09
+      ],
+      "certified_points": 3,
+      "after_last_anchor": 3,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.3615847359085698,
+          0.36223325531185974
+        ],
+        "bed_error_m": [
+          0.09886524873340782,
+          0.09912849187182551
+        ],
+        "certified_lateral_margin_m": [
+          0.09202525997156719,
+          0.1880993718416505
+        ],
+        "running_height_m": [
+          0.35440271764568526,
+          0.4426736682286521
+        ]
+      }
+    },
+    {
+      "frame": 6461,
+      "component_id": 189,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 35.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        35.0,
+        -0.015,
+        0.006039567691858225,
+        0.0001669081021378031,
+        0.0004938569082299746,
+        1.9754276329198988e-05,
+        9.455607806650824e-09
+      ],
+      "certified_points": 2,
+      "after_last_anchor": 2,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.2241490724463389,
+          0.2267330012315278
+        ],
+        "bed_error_m": [
+          0.10618567021235253,
+          0.10695553358991607
+        ],
+        "certified_lateral_margin_m": [
+          0.00036332386473494904,
+          0.0527183843017838
+        ],
+        "running_height_m": [
+          0.19565252527980675,
+          0.29048296056313516
+        ]
+      }
+    },
+    {
+      "frame": 6461,
+      "component_id": 194,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 35.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        35.0,
+        -0.015,
+        0.006039567691858225,
+        0.0001669081021378031,
+        0.0004938569082299746,
+        1.9754276329198988e-05,
+        9.455607806650824e-09
+      ],
+      "certified_points": 3,
+      "after_last_anchor": 3,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.2727259533104073,
+          0.27377605318874054
+        ],
+        "bed_error_m": [
+          0.11135439896188842,
+          0.11181729045110471
+        ],
+        "certified_lateral_margin_m": [
+          0.014505404726106508,
+          0.10168301444878147
+        ],
+        "running_height_m": [
+          0.24751646296756305,
+          0.37813535494866807
+        ]
+      }
+    },
+    {
+      "frame": 6461,
+      "component_id": 198,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 35.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        35.0,
+        -0.015,
+        0.006039567691858225,
+        0.0001669081021378031,
+        0.0004938569082299746,
+        1.9754276329198988e-05,
+        9.455607806650824e-09
+      ],
+      "certified_points": 3,
+      "after_last_anchor": 3,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.3146091345248941,
+          0.31486690789471833
+        ],
+        "bed_error_m": [
+          0.11010547137373722,
+          0.11021400253242786
+        ],
+        "certified_lateral_margin_m": [
+          0.004867684330926547,
+          0.09797458148045496
+        ],
+        "running_height_m": [
+          0.21440882149774929,
+          0.3506576082182353
+        ]
+      }
+    },
+    {
+      "frame": 6461,
+      "component_id": 208,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 35.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        35.0,
+        -0.015,
+        0.006039567691858225,
+        0.0001669081021378031,
+        0.0004938569082299746,
+        1.9754276329198988e-05,
+        9.455607806650824e-09
+      ],
+      "certified_points": 5,
+      "after_last_anchor": 5,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.38304145749730645,
+          0.39489918382597494
+        ],
+        "bed_error_m": [
+          0.1193331988237013,
+          0.12327741272028218
+        ],
+        "certified_lateral_margin_m": [
+          0.00036867681135721586,
+          0.04917205277552533
+        ],
+        "running_height_m": [
+          0.7904562749829371,
+          1.5627691821989182
+        ]
+      }
+    },
+    {
+      "frame": 6493,
+      "component_id": 217,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 35.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        35.0,
+        0.21481268775793366,
+        0.021934114889016667,
+        0.0004568993909704515,
+        0.0004988851193467964,
+        1.9955404773871855e-05,
+        9.649132815542793e-09
+      ],
+      "certified_points": 2,
+      "after_last_anchor": 2,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.3484500151515897,
+          0.3489040062360793
+        ],
+        "bed_error_m": [
+          0.09597034919957063,
+          0.0960746020302644
+        ],
+        "certified_lateral_margin_m": [
+          0.01910255185566695,
+          0.05238890085884357
+        ],
+        "running_height_m": [
+          0.3485192372299541,
+          0.4369720691117061
+        ]
+      }
+    },
+    {
+      "frame": 6501,
+      "component_id": 204,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 34.547340393066406,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        34.547340393066406,
+        0.3011252037737275,
+        0.025810865867307468,
+        0.0004978956604914159,
+        0.0003374716424578933,
+        1.369315130215164e-05,
+        4.478693978267271e-09
+      ],
+      "certified_points": 2,
+      "after_last_anchor": 2,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.33640083027448975,
+          0.33708559003981575
+        ],
+        "bed_error_m": [
+          0.10341929178039769,
+          0.10370271642881826
+        ],
+        "certified_lateral_margin_m": [
+          0.002779736912360331,
+          0.06453011131385167
+        ],
+        "running_height_m": [
+          0.35186783104378927,
+          0.43842515491561995
+        ]
+      }
+    },
+    {
+      "frame": 6501,
+      "component_id": 210,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 34.547340393066406,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        34.547340393066406,
+        0.3011252037737275,
+        0.025810865867307468,
+        0.0004978956604914159,
+        0.0003374716424578933,
+        1.369315130215164e-05,
+        4.478693978267271e-09
+      ],
+      "certified_points": 4,
+      "after_last_anchor": 4,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.3872182009652234,
+          0.39110801083331614
+        ],
+        "bed_error_m": [
+          0.10518898293558039,
+          0.10586701423671513
+        ],
+        "certified_lateral_margin_m": [
+          0.0043798258939005685,
+          0.1253778224473603
+        ],
+        "running_height_m": [
+          0.2987036990422742,
+          0.3893606148614973
+        ]
+      }
+    },
+    {
+      "frame": 6504,
+      "component_id": 212,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 37.888145446777344,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        37.888145446777344,
+        0.47167703018725793,
+        0.03329276812874923,
+        0.0005537597881033501,
+        0.00029382859874092706,
+        1.2583157255183082e-05,
+        3.5837626642214736e-09
+      ],
+      "certified_points": 3,
+      "after_last_anchor": 3,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 8,
+      "measured_ranges": {
+        "path_error_m": [
+          0.2968255144916323,
+          0.29702353168616025
+        ],
+        "bed_error_m": [
+          0.0951592167866199,
+          0.0952469361947135
+        ],
+        "certified_lateral_margin_m": [
+          0.0077936415051640395,
+          0.1054908201472618
+        ],
+        "running_height_m": [
+          0.3431575658861965,
+          0.43190384631140805
+        ]
+      }
+    },
+    {
+      "frame": 6512,
+      "component_id": 231,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 34.584861755371094,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        34.584861755371094,
+        0.4675917493740926,
+        0.0308888734719626,
+        0.00048557891977682194,
+        0.0007582312998019665,
+        3.072915314050121e-05,
+        2.2582076137704212e-08
+      ],
+      "certified_points": 4,
+      "after_last_anchor": 4,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.3722124581907767,
+          0.37347521353391017
+        ],
+        "bed_error_m": [
+          0.09915997772811087,
+          0.09975230526158642
+        ],
+        "certified_lateral_margin_m": [
+          0.1746243697425115,
+          0.3008317330734231
+        ],
+        "running_height_m": [
+          0.2595456796664341,
+          0.3488467139163335
+        ]
+      }
+    },
+    {
+      "frame": 6517,
+      "component_id": 234,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 37.300132751464844,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        37.300132751464844,
+        0.7546139116460244,
+        0.04734735419368943,
+        0.0007687671962947408,
+        0.0008669191350349221,
+        3.7911027490930075e-05,
+        3.1835281858411194e-08
+      ],
+      "certified_points": 3,
+      "after_last_anchor": 3,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 8,
+      "measured_ranges": {
+        "path_error_m": [
+          0.3221175130357838,
+          0.33107172661302675
+        ],
+        "bed_error_m": [
+          0.09237144094340574,
+          0.09452008547081633
+        ],
+        "certified_lateral_margin_m": [
+          0.044680496389157165,
+          0.14026699973451734
+        ],
+        "running_height_m": [
+          0.23726402080322503,
+          0.3245364233907626
+        ]
+      }
+    },
+    {
+      "frame": 6533,
+      "component_id": 241,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 33.830299377441406,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        33.830299377441406,
+        1.02257525316227,
+        0.05698018410793393,
+        0.0008056479539454646,
+        0.0005632143145759733,
+        2.3384428550935642e-05,
+        1.2764722308284169e-08
+      ],
+      "certified_points": 5,
+      "after_last_anchor": 5,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.3555668526000415,
+          0.36865092821803336
+        ],
+        "bed_error_m": [
+          0.0812517794980744,
+          0.08299902710147952
+        ],
+        "certified_lateral_margin_m": [
+          0.06058027334810606,
+          0.21076281002404945
+        ],
+        "running_height_m": [
+          0.20562089358215163,
+          0.30347002407905677
+        ]
+      }
+    },
+    {
+      "frame": 6535,
+      "component_id": 207,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 31.80759048461914,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        31.80759048461914,
+        0.9628256035544931,
+        0.05670044394259626,
+        0.00085610534578774,
+        0.0005337941423734349,
+        2.3713804235569428e-05,
+        1.2272179928365355e-08
+      ],
+      "certified_points": 2,
+      "after_last_anchor": 2,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.2725426866343772,
+          0.27732141784997644
+        ],
+        "bed_error_m": [
+          0.08100047659916843,
+          0.08328049340890058
+        ],
+        "certified_lateral_margin_m": [
+          0.010858331830588375,
+          0.07417086211412977
+        ],
+        "running_height_m": [
+          0.22396190903613022,
+          0.23105797090412686
+        ]
+      }
+    },
+    {
+      "frame": 6535,
+      "component_id": 221,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 31.80759048461914,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        31.80759048461914,
+        0.9628256035544931,
+        0.05670044394259626,
+        0.00085610534578774,
+        0.0005337941423734349,
+        2.3713804235569428e-05,
+        1.2272179928365355e-08
+      ],
+      "certified_points": 4,
+      "after_last_anchor": 4,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.37128019304710985,
+          0.3849100986738449
+        ],
+        "bed_error_m": [
+          0.07506521747226674,
+          0.0804446381173051
+        ],
+        "certified_lateral_margin_m": [
+          0.04376341922829757,
+          0.12701313588135904
+        ],
+        "running_height_m": [
+          0.21943913505519547,
+          0.3184027218229122
+        ]
+      }
+    },
+    {
+      "frame": 6562,
+      "component_id": 138,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 8.423163414001465,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        8.423163414001465,
+        0.12,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 488,
+      "after_last_anchor": 488,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.24281017462638146,
+          0.39999847947155165
+        ],
+        "bed_error_m": [
+          0.05838443000169507,
+          0.08232305384125341
+        ],
+        "certified_lateral_margin_m": [
+          0.0030850642176518117,
+          0.8984990663244303
+        ],
+        "running_height_m": [
+          0.1824405841142986,
+          2.7411138913782858
+        ]
+      }
+    },
+    {
+      "frame": 6564,
+      "component_id": 60,
+      "original_continuous_confirmation": "temporal_interior_evidence",
+      "last_anchor_m": 30.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        30.0,
+        1.635,
+        0.1028399059813797,
+        0.0016763131625251043,
+        0.00614925129155446,
+        0.0002853817352005224,
+        1.7110371453695653e-06
+      ],
+      "certified_points": 2,
+      "after_last_anchor": 0,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 6,
+      "measured_ranges": {
+        "path_error_m": [
+          0.06823958542991314,
+          0.06887825045851495
+        ],
+        "bed_error_m": [
+          0.062253276236592645,
+          0.06287240342894058
+        ],
+        "certified_lateral_margin_m": [
+          0.00014132745502137833,
+          0.0015154851393382879
+        ],
+        "running_height_m": [
+          0.2690768307296326,
+          0.29385847651118396
+        ]
+      }
+    },
+    {
+      "frame": 6569,
+      "component_id": 130,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.7057743920768967,
+        0.0574096689534406,
+        0.0015322754366840251,
+        1.0635751102489581e-15,
+        5.740183935467624e-17,
+        6.070180718676556e-32
+      ],
+      "certified_points": 84,
+      "after_last_anchor": 0,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 3,
+      "measured_ranges": {
+        "path_error_m": [
+          0.06449649532092736,
+          0.07110173522999247
+        ],
+        "bed_error_m": [
+          0.07411677794733598,
+          0.078314380413252
+        ],
+        "certified_lateral_margin_m": [
+          0.0044680153137636736,
+          0.24066697573346435
+        ],
+        "running_height_m": [
+          0.5234686398613678,
+          1.4765974491031388
+        ]
+      }
+    },
+    {
+      "frame": 6569,
+      "component_id": 165,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.7057743920768967,
+        0.0574096689534406,
+        0.0015322754366840251,
+        1.0635751102489581e-15,
+        5.740183935467624e-17,
+        6.070180718676556e-32
+      ],
+      "certified_points": 44,
+      "after_last_anchor": 44,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 3,
+      "measured_ranges": {
+        "path_error_m": [
+          0.11280009633787376,
+          0.1257836839216936
+        ],
+        "bed_error_m": [
+          0.0811268845867979,
+          0.09364496278633175
+        ],
+        "certified_lateral_margin_m": [
+          0.001405736695736154,
+          0.4050373251361479
+        ],
+        "running_height_m": [
+          0.27048599421982705,
+          1.4393905066054185
+        ]
+      }
+    },
+    {
+      "frame": 6569,
+      "component_id": 177,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.7057743920768967,
+        0.0574096689534406,
+        0.0015322754366840251,
+        1.0635751102489581e-15,
+        5.740183935467624e-17,
+        6.070180718676556e-32
+      ],
+      "certified_points": 153,
+      "after_last_anchor": 153,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 3,
+      "measured_ranges": {
+        "path_error_m": [
+          0.1429382603272723,
+          0.22337196441662233
+        ],
+        "bed_error_m": [
+          0.08384689742817578,
+          0.10150759900872602
+        ],
+        "certified_lateral_margin_m": [
+          4.63484974304873e-05,
+          0.4292177652527416
+        ],
+        "running_height_m": [
+          0.24261164408698455,
+          2.382933278880101
+        ]
+      }
+    },
+    {
+      "frame": 6569,
+      "component_id": 203,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.7057743920768967,
+        0.0574096689534406,
+        0.0015322754366840251,
+        1.0635751102489581e-15,
+        5.740183935467624e-17,
+        6.070180718676556e-32
+      ],
+      "certified_points": 99,
+      "after_last_anchor": 99,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 3,
+      "measured_ranges": {
+        "path_error_m": [
+          0.28652018317374606,
+          0.37121638920165134
+        ],
+        "bed_error_m": [
+          0.061885439283242805,
+          0.08252933516182928
+        ],
+        "certified_lateral_margin_m": [
+          0.0011392818005452332,
+          0.3444549032180786
+        ],
+        "running_height_m": [
+          0.18005748476781233,
+          2.8686712385113036
+        ]
+      }
+    },
+    {
+      "frame": 6574,
+      "component_id": 142,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.645,
+        -0.02702940171096794,
+        -0.002467745786827079,
+        0.00425061625834651,
+        0.0002575894829790679,
+        1.0513182800860325e-06
+      ],
+      "certified_points": 754,
+      "after_last_anchor": 754,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 5,
+      "measured_ranges": {
+        "path_error_m": [
+          0.061746898156453296,
+          0.17424984015443193
+        ],
+        "bed_error_m": [
+          0.07149466979635774,
+          0.10505866236505775
+        ],
+        "certified_lateral_margin_m": [
+          0.00140624744758798,
+          1.3175671240694324
+        ],
+        "running_height_m": [
+          0.18259988948751765,
+          2.7548810746732655
+        ]
+      }
+    },
+    {
+      "frame": 6574,
+      "component_id": 165,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.645,
+        -0.02702940171096794,
+        -0.002467745786827079,
+        0.00425061625834651,
+        0.0002575894829790679,
+        1.0513182800860325e-06
+      ],
+      "certified_points": 41,
+      "after_last_anchor": 41,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 5,
+      "measured_ranges": {
+        "path_error_m": [
+          0.17414591452768272,
+          0.18764951167595711
+        ],
+        "bed_error_m": [
+          0.08974129525819255,
+          0.09302624598747805
+        ],
+        "certified_lateral_margin_m": [
+          0.9084373143897757,
+          1.3126982223669914
+        ],
+        "running_height_m": [
+          0.34017932567697823,
+          2.5611343948670724
+        ]
+      }
+    },
+    {
+      "frame": 6574,
+      "component_id": 166,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.645,
+        -0.02702940171096794,
+        -0.002467745786827079,
+        0.00425061625834651,
+        0.0002575894829790679,
+        1.0513182800860325e-06
+      ],
+      "certified_points": 45,
+      "after_last_anchor": 45,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 5,
+      "measured_ranges": {
+        "path_error_m": [
+          0.1876774381045996,
+          0.2240491883374488
+        ],
+        "bed_error_m": [
+          0.09090985709987838,
+          0.09990349566264908
+        ],
+        "certified_lateral_margin_m": [
+          0.8824241097333978,
+          1.2679816831424482
+        ],
+        "running_height_m": [
+          0.32042359114441943,
+          2.3078710296760727
+        ]
+      }
+    },
+    {
+      "frame": 6574,
+      "component_id": 175,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.645,
+        -0.02702940171096794,
+        -0.002467745786827079,
+        0.00425061625834651,
+        0.0002575894829790679,
+        1.0513182800860325e-06
+      ],
+      "certified_points": 124,
+      "after_last_anchor": 124,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 5,
+      "measured_ranges": {
+        "path_error_m": [
+          0.22743523340532507,
+          0.30336010226117877
+        ],
+        "bed_error_m": [
+          0.07134169392864607,
+          0.09997526380718916
+        ],
+        "certified_lateral_margin_m": [
+          0.004342582821595942,
+          1.0175033950554997
+        ],
+        "running_height_m": [
+          0.22977762191008372,
+          2.684260132936942
+        ]
+      }
+    },
+    {
+      "frame": 6591,
+      "component_id": 157,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 22.619680404663086,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        22.619680404663086,
+        1.2878147350591718,
+        0.05614567931064981,
+        -0.0005700474725219812,
+        0.0012052470191004775,
+        8.51002846671509e-05,
+        9.92868221344654e-08
+      ],
+      "certified_points": 52,
+      "after_last_anchor": 52,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 4,
+      "measured_ranges": {
+        "path_error_m": [
+          0.19011067003959023,
+          0.20108866641855175
+        ],
+        "bed_error_m": [
+          0.06305175604662037,
+          0.07190716791871353
+        ],
+        "certified_lateral_margin_m": [
+          0.0006337255457135593,
+          0.19425708258316435
+        ],
+        "running_height_m": [
+          0.41529088043509527,
+          1.4826261082429157
+        ]
+      }
+    },
+    {
+      "frame": 6591,
+      "component_id": 178,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 22.619680404663086,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        22.619680404663086,
+        1.2878147350591718,
+        0.05614567931064981,
+        -0.0005700474725219812,
+        0.0012052470191004775,
+        8.51002846671509e-05,
+        9.92868221344654e-08
+      ],
+      "certified_points": 87,
+      "after_last_anchor": 87,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 4,
+      "measured_ranges": {
+        "path_error_m": [
+          0.2610731243626174,
+          0.2803060876402478
+        ],
+        "bed_error_m": [
+          0.05422020952612162,
+          0.06516584977266815
+        ],
+        "certified_lateral_margin_m": [
+          0.002897739045048753,
+          0.6750966385383199
+        ],
+        "running_height_m": [
+          0.28748247928264786,
+          2.3717021996365624
+        ]
+      }
+    },
+    {
+      "frame": 6591,
+      "component_id": 182,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 22.619680404663086,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        22.619680404663086,
+        1.2878147350591718,
+        0.05614567931064981,
+        -0.0005700474725219812,
+        0.0012052470191004775,
+        8.51002846671509e-05,
+        9.92868221344654e-08
+      ],
+      "certified_points": 70,
+      "after_last_anchor": 70,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 4,
+      "measured_ranges": {
+        "path_error_m": [
+          0.2870440014513034,
+          0.3101981214166883
+        ],
+        "bed_error_m": [
+          0.047027713502684886,
+          0.0631001657196038
+        ],
+        "certified_lateral_margin_m": [
+          0.003026266468787786,
+          0.8902668532124073
+        ],
+        "running_height_m": [
+          0.13330661579627617,
+          2.396450280943762
+        ]
+      }
+    },
+    {
+      "frame": 6591,
+      "component_id": 188,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 22.619680404663086,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        22.619680404663086,
+        1.2878147350591718,
+        0.05614567931064981,
+        -0.0005700474725219812,
+        0.0012052470191004775,
+        8.51002846671509e-05,
+        9.92868221344654e-08
+      ],
+      "certified_points": 39,
+      "after_last_anchor": 39,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 4,
+      "measured_ranges": {
+        "path_error_m": [
+          0.3185156336350889,
+          0.33331606953518433
+        ],
+        "bed_error_m": [
+          0.07086715139510198,
+          0.08443450221292663
+        ],
+        "certified_lateral_margin_m": [
+          0.03556898858970342,
+          0.5595679611843061
+        ],
+        "running_height_m": [
+          0.782641174930218,
+          2.360575885357571
+        ]
+      }
+    },
+    {
+      "frame": 6591,
+      "component_id": 191,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 22.619680404663086,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        22.619680404663086,
+        1.2878147350591718,
+        0.05614567931064981,
+        -0.0005700474725219812,
+        0.0012052470191004775,
+        8.51002846671509e-05,
+        9.92868221344654e-08
+      ],
+      "certified_points": 39,
+      "after_last_anchor": 39,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 4,
+      "measured_ranges": {
+        "path_error_m": [
+          0.3358498132061013,
+          0.34375987362615207
+        ],
+        "bed_error_m": [
+          0.08672591257977408,
+          0.09276800061026338
+        ],
+        "certified_lateral_margin_m": [
+          0.6086073960961311,
+          0.9872699992582121
+        ],
+        "running_height_m": [
+          0.18929342997638227,
+          1.4125927701044236
+        ]
+      }
+    },
+    {
+      "frame": 6591,
+      "component_id": 196,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 22.619680404663086,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        22.619680404663086,
+        1.2878147350591718,
+        0.05614567931064981,
+        -0.0005700474725219812,
+        0.0012052470191004775,
+        8.51002846671509e-05,
+        9.92868221344654e-08
+      ],
+      "certified_points": 42,
+      "after_last_anchor": 42,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 4,
+      "measured_ranges": {
+        "path_error_m": [
+          0.3726329274716985,
+          0.39986617476136216
+        ],
+        "bed_error_m": [
+          0.09586447002251713,
+          0.09984586983528035
+        ],
+        "certified_lateral_margin_m": [
+          0.13285403098175314,
+          0.9423186914076828
+        ],
+        "running_height_m": [
+          1.221419353945,
+          2.8883549124947123
+        ]
+      }
+    },
+    {
+      "frame": 6613,
+      "component_id": 135,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.8954125186854724,
+        0.03425859051476451,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 111,
+      "after_last_anchor": 0,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.07187028723909024,
+          0.07862405035204138
+        ],
+        "bed_error_m": [
+          0.07905932824235351,
+          0.08383543336927302
+        ],
+        "certified_lateral_margin_m": [
+          0.0018154739438971668,
+          0.2300230883297148
+        ],
+        "running_height_m": [
+          0.4317100290735596,
+          1.6721999477484013
+        ]
+      }
+    },
+    {
+      "frame": 6613,
+      "component_id": 159,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.8954125186854724,
+        0.03425859051476451,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 572,
+      "after_last_anchor": 572,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.09186744277477264,
+          0.26531218619028074
+        ],
+        "bed_error_m": [
+          0.07272714789697135,
+          0.09873754423063533
+        ],
+        "certified_lateral_margin_m": [
+          0.0023985060981444872,
+          0.9935585815994645
+        ],
+        "running_height_m": [
+          0.16833328100001285,
+          3.2058029575492
+        ]
+      }
+    },
+    {
+      "frame": 6613,
+      "component_id": 189,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.8954125186854724,
+        0.03425859051476451,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 50,
+      "after_last_anchor": 50,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.2649706947132188,
+          0.28513858745147447
+        ],
+        "bed_error_m": [
+          0.08327269445737084,
+          0.09505577902021294
+        ],
+        "certified_lateral_margin_m": [
+          0.619976914600113,
+          1.0886007702454288
+        ],
+        "running_height_m": [
+          0.31367479442231017,
+          2.6922669617488433
+        ]
+      }
+    },
+    {
+      "frame": 6613,
+      "component_id": 192,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.8954125186854724,
+        0.03425859051476451,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 74,
+      "after_last_anchor": 74,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.2864004465557809,
+          0.31726296510223184
+        ],
+        "bed_error_m": [
+          0.09148639030538082,
+          0.0988419669433954
+        ],
+        "certified_lateral_margin_m": [
+          0.02640965830184372,
+          1.1666383498812731
+        ],
+        "running_height_m": [
+          0.1687903984826153,
+          2.387966770307698
+        ]
+      }
+    },
+    {
+      "frame": 6613,
+      "component_id": 193,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.8954125186854724,
+        0.03425859051476451,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 69,
+      "after_last_anchor": 69,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.31977286114866726,
+          0.3535479412643282
+        ],
+        "bed_error_m": [
+          0.08526977043447229,
+          0.09077061065279596
+        ],
+        "certified_lateral_margin_m": [
+          0.405519458539983,
+          1.1413608225920453
+        ],
+        "running_height_m": [
+          0.24933370787761322,
+          3.243675997851734
+        ]
+      }
+    },
+    {
+      "frame": 6613,
+      "component_id": 196,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        0.8954125186854724,
+        0.03425859051476451,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 83,
+      "after_last_anchor": 83,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.3594786589193798,
+          0.39996054377009127
+        ],
+        "bed_error_m": [
+          0.09278469353017542,
+          0.10809679680165979
+        ],
+        "certified_lateral_margin_m": [
+          0.08968555131564743,
+          1.0840379289875428
+        ],
+        "running_height_m": [
+          0.29871896338574383,
+          2.897779764501613
+        ]
+      }
+    },
+    {
+      "frame": 6627,
+      "component_id": 211,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 35.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        35.0,
+        2.0353789061812546,
+        0.08658647207666342,
+        0.0009688725197636105,
+        2.20985825872688e-15,
+        8.087553648036984e-17,
+        1.7625361230898823e-31
+      ],
+      "certified_points": 43,
+      "after_last_anchor": 43,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 3,
+      "measured_ranges": {
+        "path_error_m": [
+          0.11780798381946514,
+          0.158366330872236
+        ],
+        "bed_error_m": [
+          0.08841637337166591,
+          0.10670731101793465
+        ],
+        "certified_lateral_margin_m": [
+          0.0010118870501391597,
+          0.24391815993955945
+        ],
+        "running_height_m": [
+          0.2601266232567959,
+          2.4653404862711454
+        ]
+      }
+    },
+    {
+      "frame": 6627,
+      "component_id": 217,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 35.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        35.0,
+        2.0353789061812546,
+        0.08658647207666342,
+        0.0009688725197636105,
+        2.20985825872688e-15,
+        8.087553648036984e-17,
+        1.7625361230898823e-31
+      ],
+      "certified_points": 116,
+      "after_last_anchor": 116,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 3,
+      "measured_ranges": {
+        "path_error_m": [
+          0.15663024411651277,
+          0.19228413245927076
+        ],
+        "bed_error_m": [
+          0.07905730965788815,
+          0.09137746956999752
+        ],
+        "certified_lateral_margin_m": [
+          0.0011308568853176937,
+          0.7182867040149455
+        ],
+        "running_height_m": [
+          0.17810772657674684,
+          3.3836015915842603
+        ]
+      }
+    },
+    {
+      "frame": 6627,
+      "component_id": 225,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 35.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        35.0,
+        2.0353789061812546,
+        0.08658647207666342,
+        0.0009688725197636105,
+        2.20985825872688e-15,
+        8.087553648036984e-17,
+        1.7625361230898823e-31
+      ],
+      "certified_points": 45,
+      "after_last_anchor": 45,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 3,
+      "measured_ranges": {
+        "path_error_m": [
+          0.2194259644723672,
+          0.2609644221067472
+        ],
+        "bed_error_m": [
+          0.10543014290984128,
+          0.12530071786101316
+        ],
+        "certified_lateral_margin_m": [
+          0.010484457506377831,
+          0.5034638126719793
+        ],
+        "running_height_m": [
+          0.4796713300755999,
+          2.5763458628994216
+        ]
+      }
+    },
+    {
+      "frame": 6627,
+      "component_id": 229,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 35.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        35.0,
+        2.0353789061812546,
+        0.08658647207666342,
+        0.0009688725197636105,
+        2.20985825872688e-15,
+        8.087553648036984e-17,
+        1.7625361230898823e-31
+      ],
+      "certified_points": 89,
+      "after_last_anchor": 89,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 3,
+      "measured_ranges": {
+        "path_error_m": [
+          0.26147545887615414,
+          0.28703255075659106
+        ],
+        "bed_error_m": [
+          0.12553463509734128,
+          0.13694769051726316
+        ],
+        "certified_lateral_margin_m": [
+          0.013898448871071556,
+          0.8419567515857032
+        ],
+        "running_height_m": [
+          0.32875873619273305,
+          2.7450509272764414
+        ]
+      }
+    },
+    {
+      "frame": 7976,
+      "component_id": 204,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 55.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        55.0,
+        -0.705,
+        0.0668999999999973,
+        0.0019799999999999185,
+        5.326705732461135e-15,
+        1.8984096643423656e-16,
+        1.007336152049964e-30
+      ],
+      "certified_points": 78,
+      "after_last_anchor": 78,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 7,
+      "measured_ranges": {
+        "path_error_m": [
+          0.11943655911455135,
+          0.15068216448694438
+        ],
+        "bed_error_m": [
+          0.07896292363249931,
+          0.09046193466270096
+        ],
+        "certified_lateral_margin_m": [
+          0.477537662667205,
+          1.2858204720570934
+        ],
+        "running_height_m": [
+          0.1535745264875071,
+          2.2025404800891417
+        ]
+      }
+    },
+    {
+      "frame": 8198,
+      "component_id": 0,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 19.614770889282227,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        19.614770889282227,
+        -0.6096702504582181,
+        -0.08217035456459561,
+        0.0,
+        0.05064952296726563,
+        0.0037213302082359755,
+        0.00018747985311778448
+      ],
+      "certified_points": 1479,
+      "after_last_anchor": 728,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 4,
+      "measured_ranges": {
+        "path_error_m": [
+          0.06004151198081672,
+          0.3996709013197894
+        ],
+        "bed_error_m": [
+          0.04770478608442478,
+          0.06980997733778124
+        ],
+        "certified_lateral_margin_m": [
+          0.0005041328437855319,
+          1.0902004882495904
+        ],
+        "running_height_m": [
+          0.10382145438437572,
+          2.2424344989279525
+        ]
+      }
+    },
+    {
+      "frame": 8424,
+      "component_id": 92,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 15.76652717590332,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        15.76652717590332,
+        -0.6604913090626592,
+        0.0052853250667307325,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 246,
+      "after_last_anchor": 246,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.19704213986573738,
+          0.22849750425158272
+        ],
+        "bed_error_m": [
+          0.0807925497467321,
+          0.09397700886960936
+        ],
+        "certified_lateral_margin_m": [
+          0.0034319022708013958,
+          0.7405200115257351
+        ],
+        "running_height_m": [
+          0.1550342157594125,
+          2.904079614672372
+        ]
+      }
+    },
+    {
+      "frame": 8424,
+      "component_id": 114,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 15.76652717590332,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        15.76652717590332,
+        -0.6604913090626592,
+        0.0052853250667307325,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 100,
+      "after_last_anchor": 100,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.2425697013127221,
+          0.2721658631745911
+        ],
+        "bed_error_m": [
+          0.08227672258481354,
+          0.09646938374624187
+        ],
+        "certified_lateral_margin_m": [
+          0.002973622209376886,
+          0.7737910832696306
+        ],
+        "running_height_m": [
+          0.2523518573425663,
+          1.9039447561236784
+        ]
+      }
+    },
+    {
+      "frame": 8424,
+      "component_id": 136,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 15.76652717590332,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        15.76652717590332,
+        -0.6604913090626592,
+        0.0052853250667307325,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 135,
+      "after_last_anchor": 135,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.3684540498261293,
+          0.39743158959618996
+        ],
+        "bed_error_m": [
+          0.08389067827912744,
+          0.094318593109019
+        ],
+        "certified_lateral_margin_m": [
+          0.02625949258839566,
+          0.879811863167885
+        ],
+        "running_height_m": [
+          0.3625307205071877,
+          3.0602535729958613
+        ]
+      }
+    },
+    {
+      "frame": 8458,
+      "component_id": 0,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        -0.5241123354998217,
+        -0.05595042659411646,
+        -0.005639787475414131,
+        0.008498480537503083,
+        0.0007559792902952776,
+        6.32781400117129e-06
+      ],
+      "certified_points": 4035,
+      "after_last_anchor": 0,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 4,
+      "measured_ranges": {
+        "path_error_m": [
+          0.1395250527646021,
+          0.2818893755157017
+        ],
+        "bed_error_m": [
+          0.038478329641638206,
+          0.062437745155825786
+        ],
+        "certified_lateral_margin_m": [
+          4.905819656728094e-05,
+          0.8044740086844333
+        ],
+        "running_height_m": [
+          0.09072775831582573,
+          2.917270608844641
+        ]
+      }
+    },
+    {
+      "frame": 8458,
+      "component_id": 68,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        -0.5241123354998217,
+        -0.05595042659411646,
+        -0.005639787475414131,
+        0.008498480537503083,
+        0.0007559792902952776,
+        6.32781400117129e-06
+      ],
+      "certified_points": 134,
+      "after_last_anchor": 0,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 4,
+      "measured_ranges": {
+        "path_error_m": [
+          0.06451130482011358,
+          0.0688782998984254
+        ],
+        "bed_error_m": [
+          0.06519433358803987,
+          0.06887423095195148
+        ],
+        "certified_lateral_margin_m": [
+          0.0063047688053558815,
+          0.45690005923515387
+        ],
+        "running_height_m": [
+          0.19133638277592105,
+          2.144398181453468
+        ]
+      }
+    },
+    {
+      "frame": 8458,
+      "component_id": 80,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 25.0,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        25.0,
+        -0.5241123354998217,
+        -0.05595042659411646,
+        -0.005639787475414131,
+        0.008498480537503083,
+        0.0007559792902952776,
+        6.32781400117129e-06
+      ],
+      "certified_points": 119,
+      "after_last_anchor": 0,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 4,
+      "measured_ranges": {
+        "path_error_m": [
+          0.0733287718605061,
+          0.08182421874180253
+        ],
+        "bed_error_m": [
+          0.07685284589157354,
+          0.08403246957908175
+        ],
+        "certified_lateral_margin_m": [
+          0.0003115071906256567,
+          0.5849601608851545
+        ],
+        "running_height_m": [
+          0.20218715427039038,
+          1.1353862738066023
+        ]
+      }
+    },
+    {
+      "frame": 9028,
+      "component_id": 0,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 27.497007369995117,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        27.497007369995117,
+        0.06,
+        -0.04033453093254301,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 966,
+      "after_last_anchor": 688,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.060122858147917936,
+          0.14758174619827588
+        ],
+        "bed_error_m": [
+          0.06426427891062575,
+          0.08702240075052912
+        ],
+        "certified_lateral_margin_m": [
+          0.0020712307993383805,
+          1.3549619185352417
+        ],
+        "running_height_m": [
+          0.12292636585064183,
+          2.958232080831767
+        ]
+      }
+    },
+    {
+      "frame": 9028,
+      "component_id": 100,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 27.497007369995117,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        27.497007369995117,
+        0.06,
+        -0.04033453093254301,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 308,
+      "after_last_anchor": 308,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.1491836181331291,
+          0.2583730088029213
+        ],
+        "bed_error_m": [
+          0.08027827481954868,
+          0.09672322494391598
+        ],
+        "certified_lateral_margin_m": [
+          0.0027989902855541926,
+          1.2458300449666628
+        ],
+        "running_height_m": [
+          0.15533044162343798,
+          3.1454876832936414
+        ]
+      }
+    },
+    {
+      "frame": 9198,
+      "component_id": 65,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 7.710898399353027,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        7.710898399353027,
+        0.24,
+        -0.005533221017644872,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 319,
+      "after_last_anchor": 319,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.22926340660789016,
+          0.36300646076220683
+        ],
+        "bed_error_m": [
+          0.05010772443828814,
+          0.07183343637245887
+        ],
+        "certified_lateral_margin_m": [
+          0.0002735321499552079,
+          0.5775256376751297
+        ],
+        "running_height_m": [
+          0.12218226604945018,
+          2.6605129947388275
+        ]
+      }
+    },
+    {
+      "frame": 9198,
+      "component_id": 82,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 7.710898399353027,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        7.710898399353027,
+        0.24,
+        -0.005533221017644872,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 85,
+      "after_last_anchor": 85,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.36450471702775056,
+          0.3997322844822617
+        ],
+        "bed_error_m": [
+          0.05321811403073193,
+          0.06111717859695274
+        ],
+        "certified_lateral_margin_m": [
+          0.07827116146154,
+          0.5929441924021628
+        ],
+        "running_height_m": [
+          0.12285465686452383,
+          2.7119248751579135
+        ]
+      }
+    },
+    {
+      "frame": 9993,
+      "component_id": 128,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 21.96846580505371,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        21.96846580505371,
+        -0.7537003440009469,
+        -0.07512924821024082,
+        -0.0023521967551648694,
+        0.00262937745111627,
+        0.00017777346270458121,
+        4.539251553760595e-07
+      ],
+      "certified_points": 52,
+      "after_last_anchor": 52,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 5,
+      "measured_ranges": {
+        "path_error_m": [
+          0.20690865715725593,
+          0.23944725061759065
+        ],
+        "bed_error_m": [
+          0.05816188874267184,
+          0.0664354960845844
+        ],
+        "certified_lateral_margin_m": [
+          0.00661137500645434,
+          0.29347303322155577
+        ],
+        "running_height_m": [
+          0.5103489407132735,
+          2.327514642111588
+        ]
+      }
+    },
+    {
+      "frame": 9993,
+      "component_id": 140,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 21.96846580505371,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        21.96846580505371,
+        -0.7537003440009469,
+        -0.07512924821024082,
+        -0.0023521967551648694,
+        0.00262937745111627,
+        0.00017777346270458121,
+        4.539251553760595e-07
+      ],
+      "certified_points": 47,
+      "after_last_anchor": 47,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 5,
+      "measured_ranges": {
+        "path_error_m": [
+          0.2987545180507857,
+          0.33436980631584434
+        ],
+        "bed_error_m": [
+          0.059618311816874874,
+          0.06739630492331777
+        ],
+        "certified_lateral_margin_m": [
+          0.0006816464421859902,
+          0.44013696331765834
+        ],
+        "running_height_m": [
+          0.4576465962691029,
+          2.907737945060431
+        ]
+      }
+    },
+    {
+      "frame": 10416,
+      "component_id": 1,
+      "original_continuous_confirmation": "immediate_interior_geometry",
+      "last_anchor_m": 15.517752647399902,
+      "continuation_x_y_slope_curvature_slope_sigma_curvature_sigma_covariance": [
+        15.517752647399902,
+        0.765,
+        0.09127425146638354,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ],
+      "certified_points": 2655,
+      "after_last_anchor": 2065,
+      "native_recognizes_all_frozen_core": true,
+      "rail_anchor_count": 2,
+      "measured_ranges": {
+        "path_error_m": [
+          0.06001889968432324,
+          0.28903412778628146
+        ],
+        "bed_error_m": [
+          0.047116895115933796,
+          0.07587942802759504
+        ],
+        "certified_lateral_margin_m": [
+          0.0005121237499425002,
+          1.338854283681297
+        ],
+        "running_height_m": [
+          0.09773722750750095,
+          3.5473182434362003
+        ]
+      }
+    }
+  ],
+  "limits": [
+    "Frozen rail and ground estimates, not refitted scan history.",
+    "A positive margin proves the implemented heuristic inequality, not correct physical clearance.",
+    "Extrapolation alone is not evidence of a false alarm; anchor association and uncertainty calibration remain separate questions."
+  ],
+  "findings": [
+    "Frame5300 has three anchors and two nonzero fit rows; quadratic residual nearly zero gives slope sigma 2.94e-14 and curvature sigma 1.54e-15. This residual cannot independently calibrate anchor-position error.",
+    "Frame5531 has two partly overlapping rail-support windows; the fallback continuation returns zero fit covariance. The heuristic distance term still supplies 0.261-0.272 m path error at the certified component.",
+    "The implemented interior inequality is reproduced, not proven physically correct. No detector thresholds or geometry changed."
+  ]
+}

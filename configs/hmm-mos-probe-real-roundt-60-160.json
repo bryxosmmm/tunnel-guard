@@ -1,0 +1,31 @@
+{
+  "hypothesis": "Run by the authors' own HMM-MOS implementation on a real recording with the poses our detector already produced: its dynamic labels are a complement to our static-hazard detector, and its range/compute envelope is bounded far below the 100-300 m this project is scored on.",
+  "source": "https://github.com/vb44/HMM-MOS commit 3f625031d135b2bbe4297125da11facdaba8ca81, built unmodified from source",
+  "bag": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+  "recorded_run": "build/perf-cpp-opt-20260917/roundT_doubleT.jsonl",
+  "detector_config": "configs/detector.json",
+  "annotation": null,
+  "note": "Moving platform: 1.72 m/frame median ego-motion (about 17 m/s at 10 Hz), 310 m of travel in the recording, curved section. Poses are the recorded run's own KISS-ICP estimates.",
+  "first_frame": 60,
+  "last_frame": 160,
+  "range_edges_m": [
+    10,
+    20,
+    30,
+    40,
+    50,
+    60
+  ],
+  "hmm_mos_config": {
+    "minRange": 0.5,
+    "maxRange": 60.0,
+    "voxelSize": 0.2,
+    "occupancySigma": 0.2,
+    "beliefThreshold": 0.99,
+    "convSize": 5,
+    "localWindowSize": 5,
+    "globalWindowSize": 300,
+    "minOtsu": 3
+  },
+  "output": "build/hmm-mos-probe-real-roundt-60-160"
+}

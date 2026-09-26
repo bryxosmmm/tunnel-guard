@@ -1,0 +1,10 @@
+{
+  "request_ref": "901975d",
+  "request_path": "results/issue27-episode-correspondence-20260924.json",
+  "request_snapshot": "build/issue27-handoff-20260924/request.json",
+  "source_run": "build/issue-23-continuous-baseline-retry-20260924",
+  "bag": "new_data",
+  "output": "results/issue27-episode-inputs-20260924.jsonl.gz",
+  "summary": "results/issue27-episode-inputs-20260924.json",
+  "scope": "Unmodified first-frame prediction records for the 30 requested episode timestamps. Not per-point component support: diagnostic_frames was empty in the full replay."
+}

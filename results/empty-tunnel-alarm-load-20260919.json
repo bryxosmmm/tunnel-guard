@@ -1,0 +1,50 @@
+{
+  "date": "2026-09-19",
+  "scope": "Highest-ROI attempt on the empty-tunnel false-alarm load, and why it was rejected",
+  "why_this_axis": {
+    "case_statement": "CASE.md 2: most provided recordings will be an empty tunnel; 8.1 scores false alarms and misses, 8.2 scores the maximum distance of confident detection",
+    "measured_alarm_load": {
+      "roundT_doubleT": "59 of 60 frames report unresolved_obstacle",
+      "doubleT_obstacle": "7 of 60 unresolved, 52 obstacle",
+      "extended_sample": "365 of 389 unresolved_obstacle"
+    }
+  },
+  "root_cause_measured": {
+    "objects": "2757 unresolved objects over 60 frames of roundT_doubleT, i.e. 46 per frame, median size 0.21 x 0.18 x 0.23 m, median height 0.51 m above the bed",
+    "position": "median lateral offset +1.39 m from the corridor centre; 1837 of 2757 fall in the 1.0-1.535 m bin, i.e. at the nominal envelope's boundary (half-width 1.535 m at rail level)",
+    "structure": "58 percent of them lie in longitudinal chains. One frame's chain, from the recorded run: x = 3.8, 8.5, 11.9, 15.7, 17.8, 20.6, 22.6, 25.3 m at lateral +1.44..+1.51 m and height 0.42..0.52 m",
+    "reading": "these are fragments of the tunnel's own continuous structures - a duct or walkway edge running the length of the scan - each fragment reported as a small object sitting at the corridor boundary, which is what turns every frame of an empty tunnel into an unresolved alarm"
+  },
+  "attempted_fix": {
+    "idea": "CASE.md's own hint: describe the normal tunnel, then look for what does not fit it. A structure occupying the same cross-section position far beyond a cluster on both sides along the track is infrastructure; a bounded cluster in the same coordinates is an object.",
+    "implementation": "post-pass over the candidates in tunnel_guard/detector.py, gated by an `infrastructure_continuity` recipe key, using only the current scan: bucket the context cloud by (lateral, height), and ask whether the candidate's own bucket, plus its 3x3 cross-section neighbours, spans far beyond the candidate both fore and aft",
+    "state": "implemented, measured, reverted. It is not in the tree."
+  },
+  "measurement_that_rejected_it": {
+    "real_recordings_60_frames_each": {
+      "roundT_doubleT": "statuses unchanged: candidate 1, unresolved_obstacle 59",
+      "doubleT_obstacle": "confirmed obstacle frames 52 -> 50, unresolved 7 -> 9: two frames of the recording that carries the labelled real obstacle lost their confirmed status"
+    },
+    "effect_on_the_target": "the alarm wall it was written to remove did not move on the tunnel recording",
+    "cost": "processing p50 154 -> 183 ms on doubleT_obstacle and 141 -> 174 ms on roundT_doubleT, about +19 percent",
+    "why_it_failed": "the bucket aggregates the wall behind and around a candidate with the candidate itself, so any object standing in front of a wall inherits the duct's long span. No threshold that still catches the duct separates them, which is a flaw of the test, not of its tuning",
+    "verdict": "rejected: it removed real detections, did not fix the alarm load, and cost latency"
+  },
+  "what_would_actually_work": [
+    "judge continuity from the candidate's own support: its own returns must form the chain, instead of inheriting the span of a cross-section cell shared with the wall behind it",
+    "or model the tunnel cross-section per station and treat returns explained by that profile as the normal tunnel - the same idea, stated as a model rather than a neighbourhood test",
+    "either way the gate is the check that failed here: the labelled obstacle recording must keep its confirmed frames, and the tunnel recording's alarm load must fall, before it ships"
+  ],
+  "also_measured_and_rejected": {
+    "raising_the_220m_input_ceiling": {
+      "hypothesis": "the shipped recipe caps input at 220 m while the panel was scored with 350 m, so 300 m detection was forfeited",
+      "measured": "the real recordings contain zero returns beyond 220 m - median 0, maximum 0, over 40 frames of both recordings - so the ceiling discards nothing real, and raising it would only lift the synthetic panel through its geometric ray-cast, which AGENTS.md forbids reading as hardware range",
+      "verdict": "not a loss; no change made"
+    },
+    "speed": {
+      "profile": "134 ms per frame: KISS-ICP about 28 ms, classify about 8 ms in three calls, native mutual graph about 7 ms, crop and voxel about 7 ms, the rest spread across the association and per-object work",
+      "conclusion": "no single dominant term and nothing redundant, so no 1.6x speedup is available by deleting work; the prior profile's 119 ms neighbour bottleneck was the NumPy path and is 7 ms now that the kernels are native"
+    }
+  },
+  "state": "working tree clean, the rejected code is reverted, no harmful behaviour shipped"
+}

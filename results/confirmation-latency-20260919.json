@@ -1,0 +1,21 @@
+{
+  "date": "2026-09-19",
+  "scope": "Confirmation latency and how it is earned, measured on the shipped recipe",
+  "why": "the case asks whether the train sees an obstacle EARLY enough to react, and lists confirmation delay among the metrics worth reporting; the value had never been measured",
+  "measured": {
+    "recording": "doubleT_obstacle, 60 frames, shipped recipe",
+    "tracks_seen": 816,
+    "tracks_confirmed": 608,
+    "confirmation_kind": {
+      "temporal_evidence": 588,
+      "immediate_geometry": 20
+    },
+    "frames_from_first_sight_to_confirmation": {
+      "median": 1,
+      "p90": 2
+    },
+    "closing_distance_in_that_window_m": 0.0,
+    "closest_confirmation_distance_m": 2.0
+  },
+  "reading": "confirmation is effectively immediate at the 10 Hz stream rate: a candidate that is geometrically sound is confirmed on the scan it arrives (immediate_geometry), and one that is not needs a single further scan (median 1 frame, p90 2). There is no slow-confirmation defect to fix, and the value is recorded so that claim rests on a measurement rather than on reading the thresholds."
+}

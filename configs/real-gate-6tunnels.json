@@ -1,0 +1,20 @@
+{
+  "hypothesis": "The synthetic panel alone cannot vet a detector change: it is insensitive to the hazard load and the obstacle-frame count on the real recordings. This replay is the acceptance gate, widened in segment 4 from two tunnels to all six and from 201 frames to every frame each recording holds.",
+  "criterion": "Report, per tunnel, frames whose status claims a corridor intrusion and the object load; a change that lowers the obstacle-frame count on the labelled recording is rejected whatever the synthetic panel says. The annotated localisation half of this gate is known to be vacuous (the annotated object lies outside the reference contour and is compared only against hazard-class objects), so it is reported and never claimed as verification.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/autoresearch-real",
+  "every": 1,
+  "max_frames": 900,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [],
+  "visualization": false,
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development"},
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_platform", "split": "development"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT", "split": "development"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT", "split": "development"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT", "split": "development"},
+    {"path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch", "split": "development"}
+  ]
+}

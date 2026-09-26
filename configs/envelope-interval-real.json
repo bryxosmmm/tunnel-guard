@@ -1,0 +1,34 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/envelope-interval-real",
+  "every": 1,
+  "max_frames": null,
+  "visualization": false,
+  "diagnostic_frames": [
+    0,
+    25,
+    100,
+    114,
+    181,
+    200,
+    219,
+    223
+  ],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Propagating existing ground-height uncertainty through stepped envelope width removes unsupported certainty without filtering small returns.",
+  "criterion": "Inspect full real outputs, retain prior diagnostic clustering input support and distant candidates; no future or duplicate confirmation evidence. No precision claim without independent labels."
+}

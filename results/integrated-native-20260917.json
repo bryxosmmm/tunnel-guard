@@ -1,0 +1,763 @@
+{
+  "date": "2026-09-17",
+  "baseline_revision": "48977ad",
+  "teammate_revision": "bb8c20c",
+  "merge_revision": "22e6a55",
+  "recipe": "configs/integrated-native-real.json",
+  "accuracy": null,
+  "panel": {
+    "panel": "configs/integrated-native-panel.json",
+    "panel_sha256": "e1843f3e86a62842847d753f58dec28cc3f7be2084a253cedfe48d5b61a5aa84",
+    "accuracy": null,
+    "limitations": [
+      "Alarm counts on nonexhaustively labelled development recordings are not precision, recall or false-alarm rate.",
+      "Repeated frames and candidates are not independent object events.",
+      "Timing is descriptive; concurrent workloads and visualization settings differ.",
+      "Float comparison uses absolute and relative tolerance 1e-10; discrete decisions and IDs are exact."
+    ],
+    "bags": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/runtime-context-real/doubleT_obstacle.jsonl",
+        "after": "build/integrated-native-real/doubleT_obstacle.jsonl",
+        "before_sha256": "85a2f5fe83e981ce361516602f970b68e999900c0d3b09a6dace660140c88056",
+        "after_sha256": "8ce4aeb1958f89b3c266e9e7b7ce3fba3df5e7906a47b9f7571203dca6c26c9e",
+        "before_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 82,
+            "obstacle": 119
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44603,
+          "support_voxel_observations": 3856178,
+          "confirmed_intersection_observations": 203,
+          "candidate_observations_at_least_60m": 10665,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 469.0715419710614,
+            "p95": 546.7085840064101,
+            "p99": 645.5557079752907
+          }
+        },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 82,
+            "obstacle": 119
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44603,
+          "support_voxel_observations": 3856178,
+          "confirmed_intersection_observations": 203,
+          "candidate_observations_at_least_60m": 10665,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 154.62495799874887,
+            "p95": 200.9285839740187,
+            "p99": 240.17950001871213
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 5.284661597215745e-14
+      },
+      {
+        "bag": "doubleT_platform",
+        "before": "build/runtime-context-real/doubleT_platform.jsonl",
+        "after": "build/integrated-native-real/doubleT_platform.jsonl",
+        "before_sha256": "df2370f2c51d3e3a6def4cac93addb9ba4dab88c7dbabe747cddb87218453bb8",
+        "after_sha256": "9410e827a73957c0fce75df9d45ee6426849ff402c7b385b37f79d44c35d125b",
+        "before_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68321,
+          "support_voxel_observations": 4237359,
+          "confirmed_intersection_observations": 255,
+          "candidate_observations_at_least_60m": 22191,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 315.41670800652355,
+            "p95": 392.4336328054779,
+            "p99": 428.78592993365606
+          }
+        },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68321,
+          "support_voxel_observations": 4237359,
+          "confirmed_intersection_observations": 255,
+          "candidate_observations_at_least_60m": 22191,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 125.98854099633172,
+            "p95": 231.363474985119,
+            "p99": 341.02547053480527
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 7.66053886991358e-14
+      },
+      {
+        "bag": "roundT_doubleT",
+        "before": "build/runtime-context-real/roundT_doubleT.jsonl",
+        "after": "build/integrated-native-real/roundT_doubleT.jsonl",
+        "before_sha256": "6bc675c3aeb75727c4eaf7b911df6157c46e0c04de9ebdd349403b3b023e18b8",
+        "after_sha256": "6cf383e177203e8c145af055eb790237d0b44b1c4793c81f4c3a0c3d5a54ede2",
+        "before_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 187,
+            "obstacle": 64
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48953,
+          "support_voxel_observations": 4039823,
+          "confirmed_intersection_observations": 191,
+          "candidate_observations_at_least_60m": 11435,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 371.8396670301445,
+            "p95": 430.16318109002896,
+            "p99": 456.4073600783013
+          }
+        },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 187,
+            "obstacle": 64
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48953,
+          "support_voxel_observations": 4039823,
+          "confirmed_intersection_observations": 191,
+          "candidate_observations_at_least_60m": 11435,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 124.29204198997468,
+            "p95": 161.17505243746564,
+            "p99": 187.6897787570489
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 3.492414690775547e-13
+      }
+    ]
+  },
+  "paired": {
+    "runs": [
+      {
+        "repeat": 0,
+        "backend": "before",
+        "voxel_backend": "cpp",
+        "order": [
+          "before",
+          "after"
+        ],
+        "frames": 20,
+        "elapsed_s": 9.623049581132364,
+        "processing_ms": {
+          "p50": 479.25341650261544,
+          "p95": 525.3040621959371
+        }
+      },
+      {
+        "repeat": 0,
+        "backend": "after",
+        "voxel_backend": "cpp",
+        "order": [
+          "before",
+          "after"
+        ],
+        "frames": 20,
+        "elapsed_s": 2.90775916504208,
+        "processing_ms": {
+          "p50": 146.5074165025726,
+          "p95": 154.66070596594363
+        }
+      },
+      {
+        "repeat": 1,
+        "backend": "after",
+        "voxel_backend": "cpp",
+        "order": [
+          "after",
+          "before"
+        ],
+        "frames": 20,
+        "elapsed_s": 2.977233915938996,
+        "processing_ms": {
+          "p50": 148.08468747651204,
+          "p95": 167.54953924100846
+        }
+      },
+      {
+        "repeat": 1,
+        "backend": "before",
+        "voxel_backend": "cpp",
+        "order": [
+          "after",
+          "before"
+        ],
+        "frames": 20,
+        "elapsed_s": 10.327475877071265,
+        "processing_ms": {
+          "p50": 475.67945849732496,
+          "p95": 646.1426017485793
+        }
+      },
+      {
+        "repeat": 2,
+        "backend": "before",
+        "voxel_backend": "cpp",
+        "order": [
+          "before",
+          "after"
+        ],
+        "frames": 20,
+        "elapsed_s": 9.139354124083184,
+        "processing_ms": {
+          "p50": 449.92214551893994,
+          "p95": 503.7728923256509
+        }
+      },
+      {
+        "repeat": 2,
+        "backend": "after",
+        "voxel_backend": "cpp",
+        "order": [
+          "before",
+          "after"
+        ],
+        "frames": 20,
+        "elapsed_s": 2.8480480418656953,
+        "processing_ms": {
+          "p50": 137.07010401412845,
+          "p95": 165.63077952596365
+        }
+      }
+    ],
+    "comparisons": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/integrated-native-paired/0-before.jsonl",
+        "after": "build/integrated-native-paired/0-after.jsonl",
+        "before_sha256": "d54eaa9b4b36a84852ae233b7386c06e738b3c14cfb8f957925cb14471538e58",
+        "after_sha256": "a73221d8f1eb1c6a98f85aa4a63ba62aacecc14b2a802d294c44b9dcc13e8faa",
+        "before_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4336,
+          "support_voxel_observations": 382291,
+          "confirmed_intersection_observations": 26,
+          "candidate_observations_at_least_60m": 1010,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 478.7562915007584,
+            "p95": 524.540464222082,
+            "p99": 541.950259230216
+          }
+        },
+        "after_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4336,
+          "support_voxel_observations": 382291,
+          "confirmed_intersection_observations": 26,
+          "candidate_observations_at_least_60m": 1010,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 145.6004370120354,
+            "p95": 154.06629371573217,
+            "p99": 154.7547587158624
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 7.993605777301127e-15
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/integrated-native-paired/1-before.jsonl",
+        "after": "build/integrated-native-paired/1-after.jsonl",
+        "before_sha256": "aaa9bafe805157a5bfd3adf505b6710b267b5f931e7aed7304f3c2d86eb2a1b1",
+        "after_sha256": "3bbd027c709afd0a8cef1d181ef3100ee14b01da480d5ece2feedbd9328673dc",
+        "before_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4336,
+          "support_voxel_observations": 382291,
+          "confirmed_intersection_observations": 26,
+          "candidate_observations_at_least_60m": 1010,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 474.7142920095939,
+            "p95": 625.5069625214675,
+            "p99": 738.5601925407534
+          }
+        },
+        "after_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4336,
+          "support_voxel_observations": 382291,
+          "confirmed_intersection_observations": 26,
+          "candidate_observations_at_least_60m": 1010,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 147.48231251724064,
+            "p95": 167.2284684231272,
+            "p99": 168.83032647136133
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 1.6542323066914832e-14
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/integrated-native-paired/2-before.jsonl",
+        "after": "build/integrated-native-paired/2-after.jsonl",
+        "before_sha256": "4c10c676029dfdb5dea65d4af02f3f207ed04e92cc5e92eae2ce9c557e30a07d",
+        "after_sha256": "a8ed7ec206e6adb3f62be8eabc15904cac7836ce390c89a76ca97d2f162a4e1a",
+        "before_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4336,
+          "support_voxel_observations": 382291,
+          "confirmed_intersection_observations": 26,
+          "candidate_observations_at_least_60m": 1010,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 449.4778119842522,
+            "p95": 503.261079452932,
+            "p99": 540.6726486794649
+          }
+        },
+        "after_statistics": {
+          "frames": 20,
+          "status_frames": {
+            "unresolved_obstacle": 7,
+            "obstacle": 13
+          },
+          "health_frames": {
+            "degraded": 20
+          },
+          "geometry_valid_frames": 20,
+          "motion_valid_frames": 19,
+          "candidate_observations": 4336,
+          "support_voxel_observations": 382291,
+          "confirmed_intersection_observations": 26,
+          "candidate_observations_at_least_60m": 1010,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 136.61041698651388,
+            "p95": 165.16483542218344,
+            "p99": 223.24153350607946
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 2.4868995751603507e-14
+      }
+    ],
+    "median_of_run_p50_ms": {
+      "before": 475.67945849732496,
+      "after": 146.5074165025726
+    },
+    "p50_speedup": 3.246794393435859,
+    "limitations": [
+      "Cached prefix of one development recording, not full field latency.",
+      "No bag decoding, rendering or ROS transport in timed region.",
+      "Sequential alternating runs reduce but cannot eliminate machine-load and thermal effects.",
+      "No accuracy conclusion; only output equivalence and cost."
+    ]
+  },
+  "profile": {
+    "command": [
+      "/Users/mors1337/Code/DL/tunnel-guard/tunnel_guard/profile_run.py",
+      "--experiment",
+      "configs/integrated-native-wall-profile.json"
+    ],
+    "limitations": [
+      "Inclusive nested times must not be summed.",
+      "Includes first-frame initialization; profiling has overhead.",
+      "No inference about accuracy or unmeasured target hardware."
+    ],
+    "stages": {
+      "tunnel_guard.io.decode_cloud": {
+        "calls": 10,
+        "total_s": 0.306469792034477,
+        "p50_ms": 28.979541995795444,
+        "samples_s": [
+          0.043268707988318056,
+          0.032269957999233156,
+          0.03231270896503702,
+          0.02710987499449402,
+          0.028605792031157762,
+          0.030376208014786243,
+          0.029353291960433125,
+          0.026820083032362163,
+          0.028350125008728355,
+          0.028003042039927095
+        ]
+      },
+      "Detector._motion": {
+        "calls": 10,
+        "total_s": 0.41078395990189165,
+        "p50_ms": 40.47591699054465,
+        "samples_s": [
+          0.03562045900616795,
+          0.04292512498795986,
+          0.03862579195993021,
+          0.039109750010538846,
+          0.049059666984248906,
+          0.03949937497964129,
+          0.04298749996814877,
+          0.041452459001448005,
+          0.04352108301827684,
+          0.03798274998553097
+        ]
+      },
+      "tunnel_guard.geometry.robust_plane": {
+        "calls": 10,
+        "total_s": 0.04680996009847149,
+        "p50_ms": 4.648833506507799,
+        "samples_s": [
+          0.005133167025633156,
+          0.0051293340511620045,
+          0.004516792017966509,
+          0.004299916967283934,
+          0.003975333005655557,
+          0.004780874995049089,
+          0.004370749986264855,
+          0.004818209039513022,
+          0.004294208018109202,
+          0.005491374991834164
+        ]
+      },
+      "TrackGeometry.classify": {
+        "calls": 30,
+        "total_s": 0.09408387390431017,
+        "p50_ms": 2.775437489617616,
+        "samples_s": [
+          0.0027204169891774654,
+          0.006028790958225727,
+          0.0007231660420075059,
+          0.002794582978822291,
+          0.006237166991923004,
+          0.0007403329946100712,
+          0.0026744999922811985,
+          0.004970291978679597,
+          0.0008164580212906003,
+          0.00317558302776888,
+          0.006099959020502865,
+          0.0007197499508038163,
+          0.0027491659857332706,
+          0.004351582960225642,
+          0.0007348340004682541,
+          0.002756292000412941,
+          0.006345542031340301,
+          0.000782917020842433,
+          0.002659957972355187,
+          0.005956249951850623,
+          0.0008184160105884075,
+          0.004031167016364634,
+          0.004974499985110015,
+          0.000798167020548135,
+          0.0028704999713227153,
+          0.004789250029716641,
+          0.0008012909675016999,
+          0.0029863329837098718,
+          0.006965917011257261,
+          0.0010107920388691127
+        ]
+      },
+      "tunnel_guard.accelerator.normal_statistics": {
+        "calls": 10,
+        "total_s": 0.10755608405452222,
+        "p50_ms": 10.641229513566941,
+        "samples_s": [
+          0.009366792044602334,
+          0.01369283301755786,
+          0.008917333965655416,
+          0.011552834010217339,
+          0.0095467499922961,
+          0.012140290986280888,
+          0.009995249973144382,
+          0.010510625026654452,
+          0.01077183400047943,
+          0.011061541037634015
+        ]
+      },
+      "TunnelBackground.__init__": {
+        "calls": 10,
+        "total_s": 0.5811637910082936,
+        "p50_ms": 56.2356460141018,
+        "samples_s": [
+          0.06070466700475663,
+          0.06428179098293185,
+          0.05325433297548443,
+          0.057041792024392635,
+          0.055972374975681305,
+          0.05548433295916766,
+          0.05624574999092147,
+          0.05622554203728214,
+          0.05512370803626254,
+          0.06682950002141297
+        ]
+      },
+      "TrackGeometry.__init__": {
+        "calls": 10,
+        "total_s": 0.6809156269882806,
+        "p50_ms": 66.1457505193539,
+        "samples_s": [
+          0.07114433299284428,
+          0.07571474998258054,
+          0.06319029198493809,
+          0.066170834004879,
+          0.06465566699625924,
+          0.06561037502251565,
+          0.0661206670338288,
+          0.06652679201215506,
+          0.06452504196204245,
+          0.07725687499623746
+        ]
+      },
+      "TunnelBackground.mask": {
+        "calls": 10,
+        "total_s": 0.026380918046925217,
+        "p50_ms": 2.8149374993517995,
+        "samples_s": [
+          0.003035333997104317,
+          0.002915334014687687,
+          0.002075167023576796,
+          0.002714540984015912,
+          0.0014705840148963034,
+          0.0032701250165700912,
+          0.0031043749768286943,
+          0.002055542019661516,
+          0.0018934159888885915,
+          0.0038465000106953084
+        ]
+      },
+      "tunnel_guard.accelerator.density_graph": {
+        "calls": 10,
+        "total_s": 0.08511704299598932,
+        "p50_ms": 8.693458512425423,
+        "samples_s": [
+          0.009151834005024284,
+          0.009333042020443827,
+          0.008978749974630773,
+          0.007680999988224357,
+          0.007570957997813821,
+          0.007684291980694979,
+          0.008265750017017126,
+          0.008930750016588718,
+          0.008456167008262128,
+          0.00906449998728931
+        ]
+      },
+      "tunnel_guard.detector.density_labels": {
+        "calls": 10,
+        "total_s": 0.17884479206986725,
+        "p50_ms": 17.593541502719745,
+        "samples_s": [
+          0.019745459023397416,
+          0.017177250003442168,
+          0.017857124970760196,
+          0.01566666702274233,
+          0.016633291030302644,
+          0.015743917028885335,
+          0.02054483297979459,
+          0.017842792032752186,
+          0.017344290972687304,
+          0.02028916700510308
+        ]
+      },
+      "tunnel_guard.detector.cluster_candidates": {
+        "calls": 10,
+        "total_s": 0.2677153730764985,
+        "p50_ms": 26.211187476292253,
+        "samples_s": [
+          0.029060000029858202,
+          0.02634387498255819,
+          0.026392416039016098,
+          0.02473100001225248,
+          0.023978165991138667,
+          0.025289750017691404,
+          0.029807833023369312,
+          0.026078499970026314,
+          0.025268875004258007,
+          0.030764958006329834
+        ]
+      },
+      "Detector._associate": {
+        "calls": 10,
+        "total_s": 0.1212090429617092,
+        "p50_ms": 13.075312483124435,
+        "samples_s": [
+          0.002535083971451968,
+          0.0092418750282377,
+          0.010313334001693875,
+          0.01433379203081131,
+          0.01267016597557813,
+          0.01348045899067074,
+          0.014224457961972803,
+          0.012367292016278952,
+          0.015175499953329563,
+          0.01686708303168416
+        ]
+      },
+      "Detector.process": {
+        "calls": 10,
+        "total_s": 1.6483039589365944,
+        "p50_ms": 163.39133348083124,
+        "samples_s": [
+          0.15908454195596278,
+          0.17312166700139642,
+          0.15438745805295184,
+          0.1601217919960618,
+          0.16596574999857694,
+          0.15898279199609533,
+          0.1692791249952279,
+          0.1619717919966206,
+          0.16481087496504188,
+          0.18057816597865894
+        ]
+      }
+    }
+  },
+  "viewer": {
+    "metadata": "integrated-native-real",
+    "frames": 345,
+    "frame_fields": [
+      "row",
+      "points",
+      "decoded_points",
+      "distances",
+      "corridor"
+    ],
+    "track_id": 11788,
+    "available": true,
+    "expected_support": 4653,
+    "returned_support": 4653,
+    "reason": "exact_current_scan_voxel_representatives"
+  },
+  "limitations": [
+    "798 development scans, nonexhaustive labels: no precision, recall or safety claim.",
+    "Paired benchmark: 20 cached scans, three alternating repetitions, distinct old/new binaries; excludes decoding, rendering and transport.",
+    "Full replay includes diagnostic capture on nine frames and some concurrent build/inspection work; timing is descriptive.",
+    "Invalid-geometry replay deliberately raises rail support requirement on one real frame; not a natural default-panel failure.",
+    "Source distribution built and imported on macOS; Docker/ROS2 and Intel target were not run.",
+    "Initial cProfile output omitted expected parent call counts; retained for diagnosis, replaced by explicit inclusive wall timers."
+  ]
+}

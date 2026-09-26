@@ -1,0 +1,23 @@
+{
+  "detector_config": "configs/detector.json",
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Reduce decode allocation/copy cost without changing real measurements or detector evidence",
+  "criterion": "798-frame outputs match integrated-native-real within 1e-10; report scoped offline iteration latency",
+  "output": "build/decode-paired",
+  "baseline_source": "build/decode-baseline/tunnel_guard/io.py",
+  "repetitions": 3,
+  "max_frames": null
+}

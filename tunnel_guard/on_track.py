@@ -1,16 +1,22 @@
-"""Find objects with point support inside the reference clearance envelope.
+"""Review probe: compact objects with point support inside the reference clearance envelope.
 
-The detector's ``path_relation=intersecting`` comes from cluster bounding boxes, so a wall
-cluster whose box reaches into the envelope counts as a hazard. This command works on
-returns instead: only points that actually lie inside the GOST contour are clustered, and a
+This is a REVIEW instrument, not the detector. It works on returns rather than on the
+detector's components: only points that lie inside the GOST contour are clustered, and a
 cluster is rejected when it is a face of a large connected surface, or when the same lateral
 and vertical profile runs continuously (or periodically) along the tunnel — cable runs,
 linings, trays and posts. What survives is a short list of compact intrusions, grouped into
 events across frames so one object is reported once rather than once per frame.
 
+The detector itself no longer uses bounding boxes or cluster-level continuity for this: a
+return's relation to the corridor is decided per return, on the measured coordinates, with
+the tunnel's own cross-section recognised by longitudinal support and outward reach
+(see ``docs/DETECTOR.md`` section 7). This probe is kept because its reporting bar —
+compactness, several frames, a plausible lateral band — is a different and stricter question,
+and because it is the tool that showed the envelope itself is only as good as the
+track-centre estimate behind it.
+
 Thresholds live in ``configs/on-track-probe.json``. Output is the per-frame clusters plus the
-grouped events; a candidate list is evidence for review, not a verified hazard, and on curved
-recordings the envelope itself is only as good as the track-centre estimate behind it.
+grouped events; a candidate list is evidence for review, not a verified hazard.
 """
 from __future__ import annotations
 

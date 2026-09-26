@@ -1,0 +1,32 @@
+{
+  "seed": 20260918,
+  "scene_config": "configs/stress-measured-pattern-final.json",
+  "output": "build/track-curves-prefix",
+  "frames": 1,
+  "frame_period_s": 0.1,
+  "mesh_step_m": 0.5,
+  "detectors": {
+    "baseline": "configs/detector-track-baseline.json",
+    "continuity": "configs/detector-continuity-experimental.json"
+  },
+  "cases": [
+    {
+      "id": "straight",
+      "horizontal_curvature": 0,
+      "vertical_curvature": 0,
+      "grade": 0,
+      "cant_gradient_rad_per_m": 0,
+      "object": {
+        "station_m": 20,
+        "lateral_m": 0,
+        "dimensions_m": [
+          0.4,
+          0.5,
+          0.8
+        ]
+      }
+    }
+  ],
+  "hypothesis": "Measured local rail bases follow horizontal, vertical and cant changes while keeping visible objects",
+  "criterion": "Report candidate and confirmed-intersection matches separately; retain every failure; no field accuracy"
+}

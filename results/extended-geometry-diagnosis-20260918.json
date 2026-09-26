@@ -1,0 +1,1438 @@
+{
+  "selection": "Three earliest failed source frames and their predecessors, selected after observing the failures; development diagnosis only",
+  "source_run": "build/extended-full",
+  "source_revision": "60921a7",
+  "source_geometry_sha256": "3eaaa3e09eba6461bbe6d48468206b28aec6f455d6f9dde6e9b7c356987b82a1",
+  "cases": [
+    {
+      "frame": 890,
+      "measurement_timestamp_ns": 946686778233441949,
+      "geometry_input_npz_sha256": "d7ef8e68c8d40d3fd364230e7081dc40d0ec9f96a2b2ae2c5ff8e4804f9863fa",
+      "variants": [
+        {
+          "estimator": "histogram",
+          "support": "window",
+          "valid": true,
+          "rail_anchors": [
+            [
+              5.0,
+              0.16499999999999998,
+              1.6199999999999999,
+              14.0
+            ],
+            [
+              10.0,
+              0.195,
+              1.6199999999999999,
+              12.0
+            ],
+            [
+              15.0,
+              0.46499999999999997,
+              1.6199999999999999,
+              8.0
+            ],
+            [
+              20.0,
+              0.855,
+              1.56,
+              19.0
+            ],
+            [
+              25.0,
+              1.29,
+              1.65,
+              13.0
+            ],
+            [
+              30.0,
+              1.68,
+              1.5899999999999999,
+              7.0
+            ]
+          ]
+        },
+        {
+          "estimator": "histogram",
+          "support": "measured",
+          "valid": true,
+          "rail_anchors": [
+            [
+              5.0,
+              0.16499999999999998,
+              1.6199999999999999,
+              14.0
+            ],
+            [
+              8.354769706726074,
+              0.195,
+              1.6199999999999999,
+              12.0
+            ],
+            [
+              16.13918113708496,
+              0.5354746596598773,
+              1.65,
+              7.0
+            ],
+            [
+              21.2799015045166,
+              0.9022902973484614,
+              1.56,
+              7.0
+            ],
+            [
+              30.0,
+              1.6199999999999999,
+              1.5899999999999999,
+              6.0
+            ],
+            [
+              31.712078094482422,
+              1.7993868349798166,
+              1.5899999999999999,
+              4.0
+            ],
+            [
+              40.0,
+              2.73,
+              1.65,
+              5.0
+            ]
+          ]
+        },
+        {
+          "estimator": "paired_line",
+          "support": "window",
+          "valid": true,
+          "rail_anchors": [
+            [
+              5.0,
+              0.16499999999999998,
+              1.6199999999999999,
+              14.0
+            ],
+            [
+              10.0,
+              0.195,
+              1.6199999999999999,
+              12.0
+            ],
+            [
+              15.0,
+              0.5570398700132294,
+              1.587406024384516,
+              8.0
+            ],
+            [
+              20.0,
+              0.9137544406655476,
+              1.5846722644497602,
+              19.0
+            ],
+            [
+              25.0,
+              1.2449999999999999,
+              1.56,
+              13.0
+            ],
+            [
+              30.0,
+              1.640120683880716,
+              1.5912930675075154,
+              7.0
+            ]
+          ]
+        },
+        {
+          "estimator": "paired_line",
+          "support": "measured",
+          "valid": true,
+          "rail_anchors": [
+            [
+              5.0,
+              0.16499999999999998,
+              1.6199999999999999,
+              14.0
+            ],
+            [
+              8.354769706726074,
+              0.195,
+              1.6199999999999999,
+              12.0
+            ],
+            [
+              15.0,
+              0.5971446667695804,
+              1.5289711828453372,
+              5.0
+            ],
+            [
+              20.0,
+              0.9137570082381649,
+              1.5857515795501638,
+              20.0
+            ],
+            [
+              25.0,
+              1.255225132865055,
+              1.5842204800380688,
+              11.0
+            ],
+            [
+              30.0,
+              1.6496466444868008,
+              1.5946831896212348,
+              7.0
+            ],
+            [
+              34.28028106689453,
+              2.0628050811409913,
+              1.5907077962454328,
+              4.0
+            ],
+            [
+              40.0,
+              2.67,
+              1.65,
+              4.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 891,
+      "measurement_timestamp_ns": 946686778333438993,
+      "geometry_input_npz_sha256": "d3e474b0108e7508dd54450c1f7e43beae51bb4a889878b84b82bef8c60472d9",
+      "variants": [
+        {
+          "estimator": "histogram",
+          "support": "window",
+          "valid": true,
+          "rail_anchors": [
+            [
+              20.0,
+              0.51,
+              1.5899999999999999,
+              7.0
+            ],
+            [
+              30.0,
+              -0.135,
+              1.6199999999999999,
+              4.0
+            ]
+          ]
+        },
+        {
+          "estimator": "histogram",
+          "support": "measured",
+          "valid": false,
+          "rail_anchors": [
+            [
+              14.881636619567871,
+              0.51,
+              1.5899999999999999,
+              7.0
+            ]
+          ]
+        },
+        {
+          "estimator": "paired_line",
+          "support": "window",
+          "valid": true,
+          "rail_anchors": [
+            [
+              20.0,
+              0.5339314416157901,
+              1.5842990516703492,
+              7.0
+            ],
+            [
+              30.0,
+              -0.135,
+              1.6199999999999999,
+              4.0
+            ]
+          ]
+        },
+        {
+          "estimator": "paired_line",
+          "support": "measured",
+          "valid": false,
+          "rail_anchors": [
+            [
+              14.881636619567871,
+              0.5123011567603707,
+              1.5842990516703492,
+              7.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 897,
+      "measurement_timestamp_ns": 946686778933393955,
+      "geometry_input_npz_sha256": "dd6d570a9fe78cd21fc6e3b86cf4bcdd10356b4d0b2544028a3772eae591b01c",
+      "variants": [
+        {
+          "estimator": "histogram",
+          "support": "window",
+          "valid": true,
+          "rail_anchors": [
+            [
+              5.0,
+              0.195,
+              1.6199999999999999,
+              14.0
+            ],
+            [
+              10.0,
+              0.195,
+              1.6199999999999999,
+              11.0
+            ],
+            [
+              20.0,
+              0.54,
+              1.5899999999999999,
+              6.0
+            ],
+            [
+              25.0,
+              1.05,
+              1.5899999999999999,
+              5.0
+            ],
+            [
+              35.0,
+              2.31,
+              1.65,
+              6.0
+            ],
+            [
+              40.0,
+              2.895,
+              1.56,
+              5.0
+            ]
+          ]
+        },
+        {
+          "estimator": "histogram",
+          "support": "measured",
+          "valid": true,
+          "rail_anchors": [
+            [
+              5.0,
+              0.195,
+              1.6199999999999999,
+              14.0
+            ],
+            [
+              7.139695167541504,
+              0.195,
+              1.6199999999999999,
+              11.0
+            ],
+            [
+              14.88808536529541,
+              0.54,
+              1.5899999999999999,
+              6.0
+            ],
+            [
+              21.484054565429688,
+              0.983451201608512,
+              1.5899999999999999,
+              7.0
+            ],
+            [
+              28.009654998779297,
+              1.5161878405392117,
+              1.5899999999999999,
+              6.0
+            ],
+            [
+              31.793657302856445,
+              1.8982407566655963,
+              1.5899999999999999,
+              5.0
+            ],
+            [
+              40.0,
+              2.82,
+              1.65,
+              4.0
+            ]
+          ]
+        },
+        {
+          "estimator": "paired_line",
+          "support": "window",
+          "valid": true,
+          "rail_anchors": [
+            [
+              5.0,
+              0.1979383083107612,
+              1.5860330164094272,
+              14.0
+            ],
+            [
+              10.0,
+              0.3552701069082164,
+              1.584260170099947,
+              11.0
+            ],
+            [
+              15.0,
+              0.628883979201466,
+              1.5757563760645257,
+              15.0
+            ],
+            [
+              20.0,
+              0.951548666780039,
+              1.5742932320982645,
+              18.0
+            ],
+            [
+              25.0,
+              1.3199700807696937,
+              1.582827414959562,
+              12.0
+            ],
+            [
+              30.0,
+              1.68,
+              1.53,
+              6.0
+            ]
+          ]
+        },
+        {
+          "estimator": "paired_line",
+          "support": "measured",
+          "valid": true,
+          "rail_anchors": [
+            [
+              5.0,
+              0.1979383083107612,
+              1.5860330164094272,
+              14.0
+            ],
+            [
+              10.0,
+              0.3552701069082164,
+              1.584260170099947,
+              11.0
+            ],
+            [
+              15.0,
+              0.628883979201466,
+              1.5757563760645257,
+              15.0
+            ],
+            [
+              20.0,
+              0.951548666780039,
+              1.5742932320982645,
+              18.0
+            ],
+            [
+              25.0,
+              1.3199700807696937,
+              1.582827414959562,
+              12.0
+            ],
+            [
+              29.144620895385742,
+              1.616972004156162,
+              1.53,
+              6.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 898,
+      "measurement_timestamp_ns": 946686779033385038,
+      "geometry_input_npz_sha256": "af599ba61ca75da3f389b527301e5f535870a4074dae0b304fbc4be1adb26127",
+      "variants": [
+        {
+          "estimator": "histogram",
+          "support": "window",
+          "valid": true,
+          "rail_anchors": [
+            [
+              15.0,
+              0.42,
+              1.65,
+              7.0
+            ],
+            [
+              20.0,
+              0.525,
+              1.6199999999999999,
+              7.0
+            ],
+            [
+              25.0,
+              0.945,
+              1.56,
+              5.0
+            ],
+            [
+              30.0,
+              1.77,
+              1.5899999999999999,
+              9.0
+            ]
+          ]
+        },
+        {
+          "estimator": "histogram",
+          "support": "measured",
+          "valid": true,
+          "rail_anchors": [
+            [
+              11.966425895690918,
+              0.42,
+              1.65,
+              7.0
+            ],
+            [
+              14.694164276123047,
+              0.525,
+              1.6199999999999999,
+              7.0
+            ],
+            [
+              20.318490982055664,
+              0.9147926713168575,
+              1.56,
+              6.0
+            ],
+            [
+              26.846019744873047,
+              1.4464141223997937,
+              1.56,
+              6.0
+            ],
+            [
+              31.702045440673828,
+              1.8914047241857226,
+              1.5899999999999999,
+              5.0
+            ],
+            [
+              36.17021179199219,
+              2.3790505062879372,
+              1.65,
+              5.0
+            ]
+          ]
+        },
+        {
+          "estimator": "paired_line",
+          "support": "window",
+          "valid": true,
+          "rail_anchors": [
+            [
+              15.0,
+              0.5880037318586286,
+              1.5895063371577995,
+              7.0
+            ],
+            [
+              20.0,
+              0.5078044176780975,
+              1.5905288850085217,
+              7.0
+            ],
+            [
+              25.0,
+              0.6583666830715069,
+              1.519878781256556,
+              4.0
+            ],
+            [
+              35.0,
+              0.3951879385498697,
+              1.371157922630855,
+              4.0
+            ]
+          ]
+        },
+        {
+          "estimator": "paired_line",
+          "support": "measured",
+          "valid": false,
+          "rail_anchors": [
+            [
+              15.0,
+              0.5880037318586286,
+              1.5895063371577995,
+              7.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 906,
+      "measurement_timestamp_ns": 946686779833323956,
+      "geometry_input_npz_sha256": "9b708b7b198b063be1ead160728c0224afb8f2d3131bd44ab98a3e71d914bebc",
+      "variants": [
+        {
+          "estimator": "histogram",
+          "support": "window",
+          "valid": true,
+          "rail_anchors": [
+            [
+              5.0,
+              0.195,
+              1.6199999999999999,
+              13.0
+            ],
+            [
+              10.0,
+              0.21,
+              1.5899999999999999,
+              10.0
+            ],
+            [
+              20.0,
+              0.5549999999999999,
+              1.6199999999999999,
+              7.0
+            ],
+            [
+              25.0,
+              1.095,
+              1.56,
+              5.0
+            ],
+            [
+              40.0,
+              2.88,
+              1.5899999999999999,
+              6.0
+            ]
+          ]
+        },
+        {
+          "estimator": "histogram",
+          "support": "measured",
+          "valid": true,
+          "rail_anchors": [
+            [
+              5.0,
+              0.195,
+              1.6199999999999999,
+              13.0
+            ],
+            [
+              7.565853118896484,
+              0.21,
+              1.5899999999999999,
+              10.0
+            ],
+            [
+              13.369613647460938,
+              0.5304687469801063,
+              1.65,
+              7.0
+            ],
+            [
+              20.0,
+              0.945,
+              1.56,
+              20.0
+            ],
+            [
+              24.915529251098633,
+              1.2997188951708367,
+              1.56,
+              11.0
+            ],
+            [
+              29.39920997619629,
+              1.69664524355629,
+              1.5899999999999999,
+              7.0
+            ],
+            [
+              34.29969024658203,
+              2.2030037495518022,
+              1.6199999999999999,
+              7.0
+            ],
+            [
+              40.0,
+              2.88,
+              1.65,
+              6.0
+            ]
+          ]
+        },
+        {
+          "estimator": "paired_line",
+          "support": "window",
+          "valid": true,
+          "rail_anchors": [
+            [
+              5.0,
+              0.195,
+              1.6199999999999999,
+              13.0
+            ],
+            [
+              10.0,
+              0.21,
+              1.5899999999999999,
+              10.0
+            ],
+            [
+              20.0,
+              0.535298980174022,
+              1.597002155319366,
+              7.0
+            ],
+            [
+              25.0,
+              1.2850078938636345,
+              1.575928178236453,
+              5.0
+            ],
+            [
+              35.0,
+              2.265,
+              1.6199999999999999,
+              4.0
+            ]
+          ]
+        },
+        {
+          "estimator": "paired_line",
+          "support": "measured",
+          "valid": true,
+          "rail_anchors": [
+            [
+              5.0,
+              0.195,
+              1.6199999999999999,
+              13.0
+            ],
+            [
+              7.565853118896484,
+              0.21,
+              1.5899999999999999,
+              10.0
+            ],
+            [
+              13.369613647460938,
+              0.5304687469801063,
+              1.65,
+              7.0
+            ],
+            [
+              20.0,
+              0.945,
+              1.56,
+              20.0
+            ],
+            [
+              25.0,
+              1.3610737755944402,
+              1.5760033709664956,
+              11.0
+            ],
+            [
+              30.0,
+              1.8128457564483624,
+              1.5790460289753074,
+              10.0
+            ],
+            [
+              35.0,
+              2.265,
+              1.56,
+              7.0
+            ],
+            [
+              40.0,
+              2.8387248926438375,
+              1.6039204794120343,
+              5.0
+            ]
+          ]
+        }
+      ]
+    },
+    {
+      "frame": 907,
+      "measurement_timestamp_ns": 946686779933331966,
+      "geometry_input_npz_sha256": "71e85b8def86c512524f27606edcf16bbbf622c6b1a0e67421f45218d9afa422",
+      "variants": [
+        {
+          "estimator": "histogram",
+          "support": "window",
+          "valid": true,
+          "rail_anchors": [
+            [
+              10.0,
+              0.40499999999999997,
+              1.38,
+              7.0
+            ],
+            [
+              15.0,
+              0.48,
+              1.53,
+              7.0
+            ],
+            [
+              20.0,
+              0.6599999999999999,
+              1.5899999999999999,
+              7.0
+            ],
+            [
+              25.0,
+              1.095,
+              1.6199999999999999,
+              5.0
+            ],
+            [
+              30.0,
+              1.815,
+              1.56,
+              10.0
+            ],
+            [
+              35.0,
+              2.475,
+              1.56,
+              5.0
+            ]
+          ]
+        },
+        {
+          "estimator": "histogram",
+          "support": "measured",
+          "valid": true,
+          "rail_anchors": [
+            [
+              12.788894653320312,
+              0.48,
+              1.53,
+              7.0
+            ],
+            [
+              14.89052963256836,
+              0.54,
+              1.65,
+              7.0
+            ],
+            [
+              18.769512176513672,
+              0.8721245491722193,
+              1.65,
+              6.0
+            ],
+            [
+              30.0,
+              1.815,
+              1.56,
+              11.0
+            ],
+            [
+              31.503122329711914,
+              1.9264134557924357,
+              1.5899999999999999,
+              7.0
+            ]
+          ]
+        },
+        {
+          "estimator": "paired_line",
+          "support": "window",
+          "valid": true,
+          "rail_anchors": [
+            [
+              10.0,
+              0.40499999999999997,
+              1.38,
+              7.0
+            ],
+            [
+              15.0,
+              0.6440195043104738,
+              1.5685056925277021,
+              7.0
+            ],
+            [
+              20.0,
+              0.9827068270309411,
+              1.5788224597505873,
+              16.0
+            ],
+            [
+              25.0,
+              1.37575407230115,
+              1.5839189881087652,
+              12.0
+            ],
+            [
+              30.0,
+              1.8138778101974344,
+              1.575534366661753,
+              7.0
+            ],
+            [
+              35.0,
+              2.2892685592823274,
+              1.564064482279622,
+              6.0
+            ],
+            [
+              40.0,
+              2.82,
+              1.65,
+              5.0
+            ]
+          ]
+        },
+        {
+          "estimator": "paired_line",
+          "support": "measured",
+          "valid": false,
+          "rail_anchors": [
+            [
+              15.0,
+              0.6440195043104738,
+              1.5685056925277021,
+              7.0
+            ]
+          ]
+        }
+      ]
+    }
+  ],
+  "candidate": {
+    "production_changed": false,
+    "source_sha256": "7385937b0bb0c3ba70198c945b16188b6f2c9740e49d719f457d7142d6da87bb",
+    "change": "Use the fitted first accepted rail-pair heading in the next window when exactly one anchor exists, instead of zero heading",
+    "config": {
+      "seed": 20260915,
+      "sensor_rotation": [
+        [
+          0.0,
+          -1.0,
+          0.0
+        ],
+        [
+          1.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          1.0
+        ]
+      ],
+      "sensor_translation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "min_range_m": 1.0,
+      "max_range_m": 220.0,
+      "min_forward_m": 2.0,
+      "context_half_width_m": 8.0,
+      "geometry_voxel_m": 0.05,
+      "ground_fit_range_m": [
+        2.0,
+        25.0
+      ],
+      "ground_fit_half_width_m": 2.0,
+      "ground_sensor_height_bounds_m": [
+        0.6,
+        3.5
+      ],
+      "ground_max_slopes": [
+        0.15,
+        0.3
+      ],
+      "ground_ransac_trials": 180,
+      "ground_inlier_m": 0.065,
+      "ground_min_support": 60,
+      "ground_min_fraction": 0.25,
+      "ground_segment_m": 5.0,
+      "ground_local_window_m": 12.0,
+      "ground_max_extrapolation_m": 15.0,
+      "ground_max_uncertainty_m": 0.15,
+      "rail_gauge_m": 1.52,
+      "rail_gauge_tolerance_m": 0.15,
+      "rail_height_bounds_m": [
+        0.1,
+        0.3
+      ],
+      "rail_bin_m": 0.03,
+      "rail_window_m": 10.0,
+      "rail_window_growth": 0.35,
+      "rail_max_window_m": 35.0,
+      "rail_min_span_m": 2.0,
+      "rail_min_longitudinal_bins": 4,
+      "rail_half_width_m": 0.13,
+      "rail_max_heading": 0.12,
+      "path_max_extrapolation_m": 25.0,
+      "path_max_uncertainty_m": 0.4,
+      "path_initial_center_bound_m": 0.75,
+      "envelope_margin_m": 0.0,
+      "envelope_calibration": "GOST_23961_80_M_reference_not_vehicle_swept_validation",
+      "cluster_voxel_m": 0.05,
+      "cluster_max_radius_m": 0.75,
+      "cluster_min_extent_m": 0.08,
+      "cluster_context_margin_m": 0.6,
+      "immediate_min_voxels": 30,
+      "immediate_min_height_m": 0.5,
+      "confirmation_hits": 2,
+      "confirmation_window": 3,
+      "track_max_gap_s": 0.35,
+      "odometry_voxel_m": 0.35,
+      "odometry_max_iterations": 60,
+      "odometry_threads": 4,
+      "odometry_max_residual_m": 0.3,
+      "odometry_min_overlap": 0.45,
+      "frame_max_gap_s": 0.5,
+      "range_bins_m": [
+        2.0,
+        10.0,
+        20.0,
+        40.0,
+        60.0,
+        100.0,
+        150.0,
+        220.0
+      ],
+      "segmentation_method": "density",
+      "density_radius_m": 0.12,
+      "density_angular_radius_rad": 0.0035,
+      "density_min_near": 8,
+      "density_min_far": 3,
+      "density_reference_range_m": 20.0,
+      "weak_min_voxels": 2,
+      "evidence_window_s": 0.5,
+      "evidence_min_points": 3,
+      "tracking_position_sigma_m": 0.15,
+      "tracking_acceleration_sigma_mps2": 2.0,
+      "tracking_mahalanobis_gate": 14.16,
+      "tracking_extent_log_gate": 2.5,
+      "tracking_pose_sigma_m": 0.1,
+      "min_running_height_m": 0.015,
+      "segmentation_context_half_width_m": 3.0,
+      "envelope_source": "GOST 23961-80 figures 6 and 7, https://engenegr.ru/gost-23961-80. Upper contour exact piecewise segments; lower contour horizontally filled conservatively, omitting wheel recesses. Mirrors and contact-collector extensions excluded. No actual vehicle/curve dynamic validation.",
+      "odometry_min_normal_eigenvalue": 0.01,
+      "sensor_profile_verified": false,
+      "travel_objects": {
+        "vert_scan": 128,
+        "horz_scan": 3600,
+        "min_range": 1.0,
+        "max_range": 220.0,
+        "min_vert_angle": -30.0,
+        "max_vert_angle": 20.0,
+        "horz_merge_thres": 0.4,
+        "vert_merge_thres": 0.5,
+        "vert_scan_size": 3,
+        "horz_scan_size": 5,
+        "horz_extension_size": 5,
+        "horz_skip_size": 5,
+        "downsample": 1,
+        "min_cluster_size": 4,
+        "max_cluster_size": 30000,
+        "seed": 20260915
+      },
+      "hdbscan": {
+        "min_cluster_size": 8,
+        "min_samples": 4,
+        "cluster_selection_method": "eom",
+        "core_dist_n_jobs": 1
+      },
+      "envelope_segments_m": [
+        [
+          0.05,
+          0.085,
+          1.15,
+          1.15
+        ],
+        [
+          0.085,
+          0.44,
+          1.32,
+          1.32
+        ],
+        [
+          0.44,
+          0.74,
+          1.45,
+          1.45
+        ],
+        [
+          0.74,
+          1.15,
+          1.435,
+          1.435
+        ],
+        [
+          1.15,
+          3.26,
+          1.46,
+          1.535
+        ],
+        [
+          3.26,
+          3.6,
+          1.535,
+          1.235
+        ],
+        [
+          3.6,
+          3.675,
+          1.235,
+          1.01
+        ],
+        [
+          3.675,
+          3.7,
+          1.01,
+          0.7
+        ]
+      ],
+      "density_vertical_scale": 0.5,
+      "rail_vertical_margin_m": 0.04,
+      "background": {
+        "enabled": false,
+        "voxel_m": 0.1,
+        "window_m": 30.0,
+        "planes_per_window": 3,
+        "min_support": 40,
+        "fit_distance_m": 0.025,
+        "remove_distance_m": 0.025,
+        "ransac_iterations": 120,
+        "ransac_probability": 0.999,
+        "max_longitudinal_normal": 0.2,
+        "min_cross_normal": 0.75,
+        "min_longitudinal_span_m": 8.0,
+        "min_transverse_span_m": 1.0,
+        "strip_m": 10.0,
+        "min_strip_support": 3,
+        "min_strip_span_m": 0.5,
+        "support_margin_m": 0.3,
+        "min_seed_height_m": 0.3,
+        "normal_radius_m": 0.2,
+        "normal_max_neighbors": 30,
+        "normal_min_neighbors": 6,
+        "normal_min_variance_m2": 0.0001,
+        "normal_planarity_ratio": 0.2,
+        "normal_alignment_cos": 0.8,
+        "protrusion_depth_m": 0.06,
+        "protection_radius_m": 0.35,
+        "ransac_threads": 1
+      },
+      "deskew_enabled": false,
+      "query_workers": -1,
+      "native_kernels": true,
+      "deskew_policy": "Disabled until acquisition span versus scan period and prior deskew provenance are verified. KISS-ICP normalizes the supplied point-time range to one full previous motion increment.",
+      "voxel_backend": "cpp",
+      "installation_reference": {
+        "source": "user_report_2026-09-17",
+        "statement": "\u041b\u0438\u0434\u0430\u0440 (\u043d\u0443\u043b\u0435\u0432\u0430\u044f \u0442\u043e\u0447\u043a\u0430 \u0435\u0433\u043e \u043e\u0442\u0441\u0447\u0451\u0442\u0430) \u0441\u0442\u043e\u0438\u0442 \u043d\u0430 \u0443\u0440\u043e\u0432\u043d\u0435 1075\u043c\u043c \u043e\u0442 \u0443\u0440\u043e\u0432\u043d\u044f \u0433\u043e\u043b\u043e\u0432\u043a\u0438 \u0440\u0435\u043b\u044c\u0441\u043e\u0432, \u0440\u043e\u0432\u043d\u043e \u043f\u043e\u0441\u0435\u0440\u0435\u0434\u0438\u043d\u0435 \u043c\u0435\u0436\u0434\u0443 \u043d\u0438\u043c\u0438. \u041d\u0430 \u043f\u0443\u0441\u0442\u043e\u043c \u0432\u0430\u0433\u043e\u043d\u0435 \u0431\u0435\u0437 \u0434\u0432\u0438\u0436\u0435\u043d\u0438\u044f.",
+        "height_above_railheads_m": 1.075,
+        "lateral_offset_from_track_center_m": 0.0,
+        "condition": "empty_stationary_wagon",
+        "recording_applicability_verified": false,
+        "measurement_uncertainty_m": null,
+        "height_direction_definition": "reported above railheads; gravity vertical versus track-plane normal unspecified",
+        "vehicle_front_offset_m": null,
+        "mounting_angles_deg": null,
+        "vehicle_extrinsics_verified": false
+      },
+      "mounting_observer": {
+        "fit_range_m": [
+          5.0,
+          20.0
+        ],
+        "bin_m": 1.0,
+        "min_points_per_side_bin": 5,
+        "min_upper_points_per_side_bin": 2,
+        "upper_support_quantile": 0.75,
+        "min_paired_bins": 6,
+        "min_span_m": 8.0,
+        "max_fit_residual_m": 0.08,
+        "reference_height_band_m": 0.1,
+        "reference_lateral_band_m": 0.15
+      },
+      "rail_center_estimator": "paired_line",
+      "rail_anchor_support": "measured"
+    },
+    "frames": [
+      {
+        "frame": 890,
+        "valid": true,
+        "rail_anchors": [
+          [
+            5.0,
+            0.16499999999999998,
+            1.6199999999999999,
+            14.0
+          ],
+          [
+            8.354769706726074,
+            0.195,
+            1.6199999999999999,
+            12.0
+          ],
+          [
+            15.0,
+            0.5971446667695804,
+            1.5289711828453372,
+            5.0
+          ],
+          [
+            20.0,
+            0.9137570082381649,
+            1.5857515795501638,
+            20.0
+          ],
+          [
+            25.0,
+            1.255225132865055,
+            1.5842204800380688,
+            11.0
+          ],
+          [
+            30.0,
+            1.6496466444868008,
+            1.5946831896212348,
+            7.0
+          ],
+          [
+            34.28028106689453,
+            2.0628050811409913,
+            1.5907077962454328,
+            4.0
+          ],
+          [
+            40.0,
+            2.67,
+            1.65,
+            4.0
+          ]
+        ]
+      },
+      {
+        "frame": 891,
+        "valid": false,
+        "rail_anchors": [
+          [
+            14.881636619567871,
+            0.5123011567603707,
+            1.5842990516703492,
+            7.0
+          ]
+        ]
+      },
+      {
+        "frame": 897,
+        "valid": true,
+        "rail_anchors": [
+          [
+            5.0,
+            0.1979383083107612,
+            1.5860330164094272,
+            14.0
+          ],
+          [
+            10.0,
+            0.3990259390482439,
+            1.5867344813639506,
+            21.0
+          ],
+          [
+            15.0,
+            0.6419028535411565,
+            1.5727177004313042,
+            20.0
+          ],
+          [
+            20.0,
+            0.9413561514181338,
+            1.570940152364488,
+            16.0
+          ],
+          [
+            25.0,
+            1.3090262045244876,
+            1.5824393600460327,
+            10.0
+          ],
+          [
+            29.144620895385742,
+            1.617100543836082,
+            1.53,
+            6.0
+          ]
+        ]
+      },
+      {
+        "frame": 898,
+        "valid": true,
+        "rail_anchors": [
+          [
+            15.0,
+            0.5880037318586286,
+            1.5895063371577995,
+            7.0
+          ],
+          [
+            20.0,
+            0.9284899551781173,
+            1.5733678742892634,
+            14.0
+          ],
+          [
+            25.0,
+            1.3366044285494543,
+            1.5791985917961804,
+            12.0
+          ],
+          [
+            30.0,
+            1.7756457011467754,
+            1.5868464942811642,
+            6.0
+          ],
+          [
+            35.0,
+            2.284899429272733,
+            1.5956204269263943,
+            5.0
+          ],
+          [
+            40.0,
+            2.8380384010364854,
+            1.6159959293556052,
+            4.0
+          ]
+        ]
+      },
+      {
+        "frame": 906,
+        "valid": true,
+        "rail_anchors": [
+          [
+            5.0,
+            0.195,
+            1.6199999999999999,
+            13.0
+          ],
+          [
+            7.565853118896484,
+            0.21,
+            1.5899999999999999,
+            10.0
+          ],
+          [
+            13.369613647460938,
+            0.5304687469801063,
+            1.65,
+            7.0
+          ],
+          [
+            20.0,
+            0.945,
+            1.56,
+            20.0
+          ],
+          [
+            25.0,
+            1.3610737755944402,
+            1.5760033709664956,
+            11.0
+          ],
+          [
+            30.0,
+            1.8128457564483624,
+            1.5790460289753074,
+            10.0
+          ],
+          [
+            35.0,
+            2.265,
+            1.56,
+            7.0
+          ],
+          [
+            40.0,
+            2.8387248926438375,
+            1.6039204794120343,
+            5.0
+          ]
+        ]
+      },
+      {
+        "frame": 907,
+        "valid": true,
+        "rail_anchors": [
+          [
+            15.0,
+            0.6440195043104738,
+            1.5685056925277021,
+            7.0
+          ],
+          [
+            20.0,
+            0.978929904279128,
+            1.5763860046176577,
+            13.0
+          ],
+          [
+            25.0,
+            1.3699884994765181,
+            1.5771501936339598,
+            11.0
+          ],
+          [
+            30.0,
+            1.818195051785084,
+            1.5786334946911822,
+            7.0
+          ],
+          [
+            35.0,
+            2.293105619489467,
+            1.5595469206159724,
+            5.0
+          ],
+          [
+            39.48173904418945,
+            2.7707744790513993,
+            1.65,
+            5.0
+          ]
+        ]
+      }
+    ]
+  },
+  "limitations": [
+    "No rail identity labels; anchor count/validity is not geometric accuracy.",
+    "Selected failures are not a held-out evaluation.",
+    "Candidate is not integrated: propagation of a wrong initial rail pair remains unresolved."
+  ]
+}

@@ -1,0 +1,121 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "bag": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+  "frames": 10,
+  "output": "build/ray-insertion-expansion-grouped-returns",
+  "membership_tolerance_m": 1e-06,
+  "cases": [
+    {
+      "name": "recorded_control"
+    },
+    {
+      "name": "small_20m",
+      "bbox_min": [
+        20,
+        -0.15,
+        -1.1
+      ],
+      "bbox_max": [
+        20.3,
+        0.15,
+        -0.7000000000000001
+      ]
+    },
+    {
+      "name": "upright_20m",
+      "bbox_min": [
+        20,
+        -0.3,
+        -1.1
+      ],
+      "bbox_max": [
+        20.6,
+        0.3,
+        0.5999999999999999
+      ]
+    },
+    {
+      "name": "small_60m",
+      "bbox_min": [
+        60,
+        -0.15,
+        -1.1
+      ],
+      "bbox_max": [
+        60.3,
+        0.15,
+        -0.7000000000000001
+      ]
+    },
+    {
+      "name": "upright_60m",
+      "bbox_min": [
+        60,
+        -0.3,
+        -1.1
+      ],
+      "bbox_max": [
+        60.6,
+        0.3,
+        0.5999999999999999
+      ]
+    },
+    {
+      "name": "small_100m",
+      "bbox_min": [
+        100,
+        -0.15,
+        -1.1
+      ],
+      "bbox_max": [
+        100.3,
+        0.15,
+        -0.7000000000000001
+      ]
+    },
+    {
+      "name": "upright_100m",
+      "bbox_min": [
+        100,
+        -0.3,
+        -1.1
+      ],
+      "bbox_max": [
+        100.6,
+        0.3,
+        0.5999999999999999
+      ]
+    },
+    {
+      "name": "upright_60m_off_axis",
+      "bbox_min": [
+        60,
+        2.2,
+        -1.1
+      ],
+      "bbox_max": [
+        60.6,
+        2.8,
+        0.6
+      ]
+    },
+    {
+      "name": "upright_60m_drop70",
+      "bbox_min": [
+        60,
+        -0.3,
+        -1.1
+      ],
+      "bbox_max": [
+        60.6,
+        0.3,
+        0.6
+      ],
+      "return_drop_probability": 0.7
+    }
+  ],
+  "hypothesis": "Measured ray coverage and stage-by-stage survival distinguish lack of target sampling from pipeline rejection in controlled inserted shapes.",
+  "limitations": "HYBRID SYNTHETIC experiment, not real obstacle accuracy. Opaque boxes fixed in current sensor processing frame, not world-fixed trajectories. Explicit box base z=-1.1m is not surveyed ground. Only directions of valid recorded returns are available; missing beams cannot be reconstructed. Return multiplicity is preserved, not independent evidence. No material response, multipath, sensor firing model, calibrated range or physical vehicle envelope. Background already contains unknown objects. Dropout removes hidden background too. Deskew disabled; source timing/pose assumptions remain. Same-time return slots are grouped by direction components quantized to 1e-6 before opaque occlusion. This is a declared beam-identity proxy, not verified sensor firing calibration.",
+  "return_direction_quantum": 1e-06
+}

@@ -1,0 +1,10 @@
+{
+  "run": "build/alarm-cause-after",
+  "bag_root": "data/sourcecraft_subset/for_hackathon",
+  "output": "build/remaining-alert-review",
+  "platform_bag": "doubleT_platform",
+  "obstacle_bag": "doubleT_obstacle",
+  "obstacle_frames": [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 100],
+  "obstacle_region": {"low": [53, -3.5, -3.2], "high": [59, 2.5, 1.0]},
+  "note": "Review every remaining platform obstacle frame and its recorded neighbours. Future frames are used only in offline diagnosis, never detector inference. Regions are review windows, not annotations."
+}

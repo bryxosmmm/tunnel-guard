@@ -1,0 +1,311 @@
+{
+  "scope": "Observed accumulated-support count differences; not waived or claimed bitwise identical. Configured presence thresholds are confirmation_hits=2 and evidence_min_points=3. No claim that this run isolates the cause recorded in issue #9.",
+  "records": [
+    {
+      "bag": "doubleT_platform",
+      "frame": 291,
+      "track_id": 3303,
+      "before": 3,
+      "after": 2,
+      "delta": -1,
+      "presence_decision_changed_by_count": true
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 310,
+      "track_id": 5165,
+      "before": 2,
+      "after": 1,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 318,
+      "track_id": 4895,
+      "before": 7,
+      "after": 8,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 320,
+      "track_id": 4895,
+      "before": 5,
+      "after": 6,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 321,
+      "track_id": 4895,
+      "before": 5,
+      "after": 6,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 322,
+      "track_id": 4895,
+      "before": 6,
+      "after": 7,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 336,
+      "track_id": 5451,
+      "before": 1,
+      "after": 2,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "doubleT_platform",
+      "frame": 343,
+      "track_id": 5529,
+      "before": 1,
+      "after": 2,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 125,
+      "track_id": 1916,
+      "before": 11,
+      "after": 10,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 126,
+      "track_id": 1916,
+      "before": 14,
+      "after": 13,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 128,
+      "track_id": 1978,
+      "before": 10,
+      "after": 11,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 129,
+      "track_id": 1978,
+      "before": 13,
+      "after": 14,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 135,
+      "track_id": 2005,
+      "before": 15,
+      "after": 14,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 137,
+      "track_id": 2005,
+      "before": 18,
+      "after": 17,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 138,
+      "track_id": 2005,
+      "before": 107,
+      "after": 106,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frame": 139,
+      "track_id": 2005,
+      "before": 291,
+      "after": 290,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frame": 201,
+      "track_id": 2423,
+      "before": 1,
+      "after": 2,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 281,
+      "track_id": 3816,
+      "before": 2,
+      "after": 1,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 282,
+      "track_id": 3816,
+      "before": 2,
+      "after": 1,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 391,
+      "track_id": 4802,
+      "before": 15,
+      "after": 16,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 392,
+      "track_id": 4802,
+      "before": 18,
+      "after": 19,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 392,
+      "track_id": 5006,
+      "before": 4,
+      "after": 3,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 393,
+      "track_id": 5006,
+      "before": 8,
+      "after": 7,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 394,
+      "track_id": 5006,
+      "before": 11,
+      "after": 10,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 395,
+      "track_id": 5006,
+      "before": 19,
+      "after": 18,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 396,
+      "track_id": 5006,
+      "before": 24,
+      "after": 23,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 402,
+      "track_id": 5134,
+      "before": 7,
+      "after": 8,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 403,
+      "track_id": 5134,
+      "before": 58,
+      "after": 59,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 405,
+      "track_id": 5134,
+      "before": 128,
+      "after": 129,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 502,
+      "track_id": 5536,
+      "before": 14,
+      "after": 15,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 503,
+      "track_id": 5536,
+      "before": 17,
+      "after": 18,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 505,
+      "track_id": 5536,
+      "before": 13,
+      "after": 14,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frame": 506,
+      "track_id": 5536,
+      "before": 14,
+      "after": 15,
+      "delta": 1,
+      "presence_decision_changed_by_count": false
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "frame": 246,
+      "track_id": 4591,
+      "before": 18,
+      "after": 17,
+      "delta": -1,
+      "presence_decision_changed_by_count": false
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/runtime-context-paired",
+  "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+  "frames": 20,
+  "repetitions": 3,
+  "hypothesis": "Removing unused background queries and repeated component scans reduces real detector cost with identical outputs.",
+  "criterion": "All compared fields match within 1e-10; lower median of run medians in alternating same-data same-backend runs.",
+  "baseline_source": "build/runtime-profile-before/source/tunnel_guard"
+}

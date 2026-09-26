@@ -1,0 +1,87 @@
+{
+  "date": "2026-09-20",
+  "scope": "Applying cross-branch findings to this branch: one tool adopted, one mechanism removed, one reported field corrected, and the conclusions those change",
+  "adopted_tool": {
+    "path": "tunnel_guard/sensor_profile.py",
+    "origin": "origin/experiments/dolgov (Nikita Dolgov)",
+    "lines": 272,
+    "why": "measures cross-recording questions our own inspect_bag cannot: capture configuration, clock behaviour over a whole recording, return multiplicity and mounting in the frame the detector works in",
+    "reviewed_by_us_before_adoption": "yes: API surface checked (uses rail_anchors, plane, ground, path, rail_head_height_m, valid, iter_bag, voxel_representatives - all present), then smoke-tested on roundT_doubleT and run over all six recordings",
+    "our_run": "build/sensor-profile-20260920.json, config configs/detector-native.json sha256 69c1be77262c4bcd...",
+    "findings_recorded_separately": "results/sensor-truth-20260920.json"
+  },
+  "removed_mechanism": {
+    "name": "corridor-aware input crop widening (follow the previous frame's remembered centre-line, gated on its offset)",
+    "why_it_existed": "on a curve the track leaves the fixed 8 m sensor-axis window, discarding both the returns and the rail anchors that estimate the curve",
+    "regression": "commit 869c99f (same author identity as the rest of this branch, same day the feature landed, 5e2beaa) deleted the block assigning previous_centre/previous_offset_m/previous_max_x inside an unrelated hunk about background-refit cadence, leaving the readers in place. engage was therefore always false and the crop was always the fixed band. Reported by a cross-branch review (origin/experiments/morev, docs/REVIEW_GERASIMOV_FOLLOWUP_20260919.md, P1), root-caused by us.",
+    "three_instrument_measurement_off_versus_on": {
+      "extended_curved_real_run": {
+        "splits": "new_data_0,54,108,162,216",
+        "frames": 255,
+        "gate_engaged_frames": 143,
+        "objects": "48499 -> 49922 (+2.93 %)",
+        "confirmed_hazards": "3761 -> 4143 (+10.16 %)",
+        "frame_status_changes": 0,
+        "geometry_points": "+0.33 %",
+        "artifacts": [
+          "build/adopt-20260920/extended-crop-off",
+          "build/adopt-20260920/extended-crop-on"
+        ]
+      },
+      "two_sourcecraft_recordings": {
+        "frames": 402,
+        "doubleT_obstacle": "statuses identical (candidate 2, unresolved 28, obstacle 171); objects 48050 -> 48313 (+0.55 %); inside_heuristic_path_and_ground_interval unchanged 223 -> 223",
+        "roundT_doubleT": "one frame (157) no_obstacle_observed -> unresolved_obstacle; objects 36405 -> 36831 (+1.17 %); inside_heuristic_path_and_ground_interval unchanged 45 -> 45; unsupported_nominal_envelope 2471 -> 2763 (+11.8 %)",
+        "artifacts": [
+          "build/adopt-20260920/real-crop-off",
+          "build/adopt-20260920/real-crop-on"
+        ]
+      },
+      "analytic_arc_R300": {
+        "cases": 120,
+        "matched_frames": "20 of 120 in BOTH arms",
+        "unmatched_hazards": "5736 -> 5758",
+        "object_reported": "60 -> 69",
+        "median_union_coverage": "0.048 -> 0.096",
+        "instrument_caveat": "this arc scene emits on the order of 4700 unmatched hazards per 120 frames (precision 0.0035) and it is not a clean instrument",
+        "artifacts": [
+          "build/adopt-20260920/arc-crop-off",
+          "build/adopt-20260920/arc-crop-on"
+        ]
+      },
+      "cost": "1-3 % per frame (real replay p50 118.99 -> 121.35 ms on roundT_doubleT; extended p50 97.0 -> 97.1, 131.2 -> 134.2, 136.4 -> 136.7, 134.4 -> 138.0 ms)"
+    },
+    "decision": "REMOVED, not shipped disabled. It changed no frame decision on any instrument while adding up to +10.16 % confirmed hazards, its reference is the previous frame's extrapolated centre-line (the least reliable quantity on a curve, which is why the added returns arrive ambiguous rather than as intrusions), a numeric gate cannot robustly disable it, and leaving it silently dead is what hid the regression. Deleted: the state attributes, their resets, _corridor_offset, the state-assignment block, the engage/offset/half machinery and the corridor_crop_threshold_m read. detector.py lost 42 lines and gained 9.",
+    "verification": "with the mechanism removed the two recordings reproduce the crop-off replay on every decision field of all 402 frames (status, nearest_obstacle_m, health, reason, and every object's id/box/distance/relation/reason/confirmed/intersection_confirmed/support_voxels/hits): 0 frames differ. Artifact: build/adopt-20260920/real-final-20260920.",
+    "claim_withdrawn": "README asserted the corridor-following crop as shipped and verified, with a +4-6 ms/frame cost and the R=300 m arc reporting the on-track object as obstacle from the first frame. It had not been running. When restored it did not reproduce that arc result (20 of 120 frames matched in both arms), so the arc claim is withdrawn as well and the README section was rewritten."
+  },
+  "corrected_field": {
+    "old": "certified_range_m = maximum over stations whose PATH uncertainty is within policy",
+    "problems": [
+      "ignored bed uncertainty",
+      "ignored local_3d frame support",
+      "a gap earlier in range did not shorten it, so an island of support beyond a gap could set the horizon"
+    ],
+    "new": "supported_range_m = far end of the contiguous supported run, requiring path uncertainty within path_max_uncertainty_m AND bed uncertainty within ground_max_uncertainty_m AND, in local_3d mode, containment in a measured frame segment. 0.5 m grid. Renamed because the old name over-claimed; no code consumer existed.",
+    "measured_effect": {
+      "bed_mode_shipped": "one frame of 402 shortened by 2 m; the field otherwise moves by half a grid step (61-62 m instead of 61 m) because the grid is now 0.5 m rather than 1.0 m",
+      "local_3d_mode": "20 of 20 sampled real frames of roundT_doubleT were affected: the old rule reported a median 63.5 m (57-67 m) and exceeded the end of the last available 3D section on ALL 20 frames, worst case 67 m against 20 m. The new rule reports a median 45.0 m and tracks the real section end (48.0/48.1, 20.0/20.0, 35.0/35.0)."
+    },
+    "note": "the defect a cross-branch review measured (67 m reported, last section 20 m) is specific to local_3d mode, which this branch does not ship. In bed mode the field was close to correct, which is why our own audits never caught it."
+  },
+  "conclusions_that_change": [
+    "The corridor-following input crop is not a win for this detector. Do not re-implement it without an instrument that can show a detection gain; the extended curved run is that instrument and it shows +10 % hazards and no decision change.",
+    "The reported horizon was overstated only in local_3d mode; in the shipped bed mode it was near-correct. Future audits of this field should test local_3d explicitly.",
+    "Any published count of returns or points from these recordings is about twice the number of independent measurements: 98.91 per cent of valid slots are exact duplicate copies (identical xyz and intensity) of their emission partner. See results/sensor-truth-20260920.json.",
+    "The labelled obstacle recording is the outlier of the six capture configurations, and two recordings contain frame gaps (1.10 s, 0.70 s) that exceed track_max_gap_s 0.35 s, so per-frame event counts on those stretches are understated."
+  ],
+  "unchanged": [
+    "No detection threshold was altered. The fixed 1460-frame panel and every other recipe are unaffected by both changes; the panel gate is recorded in the run artifact."
+  ],
+  "limitations": [
+    "The extended-run comparison samples 5 of 221 splits, not the whole 20-minute recording.",
+    "The arc scene is a poor instrument (precision 0.0035) and its numbers are reported for completeness, not as evidence of benefit.",
+    "No instrument here can show a detection gain from a wider crop on genuine curve geometry at range, because the corridor itself is uncertified out there; that is the same far-field limit the rest of the record describes.",
+    "tunnel_guard/sensor_profile.py is another contributor's code, adopted verbatim after review; attribution stays with its author in git history."
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "date": "2026-09-19",
+  "scope": "The demo path, part two: input topic consistency and how silence is reported",
+  "measured": {
+    "launch_vs_node": "consistent: the launch declares config, input_topic, rviz, input_reliability and input_timeout_s; the node declares the same four plus display_max_points, and the defaults agree",
+    "rviz_config": "valid YAML, standard display classes (rviz_common/Displays, PointCloud2, MarkerArray, Orbit), topics matching the node's publications, and the fixed frame it asks for is now published",
+    "bag_topics": {
+      "roundT_doubleT": "/lidar_points",
+      "doubleT_platform": "/lidar_points",
+      "extended_recording": "/lidar_points",
+      "doubleT_obstacle": "/sensing/lidar/hesai128/pointcloud"
+    }
+  },
+  "defect": "the node defaults to /lidar_points, which one of our own recordings does not use; run as documented on that bag it receives nothing and degrades to unavailable after three seconds with no indication of why",
+  "fix": "the silence watchdog now logs an error naming the configured topic, the timeout, the point-cloud topics that are actually present, and the parameter to restart with. Reporting only: the degradation itself was already explicit and is unchanged.",
+  "verification_status": "parses; not exercised here because the machine has no ROS 2 and no Docker daemon, and the README says so for the ROS path"
+}

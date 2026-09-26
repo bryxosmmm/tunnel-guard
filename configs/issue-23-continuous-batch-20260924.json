@@ -1,0 +1,7 @@
+{
+  "experiments": [
+    "configs/issue-23-continuous-baseline-retry-20260924.json",
+    "configs/issue-23-continuous-local-20260924.json"
+  ],
+  "log_directory": "build/issue-23-continuous-logs-20260924"
+}

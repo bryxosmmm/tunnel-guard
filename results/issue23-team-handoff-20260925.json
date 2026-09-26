@@ -1,0 +1,17 @@
+{
+  "scope": "Harness preparation and next integration dependencies, not acceptance of teammate implementations",
+  "checked_pull_requests": [
+    {"number": 29, "url": "https://github.com/bryxosmmm/tunnel-guard/pull/29", "state": "open", "decision": "Keep current default baseline. Local confirmation remains opt-in; historical negative gate ties at 98 frames and 88 episodes."},
+    {"number": 28, "url": "https://github.com/bryxosmmm/tunnel-guard/pull/28", "state": "draft", "decision": "Do not promote from historical counts. Exact rebased branch is not fully evaluated; long or structure-attached obstacles remain a suppression risk."},
+    {"number": 34, "url": "https://github.com/bryxosmmm/tunnel-guard/pull/34", "state": "open", "decision": "Use this existing contour-label implementation for subsequent boundary-panel integration rather than duplicating it. Reported smoke has 13 conditional edge cases and zero confirmed edge hazards; no acceptance claimed here."},
+    {"number": 33, "url": "https://github.com/bryxosmmm/tunnel-guard/pull/33", "state": "open", "decision": "Prefer existing ROS contract candidate for integration. No target Docker/Humble/RViz runtime acceptance exists in the PR; verify before release."}
+  ],
+  "remaining_critical_limits": [
+    "Default detector has zero exact-provenance intersection-confirmed frames for synthetic low event9 and thin event10 in the retained baseline.",
+    "Person presence on36 frames is not evidence of a real on-track collision hazard; full-person-volume localization and observed-return support differ.",
+    "Extrapolation uncertainty is heuristic; fitting residuals do not independently measure anchor association, railhead identity or extrinsic error.",
+    "Negative evaluation partition was previously inspected; not a blind holdout.",
+    "ROS target runtime, actual demo display, sustained input-rate handling and sensor-to-display latency remain separate acceptance tasks."
+  ],
+  "modifications_to_teammate_work": "None. No branch or other worktree modified."
+}

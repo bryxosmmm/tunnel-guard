@@ -1,0 +1,14 @@
+{
+  "detector_config": "configs/detector.json",
+  "bag": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+  "reference_jsonl": "build/coverage-expansion-real/roundT_doubleT.jsonl",
+  "frames": [
+    68,
+    76,
+    124,
+    232
+  ],
+  "repetitions": 4,
+  "output": "build/goal-background-repro-fixed",
+  "hypothesis": "Serialize only Open3D RANSAC proposal selection while retaining the rest of the configured detector; measure same-scan repeatability."
+}

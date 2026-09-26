@@ -1,0 +1,40 @@
+{
+  "hypothesis": "Object presence is conflated with corridor-hazard confirmation; a supported adjacent object can pass IoU yet be excluded from near_track_objects evaluation.",
+  "criterion": "Keep annotations and IoU 0.25 fixed. Require the manual anchor to be counted as present without changing boxes or corridor alarms; compare all 2488 real frames, report nonexhaustive-label limits separately.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/object-evidence-after",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [
+    181
+  ],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+      "split": "development"
+    }
+  ]
+}

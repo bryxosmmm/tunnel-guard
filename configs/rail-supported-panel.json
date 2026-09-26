@@ -1,0 +1,19 @@
+{
+  "bags": [
+    {
+      "bag": "doubleT_obstacle",
+      "before": "build/mounting-real/doubleT_obstacle.jsonl",
+      "after": "build/rail-supported-real/doubleT_obstacle.jsonl"
+    },
+    {
+      "bag": "doubleT_platform",
+      "before": "build/mounting-real/doubleT_platform.jsonl",
+      "after": "build/rail-supported-real/doubleT_platform.jsonl"
+    },
+    {
+      "bag": "roundT_doubleT",
+      "before": "build/mounting-real/roundT_doubleT.jsonl",
+      "after": "build/rail-supported-real/roundT_doubleT.jsonl"
+    }
+  ]
+}

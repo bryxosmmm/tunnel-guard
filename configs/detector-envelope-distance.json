@@ -217,30 +217,5 @@
   },
   "deskew_enabled": false,
   "deskew_policy": "Disabled until acquisition span versus scan period and prior deskew provenance are verified. KISS-ICP normalizes the supplied point-time range to one full previous motion increment.",
-  "obstacle_distance_mode": "envelope_support_min_x",
-  "ground_extension_model_anchors": 5,
-  "ground_extension_max_offset_m": 0.06,
-  "ground_extension_misses_max": 2,
-  "ground_extension_window_growth": 0.5,
-  "ground_extension_max_window_m": 60.0,
-  "ground_extension_min_points": 8,
-  "rail_support_symmetry_min": 0.4,
-  "rail_model_anchors": 8,
-  "rail_extension_min_points": 4,
-  "longitudinal_extension_enabled": false,
-  "rail_extension_max_offset_m": 0.12,
-  "rail_extension_misses_max": 3,
-  "rail_extension_window_growth": 0.6,
-  "rail_extension_max_window_m": 60.0,
-  "rail_head_band_m": [
-    -0.1,
-    0.06
-  ],
-  "rail_head_width_m": 0.07,
-  "rail_band_margin_m": 0.02,
-  "path_sigma_floor_m": 0.06,
-  "path_growth_bounds_m_per_m": [
-    0.004,
-    0.02
-  ]
+  "obstacle_distance_mode": "envelope_support_min_x"
 }

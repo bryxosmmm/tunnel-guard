@@ -1,0 +1,28 @@
+{
+  "hypothesis": "Keep segmentation and association under lost longitudinal rail support, using the existing vertical gate only where bed/head support remains measured; unmeasured points remain eligible and cannot certify a corridor relation.",
+  "criterion": {
+    "availability": "Segmentation and association execute on every real invalid-geometry frame; inspect component support and neighboring-frame identity, not just counts.",
+    "safety": "Invalid frames remain unknown/unavailable; objects have unknown path relation, no confirmed intersection, and null rail-relative coordinates.",
+    "control": "Preserve valid-frame geometric inference; report altered tracking history separately.",
+    "limits": "No synthetic scenes, no detector-derived ground truth; report merging and unsupported proposal workload."
+  },
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/geometry-independent-smoke-partial-20260923",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [
+    47,
+    48,
+    49
+  ],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/extended_subset/new_data_200",
+      "split": "development_extended_segment_not_independent_pass"
+    }
+  ],
+  "source_base": "e89d510"
+}

@@ -1,0 +1,21 @@
+{
+  "hypothesis": "Separate acquisition clocks and source evidence, expose degraded timing, and export actual results; deskew remains disabled pending timing calibration.",
+  "success_criterion": "Report real object localization on independently reviewed frames, and false alarm episodes only where annotations are exhaustive. Synthetic ray-cast results are a separate stress test. Unannotated bags cannot produce accuracy, precision, or recall.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/prefetch-on",
+  "every": 1,
+  "max_frames": 30,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development"
+    }
+  ],
+  "visualization": false,
+  "display_max_points": 100000
+}

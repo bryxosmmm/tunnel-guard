@@ -1,0 +1,4727 @@
+{
+  "teammate_commit": "525e276",
+  "baseline_commit": "02083ec",
+  "decision": "Keep fitted initial heading opt-in: recovered availability does not establish correct rail association. Integrate scenario runner, not HMM-MOS filtering.",
+  "full_geometry": {
+    "frames": 11271,
+    "before_valid": 11250,
+    "after_valid": 11258,
+    "unbracketed_anchors": 0,
+    "recovered_frames": [
+      898,
+      907,
+      6750,
+      8396,
+      8447,
+      8449,
+      8543,
+      8544,
+      10587
+    ],
+    "regressed_frames": [
+      4094
+    ],
+    "common_probe_max_change_m": {
+      "p50": 0.00023875075481175762,
+      "p95": 0.19931924429372824,
+      "max": 5.71509027948737
+    },
+    "frames_with_changed_common_probe": 8640,
+    "baseline_result_sha256": "02e218ab67eed843719a552979f416663ded16237820e0f898fe495d79f04e64",
+    "limitations": [
+      "Geometry availability and disagreement are not independent rail truth.",
+      "No obstacle detection or temporal association replay in this command."
+    ]
+  },
+  "real_detector_panel": {
+    "panel": "configs/rail-heading-comparison.json",
+    "panel_sha256": "dfa145fa8335f5d8ad10b5b5b7a9e981f0c92fb3a90674c7b93f049d8ff17b09",
+    "accuracy": null,
+    "limitations": [
+      "Alarm counts on nonexhaustively labelled development recordings are not precision, recall or false-alarm rate.",
+      "Repeated frames and candidates are not independent object events.",
+      "Timing is descriptive; concurrent workloads and visualization settings differ.",
+      "Float comparison uses absolute and relative tolerance 1e-10; discrete decisions and IDs are exact."
+    ],
+    "bags": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/rail-measured-real/doubleT_obstacle.jsonl",
+        "after": "build/rail-heading-real/doubleT_obstacle.jsonl",
+        "before_sha256": "0324e4a84c1c89aeef98ab36b1539bb1d3f7f368d7dbed16f8080ae04489626a",
+        "after_sha256": "f38b892c71d81db7fdb87b1f830e659ca914ae833ce05180db16ebef10a7569e",
+        "before_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 43,
+            "obstacle": 158
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 48599,
+          "support_voxel_observations": 3899446,
+          "confirmed_intersection_observations": 176,
+          "candidate_observations_at_least_60m": 13092,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 150.6385839311406,
+            "p95": 185.11612503789365,
+            "p99": 223.94362499471754
+          }
+        },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 35,
+            "obstacle": 166
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 49002,
+          "support_voxel_observations": 3889958,
+          "confirmed_intersection_observations": 184,
+          "candidate_observations_at_least_60m": 13076,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 173.1632079463452,
+            "p95": 209.57912493031472,
+            "p99": 256.4527499489486
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "nearest_obstacle_m": 11,
+          "objects": 201,
+          "geometry": 200,
+          "range_observability": 65,
+          "status": 28
+        },
+        "first_changed_frames": {
+          "status": [
+            4,
+            80,
+            81,
+            82,
+            83,
+            84,
+            98,
+            99,
+            106,
+            107,
+            112,
+            117,
+            118,
+            121,
+            122,
+            123,
+            132,
+            149,
+            159,
+            180,
+            188,
+            189,
+            190,
+            191,
+            192,
+            198,
+            199,
+            200
+          ],
+          "nearest_obstacle_m": [
+            0,
+            5,
+            21,
+            23,
+            25,
+            27,
+            29,
+            43,
+            49,
+            69,
+            178
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30
+          ],
+          "range_observability": [
+            2,
+            4,
+            8,
+            10,
+            13,
+            20,
+            24,
+            25,
+            27,
+            34,
+            36,
+            39,
+            40,
+            42,
+            43,
+            44,
+            47,
+            50,
+            57,
+            64,
+            65,
+            74,
+            77,
+            80,
+            81,
+            82,
+            94,
+            98,
+            99,
+            105
+          ]
+        },
+        "largest_compared_float_difference": 9.91653823852539
+      },
+      {
+        "bag": "doubleT_platform",
+        "before": "build/rail-measured-real/doubleT_platform.jsonl",
+        "after": "build/rail-heading-real/doubleT_platform.jsonl",
+        "before_sha256": "4988d080bc6fe501e5d8c430ad2eac5972bd1abb4d53121d8f7e9d643bfae117",
+        "after_sha256": "0b9a8239363b1eebb668884d4eff7d7ecae130fa9cac9729700a221d5e75cd38",
+        "before_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 279,
+            "obstacle": 66
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68087,
+          "support_voxel_observations": 4236136,
+          "confirmed_intersection_observations": 231,
+          "candidate_observations_at_least_60m": 21893,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 122.47545795980841,
+            "p95": 173.17715038079768,
+            "p99": 256.48518352769327
+          }
+        },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 279,
+            "obstacle": 66
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68094,
+          "support_voxel_observations": 4235573,
+          "confirmed_intersection_observations": 231,
+          "candidate_observations_at_least_60m": 21878,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 160.17237503547221,
+            "p95": 231.57515039201826,
+            "p99": 319.2598670208828
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "geometry": 339,
+          "objects": 326,
+          "nearest_obstacle_m": 6
+        },
+        "first_changed_frames": {
+          "nearest_obstacle_m": [
+            37,
+            47,
+            55,
+            92,
+            177,
+            197
+          ],
+          "objects": [
+            3,
+            4,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            20,
+            22,
+            23,
+            24,
+            27,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ]
+        },
+        "largest_compared_float_difference": 8.0
+      },
+      {
+        "bag": "roundT_doubleT",
+        "before": "build/rail-measured-real/roundT_doubleT.jsonl",
+        "after": "build/rail-heading-real/roundT_doubleT.jsonl",
+        "before_sha256": "d2b7a498899f00a34e27d0400c0e20be93012ce291ad06b3e0c9f0d98a9a6580",
+        "after_sha256": "d672e9acfbe7233c7b45a27561bcf179ea12457dda3818f1760fbc601e2a1b88",
+        "before_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 207,
+            "obstacle": 44
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48175,
+          "support_voxel_observations": 4071997,
+          "confirmed_intersection_observations": 82,
+          "candidate_observations_at_least_60m": 10943,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 138.0001869983971,
+            "p95": 201.51727534830562,
+            "p99": 269.8422720108648
+          }
+        },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 205,
+            "obstacle": 46
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48147,
+          "support_voxel_observations": 4070446,
+          "confirmed_intersection_observations": 78,
+          "candidate_observations_at_least_60m": 10960,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 176.50285398121923,
+            "p95": 224.55692316871134,
+            "p99": 258.738389145583
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 252,
+          "geometry": 172,
+          "nearest_obstacle_m": 14,
+          "range_observability": 20,
+          "status": 4
+        },
+        "first_changed_frames": {
+          "status": [
+            98,
+            99,
+            106,
+            140
+          ],
+          "nearest_obstacle_m": [
+            85,
+            93,
+            109,
+            110,
+            119,
+            153,
+            173,
+            182,
+            184,
+            194,
+            197,
+            199,
+            207,
+            238
+          ],
+          "objects": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            4,
+            5,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32
+          ],
+          "range_observability": [
+            88,
+            96,
+            97,
+            98,
+            99,
+            100,
+            106,
+            115,
+            129,
+            140,
+            159,
+            171,
+            172,
+            182,
+            186,
+            190,
+            191,
+            192,
+            197,
+            208
+          ]
+        },
+        "largest_compared_float_difference": 8.544840574264526
+      },
+      {
+        "bag": "new_data_0",
+        "before": "build/extended-measured/new_data_0.jsonl",
+        "after": "build/rail-heading-real/new_data_0.jsonl",
+        "before_sha256": "e6d475a693aa29b7f700c7949d353e84ef2dbe2a31bdb6956b58fd45dee5d1ea",
+        "after_sha256": "76258d8b504f6bd4355654af196f497bf75c309cf19f15a1ca0e4d8b13d8cdfb",
+        "before_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 49,
+            "obstacle": 2
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 10771,
+          "support_voxel_observations": 793026,
+          "confirmed_intersection_observations": 8,
+          "candidate_observations_at_least_60m": 2699,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 119.264250039123,
+            "p95": 180.71420851629227,
+            "p99": 848.1065420201048
+          }
+        },
+        "after_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 49,
+            "obstacle": 2
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 10763,
+          "support_voxel_observations": 789036,
+          "confirmed_intersection_observations": 8,
+          "candidate_observations_at_least_60m": 2702,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 118.48787497729063,
+            "p95": 162.63120900839567,
+            "p99": 194.7474170010537
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 49,
+          "geometry": 45,
+          "range_observability": 2
+        },
+        "first_changed_frames": {
+          "objects": [
+            1,
+            2,
+            3,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ],
+          "geometry": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            20,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            33,
+            34
+          ],
+          "range_observability": [
+            38,
+            42
+          ]
+        },
+        "largest_compared_float_difference": 0.3017301559448242
+      },
+      {
+        "bag": "new_data_100",
+        "before": "build/extended-measured/new_data_100.jsonl",
+        "after": "build/rail-heading-real/new_data_100.jsonl",
+        "before_sha256": "835d7be3dc8bc93de26649c1e314e8438e9adf2ba408d09950d16cda4968b2cc",
+        "after_sha256": "36755f0152a2468b187291514860043bc8c4d38d1ad706382ee6b5bf217b15bf",
+        "before_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 51
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 8964,
+          "support_voxel_observations": 694451,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 2312,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 191.28158292733133,
+            "p95": 311.2858335371129,
+            "p99": 361.48358351783827
+          }
+        },
+        "after_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "unresolved_obstacle": 51
+          },
+          "health_frames": {
+            "degraded": 51
+          },
+          "geometry_valid_frames": 51,
+          "motion_valid_frames": 50,
+          "candidate_observations": 8965,
+          "support_voxel_observations": 688006,
+          "confirmed_intersection_observations": 0,
+          "candidate_observations_at_least_60m": 2304,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 174.69925002660602,
+            "p95": 243.53391700424254,
+            "p99": 248.7245419761166
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 50,
+          "geometry": 32,
+          "range_observability": 2
+        },
+        "first_changed_frames": {
+          "objects": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30
+          ],
+          "geometry": [
+            1,
+            3,
+            6,
+            9,
+            11,
+            12,
+            16,
+            17,
+            18,
+            19,
+            20,
+            23,
+            24,
+            26,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45
+          ],
+          "range_observability": [
+            30,
+            43
+          ]
+        },
+        "largest_compared_float_difference": 0.017770254199804523
+      },
+      {
+        "bag": "new_data_200",
+        "before": "build/extended-measured/new_data_200.jsonl",
+        "after": "build/rail-heading-real/new_data_200.jsonl",
+        "before_sha256": "0a7a5fc26dc83e36046b186ff66f68021406d22e1a6f52dce27b50d5b2e27652",
+        "after_sha256": "24969ce8f57c09ceb6afd0179962d2d22ad12a9b4a5e11f9be4418d610d8f3ad",
+        "before_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 27,
+            "obstacle": 22,
+            "unknown": 1
+          },
+          "health_frames": {
+            "degraded": 50,
+            "unavailable": 1
+          },
+          "geometry_valid_frames": 50,
+          "motion_valid_frames": 49,
+          "candidate_observations": 11328,
+          "support_voxel_observations": 1066051,
+          "confirmed_intersection_observations": 27,
+          "candidate_observations_at_least_60m": 3177,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 142.41370907984674,
+            "p95": 193.54874943383038,
+            "p99": 261.66604150785133
+          }
+        },
+        "after_statistics": {
+          "frames": 51,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 30,
+            "obstacle": 19,
+            "unknown": 1
+          },
+          "health_frames": {
+            "degraded": 50,
+            "unavailable": 1
+          },
+          "geometry_valid_frames": 50,
+          "motion_valid_frames": 49,
+          "candidate_observations": 11317,
+          "support_voxel_observations": 1068256,
+          "confirmed_intersection_observations": 22,
+          "candidate_observations_at_least_60m": 3202,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 152.0032499684021,
+            "p95": 196.18529151193798,
+            "p99": 259.44054196588695
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {
+          "objects": 44,
+          "geometry": 23,
+          "status": 9,
+          "range_observability": 2,
+          "nearest_obstacle_m": 1
+        },
+        "first_changed_frames": {
+          "status": [
+            18,
+            20,
+            24,
+            25,
+            27,
+            28,
+            30,
+            37,
+            42
+          ],
+          "nearest_obstacle_m": [
+            41
+          ],
+          "objects": [
+            0,
+            1,
+            3,
+            7,
+            8,
+            9,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35
+          ],
+          "geometry": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            7,
+            8,
+            9,
+            10,
+            12,
+            16,
+            22,
+            25,
+            27,
+            28,
+            30,
+            31,
+            33,
+            37,
+            40,
+            49,
+            50
+          ],
+          "range_observability": [
+            22,
+            28
+          ]
+        },
+        "largest_compared_float_difference": 6.0
+      }
+    ]
+  },
+  "provisional_evaluation": {
+    "label_status": "provisional_geometry",
+    "prediction_scope": "near_track_objects",
+    "annotation_origins": {
+      "unspecified": 5
+    },
+    "box_semantics": "unspecified",
+    "minimum_3d_iou": 0.25,
+    "evaluated_frames": 5,
+    "missing_frames": [],
+    "exhaustive_frames": 0,
+    "tp": 5,
+    "fn": 0,
+    "fp_exhaustive_only": 0,
+    "annotated_object_recall": 1.0,
+    "precision_exhaustive_only": null,
+    "recall_exhaustive_only": null,
+    "f1_exhaustive_only": null,
+    "event_recall": 1.0,
+    "distance_mae_m": 0.2011451721191392,
+    "matched_mean_3d_iou": 0.28372810265588655,
+    "validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+      "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+    ],
+    "events": {
+      "doubleT_obstacle:upright_structure_17m": {
+        "annotated_frames": 5,
+        "matched_frames": 5,
+        "first_detection_distance_m": 16.6
+      }
+    },
+    "frames": [
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 0,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": [
+          [
+            1,
+            0,
+            0.28562566672680045
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 50,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            40,
+            0,
+            0.28363331532339287
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 100,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            38,
+            0,
+            0.28438926488241534
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 150,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            41,
+            0,
+            0.27294216596523047
+          ]
+        ]
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 200,
+        "tp": 1,
+        "fn": 0,
+        "fp": null,
+        "status": "obstacle",
+        "matches": [
+          [
+            47,
+            0,
+            0.2920501003815936
+          ]
+        ]
+      }
+    ],
+    "annotations_sha256": "8dfe58e0e2723fec56298cd656a99adff992edace2a5ea965eeacd125b7fd8c6",
+    "run": "build/rail-heading-real"
+  },
+  "final_policy_verification": [
+    {
+      "bag": "new_data_0",
+      "before": "build/rail-heading-real/new_data_0.jsonl",
+      "after": "build/rail-heading-final-replay/new_data_0.jsonl",
+      "before_sha256": "76258d8b504f6bd4355654af196f497bf75c309cf19f15a1ca0e4d8b13d8cdfb",
+      "after_sha256": "9b05757f974e458457d59ab2c7292bc046c204d3b3c72c1a5ab3e0b46546b0f7",
+      "before_statistics": {
+        "frames": 51,
+        "status_frames": {
+          "unresolved_obstacle": 49,
+          "obstacle": 2
+        },
+        "health_frames": {
+          "degraded": 51
+        },
+        "geometry_valid_frames": 51,
+        "motion_valid_frames": 50,
+        "candidate_observations": 10763,
+        "support_voxel_observations": 789036,
+        "confirmed_intersection_observations": 8,
+        "candidate_observations_at_least_60m": 2702,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 118.48787497729063,
+          "p95": 162.63120900839567,
+          "p99": 194.7474170010537
+        }
+      },
+      "after_statistics": {
+        "frames": 51,
+        "status_frames": {
+          "unresolved_obstacle": 49,
+          "obstacle": 2
+        },
+        "health_frames": {
+          "degraded": 51
+        },
+        "geometry_valid_frames": 51,
+        "motion_valid_frames": 50,
+        "candidate_observations": 10763,
+        "support_voxel_observations": 789036,
+        "confirmed_intersection_observations": 8,
+        "candidate_observations_at_least_60m": 2702,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 123.20308305788785,
+          "p95": 160.7642499729991,
+          "p99": 761.2684585037641
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {},
+      "first_changed_frames": {},
+      "largest_compared_float_difference": 4.428575561821191e-14
+    },
+    {
+      "bag": "new_data_0",
+      "before": "build/extended-measured/new_data_0.jsonl",
+      "after": "build/rail-heading-default-replay/new_data_0.jsonl",
+      "before_sha256": "e6d475a693aa29b7f700c7949d353e84ef2dbe2a31bdb6956b58fd45dee5d1ea",
+      "after_sha256": "90cfe541a02717e3aea07441ec8aa65341990187d0160cb981f1b955ac81ce80",
+      "before_statistics": {
+        "frames": 51,
+        "status_frames": {
+          "unresolved_obstacle": 49,
+          "obstacle": 2
+        },
+        "health_frames": {
+          "degraded": 51
+        },
+        "geometry_valid_frames": 51,
+        "motion_valid_frames": 50,
+        "candidate_observations": 10771,
+        "support_voxel_observations": 793026,
+        "confirmed_intersection_observations": 8,
+        "candidate_observations_at_least_60m": 2699,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 119.264250039123,
+          "p95": 180.71420851629227,
+          "p99": 848.1065420201048
+        }
+      },
+      "after_statistics": {
+        "frames": 51,
+        "status_frames": {
+          "unresolved_obstacle": 49,
+          "obstacle": 2
+        },
+        "health_frames": {
+          "degraded": 51
+        },
+        "geometry_valid_frames": 51,
+        "motion_valid_frames": 50,
+        "candidate_observations": 10771,
+        "support_voxel_observations": 793026,
+        "confirmed_intersection_observations": 8,
+        "candidate_observations_at_least_60m": 2699,
+        "histories_with_future_timestamps": 0,
+        "histories_with_duplicate_timestamps": 0,
+        "processing_ms": {
+          "p50": 122.59899999480695,
+          "p95": 162.86131198285148,
+          "p99": 771.5726459864527
+        }
+      },
+      "missing_after": [],
+      "extra_after": [],
+      "measurement_identity_errors": [],
+      "changed_frames_by_field": {},
+      "first_changed_frames": {},
+      "largest_compared_float_difference": 4.6851411639181606e-14
+    }
+  ],
+  "synthetic": {
+    "baseline": {
+      "cases": [
+        {
+          "case": {
+            "id": "empty_stationary",
+            "kind": "none",
+            "sensor_step_m": 0
+          },
+          "cloud_sequence_sha256": "e64cb1725324d9a96b066a027e547f955e7f0b8c21fe7278b80e155cebc1e133",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 1,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 2,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 3,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 4,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 5,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 6,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 7,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 8,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 9,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 10,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 11,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            }
+          ],
+          "detected_frames": [],
+          "first_detection_frame": null,
+          "after_stop_visible_frames": 0,
+          "after_stop_detected_frames": 0,
+          "empty_scene_alarm_frames": 0
+        },
+        {
+          "case": {
+            "id": "empty_moving",
+            "kind": "none",
+            "sensor_step_m": 0.5
+          },
+          "cloud_sequence_sha256": "a2f9b0bafd3cb80c494c8d8ff5af2886d4bc3c90ff0cf26dd193e30318490a19",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 1,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 2,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 3,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 4,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 5,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 6,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 7,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 8,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 9,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 10,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 11,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            }
+          ],
+          "detected_frames": [],
+          "first_detection_frame": null,
+          "after_stop_visible_frames": 0,
+          "after_stop_detected_frames": 0,
+          "empty_scene_alarm_frames": 0
+        },
+        {
+          "case": {
+            "id": "static_20",
+            "kind": "static",
+            "sensor_step_m": 0.5,
+            "start_m": 20,
+            "dimensions_m": [
+              0.3,
+              0.3,
+              0.4
+            ],
+            "lateral_m": 0
+          },
+          "cloud_sequence_sha256": "7854025953dcbe6a5fc1f8d9b28b519938a00acee4614077dfadbd99a142e74e",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 76,
+              "best_candidate_iou": 0.1660438636446473,
+              "best_confirmed_intersection_iou": 0,
+              "status": "candidate",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 1,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 74,
+              "best_candidate_iou": 0.8801390849732275,
+              "best_confirmed_intersection_iou": 0.8801390849732275,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 2,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 86,
+              "best_candidate_iou": 0.9028132593805392,
+              "best_confirmed_intersection_iou": 0.9028132593805392,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 3,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 94,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 4,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 95,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 5,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 106,
+              "best_candidate_iou": 0.901740578543773,
+              "best_confirmed_intersection_iou": 0.901740578543773,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 6,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 95,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 7,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 114,
+              "best_candidate_iou": 0.20923000791654137,
+              "best_confirmed_intersection_iou": 0.20923000791654137,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 8,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 114,
+              "best_candidate_iou": 0.23291890506907476,
+              "best_confirmed_intersection_iou": 0.23291890506907476,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 2
+            },
+            {
+              "frame": 9,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 149,
+              "best_candidate_iou": 0.910005119094018,
+              "best_confirmed_intersection_iou": 0.910005119094018,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 10,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 150,
+              "best_candidate_iou": 0.1564243224858037,
+              "best_confirmed_intersection_iou": 0.1564243224858037,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 2
+            },
+            {
+              "frame": 11,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 147,
+              "best_candidate_iou": 0.9920119610325748,
+              "best_confirmed_intersection_iou": 0.9920119610325748,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            }
+          ],
+          "detected_frames": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "first_detection_frame": 1,
+          "after_stop_visible_frames": 0,
+          "after_stop_detected_frames": 0,
+          "empty_scene_alarm_frames": null
+        },
+        {
+          "case": {
+            "id": "static_60",
+            "kind": "static",
+            "sensor_step_m": 0.5,
+            "start_m": 60,
+            "dimensions_m": [
+              0.3,
+              0.3,
+              0.4
+            ],
+            "lateral_m": 0
+          },
+          "cloud_sequence_sha256": "0b3199711fb0ce4730498bdd10fbb3a7f6d3200fd33fad9794c53c716f5ecd9b",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 8,
+              "best_candidate_iou": 0.7037107022944299,
+              "best_confirmed_intersection_iou": 0,
+              "status": "candidate",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 1,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 8,
+              "best_candidate_iou": 0.5732385448567663,
+              "best_confirmed_intersection_iou": 0.5732385448567663,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 2,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 5,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 3,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 8,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 4,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 8,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 5,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 9,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 6,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 8,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 7,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 7,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 8,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 9,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 9,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 11,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 10,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 12,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 11,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 11,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            }
+          ],
+          "detected_frames": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "first_detection_frame": 1,
+          "after_stop_visible_frames": 0,
+          "after_stop_detected_frames": 0,
+          "empty_scene_alarm_frames": null
+        },
+        {
+          "case": {
+            "id": "static_100",
+            "kind": "static",
+            "sensor_step_m": 0.5,
+            "start_m": 100,
+            "dimensions_m": [
+              0.3,
+              0.3,
+              0.4
+            ],
+            "lateral_m": 0
+          },
+          "cloud_sequence_sha256": "79678612ec3220048744f384cd86e62fbd62d8c2d4ea9007022585faed8accb4",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "candidate",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 1,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 2,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 3,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 3,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 4,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 5,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 3,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 6,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 7,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 3,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 8,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 9,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 10,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 11,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            }
+          ],
+          "detected_frames": [],
+          "first_detection_frame": null,
+          "after_stop_visible_frames": 0,
+          "after_stop_detected_frames": 0,
+          "empty_scene_alarm_frames": null
+        },
+        {
+          "case": {
+            "id": "walk_stop_20",
+            "kind": "moving",
+            "sensor_step_m": 0.5,
+            "start_m": 20,
+            "dimensions_m": [
+              0.45,
+              1.02,
+              1.35
+            ],
+            "lateral_m": 0,
+            "velocity_mps": -1.5,
+            "stop_frame": 6
+          },
+          "cloud_sequence_sha256": "a5df9d0a4cc99a7e1198213acd0c2b9f44be4ade8c1d977c05fef12deb999ffe",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.45,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 876,
+              "best_candidate_iou": 0.9541271917026138,
+              "best_confirmed_intersection_iou": 0.9541271917026138,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 1,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.85,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 877,
+              "best_candidate_iou": 0.9978071917189631,
+              "best_confirmed_intersection_iou": 0.9978071917189631,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 2,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.7,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.15,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 965,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 3,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.55,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.0,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1002,
+              "best_candidate_iou": 0.9757962321916013,
+              "best_confirmed_intersection_iou": 0.9757962321916013,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 4,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.4,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.849999999999998,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1142,
+              "best_candidate_iou": 0.9714121649178525,
+              "best_confirmed_intersection_iou": 0.9714121649178525,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 5,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.25,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.7,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1169,
+              "best_candidate_iou": 0.9993646828297132,
+              "best_confirmed_intersection_iou": 0.9993646828297132,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 6,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.1,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.55,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1301,
+              "best_candidate_iou": 0.9681786289264162,
+              "best_confirmed_intersection_iou": 0.9681786289264162,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 7,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.1,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.55,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1395,
+              "best_candidate_iou": 0.9340347041535589,
+              "best_confirmed_intersection_iou": 0.9340347041535589,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 8,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.1,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.55,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1451,
+              "best_candidate_iou": 0.935594056359259,
+              "best_confirmed_intersection_iou": 0.935594056359259,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 9,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.1,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.55,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1556,
+              "best_candidate_iou": 0.9990305596230746,
+              "best_confirmed_intersection_iou": 0.9990305596230746,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 10,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.1,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.55,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1709,
+              "best_candidate_iou": 0.9391232662447282,
+              "best_confirmed_intersection_iou": 0.9391232662447282,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 11,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.1,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.55,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1796,
+              "best_candidate_iou": 0.9999503307301983,
+              "best_confirmed_intersection_iou": 0.9999503307301983,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            }
+          ],
+          "detected_frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "first_detection_frame": 0,
+          "after_stop_visible_frames": 6,
+          "after_stop_detected_frames": 6,
+          "empty_scene_alarm_frames": null
+        },
+        {
+          "case": {
+            "id": "appear_20",
+            "kind": "appearing",
+            "sensor_step_m": 0.5,
+            "start_m": 20,
+            "dimensions_m": [
+              0.3,
+              0.3,
+              0.4
+            ],
+            "lateral_m": 0,
+            "appear_frame": 4
+          },
+          "cloud_sequence_sha256": "49a6b10829fc7ff3bbeeb8e97cc3275ce7b8e2a8a361be586fc303a34699e4b3",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 1,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 2,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 3,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 4,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 95,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "candidate",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 5,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 106,
+              "best_candidate_iou": 0.901740578543773,
+              "best_confirmed_intersection_iou": 0.901740578543773,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 6,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 95,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 7,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 114,
+              "best_candidate_iou": 0.20923000791654137,
+              "best_confirmed_intersection_iou": 0.001214128296060676,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 8,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 114,
+              "best_candidate_iou": 0.23291890506907476,
+              "best_confirmed_intersection_iou": 0.23291890506907476,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 2
+            },
+            {
+              "frame": 9,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 149,
+              "best_candidate_iou": 0.910005119094018,
+              "best_confirmed_intersection_iou": 0.910005119094018,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 10,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 150,
+              "best_candidate_iou": 0.1564243224858037,
+              "best_confirmed_intersection_iou": 0.1564243224858037,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 2
+            },
+            {
+              "frame": 11,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 147,
+              "best_candidate_iou": 0.9920119610325748,
+              "best_confirmed_intersection_iou": 0.9920119610325748,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            }
+          ],
+          "detected_frames": [
+            5,
+            6,
+            8,
+            9,
+            10,
+            11
+          ],
+          "first_detection_frame": 5,
+          "after_stop_visible_frames": 0,
+          "after_stop_detected_frames": 0,
+          "empty_scene_alarm_frames": null
+        }
+      ],
+      "scope": "Ray-cast procedural diagnostic, not field safety/recall",
+      "limitations": [
+        "Ideal straight tunnel, fixed beams, simplified independent range noise/dropout.",
+        "No material reflectance, multipath, rolling acquisition or real calibration error.",
+        "Box IoU uses visible ray support; no invisible-object detection is implied."
+      ]
+    },
+    "candidate": {
+      "cases": [
+        {
+          "case": {
+            "id": "empty_stationary",
+            "kind": "none",
+            "sensor_step_m": 0
+          },
+          "cloud_sequence_sha256": "e64cb1725324d9a96b066a027e547f955e7f0b8c21fe7278b80e155cebc1e133",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 1,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 2,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 3,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 4,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 5,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 6,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 7,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 8,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 9,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 10,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 11,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            }
+          ],
+          "detected_frames": [],
+          "first_detection_frame": null,
+          "after_stop_visible_frames": 0,
+          "after_stop_detected_frames": 0,
+          "empty_scene_alarm_frames": 0
+        },
+        {
+          "case": {
+            "id": "empty_moving",
+            "kind": "none",
+            "sensor_step_m": 0.5
+          },
+          "cloud_sequence_sha256": "a2f9b0bafd3cb80c494c8d8ff5af2886d4bc3c90ff0cf26dd193e30318490a19",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 1,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 2,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 3,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 4,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 5,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 6,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 7,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 8,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 9,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 10,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 11,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            }
+          ],
+          "detected_frames": [],
+          "first_detection_frame": null,
+          "after_stop_visible_frames": 0,
+          "after_stop_detected_frames": 0,
+          "empty_scene_alarm_frames": 0
+        },
+        {
+          "case": {
+            "id": "static_20",
+            "kind": "static",
+            "sensor_step_m": 0.5,
+            "start_m": 20,
+            "dimensions_m": [
+              0.3,
+              0.3,
+              0.4
+            ],
+            "lateral_m": 0
+          },
+          "cloud_sequence_sha256": "7854025953dcbe6a5fc1f8d9b28b519938a00acee4614077dfadbd99a142e74e",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 76,
+              "best_candidate_iou": 0.1660438636446473,
+              "best_confirmed_intersection_iou": 0,
+              "status": "candidate",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 1,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 74,
+              "best_candidate_iou": 0.8801390849732275,
+              "best_confirmed_intersection_iou": 0.8801390849732275,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 2,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 86,
+              "best_candidate_iou": 0.9028132593805392,
+              "best_confirmed_intersection_iou": 0.9028132593805392,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 3,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 94,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 4,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 95,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 5,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 106,
+              "best_candidate_iou": 0.901740578543773,
+              "best_confirmed_intersection_iou": 0.901740578543773,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 6,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 95,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 7,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 114,
+              "best_candidate_iou": 0.20923000791654137,
+              "best_confirmed_intersection_iou": 0.20923000791654137,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 8,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 114,
+              "best_candidate_iou": 0.23291890506907476,
+              "best_confirmed_intersection_iou": 0.23291890506907476,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 2
+            },
+            {
+              "frame": 9,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 149,
+              "best_candidate_iou": 0.910005119094018,
+              "best_confirmed_intersection_iou": 0.910005119094018,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 10,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 150,
+              "best_candidate_iou": 0.1564243224858037,
+              "best_confirmed_intersection_iou": 0.1564243224858037,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 2
+            },
+            {
+              "frame": 11,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 147,
+              "best_candidate_iou": 0.9920119610325748,
+              "best_confirmed_intersection_iou": 0.9920119610325748,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            }
+          ],
+          "detected_frames": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "first_detection_frame": 1,
+          "after_stop_visible_frames": 0,
+          "after_stop_detected_frames": 0,
+          "empty_scene_alarm_frames": null
+        },
+        {
+          "case": {
+            "id": "static_60",
+            "kind": "static",
+            "sensor_step_m": 0.5,
+            "start_m": 60,
+            "dimensions_m": [
+              0.3,
+              0.3,
+              0.4
+            ],
+            "lateral_m": 0
+          },
+          "cloud_sequence_sha256": "0b3199711fb0ce4730498bdd10fbb3a7f6d3200fd33fad9794c53c716f5ecd9b",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 8,
+              "best_candidate_iou": 0.7037107022944299,
+              "best_confirmed_intersection_iou": 0,
+              "status": "candidate",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 1,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 8,
+              "best_candidate_iou": 0.5732385448567663,
+              "best_confirmed_intersection_iou": 0.5732385448567663,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 2,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 5,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 3,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 8,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 4,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 8,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 5,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 9,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 6,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 8,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 7,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 7,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 8,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 9,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 9,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 11,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 10,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 12,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 11,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  60.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  60.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 11,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            }
+          ],
+          "detected_frames": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "first_detection_frame": 1,
+          "after_stop_visible_frames": 0,
+          "after_stop_detected_frames": 0,
+          "empty_scene_alarm_frames": null
+        },
+        {
+          "case": {
+            "id": "static_100",
+            "kind": "static",
+            "sensor_step_m": 0.5,
+            "start_m": 100,
+            "dimensions_m": [
+              0.3,
+              0.3,
+              0.4
+            ],
+            "lateral_m": 0
+          },
+          "cloud_sequence_sha256": "79678612ec3220048744f384cd86e62fbd62d8c2d4ea9007022585faed8accb4",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "candidate",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 1,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 2,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 3,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 3,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 4,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 5,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 3,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 6,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 7,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 3,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 8,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 9,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 10,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 11,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  100.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  100.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 4,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "unresolved_obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            }
+          ],
+          "detected_frames": [],
+          "first_detection_frame": null,
+          "after_stop_visible_frames": 0,
+          "after_stop_detected_frames": 0,
+          "empty_scene_alarm_frames": null
+        },
+        {
+          "case": {
+            "id": "walk_stop_20",
+            "kind": "moving",
+            "sensor_step_m": 0.5,
+            "start_m": 20,
+            "dimensions_m": [
+              0.45,
+              1.02,
+              1.35
+            ],
+            "lateral_m": 0,
+            "velocity_mps": -1.5,
+            "stop_frame": 6
+          },
+          "cloud_sequence_sha256": "a5df9d0a4cc99a7e1198213acd0c2b9f44be4ade8c1d977c05fef12deb999ffe",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.45,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 876,
+              "best_candidate_iou": 0.9541271917026138,
+              "best_confirmed_intersection_iou": 0.9541271917026138,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 1,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.85,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 877,
+              "best_candidate_iou": 0.9978071917189631,
+              "best_confirmed_intersection_iou": 0.9978071917189631,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 2,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.7,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.15,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 965,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 3,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.55,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.0,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1002,
+              "best_candidate_iou": 0.9757962321916013,
+              "best_confirmed_intersection_iou": 0.9757962321916013,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 4,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.4,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.849999999999998,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1142,
+              "best_candidate_iou": 0.9714121649178525,
+              "best_confirmed_intersection_iou": 0.9714121649178525,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 5,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.25,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.7,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1169,
+              "best_candidate_iou": 0.9993646828297132,
+              "best_confirmed_intersection_iou": 0.9993646828297132,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 6,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.1,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.55,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1301,
+              "best_candidate_iou": 0.9681786289264162,
+              "best_confirmed_intersection_iou": 0.9681786289264162,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 7,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.1,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.55,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1395,
+              "best_candidate_iou": 0.9340347041535589,
+              "best_confirmed_intersection_iou": 0.9340347041535589,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 8,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.1,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.55,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1451,
+              "best_candidate_iou": 0.935594056359259,
+              "best_confirmed_intersection_iou": 0.935594056359259,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 9,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.1,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.55,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1556,
+              "best_candidate_iou": 0.9990305596230746,
+              "best_confirmed_intersection_iou": 0.9990305596230746,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 10,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.1,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.55,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1709,
+              "best_candidate_iou": 0.9391232662447282,
+              "best_confirmed_intersection_iou": 0.9391232662447282,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 11,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  19.1,
+                  -0.51,
+                  -1.5
+                ],
+                "bbox_max": [
+                  19.55,
+                  0.51,
+                  -0.1499999999999999
+                ]
+              },
+              "visible_object_points": 1796,
+              "best_candidate_iou": 0.9999503307301983,
+              "best_confirmed_intersection_iou": 0.9999503307301983,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            }
+          ],
+          "detected_frames": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11
+          ],
+          "first_detection_frame": 0,
+          "after_stop_visible_frames": 6,
+          "after_stop_detected_frames": 6,
+          "empty_scene_alarm_frames": null
+        },
+        {
+          "case": {
+            "id": "appear_20",
+            "kind": "appearing",
+            "sensor_step_m": 0.5,
+            "start_m": 20,
+            "dimensions_m": [
+              0.3,
+              0.3,
+              0.4
+            ],
+            "lateral_m": 0,
+            "appear_frame": 4
+          },
+          "cloud_sequence_sha256": "49a6b10829fc7ff3bbeeb8e97cc3275ce7b8e2a8a361be586fc303a34699e4b3",
+          "frames": [
+            {
+              "frame": 0,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 1,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 2,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 3,
+              "object_present": false,
+              "object_world_box": null,
+              "visible_object_points": 0,
+              "best_candidate_iou": 0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "no_obstacle_observed",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 4,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 95,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 0,
+              "status": "candidate",
+              "geometry_valid": true,
+              "confirmed_intersections": 0
+            },
+            {
+              "frame": 5,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 106,
+              "best_candidate_iou": 0.901740578543773,
+              "best_confirmed_intersection_iou": 0.901740578543773,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 6,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 95,
+              "best_candidate_iou": 1.0,
+              "best_confirmed_intersection_iou": 1.0,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 7,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 114,
+              "best_candidate_iou": 0.20923000791654137,
+              "best_confirmed_intersection_iou": 0.001214128296060676,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 8,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 114,
+              "best_candidate_iou": 0.23291890506907476,
+              "best_confirmed_intersection_iou": 0.23291890506907476,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 2
+            },
+            {
+              "frame": 9,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 149,
+              "best_candidate_iou": 0.910005119094018,
+              "best_confirmed_intersection_iou": 0.910005119094018,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            },
+            {
+              "frame": 10,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 150,
+              "best_candidate_iou": 0.1564243224858037,
+              "best_confirmed_intersection_iou": 0.1564243224858037,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 2
+            },
+            {
+              "frame": 11,
+              "object_present": true,
+              "object_world_box": {
+                "bbox_min": [
+                  20.0,
+                  -0.15,
+                  -1.5
+                ],
+                "bbox_max": [
+                  20.3,
+                  0.15,
+                  -1.1
+                ]
+              },
+              "visible_object_points": 147,
+              "best_candidate_iou": 0.9920119610325748,
+              "best_confirmed_intersection_iou": 0.9920119610325748,
+              "status": "obstacle",
+              "geometry_valid": true,
+              "confirmed_intersections": 1
+            }
+          ],
+          "detected_frames": [
+            5,
+            6,
+            8,
+            9,
+            10,
+            11
+          ],
+          "first_detection_frame": 5,
+          "after_stop_visible_frames": 0,
+          "after_stop_detected_frames": 0,
+          "empty_scene_alarm_frames": null
+        }
+      ],
+      "scope": "Ray-cast procedural diagnostic, not field safety/recall",
+      "limitations": [
+        "Ideal straight tunnel, fixed beams, simplified independent range noise/dropout.",
+        "No material reflectance, multipath, rolling acquisition or real calibration error.",
+        "Box IoU uses visible ray support; no invisible-object detection is implied."
+      ]
+    },
+    "paired_clouds_identical": true
+  },
+  "hmm_mos_execution": "Not built or run in this review; teammate results not independently reproduced",
+  "artifact_sha256": {
+    "build/rail-heading-full-geometry/manifest.json": "6d4a5bd32bb2df58310da18d2e2319a0d3f722c49ff9b9cf405220a0005b881d",
+    "build/rail-heading-real/manifest.json": "6d708bf517d9d8bf58022c0f029f45433f18cce6f9eb5524c4f6e407c86a4dac",
+    "build/motion-scenarios-before/manifest.json": "edb8c8d7122cedf24e0703969f18a715662755d3cb02e41b47441295a4a2d55b",
+    "build/motion-scenarios-heading/manifest.json": "6e5bfdec89c7a400987c51c05fa946dce41d7780ffc788cc27e56b7438c8c9b7",
+    "build/hmm-review/Map.cpp": "48d17c8137a929b3280bf17b99f3e4b21eeb44fb0c84fb91a16a8bf7c8eb2c58"
+  },
+  "known_changed_path_examples": [
+    484,
+    4094,
+    8358,
+    8698,
+    9083,
+    10972
+  ],
+  "limitations": [
+    "Full 11271 replay is geometry only; end-to-end candidate panel is 951 frames.",
+    "Final opt-in gate verified end-to-end on 51 real frames per policy, identical semantic outputs to recorded respective runs.",
+    "No independent rail truth; provisional boxes are not field recall.",
+    "Concurrent runs are not a performance benchmark.",
+    "Source/config snapshots under build retain pre-gate candidate code; recipes now explicitly opt in to fitted heading."
+  ],
+  "final_geometry_cli_verification": {
+    "frames": 3,
+    "before_valid": 3,
+    "after_valid": 3,
+    "unbracketed_anchors": 0,
+    "recovered_frames": [],
+    "regressed_frames": [],
+    "common_probe_max_change_m": {
+      "p50": 0.00018903207070402467,
+      "p95": 0.0003763993574155452,
+      "max": 0.00039721794482793643
+    },
+    "frames_with_changed_common_probe": 2,
+    "baseline_result_sha256": "02e218ab67eed843719a552979f416663ded16237820e0f898fe495d79f04e64",
+    "limitations": [
+      "Geometry availability and disagreement are not independent rail truth.",
+      "No obstacle detection or temporal association replay in this command."
+    ]
+  }
+}

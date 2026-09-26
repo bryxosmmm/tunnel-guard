@@ -1,0 +1,252 @@
+{
+  "date": "2026-09-19",
+  "scope": "Curvature continuation of the reference clearance corridor past the measured rail anchors. The corridor previously continued along a straight tangent whose slope was clipped at rail_max_heading and was modelled for path_max_extrapolation_m beyond the nearest anchor; on a curve the true centre-line leaves that line quadratically.",
+  "problem_measurement": {
+    "rail_anchor_support_median_max_m": 40.0,
+    "modelled_horizon_m": "anchors + path_max_extrapolation_m (25 m) = about 65 m on real recordings",
+    "centre_line_self_consistency_m": {
+      "consecutive_frames": 0.021,
+      "gap_5_frames_8.6m": 0.039,
+      "gap_20_frames_34.4m": 0.104
+    },
+    "curve_offset_ignored_by_a_straight_corridor_m": {
+      "100 m on R=1000 m": 5.0,
+      "300 m on R=1000 m": 45.0
+    },
+    "bore_evidence_range_m": {
+      "walls_and_ceiling_max": [
+        120.7,
+        207.3
+      ],
+      "note": "Walls/ceiling return far beyond the rails, but per-bin medians of upper returns are not an axis: in roundT frame 180 the left/right pairing jumps from a 5.0 m to a 9.0 m separation (platform edge versus bore wall). A long-lever estimator must use surface strips, not medians."
+    }
+  },
+  "change": {
+    "python": "TrackGeometry._continuation",
+    "native": "cpp/kernels.cpp classify_geometry",
+    "recipe_keys": {
+      "path_curve_window_m": 30.0,
+      "path_curvature_significance": 4.0
+    },
+    "off_switch": "path_curve_window_m: 0 reproduces the previous straight continuation",
+    "properties": [
+      "fit expressed in the edge anchor frame, so center(x) is continuous there",
+      "curvature shrunk to zero unless |c| exceeds path_curvature_significance standard errors",
+      "extrapolation uncertainty propagated from the fit covariance in quadrature with the base term",
+      "the 25 m gate and every threshold are unchanged"
+    ]
+  },
+  "verification": {
+    "forward_prediction_test": {
+      "method": "Predict the centre-line ahead from frame k, express that world point in the axes of a later frame that has driven over the same ground, and compare with the rails it measures there. Label-free; the reference is the sensor's own later measurement.",
+      "recording": "roundT_doubleT, 11 source frames, poses from build/perf-cpp-opt-20260917",
+      "abs_error_m": {
+        "40 m": {
+          "old": [
+            0.195,
+            0.249
+          ],
+          "new": [
+            0.045,
+            0.104
+          ]
+        },
+        "50 m": {
+          "old": [
+            0.468,
+            0.66
+          ],
+          "new": [
+            0.136,
+            0.359
+          ]
+        },
+        "60 m": {
+          "old": [
+            1.017,
+            1.411
+          ],
+          "new": [
+            0.203,
+            0.432
+          ]
+        },
+        "columns": "[median, p90]"
+      },
+      "off_switch_reproduction": {
+        "40 m": [
+          0.195,
+          0.195
+        ],
+        "50 m": [
+          0.467,
+          0.468
+        ],
+        "60 m": [
+          1.013,
+          1.017
+        ],
+        "note": "with path_curve_window_m=0 the new column equals the old model",
+        "columns": "[old, new]"
+      },
+      "sensitivity_to_the_gate": {
+        "recording": "roundT_doubleT, |median| error m at 40/50/60 m",
+        "old_model": [
+          0.195,
+          0.468,
+          1.017
+        ],
+        "gate_2_sigma": [
+          0.045,
+          0.136,
+          0.203
+        ],
+        "gate_4_sigma": [
+          0.067,
+          0.162,
+          0.16
+        ]
+      }
+    },
+    "backend_equivalence": {
+      "geometry_arrays_identical": "20/20",
+      "kernel_checks": "29/29",
+      "recording": "roundT_doubleT"
+    },
+    "real_ab_60_frames_per_recording": {
+      "roundT_doubleT_curved": {
+        "status_off": {
+          "unresolved_obstacle": 59,
+          "candidate": 1
+        },
+        "status_on": {
+          "unresolved_obstacle": 59,
+          "candidate": 1
+        },
+        "objects": [
+          15061,
+          15057
+        ],
+        "intersecting": [
+          0,
+          0
+        ]
+      },
+      "doubleT_obstacle_straight": {
+        "status_off": {
+          "obstacle": 52,
+          "unresolved_obstacle": 8
+        },
+        "status_on": {
+          "obstacle": 52,
+          "unresolved_obstacle": 8
+        },
+        "objects": [
+          14305,
+          14014
+        ],
+        "intersecting": [
+          64,
+          70
+        ]
+      }
+    },
+    "measured_pattern_panel": {
+      "note": "rails are straight boxes across the whole scene, so any bend the fit invents is error",
+      "baseline_9de584f": {
+        "tp": 709,
+        "fn": 251,
+        "fp": 176,
+        "precision": 0.8011,
+        "event_recall": 0.8021,
+        "negative_episode_rate": 0.0
+      },
+      "gate_2_sigma": {
+        "tp": 702,
+        "fn": 258,
+        "fp": 216,
+        "precision": 0.7647,
+        "event_recall": 0.8021,
+        "negative_episode_rate": 0.08,
+        "config": "configs/stress-measured-pattern-curve-20260919.json"
+      },
+      "gate_4_sigma": {
+        "tp": 709,
+        "fn": 251,
+        "fp": 176,
+        "precision": 0.8011,
+        "event_recall": 0.8021,
+        "matched_mean_3d_iou": 0.8223,
+        "distance_mae_m": 0.0011,
+        "negative_episode_rate": 0.0,
+        "identical_to_baseline": true,
+        "config": "configs/stress-measured-pattern-curve4-20260919.json"
+      }
+    },
+    "real_ab_default_gate_60_frames": {
+      "roundT_doubleT_curved": {
+        "status_off": {
+          "unresolved_obstacle": 59,
+          "candidate": 1
+        },
+        "status_on": {
+          "unresolved_obstacle": 59,
+          "candidate": 1
+        },
+        "objects": [
+          15061,
+          15041
+        ],
+        "intersecting": [
+          0,
+          0
+        ]
+      },
+      "doubleT_obstacle_straight": {
+        "status_off": {
+          "unresolved_obstacle": 8,
+          "obstacle": 52
+        },
+        "status_on": {
+          "unresolved_obstacle": 7,
+          "candidate": 1,
+          "obstacle": 52
+        },
+        "objects": [
+          14305,
+          14169
+        ],
+        "intersecting": [
+          64,
+          68
+        ],
+        "note": "one frame of 60 moves unresolved_obstacle -> candidate; labels cannot adjudicate it"
+      }
+    }
+  },
+  "trade_offs_stated": [
+    "This makes the corridor follow the curve inside its modelled horizon; it does not extend that horizon. Beyond anchors + 25 m there is still no modelled coverage, so the 100-300 m band the organizers score remains unknown until a long-lever (bore) estimate justifies modelling there.",
+    "On straight track the fitted slope replaces the noisy two-point tangent, which changes the corridor slightly: doubleT_obstacle moved 64 -> 70 intersecting object observations out of 14,305. Smoother is the intent, but it is a behaviour change and no label exists to call it an improvement.",
+    "The 2 sigma shrinkage keeps the straight continuation for a genuinely gentle curve that a 30 m window cannot resolve. Under-bending, never over-bending.",
+    "Uncertainty is now the old base term in quadrature with the fit error, so it is never smaller than before; in noisy frames that can flip points near the extrapolation edge out of 'observed'.",
+    "Curvature still comes from at most 40 m of rail evidence; the fit is a local quadratic, not a clothoid, and it does not model transition spirals explicitly.",
+    "The fitted slope replaces the two-point tangent even where the curvature is shrunk, so straight recordings are not bit-identical either: on 60 frames of doubleT_obstacle one frame's status moves unresolved_obstacle -> candidate and objects fall 14,305 -> 14,169. Keeping the old two-point slope and adding only the fitted curvature would make straight geometry identical; it is not implemented."
+  ],
+  "rejected": [
+    "Reusing the previous frame's background or corridor (the project reserves that as an algorithmic experiment with causal requirements; it changes decisions).",
+    "Extending the modelled horizon with a curvature fit from rails alone: a 40 m lever implies sigma_curvature about 3-6e-5 1/m, which is 0.3-2.7 m of induced error at 100-300 m.",
+    "Estimating the axis from per-bin medians of wall/upper returns: measured to jump 5-9 m with scene content (platform edges), so it would inject the very error it is meant to remove."
+  ],
+  "mechanism": {
+    "inside_anchor_span": "centre and uncertainty identical to before (checked on a real frame, 5-40 m)",
+    "beyond_anchor_span_m": {
+      "-10": -0.045,
+      "50": -0.015,
+      "60": -0.09,
+      "65": -0.15,
+      "80": -0.419
+    },
+    "consequence": "The synthetic false positives are distant background components re-classified by a corridor shift of 5-15 cm beyond 40 m, not the inserted object; recall is unchanged in the 3-case subset and the full panel loses 7 tp at 2 sigma only.",
+    "determinism": "three repeats of the same config gave identical counts, so the deltas are the change, not run noise"
+  }
+}

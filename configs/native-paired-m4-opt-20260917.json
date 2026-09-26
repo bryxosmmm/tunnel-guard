@@ -1,0 +1,10 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/native-paired-m4-opt-20260917",
+  "bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+  "frames": 20,
+  "repetitions": 3,
+  "hypothesis": "Paired benchmark after fusing the per-frame native calls onto one arena.",
+  "criterion": "All compared fields within 1e-10, no changed status/IDs/support, median of run medians lower for C++."
+}

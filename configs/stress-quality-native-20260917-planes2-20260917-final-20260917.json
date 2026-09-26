@@ -1,0 +1,75 @@
+{
+  "hypothesis": "The detector finds previously unseen objects present at startup, under changed sensor pose and without an empty reference; off-path infrastructure does not become a collision alarm.",
+  "success_criterion": {
+    "event_recall_min": 0.95,
+    "negative_episode_rate_max": 0.05,
+    "minimum_iou": 0.1
+  },
+  "seed": 20260915,
+  "detector_config": "configs/detector-native-planes2-20260917.json",
+  "output": "build/stress-quality-final-20260917",
+  "frames_per_case": 3,
+  "frame_period_s": 0.1,
+  "sensor_step_m": [
+    0.0,
+    0.5
+  ],
+  "ranges_m": [
+    10.0,
+    20.0,
+    40.0,
+    60.0,
+    100.0,
+    150.0
+  ],
+  "lateral_m": [
+    0.0,
+    0.6,
+    2.5
+  ],
+  "object_dimensions_m": [
+    [
+      0.3,
+      0.3,
+      0.4
+    ],
+    [
+      0.6,
+      0.6,
+      1.7
+    ],
+    [
+      0.8,
+      0.8,
+      1.0
+    ]
+  ],
+  "ground_z_m": -1.7,
+  "rail_height_m": 0.2,
+  "rail_gauge_m": 1.52,
+  "rail_width_m": 0.07,
+  "tunnel_half_width_m": 4.0,
+  "tunnel_ceiling_z_m": 2.6,
+  "scene_end_m": 250.0,
+  "azimuth_bins": 2400,
+  "elevation_segments_deg": [
+    [
+      -25.0,
+      -3.0,
+      32
+    ],
+    [
+      -3.0,
+      3.0,
+      64
+    ],
+    [
+      3.0,
+      15.0,
+      32
+    ]
+  ],
+  "range_noise_sigma_m": 0.015,
+  "random_drop_probability": 0.05,
+  "note": "Analytic opaque box ray casting with a declared generic 128-beam pattern, range noise, dropout, and motion. Not a Hesai sensor reproduction and not evidence of real 100\u2013150m recall. Off-path cases score collision alarms, not adjacent-object reporting."
+}

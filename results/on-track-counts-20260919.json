@@ -1,0 +1,38 @@
+{
+  "date": "2026-09-19",
+  "scope": "The on_track probe's counts, re-measured because the README quotes them with no artifact in the repository",
+  "status": "PARTIAL: 3 of 6 recordings measured. The full run was launched and left to run on a machine shared with other users; the recordings that completed are below.",
+  "per_recording": {
+    "roundT_doubleT": {
+      "clusters": 215,
+      "events": 17,
+      "candidates": 0
+    },
+    "roundT_pressureGate_roundT": {
+      "clusters": 177,
+      "events": 18,
+      "candidates": 1
+    },
+    "squareT_platform_squareT_switch": {
+      "clusters": 391,
+      "events": 9,
+      "candidates": 0
+    },
+    "doubleT_platform": {
+      "clusters": 1030,
+      "events": 16,
+      "candidates": 0,
+      "note": "from an earlier partial run of the same command"
+    }
+  },
+  "partial_sum": {
+    "clusters": 1813,
+    "events": 60,
+    "candidates": 1
+  },
+  "readme_claim_under_check": "11,115 in-envelope clusters -> 381 events -> 15 candidates over six recordings",
+  "command": "python -m tunnel_guard.on_track --bag data/sourcecraft_subset/for_hackathon/<bag> --config configs/on-track-probe.json --output build/on-track-<bag>.json",
+  "corrections_of_this_record": "a first version of this file recorded empty counts because it looked for a `summary` key; the tool's output holds the clusters, events and candidates as LISTs, so the counts are their lengths - the same three numbers the README quotes",
+  "reading": "the measured recordings are consistent in shape with the claim - tens of events and a handful of candidates out of hundreds to thousands of in-envelope clusters - but they do not confirm the aggregate, and the README's evidence-status note says so",
+  "verdict": "NOT REPRODUCED: four of six recordings measure 1813 clusters and 60 events, against a quoted 11,115 and 381. The README now carries the measured table and treats the former aggregate as stale, keeping the shape of the result and dropping the numbers."
+}

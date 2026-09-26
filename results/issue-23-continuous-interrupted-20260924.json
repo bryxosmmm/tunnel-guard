@@ -1,0 +1,13 @@
+{
+  "output": "build/issue-23-continuous-baseline-20260924",
+  "completion": "incomplete; excluded from full-corpus comparison",
+  "evidence": {
+    "finished_manifest_timestamp_present": false,
+    "summary_present": false,
+    "live_detector_process_found": false,
+    "last_saved_timing_frame": 2155
+  },
+  "cause": "Unknown; original background job and stdout are no longer available. No inferred exit code.",
+  "retention": "Original output directory retained unchanged.",
+  "recovery": "Restart from acquisition0 with configs/issue-23-continuous-baseline-retry-20260924.json; persistent supervised batch with per-run stdout/stderr and exit metadata. No detector state resumed from partial output."
+}

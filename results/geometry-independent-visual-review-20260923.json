@@ -1,0 +1,22 @@
+{
+  "run": "build/geometry-independent-smoke-partial-20260923",
+  "bag": "new_data_200",
+  "frame": 48,
+  "observed": [
+    "Frame status unknown and health unavailable are visible.",
+    "Reference contour is absent, rather than extrapolated through unsupported geometry.",
+    "Candidate boxes are yellow and report path relation unknown.",
+    "Separate nearest component without a corridor relation is displayed at 2.00 m; it is not a collision distance."
+  ],
+  "limits": [
+    "Top and side projections of measured points and support; not independent object identity or surveyed track geometry.",
+    "Small singleton proposals remain numerous; no operator-workload acceptance."
+  ],
+  "recovery": {
+    "frame": 49,
+    "status": "no_obstacle_observed",
+    "health": "degraded",
+    "browser_error": "",
+    "observed": "Supported reference contour returns; geometry-unknown distance is absent. This is not a clear-route claim."
+  }
+}

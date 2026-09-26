@@ -1,6 +1,7 @@
 # Local datasets, recordings, and generated experiment artifacts
 /data/
 /archive/
+/bags.zip
 /materials/
 /build/
 /dist/
@@ -17,7 +18,9 @@
 /.direnv/
 /.uv-cache/
 /.venv/
-/scripts/
+/scripts/*
+!/scripts/benchmark_issue23.py
+!/scripts/audit_issue23_certification.py
 /experiments/
 .env
 .env.*
@@ -30,3 +33,8 @@ __pycache__/
 *.py[cod]
 *.egg-info/
 .ipynb_checkpoints/
+
+# Locally built native accelerator
+*.so
+*.dylib
+*.pyd

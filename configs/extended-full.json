@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/extended-full",
+  "every": 1,
+  "max_frames": null,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/extended_full/new_data",
+      "split": "extended_unlabelled_full_recording"
+    }
+  ],
+  "hypothesis": "Process the entire extended recording in original chronological bag order with continuous causal tracker state",
+  "criterion": "Report every acquisition, time reset and unsupported geometry; no accuracy claim without labels"
+}

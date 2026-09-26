@@ -1,0 +1,9 @@
+{
+  "bag": "doubleT_obstacle",
+  "cases": [
+    {"frame": 200, "name": "Near structure ~2 m", "low": [1.8, -2.3, -2.1], "high": [4.4, -1.1, -0.7]},
+    {"frame": 0, "name": "Structure ~34 m", "low": [33, 0, -2.7], "high": [36, 2.3, 2.1]},
+    {"frame": 25, "name": "Probe candidate ~56 m", "low": [54, -3, -3], "high": [58, 2, 0.5]}
+  ],
+  "note": "Fixed measured-space review windows, not object annotations or known negatives. The 56m object identity is unresolved. All points in each window are displayed."
+}

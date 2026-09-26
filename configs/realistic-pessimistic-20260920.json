@@ -1,0 +1,50 @@
+{
+  "hypothesis": "Objects inserted into real recorded frames, occlusion-correct; recall bracket between the pessimistic slot rule and the surface-present rule.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/realistic-pessimistic-20260920",
+  "background_bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+  "pose_run": "build/perf-cpp-hardware-20260917",
+  "source_frames": 6,
+  "frame_start": 40,
+  "frame_stride": 1,
+  "ranges_m": [
+    10.0,
+    20.0,
+    40.0,
+    60.0,
+    100.0,
+    150.0
+  ],
+  "lateral_m": [
+    0.0,
+    0.6,
+    2.5
+  ],
+  "object_dimensions_m": [
+    [
+      0.3,
+      0.3,
+      0.4
+    ],
+    [
+      0.6,
+      0.6,
+      1.7
+    ],
+    [
+      0.8,
+      0.8,
+      1.0
+    ]
+  ],
+  "rail_gauge_m": 1.52,
+  "rail_height_m": 0.2,
+  "object_rest_height_m": 0.05,
+  "object_range_noise_m": 0.02,
+  "object_intensity": 30.0,
+  "minimum_iou": 0.1,
+  "note": "Same promotion panel as configs/realistic-panel-20260917.json, re-run on 9de584f with the tracked default recipe configs/detector.json.",
+  "empty_slots_return_object": false,
+  "criterion": "Report misses separated by visibility, detection and the box convention; report the nuisance load."
+}

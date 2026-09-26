@@ -1,0 +1,1455 @@
+{
+  "experiment": "Actual rail-pair refinement rejection and selection-conditioned feasibility",
+  "production_changed": false,
+  "observations": {
+    "scans": 30,
+    "geometry_observations": 30,
+    "scientific_changes": [],
+    "counts": {
+      "retained_anchors": 144,
+      "accepted_pair_fit": 95,
+      "inherited_heading": 49
+    },
+    "limits": [
+      "Observation only; unchanged source/config/native and fixed30actual scans.",
+      "All scientific output fields must remain exact. No thresholds changed.",
+      "No inference that a feasible parallel-line model proves physical rails."
+    ]
+  },
+  "feasibility": {
+    "plan": {
+      "hypothesis": "Least squares minimizes squared residuals but the existing guard constrains maximum residual. Determine whether rejected measured rows admit a parallel-line fit satisfying all unchanged physical bounds.",
+      "input": "build/issue23-rail-fit-rejections/probe/heading-origin.jsonl.gz",
+      "config": "build/issue23-rail-fit-rejections/probe/detector.json",
+      "output": "build/issue23-rail-fit-rejections/feasibility-results.json",
+      "method": "scipy.optimize.linprog highs: minimize maximum absolute residual; slope, gauge and caller center-prior bounds unchanged",
+      "success_criterion": "Report every failed attempted fit, solver termination, recomputed maximum residual and strict existing-bound feasibility. No detector change or activation claim.",
+      "limits": [
+        "Fixed measured rows only; fitting a different model can change second-iteration support, so this does not establish a successful full refinement.",
+        "A feasible model does not prove physical rails or correct continuation.",
+        "No thresholds, source points, or config values changed."
+      ]
+    },
+    "input_sha256": "8737ae16bf3f18e6bf6199161c5e980e52ba3b67222351854cf70fb0a46c191c",
+    "config_sha256": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa",
+    "attempts": 154,
+    "failed_attempts": 53,
+    "first_failed_guards": {
+      "residual": 48,
+      "center_prior": 1,
+      "gauge": 4
+    },
+    "retained_failed_guards": {
+      "residual": 46,
+      "gauge": 3
+    },
+    "strictly_feasible": 53,
+    "retained_strictly_feasible": 49,
+    "results": [
+      {
+        "frame": 5300,
+        "window_center_m": 10.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 38,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.0010554016380902606,
+          0.24076680592517358,
+          1.580008014574412
+        ],
+        "solver_residual_m": 0.05391693295712428,
+        "recomputed_max_residual_m": 0.05391693295712441,
+        "original_max_residual_m": 0.0802747085386103,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 5300,
+        "window_center_m": 25.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 18,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.001154348729947622,
+          0.8704507143447472,
+          1.426758388158418
+        ],
+        "solver_residual_m": 0.05624393480500195,
+        "recomputed_max_residual_m": 0.05624393480500234,
+        "original_max_residual_m": 0.06830079021727409,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 5360,
+        "window_center_m": 20.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 63,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.07499429322466357,
+          1.0280615605541978,
+          1.6253480141872616
+        ],
+        "solver_residual_m": 0.051646808219052084,
+        "recomputed_max_residual_m": 0.05164680821905221,
+        "original_max_residual_m": 0.08155036471921084,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 5360,
+        "window_center_m": 25.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 65,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.07372223376217513,
+          1.3449929564703422,
+          1.579666965450898
+        ],
+        "solver_residual_m": 0.05384567105741394,
+        "recomputed_max_residual_m": 0.053845671057414224,
+        "original_max_residual_m": 0.06819213790899992,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 5360,
+        "window_center_m": 30.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 35,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.06952515583201115,
+          1.664684413958797,
+          1.5567156880845663
+        ],
+        "solver_residual_m": 0.05566419279254638,
+        "recomputed_max_residual_m": 0.05566419279254653,
+        "original_max_residual_m": 0.07336999457379512,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 5531,
+        "window_center_m": 5.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 34,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.004016156843483399,
+          -0.23625261637081196,
+          1.6434615650196662
+        ],
+        "solver_residual_m": 0.048916824292684,
+        "recomputed_max_residual_m": 0.04891682429268407,
+        "original_max_residual_m": 0.08109794051567398,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 5531,
+        "window_center_m": 10.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 28,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.004016156843483378,
+          -0.25633340058822873,
+          1.6434615650196664
+        ],
+        "solver_residual_m": 0.048916824292684,
+        "recomputed_max_residual_m": 0.04891682429268429,
+        "original_max_residual_m": 0.07968514371726165,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 5541,
+        "window_center_m": 5.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 37,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.0016968972406760415,
+          -0.29903062475214925,
+          1.5974380165612363
+        ],
+        "solver_residual_m": 0.054233164795542715,
+        "recomputed_max_residual_m": 0.054233164795542965,
+        "original_max_residual_m": 0.08836154753185771,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 5541,
+        "window_center_m": 25.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 53,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.07366210631123224,
+          -1.578180858074754,
+          1.5946776606951463
+        ],
+        "solver_residual_m": 0.05604603322162575,
+        "recomputed_max_residual_m": 0.056046033221626046,
+        "original_max_residual_m": 0.10403436358251605,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 5541,
+        "window_center_m": 30.0,
+        "retained": false,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 26,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.06915198059262954,
+          -1.9491657079948295,
+          1.601229375896197
+        ],
+        "solver_residual_m": 0.048343046892297854,
+        "recomputed_max_residual_m": 0.04834304689229907,
+        "original_max_residual_m": 0.06742415244293998,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 5550,
+        "window_center_m": 10.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 33,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.026533785092191082,
+          -0.39122207271366144,
+          1.596501494107304
+        ],
+        "solver_residual_m": 0.06058267404104651,
+        "recomputed_max_residual_m": 0.06058267404104667,
+        "original_max_residual_m": 0.0907690892124709,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 5550,
+        "window_center_m": 25.0,
+        "retained": false,
+        "original_first_failed_guard": "center_prior",
+        "source_return_line": 171,
+        "points": 28,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.05581966743070132,
+          -1.4762282117993384,
+          1.545349300137506
+        ],
+        "solver_residual_m": 0.03736382900926149,
+        "recomputed_max_residual_m": 0.03736382900926172,
+        "original_max_residual_m": 0.0526082696850414,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6451,
+        "window_center_m": 30.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 46,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.0010935226843562258,
+          -0.07795049250867356,
+          1.574670438424763
+        ],
+        "solver_residual_m": 0.05205396256653696,
+        "recomputed_max_residual_m": 0.052053962566537604,
+        "original_max_residual_m": 0.06989405921023173,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6451,
+        "window_center_m": 35.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 27,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.000285728832859239,
+          -0.06326756487532678,
+          1.5483046368718696
+        ],
+        "solver_residual_m": 0.050493675265074235,
+        "recomputed_max_residual_m": 0.05049367526507442,
+        "original_max_residual_m": 0.06572701645315493,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6461,
+        "window_center_m": 5.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 56,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.005336990527782355,
+          -0.02725787230655008,
+          1.519823552627848
+        ],
+        "solver_residual_m": 0.04216417659523488,
+        "recomputed_max_residual_m": 0.04216417659523497,
+        "original_max_residual_m": 0.06979513895353784,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6461,
+        "window_center_m": 35.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 29,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.00802076845064856,
+          -0.006423929232097792,
+          1.5493076371171561
+        ],
+        "solver_residual_m": 0.06264906095172927,
+        "recomputed_max_residual_m": 0.0626490609517294,
+        "original_max_residual_m": 0.07364801363045936,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6493,
+        "window_center_m": 30.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 47,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.0118054166789762,
+          0.10548974923416458,
+          1.561373676082574
+        ],
+        "solver_residual_m": 0.05483630020372257,
+        "recomputed_max_residual_m": 0.054836300203722654,
+        "original_max_residual_m": 0.06788416391268504,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6501,
+        "window_center_m": 20.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 81,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.010664990821061524,
+          0.01980760463428839,
+          1.5685476020999765
+        ],
+        "solver_residual_m": 0.05498545950781355,
+        "recomputed_max_residual_m": 0.05498545950781353,
+        "original_max_residual_m": 0.06857098845075249,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6517,
+        "window_center_m": 10.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 87,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.0011661338597089984,
+          0.03291600774044867,
+          1.5671538137472802
+        ],
+        "solver_residual_m": 0.05461830752748101,
+        "recomputed_max_residual_m": 0.05461830752748131,
+        "original_max_residual_m": 0.07296817513558573,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6533,
+        "window_center_m": 35.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 33,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.04614534217315163,
+          1.084902721415164,
+          1.592625657268439
+        ],
+        "solver_residual_m": 0.0517438254104917,
+        "recomputed_max_residual_m": 0.05174382541049205,
+        "original_max_residual_m": 0.09089796835719055,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6535,
+        "window_center_m": 30.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 43,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.04824398104454503,
+          0.8705862940990489,
+          1.5954706801378116
+        ],
+        "solver_residual_m": 0.054032815768816495,
+        "recomputed_max_residual_m": 0.0540328157688168,
+        "original_max_residual_m": 0.0706631824164311,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6535,
+        "window_center_m": 35.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 29,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.04557666829887299,
+          1.0951776065241023,
+          1.5673841198009695
+        ],
+        "solver_residual_m": 0.04886582237525641,
+        "recomputed_max_residual_m": 0.04886582237525705,
+        "original_max_residual_m": 0.06788945327559326,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6562,
+        "window_center_m": 5.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 37,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.002185091231625605,
+          0.12529260134179931,
+          1.6478133266896045
+        ],
+        "solver_residual_m": 0.046376860299966106,
+        "recomputed_max_residual_m": 0.04637686029996635,
+        "original_max_residual_m": 0.09421035997874216,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6562,
+        "window_center_m": 10.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 32,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.0019000093132455914,
+          0.13565179915190395,
+          1.6486396569429207
+        ],
+        "solver_residual_m": 0.0460804259224231,
+        "recomputed_max_residual_m": 0.04608042592242334,
+        "original_max_residual_m": 0.06958715613912814,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6564,
+        "window_center_m": 10.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 37,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.002212655124647622,
+          0.16420469410746122,
+          1.5776765734606695
+        ],
+        "solver_residual_m": 0.04909166175215508,
+        "recomputed_max_residual_m": 0.04909166175215518,
+        "original_max_residual_m": 0.0712993544532654,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6564,
+        "window_center_m": 20.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 45,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.0348771203505941,
+          0.7084482259975037,
+          1.5501053448707518
+        ],
+        "solver_residual_m": 0.0529607447390201,
+        "recomputed_max_residual_m": 0.05296074473902035,
+        "original_max_residual_m": 0.07706180540129515,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6564,
+        "window_center_m": 30.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 48,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.08312499148224288,
+          1.6325265390992894,
+          1.5656993681903035
+        ],
+        "solver_residual_m": 0.055749192592384866,
+        "recomputed_max_residual_m": 0.0557491925923852,
+        "original_max_residual_m": 0.0650936366583117,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6569,
+        "window_center_m": 10.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 33,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.0051025454849797985,
+          0.20407709774093,
+          1.6494561840608792
+        ],
+        "solver_residual_m": 0.0439496355073097,
+        "recomputed_max_residual_m": 0.04394963550730979,
+        "original_max_residual_m": 0.08620040464528023,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6574,
+        "window_center_m": 10.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 34,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.0009575707663905274,
+          0.6282189093499579,
+          1.6605768302055497
+        ],
+        "solver_residual_m": 0.05849436238831199,
+        "recomputed_max_residual_m": 0.05849436238831229,
+        "original_max_residual_m": 0.06893516824372403,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6574,
+        "window_center_m": 20.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 31,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.02223850506293687,
+          0.7303525542072804,
+          1.57291886719294
+        ],
+        "solver_residual_m": 0.06359130332939356,
+        "recomputed_max_residual_m": 0.063591303329394,
+        "original_max_residual_m": 0.09694830151437861,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6574,
+        "window_center_m": 25.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 19,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.03565093282924323,
+          0.6461139964006567,
+          1.5312842809169924
+        ],
+        "solver_residual_m": 0.051925075730394524,
+        "recomputed_max_residual_m": 0.05192507573039584,
+        "original_max_residual_m": 0.06507090649237868,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6591,
+        "window_center_m": 10.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 32,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.008187620611933946,
+          0.32036556188254617,
+          1.5129784402075226
+        ],
+        "solver_residual_m": 0.04557111312655224,
+        "recomputed_max_residual_m": 0.04557111312655371,
+        "original_max_residual_m": 0.07097296152856314,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 6591,
+        "window_center_m": 25.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 48,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.06889507330363909,
+          1.4677906725082428,
+          1.582033664876139
+        ],
+        "solver_residual_m": 0.05162939601144102,
+        "recomputed_max_residual_m": 0.051629396011441564,
+        "original_max_residual_m": 0.0764179284028601,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 7976,
+        "window_center_m": 15.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 84,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.026591963894102417,
+          -0.5018504435815511,
+          1.5856743182990634
+        ],
+        "solver_residual_m": 0.05946733157532343,
+        "recomputed_max_residual_m": 0.0594673315753238,
+        "original_max_residual_m": 0.10742639638051765,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 7976,
+        "window_center_m": 25.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 69,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.041775007842551524,
+          -0.9192568308418164,
+          1.591392407489617
+        ],
+        "solver_residual_m": 0.05725891986302188,
+        "recomputed_max_residual_m": 0.057258919863022006,
+        "original_max_residual_m": 0.06760548626920393,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 7976,
+        "window_center_m": 30.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 55,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.04404879488959225,
+          -1.1409936902163764,
+          1.5340693043300682
+        ],
+        "solver_residual_m": 0.05713681656278509,
+        "recomputed_max_residual_m": 0.057136816562786574,
+        "original_max_residual_m": 0.06725191382072815,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 7976,
+        "window_center_m": 55.0,
+        "retained": true,
+        "original_first_failed_guard": "gauge",
+        "source_return_line": 170,
+        "points": 16,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.04001565676677684,
+          -0.7007060900703352,
+          1.37
+        ],
+        "solver_residual_m": 0.042710083520764795,
+        "recomputed_max_residual_m": 0.042710083520764774,
+        "original_max_residual_m": 0.05604143825778474,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 8198,
+        "window_center_m": 5.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 43,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.006013579163959154,
+          0.19595321483725758,
+          1.599136638243982
+        ],
+        "solver_residual_m": 0.03831366230769806,
+        "recomputed_max_residual_m": 0.03831366230769817,
+        "original_max_residual_m": 0.07121598645386262,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 8198,
+        "window_center_m": 10.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 52,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.014952349594761206,
+          0.27714159657681403,
+          1.592213893114056
+        ],
+        "solver_residual_m": 0.04760619977941253,
+        "recomputed_max_residual_m": 0.04760619977941283,
+        "original_max_residual_m": 0.08580577202269213,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 8198,
+        "window_center_m": 15.0,
+        "retained": true,
+        "original_first_failed_guard": "gauge",
+        "source_return_line": 170,
+        "points": 28,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.000663253432264135,
+          -0.6701394734079221,
+          1.37
+        ],
+        "solver_residual_m": 0.05562081347183957,
+        "recomputed_max_residual_m": 0.05562081347183989,
+        "original_max_residual_m": 0.06770235239910427,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 8458,
+        "window_center_m": 10.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 65,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.03475779215161716,
+          -0.5210188905474805,
+          1.5706641160781112
+        ],
+        "solver_residual_m": 0.05253060647464028,
+        "recomputed_max_residual_m": 0.05253060647464047,
+        "original_max_residual_m": 0.06727437912138923,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 8458,
+        "window_center_m": 15.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 45,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.03226044705672003,
+          -0.6702974721784476,
+          1.5371317600339078
+        ],
+        "solver_residual_m": 0.04184923864215582,
+        "recomputed_max_residual_m": 0.04184923864215595,
+        "original_max_residual_m": 0.07093430233567133,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 8458,
+        "window_center_m": 20.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 23,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.034120874121217434,
+          -0.38123565269063764,
+          1.3749772135025466
+        ],
+        "solver_residual_m": 0.055268413746140645,
+        "recomputed_max_residual_m": 0.055268413746141,
+        "original_max_residual_m": 0.06522052135566403,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 8458,
+        "window_center_m": 30.0,
+        "retained": false,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 25,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.03239341744309224,
+          -1.4066148308199529,
+          1.561783859137394
+        ],
+        "solver_residual_m": 0.05725749251242678,
+        "recomputed_max_residual_m": 0.057257492512427066,
+        "original_max_residual_m": 0.06694303790451717,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 9028,
+        "window_center_m": 30.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 22,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.0022151905394601477,
+          0.05325489211280722,
+          1.3844679084478386
+        ],
+        "solver_residual_m": 0.05847202481069251,
+        "recomputed_max_residual_m": 0.05847202481069247,
+        "original_max_residual_m": 0.06582660003224672,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 9198,
+        "window_center_m": 5.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 44,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.012685565583246372,
+          0.24405788330708156,
+          1.5750137955122219
+        ],
+        "solver_residual_m": 0.050227532081307445,
+        "recomputed_max_residual_m": 0.050227532081308146,
+        "original_max_residual_m": 0.0944909003989573,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 9198,
+        "window_center_m": 10.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 41,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          0.01590276740774657,
+          0.3191771347467888,
+          1.592590597107439
+        ],
+        "solver_residual_m": 0.052768339785475744,
+        "recomputed_max_residual_m": 0.052768339785475904,
+        "original_max_residual_m": 0.08497422275787309,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 9993,
+        "window_center_m": 10.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 56,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.010897087112664825,
+          -0.2264129249355555,
+          1.6141996983157691
+        ],
+        "solver_residual_m": 0.04807101394512748,
+        "recomputed_max_residual_m": 0.048071013945127916,
+        "original_max_residual_m": 0.09840232093635448,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 9993,
+        "window_center_m": 15.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 69,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.015855567683926416,
+          -0.3923795430439544,
+          1.5377451416858134
+        ],
+        "solver_residual_m": 0.05890866144405485,
+        "recomputed_max_residual_m": 0.05890866144405521,
+        "original_max_residual_m": 0.09898045792134724,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 9993,
+        "window_center_m": 25.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 54,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.04644372499532593,
+          -0.8746911068948445,
+          1.604528608483099
+        ],
+        "solver_residual_m": 0.06288550598884515,
+        "recomputed_max_residual_m": 0.06288550598884546,
+        "original_max_residual_m": 0.06997442900005857,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 9993,
+        "window_center_m": 35.0,
+        "retained": false,
+        "original_first_failed_guard": "gauge",
+        "source_return_line": 170,
+        "points": 29,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.05863768735721717,
+          -2.7276555957135042,
+          1.37
+        ],
+        "solver_residual_m": 0.047547007238971546,
+        "recomputed_max_residual_m": 0.04754700723897276,
+        "original_max_residual_m": 0.04899672970472668,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 10416,
+        "window_center_m": 5.0,
+        "retained": true,
+        "original_first_failed_guard": "residual",
+        "source_return_line": 170,
+        "points": 46,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.015089503311955752,
+          -0.21483099021009933,
+          1.611739177917944
+        ],
+        "solver_residual_m": 0.05138184074101753,
+        "recomputed_max_residual_m": 0.051381840741017815,
+        "original_max_residual_m": 0.09429035033368427,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      },
+      {
+        "frame": 10416,
+        "window_center_m": 15.0,
+        "retained": true,
+        "original_first_failed_guard": "gauge",
+        "source_return_line": 170,
+        "points": 26,
+        "solver_success": true,
+        "solver_status": 0,
+        "solver_message": "Optimization terminated successfully. (HiGHS Status 7: Optimal)",
+        "coefficients": [
+          -0.005369042529496434,
+          0.7716792564504286,
+          1.37
+        ],
+        "solver_residual_m": 0.04854888025248203,
+        "recomputed_max_residual_m": 0.048548880252482274,
+        "original_max_residual_m": 0.06398661089698354,
+        "guards": {
+          "heading": true,
+          "center": true,
+          "gauge": true,
+          "residual": true
+        },
+        "strictly_feasible": true
+      }
+    ]
+  },
+  "selection_stage_observation": {
+    "actual_scans": 30,
+    "scientific_changes": [],
+    "observed_fit_stages": 277,
+    "selector_satisfies_strip": 277,
+    "selector_satisfies_heading_gauge": 277,
+    "failed_final_stages": 53,
+    "failed_final_selector_satisfies_strip": 53,
+    "failed_final_selector_satisfies_heading_gauge": 53
+  },
+  "actual_detector_scans_processed": 60,
+  "distinct_scans": 30,
+  "decision": "Do not adopt minimax refinement from feasibility alone. All 53 rejected attempted fits admit bounded models, but every observed selection model already satisfies the strip, heading and gauge constraints. This is selection-conditioned agreement, not independent evidence of rail geometry.",
+  "limits": [
+    "Only fixed 30 real support scans, repeated with two read-only observers; scientific outputs exact in both runs.",
+    "49 retained fallback headings:46 residual rejections and3 gauge rejections. No support-count/span/rank rejection in this panel.",
+    "The center-prior constraint was additionally enforced in offline linear programming; it is not included in the selection-stage heading/gauge summary.",
+    "No detector estimator change, nuisance improvement, promotion or formal primary run.",
+    "Full trace data are retained in the portable archive; raw per-scan detector reports remain local."
+  ],
+  "next_experiment": {
+    "choice": "Independent support evaluation before any estimator replacement",
+    "hypothesis": "A replacement must improve predictions on support not selected by its own residual strip, rather than merely satisfy the strip that constructed its input.",
+    "prerequisite": "Define provenance-preserving independent rail support or reference annotations; the present conditioned rows cannot establish that criterion.",
+    "execution": "Not launched; user interrupted autonomous work."
+  }
+}

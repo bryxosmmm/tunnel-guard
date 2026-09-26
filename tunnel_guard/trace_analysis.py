@@ -23,6 +23,8 @@ def inside(points, box):
 def analyze(run: Path, annotations: dict):
     rows = {}
     for file in run.glob("*.jsonl"):
+        if file.name.endswith("-timing.jsonl"):
+            continue
         with file.open() as stream:
             for line in stream:
                 row = json.loads(line)
@@ -58,17 +60,21 @@ def analyze(run: Path, annotations: dict):
                 record["stage_box_points"] = None
             best = max(row["objects"], key=lambda o: box_iou(o, box), default=None)
             if best is not None:
-                record["best_candidate"] = {k: best[k] for k in ("component_id", "track_id", "confirmed", "hits", "confirmation",
-                    "path_relation", "distance_m", "cluster_nearest_x_m", "supported_envelope_nearest_x_m", "bbox_min", "bbox_max")}
+                record["best_candidate"] = {k: best[k] for k in ("component_id", "track_id", "confirmed",
+                    "presence_confirmed", "presence_confirmation", "hits", "confirmation", "path_relation",
+                    "distance_m", "cluster_nearest_x_m", "supported_envelope_nearest_x_m", "bbox_min", "bbox_max")}
                 record["best_candidate"].update(iou=box_iou(best, box),
-                    matches_provisional_box=bool(best["confirmed"] and box_iou(best, box) >= annotations["minimum_iou"]))
+                    matches_provisional_box=bool(
+                        (best["presence_confirmed"] if annotations["prediction_scope"] == "near_track_objects"
+                         else best["confirmed"] and best["path_relation"] in ("intersecting", "unresolved"))
+                        and box_iou(best, box) >= annotations["minimum_iou"]))
             else:
                 record["best_candidate"] = None
             observations.append(record)
     distance_cases = []
     for (bag, frame), row in rows.items():
         for obj in row["objects"]:
-            if obj["confirmed"] and obj["path_relation"] == "intersecting" and obj["supported_envelope_nearest_x_m"] is not None:
+            if obj.get("intersection_confirmed", obj["confirmed"] and obj["path_relation"] == "intersecting") and obj["supported_envelope_nearest_x_m"] is not None:
                 gap = obj["supported_envelope_nearest_x_m"] - obj["cluster_nearest_x_m"]
                 if gap > 1e-6:
                     distance_cases.append({"bag": bag, "frame": frame, "track_id": obj["track_id"],
@@ -84,6 +90,7 @@ def analyze(run: Path, annotations: dict):
         "status_counts": dict(Counter(r['status'] for r in rows.values())),
         "candidate_instances": sum(len(r['objects']) for r in rows.values()),
         "confirmed_instances": sum(o['confirmed'] for r in rows.values() for o in r['objects']),
+        "presence_confirmed_instances": sum(o["presence_confirmed"] for r in rows.values() for o in r["objects"]),
         "confirmed_hazard_instances": sum(o['confirmed'] and o['path_relation'] != 'adjacent' for r in rows.values() for o in r['objects']),
         "rejected_components": dict(sum((Counter(r['pipeline']['segmentation'].get('rejected', {})) for r in rows.values()), Counter())),
         "confirmed_intersections_with_distance_gap": len(distance_cases), "largest_distance_gaps": distance_cases[:20],
@@ -95,6 +102,8 @@ def compare_runs(before: Path, after: Path):
     def load(run):
         result = {}
         for path in run.glob("*.jsonl"):
+            if path.name.endswith("-timing.jsonl"):
+                continue
             for line in path.read_text().splitlines():
                 row = json.loads(line)
                 result[(row['bag'], row['frame'])] = row

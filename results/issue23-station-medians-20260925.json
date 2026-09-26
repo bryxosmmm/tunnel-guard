@@ -1,0 +1,359 @@
+{
+  "experiment": "Batched longitudinal station medians, isolated performance candidate",
+  "production_change": false,
+  "source_change": "Only geometry.py refine_rail_pair: grouped coordinate order statistics with the existing one/two-value np.mean arithmetic, same station bins, side order, fit model and bounds. Baseline scalar reporting retained.",
+  "config_sha256": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa",
+  "native_sha256": "daeeb70c5e93225be0695fa5a1c2edddd00b3ea61dc6729bc76269fc1c2e8cf7",
+  "fixed_support_probe": {
+    "scans": 30,
+    "scientific_changes": [],
+    "support_membership_identical": 30,
+    "probes": [
+      {
+        "frame": 5300,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 5360,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 5531,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 5541,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 5550,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6438,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6451,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6461,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6493,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6501,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6504,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6512,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6517,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6533,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6535,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6562,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6564,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6569,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6574,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6591,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6613,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 6627,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 7976,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 8198,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 8424,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 8458,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 9028,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 9198,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 9993,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      },
+      {
+        "frame": 10416,
+        "geometry_equal": true,
+        "measured_fields_equal": true,
+        "membership_equal": true
+      }
+    ],
+    "limits": [
+      "Fresh-state support scans, not temporal full-panel acceptance.",
+      "Concurrent correctness qualification: no timing claim."
+    ]
+  },
+  "paired_runtime": {
+    "actual_processed_acquisitions": 800,
+    "distinct_acquisitions": 200,
+    "scientific_identity": true,
+    "run_order": [
+      {
+        "plan": "build/issue23-station-medians/baseline-first.json",
+        "variant": "baseline",
+        "processing_elapsed_s": 33.494335543000005,
+        "processing_cpu_s": 38.783354
+      },
+      {
+        "plan": "build/issue23-station-medians/candidate-first.json",
+        "variant": "candidate",
+        "processing_elapsed_s": 32.453236957,
+        "processing_cpu_s": 37.994874
+      },
+      {
+        "plan": "build/issue23-station-medians/candidate-second.json",
+        "variant": "candidate",
+        "processing_elapsed_s": 32.340623990000005,
+        "processing_cpu_s": 37.624194
+      },
+      {
+        "plan": "build/issue23-station-medians/baseline-second.json",
+        "variant": "baseline",
+        "processing_elapsed_s": 33.35543455,
+        "processing_cpu_s": 38.641948
+      }
+    ],
+    "comparisons": {
+      "new_data": {
+        "runs": {
+          "baseline": [
+            {
+              "elapsed_s": 14.879882961000002,
+              "cpu_s": 17.952299,
+              "p50_s": 0.166462,
+              "p95_s": 0.20295106905000002
+            },
+            {
+              "elapsed_s": 14.931992260000001,
+              "cpu_s": 17.991904,
+              "p50_s": 0.167542667,
+              "p95_s": 0.2054892709
+            }
+          ],
+          "candidate": [
+            {
+              "elapsed_s": 14.405928831,
+              "cpu_s": 17.647221000000002,
+              "p50_s": 0.161827833,
+              "p95_s": 0.1983440003
+            },
+            {
+              "elapsed_s": 14.495037331,
+              "cpu_s": 17.547078000000003,
+              "p50_s": 0.1628173125,
+              "p95_s": 0.19840931035
+            }
+          ]
+        },
+        "elapsed_ratio_of_means": 0.9694447580956485,
+        "cpu_ratio_of_means": 0.9791369974179146,
+        "every_candidate_elapsed_below_every_baseline": true
+      },
+      "doubleT_platform": {
+        "runs": {
+          "baseline": [
+            {
+              "elapsed_s": 18.614452582000002,
+              "cpu_s": 20.831055000000003,
+              "p50_s": 0.1987703125,
+              "p95_s": 0.3007734394
+            },
+            {
+              "elapsed_s": 18.42344229,
+              "cpu_s": 20.650044,
+              "p50_s": 0.1991015415,
+              "p95_s": 0.29972285190000003
+            }
+          ],
+          "candidate": [
+            {
+              "elapsed_s": 18.047308126,
+              "cpu_s": 20.347653,
+              "p50_s": 0.1920143545,
+              "p95_s": 0.2951097599
+            },
+            {
+              "elapsed_s": 17.845586659000002,
+              "cpu_s": 20.077116,
+              "p50_s": 0.191552875,
+              "p95_s": 0.30022995365000005
+            }
+          ]
+        },
+        "elapsed_ratio_of_means": 0.969085713673603,
+        "cpu_ratio_of_means": 0.9745346669817017,
+        "every_candidate_elapsed_below_every_baseline": true
+      },
+      "combined": {
+        "runs": {
+          "baseline": [
+            {
+              "elapsed_s": 33.494335543000005,
+              "cpu_s": 38.783354
+            },
+            {
+              "elapsed_s": 33.35543455,
+              "cpu_s": 38.641948
+            }
+          ],
+          "candidate": [
+            {
+              "elapsed_s": 32.453236957,
+              "cpu_s": 37.994874
+            },
+            {
+              "elapsed_s": 32.340623990000005,
+              "cpu_s": 37.624194
+            }
+          ]
+        },
+        "elapsed_ratio_of_means": 0.9692458307165477,
+        "cpu_ratio_of_means": 0.9766712695547509,
+        "every_candidate_elapsed_below_every_baseline": true
+      }
+    },
+    "limits": [
+      "Only two100frame prefixes, two executions per variant, not independent detection events.",
+      "Timing is unprofiled local Detector.process, not full harness runtime or live latency.",
+      "No primary-metric improvement or production promotion claimed; full panel not rerun."
+    ]
+  },
+  "complete_positive_person": {
+    "cloud_with_fake_obj": {
+      "frames": 1510,
+      "timed_frames": 1510,
+      "scientific_identity": true,
+      "processing_elapsed_s": 421.636617917,
+      "processing_cpu_s": 465.51886900000005
+    },
+    "doubleT_obstacle": {
+      "frames": 201,
+      "timed_frames": 201,
+      "scientific_identity": true,
+      "processing_elapsed_s": 38.236105374000005,
+      "processing_cpu_s": 47.716937
+    }
+  },
+  "actual_processed_acquisitions": 2541,
+  "distinct_acquisitions": 1941,
+  "decision": "Measured lower processing time on both fixed prefixes with exact scientific outputs; full positive/person outputs also exact. Retain isolated patch, not production promotion or nuisance reduction.",
+  "limits": [
+    "Two ABBA repeats: combined processing3.08%lower andCPU2.33%lower; not universal speed, live latency, or full-harness timing.",
+    "Do not add this gain to the separately measured reporting optimization without a combined experiment.",
+    "Full13558negative-panel replay not performed; false-alarm metric unchanged/not rescored.",
+    "Full raw rows retained locally; compact portable archive preserves source, patches, recipes, all timing/digest rows and observed support evidence.",
+    "No automatic tests, production source/config/native edits, or formal primaryrun; count remains2/6."
+  ]
+}

@@ -1,0 +1,772 @@
+{
+  "baseline_commit": "01c8d84",
+  "recording_applicability_verified": false,
+  "calibration_installed": false,
+  "comparison": {
+    "panel": "configs/mounting-panel.json",
+    "panel_sha256": "705ee82d860850188b30e711b62d224ef0ab9a758fb0a3d0101fb6ab4797bc5b",
+    "accuracy": null,
+    "limitations": [
+      "Alarm counts on nonexhaustively labelled development recordings are not precision, recall or false-alarm rate.",
+      "Repeated frames and candidates are not independent object events.",
+      "Timing is descriptive; concurrent workloads and visualization settings differ.",
+      "Float comparison uses absolute and relative tolerance 1e-10; discrete decisions and IDs are exact."
+    ],
+    "bags": [
+      {
+        "bag": "doubleT_obstacle",
+        "before": "build/decode-real/doubleT_obstacle.jsonl",
+        "after": "build/mounting-real/doubleT_obstacle.jsonl",
+        "before_sha256": "dd9b45532d8ee407a50b17c3d82fe294b8c74d9ea6f537545c0ba4b631890674",
+        "after_sha256": "85a6b9e9357c0ee7061ea6bdaa06ed287a8b607c0d7b979f9cc895c511daa901",
+        "before_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 82,
+            "obstacle": 119
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44603,
+          "support_voxel_observations": 3856178,
+          "confirmed_intersection_observations": 203,
+          "candidate_observations_at_least_60m": 10665,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 153.2666659913957,
+            "p95": 215.97770898370072,
+            "p99": 245.69354200502858
+          }
+        },
+        "after_statistics": {
+          "frames": 201,
+          "status_frames": {
+            "unresolved_obstacle": 82,
+            "obstacle": 119
+          },
+          "health_frames": {
+            "degraded": 201
+          },
+          "geometry_valid_frames": 201,
+          "motion_valid_frames": 200,
+          "candidate_observations": 44603,
+          "support_voxel_observations": 3856178,
+          "confirmed_intersection_observations": 203,
+          "candidate_observations_at_least_60m": 10665,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 149.43370898254216,
+            "p95": 188.60391702037305,
+            "p99": 268.8924999674782
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 4.529709940470639e-14
+      },
+      {
+        "bag": "doubleT_platform",
+        "before": "build/decode-real/doubleT_platform.jsonl",
+        "after": "build/mounting-real/doubleT_platform.jsonl",
+        "before_sha256": "557e038ef57441e087300d4e63f514c31b9eb362bac6d9e6860b9a7372415232",
+        "after_sha256": "d2c35e3a0ca8ba6dededbc0ac0f3a20a9cd26ed22c25b5c1d01f1d75525ea0eb",
+        "before_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68321,
+          "support_voxel_observations": 4237359,
+          "confirmed_intersection_observations": 255,
+          "candidate_observations_at_least_60m": 22191,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 123.52358299540356,
+            "p95": 198.34790860768413,
+            "p99": 271.4728399692103
+          }
+        },
+        "after_statistics": {
+          "frames": 345,
+          "status_frames": {
+            "unresolved_obstacle": 258,
+            "obstacle": 87
+          },
+          "health_frames": {
+            "degraded": 345
+          },
+          "geometry_valid_frames": 345,
+          "motion_valid_frames": 240,
+          "candidate_observations": 68321,
+          "support_voxel_observations": 4237359,
+          "confirmed_intersection_observations": 255,
+          "candidate_observations_at_least_60m": 22191,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 116.20791698805988,
+            "p95": 160.9232333838009,
+            "p99": 196.41454848228025
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 7.149836278586008e-14
+      },
+      {
+        "bag": "roundT_doubleT",
+        "before": "build/decode-real/roundT_doubleT.jsonl",
+        "after": "build/mounting-real/roundT_doubleT.jsonl",
+        "before_sha256": "a650606a1de563bbf9a077e2b42078113100e443fd08d2e414adbbde655d4842",
+        "after_sha256": "3a07e0c452224415b116200676163f2a535e014e33225d8cec8f82d89ed33b34",
+        "before_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 187,
+            "obstacle": 64
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48953,
+          "support_voxel_observations": 4039823,
+          "confirmed_intersection_observations": 191,
+          "candidate_observations_at_least_60m": 11435,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 131.99283299036324,
+            "p95": 194.43601891398427,
+            "p99": 247.96026941796305
+          }
+        },
+        "after_statistics": {
+          "frames": 252,
+          "status_frames": {
+            "candidate": 1,
+            "unresolved_obstacle": 187,
+            "obstacle": 64
+          },
+          "health_frames": {
+            "degraded": 252
+          },
+          "geometry_valid_frames": 252,
+          "motion_valid_frames": 251,
+          "candidate_observations": 48953,
+          "support_voxel_observations": 4039823,
+          "confirmed_intersection_observations": 191,
+          "candidate_observations_at_least_60m": 11435,
+          "histories_with_future_timestamps": 0,
+          "histories_with_duplicate_timestamps": 0,
+          "processing_ms": {
+            "p50": 137.15779199264944,
+            "p95": 223.40414389327634,
+            "p99": 319.45820314576866
+          }
+        },
+        "missing_after": [],
+        "extra_after": [],
+        "measurement_identity_errors": [],
+        "changed_frames_by_field": {},
+        "first_changed_frames": {},
+        "largest_compared_float_difference": 4.4653170050423796e-13
+      }
+    ]
+  },
+  "mounting_report": [
+    {
+      "bag": "doubleT_obstacle",
+      "source_sha256": "85a6b9e9357c0ee7061ea6bdaa06ed287a8b607c0d7b979f9cc895c511daa901",
+      "partitions": {
+        "fit": {
+          "frames": 20,
+          "observed_frames": 20,
+          "observed_fraction": 1.0,
+          "states": {
+            "observed": 20
+          },
+          "height_m": {
+            "p05": 1.4983426212310604,
+            "p50": 1.4994709109593098,
+            "p95": 1.5008974274150655,
+            "span": 0.0038444646778685865
+          },
+          "lateral_m": {
+            "p05": -0.03316856679892134,
+            "p50": -0.02538616736566511,
+            "p95": -0.020920123241855788,
+            "span": 0.016613303832662622
+          },
+          "reference_comparisons": {
+            "outside_diagnostic_band": 20
+          },
+          "max_rotation_deviation_deg": 0.18175499588303864
+        },
+        "later": {
+          "frames": 181,
+          "observed_frames": 179,
+          "observed_fraction": 0.988950276243094,
+          "states": {
+            "observed": 179,
+            "unavailable": 2
+          },
+          "height_m": {
+            "p05": 1.4985355393882704,
+            "p50": 1.4999126856252185,
+            "p95": 1.5015284731149636,
+            "span": 0.004436782617741608
+          },
+          "lateral_m": {
+            "p05": -0.03889846645717626,
+            "p50": -0.029257317508238456,
+            "p95": -0.018298649781512633,
+            "span": 0.032946157225682664
+          },
+          "reference_comparisons": {
+            "outside_diagnostic_band": 179
+          },
+          "max_rotation_deviation_deg": 0.2541448100651518
+        },
+        "all": {
+          "frames": 201,
+          "observed_frames": 199,
+          "observed_fraction": 0.9900497512437811,
+          "states": {
+            "observed": 199,
+            "unavailable": 2
+          },
+          "height_m": {
+            "p05": 1.4984331239506476,
+            "p50": 1.4998767590170943,
+            "p95": 1.5015284731149636,
+            "span": 0.004436782617741608
+          },
+          "lateral_m": {
+            "p05": -0.0386092717955467,
+            "p50": -0.0287608746966211,
+            "p95": -0.018397248919478658,
+            "span": 0.032946157225682664
+          },
+          "reference_comparisons": {
+            "outside_diagnostic_band": 199
+          },
+          "max_rotation_deviation_deg": 0.2541448100651518
+        }
+      },
+      "fit_cutoff_measurement_ns": 946687299100110054,
+      "later_first_measurement_ns": 946687299200095057,
+      "numerical_consistency_accepted": false,
+      "rejection_reasons": [
+        "fit:reported_reference_disagreement",
+        "later:reported_reference_disagreement"
+      ],
+      "frozen_processing_to_track_rotation": [
+        [
+          0.9996536248235379,
+          -0.02194398740317407,
+          -0.014528998382934241
+        ],
+        [
+          0.021060796508783314,
+          0.9980723235874133,
+          -0.05837876102863334
+        ],
+        [
+          0.015782053972078183,
+          0.05805254779656097,
+          0.9981887739634979
+        ]
+      ],
+      "frozen_xyz_deg": [
+        3.3284520755897433,
+        -0.904282626062628,
+        1.2069343164017312
+      ],
+      "calibration_installed": false,
+      "vehicle_extrinsics_verified": false,
+      "installation_blockers": [
+        "reference_recording_load_and_stationarity_unverified",
+        "railhead_support_is_not_independently_surveyed_geometry",
+        "longitudinal_vehicle_offset_and_body_envelope_unknown"
+      ],
+      "limitations": [
+        "Existing rail model seeds candidates; no independent rail-identity proof.",
+        "Near track must be locally straight/planar; curvature/cant changes can invalidate a fixed orientation.",
+        "Upper observed support can be below the physical running surface.",
+        "Reported height direction/uncertainty unspecified; plane-normal height is a proxy.",
+        "Temporal frames correlated; ranges are not statistical confidence bounds."
+      ]
+    },
+    {
+      "bag": "doubleT_platform",
+      "source_sha256": "d2c35e3a0ca8ba6dededbc0ac0f3a20a9cd26ed22c25b5c1d01f1d75525ea0eb",
+      "partitions": {
+        "fit": {
+          "frames": 20,
+          "observed_frames": 20,
+          "observed_fraction": 1.0,
+          "states": {
+            "observed": 20
+          },
+          "height_m": {
+            "p05": 1.0849084862767708,
+            "p50": 1.090360333276808,
+            "p95": 1.0995330120091722,
+            "span": 0.01700913420843908
+          },
+          "lateral_m": {
+            "p05": 0.017937637200779323,
+            "p50": 0.02367660622463599,
+            "p95": 0.03109432399050429,
+            "span": 0.0184878370547977
+          },
+          "reference_comparisons": {
+            "within_diagnostic_band": 20
+          },
+          "max_rotation_deviation_deg": 0.09437699708879813
+        },
+        "later": {
+          "frames": 325,
+          "observed_frames": 325,
+          "observed_fraction": 1.0,
+          "states": {
+            "observed": 325
+          },
+          "height_m": {
+            "p05": 1.0830621451154572,
+            "p50": 1.0860026745530742,
+            "p95": 1.09068435760708,
+            "span": 0.015348217173329903
+          },
+          "lateral_m": {
+            "p05": 0.00468423302869008,
+            "p50": 0.01696329842825698,
+            "p95": 0.030433705598809854,
+            "span": 0.050812889929645416
+          },
+          "reference_comparisons": {
+            "within_diagnostic_band": 325
+          },
+          "max_rotation_deviation_deg": 0.45906094853315677
+        },
+        "all": {
+          "frames": 345,
+          "observed_frames": 345,
+          "observed_fraction": 1.0,
+          "states": {
+            "observed": 345
+          },
+          "height_m": {
+            "p05": 1.0831314312420142,
+            "p50": 1.0860585812690462,
+            "p95": 1.0911811908971245,
+            "span": 0.020711103968052536
+          },
+          "lateral_m": {
+            "p05": 0.004731587055961606,
+            "p50": 0.01740239767553075,
+            "p95": 0.030720458370215017,
+            "span": 0.050812889929645416
+          },
+          "reference_comparisons": {
+            "within_diagnostic_band": 345
+          },
+          "max_rotation_deviation_deg": 0.45906094853315677
+        }
+      },
+      "fit_cutoff_measurement_ns": 946693352233386040,
+      "later_first_measurement_ns": 946693352333394051,
+      "numerical_consistency_accepted": true,
+      "rejection_reasons": [],
+      "frozen_processing_to_track_rotation": [
+        [
+          0.9999757946104992,
+          -0.004478119808958528,
+          -0.005325094935917593
+        ],
+        [
+          0.004516228994452164,
+          0.9999641242129919,
+          0.007166167916898973
+        ],
+        [
+          0.005292812935442888,
+          -0.00719004380516112,
+          0.9999601439064006
+        ]
+      ],
+      "frozen_xyz_deg": [
+        -0.41196848467813324,
+        -0.3032572588658645,
+        0.25876536489270946
+      ],
+      "calibration_installed": false,
+      "vehicle_extrinsics_verified": false,
+      "installation_blockers": [
+        "reference_recording_load_and_stationarity_unverified",
+        "railhead_support_is_not_independently_surveyed_geometry",
+        "longitudinal_vehicle_offset_and_body_envelope_unknown"
+      ],
+      "limitations": [
+        "Existing rail model seeds candidates; no independent rail-identity proof.",
+        "Near track must be locally straight/planar; curvature/cant changes can invalidate a fixed orientation.",
+        "Upper observed support can be below the physical running surface.",
+        "Reported height direction/uncertainty unspecified; plane-normal height is a proxy.",
+        "Temporal frames correlated; ranges are not statistical confidence bounds."
+      ]
+    },
+    {
+      "bag": "roundT_doubleT",
+      "source_sha256": "3a07e0c452224415b116200676163f2a535e014e33225d8cec8f82d89ed33b34",
+      "partitions": {
+        "fit": {
+          "frames": 20,
+          "observed_frames": 20,
+          "observed_fraction": 1.0,
+          "states": {
+            "observed": 20
+          },
+          "height_m": {
+            "p05": 1.0887227011427822,
+            "p50": 1.0929408882462308,
+            "p95": 1.094081506957691,
+            "span": 0.0058774949942010934
+          },
+          "lateral_m": {
+            "p05": 0.004469853498554631,
+            "p50": 0.022845648400399148,
+            "p95": 0.041449518268249975,
+            "span": 0.038318957128705214
+          },
+          "reference_comparisons": {
+            "within_diagnostic_band": 20
+          },
+          "max_rotation_deviation_deg": 0.984922308016485
+        },
+        "later": {
+          "frames": 232,
+          "observed_frames": 176,
+          "observed_fraction": 0.7586206896551724,
+          "states": {
+            "observed": 176,
+            "unavailable": 56
+          },
+          "height_m": {
+            "p05": 1.0847515305127013,
+            "p50": 1.0927427061959754,
+            "p95": 1.098321899098528,
+            "span": 0.019267579117884015
+          },
+          "lateral_m": {
+            "p05": -0.03832263753799188,
+            "p50": 0.007653825930558526,
+            "p95": 0.025782948330875605,
+            "span": 0.0854446481794837
+          },
+          "reference_comparisons": {
+            "within_diagnostic_band": 176
+          },
+          "max_rotation_deviation_deg": 4.881531937497103
+        },
+        "all": {
+          "frames": 252,
+          "observed_frames": 196,
+          "observed_fraction": 0.7777777777777778,
+          "states": {
+            "observed": 196,
+            "unavailable": 56
+          },
+          "height_m": {
+            "p05": 1.0850488111240724,
+            "p50": 1.0928232271026945,
+            "p95": 1.0980679100545105,
+            "span": 0.019267579117884015
+          },
+          "lateral_m": {
+            "p05": -0.037806305997048976,
+            "p50": 0.00843479805079641,
+            "p95": 0.028615440414747482,
+            "span": 0.0949609068289457
+          },
+          "reference_comparisons": {
+            "within_diagnostic_band": 196
+          },
+          "max_rotation_deviation_deg": 4.881531937497103
+        }
+      },
+      "fit_cutoff_measurement_ns": 946692933533452988,
+      "later_first_measurement_ns": 946692933633453012,
+      "numerical_consistency_accepted": false,
+      "rejection_reasons": [
+        "later:insufficient_observed_frames",
+        "later:orientation_instability"
+      ],
+      "frozen_processing_to_track_rotation": [
+        [
+          0.9999479464909675,
+          0.01018893740655162,
+          0.0005383892849598949
+        ],
+        [
+          -0.010201927231600471,
+          0.9992525499197231,
+          0.03728621943415659
+        ],
+        [
+          -0.00015807990990406132,
+          -0.037289771163903924,
+          0.9993044821160794
+        ]
+      ],
+      "frozen_xyz_deg": [
+        -2.1370419977866675,
+        0.00905731170103631,
+        -0.5845375205842241
+      ],
+      "calibration_installed": false,
+      "vehicle_extrinsics_verified": false,
+      "installation_blockers": [
+        "reference_recording_load_and_stationarity_unverified",
+        "railhead_support_is_not_independently_surveyed_geometry",
+        "longitudinal_vehicle_offset_and_body_envelope_unknown"
+      ],
+      "limitations": [
+        "Existing rail model seeds candidates; no independent rail-identity proof.",
+        "Near track must be locally straight/planar; curvature/cant changes can invalidate a fixed orientation.",
+        "Upper observed support can be below the physical running surface.",
+        "Reported height direction/uncertainty unspecified; plane-normal height is a proxy.",
+        "Temporal frames correlated; ranges are not statistical confidence bounds."
+      ]
+    }
+  ],
+  "frozen_rotation_replay": [
+    {
+      "bag": "doubleT_obstacle",
+      "validation_frames": 181,
+      "fit_cutoff_measurement_ns": 946687299100110054,
+      "before": {
+        "frames": 181,
+        "observed_frames": 179,
+        "observed_fraction": 0.988950276243094,
+        "states": {
+          "observed": 179,
+          "unavailable": 2
+        },
+        "height_m": {
+          "p05": 1.4985355393882704,
+          "p50": 1.4999126856252185,
+          "p95": 1.5015284731149636,
+          "span": 0.004436782617741608
+        },
+        "lateral_m": {
+          "p05": -0.03889846645717626,
+          "p50": -0.029257317508238456,
+          "p95": -0.018298649781512633,
+          "span": 0.032946157225682664
+        },
+        "reference_comparisons": {
+          "outside_diagnostic_band": 179
+        },
+        "max_rotation_deviation_deg": 0.2541448100651518
+      },
+      "after": {
+        "frames": 181,
+        "observed_frames": 181,
+        "observed_fraction": 1.0,
+        "states": {
+          "observed": 181
+        },
+        "height_m": {
+          "p05": 1.4994968346003732,
+          "p50": 1.5004191223533574,
+          "p95": 1.5013611325542482,
+          "span": 0.0037261149627101364
+        },
+        "lateral_m": {
+          "p05": -0.041949517188808766,
+          "p50": -0.03482996965901136,
+          "p95": -0.027500351120305782,
+          "span": 0.020955213906803136
+        },
+        "reference_comparisons": {
+          "outside_diagnostic_band": 181
+        },
+        "max_rotation_deviation_deg": 0.13344885197968454
+      },
+      "calibration_installed": false,
+      "scope": "Frozen rotation about sensor origin, re-estimated on strictly later clouds; no translation or detector/accuracy evaluation"
+    },
+    {
+      "bag": "doubleT_platform",
+      "validation_frames": 325,
+      "fit_cutoff_measurement_ns": 946693352233386040,
+      "before": {
+        "frames": 325,
+        "observed_frames": 325,
+        "observed_fraction": 1.0,
+        "states": {
+          "observed": 325
+        },
+        "height_m": {
+          "p05": 1.0830621451154572,
+          "p50": 1.0860026745530742,
+          "p95": 1.09068435760708,
+          "span": 0.015348217173329903
+        },
+        "lateral_m": {
+          "p05": 0.00468423302869008,
+          "p50": 0.01696329842825698,
+          "p95": 0.030433705598809854,
+          "span": 0.050812889929645416
+        },
+        "reference_comparisons": {
+          "within_diagnostic_band": 325
+        },
+        "max_rotation_deviation_deg": 0.45906094853315677
+      },
+      "after": {
+        "frames": 325,
+        "observed_frames": 325,
+        "observed_fraction": 1.0,
+        "states": {
+          "observed": 325
+        },
+        "height_m": {
+          "p05": 1.0832427584690902,
+          "p50": 1.0860887641626293,
+          "p95": 1.0905185500810752,
+          "span": 0.0162017430543
+        },
+        "lateral_m": {
+          "p05": -0.0026365194431692738,
+          "p50": 0.008426601926006527,
+          "p95": 0.025679599592456453,
+          "span": 0.043776838593683975
+        },
+        "reference_comparisons": {
+          "within_diagnostic_band": 325
+        },
+        "max_rotation_deviation_deg": 0.47544088568524095
+      },
+      "calibration_installed": false,
+      "scope": "Frozen rotation about sensor origin, re-estimated on strictly later clouds; no translation or detector/accuracy evaluation"
+    },
+    {
+      "bag": "roundT_doubleT",
+      "validation_frames": 232,
+      "fit_cutoff_measurement_ns": 946692933533452988,
+      "before": {
+        "frames": 232,
+        "observed_frames": 176,
+        "observed_fraction": 0.7586206896551724,
+        "states": {
+          "observed": 176,
+          "unavailable": 56
+        },
+        "height_m": {
+          "p05": 1.0847515305127013,
+          "p50": 1.0927427061959754,
+          "p95": 1.098321899098528,
+          "span": 0.019267579117884015
+        },
+        "lateral_m": {
+          "p05": -0.03832263753799188,
+          "p50": 0.007653825930558526,
+          "p95": 0.025782948330875605,
+          "span": 0.0854446481794837
+        },
+        "reference_comparisons": {
+          "within_diagnostic_band": 176
+        },
+        "max_rotation_deviation_deg": 4.881531937497103
+      },
+      "after": {
+        "frames": 232,
+        "observed_frames": 147,
+        "observed_fraction": 0.6336206896551724,
+        "states": {
+          "observed": 147,
+          "unavailable": 85
+        },
+        "height_m": {
+          "p05": 1.0844319054877973,
+          "p50": 1.0937762516213132,
+          "p95": 1.0987482790236351,
+          "span": 0.01924279135274931
+        },
+        "lateral_m": {
+          "p05": -0.009717690448126872,
+          "p50": 0.011263602540252105,
+          "p95": 0.025105149862282905,
+          "span": 0.059439784104463725
+        },
+        "reference_comparisons": {
+          "within_diagnostic_band": 147
+        },
+        "max_rotation_deviation_deg": 4.760177826594353
+      },
+      "calibration_installed": false,
+      "scope": "Frozen rotation about sensor origin, re-estimated on strictly later clouds; no translation or detector/accuracy evaluation"
+    }
+  ],
+  "observer_latency": {
+    "doubleT_obstacle": {
+      "observer_ms_p50": 1.6988749848678708
+    },
+    "doubleT_platform": {
+      "observer_ms_p50": 2.9099590028636158
+    },
+    "roundT_doubleT": {
+      "observer_ms_p50": 1.9206044962629676
+    }
+  },
+  "rviz_artifact_inspection": [
+    {
+      "bag": "doubleT_obstacle",
+      "display_points": 9793,
+      "mounting_marker_points": 50,
+      "support_points_match": true,
+      "status_mounting_matches": true,
+      "quality_text": "RECORDED_RESULT_REPLAY | unresolved_obstacle\nIntrusion=None m | uncertain=33.921974182128906 m\ndegraded: first_frame, unverified_sensor_profile_and_extrinsics, deskew_disabled_unverified_timing\nReference envelope; observed support only; route clearance unknown\nRail support height: 1.500 m; reported static height: 1.075 m\nRecording applicability unverified; vehicle calibration unverified"
+    },
+    {
+      "bag": "doubleT_platform",
+      "display_points": 9771,
+      "mounting_marker_points": 79,
+      "support_points_match": true,
+      "status_mounting_matches": true,
+      "quality_text": "RECORDED_RESULT_REPLAY | unresolved_obstacle\nIntrusion=None m | uncertain=2.0009207725524902 m\ndegraded: first_frame, unverified_sensor_profile_and_extrinsics, deskew_disabled_unverified_timing\nReference envelope; observed support only; route clearance unknown\nRail support height: 1.090 m; reported static height: 1.075 m\nRecording applicability unverified; vehicle calibration unverified"
+    },
+    {
+      "bag": "roundT_doubleT",
+      "display_points": 9974,
+      "mounting_marker_points": 98,
+      "support_points_match": true,
+      "status_mounting_matches": true,
+      "quality_text": "RECORDED_RESULT_REPLAY | candidate\nIntrusion=None m | uncertain=None m\ndegraded: first_frame, weak_or_unmeasured_translation_observability, unverified_sensor_profile_and_extrinsics, deskew_disabled_unverified_timing\nReference envelope; observed support only; route clearance unknown\nRail support height: 1.094 m; reported static height: 1.075 m\nRecording applicability unverified; vehicle calibration unverified"
+    }
+  ],
+  "browser_visual_inspection": "Observed green support points, mounting height and unknown-applicability text; zoom button works on frame 0 doubleT_obstacle",
+  "ros_runtime_or_gui_verified": false
+}

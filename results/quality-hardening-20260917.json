@@ -1,0 +1,650 @@
+{
+  "date": "2026-09-17",
+  "scope": "Detection quality: measurement hygiene, hazard/clearance separation, infrastructure classification, and a synthetic source whose rays, surfaces and returns come from a real frame.",
+  "corpus_duplicated_returns": {
+    "statuses": {
+      "candidate": 329,
+      "unresolved_obstacle": 84,
+      "obstacle": 272,
+      "object_near_track": 113
+    },
+    "relations": {
+      "structure": 6408,
+      "adjacent": 12519,
+      "unresolved": 7420,
+      "near_track_object": 92515,
+      "beyond_supported_reference": 41422,
+      "intersecting": 1593
+    },
+    "frames_reporting_a_hazard": 356,
+    "nearest_hazard_m_percentiles": {
+      "p5": 7.5,
+      "p50": 46.8,
+      "p95": 58.3
+    }
+  },
+  "corpus_track_hardware": {
+    "statuses": {
+      "candidate": 367,
+      "unresolved_obstacle": 80,
+      "obstacle": 218,
+      "object_near_track": 133
+    },
+    "relations": {
+      "structure": 6408,
+      "adjacent": 12519,
+      "unresolved": 7420,
+      "near_track_object": 84897,
+      "beyond_supported_reference": 41002,
+      "intersecting": 929,
+      "track_hardware": 8702
+    },
+    "frames_reporting_a_hazard": 298,
+    "nearest_hazard_m_percentiles": {
+      "p5": 7.3,
+      "p50": 55.5,
+      "p95": 60.9
+    }
+  },
+  "panels": {
+    "development": {
+      "localized_tp": 170,
+      "localized_fn": 46,
+      "localized_object_recall": 0.7870370370370371,
+      "localized_event_recall": 0.9444444444444444,
+      "localized_precision_exhaustive_only": 0.9289617486338798,
+      "localized_distance_mae_m": 0.00045348745040571547,
+      "localized_tp_within_reference_horizon": 128,
+      "localized_fn_within_reference_horizon": 16,
+      "annotated_objects_beyond_reference_horizon": 72
+    },
+    "holdout": {
+      "localized_tp": 168,
+      "localized_fn": 48,
+      "localized_object_recall": 0.7777777777777778,
+      "localized_event_recall": 0.9444444444444444,
+      "localized_precision_exhaustive_only": 0.9130434782608695,
+      "localized_distance_mae_m": 0.00037316716795834264,
+      "localized_tp_within_reference_horizon": 128,
+      "localized_fn_within_reference_horizon": 16,
+      "annotated_objects_beyond_reference_horizon": 72
+    },
+    "measured": {
+      "localized_tp": 765,
+      "localized_fn": 195,
+      "localized_object_recall": 0.796875,
+      "localized_event_recall": 0.8541666666666666,
+      "localized_precision_exhaustive_only": 0.864406779661017,
+      "localized_distance_mae_m": 0.002287360889117896,
+      "localized_tp_within_reference_horizon": 464,
+      "localized_fn_within_reference_horizon": 16,
+      "annotated_objects_beyond_reference_horizon": 480
+    }
+  },
+  "person_panel": {
+    "label_status": "provisional_geometry",
+    "prediction_scope": "near_track_objects",
+    "annotation_origins": {
+      "detector_track_propagation": 35,
+      "manual_anchor": 1
+    },
+    "box_semantics": "unspecified",
+    "minimum_3d_iou": 0.25,
+    "evaluated_frames": 36,
+    "missing_frames": [],
+    "exhaustive_frames": 0,
+    "tp": 0,
+    "fn": 36,
+    "fp_exhaustive_only": 0,
+    "annotated_object_recall": 0.0,
+    "precision_exhaustive_only": null,
+    "recall_exhaustive_only": null,
+    "f1_exhaustive_only": null,
+    "event_recall": 0.0,
+    "localization_tolerance_m": 0.25,
+    "localized_tp": 36,
+    "localized_fn": 0,
+    "localized_object_recall": 1.0,
+    "localized_event_recall": 1.0,
+    "localized_precision_exhaustive_only": null,
+    "localized_mean_centre_error_m": 0.48050570574213647,
+    "localized_distance_mae_m": 0.2494674373554257,
+    "localized_tp_within_reference_horizon": 36,
+    "localized_fn_within_reference_horizon": 0,
+    "annotated_objects_beyond_reference_horizon": 0,
+    "distance_mae_m": null,
+    "matched_mean_3d_iou": null,
+    "validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+      "Labels include detector-track propagation; retain author review provenance and do not treat this panel as an independent holdout",
+      "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+    ],
+    "events": {
+      "doubleT_obstacle:7": {
+        "annotated_frames": 36,
+        "matched_frames": 0,
+        "localized_frames": 36,
+        "first_detection_distance_m": null,
+        "localized_first_distance_m": 4.600920324384247
+      }
+    },
+    "frames": [
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 165,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "candidate",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 166,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "candidate",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 167,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "candidate",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 168,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 169,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 170,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 171,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 172,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "candidate",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 173,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "object_near_track",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 174,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "candidate",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 175,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "candidate",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 176,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 177,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 178,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 179,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "candidate",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 180,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 181,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 182,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 183,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 184,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 185,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 186,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 187,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 188,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 189,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "object_near_track",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 190,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "object_near_track",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 191,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "candidate",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 192,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 193,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "candidate",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 194,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "object_near_track",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 195,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "object_near_track",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 196,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "candidate",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 197,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "candidate",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 198,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 199,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "obstacle",
+        "matches": []
+      },
+      {
+        "bag": "doubleT_obstacle",
+        "frame": 200,
+        "tp": 0,
+        "fn": 1,
+        "fp": null,
+        "status": "unresolved_obstacle",
+        "matches": []
+      }
+    ],
+    "annotations_sha256": "f538adc5eed18ff526b7a21c02b16562bc334e34abaf702f841d35927eba06e8",
+    "run": "build/perf-cpp-hardware-20260917"
+  },
+  "calibrated_synthetic_panel": {
+    "run": "build/realistic-panel2-20260917",
+    "source": "real rays, real surfaces, real returns, real ego motion from doubleT_obstacle",
+    "localized_tp": 109,
+    "localized_fn": 107,
+    "localized_object_recall": 0.5046296296296297,
+    "localized_event_recall": 0.5555555555555556,
+    "localized_precision_exhaustive_only": null,
+    "localized_distance_mae_m": 0.002843399972201706,
+    "localized_tp_within_reference_horizon": 109,
+    "localized_fn_within_reference_horizon": 35,
+    "annotated_objects_beyond_reference_horizon": 72
+  },
+  "measured_sensor_facts": {
+    "rings": 128,
+    "valid_slots_share": 0.376,
+    "duplicated_measurements": "346808 valid, 177610 unique: every return is carried twice, bit-identical",
+    "elevation_ladder_deg_p10_p50_p90": [
+      0.111,
+      0.168,
+      0.514
+    ],
+    "azimuth_step_deg": 0.2,
+    "range_m_p50_p90_p99": [
+      6.9,
+      19.1,
+      61.5
+    ],
+    "returns_beyond_60_m_share": 0.011,
+    "returns_beyond_100_m_share": 0.0028,
+    "intensity_p50_p90": [
+      11,
+      26
+    ],
+    "intra_scan_travel_m": {
+      "doubleT_obstacle": 0.003,
+      "doubleT_platform": 0.064,
+      "roundT_doubleT": 1.717
+    }
+  },
+  "deskew_experiment": {
+    "timestamp_convention": "normalized fraction of the scan, matching KISS-ICP's own loaders; verified, not assumed",
+    "effect_on_definite_alarms": {
+      "doubleT_obstacle": "117 -> 110 (stationary control, bidirectional)",
+      "doubleT_platform": "44 -> 43",
+      "roundT_doubleT": "57 -> 67 at 62 km/h"
+    },
+    "geometry_fits": "bed residual and rail anchor count unchanged: the distortion is along-track and a cross-section fit cannot see it",
+    "distance_bias": "not measurable without a surveyed reference; a mid-scan return is displaced up to 0.85 m at 62 km/h",
+    "verdict": "material on the fast recording, unvalidated; kept as an opt-in recipe, not the default"
+  },
+  "known_failure_modes": [
+    "Close-range objects merge with the ground and track structure and lose their identity: at 10 m only 24 of 36 frames put a confirmed object's centre inside the annotated box, while 20 m reaches 0.944.",
+    "Half of the measured panel's annotated boxes lie beyond the range where the bed and rail chains support a clearance verdict, so they can only be scored for presence.",
+    "No exhaustive negative interval exists anywhere, so no precision figure is measured on real data."
+  ],
+  "detection_capability_real_scene": {
+    "run": "build/realistic-panel-lower-20260917",
+    "method": "objects inserted on the recorded track centreline at the local bed height, occluding real returns; pessimistic bound (only slots the recording returned from)",
+    "recall_by_object_size_and_range": {
+      "(0.3, 0.3, 0.4)": {
+        "10m": {
+          "recall": 0.0,
+          "mean_returns_from_object": 29.0,
+          "beam_spacing_m": 0.029
+        },
+        "20m": {
+          "recall": 0.833,
+          "mean_returns_from_object": 86.4,
+          "beam_spacing_m": 0.059
+        },
+        "40m": {
+          "recall": 0.833,
+          "mean_returns_from_object": 19.3,
+          "beam_spacing_m": 0.117
+        },
+        "60m": {
+          "recall": 0.0,
+          "mean_returns_from_object": 2.1,
+          "beam_spacing_m": 0.176
+        },
+        "100m": {
+          "recall": 0.25,
+          "mean_returns_from_object": 1.5,
+          "beam_spacing_m": 0.293
+        },
+        "150m": {
+          "recall": 0.0,
+          "mean_returns_from_object": 0.0,
+          "beam_spacing_m": 0.44
+        }
+      },
+      "(0.6, 0.6, 1.7)": {
+        "10m": {
+          "recall": 1.0,
+          "mean_returns_from_object": 1262.4,
+          "beam_spacing_m": 0.029
+        },
+        "20m": {
+          "recall": 1.0,
+          "mean_returns_from_object": 581.8,
+          "beam_spacing_m": 0.059
+        },
+        "40m": {
+          "recall": 1.0,
+          "mean_returns_from_object": 192.4,
+          "beam_spacing_m": 0.117
+        },
+        "60m": {
+          "recall": 0.667,
+          "mean_returns_from_object": 28.2,
+          "beam_spacing_m": 0.176
+        },
+        "100m": {
+          "recall": 0.333,
+          "mean_returns_from_object": 12.0,
+          "beam_spacing_m": 0.293
+        },
+        "150m": {
+          "recall": 0.0,
+          "mean_returns_from_object": 0.0,
+          "beam_spacing_m": 0.44
+        }
+      },
+      "(0.8, 0.8, 1.0)": {
+        "10m": {
+          "recall": 1.0,
+          "mean_returns_from_object": 232.2,
+          "beam_spacing_m": 0.029
+        },
+        "20m": {
+          "recall": 1.0,
+          "mean_returns_from_object": 559.9,
+          "beam_spacing_m": 0.059
+        },
+        "40m": {
+          "recall": 1.0,
+          "mean_returns_from_object": 153.7,
+          "beam_spacing_m": 0.117
+        },
+        "60m": {
+          "recall": 0.667,
+          "mean_returns_from_object": 20.7,
+          "beam_spacing_m": 0.176
+        },
+        "100m": {
+          "recall": 0.333,
+          "mean_returns_from_object": 14.4,
+          "beam_spacing_m": 0.293
+        },
+        "150m": {
+          "recall": 0.0,
+          "mean_returns_from_object": 0.2,
+          "beam_spacing_m": 0.44
+        }
+      }
+    },
+    "measured_limiter_at_range": {
+      "beam_spacing_m": {
+        "10m": 0.029,
+        "20m": 0.059,
+        "40m": 0.117,
+        "60m": 0.176,
+        "100m": 0.293,
+        "150m": 0.44,
+        "200m": 0.586
+      },
+      "returns_from_a_person_sized_object": {
+        "10m": 1276,
+        "20m": 582,
+        "40m": 192,
+        "60m": 28,
+        "100m": 12,
+        "150m": 0
+      },
+      "note": "at 150 m the recording returns nothing in the object's direction; 1.1% of all returns are beyond 60 m and 0.28% beyond 100 m, because the tunnel curves and occludes"
+    },
+    "physical_limits_not_algorithmic": [
+      "A 0.3 m object is one beam interval wide at ~100 m, and low objects are lost earlier by grazing incidence: at 60 m a 0.3 m box on the bed subtends about 2 degrees and is occluded by bed roughness.",
+      "A 1.7 m person spans roughly 6 ladder intervals at 100 m but only 3 at 200 m, and the ladder's p90 interval is 0.514 deg, i.e. 1.79 m at 200 m: whole body parts fall between rings regardless of the detector.",
+      "Beyond ~40-60 m the fitted rail chain no longer supports a lateral verdict, so far evidence can be reported for presence but cannot be certified as inside or outside the contour."
+    ],
+    "what_0_200_m_would_require": [
+      "A straight section: in these recordings the curve, not the detector, ends the range.",
+      "Bed and rail reference extended with a measured extrapolation error, or a bore-based centre, so a far detection can be given a clearance verdict rather than a presence label.",
+      "Range-graded annotations including exhaustive negatives; without them precision at range is unmeasurable, and the far field already contains clutter 3-8 m from the truth.",
+      "Verified timing and deskew before any distance figure at range is quoted."
+    ]
+  }
+}

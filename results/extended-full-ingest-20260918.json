@@ -1,0 +1,3371 @@
+{
+  "extraction": {
+    "archive": "bags.zip::bags/new_data.zst",
+    "files": [
+      {
+        "member": "./new_data/new_data_30.db3",
+        "bytes": 407789568,
+        "sha256": "db36946ef02330c130c8ca8908eaa2c47f81995c1b5aa54b65dd3a7435e38b3f"
+      },
+      {
+        "member": "./new_data/new_data_58.db3",
+        "bytes": 407789568,
+        "sha256": "349be669f83ff47cd69de9f99699bfb401fa714b57e675408e060293f156f1b2"
+      },
+      {
+        "member": "./new_data/new_data_200.db3",
+        "bytes": 407789568,
+        "sha256": "e1170952f29c7242498dfdc46f7cbbc705ce8b864d38d8e72137146fd64377a2"
+      },
+      {
+        "member": "./new_data/new_data_84.db3",
+        "bytes": 407789568,
+        "sha256": "f1495680f9b60298dd524e6928daf779da8df4901eeac3f395a4955e931abf20"
+      },
+      {
+        "member": "./new_data/new_data_17.db3",
+        "bytes": 407789568,
+        "sha256": "c62550f87d8619dc9d7f68f02e7e523c9c0da4623a145d5ef66d7fc57f84f986"
+      },
+      {
+        "member": "./new_data/new_data_73.db3",
+        "bytes": 407789568,
+        "sha256": "02e3064feb496ce1cc61a62ff45c9fe9b5e125321484be5db98a2e45b99a3d34"
+      },
+      {
+        "member": "./new_data/new_data_122.db3",
+        "bytes": 407789568,
+        "sha256": "5ba92ab405646703992d3a36a6dd06b53e9b31e63ba9c6ab137b8fc5a2e7aec1"
+      },
+      {
+        "member": "./new_data/new_data_139.db3",
+        "bytes": 407789568,
+        "sha256": "5932f66d69357414bf336e457c30dbf3daf856c90af6fbbf2718307f99927ac2"
+      },
+      {
+        "member": "./new_data/new_data_70.db3",
+        "bytes": 407789568,
+        "sha256": "892f270ee870561ad879652d3492bd67af4164cdbff82ec2cfe3295276b8e069"
+      },
+      {
+        "member": "./new_data/new_data_133.db3",
+        "bytes": 407789568,
+        "sha256": "54e7eafb5abe7b8fcbfc6b8ed84ed2712dd143777318cb6e6d7bae33af1214cc"
+      },
+      {
+        "member": "./new_data/new_data_46.db3",
+        "bytes": 407789568,
+        "sha256": "28c6e056af8effd82dfcd9b2efcd8a475593baa04d468f50db20bd30cdc05039"
+      },
+      {
+        "member": "./new_data/new_data_215.db3",
+        "bytes": 407789568,
+        "sha256": "77bde1eb5db2dbd91f8ee869e3aa3de00314d9f8bc3b8707e1c9e2e73004f19b"
+      },
+      {
+        "member": "./new_data/new_data_93.db3",
+        "bytes": 407789568,
+        "sha256": "3a137dc067e6133180478c9a1e33ca3db8f2db4d990558bc4b496d6e10f9639c"
+      },
+      {
+        "member": "./new_data/new_data_77.db3",
+        "bytes": 407789568,
+        "sha256": "71fc69fbb9c88e90993bbd3093858b898f3e4f62dd3435ea5929b91d1022999d"
+      },
+      {
+        "member": "./new_data/new_data_59.db3",
+        "bytes": 407789568,
+        "sha256": "11a2192ce0af40a4b2c089cacca49c89a41e6f29d60f2fd2ad468bb330a89725"
+      },
+      {
+        "member": "./new_data/new_data_143.db3",
+        "bytes": 407789568,
+        "sha256": "5692a6a2e36a620eab312bc3eace8f424d219a6388ff8184fcfef5179e494788"
+      },
+      {
+        "member": "./new_data/new_data_54.db3",
+        "bytes": 407789568,
+        "sha256": "6d7421ba1d0520c2190ea32ad85b24ffa6c3277c8fd4909236a42b6b05eef832"
+      },
+      {
+        "member": "./new_data/new_data_211.db3",
+        "bytes": 407789568,
+        "sha256": "429f0c0038ff484d149574416d9d7d7626528e9d253df86b53589bbbebea0579"
+      },
+      {
+        "member": "./new_data/new_data_148.db3",
+        "bytes": 407789568,
+        "sha256": "34142227a486ced5f295b6cbe833b069fb80f678512686101f57294795f85fb1"
+      },
+      {
+        "member": "./new_data/new_data_50.db3",
+        "bytes": 407789568,
+        "sha256": "80e91091ac2506ec5fe1da8bb853cf0ba522cab863c5fe1a7e921970c8e6d154"
+      },
+      {
+        "member": "./new_data/new_data_13.db3",
+        "bytes": 407789568,
+        "sha256": "40b6052412326c85aa5ed77db2f7a970cc123a13b394536ac187f614b28547f4"
+      },
+      {
+        "member": "./new_data/new_data_101.db3",
+        "bytes": 407789568,
+        "sha256": "0f877ad7cd36fd1d61590456949ab4d297e9181f350c9378a97da85af20b26aa"
+      },
+      {
+        "member": "./new_data/new_data_90.db3",
+        "bytes": 407789568,
+        "sha256": "08774da6cb0f5f5f776bf3ac7e74570d20f8324cd160900b6e70e3ced52b3305"
+      },
+      {
+        "member": "./new_data/new_data_66.db3",
+        "bytes": 407789568,
+        "sha256": "770082db53acd4cde3b9672d32a639866c83647bfd60ddfb26a289ca3773b57e"
+      },
+      {
+        "member": "./new_data/new_data_64.db3",
+        "bytes": 407789568,
+        "sha256": "8006276d556c46826cb628a4e0ee1f078e95aadc2a5756a528ae08bac84ec748"
+      },
+      {
+        "member": "./new_data/new_data_55.db3",
+        "bytes": 407789568,
+        "sha256": "c8bb00727b8f63767019e73ef0360081ae0cb90cafe4329ce3e22a8162cd7bed"
+      },
+      {
+        "member": "./new_data/new_data_113.db3",
+        "bytes": 407789568,
+        "sha256": "5ca11d1bb2efec7fd90bbbe7775c42ac52ad78010ff54d59929724e539cc5b7d"
+      },
+      {
+        "member": "./new_data/new_data_194.db3",
+        "bytes": 407789568,
+        "sha256": "d6adac5bcf613a2f3408507832aaf2e8beebcc8e290d46ecfe69e610afba3a6a"
+      },
+      {
+        "member": "./new_data/new_data_168.db3",
+        "bytes": 407789568,
+        "sha256": "479d19c5021e8c6e0f4ed2382c3a2fb8da93b891b0869a28f77b74d01014c932"
+      },
+      {
+        "member": "./new_data/new_data_189.db3",
+        "bytes": 407789568,
+        "sha256": "3f69542edde27b2ec3624c2c94af1b8be5a484f24994418bd56b32567a728cc1"
+      },
+      {
+        "member": "./new_data/new_data_47.db3",
+        "bytes": 407789568,
+        "sha256": "6f8f440f073f84ebd1be9c1106386ea2827c9585f863a057e8337cc70e043f58"
+      },
+      {
+        "member": "./new_data/new_data_184.db3",
+        "bytes": 407789568,
+        "sha256": "6100be77d4193608cc522e9b66e7afd9854d903c581abd3e0b8256f82147c213"
+      },
+      {
+        "member": "./new_data/new_data_192.db3",
+        "bytes": 407789568,
+        "sha256": "7ebd84a65272525d9f87c515aa6378f56171686567a7cb97d6e64a750641be60"
+      },
+      {
+        "member": "./new_data/new_data_146.db3",
+        "bytes": 407789568,
+        "sha256": "9d80a8550e6c915623f05457918f0c851c6f3518d7e5386f76675b58d448567d"
+      },
+      {
+        "member": "./new_data/new_data_83.db3",
+        "bytes": 407789568,
+        "sha256": "bff785f7de96ea0af505c1e6419d5517f536f473fbe3e8f0c44fdcfc52644120"
+      },
+      {
+        "member": "./new_data/new_data_81.db3",
+        "bytes": 407789568,
+        "sha256": "65bf4bc5e0dbcbacdcedea956cdbc38666b618547e94bd7e3ac8346568f38c2a"
+      },
+      {
+        "member": "./new_data/new_data_118.db3",
+        "bytes": 407789568,
+        "sha256": "cb425e1d63677d097d6727c64ebff1ef481923afe0b63d8f1709ddf853f214e6"
+      },
+      {
+        "member": "./new_data/new_data_92.db3",
+        "bytes": 407789568,
+        "sha256": "3fbae65d85b1bd46cc73a4df3c1787dc4f88dba131d6e55a674c1438e9dc081b"
+      },
+      {
+        "member": "./new_data/new_data_187.db3",
+        "bytes": 407789568,
+        "sha256": "4729966ae8a6d6cb24c7d6d5200145cdc71045618c5c1dcf30795b4052700622"
+      },
+      {
+        "member": "./new_data/new_data_120.db3",
+        "bytes": 407789568,
+        "sha256": "8ba2256704b582709bc231e42ed6f25f658bfbf499fe229c2aff40ed9fbdb1d3"
+      },
+      {
+        "member": "./new_data/new_data_15.db3",
+        "bytes": 407789568,
+        "sha256": "669af19b614b284a35f8279bf31f2ac5202aa91dfa0a22025f25bc814338deb7"
+      },
+      {
+        "member": "./new_data/new_data_209.db3",
+        "bytes": 407789568,
+        "sha256": "c6948d64e6652552b3f405fac618c016cae9139c5b39eb408689b110a8df34ac"
+      },
+      {
+        "member": "./new_data/new_data_205.db3",
+        "bytes": 407789568,
+        "sha256": "30a14b6583629be2fb64c93bb5fef7073b874644b6af1c5e6db861a9ad9efb32"
+      },
+      {
+        "member": "./new_data/new_data_71.db3",
+        "bytes": 407789568,
+        "sha256": "138e24aec8aaf85ff45b6188259554d78946b8739dd1e3ffef5efea3691ea2b8"
+      },
+      {
+        "member": "./new_data/new_data_19.db3",
+        "bytes": 407789568,
+        "sha256": "bfc91a8831c3620fdad2c86ff9a524093f0dbcb939a54108bcb256860a631953"
+      },
+      {
+        "member": "./new_data/new_data_173.db3",
+        "bytes": 407789568,
+        "sha256": "ca8ce75f75f161ce61fafaee264885b2505ead641a54210f2085c86fd83d5377"
+      },
+      {
+        "member": "./new_data/new_data_207.db3",
+        "bytes": 407789568,
+        "sha256": "39a54587575afcfe4b1adedf1debf683f482567ac69523cbb59910c642dbc16c"
+      },
+      {
+        "member": "./new_data/new_data_111.db3",
+        "bytes": 407789568,
+        "sha256": "481dc72b8be1a2f8b9b35f4051c85e6babdb282832b5d435cf8f0549b5ae70d2"
+      },
+      {
+        "member": "./new_data/new_data_25.db3",
+        "bytes": 407789568,
+        "sha256": "d504cfd47a87347c40d080d0ace5d65933f03c870eeb87da1584cad94fd744a1"
+      },
+      {
+        "member": "./new_data/new_data_151.db3",
+        "bytes": 407789568,
+        "sha256": "40aa168c4322b3d2cd39e7e2676da3d9abe97f5e7b45cbecc39d07e4cd5c7c8d"
+      },
+      {
+        "member": "./new_data/new_data_79.db3",
+        "bytes": 407789568,
+        "sha256": "a8eeed60bdb4b0cef7aa207a3d816f822b49020bf705e205c5a4465ef23f1067"
+      },
+      {
+        "member": "./new_data/new_data_178.db3",
+        "bytes": 407789568,
+        "sha256": "21346fced8277157f79463aa0c97209bcf28ecc6a7367f177ee1905d5c0a466a"
+      },
+      {
+        "member": "./new_data/new_data_195.db3",
+        "bytes": 407789568,
+        "sha256": "d9a1e55a2217f2b84c5d272f753aa903b9ca9a5502bb30aa82c724513b206d83"
+      },
+      {
+        "member": "./new_data/new_data_117.db3",
+        "bytes": 407789568,
+        "sha256": "add45ad3a23b84744f32293737846adb58ae85cbe5086a0cd7f15c5aac3538dc"
+      },
+      {
+        "member": "./new_data/new_data_171.db3",
+        "bytes": 407789568,
+        "sha256": "adc9df41e498e241503dbe97acb89cca44ccc86aa39b4d25859c0dfbc1b7a439"
+      },
+      {
+        "member": "./new_data/new_data_12.db3",
+        "bytes": 407789568,
+        "sha256": "3c312da5d3a1bf70713c5c77b789ae3a85a5c35d01c4a156303143da81c11206"
+      },
+      {
+        "member": "./new_data/new_data_80.db3",
+        "bytes": 407789568,
+        "sha256": "e39b8b652fadd2b3a0a7f8b6a48f24ba09edb73e8618126c1bbfc308b4a5eea0"
+      },
+      {
+        "member": "./new_data/new_data_134.db3",
+        "bytes": 407789568,
+        "sha256": "dd045e3da2e343de4661ea23adbd0910a894fc5cf340e356b9e9cb60d269e060"
+      },
+      {
+        "member": "./new_data/new_data_67.db3",
+        "bytes": 407789568,
+        "sha256": "07b4215218fa5d3224ba2eeff1be07dd36d2f2eac7dc50533c72da49d76aff3b"
+      },
+      {
+        "member": "./new_data/new_data_175.db3",
+        "bytes": 407789568,
+        "sha256": "283ff43c20d1ba9794c4ac4e12fc5a68faaefce47bf25e7937ee32b85409f1d8"
+      },
+      {
+        "member": "./new_data/new_data_138.db3",
+        "bytes": 407789568,
+        "sha256": "f96697a0ec13e351cf3ba4fa37d7ac645d800545b183702fabfcab2da526da52"
+      },
+      {
+        "member": "./new_data/new_data_6.db3",
+        "bytes": 407789568,
+        "sha256": "4ca0a065c0ef9f56e3ca3d3a306ef70f37c3b664f8585297e19e1f086922676d"
+      },
+      {
+        "member": "./new_data/new_data_27.db3",
+        "bytes": 407789568,
+        "sha256": "f56a8521dd80f2d1b66c3e46ac60c227d66cdb52dc9ddeb45bde5987ebfae361"
+      },
+      {
+        "member": "./new_data/new_data_126.db3",
+        "bytes": 407789568,
+        "sha256": "22730d3e59aa9ca3902044ed3b357464d6070ff99555042b1ee019b7b3713d9b"
+      },
+      {
+        "member": "./new_data/new_data_210.db3",
+        "bytes": 407789568,
+        "sha256": "75a195991afff24a77867de90567e2a65b3fa0860694e4ae962a140e390f73ed"
+      },
+      {
+        "member": "./new_data/new_data_159.db3",
+        "bytes": 407789568,
+        "sha256": "f20c81ae00816d2c3a597f6488692ab80021d67d5fffed9e96be2a2b662201e7"
+      },
+      {
+        "member": "./new_data/new_data_196.db3",
+        "bytes": 407789568,
+        "sha256": "f7c0ba13e3902390ca5221cc79d619921602a26f5d548e73fcd3789a21308adf"
+      },
+      {
+        "member": "./new_data/new_data_176.db3",
+        "bytes": 407789568,
+        "sha256": "50dd4defde9032094d7f0c4e6daea44b5d735a17284e6c0a19917981e8ddb67a"
+      },
+      {
+        "member": "./new_data/new_data_91.db3",
+        "bytes": 407789568,
+        "sha256": "6911d9f4414337e5f6ed5269eb1ba7822915deca4f6f7c6ef5fdb8fc84e5cbf9"
+      },
+      {
+        "member": "./new_data/new_data_7.db3",
+        "bytes": 407789568,
+        "sha256": "0789213d00c60eb61a01054eea811a2a9c17962c4378ff4d5cc7e9629ed7588a"
+      },
+      {
+        "member": "./new_data/new_data_112.db3",
+        "bytes": 407789568,
+        "sha256": "d602c75098d2521508c5b7721f3432b0837e501574ad62a613a0a075556b5ff7"
+      },
+      {
+        "member": "./new_data/new_data_96.db3",
+        "bytes": 407789568,
+        "sha256": "ce6c4d890b76caa7f6e7b1074728223c069767f2dad14a64f0a187936c237064"
+      },
+      {
+        "member": "./new_data/new_data_121.db3",
+        "bytes": 407789568,
+        "sha256": "25f476cfb8c741356d1af32c1a6509e65642c192ad1e1b51646cde1ad6e0d134"
+      },
+      {
+        "member": "./new_data/new_data_145.db3",
+        "bytes": 407789568,
+        "sha256": "e912de4f2bfa60ce60671408d1df504e06d0233a5599b0b38743b2482df8ab59"
+      },
+      {
+        "member": "./new_data/new_data_2.db3",
+        "bytes": 407789568,
+        "sha256": "270d4a689fbdbf761c8e0bd522a9da77cfb894f99672e165255f77247d2fce46"
+      },
+      {
+        "member": "./new_data/new_data_185.db3",
+        "bytes": 407789568,
+        "sha256": "4bbc060c6edfa2b25112ddbc8beeb4fb0bf6c0b637f5265610997f4b8ee8f4ba"
+      },
+      {
+        "member": "./new_data/new_data_174.db3",
+        "bytes": 407789568,
+        "sha256": "aea5dd40288a0d1cac5506b47e502ab94ec9902f0877a37414b6917adf58d135"
+      },
+      {
+        "member": "./new_data/new_data_183.db3",
+        "bytes": 407789568,
+        "sha256": "d4ded17027afca603dad7abd98bc0c31d103c81fa237cb034b43cf73066b9b70"
+      },
+      {
+        "member": "./new_data/new_data_150.db3",
+        "bytes": 407789568,
+        "sha256": "e5d4438920d0b27f32f14b34577a9fcca878e7b0419440aa7dc901824acdf1b5"
+      },
+      {
+        "member": "./new_data/new_data_37.db3",
+        "bytes": 407789568,
+        "sha256": "a063271620ee3e99ec4d31f84634009d2e4466aad54930c681a77f7424dea031"
+      },
+      {
+        "member": "./new_data/new_data_136.db3",
+        "bytes": 407789568,
+        "sha256": "8b287b7fb3a87686bdc58c68fbaeb44ed18c788b1845c598ec5159de69cdd30d"
+      },
+      {
+        "member": "./new_data/new_data_62.db3",
+        "bytes": 407789568,
+        "sha256": "8c8d9f3f73bdd963c2cae9d16806f69aee9687bbdd6b69d6abbd92897c8ef548"
+      },
+      {
+        "member": "./new_data/new_data_198.db3",
+        "bytes": 407789568,
+        "sha256": "d9e44a71b7f8cb757cb00aa16397cd0b47dcc00e18c7b89b50a57ba9c652c02b"
+      },
+      {
+        "member": "./new_data/new_data_155.db3",
+        "bytes": 407789568,
+        "sha256": "80e96ec9c1da1d784ee702693471c3e568ad1e5e1c768872536cbb41b25d6c78"
+      },
+      {
+        "member": "./new_data/new_data_105.db3",
+        "bytes": 407789568,
+        "sha256": "7e7d6ae098e088586ba0da1535c35d4356b74d8f4f405f2efe944e5fa44baf4c"
+      },
+      {
+        "member": "./new_data/new_data_3.db3",
+        "bytes": 407789568,
+        "sha256": "9f9e8309b287440a4189cf1a7c762044fa620d0178ecd8a6dd8d7643f7839345"
+      },
+      {
+        "member": "./new_data/new_data_204.db3",
+        "bytes": 407789568,
+        "sha256": "2b573bd7165b072aa8b31ac49eb8dd2bc6f5d7934c1318f8912a64f745a93cb9"
+      },
+      {
+        "member": "./new_data/new_data_35.db3",
+        "bytes": 407789568,
+        "sha256": "fcb8a9f9c16c13c8275d6a7f231fb063bf69e4e582410eae211d047921653d45"
+      },
+      {
+        "member": "./new_data/new_data_108.db3",
+        "bytes": 407789568,
+        "sha256": "261bfd59722f583d3c985619c2f09d78fb29d0c91eb0fa7f8360ce948b1fe26b"
+      },
+      {
+        "member": "./new_data/new_data_26.db3",
+        "bytes": 407789568,
+        "sha256": "d89fb558270d1a66546dd77c8493e0eeb516c58ef40105237976324db93c3953"
+      },
+      {
+        "member": "./new_data/new_data_129.db3",
+        "bytes": 407789568,
+        "sha256": "196549c4a1ed5fc360d03a8cfb69993be25fdf4760cced898e6d30812da7d305"
+      },
+      {
+        "member": "./new_data/new_data_1.db3",
+        "bytes": 407789568,
+        "sha256": "43b9269f0515031d9b441d7c78d62da0647aee5e35f53d4c96410f1f55616d65"
+      },
+      {
+        "member": "./new_data/new_data_82.db3",
+        "bytes": 407789568,
+        "sha256": "3dffd6f968d15c7e352a81e826bf1b55aa577002591d2972385db64ea8855d86"
+      },
+      {
+        "member": "./new_data/new_data_142.db3",
+        "bytes": 407789568,
+        "sha256": "ddc53c3b91cf447764fc074313ef27b6a677e3d2ec290ffd6261184cc7e7caee"
+      },
+      {
+        "member": "./new_data/new_data_52.db3",
+        "bytes": 407789568,
+        "sha256": "92385ebb905f7270392de0a7e63dc1834a9c407a9115c0ab8b4a3230f653ea01"
+      },
+      {
+        "member": "./new_data/new_data_38.db3",
+        "bytes": 407789568,
+        "sha256": "624cf19ee2ff549da8ad2654ed08a62a9cb863eef7e7c71b7d12bbee2a9524f5"
+      },
+      {
+        "member": "./new_data/new_data_202.db3",
+        "bytes": 407789568,
+        "sha256": "2fe231b178f1df380ad95cadfcfa62ee34ca147733810c888f7f7a026c188896"
+      },
+      {
+        "member": "./new_data/new_data_208.db3",
+        "bytes": 407789568,
+        "sha256": "4e9d699d9a2c675bc12cd12a684b8e557fe68401413f9e2567d10cfdf527acf3"
+      },
+      {
+        "member": "./new_data/new_data_45.db3",
+        "bytes": 407789568,
+        "sha256": "1a4ea13d645e235619a6913cd17fbdae7dc735ce8917de9d92794f69c90e1212"
+      },
+      {
+        "member": "./new_data/new_data_130.db3",
+        "bytes": 407789568,
+        "sha256": "e6807fbc06c4ba9984347dfee08458a3fae2f34b43995b0364bf4b114d9e68c9"
+      },
+      {
+        "member": "./new_data/new_data_109.db3",
+        "bytes": 407789568,
+        "sha256": "07b4c96fd8d878ac333a43ad934d00179b0a17b6fde70a1e280fbc8c379db389"
+      },
+      {
+        "member": "./new_data/new_data_57.db3",
+        "bytes": 407789568,
+        "sha256": "d33874e3ffa4aaf6a28eb01961b5b4986e36e6e02dbd39f74795307d1eb399d9"
+      },
+      {
+        "member": "./new_data/new_data_39.db3",
+        "bytes": 407789568,
+        "sha256": "0b3fa8fd0be9e4760582a98c3686bba06ca46656cb14555e42f295da273e7e17"
+      },
+      {
+        "member": "./new_data/new_data_182.db3",
+        "bytes": 407789568,
+        "sha256": "ca8a9024a01be1247b0343efb1dfb6704e067133c12a4d32f217e178b31cd8dc"
+      },
+      {
+        "member": "./new_data/new_data_161.db3",
+        "bytes": 407789568,
+        "sha256": "b05fa8760ea3b574fdce9480f4da46c35ad655270c02b8a469840aa70e59a7ee"
+      },
+      {
+        "member": "./new_data/new_data_94.db3",
+        "bytes": 407789568,
+        "sha256": "b7e71dfa4431192b9a77379c97df8f688b00b35ab20d5ad4c1977291ca86076e"
+      },
+      {
+        "member": "./new_data/new_data_8.db3",
+        "bytes": 407789568,
+        "sha256": "c884ed9543786c155c7a9ad491ce115420045de217ca1a6333d46536e92d7510"
+      },
+      {
+        "member": "./new_data/new_data_60.db3",
+        "bytes": 407789568,
+        "sha256": "f266c373b9bba8ad16cba98a39e17f6caf9ce23cb27763c973de8071c7f11562"
+      },
+      {
+        "member": "./new_data/new_data_166.db3",
+        "bytes": 407789568,
+        "sha256": "aa9f02fe6e1fab4f12972db2473e95e3b4a764504a9925caeb2c3d9b21b8ef48"
+      },
+      {
+        "member": "./new_data/new_data_164.db3",
+        "bytes": 407789568,
+        "sha256": "c3e2e87db16005897300cd2a30ec3e199eea78ac80be4b6e52fba35ac0a6b4b4"
+      },
+      {
+        "member": "./new_data/new_data_180.db3",
+        "bytes": 407789568,
+        "sha256": "c693d88bd0c578cf15e100d3f83f317943c6d183e839fa0bb85a74b58c02e313"
+      },
+      {
+        "member": "./new_data/new_data_18.db3",
+        "bytes": 407789568,
+        "sha256": "35353595fecd1794020d11aecd0d38b001988a7f8ff811b0f0fe06be5575bc0a"
+      },
+      {
+        "member": "./new_data/new_data_69.db3",
+        "bytes": 407789568,
+        "sha256": "cfa2484d01a72024d91cebd91cc1b60b6af9d2ac6384136cf87b6cdc59ccde2d"
+      },
+      {
+        "member": "./new_data/new_data_163.db3",
+        "bytes": 407789568,
+        "sha256": "0397cdeab835febfcc17c1e965252e45e6cb63a7c067b46076dc0935448ea184"
+      },
+      {
+        "member": "./new_data/new_data_86.db3",
+        "bytes": 407789568,
+        "sha256": "401cc8e2f3edf1100f2fc160ee4fe26a08a2d5bc518f5c05822096b5613b67c0"
+      },
+      {
+        "member": "./new_data/new_data_170.db3",
+        "bytes": 407789568,
+        "sha256": "81dda73cc838fb6268116bff8d30256f96bf9fc975194fafbb0c8fd837467279"
+      },
+      {
+        "member": "./new_data/new_data_188.db3",
+        "bytes": 407789568,
+        "sha256": "f63f0b5d1f57e7158289c891195007cae4f809cf5fbdf30adbf5b46611f44413"
+      },
+      {
+        "member": "./new_data/new_data_119.db3",
+        "bytes": 407789568,
+        "sha256": "2a32bc8f2b9a5578978b48cbb8b8e252554f961add540d2b34880dd323f38bbc"
+      },
+      {
+        "member": "./new_data/new_data_100.db3",
+        "bytes": 407789568,
+        "sha256": "27c6c121fdaaae8d86a2b39ffebb726a6c61a000350bb0e7ec36e8407941eb59"
+      },
+      {
+        "member": "./new_data/new_data_48.db3",
+        "bytes": 407789568,
+        "sha256": "c7f83d0b24117afe4b1a30dea543bc48255bc7bec761f0448a36d10a73a5cc50"
+      },
+      {
+        "member": "./new_data/new_data_172.db3",
+        "bytes": 407789568,
+        "sha256": "5122e3ad137ded314844fc8b72915481e884f70cf4c3cdc6706a7df131bb4606"
+      },
+      {
+        "member": "./new_data/new_data_99.db3",
+        "bytes": 407789568,
+        "sha256": "5230acaa4a0b5fcee2c94325867db015511e9150e9894561111a2f023574a8a5"
+      },
+      {
+        "member": "./new_data/new_data_22.db3",
+        "bytes": 407789568,
+        "sha256": "fa5ae8a68dcdd4774bf50959fac6485d900b32f8d31c0a081545212b8d5c03de"
+      },
+      {
+        "member": "./new_data/new_data_154.db3",
+        "bytes": 407789568,
+        "sha256": "1c522b04ad53b8e5efc42ca0785b9e6d41e09566b0c137f3f82823142468d8c9"
+      },
+      {
+        "member": "./new_data/new_data_11.db3",
+        "bytes": 407789568,
+        "sha256": "9e60a6054e07b086e0e00b97c2e18aeeb489cdf910a13c5393286fe53fcaaf64"
+      },
+      {
+        "member": "./new_data/new_data_85.db3",
+        "bytes": 407789568,
+        "sha256": "5d80da2e7d85c12bf698da7dd4e3d10dec933a4d5f6de9258fd1d0a96fe7ce83"
+      },
+      {
+        "member": "./new_data/new_data_20.db3",
+        "bytes": 407789568,
+        "sha256": "8df758ee33ac86f4b575db044cbcc763bb12307a469cdcf7b6a2957d94ba09f0"
+      },
+      {
+        "member": "./new_data/new_data_165.db3",
+        "bytes": 407789568,
+        "sha256": "a5418707345d02007f14806fb20a39e0679a7518c9184b8eaae8546f01d2401e"
+      },
+      {
+        "member": "./new_data/new_data_4.db3",
+        "bytes": 407789568,
+        "sha256": "cbecb6df479b0489b8e195998c8d507ca7e7f0df4783f9700f2361a595536a5f"
+      },
+      {
+        "member": "./new_data/new_data_162.db3",
+        "bytes": 407789568,
+        "sha256": "3fec462b24a6c95c07ae7d090c47b31b634838222c16613257c3b16b7773ce87"
+      },
+      {
+        "member": "./new_data/new_data_131.db3",
+        "bytes": 407789568,
+        "sha256": "5ebe8d0d4f304fda9447cb3099d7318ed43f12bf049f314f2b39f324b2089410"
+      },
+      {
+        "member": "./new_data/new_data_44.db3",
+        "bytes": 407789568,
+        "sha256": "6c1efc4e1da9441301285ba18f3e7fdc9c71bb180fbdf94c5b3b65b333d5ca3e"
+      },
+      {
+        "member": "./new_data/new_data_89.db3",
+        "bytes": 407789568,
+        "sha256": "149997790148d5f3c70c7affda4a3e6a89d73d884f7b28711f8e393ce93d4ca3"
+      },
+      {
+        "member": "./new_data/new_data_110.db3",
+        "bytes": 407789568,
+        "sha256": "fb199bbe17ec431b954bcac56c7f1f663ff08e6e488f6c6a5c34ef5ba5ec8225"
+      },
+      {
+        "member": "./new_data/new_data_140.db3",
+        "bytes": 407789568,
+        "sha256": "29bc23168826b4504d5cf746f59cc11472db1b58db487128ce1433cc5f7dea58"
+      },
+      {
+        "member": "./new_data/new_data_63.db3",
+        "bytes": 407789568,
+        "sha256": "c30cedc85b54cc46a75c12b6055d45bd45bc7d75b865be0d5491b19ddd4549d8"
+      },
+      {
+        "member": "./new_data/new_data_102.db3",
+        "bytes": 407789568,
+        "sha256": "af39a5cdc87bf6b2620be78017a2b89aca8543736b6e6778965b0c2c6d978344"
+      },
+      {
+        "member": "./new_data/new_data_0.db3",
+        "bytes": 407789568,
+        "sha256": "1212c4c722d53c26b389ce416a13680f8e6c269180ebe0aba15616a05ca58e53"
+      },
+      {
+        "member": "./new_data/new_data_78.db3",
+        "bytes": 407789568,
+        "sha256": "6fe0ce65cda07ca17622f6f71ac0c8a3913365ef23e84e263cd5c5afa6573534"
+      },
+      {
+        "member": "./new_data/new_data_217.db3",
+        "bytes": 407789568,
+        "sha256": "029207f7c91cd4573d375a54a73b43053761b5a9b9602ab37a7deed3919cc4f9"
+      },
+      {
+        "member": "./new_data/new_data_203.db3",
+        "bytes": 407789568,
+        "sha256": "5a480e2a19c3601224dad906f8b00430a0c2b5b440b95e69aae618c93b069235"
+      },
+      {
+        "member": "./new_data/new_data_197.db3",
+        "bytes": 407789568,
+        "sha256": "a1cbb8c7eee9acd33c0f2b2ee83e8c28acabaedd689160df39f1131ca0ec9276"
+      },
+      {
+        "member": "./new_data/new_data_144.db3",
+        "bytes": 407789568,
+        "sha256": "c8f857d2df220ec1b3444204f081cf3df5bed8754014ab5f33f988e918ae14f6"
+      },
+      {
+        "member": "./new_data/new_data_61.db3",
+        "bytes": 407789568,
+        "sha256": "cae086ba0e74db0b2b4583440d9f3ca1c2682bd239eac11000dc478fc10fe93f"
+      },
+      {
+        "member": "./new_data/metadata.yaml",
+        "bytes": 44642,
+        "sha256": "7118a5a216d252e8b0ec6e7174e255e06b590164285649f950d8839ebfa9d91f"
+      },
+      {
+        "member": "./new_data/new_data_190.db3",
+        "bytes": 407789568,
+        "sha256": "159a4d76a9256987c9e7c42d5cf8caaf9e14cb53885d59145c22aaf9eaf4d7c6"
+      },
+      {
+        "member": "./new_data/new_data_34.db3",
+        "bytes": 407789568,
+        "sha256": "23ef82428079f49416c7b589e3595cd9de2be688d2ce17d4799fbd709818c333"
+      },
+      {
+        "member": "./new_data/new_data_107.db3",
+        "bytes": 407789568,
+        "sha256": "8e8a58e2cb55eb80123d5a8c48ecb8e90c47079af474dec01899b42fc6376b84"
+      },
+      {
+        "member": "./new_data/new_data_98.db3",
+        "bytes": 407789568,
+        "sha256": "1f618fc46e88a4549c4d3a3d79c03cbd31ec7584e1468a6c99417713ae1d96e0"
+      },
+      {
+        "member": "./new_data/new_data_193.db3",
+        "bytes": 407789568,
+        "sha256": "b203c659b7a67575776316495e7d9ddc63d073f0dc28b65dc928c46fa0e0256d"
+      },
+      {
+        "member": "./new_data/new_data_169.db3",
+        "bytes": 407789568,
+        "sha256": "235ec9bf41bf3d951dca812212128cd8e36cb4a2caab74d8a36c22adf8eedbe5"
+      },
+      {
+        "member": "./new_data/new_data_213.db3",
+        "bytes": 407789568,
+        "sha256": "8027ee531885ee05c2452ff98ebbf889479a51602fb8bf47e6a8aed1eb8b4706"
+      },
+      {
+        "member": "./new_data/new_data_40.db3",
+        "bytes": 407789568,
+        "sha256": "a14544f07379de7d7aa1078d3961d71d29be407fff2946b26c53690388a02ef9"
+      },
+      {
+        "member": "./new_data/new_data_95.db3",
+        "bytes": 407789568,
+        "sha256": "0b42e8ea2f51ae3c46cff19dd03121a1f587e841eb07639ce91018827b4cdbfc"
+      },
+      {
+        "member": "./new_data/new_data_97.db3",
+        "bytes": 407789568,
+        "sha256": "c2f56983e5ae2e6ce608841d723f0127b9920831797ea32c2bbfb713f63ac93d"
+      },
+      {
+        "member": "./new_data/new_data_14.db3",
+        "bytes": 407789568,
+        "sha256": "100d184cb0b71a685e2bd02edad2d6a7d3c2baa721da5c91f6c78a426d597d8e"
+      },
+      {
+        "member": "./new_data/new_data_103.db3",
+        "bytes": 407789568,
+        "sha256": "251c68d23d02d86ab1e56c6daa097eeb6055a14a218f81273e29348355215bf2"
+      },
+      {
+        "member": "./new_data/new_data_216.db3",
+        "bytes": 407789568,
+        "sha256": "8a4693925d696d218780a2e0c72bdcb318b7fdfc622a3133905422420b551ab5"
+      },
+      {
+        "member": "./new_data/new_data_199.db3",
+        "bytes": 407789568,
+        "sha256": "2176f659c2309e6ffa5c017969b3bd1c07410f801f71466b9218a09dce84138a"
+      },
+      {
+        "member": "./new_data/new_data_21.db3",
+        "bytes": 407789568,
+        "sha256": "c1906908d34efc0fd1fda178f0599f8fa2aeae306c281cbe639344fb761e4e21"
+      },
+      {
+        "member": "./new_data/new_data_220.db3",
+        "bytes": 407789568,
+        "sha256": "5886c4629e5e565a9309b86e87959449d0c98b65249d5bfa924a38c39b7b1146"
+      },
+      {
+        "member": "./new_data/new_data_49.db3",
+        "bytes": 407789568,
+        "sha256": "23eeace3e948956ef1b32c4d82831d67e8f220a17f8bcc009508c11ae900ed98"
+      },
+      {
+        "member": "./new_data/new_data_152.db3",
+        "bytes": 407789568,
+        "sha256": "1206c18ecfc108e3dd82b6061aafcba90c3cf659dc1cd71730ccf0608ec84453"
+      },
+      {
+        "member": "./new_data/new_data_181.db3",
+        "bytes": 407789568,
+        "sha256": "3a6cb8184f528b47402bf6fdb7f5e82d1a73fc29e680d20dd65094b1c16f783c"
+      },
+      {
+        "member": "./new_data/new_data_160.db3",
+        "bytes": 407789568,
+        "sha256": "789893536fb31062c1113a24e3102fef271375dc34b6520a001d9cda123f294a"
+      },
+      {
+        "member": "./new_data/new_data_9.db3",
+        "bytes": 407789568,
+        "sha256": "022c0b6bf6740adbb6d00d69cd83e0bec9617a7febd5dd955c9ea547ed880f59"
+      },
+      {
+        "member": "./new_data/new_data_28.db3",
+        "bytes": 407789568,
+        "sha256": "66628f99c454255122bce2f613e183bae8a817dbef0c1539fa83f561ddf29888"
+      },
+      {
+        "member": "./new_data/new_data_115.db3",
+        "bytes": 407789568,
+        "sha256": "5c486b18469e23a332162dcf4be4f7a4ff2d873012d4ef42c9e6a5d2072f45cc"
+      },
+      {
+        "member": "./new_data/new_data_42.db3",
+        "bytes": 407789568,
+        "sha256": "4a510a3beeebae900acdb5640d70c40d50ea604ddaedc144d2359136041598ba"
+      },
+      {
+        "member": "./new_data/new_data_219.db3",
+        "bytes": 407789568,
+        "sha256": "2f92990b8d80202fd127bdef4f06e8538a66540fee4f9758c005d1946f7549de"
+      },
+      {
+        "member": "./new_data/new_data_124.db3",
+        "bytes": 407789568,
+        "sha256": "4a317676612fd981327816c2c51a38af9ef9649b626d46ec49bc5ddee7d874d1"
+      },
+      {
+        "member": "./new_data/new_data_218.db3",
+        "bytes": 407789568,
+        "sha256": "04bba75c75c07aeaf6b2d8755daf10d77849d794010a4f6ccfb761518d3252e9"
+      },
+      {
+        "member": "./new_data/new_data_114.db3",
+        "bytes": 407789568,
+        "sha256": "795f9d165943963f5f0a8d27db4516ca9b603a806e9693c72db68564cba26b29"
+      },
+      {
+        "member": "./new_data/new_data_153.db3",
+        "bytes": 407789568,
+        "sha256": "059abbb12dce3f1a15b68cfe817dda7d47440e021536730002faf50641068883"
+      },
+      {
+        "member": "./new_data/new_data_127.db3",
+        "bytes": 407789568,
+        "sha256": "34af74ac7e99c103e5f91f098ea711cfc850626388202122d545f6e31ea7d015"
+      },
+      {
+        "member": "./new_data/new_data_106.db3",
+        "bytes": 407789568,
+        "sha256": "4d880bb0a6eb70908e60b152b538532d1df10729b0b560de985fe706f0db3ee2"
+      },
+      {
+        "member": "./new_data/new_data_167.db3",
+        "bytes": 407789568,
+        "sha256": "5eede17c9ea3963527d99947e97fa94bdf0716d156650bc5b36607093ad5e5c2"
+      },
+      {
+        "member": "./new_data/new_data_29.db3",
+        "bytes": 407789568,
+        "sha256": "04dfa23e9c009d8f559750904795b3484e7360e87ad9741a1886a36e3bb1317e"
+      },
+      {
+        "member": "./new_data/new_data_51.db3",
+        "bytes": 407789568,
+        "sha256": "8b266c877ca0452abf37d46476292548404c9aa6af878fdfd09cdbe7b4cb64be"
+      },
+      {
+        "member": "./new_data/new_data_41.db3",
+        "bytes": 407789568,
+        "sha256": "d202658bf31da3ac3722ca5c4d54c379786b1d4ce0a374c2defa071ea3b9bdfc"
+      },
+      {
+        "member": "./new_data/new_data_23.db3",
+        "bytes": 407789568,
+        "sha256": "c19aafbc4543e9d5f0ad0e083fc524cb07ffea8ed0c97fdedde26321e6de549c"
+      },
+      {
+        "member": "./new_data/new_data_53.db3",
+        "bytes": 407789568,
+        "sha256": "b76c89474c5ed3bb6579bf51e9167f3d2df88d647aa4fea02c395405d1f84940"
+      },
+      {
+        "member": "./new_data/new_data_177.db3",
+        "bytes": 407789568,
+        "sha256": "022f0330d285343a15d9c5657bee9268ac96a03f086a4bd1a67fe0c69ef662d4"
+      },
+      {
+        "member": "./new_data/new_data_74.db3",
+        "bytes": 407789568,
+        "sha256": "f2b3d5d12b6ebe373ce27440eb34791f732986c8aacad078fc58792ee055594a"
+      },
+      {
+        "member": "./new_data/new_data_56.db3",
+        "bytes": 407789568,
+        "sha256": "b96a6a1bc1bbae6f8a3a753fba6a6d375ae9313fe8fb1827b38668dacb46a26a"
+      },
+      {
+        "member": "./new_data/new_data_31.db3",
+        "bytes": 407789568,
+        "sha256": "113159de2017f99db2556ab97f566e4a7ca94af5f8976f337ce745734365e322"
+      },
+      {
+        "member": "./new_data/new_data_135.db3",
+        "bytes": 407789568,
+        "sha256": "c3ccf15a47fb3ce4fd20ce2b6f87b4f17df648f0a76358075f0f2205dbbfadee"
+      },
+      {
+        "member": "./new_data/new_data_125.db3",
+        "bytes": 407789568,
+        "sha256": "33a2722410fe8283769bab33c45d9233eb3bbfff9e9add4bb195ee2405852b3b"
+      },
+      {
+        "member": "./new_data/new_data_132.db3",
+        "bytes": 407789568,
+        "sha256": "ef9cb8b8ceced124dd84a66f3bda9b5c71811861e833a73fdf65a023c90d4e88"
+      },
+      {
+        "member": "./new_data/new_data_179.db3",
+        "bytes": 407789568,
+        "sha256": "57f99702bbe86f88608649d87d1507e891b033538bbc6ae705545016a8523c44"
+      },
+      {
+        "member": "./new_data/new_data_201.db3",
+        "bytes": 407789568,
+        "sha256": "e62111ad28076c006e13e5a5a87ee30aac30ea664172c32329109fc455cdb53f"
+      },
+      {
+        "member": "./new_data/new_data_212.db3",
+        "bytes": 407789568,
+        "sha256": "89d8b826d6c04119962df19853fb39f9f5ecdc1c0b10f4548ea0b0570dd9fd88"
+      },
+      {
+        "member": "./new_data/new_data_214.db3",
+        "bytes": 407789568,
+        "sha256": "f50790460392e16914e3dd604c1ee8f09f15e82b4bcd07e21f3c8cf2da42536b"
+      },
+      {
+        "member": "./new_data/new_data_186.db3",
+        "bytes": 407789568,
+        "sha256": "424f925617727fff655a2a6bfcb352b4ba45d252e5fd48b1622082587bf0fcc5"
+      },
+      {
+        "member": "./new_data/new_data_68.db3",
+        "bytes": 407789568,
+        "sha256": "da601f34b1535952016fee721b160fe2262e34bc73ed7ef392d0442a02f78887"
+      },
+      {
+        "member": "./new_data/new_data_206.db3",
+        "bytes": 407789568,
+        "sha256": "8ad939b84d24462489aa7e3f4ea0f59809e554fd6395c5ae825628b3b6903bbf"
+      },
+      {
+        "member": "./new_data/new_data_76.db3",
+        "bytes": 407789568,
+        "sha256": "2cd826aa7462f439d4e68444d8b243dcfad0c0d276ddb6ef3e966f0522b13205"
+      },
+      {
+        "member": "./new_data/new_data_149.db3",
+        "bytes": 407789568,
+        "sha256": "4a468818a5133926ee9ae42e0197f271b8f1bff7db67c107b455622979f29f70"
+      },
+      {
+        "member": "./new_data/new_data_16.db3",
+        "bytes": 407789568,
+        "sha256": "7264979525b6ad85e913d452b740a43f296428dd55493e9f369ff05100ec2747"
+      },
+      {
+        "member": "./new_data/new_data_147.db3",
+        "bytes": 407789568,
+        "sha256": "5381d3ec0c5171e19688707205c2d4a6c2e260ed6a3c420038cc511fd901ac09"
+      },
+      {
+        "member": "./new_data/new_data_32.db3",
+        "bytes": 407789568,
+        "sha256": "a445851833fc4b55124a8db5e866723b607d679b2aab389f2c3583641d9655f8"
+      },
+      {
+        "member": "./new_data/new_data_72.db3",
+        "bytes": 407789568,
+        "sha256": "30eb3f706438c853c643539d670faea566dfe4a2b3110194d5d13c71c284a624"
+      },
+      {
+        "member": "./new_data/new_data_156.db3",
+        "bytes": 407789568,
+        "sha256": "a3af4c71f5710dab8f3a96077258e5aeab6e319eb15cca85fc4770511fbc5f63"
+      },
+      {
+        "member": "./new_data/new_data_33.db3",
+        "bytes": 407789568,
+        "sha256": "5ab1b3788e0d928a7b8ab6d385b6f1513c7d7089c2a5e6838f73e3de9592d445"
+      },
+      {
+        "member": "./new_data/new_data_88.db3",
+        "bytes": 407789568,
+        "sha256": "53d2e38b1c5f83260e3c1969d3d68c28bf76919042b0d2531464abfbf5867659"
+      },
+      {
+        "member": "./new_data/new_data_116.db3",
+        "bytes": 407789568,
+        "sha256": "a0ca72250e1121b2a6ff53b32dd6b1791c0629a7a93f3b24bba3fd99f4775654"
+      },
+      {
+        "member": "./new_data/new_data_191.db3",
+        "bytes": 407789568,
+        "sha256": "4e49544e0b7de93117e5df084b1dcaca4fd4d6bfe422cd4c696eeb8a70c46d93"
+      },
+      {
+        "member": "./new_data/new_data_24.db3",
+        "bytes": 407789568,
+        "sha256": "eb7b00bd0d115329ac30f71381637869bfd6fe6d1d8cbfe57ad249ad6eab9792"
+      },
+      {
+        "member": "./new_data/new_data_158.db3",
+        "bytes": 407789568,
+        "sha256": "1a05ef4c3ff6a0e503b89059bfdf11a26ceb8fbad2b4f1c21a79f2d70f77d513"
+      },
+      {
+        "member": "./new_data/new_data_141.db3",
+        "bytes": 407789568,
+        "sha256": "89ff2426f391130a14ed969082521063efb5db1ff6c20379d25c4425ee2eb681"
+      },
+      {
+        "member": "./new_data/new_data_5.db3",
+        "bytes": 407789568,
+        "sha256": "62ce1ea8ab05e0828392ce8d5f68145e130fcc1f73b9f864efc097e1d7bd6b68"
+      },
+      {
+        "member": "./new_data/new_data_36.db3",
+        "bytes": 407789568,
+        "sha256": "034acf09bfa4a73124a3c503970263002253b7f2a0d12586b4b39c3f62d1231e"
+      },
+      {
+        "member": "./new_data/new_data_104.db3",
+        "bytes": 407789568,
+        "sha256": "9426af2321db5866790707b799484585896512407641cf8f4f1e859546d61cd2"
+      },
+      {
+        "member": "./new_data/new_data_123.db3",
+        "bytes": 407789568,
+        "sha256": "37ddaa5c76ab7e2f6ded4b819c2eda7def3410d3ce2e0d8938f710d0628d71d3"
+      },
+      {
+        "member": "./new_data/new_data_43.db3",
+        "bytes": 407789568,
+        "sha256": "689912673bdab36bd4113f779f15b2daab0115ad413f67751ef0c1a04f5f9363"
+      },
+      {
+        "member": "./new_data/new_data_87.db3",
+        "bytes": 407789568,
+        "sha256": "69754de60acfebf1edf0be51cf19a629d22468483f43e7ae1885a54482f7ad2d"
+      },
+      {
+        "member": "./new_data/new_data_10.db3",
+        "bytes": 407789568,
+        "sha256": "6569fbbc5d3aa3e20322e7389809167a6dc8edaf189cd2e207eefc6b30ee4526"
+      },
+      {
+        "member": "./new_data/new_data_128.db3",
+        "bytes": 407789568,
+        "sha256": "2ad707c54d43254f33b28664c3530c05ebc9eee576992f1bc5390070db9d797f"
+      },
+      {
+        "member": "./new_data/new_data_65.db3",
+        "bytes": 407789568,
+        "sha256": "550c28516ea19078cfc68b638d8bb7d03272bee9bf9eba70ec09f77e7c155ae1"
+      },
+      {
+        "member": "./new_data/new_data_75.db3",
+        "bytes": 407789568,
+        "sha256": "c9b72564a11b3f4b4092392cff9ae2e3ea2c66167e7896f661c38fd00c13d9d8"
+      },
+      {
+        "member": "./new_data/new_data_137.db3",
+        "bytes": 407789568,
+        "sha256": "098fe079dbbee58f6d3b78edc382adeb5c6abacbb730e974145e7bfce6932dcd"
+      },
+      {
+        "member": "./new_data/new_data_157.db3",
+        "bytes": 407789568,
+        "sha256": "0c1429b8a433eb761a55e01edd322fbe677ce64c4fe6060a6be386d1b7bb293f"
+      }
+    ],
+    "seconds": 211.05624191602692
+  },
+  "headers": {
+    "bag": "data/extended_full/new_data",
+    "metadata_sha256": "7118a5a216d252e8b0ec6e7174e255e06b590164285649f950d8839ebfa9d91f",
+    "source_sha256": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+    "clouds": 11271,
+    "segments": [
+      {
+        "file": "new_data_0.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686689233376980,
+        "measurement_last_ns": 946686694233440042,
+        "record_first_ns": 1789642926161078864,
+        "record_last_ns": 1789642931181372574
+      },
+      {
+        "file": "new_data_1.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686694333443999,
+        "measurement_last_ns": 946686699333372951,
+        "record_first_ns": 1789642931259417508,
+        "record_last_ns": 1789642936257652079
+      },
+      {
+        "file": "new_data_2.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686699433364034,
+        "measurement_last_ns": 946686704433477998,
+        "record_first_ns": 1789642936360026972,
+        "record_last_ns": 1789642941374809634
+      },
+      {
+        "file": "new_data_3.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686704533480048,
+        "measurement_last_ns": 946686709533458948,
+        "record_first_ns": 1789642941457391586,
+        "record_last_ns": 1789642946451397709
+      },
+      {
+        "file": "new_data_4.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686709633447051,
+        "measurement_last_ns": 946686714633388042,
+        "record_first_ns": 1789642946550394610,
+        "record_last_ns": 1789642951558937773
+      },
+      {
+        "file": "new_data_5.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686714733389974,
+        "measurement_last_ns": 946686719733291984,
+        "record_first_ns": 1789642951662586167,
+        "record_last_ns": 1789642956659456184
+      },
+      {
+        "file": "new_data_6.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686719833302021,
+        "measurement_last_ns": 946686724833385944,
+        "record_first_ns": 1789642956751101909,
+        "record_last_ns": 1789642961750581066
+      },
+      {
+        "file": "new_data_7.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686724933377981,
+        "measurement_last_ns": 946686729933392048,
+        "record_first_ns": 1789642961853758576,
+        "record_last_ns": 1789642966849801670
+      },
+      {
+        "file": "new_data_8.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686730033401012,
+        "measurement_last_ns": 946686735033398986,
+        "record_first_ns": 1789642966957852495,
+        "record_last_ns": 1789642971953988066
+      },
+      {
+        "file": "new_data_9.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686735133411050,
+        "measurement_last_ns": 946686740133412004,
+        "record_first_ns": 1789642972051167841,
+        "record_last_ns": 1789642977052831159
+      },
+      {
+        "file": "new_data_10.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686740233396053,
+        "measurement_last_ns": 946686745233319044,
+        "record_first_ns": 1789642977153783575,
+        "record_last_ns": 1789642982152077442
+      },
+      {
+        "file": "new_data_11.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686745333340049,
+        "measurement_last_ns": 946686750333453059,
+        "record_first_ns": 1789642982251516112,
+        "record_last_ns": 1789642987249601070
+      },
+      {
+        "file": "new_data_12.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686750433460951,
+        "measurement_last_ns": 946686755433367014,
+        "record_first_ns": 1789642987354217703,
+        "record_last_ns": 1789642992356558435
+      },
+      {
+        "file": "new_data_13.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686755533365965,
+        "measurement_last_ns": 946686760533344984,
+        "record_first_ns": 1789642992454813414,
+        "record_last_ns": 1789642997451820312
+      },
+      {
+        "file": "new_data_14.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686760633362055,
+        "measurement_last_ns": 946686765633414030,
+        "record_first_ns": 1789642997556523180,
+        "record_last_ns": 1789643002553998567
+      },
+      {
+        "file": "new_data_15.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686765733402967,
+        "measurement_last_ns": 946686770733422041,
+        "record_first_ns": 1789643002655963748,
+        "record_last_ns": 1789643007657341521
+      },
+      {
+        "file": "new_data_16.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686770833431005,
+        "measurement_last_ns": 946686775833397985,
+        "record_first_ns": 1789643007755357408,
+        "record_last_ns": 1789643012756366373
+      },
+      {
+        "file": "new_data_17.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686775933388948,
+        "measurement_last_ns": 946686780933436036,
+        "record_first_ns": 1789643012856229128,
+        "record_last_ns": 1789643017859044329
+      },
+      {
+        "file": "new_data_18.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686781033442974,
+        "measurement_last_ns": 946686786033413053,
+        "record_first_ns": 1789643017955307678,
+        "record_last_ns": 1789643022958504537
+      },
+      {
+        "file": "new_data_19.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686786133412957,
+        "measurement_last_ns": 946686791133445978,
+        "record_first_ns": 1789643023058815973,
+        "record_last_ns": 1789643028060318109
+      },
+      {
+        "file": "new_data_20.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686791233448029,
+        "measurement_last_ns": 946686796233314037,
+        "record_first_ns": 1789643028159990752,
+        "record_last_ns": 1789643033156114707
+      },
+      {
+        "file": "new_data_21.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686796333322048,
+        "measurement_last_ns": 946686801333451033,
+        "record_first_ns": 1789643033253150685,
+        "record_last_ns": 1789643038261053855
+      },
+      {
+        "file": "new_data_22.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686801433444023,
+        "measurement_last_ns": 946686806433346033,
+        "record_first_ns": 1789643038356727981,
+        "record_last_ns": 1789643043356980994
+      },
+      {
+        "file": "new_data_23.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686806533346057,
+        "measurement_last_ns": 946686811533439994,
+        "record_first_ns": 1789643043454367983,
+        "record_last_ns": 1789643048460845235
+      },
+      {
+        "file": "new_data_24.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686811633445024,
+        "measurement_last_ns": 946686816633340955,
+        "record_first_ns": 1789643048557525742,
+        "record_last_ns": 1789643053559691190
+      },
+      {
+        "file": "new_data_25.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686816733320951,
+        "measurement_last_ns": 946686821733433008,
+        "record_first_ns": 1789643053662446889,
+        "record_last_ns": 1789643058655680601
+      },
+      {
+        "file": "new_data_26.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686821833435059,
+        "measurement_last_ns": 946686826833358049,
+        "record_first_ns": 1789643058757281519,
+        "record_last_ns": 1789643063758861220
+      },
+      {
+        "file": "new_data_27.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686826933357000,
+        "measurement_last_ns": 946686831933333039,
+        "record_first_ns": 1789643063863580497,
+        "record_last_ns": 1789643068860189513
+      },
+      {
+        "file": "new_data_28.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686832033334970,
+        "measurement_last_ns": 946686837033342004,
+        "record_first_ns": 1789643068963206272,
+        "record_last_ns": 1789643073959581991
+      },
+      {
+        "file": "new_data_29.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686837133337021,
+        "measurement_last_ns": 946686842133383989,
+        "record_first_ns": 1789643074060431556,
+        "record_last_ns": 1789643079062983163
+      },
+      {
+        "file": "new_data_30.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686842233384013,
+        "measurement_last_ns": 946686847233410954,
+        "record_first_ns": 1789643079160978974,
+        "record_last_ns": 1789643084163508325
+      },
+      {
+        "file": "new_data_31.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686847333413005,
+        "measurement_last_ns": 946686852333426952,
+        "record_first_ns": 1789643084258495395,
+        "record_last_ns": 1789643089262289239
+      },
+      {
+        "file": "new_data_32.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686852433428049,
+        "measurement_last_ns": 946686857433434010,
+        "record_first_ns": 1789643089368382879,
+        "record_last_ns": 1789643094361826514
+      },
+      {
+        "file": "new_data_33.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686857533431053,
+        "measurement_last_ns": 946686862533385992,
+        "record_first_ns": 1789643094465659328,
+        "record_last_ns": 1789643099466978646
+      },
+      {
+        "file": "new_data_34.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686862633383036,
+        "measurement_last_ns": 946686867633344054,
+        "record_first_ns": 1789643099564587035,
+        "record_last_ns": 1789643104564318672
+      },
+      {
+        "file": "new_data_35.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686867733365059,
+        "measurement_last_ns": 946686872733443022,
+        "record_first_ns": 1789643104662920895,
+        "record_last_ns": 1789643109662923426
+      },
+      {
+        "file": "new_data_36.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686872833446980,
+        "measurement_last_ns": 946686877833423972,
+        "record_first_ns": 1789643109760386007,
+        "record_last_ns": 1789643114764245078
+      },
+      {
+        "file": "new_data_37.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686877933418036,
+        "measurement_last_ns": 946686882933401942,
+        "record_first_ns": 1789643114860995416,
+        "record_last_ns": 1789643119860109162
+      },
+      {
+        "file": "new_data_38.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686883033401012,
+        "measurement_last_ns": 946686888033390045,
+        "record_first_ns": 1789643119967924680,
+        "record_last_ns": 1789643124961933844
+      },
+      {
+        "file": "new_data_39.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686888133371949,
+        "measurement_last_ns": 946686893133453965,
+        "record_first_ns": 1789643125061203545,
+        "record_last_ns": 1789643130067272663
+      },
+      {
+        "file": "new_data_40.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686893233458042,
+        "measurement_last_ns": 946686898233427048,
+        "record_first_ns": 1789643130164524805,
+        "record_last_ns": 1789643135167920923
+      },
+      {
+        "file": "new_data_41.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686898333431005,
+        "measurement_last_ns": 946686903333395004,
+        "record_first_ns": 1789643135263519005,
+        "record_last_ns": 1789643140264999268
+      },
+      {
+        "file": "new_data_42.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686903433395028,
+        "measurement_last_ns": 946686908433333993,
+        "record_first_ns": 1789643140363578375,
+        "record_last_ns": 1789643145363667935
+      },
+      {
+        "file": "new_data_43.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686908533347964,
+        "measurement_last_ns": 946686913533365011,
+        "record_first_ns": 1789643145476794825,
+        "record_last_ns": 1789643150468282103
+      },
+      {
+        "file": "new_data_44.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686913633355021,
+        "measurement_last_ns": 946686918633411050,
+        "record_first_ns": 1789643150564193659,
+        "record_last_ns": 1789643155565250973
+      },
+      {
+        "file": "new_data_45.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686918733425021,
+        "measurement_last_ns": 946686923733355045,
+        "record_first_ns": 1789643155665786447,
+        "record_last_ns": 1789643160667565360
+      },
+      {
+        "file": "new_data_46.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686923833345056,
+        "measurement_last_ns": 946686928833346963,
+        "record_first_ns": 1789643160768316492,
+        "record_last_ns": 1789643165763854796
+      },
+      {
+        "file": "new_data_47.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686928933365941,
+        "measurement_last_ns": 946686933933431983,
+        "record_first_ns": 1789643165868759907,
+        "record_last_ns": 1789643170864155441
+      },
+      {
+        "file": "new_data_48.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686934033432961,
+        "measurement_last_ns": 946686939033326030,
+        "record_first_ns": 1789643170965308469,
+        "record_last_ns": 1789643175968365515
+      },
+      {
+        "file": "new_data_49.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686939133319020,
+        "measurement_last_ns": 946686944133419037,
+        "record_first_ns": 1789643176072526494,
+        "record_last_ns": 1789643181082532321
+      },
+      {
+        "file": "new_data_50.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686944233404994,
+        "measurement_last_ns": 946686949233435035,
+        "record_first_ns": 1789643181166922809,
+        "record_last_ns": 1789643186168870753
+      },
+      {
+        "file": "new_data_51.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686949333443046,
+        "measurement_last_ns": 946686954333328009,
+        "record_first_ns": 1789643186273229925,
+        "record_last_ns": 1789643191270094181
+      },
+      {
+        "file": "new_data_52.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686954433344960,
+        "measurement_last_ns": 946686959433320999,
+        "record_first_ns": 1789643191371015014,
+        "record_last_ns": 1789643196377585659
+      },
+      {
+        "file": "new_data_53.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686959533336043,
+        "measurement_last_ns": 946686964533439994,
+        "record_first_ns": 1789643196467774923,
+        "record_last_ns": 1789643201473915514
+      },
+      {
+        "file": "new_data_54.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686964633432984,
+        "measurement_last_ns": 946686969633363008,
+        "record_first_ns": 1789643201565815689,
+        "record_last_ns": 1789643206576078648
+      },
+      {
+        "file": "new_data_55.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686969733376026,
+        "measurement_last_ns": 946686974733345032,
+        "record_first_ns": 1789643206677990249,
+        "record_last_ns": 1789643211676107521
+      },
+      {
+        "file": "new_data_56.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686974833333015,
+        "measurement_last_ns": 946686979833457947,
+        "record_first_ns": 1789643211774620712,
+        "record_last_ns": 1789643216772983103
+      },
+      {
+        "file": "new_data_57.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686979933441997,
+        "measurement_last_ns": 946686984933452010,
+        "record_first_ns": 1789643216870658951,
+        "record_last_ns": 1789643221870064690
+      },
+      {
+        "file": "new_data_58.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686985033455014,
+        "measurement_last_ns": 946686990033365965,
+        "record_first_ns": 1789643221970199865,
+        "record_last_ns": 1789643226979149544
+      },
+      {
+        "file": "new_data_59.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686990133376956,
+        "measurement_last_ns": 946686995133380055,
+        "record_first_ns": 1789643227077032474,
+        "record_last_ns": 1789643232092668230
+      },
+      {
+        "file": "new_data_60.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946686995233365059,
+        "measurement_last_ns": 946687000233418941,
+        "record_first_ns": 1789643232176557978,
+        "record_last_ns": 1789643237177281860
+      },
+      {
+        "file": "new_data_61.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687000333425999,
+        "measurement_last_ns": 946687005333428025,
+        "record_first_ns": 1789643237275502442,
+        "record_last_ns": 1789643242271745908
+      },
+      {
+        "file": "new_data_62.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687005433423996,
+        "measurement_last_ns": 946687010433297038,
+        "record_first_ns": 1789643242371312644,
+        "record_last_ns": 1789643247378909015
+      },
+      {
+        "file": "new_data_63.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687010533316970,
+        "measurement_last_ns": 946687015533354044,
+        "record_first_ns": 1789643247489459146,
+        "record_last_ns": 1789643252479210286
+      },
+      {
+        "file": "new_data_64.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687015633368015,
+        "measurement_last_ns": 946687020633445978,
+        "record_first_ns": 1789643252579458980,
+        "record_last_ns": 1789643257579201671
+      },
+      {
+        "file": "new_data_65.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687020733445048,
+        "measurement_last_ns": 946687025733302951,
+        "record_first_ns": 1789643257678818161,
+        "record_last_ns": 1789643262674415711
+      },
+      {
+        "file": "new_data_66.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687025833305001,
+        "measurement_last_ns": 946687030833436966,
+        "record_first_ns": 1789643262775353251,
+        "record_last_ns": 1789643267774897966
+      },
+      {
+        "file": "new_data_67.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687030933421969,
+        "measurement_last_ns": 946687035933464050,
+        "record_first_ns": 1789643267874205712,
+        "record_last_ns": 1789643272876191164
+      },
+      {
+        "file": "new_data_68.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687036033468008,
+        "measurement_last_ns": 946687041033326983,
+        "record_first_ns": 1789643272979421148,
+        "record_last_ns": 1789643277985178765
+      },
+      {
+        "file": "new_data_69.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687041133322001,
+        "measurement_last_ns": 946687046133458018,
+        "record_first_ns": 1789643278079217745,
+        "record_last_ns": 1789643283076845280
+      },
+      {
+        "file": "new_data_70.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687046233450055,
+        "measurement_last_ns": 946687051233358026,
+        "record_first_ns": 1789643283176615172,
+        "record_last_ns": 1789643288175954703
+      },
+      {
+        "file": "new_data_71.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687051333359957,
+        "measurement_last_ns": 946687056333420992,
+        "record_first_ns": 1789643288276017101,
+        "record_last_ns": 1789643293277024487
+      },
+      {
+        "file": "new_data_72.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687056433416963,
+        "measurement_last_ns": 946687061433419943,
+        "record_first_ns": 1789643293378370525,
+        "record_last_ns": 1789643298377614465
+      },
+      {
+        "file": "new_data_73.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687061533429980,
+        "measurement_last_ns": 946687066533352971,
+        "record_first_ns": 1789643298476251754,
+        "record_last_ns": 1789643303478562903
+      },
+      {
+        "file": "new_data_74.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687066633370042,
+        "measurement_last_ns": 946687071633455038,
+        "record_first_ns": 1789643303577545148,
+        "record_last_ns": 1789643308578659117
+      },
+      {
+        "file": "new_data_75.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687071733453989,
+        "measurement_last_ns": 946687076733399987,
+        "record_first_ns": 1789643308694726304,
+        "record_last_ns": 1789643313683572822
+      },
+      {
+        "file": "new_data_76.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687076833387971,
+        "measurement_last_ns": 946687081833433986,
+        "record_first_ns": 1789643313780218940,
+        "record_last_ns": 1789643318782455352
+      },
+      {
+        "file": "new_data_77.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687081933444023,
+        "measurement_last_ns": 946687086933302999,
+        "record_first_ns": 1789643318878359828,
+        "record_last_ns": 1789643323875752296
+      },
+      {
+        "file": "new_data_78.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687087033306956,
+        "measurement_last_ns": 946687092033468008,
+        "record_first_ns": 1789643323975690667,
+        "record_last_ns": 1789643328981046483
+      },
+      {
+        "file": "new_data_79.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687092133458972,
+        "measurement_last_ns": 946687097133355021,
+        "record_first_ns": 1789643329080673858,
+        "record_last_ns": 1789643334080882874
+      },
+      {
+        "file": "new_data_80.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687097233353972,
+        "measurement_last_ns": 946687102233366013,
+        "record_first_ns": 1789643334178069284,
+        "record_last_ns": 1789643339180878730
+      },
+      {
+        "file": "new_data_81.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687102333384991,
+        "measurement_last_ns": 946687107333385944,
+        "record_first_ns": 1789643339278966192,
+        "record_last_ns": 1789643344286266040
+      },
+      {
+        "file": "new_data_82.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687107433380008,
+        "measurement_last_ns": 946687112433434963,
+        "record_first_ns": 1789643344387476588,
+        "record_last_ns": 1789643349382735059
+      },
+      {
+        "file": "new_data_83.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687112533432007,
+        "measurement_last_ns": 946687117533424973,
+        "record_first_ns": 1789643349483768423,
+        "record_last_ns": 1789643354482205965
+      },
+      {
+        "file": "new_data_84.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687117633432031,
+        "measurement_last_ns": 946687122633380055,
+        "record_first_ns": 1789643354586389286,
+        "record_last_ns": 1789643359581652965
+      },
+      {
+        "file": "new_data_85.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687122733394027,
+        "measurement_last_ns": 946687127733356953,
+        "record_first_ns": 1789643359679142868,
+        "record_last_ns": 1789643364687450746
+      },
+      {
+        "file": "new_data_86.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687127833341002,
+        "measurement_last_ns": 946687132833454013,
+        "record_first_ns": 1789643364779191853,
+        "record_last_ns": 1789643369785399578
+      },
+      {
+        "file": "new_data_87.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687132933446050,
+        "measurement_last_ns": 946687137933310986,
+        "record_first_ns": 1789643369884217557,
+        "record_last_ns": 1789643374886005247
+      },
+      {
+        "file": "new_data_88.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687138033324003,
+        "measurement_last_ns": 946687143033445954,
+        "record_first_ns": 1789643374985248465,
+        "record_last_ns": 1789643379993464452
+      },
+      {
+        "file": "new_data_89.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687143133440971,
+        "measurement_last_ns": 946687148133368015,
+        "record_first_ns": 1789643380094090224,
+        "record_last_ns": 1789643385114527080
+      },
+      {
+        "file": "new_data_90.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687148233384013,
+        "measurement_last_ns": 946687153233402967,
+        "record_first_ns": 1789643385190239088,
+        "record_last_ns": 1789643390186131621
+      },
+      {
+        "file": "new_data_91.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687153333400011,
+        "measurement_last_ns": 946687158333418965,
+        "record_first_ns": 1789643390297223021,
+        "record_last_ns": 1789643395283717888
+      },
+      {
+        "file": "new_data_92.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687158433408976,
+        "measurement_last_ns": 946687163433387995,
+        "record_first_ns": 1789643395380856402,
+        "record_last_ns": 1789643400387926021
+      },
+      {
+        "file": "new_data_93.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687163533401966,
+        "measurement_last_ns": 946687168533432007,
+        "record_first_ns": 1789643400487445307,
+        "record_last_ns": 1789643405490278611
+      },
+      {
+        "file": "new_data_94.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687168633434057,
+        "measurement_last_ns": 946687173633411050,
+        "record_first_ns": 1789643405588692050,
+        "record_last_ns": 1789643410592257365
+      },
+      {
+        "file": "new_data_95.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687173733400941,
+        "measurement_last_ns": 946687178733343005,
+        "record_first_ns": 1789643410688164254,
+        "record_last_ns": 1789643415683332820
+      },
+      {
+        "file": "new_data_96.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687178833348036,
+        "measurement_last_ns": 946687183833446026,
+        "record_first_ns": 1789643415784719083,
+        "record_last_ns": 1789643420792820652
+      },
+      {
+        "file": "new_data_97.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687183933446050,
+        "measurement_last_ns": 946687188933400035,
+        "record_first_ns": 1789643420889618946,
+        "record_last_ns": 1789643425886777903
+      },
+      {
+        "file": "new_data_98.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687189033395052,
+        "measurement_last_ns": 946687194033310056,
+        "record_first_ns": 1789643425987328329,
+        "record_last_ns": 1789643430986085251
+      },
+      {
+        "file": "new_data_99.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687194133301020,
+        "measurement_last_ns": 946687199133452058,
+        "record_first_ns": 1789643431088664124,
+        "record_last_ns": 1789643436087066726
+      },
+      {
+        "file": "new_data_100.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687199233450055,
+        "measurement_last_ns": 946687204233348966,
+        "record_first_ns": 1789643436188421313,
+        "record_last_ns": 1789643441184646874
+      },
+      {
+        "file": "new_data_101.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687204333358049,
+        "measurement_last_ns": 946687209333335042,
+        "record_first_ns": 1789643441286737442,
+        "record_last_ns": 1789643446290786489
+      },
+      {
+        "file": "new_data_102.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687209433352947,
+        "measurement_last_ns": 946687214433470964,
+        "record_first_ns": 1789643446389230695,
+        "record_last_ns": 1789643451391663736
+      },
+      {
+        "file": "new_data_103.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687214533460021,
+        "measurement_last_ns": 946687219533329010,
+        "record_first_ns": 1789643451490402410,
+        "record_last_ns": 1789643456493010008
+      },
+      {
+        "file": "new_data_104.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687219633327007,
+        "measurement_last_ns": 946687224633396029,
+        "record_first_ns": 1789643456598745254,
+        "record_last_ns": 1789643461585719765
+      },
+      {
+        "file": "new_data_105.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687224733397007,
+        "measurement_last_ns": 946687229733350992,
+        "record_first_ns": 1789643461690884611,
+        "record_last_ns": 1789643466689332414
+      },
+      {
+        "file": "new_data_106.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687229833343029,
+        "measurement_last_ns": 946687234833341956,
+        "record_first_ns": 1789643466792888158,
+        "record_last_ns": 1789643471792394371
+      },
+      {
+        "file": "new_data_107.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687234933356047,
+        "measurement_last_ns": 946687239933385015,
+        "record_first_ns": 1789643471886612148,
+        "record_last_ns": 1789643476890218022
+      },
+      {
+        "file": "new_data_108.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687240033393025,
+        "measurement_last_ns": 946687245033365965,
+        "record_first_ns": 1789643476993484671,
+        "record_last_ns": 1789643481989048352
+      },
+      {
+        "file": "new_data_109.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687245133378983,
+        "measurement_last_ns": 946687250133422017,
+        "record_first_ns": 1789643482094366776,
+        "record_last_ns": 1789643487099795018
+      },
+      {
+        "file": "new_data_110.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687250233414054,
+        "measurement_last_ns": 946687255233423948,
+        "record_first_ns": 1789643487194300089,
+        "record_last_ns": 1789643492188852402
+      },
+      {
+        "file": "new_data_111.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687255333418012,
+        "measurement_last_ns": 946687260333348989,
+        "record_first_ns": 1789643492290253408,
+        "record_last_ns": 1789643497289720821
+      },
+      {
+        "file": "new_data_112.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687260433347940,
+        "measurement_last_ns": 946687265433344960,
+        "record_first_ns": 1789643497391007543,
+        "record_last_ns": 1789643502398057861
+      },
+      {
+        "file": "new_data_113.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687265533344030,
+        "measurement_last_ns": 946687270533372998,
+        "record_first_ns": 1789643502492654312,
+        "record_last_ns": 1789643507492243833
+      },
+      {
+        "file": "new_data_114.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687270633376002,
+        "measurement_last_ns": 946687275633425951,
+        "record_first_ns": 1789643507589103818,
+        "record_last_ns": 1789643512595386071
+      },
+      {
+        "file": "new_data_115.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687275733433008,
+        "measurement_last_ns": 946687280733329058,
+        "record_first_ns": 1789643512698990610,
+        "record_last_ns": 1789643517697485289
+      },
+      {
+        "file": "new_data_116.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687280833315969,
+        "measurement_last_ns": 946687285833382010,
+        "record_first_ns": 1789643517794046603,
+        "record_last_ns": 1789643522795602867
+      },
+      {
+        "file": "new_data_117.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687285933397055,
+        "measurement_last_ns": 946687290933454990,
+        "record_first_ns": 1789643522892396865,
+        "record_last_ns": 1789643527896188851
+      },
+      {
+        "file": "new_data_118.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687291033460021,
+        "measurement_last_ns": 946687296033360958,
+        "record_first_ns": 1789643527993640246,
+        "record_last_ns": 1789643532997234903
+      },
+      {
+        "file": "new_data_119.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687296133375049,
+        "measurement_last_ns": 946687301133455992,
+        "record_first_ns": 1789643533093269813,
+        "record_last_ns": 1789643538092241376
+      },
+      {
+        "file": "new_data_120.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687301233450055,
+        "measurement_last_ns": 946687306233347058,
+        "record_first_ns": 1789643538196263077,
+        "record_last_ns": 1789643543200184084
+      },
+      {
+        "file": "new_data_121.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687306333335996,
+        "measurement_last_ns": 946687311333461046,
+        "record_first_ns": 1789643543296155406,
+        "record_last_ns": 1789643548301067255
+      },
+      {
+        "file": "new_data_122.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687311433462024,
+        "measurement_last_ns": 946687316433331966,
+        "record_first_ns": 1789643548401066440,
+        "record_last_ns": 1789643553392638676
+      },
+      {
+        "file": "new_data_123.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687316533332944,
+        "measurement_last_ns": 946687321533377051,
+        "record_first_ns": 1789643553500331177,
+        "record_last_ns": 1789643558501628255
+      },
+      {
+        "file": "new_data_124.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687321633363962,
+        "measurement_last_ns": 946687326633398056,
+        "record_first_ns": 1789643558602203127,
+        "record_last_ns": 1789643563608269982
+      },
+      {
+        "file": "new_data_125.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687326733407974,
+        "measurement_last_ns": 946687331733456016,
+        "record_first_ns": 1789643563704438704,
+        "record_last_ns": 1789643568695122206
+      },
+      {
+        "file": "new_data_126.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687331833453059,
+        "measurement_last_ns": 946687336833374977,
+        "record_first_ns": 1789643568799413087,
+        "record_last_ns": 1789643573795008175
+      },
+      {
+        "file": "new_data_127.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687336933387041,
+        "measurement_last_ns": 946687341933326006,
+        "record_first_ns": 1789643573903378047,
+        "record_last_ns": 1789643578895135275
+      },
+      {
+        "file": "new_data_128.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687342033326983,
+        "measurement_last_ns": 946687347033393979,
+        "record_first_ns": 1789643578999457789,
+        "record_last_ns": 1789643584001432522
+      },
+      {
+        "file": "new_data_129.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687347133407950,
+        "measurement_last_ns": 946687352133362055,
+        "record_first_ns": 1789643584099946437,
+        "record_last_ns": 1789643589099420571
+      },
+      {
+        "file": "new_data_130.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687352233381033,
+        "measurement_last_ns": 946687357233443975,
+        "record_first_ns": 1789643589197639391,
+        "record_last_ns": 1789643594203590687
+      },
+      {
+        "file": "new_data_131.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687357333451033,
+        "measurement_last_ns": 946687362333469033,
+        "record_first_ns": 1789643594296845541,
+        "record_last_ns": 1789643599299073207
+      },
+      {
+        "file": "new_data_132.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687362433465004,
+        "measurement_last_ns": 946687367433462024,
+        "record_first_ns": 1789643599405198401,
+        "record_last_ns": 1789643604410821133
+      },
+      {
+        "file": "new_data_133.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687367533449054,
+        "measurement_last_ns": 946687372533321977,
+        "record_first_ns": 1789643604506861493,
+        "record_last_ns": 1789643609503372544
+      },
+      {
+        "file": "new_data_134.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687372633329988,
+        "measurement_last_ns": 946687377633461952,
+        "record_first_ns": 1789643609603891983,
+        "record_last_ns": 1789643614609140949
+      },
+      {
+        "file": "new_data_135.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687377733461022,
+        "measurement_last_ns": 946687382733363986,
+        "record_first_ns": 1789643614697555509,
+        "record_last_ns": 1789643619700482758
+      },
+      {
+        "file": "new_data_136.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687382833338976,
+        "measurement_last_ns": 946687387833421946,
+        "record_first_ns": 1789643619799149028,
+        "record_last_ns": 1789643624798439846
+      },
+      {
+        "file": "new_data_137.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687387933429003,
+        "measurement_last_ns": 946687392933449984,
+        "record_first_ns": 1789643624906241171,
+        "record_last_ns": 1789643629903724300
+      },
+      {
+        "file": "new_data_138.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687393033442020,
+        "measurement_last_ns": 946687398033367038,
+        "record_first_ns": 1789643630005615899,
+        "record_last_ns": 1789643635004390813
+      },
+      {
+        "file": "new_data_139.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687398133378029,
+        "measurement_last_ns": 946687403133301973,
+        "record_first_ns": 1789643635102332444,
+        "record_last_ns": 1789643640103443921
+      },
+      {
+        "file": "new_data_140.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687403233314037,
+        "measurement_last_ns": 946687408233420014,
+        "record_first_ns": 1789643640203651741,
+        "record_last_ns": 1789643645201611830
+      },
+      {
+        "file": "new_data_141.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687408333428979,
+        "measurement_last_ns": 946687413333402038,
+        "record_first_ns": 1789643645303847520,
+        "record_last_ns": 1789643650304429525
+      },
+      {
+        "file": "new_data_142.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687413433398962,
+        "measurement_last_ns": 946687418433418036,
+        "record_first_ns": 1789643650401618743,
+        "record_last_ns": 1789643655403728127
+      },
+      {
+        "file": "new_data_143.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687418533414960,
+        "measurement_last_ns": 946687423533364058,
+        "record_first_ns": 1789643655504844255,
+        "record_last_ns": 1789643660505347051
+      },
+      {
+        "file": "new_data_144.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687423633350015,
+        "measurement_last_ns": 946687428633463979,
+        "record_first_ns": 1789643660608744083,
+        "record_last_ns": 1789643665605458095
+      },
+      {
+        "file": "new_data_145.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687428733458996,
+        "measurement_last_ns": 946687433733404040,
+        "record_first_ns": 1789643665716607726,
+        "record_last_ns": 1789643670709702378
+      },
+      {
+        "file": "new_data_146.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687433833410978,
+        "measurement_last_ns": 946687438833379030,
+        "record_first_ns": 1789643670806754998,
+        "record_last_ns": 1789643675804489515
+      },
+      {
+        "file": "new_data_147.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687438933375001,
+        "measurement_last_ns": 946687443933364987,
+        "record_first_ns": 1789643675905500858,
+        "record_last_ns": 1789643680904791249
+      },
+      {
+        "file": "new_data_148.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687444033362985,
+        "measurement_last_ns": 946687449033404946,
+        "record_first_ns": 1789643681010175255,
+        "record_last_ns": 1789643686016020974
+      },
+      {
+        "file": "new_data_149.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687449133396029,
+        "measurement_last_ns": 946687454133406043,
+        "record_first_ns": 1789643686107675211,
+        "record_last_ns": 1789643691112649869
+      },
+      {
+        "file": "new_data_150.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687454233415008,
+        "measurement_last_ns": 946687459233422995,
+        "record_first_ns": 1789643691221683716,
+        "record_last_ns": 1789643696210306774
+      },
+      {
+        "file": "new_data_151.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687459333413959,
+        "measurement_last_ns": 946687464333395958,
+        "record_first_ns": 1789643696316464244,
+        "record_last_ns": 1789643701316295992
+      },
+      {
+        "file": "new_data_152.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687464433397055,
+        "measurement_last_ns": 946687469433346033,
+        "record_first_ns": 1789643701409422526,
+        "record_last_ns": 1789643706411510905
+      },
+      {
+        "file": "new_data_153.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687469533337951,
+        "measurement_last_ns": 946687474533434987,
+        "record_first_ns": 1789643706514740685,
+        "record_last_ns": 1789643711512235222
+      },
+      {
+        "file": "new_data_154.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687474633420944,
+        "measurement_last_ns": 946687479633435965,
+        "record_first_ns": 1789643711628569586,
+        "record_last_ns": 1789643716634433729
+      },
+      {
+        "file": "new_data_155.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687479733436942,
+        "measurement_last_ns": 946687484733340979,
+        "record_first_ns": 1789643716722142939,
+        "record_last_ns": 1789643721714583347
+      },
+      {
+        "file": "new_data_156.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687484833333969,
+        "measurement_last_ns": 946687492733386040,
+        "record_first_ns": 1789643721813092130,
+        "record_last_ns": 1789643729717783190
+      },
+      {
+        "file": "new_data_157.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687492833389044,
+        "measurement_last_ns": 946687497833413959,
+        "record_first_ns": 1789643729810985938,
+        "record_last_ns": 1789643734807120636
+      },
+      {
+        "file": "new_data_158.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687497933426976,
+        "measurement_last_ns": 946687502933331966,
+        "record_first_ns": 1789643734910200749,
+        "record_last_ns": 1789643739910217633
+      },
+      {
+        "file": "new_data_159.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687503033329964,
+        "measurement_last_ns": 946687508033390999,
+        "record_first_ns": 1789643740031750671,
+        "record_last_ns": 1789643745014539874
+      },
+      {
+        "file": "new_data_160.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687508133393049,
+        "measurement_last_ns": 946687513133440971,
+        "record_first_ns": 1789643745110579965,
+        "record_last_ns": 1789643750109221990
+      },
+      {
+        "file": "new_data_161.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687513233428955,
+        "measurement_last_ns": 946687521533282042,
+        "record_first_ns": 1789643750213313255,
+        "record_last_ns": 1789643758515225280
+      },
+      {
+        "file": "new_data_162.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687521633296013,
+        "measurement_last_ns": 946687526633399963,
+        "record_first_ns": 1789643758613726666,
+        "record_last_ns": 1789643763615758839
+      },
+      {
+        "file": "new_data_163.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687526733391047,
+        "measurement_last_ns": 946687531733417988,
+        "record_first_ns": 1789643763712215469,
+        "record_last_ns": 1789643768714920703
+      },
+      {
+        "file": "new_data_164.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687531833425999,
+        "measurement_last_ns": 946687538033359051,
+        "record_first_ns": 1789643768814816691,
+        "record_last_ns": 1789643775012267811
+      },
+      {
+        "file": "new_data_165.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687538133358002,
+        "measurement_last_ns": 946687543133393049,
+        "record_first_ns": 1789643775111448426,
+        "record_last_ns": 1789643780116324685
+      },
+      {
+        "file": "new_data_166.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687543233389020,
+        "measurement_last_ns": 946687548233327985,
+        "record_first_ns": 1789643780217406671,
+        "record_last_ns": 1789643785216233958
+      },
+      {
+        "file": "new_data_167.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687548333312035,
+        "measurement_last_ns": 946687553333284974,
+        "record_first_ns": 1789643785314290243,
+        "record_last_ns": 1789643790315839066
+      },
+      {
+        "file": "new_data_168.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687553433300972,
+        "measurement_last_ns": 946687558433349967,
+        "record_first_ns": 1789643790410291471,
+        "record_last_ns": 1789643795414847204
+      },
+      {
+        "file": "new_data_169.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687558533360004,
+        "measurement_last_ns": 946687566833454013,
+        "record_first_ns": 1789643795512812136,
+        "record_last_ns": 1789643803813093422
+      },
+      {
+        "file": "new_data_170.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687566933459044,
+        "measurement_last_ns": 946687571933315992,
+        "record_first_ns": 1789643803932111282,
+        "record_last_ns": 1789643808913804244
+      },
+      {
+        "file": "new_data_171.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687572033328056,
+        "measurement_last_ns": 946687579133394003,
+        "record_first_ns": 1789643809014517919,
+        "record_last_ns": 1789643816120513150
+      },
+      {
+        "file": "new_data_172.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687579233394980,
+        "measurement_last_ns": 946687584233404040,
+        "record_first_ns": 1789643816218521845,
+        "record_last_ns": 1789643821216354093
+      },
+      {
+        "file": "new_data_173.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687584333389997,
+        "measurement_last_ns": 946687589333438993,
+        "record_first_ns": 1789643821315924606,
+        "record_last_ns": 1789643826323913400
+      },
+      {
+        "file": "new_data_174.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687589433442950,
+        "measurement_last_ns": 946687598733399987,
+        "record_first_ns": 1789643826419135678,
+        "record_last_ns": 1789643835717965427
+      },
+      {
+        "file": "new_data_175.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687598833418965,
+        "measurement_last_ns": 946687603833382964,
+        "record_first_ns": 1789643835819824540,
+        "record_last_ns": 1789643840817167266
+      },
+      {
+        "file": "new_data_176.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687603933385968,
+        "measurement_last_ns": 946687608933372021,
+        "record_first_ns": 1789643840921098193,
+        "record_last_ns": 1789643845921903755
+      },
+      {
+        "file": "new_data_177.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687609033393979,
+        "measurement_last_ns": 946687614033400059,
+        "record_first_ns": 1789643846018575620,
+        "record_last_ns": 1789643851019953437
+      },
+      {
+        "file": "new_data_178.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687614133391976,
+        "measurement_last_ns": 946687619133434057,
+        "record_first_ns": 1789643851119317746,
+        "record_last_ns": 1789643856121171603
+      },
+      {
+        "file": "new_data_179.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687619233428001,
+        "measurement_last_ns": 946687627733348012,
+        "record_first_ns": 1789643856219731045,
+        "record_last_ns": 1789643864720580026
+      },
+      {
+        "file": "new_data_180.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687627833366990,
+        "measurement_last_ns": 946687632833408952,
+        "record_first_ns": 1789643864817213084,
+        "record_last_ns": 1789643869817710062
+      },
+      {
+        "file": "new_data_181.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687632933401942,
+        "measurement_last_ns": 946687637933462024,
+        "record_first_ns": 1789643869917091568,
+        "record_last_ns": 1789643874921628897
+      },
+      {
+        "file": "new_data_182.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687638033463001,
+        "measurement_last_ns": 946687645733291030,
+        "record_first_ns": 1789643875020082140,
+        "record_last_ns": 1789643882720718332
+      },
+      {
+        "file": "new_data_183.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687645833304048,
+        "measurement_last_ns": 946687650833403945,
+        "record_first_ns": 1789643882821154477,
+        "record_last_ns": 1789643887828778311
+      },
+      {
+        "file": "new_data_184.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687650933406949,
+        "measurement_last_ns": 946687657133370042,
+        "record_first_ns": 1789643887921124583,
+        "record_last_ns": 1789643894125310699
+      },
+      {
+        "file": "new_data_185.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687657233368993,
+        "measurement_last_ns": 946687662233446002,
+        "record_first_ns": 1789643894226551403,
+        "record_last_ns": 1789643899223091537
+      },
+      {
+        "file": "new_data_186.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687662333448052,
+        "measurement_last_ns": 946687667333410978,
+        "record_first_ns": 1789643899319153277,
+        "record_last_ns": 1789643904323676688
+      },
+      {
+        "file": "new_data_187.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687667433408022,
+        "measurement_last_ns": 946687673533444047,
+        "record_first_ns": 1789643904432915167,
+        "record_last_ns": 1789643910522366691
+      },
+      {
+        "file": "new_data_188.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687673633440018,
+        "measurement_last_ns": 946687678633461952,
+        "record_first_ns": 1789643910621756982,
+        "record_last_ns": 1789643915623291831
+      },
+      {
+        "file": "new_data_189.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687678733453989,
+        "measurement_last_ns": 946687690733338952,
+        "record_first_ns": 1789643915739309845,
+        "record_last_ns": 1789643927726976217
+      },
+      {
+        "file": "new_data_190.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687690833320022,
+        "measurement_last_ns": 946687695833453059,
+        "record_first_ns": 1789643927831678748,
+        "record_last_ns": 1789643932828924360
+      },
+      {
+        "file": "new_data_191.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687695933454037,
+        "measurement_last_ns": 946687700933437943,
+        "record_first_ns": 1789643932929838021,
+        "record_last_ns": 1789643937937406565
+      },
+      {
+        "file": "new_data_192.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687701033429980,
+        "measurement_last_ns": 946687708833469033,
+        "record_first_ns": 1789643938028952319,
+        "record_last_ns": 1789643945828985613
+      },
+      {
+        "file": "new_data_193.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687708933467984,
+        "measurement_last_ns": 946687713933380961,
+        "record_first_ns": 1789643945935132787,
+        "record_last_ns": 1789643950930059028
+      },
+      {
+        "file": "new_data_194.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687714033395052,
+        "measurement_last_ns": 946687719033406973,
+        "record_first_ns": 1789643951028164644,
+        "record_last_ns": 1789643956030773641
+      },
+      {
+        "file": "new_data_195.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687719133406997,
+        "measurement_last_ns": 946687728333441973,
+        "record_first_ns": 1789643956132195092,
+        "record_last_ns": 1789643965350026375
+      },
+      {
+        "file": "new_data_196.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687728433441997,
+        "measurement_last_ns": 946687733433398008,
+        "record_first_ns": 1789643965429973057,
+        "record_last_ns": 1789643970429869164
+      },
+      {
+        "file": "new_data_197.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687733533400059,
+        "measurement_last_ns": 946687739733461976,
+        "record_first_ns": 1789643970529073610,
+        "record_last_ns": 1789643976730628611
+      },
+      {
+        "file": "new_data_198.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687739833456039,
+        "measurement_last_ns": 946687744833305001,
+        "record_first_ns": 1789643976831132477,
+        "record_last_ns": 1789643981835685841
+      },
+      {
+        "file": "new_data_199.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687744933320045,
+        "measurement_last_ns": 946687749933408976,
+        "record_first_ns": 1789643981931665871,
+        "record_last_ns": 1789643986932407704
+      },
+      {
+        "file": "new_data_200.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687750033393025,
+        "measurement_last_ns": 946687758933467984,
+        "record_first_ns": 1789643987026537478,
+        "record_last_ns": 1789643998355980953
+      },
+      {
+        "file": "new_data_201.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687759033460021,
+        "measurement_last_ns": 946687764033373952,
+        "record_first_ns": 1789643998381197991,
+        "record_last_ns": 1789644001035640601
+      },
+      {
+        "file": "new_data_202.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687764133383989,
+        "measurement_last_ns": 946687773633430958,
+        "record_first_ns": 1789644001132651139,
+        "record_last_ns": 1789644010629052516
+      },
+      {
+        "file": "new_data_203.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687773733432055,
+        "measurement_last_ns": 946687778733386040,
+        "record_first_ns": 1789644010733120848,
+        "record_last_ns": 1789644015816841088
+      },
+      {
+        "file": "new_data_204.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687778833384037,
+        "measurement_last_ns": 946687783833436012,
+        "record_first_ns": 1789644015845778974,
+        "record_last_ns": 1789644023242015383
+      },
+      {
+        "file": "new_data_205.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687783933439970,
+        "measurement_last_ns": 946687795533323050,
+        "record_first_ns": 1789644023265483207,
+        "record_last_ns": 1789644032530260554
+      },
+      {
+        "file": "new_data_206.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687795633316040,
+        "measurement_last_ns": 946687800633381963,
+        "record_first_ns": 1789644032635245406,
+        "record_last_ns": 1789644037664887864
+      },
+      {
+        "file": "new_data_207.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687800733374953,
+        "measurement_last_ns": 946687807033380032,
+        "record_first_ns": 1789644037730760369,
+        "record_last_ns": 1789644044034023520
+      },
+      {
+        "file": "new_data_208.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687807133365035,
+        "measurement_last_ns": 946687812133414030,
+        "record_first_ns": 1789644044141314645,
+        "record_last_ns": 1789644049134688045
+      },
+      {
+        "file": "new_data_209.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687812233404040,
+        "measurement_last_ns": 946687817233391047,
+        "record_first_ns": 1789644049233228538,
+        "record_last_ns": 1789644054230328200
+      },
+      {
+        "file": "new_data_210.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687817333399057,
+        "measurement_last_ns": 946687826533457041,
+        "record_first_ns": 1789644054332551740,
+        "record_last_ns": 1789644063535688902
+      },
+      {
+        "file": "new_data_211.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687826633460999,
+        "measurement_last_ns": 946687831633360028,
+        "record_first_ns": 1789644063636743023,
+        "record_last_ns": 1789644068632440218
+      },
+      {
+        "file": "new_data_212.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687831733371973,
+        "measurement_last_ns": 946687836733433962,
+        "record_first_ns": 1789644068737217201,
+        "record_last_ns": 1789644073732777970
+      },
+      {
+        "file": "new_data_213.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687836833431959,
+        "measurement_last_ns": 946687846433408022,
+        "record_first_ns": 1789644073836218379,
+        "record_last_ns": 1789644083437637502
+      },
+      {
+        "file": "new_data_214.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687846533414960,
+        "measurement_last_ns": 946687851533337951,
+        "record_first_ns": 1789644083539698735,
+        "record_last_ns": 1789644088542676892
+      },
+      {
+        "file": "new_data_215.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687851633348942,
+        "measurement_last_ns": 946687858033445954,
+        "record_first_ns": 1789644088640202910,
+        "record_last_ns": 1789644095040748777
+      },
+      {
+        "file": "new_data_216.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687858133448005,
+        "measurement_last_ns": 946687863133448005,
+        "record_first_ns": 1789644095135401401,
+        "record_last_ns": 1789644100138528602
+      },
+      {
+        "file": "new_data_217.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687863233451962,
+        "measurement_last_ns": 946687868233400941,
+        "record_first_ns": 1789644100240605501,
+        "record_last_ns": 1789644105237440066
+      },
+      {
+        "file": "new_data_218.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687868333405018,
+        "measurement_last_ns": 946687876133445024,
+        "record_first_ns": 1789644105339629496,
+        "record_last_ns": 1789644113141884901
+      },
+      {
+        "file": "new_data_219.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687876233438015,
+        "measurement_last_ns": 946687881233296990,
+        "record_first_ns": 1789644113238468732,
+        "record_last_ns": 1789644118239145501
+      },
+      {
+        "file": "new_data_220.db3",
+        "messages": 51,
+        "clouds": 51,
+        "measurement_first_ns": 946687881333279967,
+        "measurement_last_ns": 946687889033326983,
+        "record_first_ns": 1789644118339330386,
+        "record_last_ns": 1789644126044547772
+      }
+    ],
+    "duplicate_acquisitions": [],
+    "backward_acquisitions": [],
+    "gaps_over_half_second": [
+      {
+        "segment": "new_data_156.db3",
+        "segment_cloud_index": 33,
+        "global_cloud_index": 7989,
+        "measurement_ns": 946687491033352017,
+        "record_ns": 1789643728011689211,
+        "measurement_gap_s": 2.999976039,
+        "record_gap_s": 2.997137239
+      },
+      {
+        "segment": "new_data_161.db3",
+        "segment_cloud_index": 39,
+        "global_cloud_index": 8250,
+        "measurement_ns": 946687520433395028,
+        "record_ns": 1789643757419115956,
+        "measurement_gap_s": 3.399996996,
+        "record_gap_s": 3.404861667
+      },
+      {
+        "segment": "new_data_164.db3",
+        "segment_cloud_index": 18,
+        "global_cloud_index": 8382,
+        "measurement_ns": 946687534833381057,
+        "record_ns": 1789643771809981127,
+        "measurement_gap_s": 1.300011039,
+        "record_gap_s": 1.292820412
+      },
+      {
+        "segment": "new_data_169.db3",
+        "segment_cloud_index": 15,
+        "global_cloud_index": 8634,
+        "measurement_ns": 946687563333436966,
+        "record_ns": 1789643800315167970,
+        "measurement_gap_s": 3.399981022,
+        "record_gap_s": 3.400746928
+      },
+      {
+        "segment": "new_data_171.db3",
+        "segment_cloud_index": 45,
+        "global_cloud_index": 8766,
+        "measurement_ns": 946687578633363008,
+        "record_ns": 1789643815614499109,
+        "measurement_gap_s": 2.199939012,
+        "record_gap_s": 2.191304761
+      },
+      {
+        "segment": "new_data_174.db3",
+        "segment_cloud_index": 24,
+        "global_cloud_index": 8898,
+        "measurement_ns": 946687596133442998,
+        "record_ns": 1789643833119370590,
+        "measurement_gap_s": 4.400135994,
+        "record_gap_s": 4.396728025
+      },
+      {
+        "segment": "new_data_179.db3",
+        "segment_cloud_index": 26,
+        "global_cloud_index": 9155,
+        "measurement_ns": 946687625333420992,
+        "record_ns": 1789643862320812980,
+        "measurement_gap_s": 3.599995017,
+        "record_gap_s": 3.601596379
+      },
+      {
+        "segment": "new_data_182.db3",
+        "segment_cloud_index": 5,
+        "global_cloud_index": 9287,
+        "measurement_ns": 946687641233448029,
+        "record_ns": 1789643878224693910,
+        "measurement_gap_s": 2.799995065,
+        "record_gap_s": 2.800594267
+      },
+      {
+        "segment": "new_data_184.db3",
+        "segment_cloud_index": 35,
+        "global_cloud_index": 9419,
+        "measurement_ns": 946687655633406043,
+        "record_ns": 1789643892622900814,
+        "measurement_gap_s": 1.300040007,
+        "record_gap_s": 1.300638266
+      },
+      {
+        "segment": "new_data_187.db3",
+        "segment_cloud_index": 14,
+        "global_cloud_index": 9551,
+        "measurement_ns": 946687669933454990,
+        "record_ns": 1789643906929306691,
+        "measurement_gap_s": 1.200155973,
+        "record_gap_s": 1.199718869
+      },
+      {
+        "segment": "new_data_189.db3",
+        "segment_cloud_index": 44,
+        "global_cloud_index": 9683,
+        "measurement_ns": 946687690133440971,
+        "record_ns": 1789643927129096414,
+        "measurement_gap_s": 7.100091934,
+        "record_gap_s": 7.098651331
+      },
+      {
+        "segment": "new_data_192.db3",
+        "segment_cloud_index": 23,
+        "global_cloud_index": 9815,
+        "measurement_ns": 946687706133468986,
+        "record_ns": 1789643943129311832,
+        "measurement_gap_s": 2.900133014,
+        "record_gap_s": 2.898373223
+      },
+      {
+        "segment": "new_data_195.db3",
+        "segment_cloud_index": 2,
+        "global_cloud_index": 9947,
+        "measurement_ns": 946687723533316016,
+        "record_ns": 1789643960534968849,
+        "measurement_gap_s": 4.299910068,
+        "record_gap_s": 4.306442956
+      },
+      {
+        "segment": "new_data_197.db3",
+        "segment_cloud_index": 32,
+        "global_cloud_index": 10079,
+        "measurement_ns": 946687737933331013,
+        "record_ns": 1789643975971476784,
+        "measurement_gap_s": 1.299903035,
+        "record_gap_s": 2.34125751
+      },
+      {
+        "segment": "new_data_200.db3",
+        "segment_cloud_index": 11,
+        "global_cloud_index": 10211,
+        "measurement_ns": 946687755033331037,
+        "record_ns": 1789643992027600855,
+        "measurement_gap_s": 3.999989033,
+        "record_gap_s": 3.817164602
+      },
+      {
+        "segment": "new_data_202.db3",
+        "segment_cloud_index": 41,
+        "global_cloud_index": 10343,
+        "measurement_ns": 946687772733386040,
+        "record_ns": 1789644009735548699,
+        "measurement_gap_s": 4.59999609,
+        "record_gap_s": 4.205449963
+      },
+      {
+        "segment": "new_data_205.db3",
+        "segment_cloud_index": 20,
+        "global_cloud_index": 10475,
+        "measurement_ns": 946687792533359051,
+        "record_ns": 1789644029534502406,
+        "measurement_gap_s": 6.700020075,
+        "record_gap_s": 5.851582402
+      },
+      {
+        "segment": "new_data_207.db3",
+        "segment_cloud_index": 50,
+        "global_cloud_index": 10607,
+        "measurement_ns": 946687807033380032,
+        "record_ns": 1789644044034023520,
+        "measurement_gap_s": 1.399973035,
+        "record_gap_s": 1.398333082
+      },
+      {
+        "segment": "new_data_210.db3",
+        "segment_cloud_index": 29,
+        "global_cloud_index": 10739,
+        "measurement_ns": 946687824433470011,
+        "record_ns": 1789644061437868867,
+        "measurement_gap_s": 4.30011797,
+        "record_gap_s": 4.296448407
+      },
+      {
+        "segment": "new_data_213.db3",
+        "segment_cloud_index": 8,
+        "global_cloud_index": 10871,
+        "measurement_ns": 946687842233422041,
+        "record_ns": 1789644079232738103,
+        "measurement_gap_s": 4.700057983,
+        "record_gap_s": 4.688695886
+      },
+      {
+        "segment": "new_data_215.db3",
+        "segment_cloud_index": 38,
+        "global_cloud_index": 11003,
+        "measurement_ns": 946687856833333969,
+        "record_ns": 1789644093833681331,
+        "measurement_gap_s": 1.499905944,
+        "record_gap_s": 1.497876251
+      },
+      {
+        "segment": "new_data_218.db3",
+        "segment_cloud_index": 17,
+        "global_cloud_index": 11135,
+        "measurement_ns": 946687872833358049,
+        "record_ns": 1789644109840986203,
+        "measurement_gap_s": 2.90003407,
+        "record_gap_s": 2.901487863
+      },
+      {
+        "segment": "new_data_220.db3",
+        "segment_cloud_index": 47,
+        "global_cloud_index": 11267,
+        "measurement_ns": 946687888733289957,
+        "record_ns": 1789644125739465706,
+        "measurement_gap_s": 2.799834967,
+        "record_gap_s": 2.797267466
+      }
+    ],
+    "scope": "All PointCloud2 headers; first payload per segment checked with standard ROS deserializer. No full point decoding, detector inference, semantic labels or calibration validation implied."
+  },
+  "free_gib_after": 41.09576416015625,
+  "subset_hash_agreement": true,
+  "known_rail_failure_trace": {
+    "source": "new_data_200.db3",
+    "local_frame": 48,
+    "measurement_ns": 946687758733471990,
+    "reason": "insufficient_paired_rail_support",
+    "events": [
+      {
+        "line": 310,
+        "x_m": 15.0,
+        "pairs": [
+          [
+            1.438848920863309,
+            -0.44999999999999996,
+            1.41,
+            4
+          ],
+          [
+            1.2562814070351755,
+            -0.75,
+            1.41,
+            5
+          ],
+          [
+            0.8250825082508253,
+            0.78,
+            1.65,
+            5
+          ]
+        ],
+        "accepted_anchors": [
+          [
+            5.0,
+            -0.22499999999999998,
+            1.6199999999999999,
+            11
+          ]
+        ]
+      }
+    ]
+  },
+  "full_detector_run_performed": false,
+  "full_detector_recipe": "configs/extended-full.json"
+}

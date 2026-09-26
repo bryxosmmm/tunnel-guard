@@ -1,0 +1,15 @@
+{
+  "native_binary_equal": true,
+  "detector_source_equal": true,
+  "runner_source_equal": true,
+  "detector_config_differences": {
+    "local_confirmation": {
+      "before": null,
+      "after": {
+        "shape_radius_m": 0.1,
+        "minimum_symmetric_overlap": 0.8
+      }
+    }
+  },
+  "both_finished": true
+}

@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/perf-profile-cpp-20260917",
+  "every": 1,
+  "max_frames": 12,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Attributing the current 415 ms per-frame cost requires stage-level profiling of the C++-backend pipeline on real scans.",
+  "criterion": "Twelve real scans through the actual detector with retained pstats; no threshold, algorithm or output change."
+}

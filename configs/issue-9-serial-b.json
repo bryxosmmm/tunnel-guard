@@ -1,0 +1,42 @@
+{
+  "hypothesis": "Centering support before rotation removes world-coordinate cancellation. Serial KISS association and reduction also remove upstream schedule-dependent poses, rather than relying on this panel avoiding other voxel boundaries.",
+  "criterion": "Two independent full real replays must agree exactly in poses, support counts, object confirmations and alarms; compare against eight-thread output and disclose differences and timing cost.",
+  "seed": 20260915,
+  "detector_config": "configs/detector-issue-9-serial.json",
+  "output": "build/issue-9-serial-b",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [
+    0,
+    1,
+    291
+  ],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+      "split": "development"
+    }
+  ]
+}

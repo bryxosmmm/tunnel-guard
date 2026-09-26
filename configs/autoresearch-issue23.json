@@ -1,0 +1,32 @@
+{
+  "hypothesis": "The current integrated detector reproduces its retained measured-support and positive evidence, providing a valid baseline for single-mechanism changes to extrapolated corridor certification.",
+  "criterion": "Complete every fixed recording without missing or duplicate acquisitions. Preserve per-frame positive presence and intersection evidence, person localization and continuity; no increase in negative alarm episodes, alarm frames or unknown coverage within either fixed partition. Report unresolved evidence separately. A scalar improvement never overrides a failed gate.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "panel_manifest": "configs/readiness-real-panel-20260924.json",
+  "support_report": "results/issue23-point-support-20260924.json",
+  "support_archive": "results/issue23-point-support-20260924.zip",
+  "negative_reference": "results/issue-23-continuous-20260924.json",
+  "person_reference": "results/person-specific-observations-20260923.json",
+  "original_recordings_reference": "results/issue-23-local-evidence-20260924.json",
+  "person_summary_reference": "results/person-specific-20260923.json",
+  "person_plan": "configs/person-specific-report-20260923.json",
+  "synthetic_reference": "results/organizer-synthetic-exact-20260924.json",
+  "synthetic_archive": "results/issue-23-evaluation-tools-20260924.zip",
+  "synthetic_archive_prefix": "build/organizer-synthetic-inspection-20260924/",
+  "synthetic_bag": "data/cloud_with_fake_obj",
+  "synthetic_frames": 1510,
+  "minimum_inserted_fraction_for_attribution": 0.5,
+  "frame_max_gap_s": 0.5,
+  "output_root": "build/autoresearch-issue23",
+  "primary_metric": "negative_alarm_episodes",
+  "thread_environment": {"OMP_NUM_THREADS": "1", "OPENBLAS_NUM_THREADS": "1", "MKL_NUM_THREADS": "1", "VECLIB_MAXIMUM_THREADS": "1", "NUMEXPR_NUM_THREADS": "1", "PYTHONHASHSEED": "20260915"},
+  "limits": [
+    "No independent blind holdout is available: use the frozen previously inspected evaluation partition without retuning it.",
+    "Thirty fresh-state diagnostic scans reproduce within-scan support, never continuous confirmations or track history.",
+    "Person oriented boxes are author-reviewed detector-assisted full-person volumes; point membership is correspondence evidence, not semantic point truth.",
+    "Synthetic events use frozen forensic original-return attribution, not field recall. Events 5 and 7 remain explicit contour disagreements.",
+    "Unknown and unresolved are not clear route. Negative organizer statements do not provide exhaustive point labels or precision.",
+    "Timing is instrumented offline detector processing on this machine, not live sensor-to-display latency."
+  ]
+}

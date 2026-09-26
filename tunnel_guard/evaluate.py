@@ -69,9 +69,11 @@ def evaluate_frames(predictions: dict, annotations: dict) -> dict:
             missing.append(list(key))
             continue
         prediction = predictions[key]
-        objects = [p for p in prediction["objects"] if p["confirmed"]]
         if annotations["prediction_scope"] == "collision_hazards":
-            objects = [p for p in objects if p["path_relation"] in ("intersecting", "unresolved")]
+            objects = [p for p in prediction["objects"] if p["confirmed"]
+                       and p["path_relation"] in ("intersecting", "unresolved")]
+        else:
+            objects = [p for p in prediction["objects"] if p["presence_confirmed"]]
         truth = frame["objects"]
         matches = match_objects(objects, truth, annotations["minimum_iou"])
         found = {j: i for i, j, _ in matches}
@@ -143,6 +145,9 @@ def main():
     needed = {(f["bag"], f["frame"]) for f in annotations["frames"]}
     predictions = {}
     for path in sorted(args.run.glob("*.jsonl")):
+        # Runner timing streams are telemetry, not object predictions.
+        if path.name.endswith("-timing.jsonl"):
+            continue
         with path.open() as stream:
             for line in stream:
                 row = json.loads(line)

@@ -1,0 +1,15 @@
+{
+  "hypothesis": "The unchanged integrated detector can ingest the organizer synthetic PointCloud2 bag and report object presence separately from corridor intersection.",
+  "criterion": "Process the first 10 consecutive scans without invalid serialization or native crash; inspect geometry, cloud layout and preserved outputs before full replay. This is an actual detector run, not an automated test.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/organizer-synthetic-smoke-20260924",
+  "every": 1,
+  "max_frames": 10,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [0, 9],
+  "visualization": false,
+  "bags": [{"path": "data/cloud_with_fake_obj", "topic": "/lidar_points", "split": "organizer_synthetic_first_inspection_not_field_evaluation"}],
+  "data_source": "https://disk.yandex.ru/d/KpkG_yKoGk-vHQ",
+  "limitations": ["Organizer descriptions give order and approximate 100 m spacing, not timestamped boxes or full 3D dimensions.", "Only XYZI fields are present; no ring or per-point acquisition time.", "Record time and acquisition time use different epochs; their difference is not sensor latency."]
+}

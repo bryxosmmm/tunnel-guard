@@ -1,0 +1,31 @@
+{
+  "hypothesis": "Follow-up on configs/hmm-mos-probe-synth.json: separate the two causes of dynamic labels in our tunnel geometry -- real occupancy change versus free-space/occupancy flicker of static surfaces under a moving sensor -- and test whether the flicker load depends on the configured maximum range.",
+  "source": "https://github.com/vb44/HMM-MOS commit 3f625031d135b2bbe4297125da11facdaba8ca81, built unmodified from source",
+  "scene_config": "configs/stress-measured-pattern-final.json",
+  "note": "Same scene and beams as configs/hmm-mos-probe-synth.json. 'empty_stationary' gives byte-identical scans; 'empty' differs only by the 1 m/frame sensor step, so the difference between the two is pure pose-driven flicker of static geometry.",
+  "seed": 20260917,
+  "output": "build/hmm-mos-probe-synth2",
+  "frames": 120,
+  "frame_period_s": 0.1,
+  "sensor_step_m": 1.0,
+  "object_dimensions_m": [0.45, 1.02, 1.35],
+  "hmm_mos_config": {
+    "minRange": 0.5,
+    "maxRange": 60.0,
+    "voxelSize": 0.2,
+    "occupancySigma": 0.2,
+    "beliefThreshold": 0.99,
+    "convSize": 5,
+    "localWindowSize": 5,
+    "globalWindowSize": 300,
+    "minOtsu": 3
+  },
+  "cases": [
+    {"id": "empty_stationary", "kind": "none", "sensor_step_m": 0.0},
+    {"id": "empty_60", "kind": "none"},
+    {"id": "empty_20", "kind": "none", "maxRange": 20.0},
+    {"id": "static_15_20", "kind": "static", "start_m": 15.0, "lateral_m": -0.5, "maxRange": 20.0},
+    {"id": "static_60", "kind": "static", "start_m": 60.0, "lateral_m": -0.5},
+    {"id": "appear_40", "kind": "appearing", "start_m": 40.0, "lateral_m": -0.5, "appear_frame": 10}
+  ]
+}

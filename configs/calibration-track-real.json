@@ -1,0 +1,34 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/calibration-track-real",
+  "fit_frames": 20,
+  "validation_frames": 20,
+  "fit_range_m": [
+    5.0,
+    20.0
+  ],
+  "min_rail_anchors": 3,
+  "min_span_m": 10.0,
+  "max_line_residual_m": 0.08,
+  "min_accepted_fraction": 0.8,
+  "max_rotation_deviation_deg": 1.0,
+  "max_height_span_m": 0.1,
+  "max_center_span_m": 0.15,
+  "hypothesis": "A frozen orientation estimated from an initial prefix remains geometrically consistent on later scans.",
+  "criterion": "At least 80% supported frames in fit and heldout; maximum angular deviation 1 degree, bed-height span 0.10m and center span 0.15m. These are engineering stability gates, not accuracy certification.",
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_not_blind"
+    }
+  ]
+}

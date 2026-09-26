@@ -1,0 +1,22 @@
+{
+  "hypothesis": "The synthetic panel alone cannot vet a detector change: it is insensitive to the hazard load and the obstacle-frame count on the real recordings. This replay is the acceptance gate.",
+  "criterion": "Report frames whose status claims a corridor intrusion and the object load on the two development recordings; a change that lowers the obstacle-frame count on the labelled recording is rejected whatever the synthetic panel says.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/autoresearch-real",
+  "every": 1,
+  "max_frames": 201,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development"
+    }
+  ]
+}

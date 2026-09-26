@@ -1,0 +1,22 @@
+{
+  "hypothesis": "Same-machine-state A/B for the processing-time effect of the continuity guard.",
+  "success_criterion": "Report intersecting recovery, hazard-load change and any status change against the pre-change baseline; no loss of existing intersecting observations.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/timing-ab-baseline-20260920",
+  "every": 1,
+  "max_frames": 201,
+  "prefetch_depth": 1,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development"
+    }
+  ],
+  "visualization": false,
+  "diagnostic_frames": []
+}

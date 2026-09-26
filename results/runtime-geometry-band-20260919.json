@@ -1,0 +1,72 @@
+{
+  "date": "2026-09-19",
+  "scope": "Where the frame time actually goes, and the largest available win",
+  "accounting_ms_per_frame_median": {
+    "TrackGeometry.__init__": 54.7,
+    "cluster_candidates": 20.3,
+    "KISS-ICP motion": 18.1,
+    "associate": 10.1,
+    "classify (3 calls)": 8.0,
+    "crop_voxels": 5.6,
+    "voxel_counts": 1.2,
+    "range_summary": 1.0,
+    "processing total": 123.4,
+    "reading": "the geometry construction is 44 per cent of a frame, more than motion and clustering together; the earlier profiles attributed this to the rail profile (about 18 ms, 854 median/mean calls per construction), rail-pair refinement (about 14 ms), normal covariances (7.3 ms) and the ground plane fit (4.3 ms)"
+  },
+  "opportunity_measured": {
+    "idea": "the ground and rail estimators do not need the walls, ceiling, ducts or the neighbouring track: rail returns lie at the gauge lines and the bed across the walkable width. Restricting their input to a lateral band should cost nothing in fitted geometry and much less in time.",
+    "straight_recording": {
+      "cloud_points": 72590,
+      "band_2_0_m": "10420 points, 18.2 ms (55.6 ms full), anchor counts equal but rail anchors differ by up to 0.57 m - 2.0 m cuts into the neighbouring track's rail",
+      "band_2_5_m": "rail anchors BIT-IDENTICAL (max |dx| 0.0000, max |dy| 0.0000), ground anchors and plane identical, rail head height identical"
+    },
+    "curved_recording": {
+      "cloud_points": 42740,
+      "band_2_5_m_sensor_frame": "29516 points, 36.5 -> 29.0 ms, ground anchors and plane identical, but one rail anchor moves 0.0358 m laterally"
+    },
+    "conclusion": "a lateral band around the CORRIDOR, not around the sensor axis, is the version to implement: on the straight recording it reproduces the geometry exactly, and the curved recording shows why the sensor-frame band is not enough - the corridor leaves the axis on a curve, so a sensor-frame band changes which rail returns are seen"
+  },
+  "not_shipped": "no code change: the band as tested changes a rail anchor by 3.6 cm on the curve, which is decision-affecting, so it needs the corridor-aware form and the full gate (1460-frame panel identity, both recordings' statuses, labelled obstacle preserved) before it can be committed",
+  "also_measured": {
+    "chain_filter_row_matching": "CORRECTED: the committed chain filter does NOT stack rows or call np.unique - it works per object on its own support (ground and path per object, then a cross-section and along-track comparison). The 21.9 ms np.unique belonged to the REVERTED profile model, and the earlier note attributing it to the chain filter was wrong. What the committed version does pay is one ground() and one path() call per object, about 250 per frame, which could be batched into two calls with identical per-point values.",
+    "association": "10.1 ms for the assignment over roughly 200 tracks x 200 objects; the field's standard fix is a spatial gate that decomposes the assignment into small independent subproblems"
+  },
+  "corrected_attribution": {
+    "what_i_expected": "the rail window loop and its 2-D np.unique were the cost, so a lateral band would cut it",
+    "what_measurement_shows": {
+      "rail_eligible_points": "1443 of 72590 - the rail estimator already works on a tiny subset",
+      "rail_window_loop": "sort 0.02 ms, searchsorted across 17 windows 0.07 ms, 2-D np.unique 1.11 ms in total",
+      "ground_over_all_points": "0.56 ms",
+      "so_the_loop_is_not_the_cost": "the band hypothesis is disproved: there is nothing meaningful to save by banding the rail estimator's input, and the 4 m band it uses is deliberate - it must see both tracks to choose the correct rail pair, which is why 2.5 m moved an anchor 3.6 cm on the curve"
+    },
+    "where_the_55_ms_actually_is": {
+      "refine_rail_pair": "about 13.7 ms per construction, 8 calls",
+      "normal_statistics / normal_covariances": "about 7.3 ms - and it feeds background.py, whose surface normals drive background removal, so it is decision-relevant and cannot simply be moved off the critical path",
+      "robust_plane": "about 4.3 ms",
+      "rail window loop": "about 1.5 ms",
+      "ground evaluation": "about 0.6 ms",
+      "still_unattributed": "roughly 28 ms of the constructor, most plausibly the TunnelBackground construction over all 72590 points, which the next profile must measure directly"
+    },
+    "next_step": "profile TunnelBackground's construction; that is where the remaining geometry time is, and unlike the rail band it has not been ruled out"
+  },
+  "background_model_is_the_frame": {
+    "measured": "TunnelBackground construction is 40.3 ms on 72590 points, 33 per cent of a 123 ms frame - larger than the geometry estimators it sits inside",
+    "structure": "about 22 overlapping windows of 30 m with 3 planes each and 120 RANSAC iterations per plane, rebuilt from scratch on every frame",
+    "no_duplicate_to_share": "its normals come from its own voxelised sample (voxel 0.1 m) with its own radius and neighbour parameters, so they are not the same computation as TrackGeometry's and cannot simply be handed over",
+    "why_it_can_be_cached": "the surfaces it models - lining, walls, ducts - do not change between consecutive frames at the same station. Both the field's background-modelling practice and the earlier research on this problem describe the same design: a PERSISTENT INFRASTRUCTURE MAP updated slowly, kept separate from SHORT-TERM OCCUPANCY",
+    "the_safe_form": "cache the fitted planes for stations BEHIND the train in world coordinates and re-project them into the current sensor frame, fitting fresh planes only ahead. Nothing ahead is ever cached before it has been observed, which removes the known failure mode of a stationary obstacle being absorbed into the background - the exact risk the level-crossing background-modelling work warns about",
+    "expected_win": "most of the 40 ms after the first frames of a run, i.e. the largest single runtime win available in this system",
+    "verification_plan": "plane caches change the model by design, so the panel cannot be byte-identical; the gate is the panel's metrics (event recall 0.8021, matched IoU 0.8223, zero negative episodes), both recordings' statuses with the labelled obstacle preserved 52 of 52, and a measured frame time before and after",
+    "not_attempted": "no code written: the cache is a real feature, and a half-verified version of it would be worse than none"
+  },
+  "association_decomposition_tested": {
+    "idea": "the field's tracking-by-detection practice: gate first, then decompose the assignment on the gate's graph, since no allowed edge crosses a component the per-component optima concatenate to the global optimum",
+    "implementation": "connected components over the gated bipartite graph, then one padded linear_sum_assignment per component",
+    "result": {
+      "identity": "statuses, TRACK IDS and distances identical on both recordings - the strongest available check for an association change",
+      "timing": "112.3 ms vs 114.4 on roundT_doubleT and 105.7 vs 105.9 on doubleT_obstacle: no measurable gain"
+    },
+    "conclusion": "the 10.1 ms attributed to `associate` is per-track bookkeeping - the prediction, gain and covariance updates of roughly 200 tracks - not the assignment itself, so gating cannot reduce it. The next runtime candidate in that stage is batching the per-track updates, with the caveat that it reorders floating-point arithmetic, so it would be verified on decisions rather than bit identity.",
+    "verdict": "reverted: identical output and no speed win, so the decomposition is complexity without benefit"
+  }
+}

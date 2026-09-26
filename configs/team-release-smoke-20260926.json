@@ -1,0 +1,24 @@
+{
+  "hypothesis": "The selected team integration preserves every scientific detector decision of the frozen8539a3e panel while producing usable five-topic delivery exports.",
+  "success_criterion": "All201person and345platform acquisitions complete; compare every scientific detector field with the qualified full source-group replay, and read back every exported CDR topic. Labels and detector core/config/native digests must match the qualified inputs.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/team-integration-20260926/release-cli",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "result_compression": "none",
+  "diagnostic_frames": [],
+  "visualization": true,
+  "display_max_points": 10000,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "integration_person"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "integration_negative"
+    }
+  ]
+}

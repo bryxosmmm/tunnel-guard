@@ -1,0 +1,1436 @@
+{
+  "real_recordings": [
+    {
+      "bag": "doubleT_platform",
+      "frames": 345,
+      "prediction_sha256": "22dfb97bb75ef2250e87295573ac31003053e362ee5b54305e0ace64bcf3812a",
+      "statuses": {
+        "unresolved_obstacle": 258,
+        "obstacle": 87
+      },
+      "health": {
+        "degraded": 345
+      },
+      "health_reasons": {
+        "first_frame": 1,
+        "unverified_sensor_profile_and_extrinsics": 345,
+        "deskew_disabled_unverified_timing": 345,
+        "registration_rejected": 104
+      },
+      "geometry_valid_frames": 345,
+      "motion_valid_frames": 240,
+      "candidate_observations": 68133,
+      "intersection_confirmed_observations": 266,
+      "precision": null,
+      "recall": null
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frames": 252,
+      "prediction_sha256": "a6721c0c6da45170cb495efb6352a4b2401749ca2518e259a3738f33ede3f1a9",
+      "statuses": {
+        "candidate": 1,
+        "unresolved_obstacle": 182,
+        "obstacle": 69
+      },
+      "health": {
+        "degraded": 252
+      },
+      "health_reasons": {
+        "first_frame": 1,
+        "weak_or_unmeasured_translation_observability": 56,
+        "unverified_sensor_profile_and_extrinsics": 252,
+        "deskew_disabled_unverified_timing": 252
+      },
+      "geometry_valid_frames": 252,
+      "motion_valid_frames": 251,
+      "candidate_observations": 48774,
+      "intersection_confirmed_observations": 211,
+      "precision": null,
+      "recall": null
+    }
+  ],
+  "modeled_insertions": {
+    "cases": [
+      {
+        "case": "recorded_control",
+        "frames": 10,
+        "inserted_returns": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cluster_inserted_representatives": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "frames_with_target_dominated_candidate": 0,
+        "frames_with_confirmed_target_dominated_object": 0,
+        "frames_with_confirmed_target_dominated_intersection": 0,
+        "whole_scene_statuses": {
+          "unresolved_obstacle": 10
+        },
+        "case_definition": {
+          "name": "recorded_control"
+        },
+        "unique_inserted_positions_1um": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "median_inserted_returns": 0.0,
+        "median_stage_inserted_representatives": {
+          "range_points": 0.0,
+          "cropped_points": 0.0,
+          "geometry_voxel_points": 0.0,
+          "context_after_background": 0.0,
+          "cluster_points": 0.0
+        },
+        "first_target_dominated_intersection_frame": null,
+        "acquisition_seconds_until_first_intersection": null,
+        "sampling": null
+      },
+      {
+        "case": "small_20m",
+        "frames": 10,
+        "inserted_returns": [
+          158,
+          164,
+          168,
+          168,
+          164,
+          168,
+          168,
+          168,
+          168,
+          168
+        ],
+        "cluster_inserted_representatives": [
+          45,
+          47,
+          48,
+          48,
+          48,
+          48,
+          48,
+          48,
+          48,
+          48
+        ],
+        "frames_with_target_dominated_candidate": 10,
+        "frames_with_confirmed_target_dominated_object": 9,
+        "frames_with_confirmed_target_dominated_intersection": 9,
+        "whole_scene_statuses": {
+          "unresolved_obstacle": 1,
+          "obstacle": 9
+        },
+        "case_definition": {
+          "name": "small_20m",
+          "bbox_min": [
+            20,
+            -0.15,
+            -1.1
+          ],
+          "bbox_max": [
+            20.3,
+            0.15,
+            -0.7000000000000001
+          ]
+        },
+        "unique_inserted_positions_1um": [
+          81,
+          82,
+          84,
+          84,
+          83,
+          84,
+          84,
+          84,
+          84,
+          84
+        ],
+        "median_inserted_returns": 168.0,
+        "median_stage_inserted_representatives": {
+          "range_points": 168.0,
+          "cropped_points": 168.0,
+          "geometry_voxel_points": 48.0,
+          "context_after_background": 48.0,
+          "cluster_points": 48.0
+        },
+        "first_target_dominated_intersection_frame": 1,
+        "acquisition_seconds_until_first_intersection": 0.099997997,
+        "sampling": [
+          {
+            "frame": 0,
+            "valid_return_rays_through_box": 158,
+            "unoccluded_intercepts": 158,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 1,
+            "valid_return_rays_through_box": 164,
+            "unoccluded_intercepts": 164,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 2,
+            "valid_return_rays_through_box": 168,
+            "unoccluded_intercepts": 168,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 3,
+            "valid_return_rays_through_box": 168,
+            "unoccluded_intercepts": 168,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 4,
+            "valid_return_rays_through_box": 164,
+            "unoccluded_intercepts": 164,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 5,
+            "valid_return_rays_through_box": 168,
+            "unoccluded_intercepts": 168,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 6,
+            "valid_return_rays_through_box": 168,
+            "unoccluded_intercepts": 168,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 7,
+            "valid_return_rays_through_box": 168,
+            "unoccluded_intercepts": 168,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 8,
+            "valid_return_rays_through_box": 168,
+            "unoccluded_intercepts": 168,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 9,
+            "valid_return_rays_through_box": 168,
+            "unoccluded_intercepts": 168,
+            "nearer_measured_returns": 0
+          }
+        ]
+      },
+      {
+        "case": "upright_20m",
+        "frames": 10,
+        "inserted_returns": [
+          766,
+          774,
+          788,
+          774,
+          798,
+          762,
+          780,
+          762,
+          780,
+          800
+        ],
+        "cluster_inserted_representatives": [
+          234,
+          236,
+          240,
+          239,
+          243,
+          236,
+          237,
+          236,
+          243,
+          247
+        ],
+        "frames_with_target_dominated_candidate": 10,
+        "frames_with_confirmed_target_dominated_object": 10,
+        "frames_with_confirmed_target_dominated_intersection": 10,
+        "whole_scene_statuses": {
+          "obstacle": 10
+        },
+        "case_definition": {
+          "name": "upright_20m",
+          "bbox_min": [
+            20,
+            -0.3,
+            -1.1
+          ],
+          "bbox_max": [
+            20.6,
+            0.3,
+            0.5999999999999999
+          ]
+        },
+        "unique_inserted_positions_1um": [
+          387,
+          390,
+          396,
+          387,
+          400,
+          383,
+          392,
+          385,
+          392,
+          401
+        ],
+        "median_inserted_returns": 777.0,
+        "median_stage_inserted_representatives": {
+          "range_points": 777.0,
+          "cropped_points": 777.0,
+          "geometry_voxel_points": 238.0,
+          "context_after_background": 238.0,
+          "cluster_points": 238.0
+        },
+        "first_target_dominated_intersection_frame": 0,
+        "acquisition_seconds_until_first_intersection": 0.0,
+        "sampling": [
+          {
+            "frame": 0,
+            "valid_return_rays_through_box": 766,
+            "unoccluded_intercepts": 766,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 1,
+            "valid_return_rays_through_box": 774,
+            "unoccluded_intercepts": 774,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 2,
+            "valid_return_rays_through_box": 788,
+            "unoccluded_intercepts": 788,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 3,
+            "valid_return_rays_through_box": 774,
+            "unoccluded_intercepts": 774,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 4,
+            "valid_return_rays_through_box": 798,
+            "unoccluded_intercepts": 798,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 5,
+            "valid_return_rays_through_box": 762,
+            "unoccluded_intercepts": 762,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 6,
+            "valid_return_rays_through_box": 780,
+            "unoccluded_intercepts": 780,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 7,
+            "valid_return_rays_through_box": 762,
+            "unoccluded_intercepts": 762,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 8,
+            "valid_return_rays_through_box": 780,
+            "unoccluded_intercepts": 780,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 9,
+            "valid_return_rays_through_box": 800,
+            "unoccluded_intercepts": 800,
+            "nearer_measured_returns": 0
+          }
+        ]
+      },
+      {
+        "case": "small_60m",
+        "frames": 10,
+        "inserted_returns": [
+          2,
+          0,
+          2,
+          2,
+          0,
+          2,
+          4,
+          2,
+          2,
+          0
+        ],
+        "cluster_inserted_representatives": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          2,
+          1,
+          1,
+          0
+        ],
+        "frames_with_target_dominated_candidate": 1,
+        "frames_with_confirmed_target_dominated_object": 0,
+        "frames_with_confirmed_target_dominated_intersection": 0,
+        "whole_scene_statuses": {
+          "unresolved_obstacle": 10
+        },
+        "case_definition": {
+          "name": "small_60m",
+          "bbox_min": [
+            60,
+            -0.15,
+            -1.1
+          ],
+          "bbox_max": [
+            60.3,
+            0.15,
+            -0.7000000000000001
+          ]
+        },
+        "unique_inserted_positions_1um": [
+          1,
+          0,
+          1,
+          1,
+          0,
+          1,
+          2,
+          1,
+          1,
+          0
+        ],
+        "median_inserted_returns": 2.0,
+        "median_stage_inserted_representatives": {
+          "range_points": 2.0,
+          "cropped_points": 2.0,
+          "geometry_voxel_points": 1.0,
+          "context_after_background": 1.0,
+          "cluster_points": 1.0
+        },
+        "first_target_dominated_intersection_frame": null,
+        "acquisition_seconds_until_first_intersection": null,
+        "sampling": [
+          {
+            "frame": 0,
+            "valid_return_rays_through_box": 2,
+            "unoccluded_intercepts": 2,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 1,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 2,
+            "valid_return_rays_through_box": 2,
+            "unoccluded_intercepts": 2,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 3,
+            "valid_return_rays_through_box": 2,
+            "unoccluded_intercepts": 2,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 4,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 5,
+            "valid_return_rays_through_box": 2,
+            "unoccluded_intercepts": 2,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 6,
+            "valid_return_rays_through_box": 4,
+            "unoccluded_intercepts": 4,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 7,
+            "valid_return_rays_through_box": 2,
+            "unoccluded_intercepts": 2,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 8,
+            "valid_return_rays_through_box": 2,
+            "unoccluded_intercepts": 2,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 9,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          }
+        ]
+      },
+      {
+        "case": "upright_60m",
+        "frames": 10,
+        "inserted_returns": [
+          10,
+          8,
+          14,
+          16,
+          14,
+          12,
+          14,
+          8,
+          10,
+          8
+        ],
+        "cluster_inserted_representatives": [
+          5,
+          4,
+          7,
+          8,
+          7,
+          6,
+          6,
+          4,
+          5,
+          4
+        ],
+        "frames_with_target_dominated_candidate": 10,
+        "frames_with_confirmed_target_dominated_object": 9,
+        "frames_with_confirmed_target_dominated_intersection": 7,
+        "whole_scene_statuses": {
+          "unresolved_obstacle": 3,
+          "obstacle": 7
+        },
+        "case_definition": {
+          "name": "upright_60m",
+          "bbox_min": [
+            60,
+            -0.3,
+            -1.1
+          ],
+          "bbox_max": [
+            60.6,
+            0.3,
+            0.5999999999999999
+          ]
+        },
+        "unique_inserted_positions_1um": [
+          5,
+          4,
+          7,
+          8,
+          7,
+          6,
+          7,
+          4,
+          5,
+          4
+        ],
+        "median_inserted_returns": 11.0,
+        "median_stage_inserted_representatives": {
+          "range_points": 11.0,
+          "cropped_points": 11.0,
+          "geometry_voxel_points": 5.5,
+          "context_after_background": 5.5,
+          "cluster_points": 5.5
+        },
+        "first_target_dominated_intersection_frame": 1,
+        "acquisition_seconds_until_first_intersection": 0.099997997,
+        "sampling": [
+          {
+            "frame": 0,
+            "valid_return_rays_through_box": 10,
+            "unoccluded_intercepts": 10,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 1,
+            "valid_return_rays_through_box": 8,
+            "unoccluded_intercepts": 8,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 2,
+            "valid_return_rays_through_box": 14,
+            "unoccluded_intercepts": 14,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 3,
+            "valid_return_rays_through_box": 16,
+            "unoccluded_intercepts": 16,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 4,
+            "valid_return_rays_through_box": 14,
+            "unoccluded_intercepts": 14,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 5,
+            "valid_return_rays_through_box": 12,
+            "unoccluded_intercepts": 12,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 6,
+            "valid_return_rays_through_box": 14,
+            "unoccluded_intercepts": 14,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 7,
+            "valid_return_rays_through_box": 8,
+            "unoccluded_intercepts": 8,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 8,
+            "valid_return_rays_through_box": 10,
+            "unoccluded_intercepts": 10,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 9,
+            "valid_return_rays_through_box": 8,
+            "unoccluded_intercepts": 8,
+            "nearer_measured_returns": 0
+          }
+        ]
+      },
+      {
+        "case": "small_100m",
+        "frames": 10,
+        "inserted_returns": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cluster_inserted_representatives": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "frames_with_target_dominated_candidate": 0,
+        "frames_with_confirmed_target_dominated_object": 0,
+        "frames_with_confirmed_target_dominated_intersection": 0,
+        "whole_scene_statuses": {
+          "unresolved_obstacle": 10
+        },
+        "case_definition": {
+          "name": "small_100m",
+          "bbox_min": [
+            100,
+            -0.15,
+            -1.1
+          ],
+          "bbox_max": [
+            100.3,
+            0.15,
+            -0.7000000000000001
+          ]
+        },
+        "unique_inserted_positions_1um": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "median_inserted_returns": 0.0,
+        "median_stage_inserted_representatives": {
+          "range_points": 0.0,
+          "cropped_points": 0.0,
+          "geometry_voxel_points": 0.0,
+          "context_after_background": 0.0,
+          "cluster_points": 0.0
+        },
+        "first_target_dominated_intersection_frame": null,
+        "acquisition_seconds_until_first_intersection": null,
+        "sampling": [
+          {
+            "frame": 0,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 1,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 2,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 3,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 4,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 5,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 6,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 7,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 8,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 9,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          }
+        ]
+      },
+      {
+        "case": "upright_100m",
+        "frames": 10,
+        "inserted_returns": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cluster_inserted_representatives": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "frames_with_target_dominated_candidate": 0,
+        "frames_with_confirmed_target_dominated_object": 0,
+        "frames_with_confirmed_target_dominated_intersection": 0,
+        "whole_scene_statuses": {
+          "unresolved_obstacle": 10
+        },
+        "case_definition": {
+          "name": "upright_100m",
+          "bbox_min": [
+            100,
+            -0.3,
+            -1.1
+          ],
+          "bbox_max": [
+            100.6,
+            0.3,
+            0.5999999999999999
+          ]
+        },
+        "unique_inserted_positions_1um": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "median_inserted_returns": 0.0,
+        "median_stage_inserted_representatives": {
+          "range_points": 0.0,
+          "cropped_points": 0.0,
+          "geometry_voxel_points": 0.0,
+          "context_after_background": 0.0,
+          "cluster_points": 0.0
+        },
+        "first_target_dominated_intersection_frame": null,
+        "acquisition_seconds_until_first_intersection": null,
+        "sampling": [
+          {
+            "frame": 0,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 1,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 2,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 3,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 4,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 5,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 6,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 7,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 8,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 9,
+            "valid_return_rays_through_box": 0,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 0
+          }
+        ]
+      },
+      {
+        "case": "upright_60m_off_axis",
+        "frames": 10,
+        "inserted_returns": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cluster_inserted_representatives": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "frames_with_target_dominated_candidate": 0,
+        "frames_with_confirmed_target_dominated_object": 0,
+        "frames_with_confirmed_target_dominated_intersection": 0,
+        "whole_scene_statuses": {
+          "unresolved_obstacle": 10
+        },
+        "case_definition": {
+          "name": "upright_60m_off_axis",
+          "bbox_min": [
+            60,
+            2.2,
+            -1.1
+          ],
+          "bbox_max": [
+            60.6,
+            2.8,
+            0.6
+          ]
+        },
+        "unique_inserted_positions_1um": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "median_inserted_returns": 0.0,
+        "median_stage_inserted_representatives": {
+          "range_points": 0.0,
+          "cropped_points": 0.0,
+          "geometry_voxel_points": 0.0,
+          "context_after_background": 0.0,
+          "cluster_points": 0.0
+        },
+        "first_target_dominated_intersection_frame": null,
+        "acquisition_seconds_until_first_intersection": null,
+        "sampling": [
+          {
+            "frame": 0,
+            "valid_return_rays_through_box": 142,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 142
+          },
+          {
+            "frame": 1,
+            "valid_return_rays_through_box": 142,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 142
+          },
+          {
+            "frame": 2,
+            "valid_return_rays_through_box": 140,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 140
+          },
+          {
+            "frame": 3,
+            "valid_return_rays_through_box": 136,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 136
+          },
+          {
+            "frame": 4,
+            "valid_return_rays_through_box": 134,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 134
+          },
+          {
+            "frame": 5,
+            "valid_return_rays_through_box": 130,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 130
+          },
+          {
+            "frame": 6,
+            "valid_return_rays_through_box": 134,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 134
+          },
+          {
+            "frame": 7,
+            "valid_return_rays_through_box": 134,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 134
+          },
+          {
+            "frame": 8,
+            "valid_return_rays_through_box": 134,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 134
+          },
+          {
+            "frame": 9,
+            "valid_return_rays_through_box": 138,
+            "unoccluded_intercepts": 0,
+            "nearer_measured_returns": 138
+          }
+        ]
+      },
+      {
+        "case": "upright_60m_drop70",
+        "frames": 10,
+        "inserted_returns": [
+          2,
+          3,
+          3,
+          4,
+          3,
+          2,
+          6,
+          4,
+          0,
+          3
+        ],
+        "cluster_inserted_representatives": [
+          2,
+          3,
+          3,
+          4,
+          3,
+          2,
+          4,
+          3,
+          0,
+          2
+        ],
+        "frames_with_target_dominated_candidate": 7,
+        "frames_with_confirmed_target_dominated_object": 5,
+        "frames_with_confirmed_target_dominated_intersection": 3,
+        "whole_scene_statuses": {
+          "unresolved_obstacle": 7,
+          "obstacle": 3
+        },
+        "case_definition": {
+          "name": "upright_60m_drop70",
+          "bbox_min": [
+            60,
+            -0.3,
+            -1.1
+          ],
+          "bbox_max": [
+            60.6,
+            0.3,
+            0.6
+          ],
+          "return_drop_probability": 0.7
+        },
+        "unique_inserted_positions_1um": [
+          2,
+          3,
+          3,
+          4,
+          3,
+          2,
+          4,
+          3,
+          0,
+          2
+        ],
+        "median_inserted_returns": 3.0,
+        "median_stage_inserted_representatives": {
+          "range_points": 3.0,
+          "cropped_points": 3.0,
+          "geometry_voxel_points": 3.0,
+          "context_after_background": 3.0,
+          "cluster_points": 3.0
+        },
+        "first_target_dominated_intersection_frame": 3,
+        "acquisition_seconds_until_first_intersection": 0.299990892,
+        "sampling": [
+          {
+            "frame": 0,
+            "valid_return_rays_through_box": 10,
+            "unoccluded_intercepts": 10,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 1,
+            "valid_return_rays_through_box": 8,
+            "unoccluded_intercepts": 8,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 2,
+            "valid_return_rays_through_box": 14,
+            "unoccluded_intercepts": 14,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 3,
+            "valid_return_rays_through_box": 16,
+            "unoccluded_intercepts": 16,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 4,
+            "valid_return_rays_through_box": 14,
+            "unoccluded_intercepts": 14,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 5,
+            "valid_return_rays_through_box": 12,
+            "unoccluded_intercepts": 12,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 6,
+            "valid_return_rays_through_box": 14,
+            "unoccluded_intercepts": 14,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 7,
+            "valid_return_rays_through_box": 8,
+            "unoccluded_intercepts": 8,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 8,
+            "valid_return_rays_through_box": 10,
+            "unoccluded_intercepts": 10,
+            "nearer_measured_returns": 0
+          },
+          {
+            "frame": 9,
+            "valid_return_rays_through_box": 8,
+            "unoccluded_intercepts": 8,
+            "nearer_measured_returns": 0
+          }
+        ]
+      }
+    ],
+    "accuracy": null,
+    "interpretation": "Target-dominated means >=50% inserted support, a diagnostic attribution convention, not semantic detection ground truth. Whole-scene status includes pre-existing unlabelled objects.",
+    "limitations": "HYBRID SYNTHETIC experiment, not real obstacle accuracy. Opaque boxes fixed in current sensor processing frame, not world-fixed trajectories. Explicit box base z=-1.1m is not surveyed ground. Only directions of valid recorded returns are available; missing beams cannot be reconstructed. Return multiplicity is preserved, not independent evidence. No material response, multipath, sensor firing model, calibrated range or physical vehicle envelope. Background already contains unknown objects. Dropout removes hidden background too. Deskew disabled; source timing/pose assumptions remain. Same-time return slots are grouped by direction components quantized to 1e-6 before opaque occlusion. This is a declared beam-identity proxy, not verified sensor firing calibration."
+  },
+  "report_source_sha256": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+  "real_prefix_comparison": {
+    "frames": 201,
+    "changed_frames": []
+  },
+  "recorded_control_comparison": {
+    "frames": 10,
+    "changed_frames": [],
+    "baseline_sha256": "ed20afe1a37380940e18959b0279ebecd3ed0bd7a1c9a31cc50943408e8c5d69"
+  },
+  "sources": {
+    "build/coverage-expansion-real/manifest.json": "66a8629238329cef4be7399a0c24425c98ca02755bf7099d8118076a6a14a2b5",
+    "build/ray-insertion-expansion-grouped-returns/manifest.json": "096dfd29f12ed7f28e1c426950df7478922d03720b9b1cba90765605bb894c03",
+    "build/ray-insertion-expansion-grouped-returns/observations.jsonl": "4d003174fb57c1d866049285e9d002adba4fca84cfa3bf2cd23fb575e5e8c2be",
+    "build/ray-insertion-expansion-grouped-returns/sampling.json": "d1e6c90c4f9985fda6d2da3f96e829e876a4fe9e86111a09fd621077c7e07e6b",
+    "build/ray-insertion-obstacle-background-grouped-returns/manifest.json": "c598cfbf5b6c16b83c3c59d1f2ec8a70a61ecbcff2bacbc93582ce411356d1b3",
+    "build/ray-insertion-obstacle-background-grouped-returns/observations.jsonl": "2a61c44dab943b46646c69e636049292347217a6ac863623805e806e30f3db4e",
+    "build/ray-insertion-obstacle-background-grouped-returns/sampling.json": "673ac445671e70d65e82b944a06042b6637b2b501953f4f1a417158384c84935"
+  },
+  "adaptive_background_followup": {
+    "cases": [
+      {
+        "case": "recorded_control",
+        "frames": 10,
+        "inserted_returns": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cluster_inserted_representatives": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "frames_with_target_dominated_candidate": 0,
+        "frames_with_confirmed_target_dominated_object": 0,
+        "frames_with_confirmed_target_dominated_intersection": 0,
+        "whole_scene_statuses": {
+          "unresolved_obstacle": 6,
+          "obstacle": 4
+        }
+      },
+      {
+        "case": "upright_60m",
+        "frames": 10,
+        "inserted_returns": [
+          128,
+          122,
+          126,
+          124,
+          126,
+          120,
+          124,
+          122,
+          124,
+          124
+        ],
+        "cluster_inserted_representatives": [
+          64,
+          61,
+          63,
+          62,
+          0,
+          60,
+          62,
+          61,
+          62,
+          62
+        ],
+        "frames_with_target_dominated_candidate": 9,
+        "frames_with_confirmed_target_dominated_object": 9,
+        "frames_with_confirmed_target_dominated_intersection": 0,
+        "whole_scene_statuses": {
+          "unresolved_obstacle": 6,
+          "obstacle": 4
+        }
+      },
+      {
+        "case": "upright_100m",
+        "frames": 10,
+        "inserted_returns": [
+          32,
+          28,
+          34,
+          32,
+          30,
+          32,
+          32,
+          34,
+          32,
+          34
+        ],
+        "cluster_inserted_representatives": [
+          16,
+          1,
+          17,
+          0,
+          0,
+          4,
+          13,
+          17,
+          0,
+          0
+        ],
+        "frames_with_target_dominated_candidate": 5,
+        "frames_with_confirmed_target_dominated_object": 3,
+        "frames_with_confirmed_target_dominated_intersection": 0,
+        "whole_scene_statuses": {
+          "unresolved_obstacle": 7,
+          "obstacle": 3
+        }
+      }
+    ],
+    "accuracy": null,
+    "interpretation": "Target-dominated means >=50% inserted support, a diagnostic attribution convention, not semantic detection ground truth. Whole-scene status includes pre-existing unlabelled objects.",
+    "limitations": "HYBRID SYNTHETIC experiment, not real obstacle accuracy. Opaque boxes fixed in current sensor processing frame, not world-fixed trajectories. Explicit box base z=-1.1m is not surveyed ground. Only directions of valid recorded returns are available; missing beams cannot be reconstructed. Return multiplicity is preserved, not independent evidence. No material response, multipath, sensor firing model, calibrated range or physical vehicle envelope. Background already contains unknown objects. Dropout removes hidden background too. Deskew disabled; source timing/pose assumptions remain. Same-time return slots are grouped by direction components quantized to 1e-6 before opaque occlusion. This is a declared beam-identity proxy, not verified sensor firing calibration.",
+    "hypothesis": "Follow-up after zero modeled 100m returns in the platform prefix: retain identical box geometry and examine whether valid-ray coverage differs in the obstacle recording. This is an adaptive follow-up, not an independent holdout.",
+    "source_bag": "doubleT_obstacle",
+    "sampling": {
+      "upright_60m": [
+        {
+          "frame": 0,
+          "valid_return_rays_through_box": 128,
+          "unoccluded_intercepts": 128,
+          "nearer_measured_returns": 0
+        },
+        {
+          "frame": 1,
+          "valid_return_rays_through_box": 122,
+          "unoccluded_intercepts": 122,
+          "nearer_measured_returns": 0
+        },
+        {
+          "frame": 2,
+          "valid_return_rays_through_box": 126,
+          "unoccluded_intercepts": 126,
+          "nearer_measured_returns": 0
+        },
+        {
+          "frame": 3,
+          "valid_return_rays_through_box": 124,
+          "unoccluded_intercepts": 124,
+          "nearer_measured_returns": 0
+        },
+        {
+          "frame": 4,
+          "valid_return_rays_through_box": 126,
+          "unoccluded_intercepts": 126,
+          "nearer_measured_returns": 0
+        },
+        {
+          "frame": 5,
+          "valid_return_rays_through_box": 120,
+          "unoccluded_intercepts": 120,
+          "nearer_measured_returns": 0
+        },
+        {
+          "frame": 6,
+          "valid_return_rays_through_box": 124,
+          "unoccluded_intercepts": 124,
+          "nearer_measured_returns": 0
+        },
+        {
+          "frame": 7,
+          "valid_return_rays_through_box": 122,
+          "unoccluded_intercepts": 122,
+          "nearer_measured_returns": 0
+        },
+        {
+          "frame": 8,
+          "valid_return_rays_through_box": 124,
+          "unoccluded_intercepts": 124,
+          "nearer_measured_returns": 0
+        },
+        {
+          "frame": 9,
+          "valid_return_rays_through_box": 124,
+          "unoccluded_intercepts": 124,
+          "nearer_measured_returns": 0
+        }
+      ],
+      "upright_100m": [
+        {
+          "frame": 0,
+          "valid_return_rays_through_box": 52,
+          "unoccluded_intercepts": 32,
+          "nearer_measured_returns": 20
+        },
+        {
+          "frame": 1,
+          "valid_return_rays_through_box": 46,
+          "unoccluded_intercepts": 28,
+          "nearer_measured_returns": 18
+        },
+        {
+          "frame": 2,
+          "valid_return_rays_through_box": 50,
+          "unoccluded_intercepts": 34,
+          "nearer_measured_returns": 16
+        },
+        {
+          "frame": 3,
+          "valid_return_rays_through_box": 48,
+          "unoccluded_intercepts": 32,
+          "nearer_measured_returns": 16
+        },
+        {
+          "frame": 4,
+          "valid_return_rays_through_box": 50,
+          "unoccluded_intercepts": 30,
+          "nearer_measured_returns": 20
+        },
+        {
+          "frame": 5,
+          "valid_return_rays_through_box": 46,
+          "unoccluded_intercepts": 32,
+          "nearer_measured_returns": 14
+        },
+        {
+          "frame": 6,
+          "valid_return_rays_through_box": 48,
+          "unoccluded_intercepts": 32,
+          "nearer_measured_returns": 16
+        },
+        {
+          "frame": 7,
+          "valid_return_rays_through_box": 50,
+          "unoccluded_intercepts": 34,
+          "nearer_measured_returns": 16
+        },
+        {
+          "frame": 8,
+          "valid_return_rays_through_box": 48,
+          "unoccluded_intercepts": 32,
+          "nearer_measured_returns": 16
+        },
+        {
+          "frame": 9,
+          "valid_return_rays_through_box": 50,
+          "unoccluded_intercepts": 34,
+          "nearer_measured_returns": 16
+        }
+      ]
+    },
+    "control_comparison": {
+      "frames": 10,
+      "changed_frames": [],
+      "baseline_sha256": "65bd2c35d78dbaaf1e562106f1c342519526c70353b51642682d3a657b63d090"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-qa-provisional.json",
+  "output": "build/goal-qa-profile-prefix",
+  "every": 1,
+  "max_frames": 10,
+  "visualization": true,
+  "diagnostic_frames": [
+    0,
+    25,
+    100,
+    181,
+    200
+  ],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Exercise the supplied draft 2.1m by 3m rectangular profile with explicitly assumed vertical offset; specification sensitivity, not detector accuracy.",
+  "criterion": "Process the same ten real scans and export the requested reference contour without claiming it is calibrated.",
+  "display_max_points": 10000
+}

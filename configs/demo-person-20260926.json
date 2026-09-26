@@ -1,0 +1,15 @@
+{
+  "hypothesis": "The frozen detector reproduces the accepted real-person recording through the normal CLI and recorded visualization export, without changing scientific decisions.",
+  "success_criterion": "Process all 201 acquisitions; preserve accepted scientific fields and all 36 labelled-person frames; export readable per-frame ROS messages and inspect the actual browser viewer. This is recorded inference, not live or target-hardware acceptance.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/demo-person-20260926",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "result_compression": "none",
+  "diagnostic_frames": [165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185,186,187,188,189,190,191,192,193,194,195,196,197,198,199,200],
+  "visualization": true,
+  "display_max_points": 10000,
+  "bags": [{"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development"}]
+}

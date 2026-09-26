@@ -1,0 +1,79 @@
+{
+  "requested_branch": "origin/autoresearch/six-tunnel-recall-and-nuisance",
+  "tested_commit": "f5b0983a7d4bcdc95b28dc2b8e09b1c068cfc376",
+  "source_worktree": "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-check",
+  "detector_recipe": "configs/detector.json",
+  "experiment_recipe": "configs/autoresearch-head-synthetic-full-20260924.json",
+  "seed": 20260915,
+  "source_working_tree_patch_bytes": 0,
+  "native_accelerator": {
+    "binary_sha256": "bb30b76eeccdb3570653ace549be335406d0de4bd529a035abd1c18f87c5721d",
+    "module": "tunnel_guard._native",
+    "backend": "cpp",
+    "sources_sha256": {
+      "cpp/kernels.cpp": "07e6934a60bb1ab0a4c65d8bddb57e5985f9a6fd46de3f634fa12ee0b6406fbf",
+      "cpp/voxel.cpp": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+      "cpp/native.h": "2615d315240d98f70f457517be7f85d3fe7ea45874430a8b1bceeb9c800c3b3b",
+      "setup.py": "1315ab98ae387d30bcbd8ad20080442b7ab01511d703e7dcb0ecf8db0a5a94a2",
+      "MANIFEST.in": "33c4c37a2f87322b865aa3de40223f5a1d3a0aebf1c220aa0d266bf1366d6910"
+    }
+  },
+  "build_command": "/Users/mors1337/Code/DL/tunnel-guard-post-merge/.venv-iteration/bin/python setup.py build_ext --inplace --force",
+  "bag": "data/cloud_with_fake_obj",
+  "bag_metadata_sha256": "fbc5c3daffef2918d7ea8ac50b345be82934859c545687c6548e34305c947914",
+  "expected_frames": 1510,
+  "completed_frames": 225,
+  "last_completed_frame": 224,
+  "last_completed_elapsed_s": 22.400020957,
+  "status_frames_in_completed_prefix": {
+    "no_obstacle_observed": 150,
+    "obstacle": 75
+  },
+  "completion_gate_passed": false,
+  "exit": {
+    "command": [
+      "/Users/mors1337/Code/DL/tunnel-guard-post-merge/.venv-iteration/bin/python",
+      "-m",
+      "tunnel_guard.run",
+      "--experiment",
+      "/Users/mors1337/Code/DL/tunnel-guard-post-merge/configs/autoresearch-head-synthetic-full-20260924.json"
+    ],
+    "started_unix_s": 1790281835.991801,
+    "finished_unix_s": 1790281967.5214,
+    "returncode": 1
+  },
+  "failure": {
+    "exception": "TypeError: cannot unpack non-iterable NoneType object",
+    "callsite": "tunnel_guard/geometry.py:656",
+    "cause_in_source": "accelerator.classify_geometry returns None when the plane/ground anchors/rail anchors are unavailable; classify_with_section unconditionally unpacks it.",
+    "next_input_frame_index": 225,
+    "next_input_measurement_timestamp_ns": 946685809433424950,
+    "index_provenance": "Derived from complete sequential output0..224 and next matching baseline input; traceback does not print scan index.",
+    "integrated_reference_next_status": "unknown",
+    "integrated_reference_next_geometry_reason": "weak_track_bed_plane",
+    "traceback": "Traceback (most recent call last):\n  File \"<frozen runpy>\", line 198, in _run_module_as_main\n  File \"<frozen runpy>\", line 88, in _run_code\n  File \"/Users/mors1337/Code/DL/tunnel-guard-autoresearch-check/tunnel_guard/run.py\", line 267, in <module>\n    main()\n  File \"/Users/mors1337/Code/DL/tunnel-guard-autoresearch-check/tunnel_guard/run.py\", line 185, in main\n    row = detector.process(scan.points, scan.timestamp_s, scan.point_times,\n          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/mors1337/Code/DL/tunnel-guard-autoresearch-check/tunnel_guard/detector.py\", line 782, in process\n    classification = carried[0] if carried else geometry.classify(reduced, remove_background=False)\n                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/mors1337/Code/DL/tunnel-guard-autoresearch-check/tunnel_guard/geometry.py\", line 647, in classify\n    masks, _ = self.classify_with_section(points, remove_background=remove_background,\n               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/Users/mors1337/Code/DL/tunnel-guard-autoresearch-check/tunnel_guard/geometry.py\", line 656, in classify_with_section\n    core, context, height, observed, nominal_overlap, boundary, lateral, running, gauge = native\n    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: cannot unpack non-iterable NoneType object"
+  },
+  "reference_comparison": {
+    "run": "build/organizer-synthetic-full-20260924",
+    "commit": "5d80ef39ece0c9164c2770a970c59b36e0a2183d",
+    "reference_completed_frames": 1510,
+    "detector_config_equal": true,
+    "bag_metadata_equal": true,
+    "compared_frames": 225,
+    "changed_frame_indices": {
+      "source_scan_id": [],
+      "geometry": [],
+      "motion": [],
+      "pose": [],
+      "objects": [],
+      "status": []
+    }
+  },
+  "interpretation": [
+    "The exact remote autoresearch HEAD failed the full-bag completion criterion. No detector modifications or exception suppression were applied.",
+    "All saved prefix objects, statuses, geometry, motion, poses and acquisition IDs exactly match the previously completed integrated baseline.",
+    "Remaining insertions, including low object9 and hanging object10, cannot be evaluated from this stopped replay.",
+    "This checks f5b0983, not the separate surface-support candidate PR28 or an unpublished local detector.",
+    "The known unsupported-geometry fix exists in PR18; its later integrated descendant5d80ef3 already completed this full bag. That does not make this exact branch pass."
+  ]
+}

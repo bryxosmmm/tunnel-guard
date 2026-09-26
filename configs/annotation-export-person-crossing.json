@@ -1,0 +1,334 @@
+{
+  "label_status": "provisional_geometry",
+  "prediction_scope": "near_track_objects",
+  "minimum_iou": 0.25,
+  "path_intersection": "unverified",
+  "box_semantics": "reviewer_authored_person_volume_not_observed_support",
+  "provenance": "One person-sized object seen ahead at about 55-57 m in doubleT_obstacle, frames 0-104. The reviewer authored the box by hand at frame 0 and re-anchored it at frames 28 and 47; frames 1-24, 29-46 and 48-104 were filled frame by frame by translation-only registration of the box's own returns against each later cloud (nearest neighbour, 0.60 -> 0.12 m, trimmed mean, constant-velocity prediction), and the reviewer then widened the boxes at frames 25-27 by hand. Every written frame holds 73-132 of the object's returns, with the return centroid within 0.15 m of the box centre, so the box follows the object and not a tunnel surface. Measured with the project's own reference contour on the labelled returns, the object starts outside the contour (frames 0-6), is inside over frames 7-68 (100% of returns over 28-60, reaching 0.1 m from the estimated centre line) and is outside again from frame 70, ending 1.2-1.4 m beyond the 1.44-1.46 m half-width for its height; the exit frame lies inside the centre-line 1-sigma of 0.19-0.39 m, frames 78 and later do not. No frame is exhaustive: this records where one object is, not that the frames contain nothing else. The box is a full-person volume, not the support of returns, and its identity as a person is the reviewer's judgement, not a measurement. Frame 105 is present with no box: the reviewer's explicit marker that the object is not there. An empty, non-exhaustive frame scores nothing.",
+  "scene_root": "SUSTechPOINTS/data",
+  "output": "annotations/doubleT-obstacle-person-crossing.json",
+  "scenes": {
+    "doubleT_obstacle_person": {
+      "bag": "doubleT_obstacle",
+      "label_directory": "../../../annotations/sustech-raw/doubleT_obstacle_person",
+      "exhaustive_frames": [],
+      "annotation_origins": {
+        "0": {
+          "1": "reviewer_hand_anchor_frame_0"
+        },
+        "1": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "2": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "3": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "4": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "5": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "6": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "7": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "8": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "9": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "10": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "11": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "12": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "13": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "14": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "15": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "16": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "17": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "18": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "19": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "20": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "21": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "22": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "23": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "24": {
+          "1": "registration_propagation_from_frame_0"
+        },
+        "25": {
+          "1": "reviewer_hand_adjusted_after_registration_propagation"
+        },
+        "26": {
+          "1": "reviewer_hand_adjusted_after_registration_propagation"
+        },
+        "27": {
+          "1": "reviewer_hand_adjusted_after_registration_propagation"
+        },
+        "28": {
+          "1": "reviewer_hand_anchor_frame_28"
+        },
+        "29": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "30": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "31": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "32": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "33": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "34": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "35": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "36": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "37": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "38": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "39": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "40": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "41": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "42": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "43": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "44": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "45": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "46": {
+          "1": "registration_propagation_from_frame_28"
+        },
+        "47": {
+          "1": "reviewer_hand_anchor_frame_47"
+        },
+        "48": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "49": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "50": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "51": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "52": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "53": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "54": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "55": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "56": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "57": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "58": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "59": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "60": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "61": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "62": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "63": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "64": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "65": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "66": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "67": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "68": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "69": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "70": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "71": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "72": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "73": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "74": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "75": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "76": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "77": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "78": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "79": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "80": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "81": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "82": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "83": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "84": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "85": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "86": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "87": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "88": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "89": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "90": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "91": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "92": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "93": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "94": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "95": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "96": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "97": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "98": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "99": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "100": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "101": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "102": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "103": {
+          "1": "registration_propagation_from_frame_47"
+        },
+        "104": {
+          "1": "registration_propagation_from_frame_47"
+        }
+      }
+    }
+  }
+}

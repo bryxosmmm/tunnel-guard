@@ -1,0 +1,37 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/perf-current-corpus-20260917",
+  "every": 1,
+  "max_frames": null,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "The shipped default recipe (NumPy voxel backend, no deskew) produces the current detector behaviour on the complete supplied corpus; alarm burden, reported distance, runtime and localisation of the one annotated object are measured, not inferred.",
+  "criterion": "Process every unique measured scan of all six recordings in one Detector per bag; record status, candidates, confirmed intersections with distance, geometry/motion validity, and monotonic per-frame processing time."
+}

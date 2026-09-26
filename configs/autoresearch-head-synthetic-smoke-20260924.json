@@ -1,0 +1,37 @@
+{
+  "hypothesis": "The exact remote autoresearch HEAD can process the complete organizer synthetic recording without later integration fixes; assess all ten insertions separately from scene-level alarms.",
+  "criterion": "All1510 input scans must complete without exceptions. Attribute insertion detections using source support, not generic obstacle status. A partial run is a failed completion gate, not full-bag recall. No detector/config patching during this experiment.",
+  "seed": 20260915,
+  "source_commit": "f5b0983a7d4bcdc95b28dc2b8e09b1c068cfc376",
+  "source_branch": "origin/autoresearch/six-tunnel-recall-and-nuisance",
+  "detector_config": "configs/detector.json",
+  "every": 1,
+  "max_frames": 3,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [
+    200,
+    350,
+    410,
+    460,
+    520,
+    570,
+    620,
+    670,
+    730,
+    790,
+    800
+  ],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "/Users/mors1337/Code/DL/tunnel-guard-post-merge/data/cloud_with_fake_obj",
+      "topic": "/lidar_points",
+      "split": "organizer_synthetic_previously_inspected_not_field_evaluation"
+    }
+  ],
+  "reference_runs": [
+    "build/organizer-synthetic-full-20260924",
+    "build/issue-23-local-synthetic-20260924"
+  ],
+  "output": "/Users/mors1337/Code/DL/tunnel-guard-post-merge/build/autoresearch-head-synthetic-smoke-20260924"
+}

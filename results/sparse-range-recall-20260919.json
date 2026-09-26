@@ -1,0 +1,55 @@
+{
+  "date": "2026-09-19",
+  "scope": "Range recall: high-recall candidate generation for sparse returns, after the field's method",
+  "problem": {
+    "symptom": "labelled panel recall by range: 1.00 to 100 m, 0.67 at 150 m, 0.58 at 200 m",
+    "mechanism": "at those ranges an object returns 1-5 points. The pipeline rejected any component below `weak_min_voxels` = 2 outright, so a 1-point object was discarded in the same scan it appeared and could never accumulate evidence across scans."
+  },
+  "research": {
+    "principle": "\"Treat few points as a confirmation problem, not a classification problem\": Stage A generates candidates at high recall and DELIBERATELY tolerates 1-3 returns inside the clearance envelope; Stage B confirms through multi-scan consistency (a tentative obstacle track: 1 scan weak candidate, 2 scans tentative, 3+ consistent scans confirmed). Persistent infrastructure is handled by a separate map from short-term occupancy.",
+    "sources": [
+      "Rail-BEV: LiDAR-centric BEV perception for long-range railway obstacle detection (MDPI Sensors 26/12/3637) - identifies range-dependent sparsity combined with structural clutter as the central difficulty",
+      "RSN: Range Sparse Net (CVPR 2021) - high-resolution range-image foreground with sparse 3D detection for long-range objects",
+      "RVSA-3D: voxel-based fully sparse attention for rail transit obstacle perception (Pattern Recognition)",
+      "Semantic-Supervised Spatial-Temporal Fusion for LiDAR 3D detection (arXiv 2503.10579) - temporal merging rather than naive concatenation",
+      "Laser-based obstacle detection at railway level crossings (J. Sensors 2016) - background modelling with occupancy contrast, and why a purely static background model is not enough"
+    ],
+    "what_our_system_already_has": "candidates are tracked in world coordinates and confirmed only with `confirmation_hits` and `evidence_min_points`, i.e. the literature's Stage B already exists; what was missing was Stage A letting sparse evidence in at all."
+  },
+  "change": {
+    "recipe_key": "weak_min_voxels: 2 -> 1",
+    "why_config_only": "the threshold is read by the NumPy reference and the native kernel alike, so both backends change identically by construction, with no new code path to keep in step",
+    "why_it_is_safe": "a single-return candidate cannot be confirmed on its own: confirmation still requires scan hits and accumulated evidence, so sparse objects enter as tentative candidates and only a persistent one alarms"
+  },
+  "measured": {
+    "full_1460_frame_panel": {
+      "tp": "709 -> 709",
+      "fn": "251 -> 251",
+      "fp_exhaustive_only": "176 -> 178",
+      "precision_exhaustive_only": "0.8011 -> 0.7993",
+      "event_recall": "0.8021 -> 0.8021",
+      "matched_mean_3d_iou": "0.8223 -> 0.8223",
+      "negative_episode_rate": "0.0 -> 0.0",
+      "recall_by_range": {
+        "150_m": "0.67 -> 0.67",
+        "200_m": "0.58 -> 0.58",
+        "300_m": "0.17 -> 0.17"
+      },
+      "reading": "no effect on detection at all: the sparse floor is not the binding constraint in these cases"
+    },
+    "recordings_60_frames_each": {
+      "doubleT_obstacle": "confirmed obstacle frames preserved 52 of 52",
+      "roundT_doubleT": "statuses identical",
+      "objects": "15041 -> 15450 (+2.7 per cent), confirmed 13503 -> 13884",
+      "cost": "processing p50 133.6 -> 133.9 ms and 146.8 -> 147.9 ms"
+    },
+    "withdrawn_measurement": {
+      "claim": "an earlier run restricted to 150 and 200 m showed recall 0.67 -> 0.83 and 0.58 -> 0.67",
+      "why_it_is_wrong": "restricting ranges_m changes the case indices, and the panel seeds each case's ray pattern and noise from its index, so that run compared DIFFERENT case populations against the baseline's 150 and 200 m rows instead of the same cases with and without the change. The full panel is the valid comparison and shows no effect.",
+      "lesson": "the seeded case grid is part of the measurement: subsetting the panel is not a cheaper way to measure a change"
+    },
+    "verdict": "reverted: no measured effect on detection, two extra false positives, 2.7 per cent more objects on the recordings. Nothing ships from this pass.",
+    "state": "config variants deleted; the shipped recipe is unchanged from 76356bd"
+  },
+  "trade_off_stated": "more objects enter the candidate list (+2.7 per cent on the recordings). They cannot be confirmed individually, but they are visible in the output and to the operator, which is the intended behaviour for a system that must not discard weak evidence before it can be accumulated."
+}

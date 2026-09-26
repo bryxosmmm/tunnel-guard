@@ -1,0 +1,15 @@
+{
+  "hypothesis": "The frozen detector reproduces the full accepted platform recording through the normal CLI and visualization export, retaining nuisance alarms rather than hiding them for demonstration.",
+  "success_criterion": "Process all 345 acquisitions with exact accepted scientific output, export readable ROS messages, inspect clear and alarm frames in the actual browser viewer. No claim of a clear route or live target throughput.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/demo-platform-20260926",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "result_compression": "none",
+  "diagnostic_frames": [],
+  "visualization": true,
+  "display_max_points": 10000,
+  "bags": [{"path": "data/sourcecraft_subset/for_hackathon/doubleT_platform", "split": "development_negative"}]
+}

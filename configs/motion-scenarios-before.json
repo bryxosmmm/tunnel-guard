@@ -1,0 +1,87 @@
+{
+  "seed": 20260918,
+  "frames": 12,
+  "frame_period_s": 0.1,
+  "minimum_iou": 0.1,
+  "detector_config": "configs/detector.json",
+  "scene_config": "configs/stress-measured-pattern-final.json",
+  "output": "build/motion-scenarios-before",
+  "cases": [
+    {
+      "id": "empty_stationary",
+      "kind": "none",
+      "sensor_step_m": 0
+    },
+    {
+      "id": "empty_moving",
+      "kind": "none",
+      "sensor_step_m": 0.5
+    },
+    {
+      "id": "static_20",
+      "kind": "static",
+      "sensor_step_m": 0.5,
+      "start_m": 20,
+      "dimensions_m": [
+        0.3,
+        0.3,
+        0.4
+      ],
+      "lateral_m": 0
+    },
+    {
+      "id": "static_60",
+      "kind": "static",
+      "sensor_step_m": 0.5,
+      "start_m": 60,
+      "dimensions_m": [
+        0.3,
+        0.3,
+        0.4
+      ],
+      "lateral_m": 0
+    },
+    {
+      "id": "static_100",
+      "kind": "static",
+      "sensor_step_m": 0.5,
+      "start_m": 100,
+      "dimensions_m": [
+        0.3,
+        0.3,
+        0.4
+      ],
+      "lateral_m": 0
+    },
+    {
+      "id": "walk_stop_20",
+      "kind": "moving",
+      "sensor_step_m": 0.5,
+      "start_m": 20,
+      "dimensions_m": [
+        0.45,
+        1.02,
+        1.35
+      ],
+      "lateral_m": 0,
+      "velocity_mps": -1.5,
+      "stop_frame": 6
+    },
+    {
+      "id": "appear_20",
+      "kind": "appearing",
+      "sensor_step_m": 0.5,
+      "start_m": 20,
+      "dimensions_m": [
+        0.3,
+        0.3,
+        0.4
+      ],
+      "lateral_m": 0,
+      "appear_frame": 4
+    }
+  ],
+  "hypothesis": "The geometric detector should retain visible static and stopped objects, without depending on motion labels",
+  "criterion": "Report per-frame observed support matches and nuisance counts; require identical clouds for before/after comparison",
+  "scenario_provenance": "Adapted case semantics from Gerasimov 525e276 hmm_mos_probe; existing stress.scene_scan ray caster"
+}

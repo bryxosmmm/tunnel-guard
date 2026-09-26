@@ -12,6 +12,22 @@ from rosbags.typesys import Stores, get_typestore
 from .geometry import TrackGeometry
 
 
+def distance_summary(row: dict) -> dict:
+    """Do not present an uncertain nearby object as a confirmed intrusion."""
+    hazards = [obj for obj in row["objects"] if obj["path_relation"] in ("intersecting", "unresolved")]
+    return {
+        "confirmed_intersection_m": min((obj["distance_m"] for obj in hazards
+            if obj.get("intersection_confirmed", False)), default=None),
+        "unresolved_confirmed_m": min((obj["distance_m"] for obj in hazards
+            if obj["confirmed"] and not obj.get("intersection_confirmed", False)), default=None),
+        "tentative_m": min((obj["distance_m"] for obj in hazards if not obj["confirmed"]), default=None),
+        "geometry_unknown_m": min((obj["cluster_nearest_x_m"] for obj in row["objects"]
+                                  if obj["path_relation"] == "unknown"), default=None),
+        "method": row.get("distance_method", "unavailable"),
+        "origin": row.get("distance_origin", "configured_processing_frame_origin"),
+    }
+
+
 def corridor_edges(description: dict, config: dict) -> np.ndarray:
     """Draw the classifier's reference contour only where geometry is supported."""
     if not description.get("valid"):
@@ -22,10 +38,7 @@ def corridor_edges(description: dict, config: dict) -> np.ndarray:
     geometry.ground_anchors = np.asarray(description["ground_anchors"])
     geometry.rail_anchors = np.asarray(description["rail_anchors"])
     geometry.rail_head_height_m = description["rail_head_height_m"]
-    geometry.rail_head_anchors = np.asarray(description.get("rail_head_anchors") or np.empty((0, 3)))
-    geometry.rail_sigma = np.asarray(description.get("rail_sigmas_m") or np.empty(0))
-    geometry.rail_gauge_inner = np.empty(0)
-    geometry.path_growth_m_per_m = description.get("path_growth_m_per_m")
+    geometry.rail_support_diagnostics = description.get("rail_support_diagnostics", [])
     segments = np.asarray(config["envelope_segments_m"])
     # Retain both sides of width discontinuities at adjacent segment boundaries.
     contour = [(float(h), float(w + config["envelope_margin_m"]))
@@ -43,7 +56,7 @@ def corridor_edges(description: dict, config: dict) -> np.ndarray:
             p = np.array([[x, center[0] + dy, 0.0]])
             ground, uncertainty = geometry.ground(p)
             supported &= uncertainty[0] <= config["ground_max_uncertainty_m"]
-            ring.append([x, p[0, 1], ground[0] + geometry.rail_head_profile(np.array([x]))[0] + h * normal])
+            ring.append([x, p[0, 1], ground[0] + geometry.rail_head_height_m + h * normal])
         if not supported:
             previous = None
             continue
@@ -63,27 +76,15 @@ def box_edges(obj: dict) -> np.ndarray:
                        if i < (i ^ bit) for j in (i, i ^ bit)])
 
 
-class ResultBag:
-    """Bounded display copy; no feedback into detection or temporal state."""
+class ResultMessages:
+    """Shared display messages for recorded replay and the live ROS adapter."""
 
-    def __init__(self, path: Path, config: dict, max_points: int = 100000):
+    def __init__(self, config: dict, max_points: int = 100000, *, presentation="recorded_result_replay"):
         if not isinstance(max_points, int) or max_points < 1:
             raise ValueError("display_max_points must be a positive integer")
         self.config, self.max_points = config, max_points
+        self.presentation = presentation
         self.store = get_typestore(Stores.ROS2_HUMBLE)
-        self.writer = Writer(path, version=8)
-        self.connections = {}
-
-    def __enter__(self):
-        self.writer.open()
-        for topic, kind in (("points_display", "sensor_msgs/msg/PointCloud2"),
-                            ("debug_markers", "visualization_msgs/msg/MarkerArray"),
-                            ("status", "std_msgs/msg/String")):
-            self.connections[topic] = self.writer.add_connection("/perception/" + topic, kind, typestore=self.store)
-        return self
-
-    def __exit__(self, *args):
-        self.writer.close()
 
     def message(self, kind, *args, **kwargs):
         return self.store.types[kind](*args, **kwargs)
@@ -102,7 +103,7 @@ class ResultBag:
                  uv_coordinates=[], text=text, mesh_resource="",
                  mesh_file=m("visualization_msgs/msg/MeshFile", "", empty), mesh_use_embedded_materials=False)
 
-    def write(self, row: dict, points: np.ndarray, timestamp_ns: int, support: dict | None = None):
+    def build(self, row: dict, points: np.ndarray, timestamp_ns: int, support: dict | None = None):
         m = self.message
         header = m("std_msgs/msg/Header", m("builtin_interfaces/msg/Time", *divmod(timestamp_ns, 1000000000)),
                    row["coordinate_frame"])
@@ -113,32 +114,81 @@ class ResultBag:
         point_message = m("sensor_msgs/msg/PointCloud2", header, 1, len(cloud), fields, False, 12,
                           len(cloud) * 12, cloud.view(np.uint8).reshape(-1), True)
         markers = [self.marker(header, "clear", 0, 5, action=3)]
+        mounting = row.get("mounting")
+        if mounting and mounting.get("support_points"):
+            markers.append(self.marker(header, "railhead_support_for_mounting", 0, 8,
+                                       mounting["support_points"], (.1, 1., .6, 1.)))
         corridor = corridor_edges(row.get("geometry", {}), self.config)
         if len(corridor):
             markers.append(self.marker(header, "reference_envelope", 0, 5, corridor))
         for obj in row["objects"]:
             hazard = obj["path_relation"] in ("intersecting", "unresolved")
-            color = ((1., .15, .1, 1.) if obj["confirmed"] and hazard else
-                     ((1., .8, .1, 1.) if hazard else (.5, .5, .5, 1.)))
+            intersection_confirmed = obj.get("intersection_confirmed", obj["confirmed"] and obj["path_relation"] == "intersecting")
+            color = ((1., .15, .1, 1.) if intersection_confirmed else
+                     (1., .55, .05, 1.) if obj["confirmed"] and hazard else
+                     ((1., .8, .1, 1.) if hazard or obj["path_relation"] == "unknown" else (.5, .5, .5, 1.)))
             markers.append(self.marker(header, "observed_support", obj["track_id"], 5, box_edges(obj), color))
             if support is not None and obj["track_id"] in support:
                 markers.append(self.marker(header, "candidate_measurements", obj["track_id"], 8,
                                            support[obj["track_id"]], color))
             label = f"#{obj['track_id']} {obj['distance_m']:.2f} m | {obj['path_relation']} | {obj['confirmation']} | hits={obj['hits']}"
+            if "intersection_confirmation" in obj:
+                label += f" | intrusion={obj['intersection_confirmation']} | inside_hits={obj['intersection_hits']}"
+            if obj.get("boundary_uncertain_voxels", 0):
+                label += f" | boundary={obj['boundary_uncertain_voxels']}"
             if hazard and "distance_support_point" in obj:
                 markers.append(self.marker(header, "distance_witness", obj["track_id"], 8,
                                            [obj["distance_support_point"]], (0., 1., 1., 1.)))
                 label += f" | {obj['distance_method']}"
             markers.append(self.marker(header, "object_labels", obj["track_id"], 9, color=color,
                                        text=label, position=obj["bbox_max"]))
-        text = (f"RECORDED RESULT REPLAY | {row['status']} | nearest={row['nearest_obstacle_m']} m\n"
+        distances = distance_summary(row)
+        text = (f"{self.presentation.upper()} | {row['status']}\n"
+                f"Intrusion={distances['confirmed_intersection_m']} m | uncertain={distances['unresolved_confirmed_m']} m\n"
+                f"Object without corridor relation={distances['geometry_unknown_m']} m\n"
                 f"{row['health']}: {', '.join(row['health_reasons'])}\n"
                 "Reference envelope; observed support only; route clearance unknown")
+        if mounting:
+            measured = mounting.get("height_above_support_plane_m") if mounting["state"] == "observed" else None
+            estimate = "unavailable" if measured is None else f"{measured:.3f} m"
+            text += (f"\nRail support height: {estimate}; reported static height: "
+                     f"{mounting['reference_height_m']:.3f} m"
+                     "\nRecording applicability unverified; vehicle calibration unverified")
         markers.append(self.marker(header, "quality", 0, 9, color=(1., 1., 1., 1.), text=text, position=(4., 0., 2.)))
         payloads = {"points_display": point_message,
                     "debug_markers": m("visualization_msgs/msg/MarkerArray", markers),
-                    "status": m("std_msgs/msg/String", json.dumps(row | {"presentation": "recorded_result_replay",
-                        "display_points": len(cloud)}, allow_nan=False))}
+                    "status": m("std_msgs/msg/String", json.dumps(row | {"presentation": self.presentation,
+                        "display_points": len(cloud), "distance_summary": distances}, allow_nan=False)),
+                    "attention_required": m("std_msgs/msg/Bool", row["status"] != "no_obstacle_observed"),
+                    "nearest_obstacle_m": m("std_msgs/msg/Float32", float(
+                        row["nearest_obstacle_m"] if row["nearest_obstacle_m"] is not None else np.nan)),
+                    }
+        return payloads
+
+
+class ResultBag(ResultMessages):
+    """Write the same display messages to a ROS bag without a ROS runtime."""
+
+    def __init__(self, path: Path, config: dict, max_points: int = 100000):
+        super().__init__(config, max_points)
+        self.writer = Writer(path, version=8)
+        self.connections = {}
+
+    def __enter__(self):
+        self.writer.open()
+        for topic, kind in (("points_display", "sensor_msgs/msg/PointCloud2"),
+                            ("debug_markers", "visualization_msgs/msg/MarkerArray"),
+                            ("status", "std_msgs/msg/String"),
+                            ("attention_required", "std_msgs/msg/Bool"),
+                            ("nearest_obstacle_m", "std_msgs/msg/Float32")):
+            self.connections[topic] = self.writer.add_connection("/perception/" + topic, kind, typestore=self.store)
+        return self
+
+    def __exit__(self, *args):
+        self.writer.close()
+
+    def write(self, row: dict, points: np.ndarray, timestamp_ns: int, support: dict | None = None):
+        payloads = self.build(row, points, timestamp_ns, support)
         for topic, message in payloads.items():
             connection = self.connections[topic]
             self.writer.write(connection, timestamp_ns, self.store.serialize_cdr(message, connection.msgtype))
@@ -212,7 +262,14 @@ def render_comparison(before: Path, after: Path, cases: dict, output: Path):
                 ax.set_aspect("equal", adjustable="box")
                 ax.grid(alpha=.2)
                 if level == 0:
-                    ax.set_title(f"{name} — {row['status']}; nearest={row['nearest_obstacle_m']:.3f} m\nhealth={row['health']}; confirmed denotes algorithmic evidence", fontsize=10)
+                    # `nearest_obstacle_m` is None whenever the frame has no confirmed hazard, which
+                    # is most frames now that the claim requires a measured coordinate.
+                    nearest = ("none" if row["nearest_obstacle_m"] is None
+                               else f"{row['nearest_obstacle_m']:.3f} m")
+                    candidate = ("none" if row.get("nearest_candidate_m") is None
+                                 else f"{row['nearest_candidate_m']:.3f} m")
+                    ax.set_title(f"{name} — {row['status']}; nearest hazard={nearest}, nearest candidate={candidate}"
+                                 f"\nhealth={row['health']}; confirmed denotes algorithmic evidence", fontsize=10)
                 elif level == 1:
                     detail = (f"component {target['component_id']}: reported={target['distance_m']:.3f} m; {target['path_relation']}"
                               if target is not None else "Provisional structure region; observed support only")

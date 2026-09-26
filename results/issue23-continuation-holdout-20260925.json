@@ -1,0 +1,1702 @@
+{
+  "experiment": "Exact production path estimator on withheld recorded rail anchors",
+  "production_change": false,
+  "raw_detector_replay": false,
+  "summary": {
+    "counts": {
+      "frames": 15269,
+      "holdouts": 15197,
+      "insufficient_retained_anchors": 72
+    },
+    "groups": {
+      "all": {
+        "holdouts": 15197,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 1.6858419333437569e-06,
+          "median": 0.010489916342266703,
+          "p90": 0.05605268948916944,
+          "p99": 0.15521494805506866,
+          "max": 1.831761028588367
+        },
+        "outside_prediction_interval": 387,
+        "outside_prediction_plus_anchor_interval": 102,
+        "prediction_within_configured_uncertainty_limit": 15194
+      },
+      "recording:doubleT_obstacle": {
+        "holdouts": 201,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 0.0002104583838267171,
+          "median": 0.02284924605496763,
+          "p90": 0.053053582601270355,
+          "p99": 0.08935978939350187,
+          "max": 0.18655962508515755
+        },
+        "outside_prediction_interval": 1,
+        "outside_prediction_plus_anchor_interval": 0,
+        "prediction_within_configured_uncertainty_limit": 201
+      },
+      "selected:7": {
+        "holdouts": 9767,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 2.4348563648635135e-06,
+          "median": 0.008266910104522102,
+          "p90": 0.03475520236324368,
+          "p99": 0.09046312369167538,
+          "max": 1.050250903943783
+        },
+        "outside_prediction_interval": 61,
+        "outside_prediction_plus_anchor_interval": 6,
+        "prediction_within_configured_uncertainty_limit": 9766
+      },
+      "selected:6": {
+        "holdouts": 4190,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 5.474609171003675e-06,
+          "median": 0.013135815201589962,
+          "p90": 0.0718380346636071,
+          "p99": 0.14758390930996315,
+          "max": 1.831761028588367
+        },
+        "outside_prediction_interval": 125,
+        "outside_prediction_plus_anchor_interval": 19,
+        "prediction_within_configured_uncertainty_limit": 4188
+      },
+      "selected:5": {
+        "holdouts": 934,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 2.786566665857748e-06,
+          "median": 0.04781191774186966,
+          "p90": 0.12625297163938454,
+          "p99": 0.39341255651938256,
+          "max": 1.6804207811048157
+        },
+        "outside_prediction_interval": 128,
+        "outside_prediction_plus_anchor_interval": 27,
+        "prediction_within_configured_uncertainty_limit": 934
+      },
+      "recording:doubleT_platform": {
+        "holdouts": 345,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 7.95433104730861e-05,
+          "median": 0.009660580700412286,
+          "p90": 0.03633686422277218,
+          "p99": 0.06056843389958208,
+          "max": 0.10285392817050776
+        },
+        "outside_prediction_interval": 1,
+        "outside_prediction_plus_anchor_interval": 0,
+        "prediction_within_configured_uncertainty_limit": 345
+      },
+      "negative_alarm": {
+        "holdouts": 104,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 0.0002643049651518403,
+          "median": 0.028709450794121703,
+          "p90": 0.7676241955660179,
+          "p99": 1.5567615138467807,
+          "max": 1.831761028588367
+        },
+        "outside_prediction_interval": 35,
+        "outside_prediction_plus_anchor_interval": 30,
+        "prediction_within_configured_uncertainty_limit": 101
+      },
+      "recording:roundT_doubleT": {
+        "holdouts": 252,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 5.50067475640903e-06,
+          "median": 0.012731442223867503,
+          "p90": 0.09749897815040025,
+          "p99": 0.3630765177800964,
+          "max": 0.6058191520664737
+        },
+        "outside_prediction_interval": 19,
+        "outside_prediction_plus_anchor_interval": 6,
+        "prediction_within_configured_uncertainty_limit": 252
+      },
+      "selected:4": {
+        "holdouts": 207,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 1.6858419333437569e-06,
+          "median": 0.04838613368563616,
+          "p90": 0.14037334899694,
+          "p99": 0.5503475576865025,
+          "max": 1.4087199811238382
+        },
+        "outside_prediction_interval": 24,
+        "outside_prediction_plus_anchor_interval": 8,
+        "prediction_within_configured_uncertainty_limit": 207
+      },
+      "selected:2": {
+        "holdouts": 38,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 0.0008471434928309374,
+          "median": 0.20063450207729416,
+          "p90": 0.7202291730704458,
+          "p99": 0.9445987406492969,
+          "max": 1.0241720724116432
+        },
+        "outside_prediction_interval": 25,
+        "outside_prediction_plus_anchor_interval": 20,
+        "prediction_within_configured_uncertainty_limit": 38
+      },
+      "recording:roundT_pressureGate_roundT": {
+        "holdouts": 264,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 2.4169872624324462e-05,
+          "median": 0.011125480825512388,
+          "p90": 0.05234626831958845,
+          "p99": 0.14161550907600012,
+          "max": 0.17323099907348904
+        },
+        "outside_prediction_interval": 6,
+        "outside_prediction_plus_anchor_interval": 0,
+        "prediction_within_configured_uncertainty_limit": 264
+      },
+      "recording:roundT_squareT_pressureGate_squareT": {
+        "holdouts": 541,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 1.144962486676615e-05,
+          "median": 0.009495993886660642,
+          "p90": 0.05564893026440032,
+          "p99": 0.2949958043634876,
+          "max": 1.5576610183524902
+        },
+        "outside_prediction_interval": 12,
+        "outside_prediction_plus_anchor_interval": 6,
+        "prediction_within_configured_uncertainty_limit": 541
+      },
+      "recording:squareT_platform_squareT_switch": {
+        "holdouts": 877,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 6.526042167637192e-06,
+          "median": 0.00857109156960792,
+          "p90": 0.07869303829190771,
+          "p99": 0.09630788554953805,
+          "max": 0.36100575062069573
+        },
+        "outside_prediction_interval": 23,
+        "outside_prediction_plus_anchor_interval": 3,
+        "prediction_within_configured_uncertainty_limit": 877
+      },
+      "selected:8": {
+        "holdouts": 2,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 0.01786138408941218,
+          "median": 0.17634587191675535,
+          "p90": 0.3031334621786299,
+          "p99": 0.33166066998755167,
+          "max": 0.3348303597440985
+        },
+        "outside_prediction_interval": 1,
+        "outside_prediction_plus_anchor_interval": 1,
+        "prediction_within_configured_uncertainty_limit": 2
+      },
+      "recording:new_data": {
+        "holdouts": 11221,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 2.786566665857748e-06,
+          "median": 0.011166821129769883,
+          "p90": 0.057351148550780474,
+          "p99": 0.16507508621307124,
+          "max": 1.831761028588367
+        },
+        "outside_prediction_interval": 306,
+        "outside_prediction_plus_anchor_interval": 84,
+        "prediction_within_configured_uncertainty_limit": 11218
+      },
+      "selected:3": {
+        "holdouts": 59,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 0.0006350760185377391,
+          "median": 0.04888581793410651,
+          "p90": 0.5481742690464753,
+          "p99": 0.8981151832913189,
+          "max": 1.269005626614604
+        },
+        "outside_prediction_interval": 23,
+        "outside_prediction_plus_anchor_interval": 21,
+        "prediction_within_configured_uncertainty_limit": 59
+      },
+      "recording:cloud_with_fake_obj": {
+        "holdouts": 1496,
+        "absolute_discrepancy_quantiles_m": {
+          "min": 1.6858419333437569e-06,
+          "median": 0.007334956750716687,
+          "p90": 0.039920411797597755,
+          "p99": 0.11490955815128362,
+          "max": 1.6949990054276682
+        },
+        "outside_prediction_interval": 19,
+        "outside_prediction_plus_anchor_interval": 3,
+        "prediction_within_configured_uncertainty_limit": 1496
+      }
+    },
+    "inputs": [
+      {
+        "recording": "doubleT_obstacle",
+        "frames": 201,
+        "sha256": "6d534c314e91beab64e9e9ed84a0d6c8c0f0273d2ea34d79dece75689ad36cb9"
+      },
+      {
+        "recording": "doubleT_platform",
+        "frames": 345,
+        "sha256": "aab92b89179e1905731eed3a27e8103e636fb519066864dc84731dc7fd901af8"
+      },
+      {
+        "recording": "roundT_doubleT",
+        "frames": 252,
+        "sha256": "57257cdbc181536b42f22902338d1feb191b47eff2be17d6a945a40d9817a5c6"
+      },
+      {
+        "recording": "roundT_pressureGate_roundT",
+        "frames": 268,
+        "sha256": "563f73d18ed1200f3c5e2497d3c9f471cee4cf813afb4f5dd0a57f23100b79bb"
+      },
+      {
+        "recording": "roundT_squareT_pressureGate_squareT",
+        "frames": 545,
+        "sha256": "d774ec31fa42773cb279a90fb1e0ecab6572fa2c73dce0e5c68cf3ee0736a4cd"
+      },
+      {
+        "recording": "squareT_platform_squareT_switch",
+        "frames": 877,
+        "sha256": "834803c7b6ed225836cfde5694e8d5c079b947103e5410d2c940e9d1687b3885"
+      },
+      {
+        "recording": "new_data",
+        "frames": 11271,
+        "sha256": "1672a15e47d1969cc3dfa67dba14e47a0c7aaed237adec0e5156a3d73c501f22"
+      },
+      {
+        "recording": "cloud_with_fake_obj",
+        "frames": 1510,
+        "sha256": "195fde101c16c4fef5cbbfb85ed889b5d39603382c2f91cc0300918ef0e8854f"
+      }
+    ],
+    "wall_s": 67.28818012494594,
+    "interpretation": [
+      "Saved-state numerical estimator evaluation, not a fresh raw detector replay.",
+      "One holdout per frame. Adjacent frames correlated; no binomial precision or independent trial claim.",
+      "Anchor measurements were already accepted by overlapping-window and trailing-consistency filters; holdout is not independent physical ground truth.",
+      "Reported path uncertainty is heuristic; ratio to measurement discrepancy is not calibrated Gaussian coverage.",
+      "No threshold tuning, no replacement of a quadratic by a straight line, no classification or promotion."
+    ],
+    "decision": "Diagnostic only. Retained-anchor discrepancies cannot establish true rail geometry, justify suppression, or validate a straight-line fallback."
+  },
+  "current_alarm_selected_anchor_scope": {
+    "counts": {
+      "selected_anchors_7": 47,
+      "selected_anchors_5": 14,
+      "selected_anchors_3": 22,
+      "selected_anchors_2": 30,
+      "selected_anchors_4": 17,
+      "selected_anchors_6": 4
+    },
+    "three_anchor_frames": [
+      {
+        "recording": "roundT_doubleT",
+        "frame": 135,
+        "anchors": [
+          [
+            6.788254737854004,
+            -0.32999999999999996,
+            1.53,
+            7.0
+          ],
+          [
+            19.848773956298828,
+            -1.4016804930848332,
+            1.6495989564142386,
+            4.0
+          ],
+          [
+            25.0,
+            -1.6771460093646835,
+            1.5798013781801261,
+            13.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 1
+      },
+      {
+        "recording": "roundT_doubleT",
+        "frame": 170,
+        "anchors": [
+          [
+            5.0,
+            -0.255,
+            1.6199999999999999,
+            10.0
+          ],
+          [
+            19.098861694335938,
+            -1.3499999999999999,
+            1.65,
+            4.0
+          ],
+          [
+            20.0,
+            -1.2715350524418145,
+            1.577974419664817,
+            22.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 1
+      },
+      {
+        "recording": "roundT_squareT_pressureGate_squareT",
+        "frame": 401,
+        "anchors": [
+          [
+            5.0,
+            0.24,
+            1.5899999999999999,
+            14.0
+          ],
+          [
+            7.489699363708496,
+            0.22499999999999998,
+            1.56,
+            10.0
+          ],
+          [
+            19.45514488220215,
+            -0.4975860952605517,
+            1.5562156424995048,
+            4.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 1
+      },
+      {
+        "recording": "new_data",
+        "frame": 903,
+        "anchors": [
+          [
+            12.014074325561523,
+            0.57,
+            1.65,
+            6.0
+          ],
+          [
+            12.792859077453613,
+            0.495,
+            1.5,
+            7.0
+          ],
+          [
+            20.0,
+            -0.033885595296132665,
+            1.62758140735952,
+            5.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 7
+      },
+      {
+        "recording": "new_data",
+        "frame": 4064,
+        "anchors": [
+          [
+            5.0,
+            -0.255,
+            1.6199999999999999,
+            11.0
+          ],
+          [
+            7.31453275680542,
+            -0.255,
+            1.6199999999999999,
+            9.0
+          ],
+          [
+            20.040353775024414,
+            -1.0641090135944897,
+            1.47277149444068,
+            4.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 2
+      },
+      {
+        "recording": "new_data",
+        "frame": 4104,
+        "anchors": [
+          [
+            10.0,
+            -0.5586529644677558,
+            1.5831638068770455,
+            6.0
+          ],
+          [
+            14.87956714630127,
+            -0.69,
+            1.65,
+            6.0
+          ],
+          [
+            19.368635177612305,
+            -1.0120246320269666,
+            1.5923860880124419,
+            6.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 1
+      },
+      {
+        "recording": "new_data",
+        "frame": 5300,
+        "anchors": [
+          [
+            5.0,
+            0.22751547062396296,
+            1.5889438848894348,
+            14.0
+          ],
+          [
+            7.09268856048584,
+            0.22499999999999998,
+            1.56,
+            11.0
+          ],
+          [
+            25.0,
+            0.87,
+            1.41,
+            4.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 0
+      },
+      {
+        "recording": "new_data",
+        "frame": 5550,
+        "anchors": [
+          [
+            5.0,
+            -0.33673547256808084,
+            1.5026824588465368,
+            7.0
+          ],
+          [
+            6.520553112030029,
+            -0.285,
+            1.6199999999999999,
+            9.0
+          ],
+          [
+            20.0,
+            -0.6068447111799081,
+            1.469553785503481,
+            5.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 1
+      },
+      {
+        "recording": "new_data",
+        "frame": 6569,
+        "anchors": [
+          [
+            5.0,
+            0.17049118768169294,
+            1.5866630263693293,
+            12.0
+          ],
+          [
+            9.061129570007324,
+            0.18,
+            1.65,
+            10.0
+          ],
+          [
+            25.0,
+            0.7057743920768967,
+            1.5543385269460297,
+            4.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 3
+      },
+      {
+        "recording": "new_data",
+        "frame": 6627,
+        "anchors": [
+          [
+            5.0,
+            0.3097700116685927,
+            1.495433383900151,
+            4.0
+          ],
+          [
+            14.764887809753418,
+            0.6800062441505857,
+            1.5849901680360265,
+            6.0
+          ],
+          [
+            35.0,
+            2.0353789061812546,
+            1.6078897895212863,
+            4.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 4
+      },
+      {
+        "recording": "new_data",
+        "frame": 6635,
+        "anchors": [
+          [
+            11.914645195007324,
+            0.6599999999999999,
+            1.65,
+            6.0
+          ],
+          [
+            15.0,
+            0.7609031030211174,
+            1.594376158732497,
+            6.0
+          ],
+          [
+            16.002277374267578,
+            0.7542589204647119,
+            1.6199999999999999,
+            10.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 2
+      },
+      {
+        "recording": "new_data",
+        "frame": 6673,
+        "anchors": [
+          [
+            5.0,
+            0.255,
+            1.6199999999999999,
+            11.0
+          ],
+          [
+            7.550375461578369,
+            0.255,
+            1.6199999999999999,
+            10.0
+          ],
+          [
+            20.0,
+            0.6778441721821375,
+            1.5591337754686743,
+            6.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 1
+      },
+      {
+        "recording": "new_data",
+        "frame": 6830,
+        "anchors": [
+          [
+            7.319508075714111,
+            0.3,
+            1.53,
+            10.0
+          ],
+          [
+            22.623743057250977,
+            1.4549999999999998,
+            1.56,
+            4.0
+          ],
+          [
+            25.0,
+            1.5838845963879693,
+            1.5825075518962382,
+            10.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 1
+      },
+      {
+        "recording": "new_data",
+        "frame": 6836,
+        "anchors": [
+          [
+            5.0,
+            0.27361236151732593,
+            1.583655121472434,
+            10.0
+          ],
+          [
+            6.741908073425293,
+            0.24,
+            1.5899999999999999,
+            9.0
+          ],
+          [
+            20.0,
+            0.4965441495997489,
+            1.597147513053821,
+            6.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 1
+      },
+      {
+        "recording": "new_data",
+        "frame": 7943,
+        "anchors": [
+          [
+            5.0,
+            -0.3265019103032012,
+            1.515914343332676,
+            5.0
+          ],
+          [
+            7.061898231506348,
+            -0.285,
+            1.6199999999999999,
+            8.0
+          ],
+          [
+            25.0,
+            -0.9481137625348073,
+            1.6262531010895356,
+            4.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 6
+      },
+      {
+        "recording": "new_data",
+        "frame": 7976,
+        "anchors": [
+          [
+            25.0,
+            -0.9299999999999999,
+            1.5899999999999999,
+            17.0
+          ],
+          [
+            30.0,
+            -1.14,
+            1.53,
+            11.0
+          ],
+          [
+            55.0,
+            -0.705,
+            1.38,
+            4.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 1
+      },
+      {
+        "recording": "new_data",
+        "frame": 8471,
+        "anchors": [
+          [
+            13.07805061340332,
+            -0.6749999999999999,
+            1.6199999999999999,
+            6.0
+          ],
+          [
+            15.0,
+            -0.6964799501584773,
+            1.5671673446407264,
+            6.0
+          ],
+          [
+            19.536354064941406,
+            -0.8839375999248132,
+            1.6199999999999999,
+            4.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 0
+      },
+      {
+        "recording": "new_data",
+        "frame": 8499,
+        "anchors": [
+          [
+            15.0,
+            -0.6739562068365955,
+            1.5643837134762013,
+            6.0
+          ],
+          [
+            18.849637985229492,
+            -0.825,
+            1.6199999999999999,
+            4.0
+          ],
+          [
+            25.091779708862305,
+            -1.2708546265569518,
+            1.6081807915950999,
+            5.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 0
+      },
+      {
+        "recording": "new_data",
+        "frame": 9009,
+        "anchors": [
+          [
+            5.0,
+            0.21,
+            1.5899999999999999,
+            12.0
+          ],
+          [
+            7.119024753570557,
+            0.21,
+            1.5899999999999999,
+            10.0
+          ],
+          [
+            18.420745849609375,
+            -0.495,
+            1.5,
+            4.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 0
+      },
+      {
+        "recording": "new_data",
+        "frame": 9085,
+        "anchors": [
+          [
+            5.0,
+            0.22499999999999998,
+            1.56,
+            12.0
+          ],
+          [
+            7.940956115722656,
+            0.24,
+            1.5899999999999999,
+            11.0
+          ],
+          [
+            19.68389129638672,
+            -0.4128703183338659,
+            1.3784421394477333,
+            5.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 5
+      },
+      {
+        "recording": "new_data",
+        "frame": 9154,
+        "anchors": [
+          [
+            5.0,
+            0.22918747844121198,
+            1.5805855789769694,
+            12.0
+          ],
+          [
+            7.531874656677246,
+            0.22499999999999998,
+            1.6199999999999999,
+            11.0
+          ],
+          [
+            17.68514060974121,
+            -0.5294409656636283,
+            1.38,
+            5.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 1
+      },
+      {
+        "recording": "new_data",
+        "frame": 9241,
+        "anchors": [
+          [
+            15.0,
+            0.6281048112271217,
+            1.5654178517585497,
+            7.0
+          ],
+          [
+            19.518587112426758,
+            0.8580343483103909,
+            1.5522556020101623,
+            7.0
+          ],
+          [
+            25.0,
+            1.3372876102422329,
+            1.580631599498472,
+            8.0
+          ]
+        ],
+        "components_wholly_after_last_anchor": 2
+      }
+    ],
+    "interpretation": "Scope only: three selected anchors yield two nonzero design rows for two fitted continuation coefficients; this does not validate a straight-line fallback or prove the measured rail anchors are true rails."
+  },
+  "worst_internal_discrepancies": [
+    {
+      "recording": "new_data",
+      "frame": 7976,
+      "role": "continuous_negative",
+      "baseline_status": "obstacle",
+      "negative_alarm": true,
+      "retained_anchors": [
+        [
+          5.0,
+          -0.19871778803302256,
+          1.5712316218291584,
+          13.0
+        ],
+        [
+          10.0,
+          -0.32860021461048633,
+          1.5742695782809637,
+          12.0
+        ],
+        [
+          15.0,
+          -0.51,
+          1.5899999999999999,
+          23.0
+        ],
+        [
+          20.0,
+          -0.710964415134288,
+          1.5570601870827565,
+          26.0
+        ],
+        [
+          25.0,
+          -0.9299999999999999,
+          1.5899999999999999,
+          17.0
+        ],
+        [
+          30.0,
+          -1.14,
+          1.53,
+          11.0
+        ],
+        [
+          55.0,
+          -0.705,
+          1.38,
+          4.0
+        ]
+      ],
+      "training_selected_anchors": 6,
+      "nonzero_design_rows": 5,
+      "quadratic_residual_dof_if_rank_two": 3,
+      "continuation_coefficients": [
+        30.0,
+        -1.14,
+        -0.04696186125683936,
+        -0.0003563431954678131,
+        0.0013812011517982286,
+        6.547521396936612e-05,
+        8.768871090683746e-08
+      ],
+      "holdout_distance_m": 25.0,
+      "predicted_center_m": -2.536761028588367,
+      "measured_center_m": -0.705,
+      "signed_discrepancy_m": -1.831761028588367,
+      "prediction_heuristic_uncertainty_m": 0.45372178248678696,
+      "measured_anchor_heuristic_uncertainty_m": 0.06,
+      "outside_prediction_interval": true,
+      "outside_prediction_plus_anchor_interval": true,
+      "prediction_within_configured_uncertainty_limit": false
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 964,
+      "role": "synthetic",
+      "baseline_status": "obstacle",
+      "negative_alarm": false,
+      "retained_anchors": [
+        [
+          5.0,
+          0.24666828266044602,
+          1.5463416553005125,
+          12.0
+        ],
+        [
+          7.46336555480957,
+          0.285,
+          1.5,
+          10.0
+        ],
+        [
+          15.0,
+          0.6649537938016732,
+          1.527926346572921,
+          11.0
+        ],
+        [
+          20.0,
+          1.0012162419926365,
+          1.5672469097429709,
+          15.0
+        ],
+        [
+          25.0,
+          1.4090528044000172,
+          1.590001395440445,
+          10.0
+        ],
+        [
+          28.693584442138672,
+          1.738541477844076,
+          1.5973622018800027,
+          5.0
+        ],
+        [
+          43.8281135559082,
+          1.8567188934223835,
+          1.4303665065999753,
+          4.0
+        ]
+      ],
+      "training_selected_anchors": 6,
+      "nonzero_design_rows": 5,
+      "quadratic_residual_dof_if_rank_two": 3,
+      "continuation_coefficients": [
+        28.693584442138672,
+        1.738541477844076,
+        0.09796532972094081,
+        0.001442966843344189,
+        0.0020706588484088557,
+        9.939423116654334e-05,
+        2.0040879172298247e-07
+      ],
+      "holdout_distance_m": 15.134529113769531,
+      "predicted_center_m": 3.5517178988500517,
+      "measured_center_m": 1.8567188934223835,
+      "signed_discrepancy_m": 1.6949990054276682,
+      "prediction_heuristic_uncertainty_m": 0.25551156022737176,
+      "measured_anchor_heuristic_uncertainty_m": 0.06,
+      "outside_prediction_interval": true,
+      "outside_prediction_plus_anchor_interval": true,
+      "prediction_within_configured_uncertainty_limit": true
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 1054,
+      "role": "synthetic",
+      "baseline_status": "obstacle",
+      "negative_alarm": false,
+      "retained_anchors": [
+        [
+          5.0,
+          0.21,
+          1.65,
+          12.0
+        ],
+        [
+          7.285918712615967,
+          0.22499999999999998,
+          1.6199999999999999,
+          12.0
+        ],
+        [
+          14.413405418395996,
+          0.5933412516982453,
+          1.53,
+          6.0
+        ],
+        [
+          25.0,
+          1.3643321424020387,
+          1.5800275171273366,
+          9.0
+        ],
+        [
+          29.47452163696289,
+          1.77304513983169,
+          1.576405330232129,
+          7.0
+        ],
+        [
+          43.33716583251953,
+          1.766552624910171,
+          1.4731941036476959,
+          4.0
+        ]
+      ],
+      "training_selected_anchors": 5,
+      "nonzero_design_rows": 4,
+      "quadratic_residual_dof_if_rank_two": 2,
+      "continuation_coefficients": [
+        29.47452163696289,
+        1.77304513983169,
+        0.10056051793103142,
+        0.0014564674833120346,
+        0.0039379312337601054,
+        0.00017825994311056336,
+        6.90779501301966e-07
+      ],
+      "holdout_distance_m": 13.86264419555664,
+      "predicted_center_m": 3.446973406014987,
+      "measured_center_m": 1.766552624910171,
+      "signed_discrepancy_m": 1.6804207811048157,
+      "prediction_heuristic_uncertainty_m": 0.24509304203624627,
+      "measured_anchor_heuristic_uncertainty_m": 0.06,
+      "outside_prediction_interval": true,
+      "outside_prediction_plus_anchor_interval": true,
+      "prediction_within_configured_uncertainty_limit": true
+    },
+    {
+      "recording": "roundT_squareT_pressureGate_squareT",
+      "frame": 391,
+      "role": "organizer_declared_empty",
+      "baseline_status": "obstacle",
+      "negative_alarm": true,
+      "retained_anchors": [
+        [
+          5.0,
+          0.2351787152536893,
+          1.563866564785549,
+          12.0
+        ],
+        [
+          6.86848783493042,
+          0.21,
+          1.5899999999999999,
+          10.0
+        ],
+        [
+          14.653410911560059,
+          0.6196704440910582,
+          1.5,
+          6.0
+        ],
+        [
+          20.0,
+          1.0219886250236079,
+          1.574132778795058,
+          18.0
+        ],
+        [
+          25.0,
+          1.41,
+          1.5899999999999999,
+          13.0
+        ],
+        [
+          29.86244773864746,
+          1.8309855154936552,
+          1.5789033305483409,
+          7.0
+        ],
+        [
+          44.43125534057617,
+          1.946582783714411,
+          1.415840211249696,
+          4.0
+        ]
+      ],
+      "training_selected_anchors": 6,
+      "nonzero_design_rows": 5,
+      "quadratic_residual_dof_if_rank_two": 3,
+      "continuation_coefficients": [
+        29.86244773864746,
+        1.8309855154936552,
+        0.09682236475937445,
+        0.0012375580262917402,
+        0.004519934193064795,
+        0.00020550635889257172,
+        9.048466563183926e-07
+      ],
+      "holdout_distance_m": 14.568807601928711,
+      "predicted_center_m": 3.504243802066901,
+      "measured_center_m": 1.946582783714411,
+      "signed_discrepancy_m": 1.5576610183524902,
+      "prediction_heuristic_uncertainty_m": 0.26371027767689503,
+      "measured_anchor_heuristic_uncertainty_m": 0.06,
+      "outside_prediction_interval": true,
+      "outside_prediction_plus_anchor_interval": true,
+      "prediction_within_configured_uncertainty_limit": true
+    },
+    {
+      "recording": "roundT_squareT_pressureGate_squareT",
+      "frame": 489,
+      "role": "organizer_declared_empty",
+      "baseline_status": "obstacle",
+      "negative_alarm": true,
+      "retained_anchors": [
+        [
+          5.0,
+          0.195,
+          1.6199999999999999,
+          12.0
+        ],
+        [
+          10.0,
+          0.3778249208939982,
+          1.5895556392057102,
+          10.0
+        ],
+        [
+          15.0,
+          0.669071286602934,
+          1.566761543452832,
+          18.0
+        ],
+        [
+          20.0,
+          1.021006553633996,
+          1.566880021777414,
+          20.0
+        ],
+        [
+          25.0,
+          1.4066950020001388,
+          1.5852716486017617,
+          12.0
+        ],
+        [
+          30.0,
+          1.8365330952039751,
+          1.5891936732929466,
+          8.0
+        ],
+        [
+          46.06354522705078,
+          2.106844733514935,
+          1.4402929006122316,
+          4.0
+        ]
+      ],
+      "training_selected_anchors": 6,
+      "nonzero_design_rows": 5,
+      "quadratic_residual_dof_if_rank_two": 3,
+      "continuation_coefficients": [
+        30.0,
+        1.8365330952039751,
+        0.09405483206732444,
+        0.0011127651632191265,
+        0.0018449641281462123,
+        8.745968746037154e-05,
+        1.564608463090746e-07
+      ],
+      "holdout_distance_m": 16.06354522705078,
+      "predicted_center_m": 3.6345222683437797,
+      "measured_center_m": 2.106844733514935,
+      "signed_discrepancy_m": 1.5276775348288445,
+      "prediction_heuristic_uncertainty_m": 0.2709205382038343,
+      "measured_anchor_heuristic_uncertainty_m": 0.06,
+      "outside_prediction_interval": true,
+      "outside_prediction_plus_anchor_interval": true,
+      "prediction_within_configured_uncertainty_limit": true
+    },
+    {
+      "recording": "new_data",
+      "frame": 8983,
+      "role": "continuous_negative",
+      "baseline_status": "obstacle",
+      "negative_alarm": true,
+      "retained_anchors": [
+        [
+          5.0,
+          0.22495027696365172,
+          1.585871202837593,
+          11.0
+        ],
+        [
+          10.0,
+          0.3896613459246977,
+          1.560223265751691,
+          10.0
+        ],
+        [
+          15.0,
+          0.679516274487945,
+          1.5737184449765944,
+          18.0
+        ],
+        [
+          20.0,
+          1.020485438284814,
+          1.5696701759713374,
+          20.0
+        ],
+        [
+          25.0,
+          1.4016289860812898,
+          1.5783488165135586,
+          11.0
+        ],
+        [
+          30.0,
+          1.8371437792529361,
+          1.586420553660444,
+          6.0
+        ],
+        [
+          44.2828254699707,
+          1.942821735284839,
+          1.3855128859414214,
+          4.0
+        ]
+      ],
+      "training_selected_anchors": 6,
+      "nonzero_design_rows": 5,
+      "quadratic_residual_dof_if_rank_two": 3,
+      "continuation_coefficients": [
+        30.0,
+        1.8371437792529361,
+        0.09494795996285159,
+        0.0011943249343327896,
+        0.0018999929791332054,
+        9.006830517559053e-05,
+        1.6593340085188584e-07
+      ],
+      "holdout_distance_m": 14.282825469970703,
+      "predicted_center_m": 3.4369101359110052,
+      "measured_center_m": 1.942821735284839,
+      "signed_discrepancy_m": 1.4940884006261663,
+      "prediction_heuristic_uncertainty_m": 0.23975715999350003,
+      "measured_anchor_heuristic_uncertainty_m": 0.06,
+      "outside_prediction_interval": true,
+      "outside_prediction_plus_anchor_interval": true,
+      "prediction_within_configured_uncertainty_limit": true
+    },
+    {
+      "recording": "cloud_with_fake_obj",
+      "frame": 929,
+      "role": "synthetic",
+      "baseline_status": "obstacle",
+      "negative_alarm": false,
+      "retained_anchors": [
+        [
+          5.0,
+          0.22993226399104344,
+          1.57697057570927,
+          13.0
+        ],
+        [
+          10.0,
+          0.4930063610860093,
+          1.5630820103665752,
+          7.0
+        ],
+        [
+          15.0,
+          0.7048845978186314,
+          1.5730420248820327,
+          23.0
+        ],
+        [
+          20.0,
+          0.9995870253528277,
+          1.5769985944935914,
+          12.0
+        ],
+        [
+          25.0,
+          1.3927363729739346,
+          1.5826854269886332,
+          8.0
+        ],
+        [
+          29.342544555664062,
+          1.7754682543788283,
+          1.5926646224240746,
+          8.0
+        ],
+        [
+          44.035701751708984,
+          1.889778042065589,
+          1.4319212712537073,
+          4.0
+        ]
+      ],
+      "training_selected_anchors": 6,
+      "nonzero_design_rows": 5,
+      "quadratic_residual_dof_if_rank_two": 3,
+      "continuation_coefficients": [
+        29.342544555664062,
+        1.7754682543788283,
+        0.09170404505219137,
+        0.0011977645528414237,
+        0.0031323963548273636,
+        0.0001522222209138704,
+        4.6230794169503305e-07
+      ],
+      "holdout_distance_m": 14.693157196044922,
+      "predicted_center_m": 3.3814742377516804,
+      "measured_center_m": 1.889778042065589,
+      "signed_discrepancy_m": 1.4916961956860915,
+      "prediction_heuristic_uncertainty_m": 0.2546493536231708,
+      "measured_anchor_heuristic_uncertainty_m": 0.06,
+      "outside_prediction_interval": true,
+      "outside_prediction_plus_anchor_interval": true,
+      "prediction_within_configured_uncertainty_limit": true
+    },
+    {
+      "recording": "roundT_squareT_pressureGate_squareT",
+      "frame": 411,
+      "role": "organizer_declared_empty",
+      "baseline_status": "obstacle",
+      "negative_alarm": true,
+      "retained_anchors": [
+        [
+          5.0,
+          0.22041565210008443,
+          1.5831538305132902,
+          13.0
+        ],
+        [
+          8.606841087341309,
+          0.285,
+          1.56,
+          11.0
+        ],
+        [
+          15.0,
+          0.6966130727618884,
+          1.494001524325759,
+          9.0
+        ],
+        [
+          20.0,
+          1.022777550099368,
+          1.5760516288985102,
+          20.0
+        ],
+        [
+          25.0,
+          1.365,
+          1.6199999999999999,
+          10.0
+        ],
+        [
+          30.0,
+          1.8295069669236377,
+          1.5940402128851217,
+          4.0
+        ],
+        [
+          43.586029052734375,
+          1.8452081870311199,
+          1.3816632450339867,
+          4.0
+        ]
+      ],
+      "training_selected_anchors": 6,
+      "nonzero_design_rows": 5,
+      "quadratic_residual_dof_if_rank_two": 3,
+      "continuation_coefficients": [
+        30.0,
+        1.8295069669236377,
+        0.09419204055876092,
+        0.0011463266378288256,
+        0.004039701992683378,
+        0.00018802321207737676,
+        7.382107661178328e-07
+      ],
+      "holdout_distance_m": 13.586029052734375,
+      "predicted_center_m": 3.320791949855625,
+      "measured_center_m": 1.8452081870311199,
+      "signed_discrepancy_m": 1.4755837628245052,
+      "prediction_heuristic_uncertainty_m": 0.24108714203568335,
+      "measured_anchor_heuristic_uncertainty_m": 0.06,
+      "outside_prediction_interval": true,
+      "outside_prediction_plus_anchor_interval": true,
+      "prediction_within_configured_uncertainty_limit": true
+    },
+    {
+      "recording": "new_data",
+      "frame": 6617,
+      "role": "continuous_negative",
+      "baseline_status": "no_obstacle_observed",
+      "negative_alarm": false,
+      "retained_anchors": [
+        [
+          11.09872055053711,
+          0.6,
+          1.65,
+          6.0
+        ],
+        [
+          12.465493202209473,
+          0.585,
+          1.5,
+          6.0
+        ],
+        [
+          14.238322257995605,
+          0.6014912572872942,
+          1.6074955488002876,
+          6.0
+        ],
+        [
+          18.926593780517578,
+          0.9809446808876603,
+          1.5500724147543592,
+          4.0
+        ],
+        [
+          29.631078720092773,
+          2.019920006274454,
+          1.5919217079635004,
+          6.0
+        ]
+      ],
+      "training_selected_anchors": 4,
+      "nonzero_design_rows": 3,
+      "quadratic_residual_dof_if_rank_two": 1,
+      "continuation_coefficients": [
+        18.926593780517578,
+        0.9809446808876603,
+        0.12,
+        0.010150953309082477,
+        0.0027856123347621345,
+        0.0004027246274982476,
+        1.1060128236106444e-06
+      ],
+      "holdout_distance_m": 10.704484939575195,
+      "predicted_center_m": 3.428639987398292,
+      "measured_center_m": 2.019920006274454,
+      "signed_discrepancy_m": 1.4087199811238382,
+      "prediction_heuristic_uncertainty_m": 0.19528465025752814,
+      "measured_anchor_heuristic_uncertainty_m": 0.06,
+      "outside_prediction_interval": true,
+      "outside_prediction_plus_anchor_interval": true,
+      "prediction_within_configured_uncertainty_limit": true
+    },
+    {
+      "recording": "new_data",
+      "frame": 5349,
+      "role": "continuous_negative",
+      "baseline_status": "unresolved_obstacle",
+      "negative_alarm": false,
+      "retained_anchors": [
+        [
+          5.0,
+          0.22499999999999998,
+          1.6199999999999999,
+          12.0
+        ],
+        [
+          8.027356147766113,
+          0.22499999999999998,
+          1.6199999999999999,
+          11.0
+        ],
+        [
+          14.015596389770508,
+          0.6,
+          1.47,
+          6.0
+        ],
+        [
+          24.954355239868164,
+          1.302141600143332,
+          1.56,
+          8.0
+        ]
+      ],
+      "training_selected_anchors": 3,
+      "nonzero_design_rows": 2,
+      "quadratic_residual_dof_if_rank_two": 0,
+      "continuation_coefficients": [
+        14.015596389770508,
+        0.6,
+        0.10421732410998767,
+        0.006946044979540613,
+        9.426583816800307e-16,
+        1.148419503946129e-16,
+        1.066813196772658e-31
+      ],
+      "holdout_distance_m": 10.938758850097656,
+      "predicted_center_m": 2.571147226757936,
+      "measured_center_m": 1.302141600143332,
+      "signed_discrepancy_m": 1.269005626614604,
+      "prediction_heuristic_uncertainty_m": 0.18340700435495821,
+      "measured_anchor_heuristic_uncertainty_m": 0.06,
+      "outside_prediction_interval": true,
+      "outside_prediction_plus_anchor_interval": true,
+      "prediction_within_configured_uncertainty_limit": true
+    },
+    {
+      "recording": "roundT_squareT_pressureGate_squareT",
+      "frame": 436,
+      "role": "organizer_declared_empty",
+      "baseline_status": "obstacle",
+      "negative_alarm": true,
+      "retained_anchors": [
+        [
+          5.0,
+          0.21686017575718666,
+          1.5786767237738433,
+          13.0
+        ],
+        [
+          7.489699363708496,
+          0.22499999999999998,
+          1.56,
+          10.0
+        ],
+        [
+          13.007230758666992,
+          0.5484848393274384,
+          1.44,
+          8.0
+        ],
+        [
+          20.0,
+          1.0027945327891978,
+          1.5696502630242606,
+          19.0
+        ],
+        [
+          25.0,
+          1.3664481028560194,
+          1.5772277217068953,
+          10.0
+        ],
+        [
+          27.09336280822754,
+          1.5135982016645886,
+          1.56,
+          7.0
+        ],
+        [
+          41.40644454956055,
+          1.517395894525341,
+          1.41,
+          4.0
+        ]
+      ],
+      "training_selected_anchors": 6,
+      "nonzero_design_rows": 5,
+      "quadratic_residual_dof_if_rank_two": 3,
+      "continuation_coefficients": [
+        27.09336280822754,
+        1.5135982016645886,
+        0.08175511811793665,
+        0.0,
+        0.005401374420809487,
+        0.00027703155687289503,
+        1.4645741082830234e-06
+      ],
+      "holdout_distance_m": 14.313081741333008,
+      "predicted_center_m": 2.683765890058951,
+      "measured_center_m": 1.517395894525341,
+      "signed_discrepancy_m": 1.1663699955336102,
+      "prediction_heuristic_uncertainty_m": 0.2710458186403035,
+      "measured_anchor_heuristic_uncertainty_m": 0.06,
+      "outside_prediction_interval": true,
+      "outside_prediction_plus_anchor_interval": true,
+      "prediction_within_configured_uncertainty_limit": true
+    },
+    {
+      "recording": "new_data",
+      "frame": 8562,
+      "role": "continuous_negative",
+      "baseline_status": "unresolved_obstacle",
+      "negative_alarm": false,
+      "retained_anchors": [
+        [
+          5.0,
+          -0.1731493154343707,
+          1.5799872789354554,
+          14.0
+        ],
+        [
+          15.0,
+          -0.42628487237154056,
+          1.560643936448071,
+          9.0
+        ],
+        [
+          20.0,
+          -0.585,
+          1.56,
+          24.0
+        ],
+        [
+          25.0,
+          -0.765,
+          1.56,
+          18.0
+        ],
+        [
+          30.0,
+          -0.96,
+          1.5899999999999999,
+          10.0
+        ],
+        [
+          35.0,
+          -1.14,
+          1.53,
+          6.0
+        ],
+        [
+          55.0,
+          -3.195,
+          1.38,
+          4.0
+        ]
+      ],
+      "training_selected_anchors": 6,
+      "nonzero_design_rows": 5,
+      "quadratic_residual_dof_if_rank_two": 3,
+      "continuation_coefficients": [
+        35.0,
+        -1.14,
+        -0.040852599439174554,
+        -0.00028232825278734107,
+        0.0009264115560304938,
+        3.705646224121975e-05,
+        3.287313033726081e-08
+      ],
+      "holdout_distance_m": 20.0,
+      "predicted_center_m": -2.0699832898984276,
+      "measured_center_m": -3.195,
+      "signed_discrepancy_m": 1.1250167101015722,
+      "prediction_heuristic_uncertainty_m": 0.34159767923226364,
+      "measured_anchor_heuristic_uncertainty_m": 0.06,
+      "outside_prediction_interval": true,
+      "outside_prediction_plus_anchor_interval": true,
+      "prediction_within_configured_uncertainty_limit": true
+    }
+  ],
+  "native_source_evidence": {
+    "path": "cpp/kernels.cpp",
+    "sha256": "ab1f038ed0eb3b004bfbc35a594cb69d939ccadddb8b2c3dd25a15a7496637f1",
+    "variance_dof": "count - 2; includes the deterministic zero edge row, so a three-anchor quadratic has no residual information despite this numeric divisor."
+  },
+  "decision": "Measured internal inconsistency, not physical corridor ground truth. Do not suppress hazards or promote a straight-line fallback. Next compare that existing fallback on exactly the same held-out observations before any detector candidate.",
+  "supported_prediction_subset": {
+    "all": {
+      "holdouts_within_existing_uncertainty_limit": 15194,
+      "outside_prediction_interval": 384,
+      "outside_prediction_plus_anchor_interval": 99
+    },
+    "negative_alarm": {
+      "holdouts_within_existing_uncertainty_limit": 101,
+      "outside_prediction_interval": 32,
+      "outside_prediction_plus_anchor_interval": 27
+    },
+    "three_selected": {
+      "holdouts_within_existing_uncertainty_limit": 59,
+      "outside_prediction_interval": 23,
+      "outside_prediction_plus_anchor_interval": 21
+    }
+  }
+}

@@ -1,5 +1,86 @@
 # Review of teammate annotations — 2026-09-16
 
+## Person-specific evidence — 2026-09-24
+
+The user confirms that `doubleT_obstacle` has one target obstacle, a person.
+The existing teammate labels are retained unchanged. Their positions were reviewed
+on all 36 frames after detector-assisted propagation; they are not unreviewed
+automatic labels. The author describes full-person volume in the README, whereas
+the detector reports measured-return support. A fresh annotation pass from scratch
+is not the prerequisite for inspecting this known person.
+
+A fresh 201-frame real replay of `9e7fc92`, seed `20260915`, one ICP thread,
+captured every labelled frame 165–200 and nine fixed far-field review frames.
+The original oriented boxes select components by the number of measured points
+inside the box, not by maximum IoU. All positive alternative components are recorded.
+All six contact sheets (all 36 observations) were inspected against raw points:
+the selected component follows the visible upright body and legs, not the bed.
+
+| Question | Actual result |
+| --- | --- |
+| Measured person component | 36/36 frames; 331–449 component points |
+| Points of that component inside the original oriented box | 282–415; next-best component at most 11 |
+| Explicit presence confirmation | 36/36 |
+| Track continuity within the labelled interval | One track, `2535`; zero ID switches |
+| Relation assigned by the detector | `adjacent` on all 36 frames; zero confirmed intersections |
+| IoU ≥ 0.25 against exported AABB | 5/36 |
+| IoU ≥ 0.25 against original oriented full-person box | 14/36 |
+| Median support-box / annotation-centre displacement | 0.436 m |
+
+The oriented comparison intersects the actual box half-spaces; it does not resize
+the prediction or remove label yaw. Numerical tolerance is explicit in the recipe.
+Neither 5/36 nor 14/36 is a count of actual person detections. The centre displacement
+also compares different volume conventions, not a surveyed physical centre.
+These are 36 observations of one event, not 36 independent detections.
+
+### Confirmed alarms are not person detections
+
+The recording contains 203 confirmed hazard-component observations on 172 frames.
+On the labelled interval, 32 observations on 27/36 frames are disjoint from the
+person label. Under the supplied one-target scene truth, these are non-target alarms.
+The other 171 observations occur on frames without person positions; their identity
+is not established by this audit. Nineteen alarm track IDs are not nineteen objects.
+
+All 32 labelled-interval non-target alarms carry
+`certified_interior_shared_with_structure`, with zero
+`certified_unexplained_voxels`. Sixteen have two certified interior voxels and
+sixteen have three. Twenty-four use one recorded ring value, eight use two;
+ring semantics and physical return independence remain unverified.
+
+The causal code path is explicit: `cluster_candidates` intentionally preserves
+certified interior evidence despite cross-section cell sharing with structure;
+`_associate` can confirm thin interior evidence through temporal component support.
+This proves why these records become alarms, not what physical surface generated
+every return or whether the reference contour is physically correct.
+For frame 181, the alarm is at about 56.38 m, while the person is near 10 m.
+Its two certified witnesses are about 0.099 m apart, both carry `ring=59`,
+and differ in height by about 0.00049 m. The actual witness coordinates,
+timestamps, intensities, validity masks and source indices are preserved.
+
+**Decision:** retain this fixed non-target panel and the 36-frame person control
+for the next foreground-evidence / contour investigation. Do not suppress all
+structure-sharing returns, discard a ring, inflate boxes or raise support thresholds
+to pass this recording: low and sparse genuine obstacles can share those properties.
+No detector behavior was changed and no false-alarm fix is claimed here.
+This labelled person is adjacent according to the detector; it is not a verified
+positive control for a real on-track intrusion.
+
+Reproduce with `configs/person-specific-replay-20260923.json` and
+`configs/person-specific-report-20260923.json`, respectively:
+
+```bash
+python -m tunnel_guard.run --experiment configs/person-specific-replay-20260923.json
+python -m tunnel_guard.person_evidence_report --experiment configs/person-specific-report-20260923.json
+```
+
+Published evidence: [summary](../results/person-specific-20260923.json),
+[person observations](../results/person-specific-observations-20260923.json),
+[alarm records and witnesses](../results/person-specific-alarms-20260923.json),
+[inspection and replay control](../results/person-specific-inspection-20260923.json).
+Contact sheets and far-field figures are under `results/person-specific-20260923/`.
+Full replay and diagnostics remain under `build/person-specific-replay-20260923/`.
+The sections below retain historical findings and historical detector scores.
+
 ## Update after commit 3e2d017
 
 Original PSR files are now available under `annotations/sustech-raw/doubleT_obstacle/`.

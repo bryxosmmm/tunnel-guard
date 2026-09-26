@@ -1,0 +1,52 @@
+{
+  "hypothesis": "Upper bound: an object placed where the recording returned nothing is taken to return, since the empty slot means no surface was there.",
+  "success_criterion": {
+    "localized_object_recall_min": 0.5,
+    "minimum_iou": 0.1
+  },
+  "seed": 20260915,
+  "detector_config": "configs/detector-native-hardware-20260917.json",
+  "output": "build/realistic-panel-upper-20260917",
+  "background_bag": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+  "pose_run": "build/perf-cpp-hardware-20260917",
+  "source_frames": 6,
+  "frame_start": 40,
+  "frame_stride": 1,
+  "ranges_m": [
+    10.0,
+    20.0,
+    40.0,
+    60.0,
+    100.0,
+    150.0
+  ],
+  "lateral_m": [
+    0.0,
+    0.6,
+    2.5
+  ],
+  "object_dimensions_m": [
+    [
+      0.3,
+      0.3,
+      0.4
+    ],
+    [
+      0.6,
+      0.6,
+      1.7
+    ],
+    [
+      0.8,
+      0.8,
+      1.0
+    ]
+  ],
+  "rail_gauge_m": 1.52,
+  "rail_height_m": 0.2,
+  "object_rest_height_m": 0.05,
+  "object_range_noise_m": 0.02,
+  "object_intensity": 30.0,
+  "minimum_iou": 0.1,
+  "empty_slots_return_object": true
+}

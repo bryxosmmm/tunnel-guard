@@ -1,0 +1,963 @@
+{
+  "recipe": {
+    "hypothesis": "Independent measured-scan replay reproduces saved within-scan geometry and candidate support without needing temporal state.",
+    "criterion": "Require exact equality of geometry and per-component measured fields against the continuous baseline; reject support mapping for any mismatch. Fresh-state track IDs, poses and temporal confirmations are not replay-equivalent and must not be substituted.",
+    "seed": 20260915,
+    "detector_config": "configs/detector.json",
+    "bag": "data/extended_full/new_data",
+    "reference_jsonl": "build/issue23-point-support-20260924/reference.jsonl",
+    "repetitions": 1,
+    "frames": [
+      5300,
+      5360,
+      5531,
+      5541,
+      5550,
+      6438,
+      6451,
+      6461,
+      6493,
+      6501,
+      6504,
+      6512,
+      6517,
+      6533,
+      6535,
+      6562,
+      6564,
+      6569,
+      6574,
+      6591,
+      6613,
+      6627,
+      7976,
+      8198,
+      8424,
+      8458,
+      9028,
+      9198,
+      9993,
+      10416
+    ],
+    "output": "build/issue23-point-support-full-20260924"
+  },
+  "compared_fields": [
+    "component_id",
+    "bbox_min",
+    "bbox_max",
+    "center",
+    "extent_m",
+    "support_voxels",
+    "density_core_voxels",
+    "in_envelope_voxels",
+    "uncertain_voxels",
+    "boundary_uncertain_voxels",
+    "path_relation",
+    "interior_voxels",
+    "certified_unexplained_voxels",
+    "intersection_immediate"
+  ],
+  "frames": [
+    {
+      "frame": 5300,
+      "measurement_timestamp_ns": 946687219233363986,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687219233363986",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 146,
+          "baseline_track_id": 108113,
+          "isolated_track_id_not_temporal_equivalent": 157,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 492,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_005300.npz",
+      "sha256": "539196437c7379f7c672824f80b96436b309d2b87faff986f03de18a6a162940"
+    },
+    {
+      "frame": 5360,
+      "measurement_timestamp_ns": 946687225233399987,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687225233399987",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 197,
+          "baseline_track_id": 110573,
+          "isolated_track_id_not_temporal_equivalent": 204,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 136,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 229,
+          "baseline_track_id": 109017,
+          "isolated_track_id_not_temporal_equivalent": 243,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 132,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 234,
+          "baseline_track_id": 109099,
+          "isolated_track_id_not_temporal_equivalent": 255,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 66,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_005360.npz",
+      "sha256": "b8476f4da2013e4a2e210861d9b5906fc0aba21b3c041dfa074b6c0969ab22f2"
+    },
+    {
+      "frame": 5531,
+      "measurement_timestamp_ns": 946687242333405972,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687242333405972",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 77,
+          "baseline_track_id": 112260,
+          "isolated_track_id_not_temporal_equivalent": 78,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 207,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_005531.npz",
+      "sha256": "c6aed3cb1e0585135e84513c74291fd0dee6cfd1cf980423a9a7dde570276634"
+    },
+    {
+      "frame": 5541,
+      "measurement_timestamp_ns": 946687243333405972,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687243333405972",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 133,
+          "baseline_track_id": 114398,
+          "isolated_track_id_not_temporal_equivalent": 134,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 147,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_005541.npz",
+      "sha256": "e49dac0d6ce168b7ea198147e3593afe502758a3ed89033a0528de2e17d25309"
+    },
+    {
+      "frame": 5550,
+      "measurement_timestamp_ns": 946687244233329058,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687244233329058",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 98,
+          "baseline_track_id": 114398,
+          "isolated_track_id_not_temporal_equivalent": 101,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 220,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_005550.npz",
+      "sha256": "48a054fa7fe48ba632f2d305d317a8203c29513b2ff90c59d9f4d50a949bf1b5"
+    },
+    {
+      "frame": 6438,
+      "measurement_timestamp_ns": 946687333033326983,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687333033326983",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 187,
+          "baseline_track_id": 123928,
+          "isolated_track_id_not_temporal_equivalent": 188,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 11,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006438.npz",
+      "sha256": "8c24e6ba3ff6bf4424c00e9181f87119e32e87bbf655cc8ec129b8f741e43733"
+    },
+    {
+      "frame": 6451,
+      "measurement_timestamp_ns": 946687334333433032,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687334333433032",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 159,
+          "baseline_track_id": 124821,
+          "isolated_track_id_not_temporal_equivalent": 161,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 14,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 167,
+          "baseline_track_id": 123876,
+          "isolated_track_id_not_temporal_equivalent": 169,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 12,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 173,
+          "baseline_track_id": 123477,
+          "isolated_track_id_not_temporal_equivalent": 175,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 13,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 183,
+          "baseline_track_id": 121911,
+          "isolated_track_id_not_temporal_equivalent": 185,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 8,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 188,
+          "baseline_track_id": 123591,
+          "isolated_track_id_not_temporal_equivalent": 191,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 7,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 192,
+          "baseline_track_id": 128509,
+          "isolated_track_id_not_temporal_equivalent": 196,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 84,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 193,
+          "baseline_track_id": 124018,
+          "isolated_track_id_not_temporal_equivalent": 197,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 7,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 196,
+          "baseline_track_id": 123535,
+          "isolated_track_id_not_temporal_equivalent": 202,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 6,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006451.npz",
+      "sha256": "14768d2a1c4a8d0ca81f752473fa7c6347f00e7890a0b4e4f787ce80f991731d"
+    },
+    {
+      "frame": 6461,
+      "measurement_timestamp_ns": 946687335333412051,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687335333412051",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 189,
+          "baseline_track_id": 123591,
+          "isolated_track_id_not_temporal_equivalent": 190,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 11,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 194,
+          "baseline_track_id": 128509,
+          "isolated_track_id_not_temporal_equivalent": 195,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 6,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 198,
+          "baseline_track_id": 123535,
+          "isolated_track_id_not_temporal_equivalent": 200,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 8,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 208,
+          "baseline_track_id": 127121,
+          "isolated_track_id_not_temporal_equivalent": 210,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 49,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006461.npz",
+      "sha256": "26b06f6ff088a04de3f1faa56abe0152098032060eacdbeb9fdc159fd53f42d3"
+    },
+    {
+      "frame": 6493,
+      "measurement_timestamp_ns": 946687338533447027,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687338533447027",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 217,
+          "baseline_track_id": 124147,
+          "isolated_track_id_not_temporal_equivalent": 218,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 9,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006493.npz",
+      "sha256": "85a47e27516df8d1b23998fb99f4d9e6efaa950a8ddad632063f7e5176ec4afc"
+    },
+    {
+      "frame": 6501,
+      "measurement_timestamp_ns": 946687339333392024,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687339333392024",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 204,
+          "baseline_track_id": 124069,
+          "isolated_track_id_not_temporal_equivalent": 203,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 10,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 210,
+          "baseline_track_id": 124058,
+          "isolated_track_id_not_temporal_equivalent": 212,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 9,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006501.npz",
+      "sha256": "e776d1a9d73aeaf10966d1138787bd27a28945a9f699015d2f7af695e3503e77"
+    },
+    {
+      "frame": 6504,
+      "measurement_timestamp_ns": 946687339633363962,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687339633363962",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 212,
+          "baseline_track_id": 129162,
+          "isolated_track_id_not_temporal_equivalent": 214,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 9,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006504.npz",
+      "sha256": "805a6f2cd36adaddaae045a0d71f6dbdd08dbc23dc7c9d3384308b4176d14492"
+    },
+    {
+      "frame": 6512,
+      "measurement_timestamp_ns": 946687340433375001,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687340433375001",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 231,
+          "baseline_track_id": 131520,
+          "isolated_track_id_not_temporal_equivalent": 237,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 4,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006512.npz",
+      "sha256": "f4d3b67ad3e4a07ad55e5a05c953c2b879240107bd18e037c658cc3a7327d77e"
+    },
+    {
+      "frame": 6517,
+      "measurement_timestamp_ns": 946687340933393955,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687340933393955",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 234,
+          "baseline_track_id": 130046,
+          "isolated_track_id_not_temporal_equivalent": 235,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 11,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006517.npz",
+      "sha256": "f8c26a71659d2ac2cf94b851628548e85ddec8ccc2ade676d5815c2752aa070d"
+    },
+    {
+      "frame": 6533,
+      "measurement_timestamp_ns": 946687342533388972,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687342533388972",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 241,
+          "baseline_track_id": 126686,
+          "isolated_track_id_not_temporal_equivalent": 245,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 15,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006533.npz",
+      "sha256": "0d79f4b430c99e7561a9e531dea13cd3bf1597a6511f44fdfeea0565250e0045"
+    },
+    {
+      "frame": 6535,
+      "measurement_timestamp_ns": 946687342733407974,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687342733407974",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 207,
+          "baseline_track_id": 130229,
+          "isolated_track_id_not_temporal_equivalent": 206,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 18,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 221,
+          "baseline_track_id": 126686,
+          "isolated_track_id_not_temporal_equivalent": 223,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 15,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006535.npz",
+      "sha256": "3e9ca784565791ceab9c30298209b68a6a8e4c251af4c2da7942710d8703bf1f"
+    },
+    {
+      "frame": 6562,
+      "measurement_timestamp_ns": 946687345433416963,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687345433416963",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 138,
+          "baseline_track_id": 131527,
+          "isolated_track_id_not_temporal_equivalent": 146,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 1365,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006562.npz",
+      "sha256": "7dc40a3ed47dd3437c7d5f625b6f1025a74457d78860d9c035fe6f1657c4d2b6"
+    },
+    {
+      "frame": 6564,
+      "measurement_timestamp_ns": 946687345633402944,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687345633402944",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 60,
+          "baseline_track_id": 124069,
+          "isolated_track_id_not_temporal_equivalent": 61,
+          "original_confirmation": "temporal_interior_evidence",
+          "support_points": 128,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006564.npz",
+      "sha256": "bb8ff2f6510e0b7967ebf7d06628abdd370b6d4ce35526207eeb2e1c30d9883b"
+    },
+    {
+      "frame": 6569,
+      "measurement_timestamp_ns": 946687346133301020,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687346133301020",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 130,
+          "baseline_track_id": 131287,
+          "isolated_track_id_not_temporal_equivalent": 143,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 292,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 165,
+          "baseline_track_id": 132038,
+          "isolated_track_id_not_temporal_equivalent": 187,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 207,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 177,
+          "baseline_track_id": 131740,
+          "isolated_track_id_not_temporal_equivalent": 204,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 435,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 203,
+          "baseline_track_id": 130573,
+          "isolated_track_id_not_temporal_equivalent": 254,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 171,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006569.npz",
+      "sha256": "dd7451aebb8b5cbdf096f2e1da843dc7593a04dd3d254416f5fde6f7eab935f1"
+    },
+    {
+      "frame": 6574,
+      "measurement_timestamp_ns": 946687346633308053,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687346633308053",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 142,
+          "baseline_track_id": 131740,
+          "isolated_track_id_not_temporal_equivalent": 156,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 883,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 165,
+          "baseline_track_id": 132140,
+          "isolated_track_id_not_temporal_equivalent": 227,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 41,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 166,
+          "baseline_track_id": 131979,
+          "isolated_track_id_not_temporal_equivalent": 236,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 45,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 175,
+          "baseline_track_id": 130573,
+          "isolated_track_id_not_temporal_equivalent": 254,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 238,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006574.npz",
+      "sha256": "01a010a996b6ab9b7e7c4b2eb3695c652e337f7afe3c67d56feeaf9eb9380ce4"
+    },
+    {
+      "frame": 6591,
+      "measurement_timestamp_ns": 946687348333462954,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687348333462954",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 157,
+          "baseline_track_id": 131222,
+          "isolated_track_id_not_temporal_equivalent": 163,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 149,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 178,
+          "baseline_track_id": 132764,
+          "isolated_track_id_not_temporal_equivalent": 186,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 109,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 182,
+          "baseline_track_id": 132770,
+          "isolated_track_id_not_temporal_equivalent": 195,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 83,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 188,
+          "baseline_track_id": 132381,
+          "isolated_track_id_not_temporal_equivalent": 202,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 47,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 191,
+          "baseline_track_id": 132117,
+          "isolated_track_id_not_temporal_equivalent": 209,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 42,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 196,
+          "baseline_track_id": 131179,
+          "isolated_track_id_not_temporal_equivalent": 224,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 44,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006591.npz",
+      "sha256": "5bd5228c9d37be9caa34316c324035ee220097e86961ddc6e9694ab12cff88ee"
+    },
+    {
+      "frame": 6613,
+      "measurement_timestamp_ns": 946687350533447981,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687350533447981",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 135,
+          "baseline_track_id": 132120,
+          "isolated_track_id_not_temporal_equivalent": 144,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 353,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 159,
+          "baseline_track_id": 133076,
+          "isolated_track_id_not_temporal_equivalent": 180,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 734,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 189,
+          "baseline_track_id": 132470,
+          "isolated_track_id_not_temporal_equivalent": 263,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 52,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 192,
+          "baseline_track_id": 132699,
+          "isolated_track_id_not_temporal_equivalent": 269,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 85,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 193,
+          "baseline_track_id": 132639,
+          "isolated_track_id_not_temporal_equivalent": 276,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 76,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 196,
+          "baseline_track_id": 132707,
+          "isolated_track_id_not_temporal_equivalent": 286,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 153,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006613.npz",
+      "sha256": "b09b729903f5a9f07ef2b8c81ab80e65a42b9b4a2048a4e4d652b1a08a544fd1"
+    },
+    {
+      "frame": 6627,
+      "measurement_timestamp_ns": 946687351933326006,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687351933326006",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 211,
+          "baseline_track_id": 132840,
+          "isolated_track_id_not_temporal_equivalent": 230,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 136,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 217,
+          "baseline_track_id": 133154,
+          "isolated_track_id_not_temporal_equivalent": 243,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 157,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 225,
+          "baseline_track_id": 132917,
+          "isolated_track_id_not_temporal_equivalent": 260,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 53,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 229,
+          "baseline_track_id": 133191,
+          "isolated_track_id_not_temporal_equivalent": 269,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 95,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_006627.npz",
+      "sha256": "7416ec3e7c9ddde0266798e5ee2d571182316252572de1d08f69497c06eb9500"
+    },
+    {
+      "frame": 7976,
+      "measurement_timestamp_ns": 946687486833399057,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687486833399057",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 204,
+          "baseline_track_id": 165568,
+          "isolated_track_id_not_temporal_equivalent": 235,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 79,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_007976.npz",
+      "sha256": "780ab13aee755c12f026c86b81976a1421ebf00d0d24ce06dbb35ffb3c0d0749"
+    },
+    {
+      "frame": 8198,
+      "measurement_timestamp_ns": 946687511933447957,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687511933447957",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 0,
+          "baseline_track_id": 168276,
+          "isolated_track_id_not_temporal_equivalent": 2,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 12371,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_008198.npz",
+      "sha256": "e754ae96285a373284f5f2a2e1b34ab2b94d44b9031b7e6f913080f1d1987581"
+    },
+    {
+      "frame": 8424,
+      "measurement_timestamp_ns": 946687539033346057,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687539033346057",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 92,
+          "baseline_track_id": 172951,
+          "isolated_track_id_not_temporal_equivalent": 102,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 666,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 114,
+          "baseline_track_id": 172312,
+          "isolated_track_id_not_temporal_equivalent": 145,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 105,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 136,
+          "baseline_track_id": 172911,
+          "isolated_track_id_not_temporal_equivalent": 194,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 135,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_008424.npz",
+      "sha256": "e8a316517be2db5f8225f1f2cb9733368338c5e16a30299e39d4c0e12b5a1aea"
+    },
+    {
+      "frame": 8458,
+      "measurement_timestamp_ns": 946687542433349013,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687542433349013",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 0,
+          "baseline_track_id": 170164,
+          "isolated_track_id_not_temporal_equivalent": 1,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 12598,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 68,
+          "baseline_track_id": 173411,
+          "isolated_track_id_not_temporal_equivalent": 77,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 799,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 80,
+          "baseline_track_id": 173558,
+          "isolated_track_id_not_temporal_equivalent": 106,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 182,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_008458.npz",
+      "sha256": "2ed985d544000ef5ceef1179f2f76f2b92582d8512baddec64dfd556548e43b7"
+    },
+    {
+      "frame": 9028,
+      "measurement_timestamp_ns": 946687609133414030,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687609133414030",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 0,
+          "baseline_track_id": 184561,
+          "isolated_track_id_not_temporal_equivalent": 5,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 6943,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 100,
+          "baseline_track_id": 183102,
+          "isolated_track_id_not_temporal_equivalent": 194,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 473,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_009028.npz",
+      "sha256": "d8c3a990f26b84e33c1794838ab964d947b0cf11e719f227be9d6e7fbcbc2eb9"
+    },
+    {
+      "frame": 9198,
+      "measurement_timestamp_ns": 946687629633417010,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687629633417010",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 65,
+          "baseline_track_id": 186019,
+          "isolated_track_id_not_temporal_equivalent": 66,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 1076,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 82,
+          "baseline_track_id": 186235,
+          "isolated_track_id_not_temporal_equivalent": 140,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 126,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_009198.npz",
+      "sha256": "13971492fa23d36e59fe15b02b15a445a7b0e8b59f70861a199ddc4821860c86"
+    },
+    {
+      "frame": 9993,
+      "measurement_timestamp_ns": 946687728133434057,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687728133434057",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 128,
+          "baseline_track_id": 198449,
+          "isolated_track_id_not_temporal_equivalent": 129,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 225,
+          "exact_membership_match": true
+        },
+        {
+          "component_id": 140,
+          "baseline_track_id": 198033,
+          "isolated_track_id_not_temporal_equivalent": 149,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 53,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_009993.npz",
+      "sha256": "8677af27a0ebf7b67d2f9e0fbf678455727545488479b1ac50d2b76696759c27"
+    },
+    {
+      "frame": 10416,
+      "measurement_timestamp_ns": 946687780033334017,
+      "source_scan_id": "/lidar_points:hesai_lidar:946687780033334017",
+      "geometry_equal": true,
+      "component_measured_fields_equal": true,
+      "alarms": [
+        {
+          "component_id": 1,
+          "baseline_track_id": 205974,
+          "isolated_track_id_not_temporal_equivalent": 1,
+          "original_confirmation": "immediate_interior_geometry",
+          "support_points": 12481,
+          "exact_membership_match": true
+        }
+      ],
+      "artifact": "build/issue23-point-support-20260924/verified/frame_010416.npz",
+      "sha256": "c725c637200e16a155431560d30e5a6002bb70c8764af2fdc9938434488c9f23"
+    }
+  ],
+  "requested_frames": 30,
+  "verified_frames": 30,
+  "verified_alarm_components": 70,
+  "coordinate_frame": "tunnel_guard_local, after configured sensor rotation/translation; not surveyed vehicle coordinates",
+  "source_indices": "Original flattened PointCloud2 return slots carried by the existing decoder, not nearest-neighbour estimates.",
+  "limitations": [
+    "Fresh-state replay does not reproduce temporal evidence, pose history or track IDs.",
+    "Alarm identities and confirmations come only from the saved full replay; isolated statuses are not substituted.",
+    "Matching measured geometry and component fields plus exact internal support/cluster membership permits within-scan support attribution, not obstacle truth.",
+    "Snapshots cover first frames of the requested episodes, not all88 episodes or their complete histories."
+  ]
+}

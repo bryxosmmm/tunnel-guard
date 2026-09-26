@@ -1,0 +1,26 @@
+{
+  "hypothesis": "Consecutive matching current-scan object shapes can provide temporal evidence of a currently measured corridor intrusion without accumulating points through a rejected odometric transform.",
+  "seed": 20260915,
+  "baseline_config": "configs/detector.json",
+  "baseline_real_run": "build/geometry-independent-full-20260923",
+  "baseline_synthetic_run": "build/organizer-synthetic-full-20260924",
+  "data_manifest": "configs/readiness-real-panel-20260924.json",
+  "local_confirmation": {
+    "shape_radius_m": 0.1,
+    "minimum_symmetric_overlap": 0.8
+  },
+  "design": [
+    "Use the existing association only to propose correspondence; require reciprocal nearest-support overlap of centered sensor-frame shapes on consecutive acquisitions.",
+    "The radius is two existing 5 cm support voxels, fixed before replay; overlap is symmetric so a tiny subset of infrastructure cannot explain a large shape.",
+    "Each contributing scan must independently have a measured intersecting relation, existing minimum support and at least the existing claim_min_support_voxels of certified unexplained interior evidence.",
+    "Do not use odometry rotation/translation, pooled world support, synthetic intensity/source labels, bag names or frame numbers for this channel.",
+    "Only add a separately named confirmation route when current odometry is rejected. Keep positional uncertainty and all calibration caveats; never rewrite motion validity.",
+    "Pose-based counters retain their original meaning; local temporal recurrence is not independent physical firing evidence or calibrated probability."
+  ],
+  "acceptance": {
+    "synthetic": "Both organizer events9 and10 obtain exact-provenance confirmed intersection on at least two consecutive acquisitions; previously confirmed positive events are retained. Outside-contour disagreement5/7 is reported unchanged, not scored away.",
+    "real_negatives": "On the fixed2641-frame initial regression panel, confirmed-intersection episode count and alarm-frame count do not increase on any organizer-declared negative recording, and unknown coverage does not grow to hide alarms.",
+    "person": "The36 author-reviewed person frames retain observed support and presence without new confirmed intersection; no increase in non-target alarm frames in that interval.",
+    "promotion": "A failed criterion rejects default promotion; preserve failed outputs and report the tradeoff. Passing this initial gate is not a claim of completed full20-minute evaluation or closure of issues21/23."
+  }
+}

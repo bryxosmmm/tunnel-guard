@@ -1,0 +1,18 @@
+{
+  "date": "2026-09-19",
+  "scope": "Robustness: explicit degradation on malformed or degenerate input, verified rather than assumed",
+  "why": "CASE.md scores robustness (\u0443\u0441\u0442\u043e\u0439\u0447\u0438\u0432\u043e\u0441\u0442\u044c) and the project's own brief requires a clear degradation or an explicit refusal on bad input, never a silent wrong answer",
+  "spatial_cases": {
+    "empty cloud": "unknown / insufficient_returns / health unavailable",
+    "single point": "same",
+    "three points": "same",
+    "NaN present": "same",
+    "inf present": "same",
+    "all identical points": "unknown / insufficient_track_bed_points / health unavailable"
+  },
+  "temporal_cases": {
+    "backwards timestamp": "raises ValueError explicitly",
+    "gap beyond frame_max_gap_s": "gap_reset set, motion reason reports the gap"
+  },
+  "reading": "every degenerate input produces an explicit status, reason and health rather than an exception or a quiet decision, and both temporal failure modes are handled explicitly. This is a tested property of the shipped recipe, and it is the behaviour an evaluator probing the container would see"
+}

@@ -1,0 +1,377 @@
+{
+  "experiment": "Independent fitted-plane explanation and original-return certified-support audit",
+  "production_change": false,
+  "decision": "No suppression candidate justified: none of 7503 measured negative certified queries has both existing background-mask explanation and a reliable nearby fit-sample normal. Preserve current detector.",
+  "actual_processed_frames": 3797,
+  "scientific_identity": true,
+  "excluded_elapsed_fields": [
+    "processing_s",
+    "motion_s",
+    "mounting_observation_s"
+  ],
+  "negative": {
+    "components": 93,
+    "certified_queries": 7503,
+    "raw_explained_queries": 326,
+    "reliably_explained_queries": 0,
+    "explained_without_reliable_nearby_normal_queries": 326,
+    "components_with_other_fit_seed_eligible_returns": 25,
+    "all_core_explained_components": 0,
+    "all_core_reliably_explained_components": 0,
+    "confirmed_frames": 36,
+    "all_core_explained_frames": 0,
+    "all_core_reliably_explained_frames": 0
+  },
+  "positive": {
+    "frames": 1510,
+    "target_frames": 277,
+    "target_components": 432,
+    "certified_queries": 58275,
+    "certified_foreground_queries": 58275,
+    "raw_explained_queries": 5,
+    "reliably_explained_queries": 0,
+    "confirmed_frames_without_certified_foreground_queries": 0,
+    "all_event_counts": {
+      "synthetic_event_1": {
+        "components": 75,
+        "certified_queries": 45449,
+        "raw_explained_queries": 5,
+        "reliably_explained_queries": 0,
+        "explained_without_reliable_nearby_normal_queries": 5,
+        "components_with_other_fit_seed_eligible_returns": 15,
+        "all_core_explained_components": 0,
+        "all_core_reliably_explained_components": 0,
+        "confirmed_frames": 75,
+        "all_core_explained_frames": 0,
+        "all_core_reliably_explained_frames": 0,
+        "certified_foreground_queries": 45449,
+        "raw_explained_foreground_queries": 5,
+        "reliably_explained_foreground_queries": 0
+      },
+      "synthetic_event_2": {
+        "components": 35,
+        "certified_queries": 951,
+        "raw_explained_queries": 0,
+        "reliably_explained_queries": 0,
+        "explained_without_reliable_nearby_normal_queries": 0,
+        "components_with_other_fit_seed_eligible_returns": 0,
+        "all_core_explained_components": 0,
+        "all_core_reliably_explained_components": 0,
+        "confirmed_frames": 32,
+        "all_core_explained_frames": 0,
+        "all_core_reliably_explained_frames": 0,
+        "certified_foreground_queries": 951,
+        "raw_explained_foreground_queries": 0,
+        "reliably_explained_foreground_queries": 0
+      },
+      "synthetic_event_3": {
+        "components": 21,
+        "certified_queries": 371,
+        "raw_explained_queries": 0,
+        "reliably_explained_queries": 0,
+        "explained_without_reliable_nearby_normal_queries": 0,
+        "components_with_other_fit_seed_eligible_returns": 0,
+        "all_core_explained_components": 0,
+        "all_core_reliably_explained_components": 0,
+        "confirmed_frames": 21,
+        "all_core_explained_frames": 0,
+        "all_core_reliably_explained_frames": 0,
+        "certified_foreground_queries": 371,
+        "raw_explained_foreground_queries": 0,
+        "reliably_explained_foreground_queries": 0
+      },
+      "synthetic_event_4": {
+        "components": 33,
+        "certified_queries": 741,
+        "raw_explained_queries": 0,
+        "reliably_explained_queries": 0,
+        "explained_without_reliable_nearby_normal_queries": 0,
+        "components_with_other_fit_seed_eligible_returns": 0,
+        "all_core_explained_components": 0,
+        "all_core_reliably_explained_components": 0,
+        "confirmed_frames": 29,
+        "all_core_explained_frames": 0,
+        "all_core_reliably_explained_frames": 0,
+        "certified_foreground_queries": 741,
+        "raw_explained_foreground_queries": 0,
+        "reliably_explained_foreground_queries": 0
+      },
+      "synthetic_event_5": {
+        "components": 35,
+        "certified_queries": 917,
+        "raw_explained_queries": 0,
+        "reliably_explained_queries": 0,
+        "explained_without_reliable_nearby_normal_queries": 0,
+        "components_with_other_fit_seed_eligible_returns": 1,
+        "all_core_explained_components": 0,
+        "all_core_reliably_explained_components": 0,
+        "confirmed_frames": 31,
+        "all_core_explained_frames": 0,
+        "all_core_reliably_explained_frames": 0,
+        "certified_foreground_queries": 917,
+        "raw_explained_foreground_queries": 0,
+        "reliably_explained_foreground_queries": 0
+      },
+      "synthetic_event_6": {
+        "components": 20,
+        "certified_queries": 2601,
+        "raw_explained_queries": 0,
+        "reliably_explained_queries": 0,
+        "explained_without_reliable_nearby_normal_queries": 0,
+        "components_with_other_fit_seed_eligible_returns": 20,
+        "all_core_explained_components": 0,
+        "all_core_reliably_explained_components": 0,
+        "confirmed_frames": 18,
+        "all_core_explained_frames": 0,
+        "all_core_reliably_explained_frames": 0,
+        "certified_foreground_queries": 2601,
+        "raw_explained_foreground_queries": 0,
+        "reliably_explained_foreground_queries": 0
+      },
+      "synthetic_event_7": {
+        "components": 65,
+        "certified_queries": 2376,
+        "raw_explained_queries": 0,
+        "reliably_explained_queries": 0,
+        "explained_without_reliable_nearby_normal_queries": 0,
+        "components_with_other_fit_seed_eligible_returns": 20,
+        "all_core_explained_components": 0,
+        "all_core_reliably_explained_components": 0,
+        "confirmed_frames": 22,
+        "all_core_explained_frames": 0,
+        "all_core_reliably_explained_frames": 0,
+        "certified_foreground_queries": 2376,
+        "raw_explained_foreground_queries": 0,
+        "reliably_explained_foreground_queries": 0
+      },
+      "synthetic_event_8": {
+        "components": 132,
+        "certified_queries": 4226,
+        "raw_explained_queries": 0,
+        "reliably_explained_queries": 0,
+        "explained_without_reliable_nearby_normal_queries": 0,
+        "components_with_other_fit_seed_eligible_returns": 103,
+        "all_core_explained_components": 0,
+        "all_core_reliably_explained_components": 0,
+        "confirmed_frames": 33,
+        "all_core_explained_frames": 0,
+        "all_core_reliably_explained_frames": 0,
+        "certified_foreground_queries": 4226,
+        "raw_explained_foreground_queries": 0,
+        "reliably_explained_foreground_queries": 0
+      },
+      "synthetic_event_9": {
+        "components": 11,
+        "certified_queries": 602,
+        "raw_explained_queries": 0,
+        "reliably_explained_queries": 0,
+        "explained_without_reliable_nearby_normal_queries": 0,
+        "components_with_other_fit_seed_eligible_returns": 3,
+        "all_core_explained_components": 0,
+        "all_core_reliably_explained_components": 0,
+        "confirmed_frames": 11,
+        "all_core_explained_frames": 0,
+        "all_core_reliably_explained_frames": 0,
+        "certified_foreground_queries": 602,
+        "raw_explained_foreground_queries": 0,
+        "reliably_explained_foreground_queries": 0
+      },
+      "synthetic_event_10": {
+        "components": 5,
+        "certified_queries": 41,
+        "raw_explained_queries": 0,
+        "reliably_explained_queries": 0,
+        "explained_without_reliable_nearby_normal_queries": 0,
+        "components_with_other_fit_seed_eligible_returns": 4,
+        "all_core_explained_components": 0,
+        "all_core_reliably_explained_components": 0,
+        "confirmed_frames": 5,
+        "all_core_explained_frames": 0,
+        "all_core_reliably_explained_frames": 0,
+        "certified_foreground_queries": 41,
+        "raw_explained_foreground_queries": 0,
+        "reliably_explained_foreground_queries": 0
+      }
+    },
+    "raw_exposures": [
+      {
+        "frame": 151,
+        "component_id": 296,
+        "attribution": [
+          "synthetic_event_1"
+        ],
+        "source_return_index": 307111,
+        "point_detector_frame_m": [
+          61.11730194091797,
+          -0.9600969552993774,
+          -1.2003378868103027
+        ],
+        "nearest_fit_sample_distance_m": 1.6697530367275009,
+        "nearest_fit_normal_reliable": false
+      },
+      {
+        "frame": 151,
+        "component_id": 296,
+        "attribution": [
+          "synthetic_event_1"
+        ],
+        "source_return_index": 307112,
+        "point_detector_frame_m": [
+          61.117820739746094,
+          -0.8000754714012146,
+          -1.2003027200698853
+        ],
+        "nearest_fit_sample_distance_m": 1.8157406345909528,
+        "nearest_fit_normal_reliable": false
+      },
+      {
+        "frame": 151,
+        "component_id": 296,
+        "attribution": [
+          "synthetic_event_1"
+        ],
+        "source_return_index": 307113,
+        "point_detector_frame_m": [
+          61.11833953857422,
+          -0.6400330662727356,
+          -1.2002758979797363
+        ],
+        "nearest_fit_sample_distance_m": 1.9126506340503502,
+        "nearest_fit_normal_reliable": false
+      },
+      {
+        "frame": 151,
+        "component_id": 296,
+        "attribution": [
+          "synthetic_event_1"
+        ],
+        "source_return_index": 307114,
+        "point_detector_frame_m": [
+          61.11886215209961,
+          -0.4800257086753845,
+          -1.2002573013305664
+        ],
+        "nearest_fit_sample_distance_m": 1.7649730388370113,
+        "nearest_fit_normal_reliable": false
+      },
+      {
+        "frame": 151,
+        "component_id": 296,
+        "attribution": [
+          "synthetic_event_1"
+        ],
+        "source_return_index": 307121,
+        "point_detector_frame_m": [
+          61.12220764160156,
+          0.6400936841964722,
+          -1.3337645530700684
+        ],
+        "nearest_fit_sample_distance_m": 0.7749133275740836,
+        "nearest_fit_normal_reliable": false
+      }
+    ]
+  },
+  "negative_nearest_fit_evidence": {
+    "counts": {
+      "total_explained": 326,
+      "outside_existing_normal_radius": 324,
+      "nearby_but_unreliable_normal": 2
+    },
+    "distance_m_quantiles": {
+      "min": 0.11974843378895378,
+      "p10": 0.6104864436236903,
+      "median": 1.4470536450145326,
+      "p90": 2.32295293068708,
+      "max": 3.244504002424414
+    },
+    "component_exposures": [
+      {
+        "recording": "roundT_doubleT",
+        "frame": 132,
+        "component_id": 112,
+        "certified_queries": 30,
+        "raw_explained_queries": 1,
+        "seed_eligible_component_returns": 11
+      },
+      {
+        "recording": "roundT_doubleT",
+        "frame": 170,
+        "component_id": 80,
+        "certified_queries": 491,
+        "raw_explained_queries": 171,
+        "seed_eligible_component_returns": 461
+      },
+      {
+        "recording": "roundT_squareT_pressureGate_squareT",
+        "frame": 391,
+        "component_id": 149,
+        "certified_queries": 143,
+        "raw_explained_queries": 2,
+        "seed_eligible_component_returns": 8
+      },
+      {
+        "recording": "roundT_squareT_pressureGate_squareT",
+        "frame": 401,
+        "component_id": 0,
+        "certified_queries": 1484,
+        "raw_explained_queries": 14,
+        "seed_eligible_component_returns": 6875
+      },
+      {
+        "recording": "roundT_squareT_pressureGate_squareT",
+        "frame": 411,
+        "component_id": 134,
+        "certified_queries": 119,
+        "raw_explained_queries": 9,
+        "seed_eligible_component_returns": 46
+      },
+      {
+        "recording": "roundT_squareT_pressureGate_squareT",
+        "frame": 436,
+        "component_id": 146,
+        "certified_queries": 263,
+        "raw_explained_queries": 29,
+        "seed_eligible_component_returns": 45
+      },
+      {
+        "recording": "roundT_squareT_pressureGate_squareT",
+        "frame": 489,
+        "component_id": 151,
+        "certified_queries": 232,
+        "raw_explained_queries": 1,
+        "seed_eligible_component_returns": 65
+      },
+      {
+        "recording": "roundT_squareT_pressureGate_squareT",
+        "frame": 502,
+        "component_id": 29,
+        "certified_queries": 506,
+        "raw_explained_queries": 36,
+        "seed_eligible_component_returns": 2182
+      },
+      {
+        "recording": "roundT_squareT_pressureGate_squareT",
+        "frame": 511,
+        "component_id": 73,
+        "certified_queries": 504,
+        "raw_explained_queries": 63,
+        "seed_eligible_component_returns": 595
+      }
+    ],
+    "interpretation": "Existing model can match the plane equation/strip without a reliable nearby fitted-sample normal. This does not justify using the background mask as certified interior evidence exclusion."
+  },
+  "evaluation": "build/issue23-independent-planes/evaluation-negative-positive.json",
+  "limits": [
+    "No classifier or output decision changed; explanation counts are not fewer alarms.",
+    "Fit excludes supported nominal-interior queries, not necessarily all returns of an object.",
+    "Normals belong to nearby fit samples, not directly to the queried foreground point.",
+    "Repeated frames and returns are correlated; no independent field precision/recall estimate.",
+    "Point ownership comes from the unchanged frozen organizer source-return fixture; this audit does not relabel the panel.",
+    "Certified queries are selected current component support representatives, not every original raw return.",
+    "All 58275 measured positive certified representatives belong to the corresponding inserted object; this validates the inspected attribution only, not field safety.",
+    "No full continuous-negative replay or candidate decision change was performed.",
+    "Plane agreement without local normal evidence is not proof of infrastructure identity; missing normal support is not proof the plane is physically wrong."
+  ],
+  "formal_primary_runs": 2,
+  "baseline_negative_alarm_episodes": 113
+}
