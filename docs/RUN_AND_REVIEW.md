@@ -71,11 +71,43 @@ track 2535 shows its measured support and these separate states. The table uses
 Enable “рядом” to show adjacent boxes in the overview.
 
 Do not attribute every alarm in that recording to this person, or classify
-every other object as a nuisance. A separately mentioned distant person has not
-yet been tied to a verified annotation. `annotations/sourcecraft-provisional.json`
-describes an unclassified structure around 17 m, not a confirmed person or
-intrusion. The organizer's `cloud_with_fake_obj` is a separate positive panel
-with inserted objects, not field evidence from the teammate-labelled person.
+every other object as a nuisance. The separate distant person now has 105
+provisional boxes in `annotations/doubleT-obstacle-person-crossing.json`, plus
+an empty nonexhaustive frame 105. The editor scene is `doubleT_obstacle_person`;
+the recording is `doubleT_obstacle`. The export recipe names this mapping
+explicitly, and exported frames retain `source_scene`. No box geometry or
+raw label was changed during integration.
+
+```bash
+.venv/bin/python -m tunnel_guard.run --experiment configs/team-release-smoke-20260926.json
+.venv/bin/python -m tunnel_guard.evaluate \
+  --run build/team-integration-20260926/release-cli \
+  --annotations annotations/doubleT-obstacle-person-crossing.json \
+  --output build/team-integration-20260926/crossing-evaluation.json
+```
+
+The verified integration run gave 99/105 matches at IoU ≥ 0.25. Six box misses
+remain; nonexhaustive labels cannot establish precision. The crossing description
+uses our reference contour, not independently measured vehicle clearance.
+`annotations/sourcecraft-provisional.json` describes an unclassified structure
+around 17 m, not a confirmed person or intrusion. The organizer's
+`cloud_with_fake_obj` is a separate positive panel with inserted objects.
+
+To reproduce the crossing export from the committed raw labels, first prepare
+the real source scene in fresh directories; do not replace an existing annotated
+scene:
+
+```bash
+.venv/bin/python -m tunnel_guard.sustech_import \
+  --experiment configs/person-crossing-replay-20260926.json \
+  --scene-root SUSTechPOINTS/data --max-frames 106
+mv SUSTechPOINTS/data/doubleT_obstacle SUSTechPOINTS/data/doubleT_obstacle_person
+.venv/bin/python -m tunnel_guard.sustech \
+  --config configs/annotation-export-person-crossing.json
+```
+
+The recipe reads the committed `annotations/sustech-raw/doubleT_obstacle_person`
+labels, rather than requiring the author's untracked `label/` directory.
 
 ## ROS2 Humble container
 

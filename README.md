@@ -5,6 +5,30 @@ Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 
 **Research baseline, not a validated collision-warning system.** Recall, infrastructure alarms, generalization, and runtime remain unresolved. `CASE.md` contains the original requirements. Recorded RViz2 export and a live ROS2 Humble adapter are implemented. The AMD64 Humble container processed a ten-scan real replay under Apple Silicon emulation; native target throughput and the RViz GUI remain unverified.
 
 The initial review and its two real 30-frame prefixes are documented in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). Subsequent iterations and historical results below are separate evidence.
+
+## Team release integration — 2026-09-27
+
+The release keeps the qualified `8539a3e` detector, native kernels and detector
+configuration unchanged. All 31 remote branches and 16 pre-existing local
+branches were reviewed; branch-by-branch decisions and reproducible evidence
+are in [the integration record](results/team-integration-20260926.json).
+Accepted additions are the crossing-person annotations (PR #40), the Humble
+RViz topic/acceptance correction (PR #38), and historical native reproducibility
+evidence (PR #37). The ROS delivery code from PR #33 was already integrated.
+The PR #34 hybrid evaluator was exercised and rejected; PR #39 did not pass
+its published criterion. Neither changes the release's detector or fixed panel.
+The later `autoresearch/issue-24-session-panel` handoff was also reviewed:
+it improves placement/provenance but retains the empty-denominator reporter
+defect, so it remains isolated research for the next stage.
+
+A new 546-acquisition person/platform replay preserved every compared scientific
+detector field and the CLI acquisition metadata. All five recorded ROS topics
+were deserialized and checked for every acquisition. The crossing annotation
+export now explicitly maps its editor scene to `doubleT_obstacle`: all original
+box geometry and raw labels remain unchanged; the ordinary evaluator reports
+99 matches and six misses, with no missing frames. This is not a new full-panel
+benchmark, live DDS acceptance, Intel performance result, or RViz GUI verification.
+
 ## Fixed issue #23 benchmark
 
 `bash autoresearch.sh` builds the required local C++ extension and executes the

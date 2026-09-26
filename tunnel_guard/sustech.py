@@ -5,6 +5,9 @@ The tool stores one JSON file per frame under ``<scene>/label/`` with boxes in
 command reads those files back into the ``annotations/*.json`` schema that
 ``tunnel_guard.evaluate`` checks, so human labels can be scored against a detector run.
 
+An export scene may name its actual recording with ``scenes.<scene>.bag``.
+The scene identity is retained as ``source_scene``; frame numbers are unchanged.
+
 Frames the reviewer declares exhaustive become scored frames even when they hold no
 object: that is what makes negative episodes measurable, and it is a claim about the
 reviewer, not about the detector.
@@ -114,7 +117,8 @@ def export(plan: dict, config_path: Path) -> dict:
                     "source_label_sha256": digest(sources[frame]),
                 })
             annotation["frames"].append({
-                "bag": scene, "frame": frame, "exhaustive": frame in exhaustive, "objects": objects,
+                "bag": scene_plan.get("bag", scene), "source_scene": scene,
+                "frame": frame, "exhaustive": frame in exhaustive, "objects": objects,
             })
         summary[scene] = {
             "annotated_frames": len(annotated),

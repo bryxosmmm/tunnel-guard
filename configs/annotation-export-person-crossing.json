@@ -9,7 +9,8 @@
   "output": "annotations/doubleT-obstacle-person-crossing.json",
   "scenes": {
     "doubleT_obstacle_person": {
-      "label_directory": "label",
+      "bag": "doubleT_obstacle",
+      "label_directory": "../../../annotations/sustech-raw/doubleT_obstacle_person",
       "exhaustive_frames": [],
       "annotation_origins": {
         "0": {
