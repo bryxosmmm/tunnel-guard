@@ -1,0 +1,30 @@
+{
+  "label_status": "synthetic_exact",
+  "prediction_scope": "collision_hazards",
+  "annotation_origins": {
+    "unspecified": 15
+  },
+  "box_semantics": "observed_support",
+  "minimum_3d_iou": 0.1,
+  "evaluated_frames": 33,
+  "missing_frames": [],
+  "exhaustive_frames": 0,
+  "tp": 3,
+  "fn": 12,
+  "fp_exhaustive_only": 0,
+  "annotated_object_recall": 0.2,
+  "precision_exhaustive_only": null,
+  "recall_exhaustive_only": null,
+  "f1_exhaustive_only": null,
+  "event_recall": 0.6,
+  "distance_mae_m": 0.0031853062613992713,
+  "matched_mean_3d_iou": 0.7022263157718589,
+  "validity_warnings": [
+    "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric"
+  ],
+  "label": "HYBRID SYNTHETIC",
+  "cases": 11,
+  "frames_per_case": 3,
+  "background": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+  "elapsed_s": 6.532768083969131
+}

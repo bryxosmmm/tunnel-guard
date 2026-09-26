@@ -1,0 +1,16 @@
+{
+  "label": "HYBRID SYNTHETIC",
+  "hypothesis": "A fixed panel on disjoint organizer-declared empty development recordings has nonempty positive and negative reference-contour labels in every specified object group, including a measured-surface attachment.",
+  "criterion": "For each split and each of low, thin_suspended, edge, long, measured_surface_attached, at least one full-form contour-intersecting and one nonintersecting scenario must be supported by real source returns. The criterion validates the panel, not detector recall or field safety.",
+  "configs": {
+    "poses": "configs/issue24-session-poses.json",
+    "tuning": "configs/issue24-session-tuning.json",
+    "evaluation": "configs/issue24-session-evaluation.json"
+  },
+  "input_plan_sha256": "01da760b8d11064c081826209b3d6b7fbb16aa5e5b056454162cdf79181be7fd",
+  "input_config_sha256": {
+    "poses": "eb837837cf3f7b73e64b375813e0c81d7c1e298ca352635017189727f0abc084",
+    "tuning": "09bfc2fae571f40f299cf4c3314256f7d4dfebe3bb92f790cfdde47833bdc615",
+    "evaluation": "39ea873b2f7be04f09d3a9150249b9e722d17a6e949d9b8a15b8f15ae53959c7"
+  }
+}

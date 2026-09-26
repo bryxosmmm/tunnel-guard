@@ -1,0 +1,224 @@
+{
+  "label": "HYBRID SYNTHETIC",
+  "run": "build/issue24-session-final2-20260926/tuning",
+  "minimum_iou": 0.1,
+  "point_criterion": {
+    "point_threshold": 0.6,
+    "extent_factor": 3.0,
+    "definition": "fraction of the object's own returns contained in a reported box whose extent stays within extent_factor of the object's own extent"
+  },
+  "frames": {
+    "scored_observed_support_intersections": 15,
+    "injection_free": 3
+  },
+  "objects": {
+    "scored_observed_support_intersections": 15,
+    "with_returns": 15,
+    "no_returns_visibility_outcome": 0
+  },
+  "synthetic_provenance": {
+    "full_shape_and_observed_support_are_separate": true,
+    "reference_relation": "Intersection is with the configured reference contour, not a validated vehicle swept envelope or a field collision label.",
+    "counts": {
+      "injected_frames": 30,
+      "full_shape_reference_contour_intersections": 15,
+      "observed_support_reference_contour_intersections": 15,
+      "adjacent_frames": 15
+    },
+    "adjacent_frames_claiming_hazard": 0,
+    "conditional_scoring": "Recall is conditioned on an injected full shape and observed support that both intersect the selected reference contour."
+  },
+  "outcome_kinds": {
+    "no_returns_from_object": 0,
+    "nothing_overlaps": 6,
+    "covered_by_a_larger_object": 1,
+    "overlaps_but_unconfirmed": 3,
+    "confirmed_not_hazard": 0,
+    "confirmed_hazard": 5
+  },
+  "recall": {
+    "strict_matched_of_all_injected": 0.3333,
+    "detected_of_all_injected": 0.3333,
+    "detected_of_visible": 0.3333,
+    "any_object_overlaps_of_visible": 0.5333,
+    "point_detected_of_frames_with_returns": 0.8,
+    "point_detected_of_all_injected": 0.8,
+    "counts": {
+      "injected": 15,
+      "with_returns": 15,
+      "point_detected": 12,
+      "strict_detected": 5
+    }
+  },
+  "by_size_m": {
+    "0.55x0.42x0.35": {
+      "objects": 3,
+      "detected": 0,
+      "recall": 0.0,
+      "point_detected": 3,
+      "point_recall": 1.0,
+      "mean_point_coverage": 0.9655,
+      "mean_coverage_any": 0.0694,
+      "kinds": {
+        "nothing_overlaps": 2,
+        "overlaps_but_unconfirmed": 1
+      }
+    },
+    "0.14x0.14x0.95": {
+      "objects": 3,
+      "detected": 1,
+      "recall": 0.3333333333333333,
+      "point_detected": 2,
+      "point_recall": 0.6667,
+      "mean_point_coverage": 0.7045,
+      "mean_coverage_any": 0.2346,
+      "kinds": {
+        "nothing_overlaps": 1,
+        "overlaps_but_unconfirmed": 1,
+        "confirmed_hazard": 1
+      }
+    },
+    "0.55x0.42x1.1": {
+      "objects": 3,
+      "detected": 1,
+      "recall": 0.3333333333333333,
+      "point_detected": 2,
+      "point_recall": 0.6667,
+      "mean_point_coverage": 0.6658,
+      "mean_coverage_any": 0.9444,
+      "kinds": {
+        "covered_by_a_larger_object": 1,
+        "overlaps_but_unconfirmed": 1,
+        "confirmed_hazard": 1
+      }
+    },
+    "2.6x0.42x0.65": {
+      "objects": 3,
+      "detected": 0,
+      "recall": 0.0,
+      "point_detected": 3,
+      "point_recall": 1.0,
+      "mean_point_coverage": 0.9589,
+      "mean_coverage_any": 0.0772,
+      "kinds": {
+        "nothing_overlaps": 3
+      }
+    },
+    "1.4x1.55x0.75": {
+      "objects": 3,
+      "detected": 3,
+      "recall": 1.0,
+      "point_detected": 2,
+      "point_recall": 0.6667,
+      "mean_point_coverage": 0.686,
+      "mean_coverage_any": 0.5463,
+      "kinds": {
+        "confirmed_hazard": 3
+      }
+    }
+  },
+  "by_lateral_m": {
+    "0.0": {
+      "objects": 9,
+      "detected": 1,
+      "recall": 0.1111111111111111,
+      "point_detected": 8,
+      "point_recall": 0.8889,
+      "mean_point_coverage": 0.8763,
+      "mean_coverage_any": 0.1271,
+      "kinds": {
+        "nothing_overlaps": 6,
+        "overlaps_but_unconfirmed": 2,
+        "confirmed_hazard": 1
+      }
+    },
+    "-1.6199999999999999": {
+      "objects": 3,
+      "detected": 1,
+      "recall": 0.3333333333333333,
+      "point_detected": 2,
+      "point_recall": 0.6667,
+      "mean_point_coverage": 0.6658,
+      "mean_coverage_any": 0.9444,
+      "kinds": {
+        "covered_by_a_larger_object": 1,
+        "overlaps_but_unconfirmed": 1,
+        "confirmed_hazard": 1
+      }
+    },
+    "-0.9901682761967711": {
+      "objects": 3,
+      "detected": 3,
+      "recall": 1.0,
+      "point_detected": 2,
+      "point_recall": 0.6667,
+      "mean_point_coverage": 0.686,
+      "mean_coverage_any": 0.5463,
+      "kinds": {
+        "confirmed_hazard": 3
+      }
+    }
+  },
+  "by_lateral_mode": {
+    "inside": {
+      "objects": 9,
+      "detected": 1,
+      "recall": 0.1111111111111111,
+      "point_detected": 8,
+      "point_recall": 0.8889,
+      "mean_point_coverage": 0.8763,
+      "mean_coverage_any": 0.1271,
+      "kinds": {
+        "nothing_overlaps": 6,
+        "overlaps_but_unconfirmed": 2,
+        "confirmed_hazard": 1
+      }
+    },
+    "edge": {
+      "objects": 3,
+      "detected": 1,
+      "recall": 0.3333333333333333,
+      "point_detected": 2,
+      "point_recall": 0.6667,
+      "mean_point_coverage": 0.6658,
+      "mean_coverage_any": 0.9444,
+      "kinds": {
+        "covered_by_a_larger_object": 1,
+        "overlaps_but_unconfirmed": 1,
+        "confirmed_hazard": 1
+      }
+    },
+    "measured_surface": {
+      "objects": 3,
+      "detected": 3,
+      "recall": 1.0,
+      "point_detected": 2,
+      "point_recall": 0.6667,
+      "mean_point_coverage": 0.686,
+      "mean_coverage_any": 0.5463,
+      "kinds": {
+        "confirmed_hazard": 3
+      }
+    }
+  },
+  "nuisance": {
+    "injection_free_frames": 3,
+    "frames_claiming_an_obstacle": 0,
+    "unexplained_hazard_objects_on_injected_frames": 10,
+    "frame_status": {
+      "candidate": 1,
+      "no_obstacle_observed": 2
+    },
+    "objects_by_relation": {
+      "adjacent": 836
+    },
+    "unexplained_objects_by_relation_on_injected_frames": {
+      "adjacent": 5013,
+      "intersecting": 24,
+      "confirmed_hazard": 10,
+      "unresolved": 2
+    },
+    "limit": "The recording was not exhaustively labelled, so an unexplained detection is a nuisance detection by construction but is not proof that the tunnel was empty: a real object could be among them. These are the injection-free frames of this panel, not certified-empty scenes."
+  }
+}
+Evidence: build/issue24-session-final2-20260926/tuning/report.json

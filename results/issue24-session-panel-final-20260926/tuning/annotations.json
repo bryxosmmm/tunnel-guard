@@ -1,0 +1,417 @@
+{
+  "label": "HYBRID SYNTHETIC",
+  "label_status": "synthetic_exact",
+  "prediction_scope": "collision_hazards",
+  "minimum_iou": 0.1,
+  "box_semantics": "observed_support",
+  "frames": [
+    {
+      "bag": "case_000",
+      "frame": 0,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_000",
+      "frame": 1,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_000",
+      "frame": 2,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_001",
+      "frame": 0,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            19.70452650696212,
+            -0.3019654673649708,
+            -1.121794556455923
+          ],
+          "bbox_max": [
+            19.970422587340334,
+            0.11125137012311341,
+            -0.7748228705463291
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_001",
+      "frame": 1,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            19.640416585905065,
+            -0.32111044124956184,
+            -1.1180940352170687
+          ],
+          "bbox_max": [
+            20.222542056152683,
+            0.09489410055510025,
+            -0.7841866417784613
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_001",
+      "frame": 2,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            19.640890211256266,
+            -0.3230454269534984,
+            -1.1184832684459038
+          ],
+          "bbox_max": [
+            19.917555669015723,
+            0.09335915712389797,
+            -0.772127405158019
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_002",
+      "frame": 0,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_002",
+      "frame": 1,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_002",
+      "frame": 2,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_003",
+      "frame": 0,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            19.91429710078276,
+            -0.1603299610638209,
+            0.33091513187839655
+          ],
+          "bbox_max": [
+            19.94330754484218,
+            -0.03232929116847312,
+            1.206867431026913
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_003",
+      "frame": 1,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            19.84032777390213,
+            -0.18168763987553577,
+            0.3296902519222912
+          ],
+          "bbox_max": [
+            19.884071312027732,
+            -0.06692017652019923,
+            1.2043230567565664
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_003",
+      "frame": 2,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            19.855379156145105,
+            -0.1819698794587643,
+            0.33023080132562727
+          ],
+          "bbox_max": [
+            19.895705119193142,
+            -0.05063329795485332,
+            1.2040282785041438
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_004",
+      "frame": 0,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_004",
+      "frame": 1,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_004",
+      "frame": 2,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_005",
+      "frame": 0,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            19.701250968056694,
+            -1.9271865602377927,
+            -1.13375699464097
+          ],
+          "bbox_max": [
+            20.28361247723564,
+            -1.505676966015506,
+            -0.06591104117912837
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_005",
+      "frame": 1,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            19.632814736172143,
+            -1.9018214721578868,
+            -1.166668208924571
+          ],
+          "bbox_max": [
+            20.196074510156055,
+            -1.5199594287614087,
+            -0.10420533694898497
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_005",
+      "frame": 2,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            19.632871308782555,
+            -1.9390673183773288,
+            -1.1640594871051364
+          ],
+          "bbox_max": [
+            20.213446557198406,
+            -1.5240398612447181,
+            -0.06573041029525852
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_006",
+      "frame": 0,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_006",
+      "frame": 1,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_006",
+      "frame": 2,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_007",
+      "frame": 0,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            18.67573139984386,
+            -0.3051293561318829,
+            -1.1037980454853344
+          ],
+          "bbox_max": [
+            20.614265893537585,
+            0.11237969151680231,
+            -0.47496164641608823
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_007",
+      "frame": 1,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            18.602890176605733,
+            -0.3180864857192086,
+            -1.1339515964871654
+          ],
+          "bbox_max": [
+            21.04909093659653,
+            0.09667406371593262,
+            -0.48399362640189614
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_007",
+      "frame": 2,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            18.600474361286775,
+            -0.3237614941594481,
+            -1.0993015327399092
+          ],
+          "bbox_max": [
+            20.53712475640712,
+            0.09494398336016056,
+            -0.4724898935590256
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_008",
+      "frame": 0,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_008",
+      "frame": 1,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_008",
+      "frame": 2,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_009",
+      "frame": 0,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_009",
+      "frame": 1,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_009",
+      "frame": 2,
+      "exhaustive": false,
+      "objects": []
+    },
+    {
+      "bag": "case_010",
+      "frame": 0,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            19.262833152137265,
+            -1.8627294886258923,
+            -0.9780183425494479
+          ],
+          "bbox_max": [
+            20.695282161906245,
+            -0.31257954508537544,
+            -0.24898415281327
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_010",
+      "frame": 1,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            19.201815995530072,
+            -1.8758531098945523,
+            -0.9694714388492373
+          ],
+          "bbox_max": [
+            20.433347108486046,
+            -0.3268526376464338,
+            -0.27016889848765274
+          ]
+        }
+      ]
+    },
+    {
+      "bag": "case_010",
+      "frame": 2,
+      "exhaustive": false,
+      "objects": [
+        {
+          "event_id": "inserted_object",
+          "bbox_min": [
+            19.207689461650965,
+            -1.8798922952588182,
+            -0.9808575550709104
+          ],
+          "bbox_max": [
+            20.622550079002043,
+            -0.33069143437811616,
+            -0.24755674434458178
+          ]
+        }
+      ]
+    }
+  ]
+}

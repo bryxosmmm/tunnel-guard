@@ -1,0 +1,13 @@
+{
+  "bag": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+  "metadata_sha256": "58111dca59feceaeac484f67ee765b01cdbb512a9a576d47dfe7c5c6476d6dcf",
+  "files": [
+    {
+      "name": "doubleT_platform_0.db3",
+      "bytes": 2758447104,
+      "sha256": "826e4161822ac39953acbda84d813f77061abbfdd9b47eea3327164ff05ee2c3"
+    }
+  ],
+  "split": "tuning_organizer_declared_empty_development",
+  "label": "HYBRID SYNTHETIC"
+}

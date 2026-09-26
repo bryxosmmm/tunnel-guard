@@ -1,0 +1,13 @@
+{
+  "bag": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+  "metadata_sha256": "6ffb15678cae39ac117c33289fdf1aa280211d758fcfd530d9e3fe21cf3bf17d",
+  "files": [
+    {
+      "name": "roundT_doubleT_0.db3",
+      "bytes": 2014867456,
+      "sha256": "6b5d3780bb8e373fae9c1a72080c34084f5a743efca5899526eb15c148a2b90d"
+    }
+  ],
+  "split": "evaluation_organizer_declared_empty_development",
+  "label": "HYBRID SYNTHETIC"
+}

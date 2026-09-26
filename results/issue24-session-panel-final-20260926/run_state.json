@@ -1,0 +1,64 @@
+{
+  "label": "HYBRID SYNTHETIC",
+  "completed": [
+    {
+      "name": "poses",
+      "command": [
+        "/Users/nikolai/Projects /lct/Github/tunnel-guard/.venv-tunnel-guard/bin/python",
+        "-m",
+        "tunnel_guard.run",
+        "--experiment",
+        "build/issue24-session-final2-20260926/recipes/poses.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "tuning",
+      "command": [
+        "/Users/nikolai/Projects /lct/Github/tunnel-guard/.venv-tunnel-guard/bin/python",
+        "-m",
+        "tunnel_guard.realistic_stress",
+        "--experiment",
+        "build/issue24-session-final2-20260926/recipes/tuning.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "tuning-report",
+      "command": [
+        "/Users/nikolai/Projects /lct/Github/tunnel-guard/.venv-tunnel-guard/bin/python",
+        "-m",
+        "tunnel_guard.realistic_report",
+        "--run",
+        "build/issue24-session-final2-20260926/tuning",
+        "--output",
+        "build/issue24-session-final2-20260926/tuning/report.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "evaluation",
+      "command": [
+        "/Users/nikolai/Projects /lct/Github/tunnel-guard/.venv-tunnel-guard/bin/python",
+        "-m",
+        "tunnel_guard.realistic_stress",
+        "--experiment",
+        "build/issue24-session-final2-20260926/recipes/evaluation.json"
+      ],
+      "exit_code": 0
+    },
+    {
+      "name": "evaluation-report",
+      "command": [
+        "/Users/nikolai/Projects /lct/Github/tunnel-guard/.venv-tunnel-guard/bin/python",
+        "-m",
+        "tunnel_guard.realistic_report",
+        "--run",
+        "build/issue24-session-final2-20260926/evaluation",
+        "--output",
+        "build/issue24-session-final2-20260926/evaluation/report.json"
+      ],
+      "exit_code": 0
+    }
+  ]
+}
