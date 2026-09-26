@@ -4,15 +4,10 @@ The supported live adapter is `python3 -m tunnel_guard.ros_node` (normally via
 `ros2 launch /opt/tunnel-guard/launch/tunnel_guard.launch.py`). It uses one
 topic namespace, `/perception/...`.
 
-```sh
-docker build --platform linux/amd64 -t tunnel-guard:humble .
-docker run --platform linux/amd64 --rm -it --name tunnel-guard \
-  -v "$PWD/data:/data:ro" tunnel-guard:humble \
-  ros2 launch /opt/tunnel-guard/launch/tunnel_guard.launch.py \
-  input_topic:=/lidar_points input_timeout_s:=3.0
-docker exec tunnel-guard bash -lc \
-  'source /opt/ros/humble/setup.bash && ros2 bag play /data/<bag> --rate 1.0'
-```
+The [target acceptance recipe](TARGET_ACCEPTANCE.md) is the build, launch,
+record, replay and RViz command sequence. It mounts a real bag read-only and
+uses its actual input topic; `doubleT_obstacle` publishes on
+`/sensing/lidar/hesai128/pointcloud`, not `/lidar_points`.
 
 Use `ros2 bag info /data/<bag>` before launch and set `input_topic` to its real
 PointCloud2 topic. The subscription is `KEEP_LAST(1)` and configurable as
