@@ -181,7 +181,8 @@
     const details = `#${o.track_id} · наблюдаемый размер XYZ: ${o.extent_m.map(format).join(" × ")} м\n` +
       `Точек-представителей: ${o.support_voxels}; внутри: ${o.in_envelope_voxels}; у неопределённой границы: ${o.boundary_uncertain_voxels || 0}\n` +
       `Новых измерений в окне: ${o.hits}; с внутренней опорой: ${o.intersection_hits ?? "не записано"}\n` +
-      `${reason(o.path_relation_reason)}. Подтверждение: ${o.intersection_confirmation || o.confirmation}.\n` +
+      `${reason(o.path_relation_reason)}.\n` +
+      `Присутствие: ${o.presence_confirmation ?? "не записано"}; кандидат опасности: ${o.confirmation}; пересечение: ${o.intersection_confirmation ?? "не записано"}.\n` +
       `Размер бокса — размер отражений; класс и физическая опасность не установлены.\n`;
     $("selection").textContent = details + "Загрузка точек поддержки…";
     draw();
@@ -321,7 +322,7 @@
         "ID",
         "Расстояние, м",
         "Положение",
-        "Объект / пересечение",
+        "Присутствие / пересечение",
         "Измерений",
         "Размер XYZ, м",
         "Точек / внутри",
@@ -337,7 +338,7 @@
           o.track_id,
           format(o.distance_m),
           o.path_relation,
-          `${o.confirmation} / ${o.intersection_confirmation || "unknown"}`,
+          `${o.presence_confirmation ?? "не записано"} / ${o.intersection_confirmation ?? "не записано"}`,
           o.hits,
           o.extent_m.map(format).join(" × "),
           `${o.support_voxels} / ${o.in_envelope_voxels}`,
