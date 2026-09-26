@@ -1,0 +1,386 @@
+{
+  "label_status": "synthetic_exact",
+  "prediction_scope": "collision_hazards",
+  "annotation_origins": {
+    "unspecified": 15
+  },
+  "box_semantics": "observed_support",
+  "minimum_3d_iou": 0.1,
+  "evaluated_frames": 33,
+  "missing_frames": [],
+  "exhaustive_frames": 0,
+  "tp": 5,
+  "fn": 10,
+  "fp_exhaustive_only": 0,
+  "annotated_object_recall": 0.3333333333333333,
+  "precision_exhaustive_only": null,
+  "recall_exhaustive_only": null,
+  "f1_exhaustive_only": null,
+  "event_recall": 0.6,
+  "distance_mae_m": 0.022609654878373676,
+  "matched_mean_3d_iou": 0.23420803622929293,
+  "validity_warnings": [
+    "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric"
+  ],
+  "events": {
+    "case_001:inserted_object": {
+      "annotated_frames": 3,
+      "matched_frames": 0,
+      "first_detection_distance_m": null
+    },
+    "case_003:inserted_object": {
+      "annotated_frames": 3,
+      "matched_frames": 1,
+      "first_detection_distance_m": 19.855379156145105
+    },
+    "case_005:inserted_object": {
+      "annotated_frames": 3,
+      "matched_frames": 1,
+      "first_detection_distance_m": 19.632871308782555
+    },
+    "case_007:inserted_object": {
+      "annotated_frames": 3,
+      "matched_frames": 0,
+      "first_detection_distance_m": null
+    },
+    "case_010:inserted_object": {
+      "annotated_frames": 3,
+      "matched_frames": 3,
+      "first_detection_distance_m": 19.262833152137265
+    }
+  },
+  "frames": [
+    {
+      "bag": "case_000",
+      "frame": 0,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "candidate",
+      "matches": []
+    },
+    {
+      "bag": "case_000",
+      "frame": 1,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "no_obstacle_observed",
+      "matches": []
+    },
+    {
+      "bag": "case_000",
+      "frame": 2,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "no_obstacle_observed",
+      "matches": []
+    },
+    {
+      "bag": "case_001",
+      "frame": 0,
+      "tp": 0,
+      "fn": 1,
+      "fp": null,
+      "status": "candidate",
+      "matches": []
+    },
+    {
+      "bag": "case_001",
+      "frame": 1,
+      "tp": 0,
+      "fn": 1,
+      "fp": null,
+      "status": "candidate",
+      "matches": []
+    },
+    {
+      "bag": "case_001",
+      "frame": 2,
+      "tp": 0,
+      "fn": 1,
+      "fp": null,
+      "status": "obstacle",
+      "matches": []
+    },
+    {
+      "bag": "case_002",
+      "frame": 0,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "candidate",
+      "matches": []
+    },
+    {
+      "bag": "case_002",
+      "frame": 1,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "no_obstacle_observed",
+      "matches": []
+    },
+    {
+      "bag": "case_002",
+      "frame": 2,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "no_obstacle_observed",
+      "matches": []
+    },
+    {
+      "bag": "case_003",
+      "frame": 0,
+      "tp": 0,
+      "fn": 1,
+      "fp": null,
+      "status": "candidate",
+      "matches": []
+    },
+    {
+      "bag": "case_003",
+      "frame": 1,
+      "tp": 0,
+      "fn": 1,
+      "fp": null,
+      "status": "candidate",
+      "matches": []
+    },
+    {
+      "bag": "case_003",
+      "frame": 2,
+      "tp": 1,
+      "fn": 0,
+      "fp": null,
+      "status": "obstacle",
+      "matches": [
+        [
+          0,
+          0,
+          0.38572379531439444
+        ]
+      ]
+    },
+    {
+      "bag": "case_004",
+      "frame": 0,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "candidate",
+      "matches": []
+    },
+    {
+      "bag": "case_004",
+      "frame": 1,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "no_obstacle_observed",
+      "matches": []
+    },
+    {
+      "bag": "case_004",
+      "frame": 2,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "no_obstacle_observed",
+      "matches": []
+    },
+    {
+      "bag": "case_005",
+      "frame": 0,
+      "tp": 0,
+      "fn": 1,
+      "fp": null,
+      "status": "candidate",
+      "matches": []
+    },
+    {
+      "bag": "case_005",
+      "frame": 1,
+      "tp": 0,
+      "fn": 1,
+      "fp": null,
+      "status": "candidate",
+      "matches": []
+    },
+    {
+      "bag": "case_005",
+      "frame": 2,
+      "tp": 1,
+      "fn": 0,
+      "fp": null,
+      "status": "unresolved_obstacle",
+      "matches": [
+        [
+          0,
+          0,
+          0.25766759991138877
+        ]
+      ]
+    },
+    {
+      "bag": "case_006",
+      "frame": 0,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "candidate",
+      "matches": []
+    },
+    {
+      "bag": "case_006",
+      "frame": 1,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "no_obstacle_observed",
+      "matches": []
+    },
+    {
+      "bag": "case_006",
+      "frame": 2,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "no_obstacle_observed",
+      "matches": []
+    },
+    {
+      "bag": "case_007",
+      "frame": 0,
+      "tp": 0,
+      "fn": 1,
+      "fp": null,
+      "status": "obstacle",
+      "matches": []
+    },
+    {
+      "bag": "case_007",
+      "frame": 1,
+      "tp": 0,
+      "fn": 1,
+      "fp": null,
+      "status": "obstacle",
+      "matches": []
+    },
+    {
+      "bag": "case_007",
+      "frame": 2,
+      "tp": 0,
+      "fn": 1,
+      "fp": null,
+      "status": "obstacle",
+      "matches": []
+    },
+    {
+      "bag": "case_008",
+      "frame": 0,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "candidate",
+      "matches": []
+    },
+    {
+      "bag": "case_008",
+      "frame": 1,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "no_obstacle_observed",
+      "matches": []
+    },
+    {
+      "bag": "case_008",
+      "frame": 2,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "no_obstacle_observed",
+      "matches": []
+    },
+    {
+      "bag": "case_009",
+      "frame": 0,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "candidate",
+      "matches": []
+    },
+    {
+      "bag": "case_009",
+      "frame": 1,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "no_obstacle_observed",
+      "matches": []
+    },
+    {
+      "bag": "case_009",
+      "frame": 2,
+      "tp": 0,
+      "fn": 0,
+      "fp": null,
+      "status": "no_obstacle_observed",
+      "matches": []
+    },
+    {
+      "bag": "case_010",
+      "frame": 0,
+      "tp": 1,
+      "fn": 0,
+      "fp": null,
+      "status": "obstacle",
+      "matches": [
+        [
+          0,
+          0,
+          0.12807993857154956
+        ]
+      ]
+    },
+    {
+      "bag": "case_010",
+      "frame": 1,
+      "tp": 1,
+      "fn": 0,
+      "fp": null,
+      "status": "obstacle",
+      "matches": [
+        [
+          0,
+          0,
+          0.24552145235263723
+        ]
+      ]
+    },
+    {
+      "bag": "case_010",
+      "frame": 2,
+      "tp": 1,
+      "fn": 0,
+      "fp": null,
+      "status": "obstacle",
+      "matches": [
+        [
+          0,
+          0,
+          0.15404739499649456
+        ]
+      ]
+    }
+  ],
+  "label": "HYBRID SYNTHETIC",
+  "cases": 11,
+  "frames_per_case": 3,
+  "background": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+  "elapsed_s": 6.2029616250656545
+}

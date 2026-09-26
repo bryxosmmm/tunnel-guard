@@ -1,0 +1,115 @@
+[
+  {
+    "frames": 3,
+    "recording_duration_s": 0.19999611377716064,
+    "status_frames": {
+      "candidate": 1,
+      "no_obstacle_observed": 2
+    },
+    "geometry_valid_frames": 3,
+    "motion_valid_frames": 2,
+    "processing_ms": {
+      "p50": 213.95570901222527,
+      "p95": 1330.3442831384018,
+      "p99": 1429.5788230607286
+    },
+    "read_and_process_ms": {
+      "p50": 214.171375031583,
+      "p95": 1428.1201371457425,
+      "p99": 1536.0266937781123
+    },
+    "inference_ms": {
+      "p50": 214.1491249203682,
+      "p95": 1330.3827505558727,
+      "p99": 1429.603517279029
+    },
+    "ingestion_wait_ms": {
+      "p50": 0.018000020645558834,
+      "p95": 97.73294937331228,
+      "p99": 106.4187226491049
+    },
+    "prefetch_depth": 1,
+    "alarm_episodes_unlabelled": [],
+    "accuracy": null,
+    "accuracy_validity": "No ground truth implied by bag name or alarm count",
+    "bag": "doubleT_platform",
+    "split": "development_tuning_organizer_declared_empty",
+    "wall_s": 1.9984844169812277,
+    "ingestion": {
+      "source_messages": 3,
+      "duplicate_measurements": 0,
+      "subsampled_measurements": 0,
+      "emitted_scans": 3
+    },
+    "process_peak_rss_bytes": 440041472,
+    "diagnostic_write_total_s": 0,
+    "visualization_total_s": 0,
+    "stage_ms": {
+      "decode_s": {
+        "p50": 14.087249990552664,
+        "p95": 19.171012460719794
+      },
+      "offline_iteration_s": {
+        "p50": 218.89150002971292,
+        "p95": 1432.8708999906664
+      }
+    },
+    "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+  },
+  {
+    "frames": 3,
+    "recording_duration_s": 0.20002305507659912,
+    "status_frames": {
+      "no_obstacle_observed": 3
+    },
+    "geometry_valid_frames": 3,
+    "motion_valid_frames": 2,
+    "processing_ms": {
+      "p50": 206.49654197040945,
+      "p95": 273.3078169752843,
+      "p99": 279.2465969757177
+    },
+    "read_and_process_ms": {
+      "p50": 206.68983389623463,
+      "p95": 273.49278315668926,
+      "p99": 279.4308230909519
+    },
+    "inference_ms": {
+      "p50": 206.6762080648914,
+      "p95": 273.47709611058235,
+      "p99": 279.4149528257549
+    },
+    "ingestion_wait_ms": {
+      "p50": 0.012916047126054764,
+      "p95": 47.7656785165891,
+      "p99": 52.01036851387471
+    },
+    "prefetch_depth": 1,
+    "alarm_episodes_unlabelled": [],
+    "accuracy": null,
+    "accuracy_validity": "No ground truth implied by bag name or alarm count",
+    "bag": "roundT_doubleT",
+    "split": "development_synthetic_evaluation_organizer_declared_empty",
+    "wall_s": 0.6876380420289934,
+    "ingestion": {
+      "source_messages": 3,
+      "duplicate_measurements": 0,
+      "subsampled_measurements": 0,
+      "emitted_scans": 3
+    },
+    "process_peak_rss_bytes": 477822976,
+    "diagnostic_write_total_s": 0,
+    "visualization_total_s": 0,
+    "stage_ms": {
+      "decode_s": {
+        "p50": 10.363959008827806,
+        "p95": 13.389983947854489
+      },
+      "offline_iteration_s": {
+        "p50": 211.05862490367144,
+        "p95": 278.42508752364665
+      }
+    },
+    "latency_scope": "Offline iteration: bag read/deserialization/decode, inference, optional diagnostic/RViz-bag writes, result JSON serialization and buffered write. Excludes timing-log write, fsync, live DDS queues/transport and viewer rendering; not sensor-to-display age. With prefetch_depth > 0 the read/deserialization/decode of the next scan runs on one producer thread while inference runs on this one, so read_and_process_ms is the cost of one loop iteration, not the age of a decision: a scan still waits for the scan ahead of it to finish. Wall_s / frames is the throughput that overlap buys."
+  }
+]

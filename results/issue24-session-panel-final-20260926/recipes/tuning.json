@@ -1,0 +1,177 @@
+{
+  "hypothesis": "On organizer-declared empty real tunnel frames, frozen low, suspended, contour-edge, longitudinal and measured-surface-attached boxes yield both intersecting and nonintersecting reference-contour labels without post hoc scenario selection.",
+  "criterion": "Each semantic group has both full-form contour-intersecting and nonintersecting cases, edge positives and measured-surface placements are nonempty, full-form and observed-support labels remain separate, and zero-return cases remain visible in the report. This is panel validity, not detector acceptance.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "pose_run": "build/issue24-session-final2-20260926/poses",
+  "source_frames": 3,
+  "frame_start": 0,
+  "frame_stride": 1,
+  "contour_edge_overlap_m": 0.05,
+  "contour_adjacent_clearance_m": 0.05,
+  "object_rest_height_m": 0.05,
+  "object_range_noise_m": 0.01,
+  "object_intensity": 30.0,
+  "minimum_iou": 0.1,
+  "empty_slots_return_object": false,
+  "sensor_model_limit": "Measured return slots only; opaque first-return replacement. The 0.01m noise and intensity are uncalibrated; no extrapolation to Pandar128 detection range or multiple-return behavior.",
+  "source_contract": "Issue #21 organizer-declared empty development recordings; already inspected, not a blind real evaluation. One-person recording excluded.",
+  "scenario_seed": 2401,
+  "background_bag": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+  "source_split": "tuning_organizer_declared_empty_development",
+  "output": "build/issue24-session-final2-20260926/tuning",
+  "scenarios": [
+    {
+      "name": "low_inside",
+      "group": "low",
+      "range_m": 20.0,
+      "dimensions_m": [
+        0.55,
+        0.42,
+        0.35
+      ],
+      "rest_height_m": 0.05,
+      "lateral_mode": "inside"
+    },
+    {
+      "name": "low_adjacent",
+      "group": "low",
+      "range_m": 20.0,
+      "dimensions_m": [
+        0.55,
+        0.42,
+        0.35
+      ],
+      "rest_height_m": 0.05,
+      "lateral_mode": "adjacent"
+    },
+    {
+      "name": "thin_suspended_inside",
+      "group": "thin_suspended",
+      "range_m": 20.0,
+      "dimensions_m": [
+        0.14,
+        0.14,
+        0.95
+      ],
+      "rest_height_m": 1.5,
+      "lateral_mode": "inside"
+    },
+    {
+      "name": "thin_suspended_adjacent",
+      "group": "thin_suspended",
+      "range_m": 20.0,
+      "dimensions_m": [
+        0.14,
+        0.14,
+        0.95
+      ],
+      "rest_height_m": 1.5,
+      "lateral_mode": "adjacent"
+    },
+    {
+      "name": "edge_overlap",
+      "group": "edge",
+      "range_m": 20.0,
+      "dimensions_m": [
+        0.55,
+        0.42,
+        1.1
+      ],
+      "rest_height_m": 0.05,
+      "lateral_mode": "edge",
+      "lateral_side": -1.0
+    },
+    {
+      "name": "edge_clearance",
+      "group": "edge",
+      "range_m": 20.0,
+      "dimensions_m": [
+        0.55,
+        0.42,
+        1.1
+      ],
+      "rest_height_m": 0.05,
+      "lateral_mode": "adjacent",
+      "lateral_side": -1.0
+    },
+    {
+      "name": "long_inside",
+      "group": "long",
+      "range_m": 20.0,
+      "dimensions_m": [
+        2.6,
+        0.42,
+        0.65
+      ],
+      "rest_height_m": 0.05,
+      "lateral_mode": "inside"
+    },
+    {
+      "name": "long_adjacent",
+      "group": "long",
+      "range_m": 20.0,
+      "dimensions_m": [
+        2.6,
+        0.42,
+        0.65
+      ],
+      "rest_height_m": 0.05,
+      "lateral_mode": "adjacent",
+      "lateral_side": -1.0
+    },
+    {
+      "name": "wall_flush",
+      "group": "measured_surface_attached",
+      "range_m": 20.0,
+      "dimensions_m": [
+        1.4,
+        0.4,
+        0.75
+      ],
+      "rest_height_m": 0.2,
+      "lateral_mode": "measured_surface",
+      "lateral_side": 1.0,
+      "surface_window_m": 1.5,
+      "surface_min_points": 8,
+      "surface_max_offset_m": 7.0,
+      "surface_overlap_m": 0.02,
+      "surface_contact_max_gap_m": 0.03
+    },
+    {
+      "name": "wall_protruding",
+      "group": "measured_surface_attached",
+      "range_m": 20.0,
+      "dimensions_m": [
+        1.4,
+        1.55,
+        0.75
+      ],
+      "rest_height_m": 0.2,
+      "lateral_mode": "measured_surface",
+      "lateral_side": -1.0,
+      "surface_window_m": 1.5,
+      "surface_min_points": 8,
+      "surface_max_offset_m": 6.0,
+      "surface_overlap_m": 0.02,
+      "surface_contact_max_gap_m": 0.03
+    }
+  ],
+  "prior_attempts": [
+    "build/issue24-session-tuning-v1 completed but mixed bed-relative placement with running-surface-relative contour labels; retained, excluded from final panel validity.",
+    "build/issue24-session-tuning-v2 completed but used the placement-frame contour label for later moving frames; retained, excluded from final panel validity.",
+    "build/issue24-session-tuning-v3 completed with per-frame full-form labels, but a world-fixed nominal adjacent box crossed the later-frame curved contour; retained, not used for panel group acceptance.",
+    "build/issue24-session-tuning-v4 completed but applied a needless additional 5cm to every adjacent scenario; retained, excluded from the fixed 5cm panel.",
+    "build/issue24-session-tuning-v5 completed; tuning measured-surface group had no negative contour label at the near trough. Retained and excluded from final panel group acceptance.",
+    "build/issue24-session-tuning-v6 completed but the tuning far-wall flush case was 0.763m from measured points at its final vertical placement. Retained, not credited as attached.",
+    "build/issue24-session-tuning-v7 completed physical contact and panel checks; v8 adds the required HYBRID SYNTHETIC label to every exported output. Numerical recipe is unchanged.",
+    "build/issue24-session-tuning-v8 completed with all panel validity and physical-contact checks; v9 adds native binary, source-pose and git identity to the run manifest. The scenario geometry is unchanged.",
+    "build/issue24-session-final-20260926 completed the one-command replay; final2 enforces a predeclared 3cm measured contact bound inside the generator. Geometry and detector recipe otherwise unchanged."
+  ],
+  "placement_height_semantics": "rest_height_m is above the estimated rail running surface; world placement and contour labels both use this datum.",
+  "label_semantics": "For every frame, sample the amodal box volume on a fixed 4cm lattice against that frame\u2019s selected reference contour. Separately classify visible inserted returns. Nominal mode is only a placement parameter.",
+  "adjacent_sequence_policy": "Start at the PR #34 frozen 5cm first-frame clearance. If a world-fixed box crosses a later-frame contour, source geometry alone shifts it outward on a 2cm grid to the first nonintersecting placement, then adds 5cm guard. Record that correction; never consult detector outputs.",
+  "measured_surface_split": "Flush negative uses the measured far-side wall; protruding positive uses the near-side trough. Both surface contacts are audited from source returns.",
+  "measured_surface_policy": "Iterate surface choice on the actual box x-footprint and its current vertical ground estimate; require at least 8 measured source points and audit nearest outer-face gap.",
+  "label": "HYBRID SYNTHETIC"
+}

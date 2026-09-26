@@ -37,6 +37,8 @@ import argparse
 import itertools
 import json
 from pathlib import Path
+import subprocess
+import sys
 import time
 
 import numpy as np
@@ -89,6 +91,7 @@ def read_frame(bag: Path, index: int, config: dict) -> dict:
             return {"index": index, "topic": connection.topic, "frame_id": message.header.frame_id,
                     "slots": message.height * message.width, "stamp_s": stamp.sec + stamp.nanosec * 1e-9,
                     "points": points[valid][keep] @ rotation.T + translation,
+                    "raw_point_indices": np.flatnonzero(valid)[keep],
                     "ring": ring[keep], "intensity": np.asarray(intensity, dtype=float)[keep],
                     "time_s": np.asarray(time_s, dtype=float)[keep], "duplicates": duplicates,
                     "invalid": int((~valid).sum()), "rotation": rotation}
@@ -200,12 +203,14 @@ def insert(pattern: dict, target_world: dict | None, pose: np.ndarray, rng: np.r
     labelled = np.zeros(len(points), dtype=bool)
     along = np.full(len(points), np.inf)  # no object: no ray reaches one
     hits = 0
+    replaced_indices = np.empty(0, dtype=np.int64)
     if target_world is not None:
         rotation, origin = pose[:3, :3], pose[:3, 3]
         along = ray_box(pattern["directions"] @ rotation.T, origin, np.asarray(target_world["bbox_min"]),
                         np.asarray(target_world["bbox_max"]))
         # Only measured shots can carry the object: an empty slot stays empty.
         occluded = np.isfinite(along) & (along < pattern["ranges"])
+        replaced_indices = np.flatnonzero(occluded)
         hits = int(np.isfinite(along).sum())
         if occluded.any():
             # The recordings' own surfaces carry their own spread; an inserted
@@ -246,19 +251,206 @@ def insert(pattern: dict, target_world: dict | None, pose: np.ndarray, rng: np.r
         label = {"bbox_min": low.tolist(), "bbox_max": np.maximum(high, low + 1e-3).tolist()}
     return {"points": points, "intensity": intensity, "time_s": pattern["time_s"], "labelled": labelled,
             "rays_hitting_object": hits, "returns_from_object": int(labelled.sum()), "label": label,
+            "replaced_source_indices": replaced_indices,
             # The object's own measured returns. The bounding box of these spans volume the sensor
             # never observed, so a box-only score cannot tell "reported, boxed differently" from
             # "not reported"; the points can.
             "labelled_points": points[labelled]}
 
 
-def cases(config: dict):
-    """Every case places one object on the corridor, or none for a scene-negative."""
-    yield {"range_m": None, "lateral_m": None, "dimensions_m": None}
-    for distance, lateral, dims in itertools.product(config["ranges_m"], config["lateral_m"],
-                                                     config["object_dimensions_m"]):
-        yield {"range_m": distance, "lateral_m": lateral, "dimensions_m": dims,
-               "hazard": abs(lateral) < config["rail_gauge_m"] / 2}
+def contour_width_over_height(low: float, high: float, config: dict) -> float:
+    """Largest configured reference-contour half-width touched by a box height interval.
+
+    This is only geometry of the selected reference contour, not a vehicle swept
+    envelope or a field collision label. Its extrema are at the endpoints of
+    the overlapping piecewise-linear segments.
+    """
+    widths = []
+    for bottom, top, start, end in np.asarray(config["envelope_segments_m"], dtype=float):
+        left, right = max(low, bottom), min(high, top)
+        if left > right:
+            continue
+        for height in (left, right):
+            widths.append(float(start + (end - start) * (height - bottom) / (top - bottom)))
+    return max(widths) if widths else 0.0
+
+
+def contour_intersects(lateral_m: float, dimensions_m: tuple[float, float, float] | list[float],
+                       reference_config: dict, rest_height_m: float) -> bool:
+    """Whether the injected full box intersects the selected reference contour.
+
+    The previous panel used half the rail gauge as a proxy. That is narrower
+    than the configured contour and labels true edge cases as adjacent.
+    """
+    _, lateral_size, vertical_size = map(float, dimensions_m)
+    low = float(rest_height_m)
+    width = contour_width_over_height(low, low + vertical_size, reference_config)
+    nearest_lateral = max(0.0, abs(float(lateral_m)) - lateral_size / 2.0)
+    return bool(nearest_lateral <= width)
+
+
+def contour_laterals(dimensions_m: tuple[float, float, float] | list[float], scenario_config: dict,
+                     reference_config: dict, rest_height_m: float):
+    """Resolve frozen inside/edge/adjacent modes against the configured contour.
+
+    Existing recipes retain their literal ``lateral_m`` values. New recipes may
+    use modes so changing dimensions cannot silently make an edge panel empty.
+    """
+    modes = scenario_config.get("contour_lateral_modes")
+    if modes is None:
+        for lateral in scenario_config["lateral_m"]:
+            yield float(lateral), "explicit_lateral"
+        return
+    low = float(rest_height_m)
+    width = contour_width_over_height(low, low + float(dimensions_m[2]), reference_config)
+    half = float(dimensions_m[1]) / 2.0
+    overlap = float(scenario_config.get("contour_edge_overlap_m", 0.05))
+    clearance = float(scenario_config.get("contour_adjacent_clearance_m", 0.05))
+    for mode in modes:
+        if mode == "inside":
+            magnitude = 0.0
+        elif mode == "edge":
+            magnitude = width + half - overlap
+        elif mode == "adjacent":
+            magnitude = width + half + clearance
+        else:
+            raise ValueError(f"Unknown contour lateral mode: {mode}")
+        for side in scenario_config.get("contour_lateral_sides", [1.0]):
+            if float(side) not in (-1.0, 1.0):
+                raise ValueError("contour_lateral_sides must contain only -1 or 1")
+            yield float(side) * magnitude, mode
+
+
+def cases(config: dict, reference_config: dict | None = None):
+    """Every case records object presence and contour intersection separately."""
+    yield {"range_m": None, "lateral_m": None, "dimensions_m": None,
+           "object_present": False, "reference_contour_intersects": False,
+           "lateral_mode": "background"}
+    reference_config = config if reference_config is None else reference_config
+    if "scenarios" in config:
+        for scenario in config["scenarios"]:
+            case = dict(scenario)
+            mode = case["lateral_mode"]
+            if mode == "measured_surface":
+                case.update(lateral_m=None, reference_contour_intersects=None, object_present=True)
+            else:
+                local = dict(config, contour_lateral_modes=[mode],
+                             contour_lateral_sides=[case.get("lateral_side", 1.0)])
+                lateral, _ = next(contour_laterals(case["dimensions_m"], local, reference_config,
+                                                    case["rest_height_m"]))
+                case.update(lateral_m=lateral, reference_contour_intersects=contour_intersects(
+                    lateral, case["dimensions_m"], reference_config, case["rest_height_m"]),
+                    object_present=True)
+            yield case
+        return
+    heights = config.get("object_rest_heights_m", [config["object_rest_height_m"]])
+    for distance, dims, rest_height in itertools.product(config["ranges_m"], config["object_dimensions_m"], heights):
+        for lateral, mode in contour_laterals(dims, config, reference_config, float(rest_height)):
+            yield {"range_m": distance, "lateral_m": lateral, "dimensions_m": dims,
+                   "rest_height_m": float(rest_height), "object_present": True,
+                   "reference_contour_intersects": contour_intersects(
+                       lateral, dims, reference_config, float(rest_height)),
+                   "lateral_mode": mode}
+
+
+def resolve_measured_surface(case: dict, source: dict, reference_config: dict) -> dict | None:
+    """Place the box's outside face at a real side-surface return, never at a guessed wall width."""
+    if case.get("lateral_mode") != "measured_surface":
+        return case
+    geometry = source["geometry"]
+    x = float(case["range_m"])
+    side = float(case["lateral_side"])
+    if side not in (-1.0, 1.0):
+        raise ValueError("Measured surface side must be -1 or 1")
+    centre, _, _ = geometry.path(np.array([x]))
+    if not np.isfinite(centre[0]):
+        return None
+    height = float(case["rest_height_m"])
+    if geometry.rail_head_height_m is None:
+        return None
+    points = source["pattern"]["points"]
+    width = contour_width_over_height(height, height + case["dimensions_m"][2], reference_config)
+    lateral = side * (points[:, 1] - float(centre[0]))
+    contact = float(case.get("surface_overlap_m", 0.02))
+    lateral_offset = side * (width + 0.5)
+    evidence = np.empty((0, 3))
+    surface = float("nan")
+    for _ in range(8):
+        target_lateral = float(centre[0]) + lateral_offset
+        bed, _ = geometry.ground(np.array([[x, target_lateral, 0.0]]))
+        if not np.isfinite(bed[0]):
+            return None
+        zlow = float(bed[0]) + float(geometry.rail_head_height_m) + height
+        zhigh = zlow + float(case["dimensions_m"][2])
+        # Use the actual box footprint; a more distant x-window may contain a
+        # different wall bend or installation that cannot touch this box.
+        half_length = min(float(case.get("surface_window_m", 1.0)),
+                          float(case["dimensions_m"][0]) / 2.0)
+        near = ((np.abs(points[:, 0] - x) <= half_length)
+                & (points[:, 2] >= zlow) & (points[:, 2] <= zhigh)
+                & (lateral > width + 0.1) & (lateral < float(case.get("surface_max_offset_m", 6.0))))
+        evidence = points[near]
+        if len(evidence) < int(case.get("surface_min_points", 8)):
+            return None
+        surface = float(np.quantile(side * (evidence[:, 1] - float(centre[0])), 0.1))
+        revised = side * (surface - float(case["dimensions_m"][1]) / 2.0 + contact)
+        if abs(revised - lateral_offset) < 0.005:
+            lateral_offset = revised
+            break
+        lateral_offset = revised
+    target_lateral = float(centre[0]) + lateral_offset
+    bed, _ = geometry.ground(np.array([[x, target_lateral, 0.0]]))
+    if not np.isfinite(bed[0]):
+        return None
+    zlow = float(bed[0]) + float(geometry.rail_head_height_m) + height
+    zhigh = zlow + float(case["dimensions_m"][2])
+    outer = target_lateral + side * float(case["dimensions_m"][1]) / 2.0
+    contact_returns = points[(np.abs(points[:, 0] - x) <= float(case["dimensions_m"][0]) / 2.0)
+                             & (points[:, 2] >= zlow) & (points[:, 2] <= zhigh)
+                             & (points[:, 1] * side >= outer * side)]
+    gap = (float(np.min(np.abs(contact_returns[:, 1] - outer)))
+           if len(contact_returns) else float("inf"))
+    if gap > float(case.get("surface_contact_max_gap_m", 0.03)):
+        return None
+    resolved = dict(case, lateral_m=lateral_offset, object_present=True,
+                    reference_contour_intersects=contour_intersects(
+                        lateral_offset, case["dimensions_m"], reference_config, height),
+                    measured_surface={"source_points": len(evidence), "side": side,
+                                      "surface_lateral_from_path_m": surface,
+                                      "outer_face_overlap_m": contact,
+                                      "measured_contact_gap_m": gap,
+                                      "measured_contact_returns": len(contact_returns),
+                                      "window_m": case.get("surface_window_m", 1.0)})
+    return resolved
+
+
+def resolve_sequence_adjacent(case: dict, sources: list[dict], config: dict,
+                              clearance_m: float) -> dict | None:
+    """Keep an adjacent world-fixed box outside every selected frame's contour.
+
+    The first-frame 5 cm offset alone can be crossed by the moving sensor and a
+    curved rail estimate. Only source geometry is read here; detector responses
+    cannot select the placement. The extra guard is recorded in the case.
+    """
+    if case.get("lateral_mode") != "adjacent":
+        return case
+    side = 1.0 if case["lateral_m"] >= 0 else -1.0
+    for shift in np.arange(0.0, 2.01, 0.02):
+        candidate = dict(case, lateral_m=float(case["lateral_m"] + side * shift))
+        target = world_target(candidate, sources[0]["pose"], sources[0]["geometry"],
+                              candidate["rest_height_m"])
+        if target is None:
+            return None
+        if all(not full_form_intersects(target, source["pose"], source["geometry"])
+               for source in sources):
+            # Keep the frozen 5 cm first-frame placement whenever it already
+            # clears the whole sequence. If motion needs an outward correction,
+            # retain a further 5 cm beyond the first clear grid location.
+            extra = float(shift + (clearance_m if shift > 0 else 0.0))
+            candidate["lateral_m"] = float(case["lateral_m"] + side * extra)
+            candidate["sequence_adjacent_extra_m"] = extra
+            return candidate
+    return None
 
 
 def load_poses(run: Path, bag: str) -> dict:
@@ -301,17 +493,34 @@ def world_target(case: dict, pose: np.ndarray, geometry, height_m: float) -> dic
     forward = pose[:3, :3] @ np.array([1.0, 0.0, 0.0])
     lateral = pose[:3, :3] @ np.array([0.0, 1.0, 0.0])
     up = pose[:3, :3] @ np.array([0.0, 0.0, 1.0])
+    if geometry.rail_head_height_m is None:
+        return None
     centre_world = pose[:3, 3] + pose[:3, :3] @ np.array([along_m, target_lateral,
-                                                          bed[0] + height_m + dz / 2])
+                                                          bed[0] + geometry.rail_head_height_m + height_m + dz / 2])
     return {"bbox_min": (centre_world - forward * dx / 2 - lateral * dy / 2 - up * dz / 2).tolist(),
             "bbox_max": (centre_world + forward * dx / 2 + lateral * dy / 2 + up * dz / 2).tolist()}
 
 
+def full_form_intersects(target_world: dict, pose: np.ndarray, geometry, spacing_m: float = 0.04) -> bool:
+    """Evaluate the amodal box against this frame's actual reference contour.
+
+    The scenario's nominal lateral mode is a placement recipe. Curved path and
+    moving sensor mean that its intersection label must be recomputed per frame.
+    Samples fill the volume on a fixed 4 cm lattice, independent of return rays.
+    """
+    low, high = np.asarray(target_world["bbox_min"]), np.asarray(target_world["bbox_max"])
+    axes = [np.linspace(a, b, max(2, int(np.ceil((b - a) / spacing_m)) + 1)) for a, b in zip(low, high)]
+    world = np.stack(np.meshgrid(*axes, indexing="ij"), axis=-1).reshape(-1, 3)
+    local = (world - pose[:3, 3]) @ pose[:3, :3]
+    masks, _ = geometry.classify_with_section(local, remove_background=False, include_boundary=True)
+    return bool(np.any(masks[4]))
+
+
 def run_case(case: dict, stress: dict, detector_config: dict, index: int, sources: list[dict]):
-    rng = np.random.default_rng(np.random.SeedSequence([stress["seed"], index]))
+    rng = np.random.default_rng(np.random.SeedSequence([stress["seed"], stress.get("scenario_seed", 0), index]))
     detector = Detector(detector_config)
     target = world_target(case, sources[0]["pose"], sources[0]["geometry"],
-                          stress["object_rest_height_m"])  # placed once, on the track
+                          case.get("rest_height_m", stress["object_rest_height_m"]))  # placed once, on the track
     if target is None and case.get("range_m") is not None:
         # No floor was observed at that station, so the object cannot be placed on the track there.
         # Reporting it as an unsupported case keeps a placement failure out of the miss count.
@@ -319,12 +528,14 @@ def run_case(case: dict, stress: dict, detector_config: dict, index: int, source
     rows, labels, statistics, inserted = [], [], [], []
     for position, source in enumerate(sources):
         pose, stamp = source["pose"], source["stamp_s"]
+        full_intersection = (False if target is None else
+                             full_form_intersects(target, pose, source["geometry"]))
         merged = insert(source["pattern"], target, pose, rng, stress["object_range_noise_m"],
                         stress["object_intensity"], bool(stress.get("empty_slots_return_object", False)))
         times = merged["time_s"]
         normalised = ((times - times.min()) / np.ptp(times)) if len(times) and np.ptp(times) > 0 else np.empty(0)
         row = detector.process(merged["points"], stamp, normalised)
-        row.update(frame=position, bag=f"case_{index:03d}")
+        row.update(frame=position, bag=f"case_{index:03d}", label="HYBRID SYNTHETIC")
         rows.append(row)
         # Truth at the level the sensor actually resolved: the object's own returns. Recorded at the
         # precision the detector itself saw: rounding them to 0.1 mm while the detector's box is the
@@ -333,25 +544,40 @@ def run_case(case: dict, stress: dict, detector_config: dict, index: int, source
         recorded = (np.asarray(merged["labelled_points"], dtype=float)
                     if len(merged["labelled_points"]) else None)
         if recorded is not None:
-            inserted.append({"case": index, "frame": position, "points": recorded.tolist()})
+            replaced = merged["replaced_source_indices"]
+            inserted.append({"label": "HYBRID SYNTHETIC", "case": index, "frame": position,
+                             "source_frame": source["frame_index"], "source_timestamp_s": stamp,
+                             "replaced_source_indices": replaced.tolist(),
+                             "replaced_raw_point_indices": source["raw_point_indices"][replaced].tolist(),
+                             "points": recorded.tolist(), "full_form_world_bbox": target,
+                             "observed_support_bbox": merged["label"],
+                             "measured_surface": case.get("measured_surface")})
         truth = []
-        if case.get("hazard", False):
-            if recorded is not None:
-                low = recorded.min(axis=0)
-                high = np.maximum(recorded.max(axis=0), low + 1e-3)
-                truth = [{"event_id": "inserted_object", "bbox_min": low.tolist(),
-                          "bbox_max": high.tolist()}]
-            else:
-                # Present in the world but not measured in this frame: a miss.
-                rotation = pose[:3, :3]
-                middle = (np.asarray(target["bbox_min"]) + np.asarray(target["bbox_max"])) / 2 - pose[:3, 3]
-                centre = rotation.T @ middle
-                half = np.abs(rotation.T @ (np.asarray(target["bbox_max"]) - np.asarray(target["bbox_min"]))) / 2
-                truth = [{"event_id": "inserted_object", "bbox_min": (centre - half).tolist(),
-                          "bbox_max": (centre + half).tolist()}]
+        observed_support_intersects = False
+        if recorded is not None:
+            # Ask the same current-frame classifier about the support actually
+            # created by the insertion. A full form can touch the contour while
+            # all its measured returns stay outside it; that is observability,
+            # not a detector miss.
+            support_masks, _ = source["geometry"].classify_with_section(
+                recorded, remove_background=False, include_boundary=True)
+            observed_support_intersects = bool(np.any(support_masks[4]))
+        if full_intersection and observed_support_intersects:
+            low = recorded.min(axis=0)
+            high = np.maximum(recorded.max(axis=0), low + 1e-3)
+            truth = [{"event_id": "inserted_object", "bbox_min": low.tolist(),
+                      "bbox_max": high.tolist()}]
         labels.append({"bag": row["bag"], "frame": position, "exhaustive": False, "objects": truth})
-        statistics.append({"case": index, "frame": position, "range_m": case["range_m"],
+        statistics.append({"label": "HYBRID SYNTHETIC", "case": index, "frame": position, "range_m": case["range_m"],
+                           "scenario": case.get("name"), "source_frame": source["frame_index"],
                            "lateral_m": case["lateral_m"], "dimensions_m": case["dimensions_m"],
+                           "sequence_adjacent_extra_m": case.get("sequence_adjacent_extra_m"),
+                           "rest_height_m": case.get("rest_height_m"),
+                           "lateral_mode": case["lateral_mode"],
+                           "object_present": case["object_present"],
+                           "measured_surface": case.get("measured_surface"),
+                           "full_shape_reference_contour_intersects": full_intersection,
+                           "observed_support_reference_contour_intersects": observed_support_intersects,
                            "rays_hitting_object": merged["rays_hitting_object"],
                            "returns_from_object": merged["returns_from_object"],
                            "detections": len(row["objects"]), "status": row["status"],
@@ -375,11 +601,28 @@ def main():
     source_dir.mkdir(parents=True)
     for source in Path(__file__).parent.glob("*.py"):
         (source_dir / source.name).write_bytes(source.read_bytes())
-    write_json(output / "manifest.json", environment() | {"config_sha256": digest(Path(stress["detector_config"]))})
+    from . import _native
+    write_json(output / "manifest.json", environment() | {
+        "label": "HYBRID SYNTHETIC", "command": sys.argv,
+        "git_revision": subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip(),
+        "git_status": subprocess.check_output(["git", "status", "--porcelain=v1"], text=True),
+        "native_binary_sha256": digest(Path(_native.__file__)),
+        "config_sha256": digest(Path(stress["detector_config"])),
+        "scenario_recipe_sha256": digest(args.experiment),
+        "pose_run_manifest_sha256": digest(Path(stress["pose_run"]) / "manifest.json")})
     bag = Path(stress["background_bag"])
+    source_files = sorted(bag.glob("*.db3"))
+    write_json(output / "source_manifest.json", {"bag": str(bag),
+               "metadata_sha256": digest(bag / "metadata.yaml"),
+               "files": [{"name": path.name, "bytes": path.stat().st_size,
+                          "sha256": digest(path)} for path in source_files],
+               "split": stress.get("source_split"), "label": "HYBRID SYNTHETIC"})
     poses = load_poses(Path(stress["pose_run"]), bag.name)
     if not poses:
         raise ValueError(f"No recorded poses for {bag.name} in {stress['pose_run']}")
+    manifest = json.loads((output / "manifest.json").read_text())
+    manifest["pose_rows_sha256"] = digest(Path(stress["pose_run"]) / f"{bag.name}.jsonl")
+    write_json(output / "manifest.json", manifest)
     frames = sorted(poses)
     start = int(stress.get("frame_start", 0))
     stride = int(stress.get("frame_stride", 1))
@@ -397,6 +640,7 @@ def main():
         reduced = voxel_representatives(cloud[crop], detector_config["geometry_voxel_m"])
         geometry = TrackGeometry(reduced, detector_config)
         sources.append({"frame_index": frame_index, "pattern": sensor_pattern(frame),
+                        "raw_point_indices": frame["raw_point_indices"],
                         "pose": poses[frame_index][0], "stamp_s": frame["stamp_s"],
                         "anchors": poses[frame_index][2], "geometry": geometry})
         profile.append({"frame": frame_index, "returns": len(frame["points"]),
@@ -406,6 +650,7 @@ def main():
                {"background_bag": str(bag), "recorded_frames": profile,
                 "object_range_noise_m": stress["object_range_noise_m"],
                 "object_rest_height_m": stress["object_rest_height_m"],
+                "object_rest_heights_m": stress.get("object_rest_heights_m", [stress["object_rest_height_m"]]),
                 "empty_slots_return_object": bool(stress.get("empty_slots_return_object", False)),
                 "longest_demonstrated_range_m": float(max(np.max(s["pattern"]["ranges"]) for s in sources)),
                 "object_intensity": stress["object_intensity"]})
@@ -413,12 +658,24 @@ def main():
     unsupported_cases = []
     started = time.perf_counter()
     with (output / "predictions.jsonl").open("x") as stream:
-        for index, case in enumerate(cases(stress)):
+        for index, declared_case in enumerate(cases(stress, detector_config)):
+            case = resolve_measured_surface(declared_case, sources[0], detector_config)
+            if case is None:
+                unsupported_cases.append({"case": index, "name": declared_case.get("name"),
+                                          "reason": "measured_side_surface_not_supported"})
+                continue
+            case = resolve_sequence_adjacent(case, sources, detector_config,
+                                             float(stress.get("contour_adjacent_clearance_m", 0.05)))
+            if case is None:
+                unsupported_cases.append({"case": index, "name": declared_case.get("name"),
+                                          "reason": "sequence_adjacent_clearance_not_supported"})
+                continue
             rows, labels, statistics, inserted, supported = run_case(case, stress, detector_config,
                                                                      index, sources)
             if not supported:
                 unsupported_cases.append({"case": index, "range_m": case["range_m"],
-                                          "lateral_m": case["lateral_m"]})
+                                          "lateral_m": case["lateral_m"], "name": case.get("name"),
+                                          "reason": "ground_or_path_unsupported"})
                 continue
             for row in rows:
                 predictions[(row["bag"], row["frame"])] = row
@@ -434,10 +691,10 @@ def main():
     with (output / "inserted.jsonl").open("x") as stream:
         for record in inserted_rows:
             stream.write(json.dumps(record, allow_nan=False) + "\n")
-    panel = {"label_status": "synthetic_exact", "prediction_scope": "collision_hazards",
+    panel = {"label": "HYBRID SYNTHETIC", "label_status": "synthetic_exact", "prediction_scope": "collision_hazards",
              "minimum_iou": stress["minimum_iou"], "box_semantics": "observed_support", "frames": annotations}
     score = evaluate_frames(predictions, panel)
-    score.update(cases=sum(1 for _ in cases(stress)), frames_per_case=len(sources), background=str(bag),
+    score.update(label="HYBRID SYNTHETIC", cases=sum(1 for _ in cases(stress, detector_config)), frames_per_case=len(sources), background=str(bag),
                  elapsed_s=time.perf_counter() - started)
     write_json(output / "cases.json", records)
     write_json(output / "annotations.json", panel)

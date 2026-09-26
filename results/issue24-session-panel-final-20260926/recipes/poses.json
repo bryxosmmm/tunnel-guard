@@ -1,0 +1,22 @@
+{
+  "hypothesis": "Freeze source poses and rail/bed geometry for a fixed hybrid panel on two organizer-declared empty development recordings.",
+  "criterion": "All first three consecutive scans from both named recordings are preserved with acquisition timestamps and detector geometry; this run is source preparation, not obstacle evaluation.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/issue24-session-final2-20260926/poses",
+  "every": 1,
+  "max_frames": 3,
+  "prefetch_depth": 1,
+  "diagnostic_frames": [],
+  "visualization": false,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_tuning_organizer_declared_empty"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_synthetic_evaluation_organizer_declared_empty"
+    }
+  ]
+}
