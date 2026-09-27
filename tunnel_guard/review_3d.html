@@ -36,10 +36,13 @@
 <header><h1>TUNNEL GUARD <span style="color:#55d7da">/ 3D</span></h1>
   <small id="source">Загрузка реальной записи…</small></header>
 <aside>
-  <small>Ближайшее подтверждённое пересечение</small>
+  <small id="distanceLabel">Ближайшее подтверждённое пересечение</small>
   <div id="distance">—</div>
   <small>Продольная координата в системе обработки</small>
   <div id="status">Загрузка…</div><div id="details" class="muted"></div>
+  <label>Объект <select id="focus"><option value="">Все объекты</option></select></label>
+  <label><input id="onlyfocus" type="checkbox"> Только выбранный объект</label>
+  <small id="supportInfo"></small>
   <div class="legend">
     <div style="color:#ff646b">● Подтверждённое пересечение</div>
     <div style="color:#ffad52">● Подтверждённый, положение неясно</div>
@@ -91,11 +94,16 @@ const envelope = new THREE.LineSegments(new THREE.BufferGeometry(),
   new THREE.LineBasicMaterial({ color: '#55d7da', transparent: true, opacity: .3 })); scene.add(envelope);
 const boxes = new THREE.LineSegments(new THREE.BufferGeometry(),
   new THREE.LineBasicMaterial({ vertexColors: true })); scene.add(boxes);
+const support = new THREE.Points(new THREE.BufferGeometry(),
+  new THREE.PointsMaterial({ color: '#ff70e5', size: 5, sizeAttenuation: false })); scene.add(support);
 const colors = { red: new THREE.Color('#ff646b'), orange: new THREE.Color('#ffad52'),
   yellow: new THREE.Color('#ffe083'), grey: new THREE.Color('#64758b') };
 const statuses = { obstacle: 'Алгоритм подтвердил пересечение', unresolved_obstacle: 'Положение объекта относительно габарита неясно',
   candidate: 'Есть неподтверждённые кандидаты', no_obstacle_observed: 'Препятствие не наблюдается', unknown: 'Недостаточно данных' };
+const params = new URLSearchParams(location.search);
 let meta, current = 0, currentData, firstStamp, playing = false, timer, requestId = 0;
+let focusId = Number(params.get('focus')) || null, supportRequest = 0;
+$('onlyfocus').checked = focusId !== null;
 const cache = new Map();
 async function json(url) { const r = await fetch(url); const d = await r.json();
   if (!r.ok) throw new Error(d.error || `HTTP ${r.status}`); return d; }
@@ -116,6 +124,7 @@ function replaceGeometry(object, vertices, rgb) {
 function drawBoxes() {
   const vertices = [], rgb = [];
   for (const o of currentData.row.objects) {
+    if ($('onlyfocus').checked && focusId !== null && o.track_id !== focusId) continue;
     if (o.path_relation === 'adjacent' && !$('adjacent').checked) continue;
     const c = o.path_relation === 'adjacent' ? colors.grey : o.intersection_confirmed ? colors.red :
       o.confirmed ? colors.orange : colors.yellow;
@@ -127,6 +136,26 @@ function drawBoxes() {
   }
   replaceGeometry(boxes, vertices, rgb);
 }
+async function drawSupport() {
+  const id = ++supportRequest;
+  replaceGeometry(support, []);
+  $('supportInfo').textContent = '';
+  if (focusId === null || !currentData.row.objects.some(o => o.track_id === focusId)) return;
+  try {
+    const response = await json(`/object?index=${current}&id=${focusId}`);
+    if (id !== supportRequest) return;
+    if (response.available) {
+      replaceGeometry(support, response.points.flat());
+      $('supportInfo').textContent = `${response.points.length} точек опоры выделено розовым`;
+    } else $('supportInfo').textContent = 'Точки опоры отдельно не записаны в этом кадре';
+  } catch (e) { if (id === supportRequest) $('supportInfo').textContent = `Точки опоры: ${e.message}`; }
+}
+function updateFocusUrl() {
+  const p = new URLSearchParams(location.search);
+  p.set('frame', String(current));
+  if (focusId !== null) p.set('focus', String(focusId)); else p.delete('focus');
+  history.replaceState(null, '', `${location.pathname}?${p}`);
+}
 function draw(data) {
   currentData = data;
   const vertices = [], rgb = [], c = new THREE.Color();
@@ -136,10 +165,21 @@ function draw(data) {
     rgb.push(c.r, c.g, c.b);
   }
   replaceGeometry(cloud, vertices, rgb); replaceGeometry(envelope, data.corridor.flat()); drawBoxes();
-  const row = data.row, distance = data.distances.confirmed_intersection_m;
+  const row = data.row, selected = row.objects.find(o => o.track_id === focusId);
+  const distance = selected ? selected.distance_m : data.distances.confirmed_intersection_m;
+  $('focus').replaceChildren(new Option('Все объекты', ''));
+  for (const o of row.objects.filter(o => o.path_relation !== 'adjacent' &&
+      (o.intersection_confirmed || o.confirmed && o.support_voxels >= 6))) {
+    $('focus').add(new Option(`ID ${o.track_id} · ${o.distance_m.toFixed(1)} м · ${o.path_relation}`, String(o.track_id)));
+  }
+  if (selected && ![...$('focus').options].some(o => o.value === String(focusId)))
+    $('focus').add(new Option(`ID ${focusId} · ${distance.toFixed(1)} м`, String(focusId)));
+  $('focus').value = selected ? String(focusId) : '';
+  $('distanceLabel').textContent = selected ? `Выбранный объект ID ${focusId}` : 'Ближайшее подтверждённое пересечение';
   $('distance').textContent = distance == null ? '—' : `${distance.toFixed(1)} м`;
   $('status').textContent = statuses[row.status] || row.status;
-  $('details').textContent = `Объектов: ${row.objects.length}\nТочек на экране: ${data.points.length.toLocaleString('ru')} / ${data.decoded_points.toLocaleString('ru')}\nКачество данных: ${row.health}\nКадр записи: ${row.frame}`;
+  $('details').textContent = `${selected ? `Состояние объекта: ${selected.path_relation}, подтверждён: ${selected.confirmed ? 'да' : 'нет'}\nБлижайшее подтверждённое пересечение: ${data.distances.confirmed_intersection_m?.toFixed(1) ?? '—'} м\n` : ''}Объектов: ${row.objects.length}\nТочек на экране: ${data.points.length.toLocaleString('ru')} / ${data.decoded_points.toLocaleString('ru')}\nКачество данных: ${row.health}\nКадр записи: ${row.frame}`;
+  drawSupport(); updateFocusUrl();
   $('timeline').value = current;
   $('frame').textContent = `${current + 1} / ${meta.frames.length} · ${(row.timestamp_s - firstStamp).toFixed(1)} с`;
 }
@@ -180,6 +220,12 @@ $('next').onclick = () => { if (meta) { pause(); load(Math.min(meta.frames.lengt
 $('envelope').onchange = () => envelope.visible = $('envelope').checked;
 $('boxes').onchange = () => boxes.visible = $('boxes').checked;
 $('adjacent').onchange = () => { if (currentData) drawBoxes(); };
+$('onlyfocus').onchange = () => { if (currentData) drawBoxes(); };
+$('focus').onchange = () => {
+  focusId = Number($('focus').value) || null;
+  if (focusId !== null) $('onlyfocus').checked = true;
+  if (currentData) draw(currentData);
+};
 $('size').oninput = () => cloudMaterial.size = Number($('size').value);
 document.addEventListener('keydown', e => {
   if (e.code === 'Space' && e.target === document.body && !$('play').disabled) { e.preventDefault(); $('play').click(); }
@@ -191,7 +237,8 @@ try {
   $('source').textContent = `${meta.bag} · ${meta.run} · сохранённый прогон`;
   $('timeline').max = meta.frames.length - 1;
   const first = await frameData(0); firstStamp = first.row.timestamp_s;
-  if (await load(0)) $('play').disabled = false;
+  const initialFrame = Math.min(Math.max(Number(params.get('frame')) || 0, 0), meta.frames.length - 1);
+  if (await load(initialFrame)) $('play').disabled = false;
 } catch (e) { $('error').textContent = `Ошибка загрузки: ${e.message}`; }
 </script>
 </html>
