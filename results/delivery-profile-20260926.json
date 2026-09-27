@@ -443,5 +443,14 @@
   ],
   "artifacts_local_root": "/Users/pbuyanov/Projects/tunnel-guard/build/frozen-delivery/build/delivery",
   "automated_tests": "none",
-  "source_sha256_manifests": "Complete per-file SHA256 in retained manifest.json for each run and portable evidence archive."
+  "source_sha256_manifests": "Complete per-file SHA256 in retained manifest.json for each run and portable evidence archive.",
+  "final_source_sha256": {
+    "tunnel_guard/ros_node.py": "b4e53a1f2f003ada2a936bed26b2b4e735e54c8396d2bb8aa44c59737836feda",
+    "tunnel_guard/visualization.py": "1bbbea139ddb91d94c2a7c3b2f9343fde7da957a83266c14ba08b8650c5b4b85",
+    "tunnel_guard/run.py": "8ed8bc783d8beccd681cc41b2bbb93f75199fcb471caa9bcf2b620711474e6b1",
+    "tunnel_guard/detector.py": "388debe5056baf8df3a3a2033f4858398e62b1829a5f87dc6167c645484abd0f",
+    "tunnel_guard/segmentation.py": "99409cfd36090538a4a1689ef618c4e8281e08849bf142619c7449f93e83f73a",
+    "configs/detector.json": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa"
+  },
+  "sequence_note": "CLI pair isolates display construction on selected detector; raw CDR publish was measured afterward in actual DDS replay, and startup unknown was checked in the final live adapter. Full inference + raw publish remains unexercised in Docker due to Open3D SIGILL."
 }
