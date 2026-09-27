@@ -20,6 +20,7 @@
 #include "native.h"
 
 #include <algorithm>
+#include <atomic>
 #include <cmath>
 #include <cstring>
 #include <stdexcept>
@@ -30,6 +31,12 @@
 Arena& arena() {
     static thread_local Arena instance;
     return instance;
+}
+
+unsigned worker_capacity(Py_ssize_t rows) {
+    if (rows < 4096) return 1;
+    const unsigned hardware = std::thread::hardware_concurrency();
+    return std::max(1u, std::min(hardware ? hardware : 1u, 8u));
 }
 
 void build_cells(const double* points, Py_ssize_t n, double size) {
@@ -132,12 +139,6 @@ PyObject* bytes_of(const void* data, size_t bytes) {
     return PyBytes_FromStringAndSize(static_cast<const char*>(data), static_cast<Py_ssize_t>(bytes));
 }
 
-unsigned worker_count(Py_ssize_t n) {
-    if (n < 4096) return 1;
-    const unsigned hardware = std::thread::hardware_concurrency();
-    return std::max(1u, std::min(hardware ? hardware : 1u, 8u));
-}
-
 // Eigen-decomposition of a symmetric 3x3 matrix: eigenvalues ascending and the
 // eigenvector of the smallest one.
 //
@@ -212,39 +213,45 @@ void interp_into(const double* x, Py_ssize_t n, const double* xp, const double* 
         for (Py_ssize_t i = 0; i < n; ++i) out[i] = fp[0];
         return;
     }
-    for (Py_ssize_t i = 0; i < n; ++i) {
-        const double value = x[i];
-        if (std::isnan(value)) { out[i] = value; continue; }
-        if (value <= xp[0]) { out[i] = fp[0]; continue; }
-        if (value >= xp[m - 1]) { out[i] = fp[m - 1]; continue; }
-        Py_ssize_t low = 0, high = m - 1;
-        while (high - low > 1) {
-            const Py_ssize_t middle = (low + high) / 2;
-            if (xp[middle] <= value) low = middle; else high = middle;
+    const unsigned workers = worker_capacity(n);
+    parallel_chunks(n, workers, [&](Py_ssize_t start, Py_ssize_t stop, unsigned) {
+        for (Py_ssize_t i = start; i < stop; ++i) {
+            const double value = x[i];
+            if (std::isnan(value)) { out[i] = value; continue; }
+            if (value <= xp[0]) { out[i] = fp[0]; continue; }
+            if (value >= xp[m - 1]) { out[i] = fp[m - 1]; continue; }
+            Py_ssize_t low = 0, high = m - 1;
+            while (high - low > 1) {
+                const Py_ssize_t middle = (low + high) / 2;
+                if (xp[middle] <= value) low = middle; else high = middle;
+            }
+            const double slope = (fp[low + 1] - fp[low]) / (xp[low + 1] - xp[low]);
+            out[i] = std::fma(slope, value - xp[low], fp[low]);
         }
-        const double slope = (fp[low + 1] - fp[low]) / (xp[low + 1] - xp[low]);
-        out[i] = std::fma(slope, value - xp[low], fp[low]);
-    }
+    });
 }
 
 void nearest_anchor_into(const double* x, Py_ssize_t n, const double* anchor_x, Py_ssize_t m, double* out) {
-    for (Py_ssize_t i = 0; i < n; ++i) {
-        const double value = x[i];
-        Py_ssize_t position = m;
-        if (!std::isnan(value)) {
-            Py_ssize_t low = 0, high = m;
-            while (low < high) {
-                const Py_ssize_t middle = (low + high) / 2;
-                if (anchor_x[middle] < value) low = middle + 1; else high = middle;
+    const unsigned workers = worker_capacity(n);
+    parallel_chunks(n, workers, [&](Py_ssize_t start, Py_ssize_t stop, unsigned) {
+        for (Py_ssize_t i = start; i < stop; ++i) {
+            const double value = x[i];
+            Py_ssize_t position = m;
+            if (!std::isnan(value)) {
+                Py_ssize_t low = 0, high = m;
+                while (low < high) {
+                    const Py_ssize_t middle = (low + high) / 2;
+                    if (anchor_x[middle] < value) low = middle + 1; else high = middle;
+                }
+                position = low;
             }
-            position = low;
+            if (position < 1) position = 1;
+            if (position > m - 1) position = m - 1;
+            const double left = std::abs(value - anchor_x[position - 1]);
+            const double right = std::abs(anchor_x[position] - value);
+            out[i] = left < right ? left : right;
         }
-        if (position < 1) position = 1;
-        if (position > m - 1) position = m - 1;
-        const double left = std::abs(value - anchor_x[position - 1]);
-        const double right = std::abs(anchor_x[position] - value);
-        out[i] = left < right ? left : right;
-    }
+    });
 }
 
 Py_ssize_t segment_index(const double* edges, Py_ssize_t m, double value) {
@@ -336,6 +343,8 @@ PyObject* range_indices(PyObject*, PyObject* args) {
     auto& kept = workspace.i0;
     try {
         ReleaseGIL released;
+        // Serial: the body is a square root and two comparisons, so a 350k-row pass costs
+        // less than the threads it would take to split it.
         kept.clear();
         for (Py_ssize_t i = 0; i < n; ++i) {
             const double x = data[3 * i], y = data[3 * i + 1], z = data[3 * i + 2];
@@ -439,7 +448,7 @@ PyObject* mutual_graph(PyObject*, PyObject* args) {
         KeyTable& table = scratch.table;
         // Pair enumeration, threaded over points with arena-backed sinks.
         auto& sinks = workspace.sinks;
-        const unsigned workers = worker_count(n);
+        const unsigned workers = worker_capacity(n);
         sinks.resize(workers);
         for (auto& sink : sinks) sink.clear();
         const auto collect = [&](Py_ssize_t start, Py_ssize_t stop, std::vector<int64_t>& sink) {
@@ -940,7 +949,9 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
         const double normal_scale =
             plane.size() == 3 ? std::sqrt(1.0 + (model[0] * model[0] + model[1] * model[1])) : 1.0;
         const double lateral_scale = std::sqrt(1.0 + slope_plane * slope_plane);
-        for (Py_ssize_t i = 0; i < n; ++i) {
+        const unsigned workers = worker_capacity(n);
+        parallel_chunks(n, workers, [&](Py_ssize_t begin, Py_ssize_t end, unsigned) {
+        for (Py_ssize_t i = begin; i < end; ++i) {
             const size_t index = static_cast<size_t>(i);
             const double relative = height[index] - rail_head;
             const double running_height = relative / normal_scale;
@@ -1013,6 +1024,7 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
                 lateral[index] = running[index] = NAN;
             }
         }
+        });
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     PyObject* payload = PyTuple_New(9);
     if (payload == nullptr) return nullptr;
@@ -1162,7 +1174,7 @@ PyObject* mask_apply(PyObject*, PyObject* args) {
         {
             std::vector<std::vector<int64_t>> local(static_cast<size_t>(patches));
             std::vector<std::thread> pool;
-            const unsigned workers = worker_count(patches * sample.rows() / 64);
+            const unsigned workers = worker_capacity(patches * sample.rows() / 64);
             const Py_ssize_t chunk = (patches + static_cast<Py_ssize_t>(workers) - 1) / static_cast<Py_ssize_t>(workers);
             for (unsigned worker = 0; worker < workers; ++worker) {
                 const Py_ssize_t start = static_cast<Py_ssize_t>(worker) * chunk;
@@ -1272,14 +1284,36 @@ PyObject* select_crop_voxels(PyObject*, PyObject* args) {
             ReleaseGIL released;
             KeyTable& table = scratch.table;
             table.reset(static_cast<size_t>(n));
+            auto& keys = scratch.keys;
+            auto& flags = scratch.flags;
+            keys.resize(static_cast<size_t>(n));
+            flags.assign(static_cast<size_t>(n), 0);
+            // Key derivation is per point and is the bulk of the work: compute the crop
+            // predicate and the key together, in parallel, exactly where the serial loop
+            // computed them, then insert in input order so the first representative of a
+            // voxel is still the first measurement in the frame.
+            std::atomic<bool> invalid{false};
+            const unsigned workers = worker_capacity(n);
+            parallel_chunks(n, workers, [&](Py_ssize_t begin, Py_ssize_t stop, unsigned) {
+                for (Py_ssize_t i = begin; i < stop; ++i) {
+                    const double x = data[3 * i], y = data[3 * i + 1];
+                    if (!(x >= min_forward && std::abs(y) < half_width)) continue;
+                    Key key{};
+                    if (!voxel_key_of(data + 3 * i, size, key)) {
+                        invalid.store(true, std::memory_order_relaxed);
+                        return;
+                    }
+                    keys[static_cast<size_t>(i)] = key;
+                    flags[static_cast<size_t>(i)] = 1;
+                }
+            });
+            if (invalid.load(std::memory_order_relaxed))
+                throw std::invalid_argument("nonfinite or out-of-range voxel coordinate");
             int64_t lowest = 0, highest = 0;
             bool any = false;
             for (Py_ssize_t i = 0; i < n; ++i) {
-                const double x = data[3 * i], y = data[3 * i + 1];
-                if (!(x >= min_forward && std::abs(y) < half_width)) continue;
-                Key key{};
-                if (!voxel_key_of(data + 3 * i, size, key))
-                    throw std::invalid_argument("nonfinite or out-of-range voxel coordinate");
+                if (!flags[static_cast<size_t>(i)]) continue;
+                const Key& key = keys[static_cast<size_t>(i)];
                 bool inserted = false;
                 const size_t slot = table.slot_of(key, inserted);
                 if (inserted) table.values[slot] = static_cast<int64_t>(i);
@@ -1302,24 +1336,37 @@ PyObject* select_crop_voxels(PyObject*, PyObject* args) {
                 for (size_t slot = 0; slot < table.keys.size(); ++slot)
                     if (table.used[slot])
                         column_slots[static_cast<size_t>(cursor[static_cast<size_t>(table.keys[slot][0] - lowest)]++)] = static_cast<int64_t>(slot);
-                indices.reserve(table.count);
-                const Key* keys = table.keys.data();
+                // The output position of a column's representatives is its own offsets, so the
+                // per-column ordering can be done independently and written straight into place.
+                auto& spans = scratch.spans;
+                spans.clear();
                 for (int64_t column = 0; column < columns; ++column) {
                     const int64_t begin = offsets[static_cast<size_t>(column)];
                     const int64_t end = offsets[static_cast<size_t>(column) + 1];
-                    if (end == begin) continue;
-                    auto first = column_slots.begin() + begin;
-                    auto last = column_slots.begin() + end;
-                    // Only the representatives inside one column are ordered here.
-                    std::sort(first, last, [keys](int64_t left, int64_t right) {
-                        const Key& a = keys[left];
-                        const Key& b = keys[right];
-                        if (a[1] != b[1]) return a[1] < b[1];
-                        return a[2] < b[2];
-                    });
-                    for (auto entry = first; entry != last; ++entry)
-                        indices.push_back(table.values[static_cast<size_t>(*entry)]);
+                    if (end > begin) spans.emplace_back(begin, end);
                 }
+                indices.assign(static_cast<size_t>(table.count), 0);
+                const Key* table_keys = table.keys.data();
+                const int64_t* values = table.values.data();
+                int64_t* slots = column_slots.data();
+                int64_t* output = indices.data();
+                const unsigned sort_workers = worker_capacity(static_cast<Py_ssize_t>(spans.size()) * 64);
+                parallel_chunks(static_cast<Py_ssize_t>(spans.size()), sort_workers,
+                                [&](Py_ssize_t begin, Py_ssize_t stop, unsigned) {
+                    for (Py_ssize_t index = begin; index < stop; ++index) {
+                        const int64_t first = spans[static_cast<size_t>(index)].first;
+                        const int64_t last = spans[static_cast<size_t>(index)].second;
+                        // Only the representatives inside one column are ordered here.
+                        std::sort(slots + first, slots + last, [table_keys](int64_t left, int64_t right) {
+                            const Key& a = table_keys[left];
+                            const Key& b = table_keys[right];
+                            if (a[1] != b[1]) return a[1] < b[1];
+                            return a[2] < b[2];
+                        });
+                        for (int64_t at = first; at < last; ++at)
+                            output[at] = values[slots[at]];
+                    }
+                });
             }
         }
         return bytes_of(indices.data(), indices.size() * sizeof(int64_t));
@@ -1655,7 +1702,7 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
         covariances.resize(static_cast<size_t>(n) * 6);
         eigenvalues.resize(static_cast<size_t>(n) * 3);
         normals_out.resize(static_cast<size_t>(n) * 3);
-        const unsigned workers = worker_count(n);
+        const unsigned workers = worker_capacity(n);
         // Per-thread scratch: the membership and selection buffers are mutated
         // inside the parallel region, so they cannot live in the shared arena.
         auto process = [&](Py_ssize_t start, Py_ssize_t stop) {
@@ -2153,24 +2200,30 @@ PyObject* range_summary(PyObject*, PyObject* args) {
         {
             ReleaseGIL released;
             result->assign(static_cast<size_t>(count) * 3, 0);
-            for (Py_ssize_t bin = 0; bin < count; ++bin) {
-                const double low = edges[2 * bin], high = edges[2 * bin + 1];
-                int64_t inside = 0, before = 0, with_geometry = 0;
-                for (Py_ssize_t i = 0; i < rows; ++i) {
-                    const double x = clouds[3 * i];
-                    if (x >= low && x < high) {
-                        ++inside;
-                        if (supported[i]) ++with_geometry;
+            // One pass per bin, bins spread over the workers: the counts are integers and
+            // each bin owns its three output slots, so the result is the serial one.
+            const unsigned workers = count > 0
+                ? std::min(worker_capacity(rows), static_cast<unsigned>(count)) : 1u;
+            parallel_chunks(count, workers, [&](Py_ssize_t begin, Py_ssize_t end, unsigned) {
+                for (Py_ssize_t bin = begin; bin < end; ++bin) {
+                    const double low = edges[2 * bin], high = edges[2 * bin + 1];
+                    int64_t inside = 0, before = 0, with_geometry = 0;
+                    for (Py_ssize_t i = 0; i < rows; ++i) {
+                        const double x = clouds[3 * i];
+                        if (x >= low && x < high) {
+                            ++inside;
+                            if (supported[i]) ++with_geometry;
+                        }
                     }
+                    for (Py_ssize_t i = 0; i < raw_rows; ++i) {
+                        const double x = raw[3 * i];
+                        if (keep[i] && x >= low && x < high) ++before;
+                    }
+                    (*result)[3 * bin] = inside;
+                    (*result)[3 * bin + 1] = before;
+                    (*result)[3 * bin + 2] = with_geometry;
                 }
-                for (Py_ssize_t i = 0; i < raw_rows; ++i) {
-                    const double x = raw[3 * i];
-                    if (keep[i] && x >= low && x < high) ++before;
-                }
-                (*result)[3 * bin] = inside;
-                (*result)[3 * bin + 1] = before;
-                (*result)[3 * bin + 2] = with_geometry;
-            }
+            });
         }
         return bytes_of(result->data(), result->size() * sizeof(int64_t));
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }

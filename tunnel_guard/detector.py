@@ -82,20 +82,19 @@ def voxel_unique_at(config: dict, reductive_size: float | None) -> bool:
     return size == reductive_size
 
 
-def _far_field_bound(distance_m: float, geometry: TrackGeometry, config: dict) -> float | None:
-    """The path uncertainty the classifier itself used at that distance, reported per object.
+def _far_field_bounds(distances_m: np.ndarray, geometry: TrackGeometry) -> list:
+    """The path uncertainty the classifier itself used at each distance.
 
-    Reporting the same sigma keeps the stated uncertainty and the decision consistent by
-    construction: inside the modelled horizon it is the small calibrated value (measured centre error
-    / claimed sigma was 0.46-1.34 over 10-110 m of extrapolation in
-    results/alignment-long-lever-20260919.json), and beyond the horizon it is not bounded at all -
-    reported as None rather than as an invented finite number, because there the corridor is not used
-    for any decision and a numeric bound would imply knowledge that does not exist.
+    Same value as one `_far_field_bound` call per distance: `TrackGeometry.path` applies only
+    element-wise operations, so evaluating the distances together returns the identical
+    numbers for each of them and costs one NumPy dispatch instead of one per object.
     """
     if len(geometry.rail_anchors) < 2:
-        return None
-    uncertainty = float(geometry.path(np.array([distance_m]))[2][0])
-    return uncertainty if np.isfinite(uncertainty) else None
+        return [None] * len(distances_m)
+    if not len(distances_m):
+        return []
+    uncertainty = geometry.path(np.asarray(distances_m, dtype=float))[2]
+    return [float(value) if np.isfinite(value) else None for value in uncertainty]
 
 
 def relation_reason(obj: dict) -> str:
@@ -886,8 +885,10 @@ class Detector:
             calibration_caveats.append("deskew_timestamps_unavailable")
         # One place for the native path: the native component path builds its own records, so the
         # far-field lateral bound is attached here rather than inside either builder.
-        for obj in objects:
-            obj["far_field_lateral_bound_m"] = _far_field_bound(obj["distance_m"], geometry, self.config)
+        if objects:
+            bounds = _far_field_bounds([obj["distance_m"] for obj in objects], geometry)
+            for obj, bound in zip(objects, bounds):
+                obj["far_field_lateral_bound_m"] = bound
         return result | {"status": status, "reason": geometry.reason,
                          "supported_range_m": geometry.supported_range_m(), "objects": objects,
                          "health": "unavailable" if not geometry.valid else ("degraded" if health_reasons else "normal"),

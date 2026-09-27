@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-equivalent-20260927.json",
+  "output": "build/remote-perf/baseline",
+  "every": 1,
+  "max_frames": 30,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "The rented host runs the identical detector recipe and scan prefix as the local M4 measurement, with the CPU pinned to eight logical CPUs so the thread count matches the deployment stand's 8-core i7-9700E. query_workers is 8 for the same reason: the shipped -1 means all cores, which is 8 on the stand but 128 on the rented EPYC.",
+  "criterion": "Report per-stage and per-kernel wall cost of the same thirty real scans under the pinned cpuset. No accuracy claim and no comparison against the stand: this host's CPU and GPU are not the stand's."
+}

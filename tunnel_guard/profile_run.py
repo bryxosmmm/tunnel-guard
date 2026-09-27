@@ -11,7 +11,7 @@ import time
 
 import numpy as np
 
-from . import accelerator, background, detector, geometry, io, run
+from . import accelerator, background, detector, geometry, io, mounting, run, segmentation
 
 
 def main():
@@ -28,7 +28,17 @@ def main():
         (background.TunnelBackground, "__init__"), (background.TunnelBackground, "mask"),
         (accelerator, "normal_statistics"), (accelerator, "density_graph"),
         (io, "decode_cloud"),
+        # The per-frame refits and third-party kernels that the stages above contain.
+        (detector, "_far_field_bounds"),
+        (geometry.TrackGeometry, "_ground_profile"), (geometry.TrackGeometry, "_rail_profile"),
+        (geometry.TrackGeometry, "ground"), (geometry.TrackGeometry, "path"),
+        (geometry.TrackGeometry, "structural_mask"), (geometry.TrackGeometry, "supported_range_m"),
+        (geometry, "voxel_representative_indices"),
+        (segmentation, "_separate_running_surface"), (mounting, "observe_mounting"),
     ]
+    import open3d as o3d
+    targets += [(o3d.geometry.PointCloud, "segment_plane"),
+                (o3d.geometry.PointCloud, "voxel_down_sample")]
     originals = []
 
     def instrument(function, label):

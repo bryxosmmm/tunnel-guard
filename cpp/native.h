@@ -4,7 +4,9 @@
 #include <Python.h>
 
 #include <array>
+#include <algorithm>
 #include <cstdint>
+#include <thread>
 #include <vector>
 
 // Voxel key: floor(point / size) per axis, the same derivation for every kernel
@@ -93,9 +95,43 @@ struct Arena {
     std::vector<int64_t> cell_start;   // prefix sums over table slots + 1
     std::vector<int64_t> cell_items;   // flattened memberships, insert order
     std::vector<int64_t> cell_cursor;
+    std::vector<Key> keys;             // per-point voxel keys, computed in parallel
+    std::vector<uint8_t> flags;        // per-point crop/predicate results
+    std::vector<std::pair<int64_t, int64_t>> spans;  // non-empty column extents
 };
 
 Arena& arena();
+
+// Worker count for a pass over `rows` values: one below the threshold where
+// thread setup would cost more than the work, otherwise the cores the process
+// can actually use. `parallel_chunks` and its callers must agree on this value,
+// so it is asked once and passed in.
+unsigned worker_capacity(Py_ssize_t rows);
+
+// Runs [0, rows) as contiguous chunks, one thread per worker, calling
+// body(start, stop, worker). Element-wise kernels use it to get the cores the
+// frame is otherwise leaving idle; because a chunk only ever writes the output
+// elements it owns and the chunks are contiguous, every output element is
+// computed by exactly the same arithmetic, in the same order, as the serial
+// loop it replaces. Kernels that filter keep one sink per worker and
+// concatenate them in worker order, which is the serial order again.
+template <typename Body>
+void parallel_chunks(Py_ssize_t rows, unsigned workers, Body body) {
+    if (rows <= 0) return;
+    if (workers <= 1) {
+        body(static_cast<Py_ssize_t>(0), rows, 0u);
+        return;
+    }
+    std::vector<std::thread> pool;
+    const Py_ssize_t chunk = (rows + static_cast<Py_ssize_t>(workers) - 1) / static_cast<Py_ssize_t>(workers);
+    for (unsigned worker = 0; worker < workers; ++worker) {
+        const Py_ssize_t start = static_cast<Py_ssize_t>(worker) * chunk;
+        const Py_ssize_t stop = std::min(rows, start + chunk);
+        if (start >= stop) break;
+        pool.emplace_back([&body, start, stop, worker] { body(start, stop, worker); });
+    }
+    for (auto& thread : pool) thread.join();
+}
 
 // Group point indices by voxel cell of the given size into the arena's table and
 // flat membership arrays. Any point within `size` of another shares a cell, so

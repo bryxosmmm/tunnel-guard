@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-odometry8-20260927.json",
+  "output": "build/remote-perf/odom8",
+  "every": 1,
+  "max_frames": 30,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "The same replays with the odometry's own thread count raised from 1 to 8. kiss-ICP's thread count is a candidate optimization only: the replays are compared field by field against the one-thread detector, and the variant is discarded if any decision changes.",
+  "criterion": "Report per-stage and per-kernel wall cost of the same thirty real scans under the pinned cpuset. No accuracy claim and no comparison against the stand: this host's CPU and GPU are not the stand's."
+}
