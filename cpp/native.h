@@ -145,6 +145,7 @@ PyObject* select_crop_voxels(PyObject* self, PyObject* args);
 
 // cpp/kernels.cpp -- registered in kernels.cpp
 PyObject* range_indices(PyObject* self, PyObject* args);
+PyObject* range_indices_open(PyObject* self, PyObject* args);
 PyObject* mutual_graph(PyObject* self, PyObject* args);
 PyObject* voxel_counts(PyObject* self, PyObject* args);
 PyObject* patch_candidates(PyObject* self, PyObject* args);

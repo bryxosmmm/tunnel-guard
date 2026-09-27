@@ -48,6 +48,8 @@ def load_config(path: str | Path) -> dict:
     ransac_threads = config.get("background", {}).get("ransac_threads", 1)
     if type(ransac_threads) is not int or ransac_threads < 1:
         raise ValueError("background.ransac_threads must be a positive integer")
+    if not isinstance(config.get("odometry_native_preprocess", True), bool):
+        raise ValueError("odometry_native_preprocess must be boolean")
     plane_backend = config.get("background", {}).get("plane_backend", "open3d")
     if plane_backend not in ("open3d", "native"):
         raise ValueError("background.plane_backend must be 'open3d' or 'native'")
@@ -103,6 +105,28 @@ def _far_field_bounds(distances_m: np.ndarray, geometry: TrackGeometry) -> list:
         return []
     uncertainty = geometry.path(np.asarray(distances_m, dtype=float))[2]
     return [float(value) if np.isfinite(value) else None for value in uncertainty]
+
+
+class _NativePreprocessor:
+    """kiss-ICP's frame preprocessing, replaced by the selection it performs.
+
+    With deskew disabled the library keeps the points whose range falls strictly inside the
+    configured band, in input order and unchanged - a selection, not arithmetic. Doing it
+    here is therefore the same frame, and it is measured at a fraction of the cost. If the
+    deskew is ever enabled this refuses to stand in, because then the preprocessing includes
+    motion compensation.
+    """
+
+    def __init__(self, config: dict):
+        self.minimum = float(config["min_range_m"])
+        self.maximum = float(config["max_range_m"])
+        self.native = accelerator.native(config)
+
+    def preprocess(self, frame: np.ndarray, timestamps: np.ndarray, relative_motion: np.ndarray):
+        # Timestamps may be present while the deskew is disabled: the library ignores them in
+        # exactly that case, and the deskew flag is checked where this object is installed.
+        rows = accelerator.range_indices_open(frame, self.minimum, self.maximum, self.native)
+        return frame[rows]
 
 
 def relation_reason(obj: dict) -> str:
@@ -346,7 +370,13 @@ class Detector:
         cfg.mapping.voxel_size = self.config["odometry_voxel_m"]
         cfg.registration.max_num_iterations = self.config["odometry_max_iterations"]
         cfg.registration.max_num_threads = self.config["odometry_threads"]
-        return KissICP(cfg)
+        odometry = KissICP(cfg)
+        if self.config.get("odometry_native_preprocess", True):
+            if cfg.data.deskew:
+                raise ValueError("odometry_native_preprocess requires deskew to be disabled: the "
+                                 "library's preprocessing would include motion compensation")
+            odometry.preprocessor = _NativePreprocessor(self.config)
+        return odometry
 
     def _motion(self, points: np.ndarray, point_times: np.ndarray):
         if self.diagnostic_arrays:

@@ -371,6 +371,36 @@ PyObject* range_indices(PyObject*, PyObject* args) {
     return bytes_of(kept.data(), kept.size() * sizeof(int64_t));
 }
 
+// Radial band with kiss-ICP's strict bounds: min < |p| < max.
+//
+// The odometry's own preprocessor keeps the frame's points whose range falls strictly
+// inside the configured band, in input order and unchanged. That is a selection, not
+// arithmetic, so this returns the same rows the library would and the odometry sees the
+// same frame; the strict comparison is what keeps it identical at the bounds.
+PyObject* range_indices_open(PyObject*, PyObject* args) {
+    PyObject* object;
+    double minimum, maximum;
+    if (!PyArg_ParseTuple(args, "Odd", &object, &minimum, &maximum)) return nullptr;
+    Buffer points(object);
+    if (!points.points()) {
+        PyErr_SetString(PyExc_ValueError, "expected contiguous native float64 (N,3)");
+        return nullptr;
+    }
+    const auto* data = points.doubles();
+    const Py_ssize_t n = points.rows();
+    auto& kept = workspace.i0;
+    try {
+        ReleaseGIL released;
+        kept.clear();
+        for (Py_ssize_t i = 0; i < n; ++i) {
+            const double x = data[3 * i], y = data[3 * i + 1], z = data[3 * i + 2];
+            const double radius = std::sqrt((x * x + y * y) + z * z);
+            if (radius < maximum && radius > minimum) kept.push_back(static_cast<int64_t>(i));
+        }
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    return bytes_of(kept.data(), kept.size() * sizeof(int64_t));
+}
+
 // Distinct voxel count per stack of evidence points, one call for all objects.
 // The key derivation is shared with voxel_indices, so the count equals
 // len(voxel_representatives(points, size)) for each stack.
@@ -2306,6 +2336,8 @@ static PyMethodDef methods[] = {
      "Component grouping and statistics of the cluster cloud in one pass."},
     {"select_crop_voxels", select_crop_voxels, METH_VARARGS,
      "Longitudinal-window crop and voxel reduction in one slice-partitioned pass."},
+    {"range_indices_open", range_indices_open, METH_VARARGS,
+     "Rows with min < |p| < max, in input order (the odometry preprocessor's selection)."},
     {"range_indices", range_indices, METH_VARARGS,
      "Measurement indices with |p| inside a radial band; non-finite fails a bound."},
     {"mutual_graph", mutual_graph, METH_VARARGS,

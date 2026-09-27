@@ -67,6 +67,18 @@
     "odometry_threads": "still 1. Raising it measured a 2.1e-14 change in the pose at 28 ms/frame; that is a numerics change in the reference frame and is not taken here",
     "ransac_n": "only 3 is supported, the only value this project uses; any other value is rejected rather than approximated"
   },
+  "odometry_preprocess_replaced_20260927": {
+    "guards": "installed only when the config's deskew is disabled (otherwise the library's preprocessing would include motion compensation, and this raises); switchable with odometry_native_preprocess; the strict comparison is kept so points exactly at the bound behave as the library's.",
+    "measured": {
+      "after_ms": 418.6,
+      "before_ms": 433.5,
+      "p95_after": 486.7,
+      "p95_before": 503.0
+    },
+    "note": "kiss-ICP own preprocess measured 20 ms/frame in the profile before this change.",
+    "what": "kiss-ICP's preprocessor is replaced by the selection it performs. With deskew disabled, Preprocessing.cpp (v1.3.0) keeps the frame's points whose range falls strictly inside the configured band, in input order and unchanged - a selection, not arithmetic.",
+    "why_exact": "The substitution is a selection with the same predicate, so the odometry sees the same frame. Verified on 201 real scans: changed_fields {}, missing 0, extra 0, max_float 0.0, which includes the pose and the motion record - the whole trajectory is bit-identical."
+  },
   "parallelisation": {
     "changed": "The per-iteration scan now runs on a persistent CPU worker pool instead of one CUDA thread per iteration, and the final inlier pass and refit run on the host instead of two more device round trips.",
     "measured": {
@@ -130,7 +142,7 @@
   },
   "timing_ms_per_frame": {
     "committed_cpu_backend_p50": 763.9,
-    "device_kernels_and_native_planes_p50": 437.0,
+    "device_kernels_and_native_planes_p50": 418.6,
     "device_kernels_only_p50": 714.2,
     "p95": {
       "committed": 837.2,

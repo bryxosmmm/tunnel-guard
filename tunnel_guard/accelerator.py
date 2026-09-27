@@ -65,6 +65,12 @@ def segment_plane_seed(seed: int, module):
     module.segment_plane_seed(int(seed))
 
 
+def range_indices_open(points: np.ndarray, minimum: float, maximum: float, module):
+    """Rows with `minimum < |p| < maximum`, in input order."""
+    return np.frombuffer(module.range_indices_open(np.ascontiguousarray(points), minimum, maximum),
+                         dtype=np.int64)
+
+
 def range_summary(reduced: np.ndarray, frame: np.ndarray, crop: np.ndarray, observed: np.ndarray,
                   bins: np.ndarray, module):
     """Per-bin (returns, raw cropped returns, geometry-supported returns)."""

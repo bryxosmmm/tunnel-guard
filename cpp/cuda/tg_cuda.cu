@@ -1010,6 +1010,7 @@ TG_FORWARD(patch_candidates)
 TG_FORWARD(strip_inside)
 TG_FORWARD(protrusion_ids)
 TG_FORWARD(within_radius)
+TG_FORWARD(range_indices_open)
 TG_FORWARD(ground_values)
 TG_FORWARD(mask_candidates)
 TG_FORWARD(mask_apply)
@@ -1426,6 +1427,8 @@ PyObject* cuda_device_info(PyObject*, PyObject*) {
 PyMethodDef methods[] = {
     {"classify_geometry", cuda_classify_geometry, METH_VARARGS, "CUDA classifier."},
     {"range_indices", cuda_range_indices, METH_VARARGS, "CUDA radial band filter."},
+    {"range_indices_open", cuda_forward_range_indices_open, METH_VARARGS,
+     "CPU kernel: the odometry preprocessor's strict band selection."},
     {"select_crop_voxels", cuda_select_crop_voxels, METH_VARARGS, "CUDA crop and voxel reduction."},
     {"range_summary", cuda_range_summary, METH_VARARGS, "CUDA range-bin summary."},
     {"mutual_graph", cuda_forward_mutual_graph, METH_VARARGS, "CPU kernel (device port pending)."},
