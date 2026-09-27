@@ -95,6 +95,50 @@
     },
     "why": "An iteration's scan is a serial dependency chain, which a GPU does badly: one thread per iteration cost 8.8 ms for a 31 000-point window (4 warps on one SM, load-latency bound; manual 4x unrolling changed it by 6 %). The iterations are independent of each other and each stays sequential, so cores do the same work in a fraction of the time."
   },
+  "programme_to_200_ms": {
+    "alternative": "odometry_threads 8 measured -28 ms but changes the pose at 2.1e-14; rejected as a quality change rather than an optimisation",
+    "cost": "roughly 1,500+ lines of native code across several sessions; each item needs its own per-call equivalence harness like scripts/bench_ransac_equivalence.py and the 201-scan panel comparison before it is enabled",
+    "items": [
+      {
+        "estimate_ms": -25,
+        "measured_ms": 44,
+        "plan": "native port of the batched tracking math; scipy LAP kept, or ported with a tie-detecting fallback",
+        "target": "_associate"
+      },
+      {
+        "estimate_ms": -30,
+        "measured_ms": 41,
+        "plan": "native port of the per-label work: local edge list, components, border assignment (own nearest-neighbour with a tie fallback to scipy), child statistics and box merge; geodesic reassignment stays in scipy",
+        "target": "_separate_running_surface body"
+      },
+      {
+        "estimate_ms": -26,
+        "measured_ms": 34,
+        "plan": "native port of the station loop and refine_rail_pair, with scipy's find_peaks plateau semantics reproduced from its source",
+        "target": "_rail_profile"
+      },
+      {
+        "estimate_ms": -30,
+        "measured_ms": 35,
+        "plan": "one native clustering pack: density graph, components, split, structural mask and component statistics in a single call",
+        "target": "clustering glue + structural_mask"
+      },
+      {
+        "estimate_ms": -26,
+        "measured_ms": 32,
+        "plan": "device port; mutual_graph is order-independent (edge set plus sorted CSR) so exact by construction, normal_covariances needs the cell walk reproduced",
+        "target": "mutual_graph + normal_covariances"
+      },
+      {
+        "estimate_ms": -30,
+        "measured_ms": 50,
+        "plan": "batch the remaining per-object and per-patch Python into native calls",
+        "target": "residual detector/background/cluster glue"
+      }
+    ],
+    "projected_ms": 200,
+    "remaining_ms": 221
+  },
   "rejected": {
     "rail_histogram_key_packing": "Replacing _rail_profile's np.unique(..., axis=0) of (longitudinal, lateral) bins with a biased-packed integer key - verified to select the same set on 200 random cases - measured 434.3 -> 449.7 ms per frame at identical decisions. Reverted.",
     "segmentation_csr_rewrite_revisited": "Re-applied on top of the batched loop (so it ran 43 times per frame instead of 1 476) it still cost 434 -> 455 ms at identical decisions: _local_edges and _components_within each touch the whole parent graph or allocate a node-sized array per call, while scipy's slicing only touches the subset's own rows. Reverted again, with the reason now measured rather than suspected.",
@@ -139,6 +183,14 @@
     "file": "cpp/open3d/geometry/PointCloudSegmentation.cpp, v0.19.0, PointCloud::SegmentPlane",
     "plus": "cpp/open3d/geometry/TriangleMesh.cpp ComputeTrianglePlane, and utility/Random.cpp for the proposal stream",
     "probe": "scripts/cuda_ransac_probe.py (num_iterations=1 makes the evaluated model knowable from the sampled indices)"
+  },
+  "state_20260927_end_of_session": {
+    "all_steps_verified": "every change compared against the committed detector on 201 real scans; no step accepted without changed_fields {} and max_float 0.0",
+    "committed_detector_ms": 763.9,
+    "note": "two runs of the same recipe on the same tree: 418.6 and 424.7 ms, byte-identical decisions",
+    "p50_ms": 421.0,
+    "p95_ms": 495.0,
+    "reduction_percent": 44.9
   },
   "timing_ms_per_frame": {
     "committed_cpu_backend_p50": 763.9,
