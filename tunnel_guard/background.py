@@ -41,7 +41,16 @@ class TunnelBackground:
             cfg["normal_min_neighbors"], self.native)
         self.normal_reliable = ((neighbors >= cfg["normal_min_neighbors"]) & (eigenvalues[:, 1] > cfg["normal_min_variance_m2"])
                                 & (eigenvalues[:, 0] <= cfg["normal_planarity_ratio"] * eigenvalues[:, 1]))
-        o3d.utility.random.seed(config["seed"])
+        # The proposal backend is explicit: Open3D's own RANSAC seeds its global
+        # stream here, and the native port seeds its own equivalent stream in the same
+        # place, so the two consume the same draws in the same order.
+        self.plane_backend = cfg.get("plane_backend", "open3d")
+        if self.plane_backend == "open3d":
+            o3d.utility.random.seed(config["seed"])
+        elif self.plane_backend == "native":
+            accelerator.segment_plane_seed(config["seed"], self.native)
+        else:
+            raise ValueError(f"Unknown background.plane_backend {self.plane_backend!r}")
         # Global proposals serve straight tunnels; overlapping windows let curved
         # surfaces be represented by independently supported local planar pieces.
         domains = [(float(leveled[:, 0].min()), float(leveled[:, 0].max()))] if len(leveled) else []
@@ -56,12 +65,17 @@ class TunnelBackground:
             for _ in range(cfg["planes_per_window"]):
                 if len(remainder) < cfg["min_support"]:
                     break
-                cloud = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(remainder))
-                # Open3D's parallel adaptive stopping depends on scheduling,
-                # even with a fixed seed. Serialize proposals, not all geometry.
-                with _THREAD_POOLS.limit(limits=cfg.get("ransac_threads", 1), user_api="openmp"):
-                    plane, indices = cloud.segment_plane(cfg["fit_distance_m"], 3,
-                        cfg["ransac_iterations"], probability=cfg["ransac_probability"])
+                if self.plane_backend == "native":
+                    plane, indices = accelerator.segment_plane(
+                        remainder, cfg["fit_distance_m"], 3, cfg["ransac_iterations"],
+                        cfg["ransac_probability"], self.native)
+                else:
+                    cloud = o3d.geometry.PointCloud(o3d.utility.Vector3dVector(remainder))
+                    # Open3D's parallel adaptive stopping depends on scheduling,
+                    # even with a fixed seed. Serialize proposals, not all geometry.
+                    with _THREAD_POOLS.limit(limits=cfg.get("ransac_threads", 1), user_api="openmp"):
+                        plane, indices = cloud.segment_plane(cfg["fit_distance_m"], 3,
+                            cfg["ransac_iterations"], probability=cfg["ransac_probability"])
                 indices = np.asarray(indices, dtype=int)
                 if len(indices) < cfg["min_support"]:
                     break

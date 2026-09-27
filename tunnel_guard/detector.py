@@ -48,6 +48,12 @@ def load_config(path: str | Path) -> dict:
     ransac_threads = config.get("background", {}).get("ransac_threads", 1)
     if type(ransac_threads) is not int or ransac_threads < 1:
         raise ValueError("background.ransac_threads must be a positive integer")
+    plane_backend = config.get("background", {}).get("plane_backend", "open3d")
+    if plane_backend not in ("open3d", "native"):
+        raise ValueError("background.plane_backend must be 'open3d' or 'native'")
+    if plane_backend == "native" and config.get("native_backend", "cpu") != "cuda":
+        raise ValueError("background.plane_backend 'native' needs native_backend 'cuda': the exact port "
+                         "lives in the device backend")
     if config.get("native_backend", "cpu") not in ("cpu", "cuda"):
         raise ValueError("Unknown native_backend; expected 'cpu' or 'cuda'")
     query_workers = config.get("query_workers", -1)

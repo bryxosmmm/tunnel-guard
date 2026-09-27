@@ -27,6 +27,7 @@ def main():
         (geometry.TrackGeometry, "classify"), (geometry, "robust_plane"),
         (background.TunnelBackground, "__init__"), (background.TunnelBackground, "mask"),
         (accelerator, "normal_statistics"), (accelerator, "density_graph"),
+        (accelerator, "segment_plane"),
         (io, "decode_cloud"),
         # The per-frame refits and third-party kernels that the stages above contain.
         (detector, "_far_field_bounds"),

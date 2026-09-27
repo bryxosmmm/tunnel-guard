@@ -46,6 +46,25 @@ def native(config: dict):
 
 
 
+def segment_plane(points: np.ndarray, threshold: float, ransac_n: int, iterations: int, probability: float,
+                  module):
+    """Exact port of Open3D's SegmentPlane: same plane and same inlier set.
+
+    Only the device backend implements it, and only `background.plane_backend: native`
+    selects it. The port is verified against Open3D call by call by
+    `scripts/bench_ransac_equivalence.py`, because these proposals define the tunnel
+    surface the detector claims are measured against.
+    """
+    plane, indices = module.segment_plane(np.ascontiguousarray(points), threshold, int(ransac_n),
+                                          int(iterations), probability)
+    return np.frombuffer(plane, dtype=np.float64), np.frombuffer(indices, dtype=np.int64)
+
+
+def segment_plane_seed(seed: int, module):
+    """Seed the proposal stream, mirroring `o3d.utility.random.seed`."""
+    module.segment_plane_seed(int(seed))
+
+
 def range_summary(reduced: np.ndarray, frame: np.ndarray, crop: np.ndarray, observed: np.ndarray,
                   bins: np.ndarray, module):
     """Per-bin (returns, raw cropped returns, geometry-supported returns)."""

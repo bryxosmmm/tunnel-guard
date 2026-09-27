@@ -1,0 +1,68 @@
+{
+  "date": "2026-09-27",
+  "scope": "Exact port of Open3D's plane proposals for the tunnel-surface fit; changes no decision.",
+  "why": "Open3D's segment_plane was 280 ms of a 714 ms frame, and it is the model the detector's corridor claims are measured against, so it could not be replaced by an approximation.",
+  "source": {
+    "file": "cpp/open3d/geometry/PointCloudSegmentation.cpp, v0.19.0, PointCloud::SegmentPlane",
+    "plus": "cpp/open3d/geometry/TriangleMesh.cpp ComputeTrianglePlane, and utility/Random.cpp for the proposal stream",
+    "facts_not_in_the_source": "Eigen evaluates the 4-element dot product, the 3-element norm and the refit sums in sequential order, and the 0.19 wheel is built without contracting products into FMAs. Measured, not assumed: with sequential order and no FMA the port reproduced Open3D's returned plane bit for bit and its inlier set exactly on every call, while both packet reduction orders failed the plane comparison.",
+    "probe": "scripts/cuda_ransac_probe.py (num_iterations=1 makes the evaluated model knowable from the sampled indices)"
+  },
+  "design": {
+    "stream": "std::mt19937 seeded once per frame, exactly as o3d.utility.random.seed does, and consumed in the same order; the draws are data-independent, so the number consumed by a call is fixed by the point count",
+    "parallelism": "one thread per RANSAC iteration, each scanning the cloud in the original order, so every iteration's inlier count, squared error and rmse are the sequential values; the best-result update and the break_iteration stopping rule depend on iteration order and are replayed afterwards on the host, where std::log and std::pow are the same libm calls Open3D used",
+    "final_step": "the final inlier pass is element-wise and therefore parallel, and the refit that follows it is a sequential accumulation on the host, in ascending index order",
+    "selection": "background.plane_backend: 'open3d' (default) or 'native'; the native port needs the device backend and the configuration rejects it otherwise"
+  },
+  "equivalence": {
+    "per_call": {
+      "harness": "scripts/bench_ransac_equivalence.py",
+      "panel": "40 real scans, both implementations driven in lockstep from the same seed",
+      "calls": 1386,
+      "planes_bit_equal": 1386,
+      "inlier_sets_equal": 1386
+    },
+    "decisions": {
+      "panel": "201 real scans of doubleT_obstacle",
+      "comparison": "scripts/compare_runs.py against the committed detector",
+      "changed_fields": {},
+      "missing_frames": 0,
+      "extra_frames": 0,
+      "largest_compared_float_difference": 0.0
+    },
+    "determinism": {
+      "method": "two independent 201-scan runs of the same recipe",
+      "changed_fields": {},
+      "largest_compared_float_difference": 0.0
+    }
+  },
+  "timing_ms_per_frame": {
+    "panel": "201 real scans of doubleT_obstacle, eight pinned CPUs, RTX 4080",
+    "committed_cpu_backend_p50": 763.9,
+    "device_kernels_only_p50": 714.2,
+    "device_kernels_and_native_planes_p50": 498.4,
+    "p95": {"committed": 837.2, "device_kernels_only": 777.0, "with_native_planes": 566.7},
+    "plane_proposals": {"open3d_ms_per_frame": 280.4, "native_ms_per_frame": 66.4, "calls_per_frame": 34.6,
+                        "native_per_call_p50_ms": 0.34},
+    "plane_note": "The native per-call mean is far above its p50: the first call of each frame and the first call of the process pay context, pinned-staging and pool setup, and the largest window carries four times the points of a typical one."
+  },
+  "remaining_frame_ms": {
+    "kiss_icp_motion": 142.9,
+    "geometry_construction": 156.2,
+    "of_which_background": 110.9,
+    "clustering_and_density": 115.1,
+    "association": 43.2,
+    "other": 40.3,
+    "note": "This is where the next hundred milliseconds are."
+  },
+  "not_done": {
+    "ransac_n": "only 3 is supported, the only value this project uses; any other value is rejected rather than approximated",
+    "cpu_backend": "the port lives in the device backend; a run without a GPU keeps Open3D, so the CPU path is unchanged at 763.9 ms",
+    "odometry_threads": "still 1. Raising it measured a 2.1e-14 change in the pose at 28 ms/frame; that is a numerics change in the reference frame and is not taken here"
+  },
+  "limitations": [
+    "Equivalence is established on one recording (1386 proposals over 40 scans, and 201 scans of decisions). The port is a transcription and its arithmetic is characterized, but a branch the panel does not exercise could still diverge; the harness re-runs the comparison on any recording.",
+    "The stopping rule's break_iteration formula is replayed with the host's libm, so the port is tied to a compatible libm for exactness.",
+    "Replacing a third-party kernel in a decision path is a maintenance liability: the port must be revisited if Open3D changes version or build flags. Pinned to 0.19.0 and documented here."
+  ]
+}
