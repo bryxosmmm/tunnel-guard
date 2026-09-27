@@ -30,10 +30,17 @@
 
 #include <algorithm>
 #include <array>
+#include <atomic>
+#include <condition_variable>
+#include <functional>
+#include <mutex>
 #include <random>
+#include <thread>
 #include <cmath>
 #include <climits>
 #include <cstdint>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <limits>
 #include <stdexcept>
@@ -46,6 +53,9 @@ constexpr int kThreads = 256;
 constexpr Py_ssize_t kClassifyMinimum = 4096;
 constexpr Py_ssize_t kFrontMinimum = 4096;
 constexpr Py_ssize_t kRangeMinimum = 1 << 16;
+// Below this many points a plane proposal is evaluated on the host: the device round
+// trip costs more than the sequential scan, and both paths are the same algorithm.
+constexpr Py_ssize_t kPlaneDeviceMinimum = 4096;
 constexpr size_t kPoolBytes = size_t(512) << 20;
 constexpr int64_t kKeyBias = 1 << 20;
 
@@ -531,89 +541,6 @@ int* compact_offsets(const uint8_t* flags, int64_t count) {
 // break_iteration stopping rule depend on the iteration ORDER, so they are replayed
 // afterwards on the host, where std::log and std::pow are the same libm calls
 // Open3D used.
-struct RansacArgs {
-    const double* points;
-    const int64_t* samples;   // iterations * ransac_n
-    int64_t num_points;
-    int64_t iterations;
-    int ransac_n;
-    double threshold;
-    double* fitness;
-    double* rmse;
-    double* planes;           // 4 per iteration
-    uint8_t* degenerate;      // isZero(0) models, which Open3D skips
-};
-
-__device__ inline double dot4_sequential(const double* plane, double x, double y, double z) {
-    // Eigen::Vector4d::dot with the sequential reduction the wheel uses.
-    return ((plane[0] * x + plane[1] * y) + plane[2] * z) + plane[3];
-}
-
-__device__ inline double dot3_sequential(const double* a, const double* b) {
-    return (a[0] * b[0] + a[1] * b[1]) + a[2] * b[2];
-}
-
-__global__ void ransac_iterations_kernel(RansacArgs args) {
-    // One thread per iteration: the reduction inside an iteration is sequential in
-    // the original, so it stays sequential here and the results are the same bits.
-    const int64_t iteration = static_cast<int64_t>(blockIdx.x) * blockDim.x + threadIdx.x;
-    if (iteration >= args.iterations) return;
-    const int64_t* sample = args.samples + iteration * args.ransac_n;
-    double* model = args.planes + 4 * iteration;
-    if (args.ransac_n != 3) {
-        // Open3D would fit every sample point here; only 3 is used by this project.
-        args.degenerate[iteration] = 1;
-        args.fitness[iteration] = 0.0;
-        args.rmse[iteration] = 0.0;
-        model[0] = model[1] = model[2] = model[3] = 0.0;
-        return;
-    }
-    const double* p0 = args.points + 3 * sample[0];
-    const double* p1 = args.points + 3 * sample[1];
-    const double* p2 = args.points + 3 * sample[2];
-    const double e0[3] = {p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2]};
-    const double e1[3] = {p2[0] - p0[0], p2[1] - p0[1], p2[2] - p0[2]};
-    double abc[3] = {e0[1] * e1[2] - e0[2] * e1[1],
-                     e0[2] * e1[0] - e0[0] * e1[2],
-                     e0[0] * e1[1] - e0[1] * e1[0]};
-    const double norm = sqrt(dot3_sequential(abc, abc));
-    if (norm == 0.0) {
-        args.degenerate[iteration] = 1;
-        args.fitness[iteration] = 0.0;
-        args.rmse[iteration] = 0.0;
-        model[0] = model[1] = model[2] = model[3] = 0.0;
-        return;
-    }
-    for (int axis = 0; axis < 3; ++axis) abc[axis] = abc[axis] / norm;
-    model[0] = abc[0];
-    model[1] = abc[1];
-    model[2] = abc[2];
-    model[3] = -dot3_sequential(abc, p0);
-    args.degenerate[iteration] = 0;
-    double error = 0.0;
-    int64_t count = 0;
-    for (int64_t index = 0; index < args.num_points; ++index) {
-        // The cloud walk is reproduced exactly: same predicate, same accumulation
-        // order for the squared error.
-        const double* point = args.points + 3 * index;
-        const double distance = fabs(dot4_sequential(model, point[0], point[1], point[2]));
-        if (distance < args.threshold) {
-            error += distance * distance;
-            ++count;
-        }
-    }
-    args.fitness[iteration] = static_cast<double>(count) / static_cast<double>(args.num_points);
-    args.rmse[iteration] = count == 0 ? 0.0 : sqrt(error / static_cast<double>(count));
-}
-
-__global__ void ransac_final_flag_kernel(const double* points, int64_t count, const double* plane,
-                                         double threshold, uint8_t* flags) {
-    const int64_t index = static_cast<int64_t>(blockIdx.x) * blockDim.x + threadIdx.x;
-    if (index >= count) return;
-    const double* point = points + 3 * index;
-    flags[index] = fabs(dot4_sequential(plane, point[0], point[1], point[2])) < threshold ? 1 : 0;
-}
-
 // --------------------------------------------------------------- entry points
 
 PyObject* cuda_classify_geometry(PyObject*, PyObject* args) {
@@ -1175,6 +1102,232 @@ PyObject* cuda_segment_plane_seed(PyObject*, PyObject* args) {
     Py_RETURN_NONE;
 }
 
+// A small persistent pool for iteration-parallel work. A task is a set of independent
+// indices; workers pull them with an atomic counter, so which worker computes which
+// index does not matter, and the caller works too. Each index's own work is sequential,
+// which is what keeps the plane scans identical to Open3D's.
+class WorkerPool {
+public:
+    static WorkerPool& instance() {
+        static WorkerPool single;
+        return single;
+    }
+
+    template <typename Body>
+    void run(int count, Body body) {
+        if (count <= 0) return;
+        start();
+        if (threads_.empty()) {
+            for (int index = 0; index < count; ++index) body(index);
+            return;
+        }
+        {
+            std::lock_guard<std::mutex> lock(mutex_);
+            body_ = [&body](int index) { body(index); };
+            count_ = count;
+            next_.store(0, std::memory_order_relaxed);
+            active_ = static_cast<int>(threads_.size());
+            ++generation_;
+        }
+        work_.notify_all();
+        drain();
+        std::unique_lock<std::mutex> lock(mutex_);
+        finished_.wait(lock, [this] { return active_ == 0; });
+        body_ = nullptr;
+    }
+
+    ~WorkerPool() {
+        {
+            std::lock_guard<std::mutex> lock(mutex_);
+            stopping_ = true;
+            ++generation_;
+        }
+        work_.notify_all();
+        for (auto& thread : threads_) thread.join();
+    }
+
+private:
+    WorkerPool() = default;
+
+    void start() {
+        if (started_) return;
+        started_ = true;
+        const unsigned hardware = std::thread::hardware_concurrency();
+        const unsigned workers = std::max(1u, std::min(hardware ? hardware : 1u, 8u));
+        seen_.assign(workers > 0 ? workers - 1 : 0, 0);
+        for (unsigned worker = 1; worker < workers; ++worker) {
+            threads_.emplace_back([this, worker] { loop(worker); });
+        }
+    }
+
+    void loop(unsigned worker) {
+        unsigned& seen = seen_[worker - 1];
+        for (;;) {
+            {
+                std::unique_lock<std::mutex> lock(mutex_);
+                work_.wait(lock, [this, &seen] { return stopping_ || generation_ != seen; });
+                seen = generation_;
+                if (stopping_) return;
+            }
+            drain();
+            {
+                std::lock_guard<std::mutex> lock(mutex_);
+                if (--active_ == 0) finished_.notify_all();
+            }
+        }
+    }
+
+    void drain() {
+        for (;;) {
+            const int index = next_.fetch_add(1, std::memory_order_relaxed);
+            if (index >= count_) return;
+            body_(index);
+        }
+    }
+
+    std::mutex mutex_;
+    std::condition_variable work_;
+    std::condition_variable finished_;
+    std::vector<std::thread> threads_;
+    std::vector<unsigned> seen_;
+    std::function<void(int)> body_;
+    std::atomic<int> next_{0};
+    int count_ = 0;
+    int active_ = 0;
+    unsigned generation_ = 0;
+    bool stopping_ = false;
+    bool started_ = false;
+};
+
+template <typename Body>
+void run_iterations(int count, Body body) {
+    WorkerPool::instance().run(count, body);
+}
+
+// The sequential walk, on the host. Used for small windows, where a device round trip
+// costs more than the work, and it is the same algorithm in the same order as the
+// kernel: the two must agree, and the equivalence harness compares both against
+// Open3D.
+struct RansacModel {
+    double plane[4];
+    double fitness;
+    double rmse;
+    bool degenerate;
+};
+
+RansacModel evaluate_iteration(const double* points, int64_t n, const int64_t* sample, int ransac_n,
+                               double threshold) {
+    RansacModel model{};
+    if (ransac_n != 3) {
+        model.degenerate = true;
+        return model;
+    }
+    const double* p0 = points + 3 * sample[0];
+    const double* p1 = points + 3 * sample[1];
+    const double* p2 = points + 3 * sample[2];
+    const double e0[3] = {p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2]};
+    const double e1[3] = {p2[0] - p0[0], p2[1] - p0[1], p2[2] - p0[2]};
+    double abc[3] = {e0[1] * e1[2] - e0[2] * e1[1],
+                     e0[2] * e1[0] - e0[0] * e1[2],
+                     e0[0] * e1[1] - e0[1] * e1[0]};
+    const double norm = std::sqrt((abc[0] * abc[0] + abc[1] * abc[1]) + abc[2] * abc[2]);
+    if (norm == 0.0) {
+        model.degenerate = true;
+        return model;
+    }
+    for (int axis = 0; axis < 3; ++axis) abc[axis] = abc[axis] / norm;
+    model.plane[0] = abc[0];
+    model.plane[1] = abc[1];
+    model.plane[2] = abc[2];
+    model.plane[3] = -((abc[0] * p0[0] + abc[1] * p0[1]) + abc[2] * p0[2]);
+    double error = 0.0;
+    int64_t count = 0;
+    int64_t index = 0;
+    for (; index + 4 <= n; index += 4) {
+        const double* p0 = points + 3 * (index + 0);
+        const double* p1 = points + 3 * (index + 1);
+        const double* p2 = points + 3 * (index + 2);
+        const double* p3 = points + 3 * (index + 3);
+        const double d0 = std::fabs(((model.plane[0] * p0[0] + model.plane[1] * p0[1]) + model.plane[2] * p0[2]) + model.plane[3]);
+        const double d1 = std::fabs(((model.plane[0] * p1[0] + model.plane[1] * p1[1]) + model.plane[2] * p1[2]) + model.plane[3]);
+        const double d2 = std::fabs(((model.plane[0] * p2[0] + model.plane[1] * p2[1]) + model.plane[2] * p2[2]) + model.plane[3]);
+        const double d3 = std::fabs(((model.plane[0] * p3[0] + model.plane[1] * p3[1]) + model.plane[2] * p3[2]) + model.plane[3]);
+        if (d0 < threshold) { error += d0 * d0; ++count; }
+        if (d1 < threshold) { error += d1 * d1; ++count; }
+        if (d2 < threshold) { error += d2 * d2; ++count; }
+        if (d3 < threshold) { error += d3 * d3; ++count; }
+    }
+    for (; index < n; ++index) {
+        const double* point = points + 3 * index;
+        const double distance = std::fabs(((model.plane[0] * point[0] + model.plane[1] * point[1])
+                                           + model.plane[2] * point[2]) + model.plane[3]);
+        if (distance < threshold) {
+            error += distance * distance;
+            ++count;
+        }
+    }
+    model.fitness = static_cast<double>(count) / static_cast<double>(n);
+    model.rmse = count == 0 ? 0.0 : std::sqrt(error / static_cast<double>(count));
+    return model;
+}
+
+// The best-result update and the stopping rule, in iteration order, with the same
+// libm Open3D used. Returns the winning iteration or -1.
+int replay_best_iteration(const std::vector<RansacModel>& models, int iterations, int ransac_n,
+                         double probability) {
+    double best_fitness = 0.0, best_rmse = 0.0;
+    int best_iteration = -1;
+    int iteration_count = 0;
+    size_t break_iteration = std::numeric_limits<size_t>::max();
+    for (int iteration = 0; iteration < iterations; ++iteration) {
+        if (static_cast<size_t>(iteration_count) > break_iteration) continue;
+        if (models[static_cast<size_t>(iteration)].degenerate) continue;
+        const double fitness = models[static_cast<size_t>(iteration)].fitness;
+        const double rmse = models[static_cast<size_t>(iteration)].rmse;
+        if (fitness > best_fitness || (fitness == best_fitness && rmse < best_rmse)) {
+            best_fitness = fitness;
+            best_rmse = rmse;
+            best_iteration = iteration;
+            if (best_fitness < 1.0) {
+                const double required = std::log(1.0 - probability)
+                    / std::log(1.0 - std::pow(best_fitness, ransac_n));
+                break_iteration = static_cast<size_t>(std::min(required, static_cast<double>(iterations)));
+            } else {
+                break_iteration = 0;
+            }
+        }
+        ++iteration_count;
+    }
+    return best_iteration;
+}
+
+// Final inliers with the winning model, in ascending index order, then the refit.
+void finish_plane(const double* points, int64_t n, const double* plane, double threshold, double* plane_out,
+                  std::vector<int64_t>& inliers_out) {
+    inliers_out.clear();
+    for (int64_t index = 0; index < n; ++index) {
+        const double* point = points + 3 * index;
+        const double distance = std::fabs(((plane[0] * point[0] + plane[1] * point[1])
+                                           + plane[2] * point[2]) + plane[3]);
+        if (distance < threshold) inliers_out.push_back(index);
+    }
+    fit_plane(points, inliers_out, plane_out);
+}
+
+PyObject* segment_plane_result(const double* plane, const std::vector<int64_t>& inliers) {
+    PyObject* plane_bytes = bytes_of(plane, 4 * sizeof(double));
+    PyObject* index_bytes = bytes_of(inliers.data(), inliers.size() * sizeof(int64_t));
+    if (!plane_bytes || !index_bytes) {
+        Py_XDECREF(plane_bytes);
+        Py_XDECREF(index_bytes);
+        return nullptr;
+    }
+    PyObject* payload = PyTuple_New(2);
+    PyTuple_SET_ITEM(payload, 0, plane_bytes);
+    PyTuple_SET_ITEM(payload, 1, index_bytes);
+    return payload;
+}
+
 PyObject* cuda_segment_plane(PyObject*, PyObject* args) {
     PyObject* object;
     double threshold, probability;
@@ -1193,104 +1346,50 @@ PyObject* cuda_segment_plane(PyObject*, PyObject* args) {
     }
     if (static_cast<size_t>(n) < static_cast<size_t>(ransac_n) || n == 0) {
         // Open3D returns a zero plane and an empty index list for these inputs.
-        PyObject* plane = bytes_of(nullptr, 0);
-        PyObject* indices = bytes_of(nullptr, 0);
-        if (!plane || !indices) { Py_XDECREF(plane); Py_XDECREF(indices); return nullptr; }
-        PyObject* payload = PyTuple_New(2);
-        PyTuple_SET_ITEM(payload, 0, plane);
-        PyTuple_SET_ITEM(payload, 1, indices);
-        return payload;
+        const double zero[4] = {0.0, 0.0, 0.0, 0.0};
+        return segment_plane_result(zero, std::vector<int64_t>{});
     }
     try {
-        Pool& memory = pool();
-        memory.ensure();
-        memory.reset();
+        const double* points = buffer.doubles();
         const std::vector<int64_t> samples = draw_samples(static_cast<size_t>(n), iterations, ransac_n);
-        std::vector<double> plane_host(4, 0.0);
+        double plane_host[4] = {0.0, 0.0, 0.0, 0.0};
         std::vector<int64_t> inliers_host;
         {
             ReleaseGIL released;
-            RansacArgs arguments{};
-            arguments.num_points = n;
-            arguments.iterations = iterations;
-            arguments.ransac_n = ransac_n;
-            arguments.threshold = threshold;
-            arguments.samples = device_copy(samples.data(), samples.size(), "samples");
-            arguments.points = device_copy(buffer.doubles(), static_cast<size_t>(n) * 3, "points");
-            arguments.fitness = static_cast<double*>(
-                memory.take(static_cast<size_t>(iterations) * sizeof(double)));
-            arguments.rmse = static_cast<double*>(memory.take(static_cast<size_t>(iterations) * sizeof(double)));
-            arguments.planes = static_cast<double*>(memory.take(static_cast<size_t>(iterations) * 4 * sizeof(double)));
-            arguments.degenerate = static_cast<uint8_t*>(memory.take(static_cast<size_t>(iterations)));
-            const unsigned blocks = static_cast<unsigned>((iterations + kThreads - 1) / kThreads);
-            ransac_iterations_kernel<<<blocks, kThreads>>>(arguments);
-            check(cudaGetLastError(), "ransac launch");
-            check(cudaDeviceSynchronize(), "ransac");
-
-            const std::vector<double> fitness = host_copy(arguments.fitness, static_cast<size_t>(iterations), "fitness");
-            const std::vector<double> rmse = host_copy(arguments.rmse, static_cast<size_t>(iterations), "rmse");
-            const std::vector<double> planes = host_copy(arguments.planes, static_cast<size_t>(iterations) * 4, "planes");
-            const std::vector<uint8_t> degenerate = host_copy(arguments.degenerate,
-                                                              static_cast<size_t>(iterations), "degenerate");
-            // The best-result update and the stopping rule depend on iteration order,
-            // so they are replayed here, in order, with the same libm.
-            double best_fitness = 0.0, best_rmse = 0.0;
-            int best_iteration = -1;
-            int iteration_count = 0;
-            size_t break_iteration = std::numeric_limits<size_t>::max();
-            for (int iteration = 0; iteration < iterations; ++iteration) {
-                if (static_cast<size_t>(iteration_count) > break_iteration) continue;
-                if (degenerate[static_cast<size_t>(iteration)]) continue;
-                const double iteration_fitness = fitness[static_cast<size_t>(iteration)];
-                const double iteration_rmse = rmse[static_cast<size_t>(iteration)];
-                if (iteration_fitness > best_fitness
-                        || (iteration_fitness == best_fitness && iteration_rmse < best_rmse)) {
-                    best_fitness = iteration_fitness;
-                    best_rmse = iteration_rmse;
-                    best_iteration = iteration;
-                    if (best_fitness < 1.0) {
-                        const double required = std::log(1.0 - probability)
-                            / std::log(1.0 - std::pow(best_fitness, ransac_n));
-                        break_iteration = static_cast<size_t>(std::min(required, static_cast<double>(iterations)));
-                    } else {
-                        break_iteration = 0;
-                    }
+            if (n < kPlaneDeviceMinimum) {
+                // Small window: the device round trip costs more than the scan.
+                std::vector<RansacModel> models(static_cast<size_t>(iterations));
+                for (int iteration = 0; iteration < iterations; ++iteration) {
+                    models[static_cast<size_t>(iteration)] = evaluate_iteration(
+                        points, n, samples.data() + static_cast<size_t>(iteration) * ransac_n, ransac_n, threshold);
                 }
-                ++iteration_count;
-            }
-            const bool has_plane = best_iteration >= 0;
-            if (has_plane) {
-                const double* winner = planes.data() + 4 * best_iteration;
-                for (int axis = 0; axis < 4; ++axis) plane_host[static_cast<size_t>(axis)] = winner[axis];
-                // Final inliers with the winning model, then the refit Open3D performs
-                // on them, in ascending index order.
-                uint8_t* flags = static_cast<uint8_t*>(memory.take(static_cast<size_t>(n)));
-                ransac_final_flag_kernel<<<grid_for(n), kThreads>>>(
-                    arguments.points, n, arguments.planes + 4 * best_iteration, threshold, flags);
-                check(cudaGetLastError(), "final flag launch");
-                const int* offsets = compact_offsets(flags, n);
-                const uint8_t last = tail_value(flags, n, "last final flag");
-                const Py_ssize_t count = static_cast<Py_ssize_t>(tail_value(offsets, n, "final offsets")) + last;
-                int64_t* final_indices = static_cast<int64_t*>(
-                    memory.take(static_cast<size_t>(count) * sizeof(int64_t)));
-                range_scatter_kernel<<<grid_for(n), kThreads>>>(offsets, flags, n, final_indices);
-                check(cudaGetLastError(), "final scatter launch");
-                check(cudaDeviceSynchronize(), "final inliers");
-                inliers_host = host_copy(final_indices, static_cast<size_t>(count), "final inliers");
-                fit_plane(buffer.doubles(), inliers_host, plane_host.data());
+                const int winner = replay_best_iteration(models, iterations, ransac_n, probability);
+                if (winner >= 0) {
+                    finish_plane(points, n, models[static_cast<size_t>(winner)].plane, threshold, plane_host,
+                                 inliers_host);
+                }
+            } else {
+                // Parallel over iterations, sequential inside each: the scan order is
+                // part of the result, and an iteration's scan is a serial dependency
+                // chain, which cores run far better than a GPU does (measured: one
+                // thread per iteration on the device cost 8.8 ms for a 31 000-point
+                // window; the same iterations split over the CPU cores cost a few
+                // hundred microseconds).
+                std::vector<RansacModel> models(static_cast<size_t>(iterations));
+                run_iterations(iterations, [&](int iteration) {
+                    models[static_cast<size_t>(iteration)] = evaluate_iteration(
+                        points, n, samples.data() + static_cast<size_t>(iteration) * ransac_n, ransac_n, threshold);
+                });
+                const int winner = replay_best_iteration(models, iterations, ransac_n, probability);
+                if (winner >= 0) {
+                    // The final pass and the refit are sequential in the original, so
+                    // they run here rather than as two more device round trips.
+                    finish_plane(points, n, models[static_cast<size_t>(winner)].plane, threshold, plane_host,
+                                 inliers_host);
+                }
             }
         }
-        PyObject* plane_bytes = bytes_of(plane_host.data(), plane_host.size() * sizeof(double));
-        PyObject* index_bytes = bytes_of(inliers_host.data(), inliers_host.size() * sizeof(int64_t));
-        if (!plane_bytes || !index_bytes) {
-            Py_XDECREF(plane_bytes);
-            Py_XDECREF(index_bytes);
-            return nullptr;
-        }
-        PyObject* payload = PyTuple_New(2);
-        PyTuple_SET_ITEM(payload, 0, plane_bytes);
-        PyTuple_SET_ITEM(payload, 1, index_bytes);
-        return payload;
+        return segment_plane_result(plane_host, inliers_host);
     } catch (const std::bad_alloc&) {
         return PyErr_NoMemory();
     } catch (const std::exception& error) {
