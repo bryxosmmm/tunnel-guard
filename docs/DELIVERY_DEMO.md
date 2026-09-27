@@ -2,22 +2,19 @@
 
 ## Source boundary
 
-The working release candidate is **8539a3e1a8764a49b3647558c895a611eebf6a13**
-(PR #35), selected after the user said the owner's last change was probably final.
-This is a working assumption, not an explicit published freeze approval.
-PR #35's description and owner comments still identify
-**ec311a0bc78363791b5fe9bfaf1ea759bbf2b16a** as the verified baseline.
-The later commit changes `detector.py` and `segmentation.py`; it is not a delivery-only commit.
-Both complete source variants and the fetched PR metadata are retained in the evidence.
+The user identifies current `main` as the frozen final detector. This delivery branch
+is based on **7689b8057a3e35ab39ce0e671c37d7efc9cfd1d6** (PR #42 merge).
+The inference source, native source and `configs/detector.json` at that commit match
+PR #35 head **8539a3e1a8764a49b3647558c895a611eebf6a13**; the only change under
+`tunnel_guard/` is `sustech.py`, which exports annotations. The earlier verified
+baseline **ec311a0bc78363791b5fe9bfaf1ea759bbf2b16a** is retained as historical
+comparison evidence. This PR changes no detector or detector configuration file
+relative to `main`.
 
-**Question for Semyon Morev:** does the freeze include the instance separation change
-`8539a3e`, or does the release retain `ec311a0`? The delivery patch is measured separately
-on both. No detector/configuration change is included in this PR relative to `8539a3e`.
-
-`configs/detector.json` SHA256 in both variants:
+`configs/detector.json` SHA256 at the frozen `main` commit:
 `f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa`.
-The delivery follows PR #35's five `/perception/...` topics and imports PR #38's
-Humble RViz topic-property correction. Do not combine it with the
+The delivery follows main's five `/perception/...` topics and RViz configuration
+from PR #38. Do not combine it with the
 `experiments/buyanov` `/tunnel_guard/...` launch/package.
 Fixed frame is `tunnel_guard_local`; there is no identity TF.
 
@@ -33,10 +30,8 @@ Do not overwrite an evidence directory: each run uses a new output path.
 uv sync --locked
 uv run python setup.py build_ext --inplace
 uv run python -m tunnel_guard.run --experiment configs/delivery-demo.json
-# Retain the annotation verbatim at its exact source commit.
-git show 958cdb0db317cdb72006b6f75a8e138087946daa:annotations/doubleT-obstacle-person-crossing.json > build/person-crossing.json
 uv run python -m tools.render_delivery_demo --run build/delivery/demo \
-  --annotations build/person-crossing.json --output build/delivery/demo.html
+  --annotations annotations/doubleT-obstacle-person-crossing.json --output build/delivery/demo.html
 python3 -m http.server 8765 --directory build/delivery
 ```
 
@@ -78,7 +73,7 @@ docker run --platform linux/amd64 --rm \
   tunnel-guard:delivery bash -lc \
   'source /opt/ros/humble/setup.bash && python3 /recipe/replay_delivery.py /recipes/delivery-ros-rate1.json /evidence/rate1'
 uv run python -m tools.render_delivery_demo --run build/delivery/demo \
-  --annotations build/person-crossing.json --live build/delivery/ros/complete \
+  --annotations annotations/doubleT-obstacle-person-crossing.json --live build/delivery/ros/complete \
   --output build/delivery/demo-with-freshness.html
 ```
 
@@ -122,6 +117,12 @@ outputs. Mac/native, Mac/amd64-emulated ROS and the unmeasured target Intel are 
 See [the measured report](../results/delivery-profile-20260926.md) and the [portable selected-message archive](../results/delivery-demo-evidence-20260926.zip). The browser demo includes an actual **startup without input** watchdog
 recording under frozen simulation time. It does not claim the requested complete
 fresh-scene → lost-input → recovery live sequence passed.
+
+After rebasing on `main`, a second full 201-scan CLI replay retained every detector
+decision, acquisition timestamp and all 804 non-status display CDR payloads from
+the earlier optimized replay. Its manifest, raw stage timings and comparison are
+in the archive. The original before/after timing pair remains the controlled
+performance comparison; the later `main` run is an integration check.
 
 The amd64 image built, but Open3D 0.19.0 raised SIGILL on the first input in this
 Docker Desktop emulator (reported CPU lacks AVX). Linux/arm64 could not install
