@@ -27,6 +27,10 @@ mounting or vehicle extrinsics.
 
 The initial review and its two real 30-frame prefixes are documented in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). Subsequent iterations and historical results below are separate evidence.
 
+The [recorded 3D server demonstration](docs/SERVER_DEMO_20260927.md) documents
+the transferred complete dataset, two complete real-bag runs, SSH viewing
+commands, and the limits of that evidence.
+
 ## Extended dataset: initial real runs
 
 See [archive inventory and first comparison](docs/EXTENDED_FIRST_LOOK.md): 11,271 clouds in 221 segments, about 84 GiB unpacked. Three fixed segments (153 clouds) were processed by current and previous geometry without tuning. Both fail on the same one frame; no labelled accuracy is established. The initial sample extracted about 1.14 GiB; after disk cleanup, [the complete recording is now extracted and all acquisition headers audited](docs/EXTENDED_FULL_INGEST.md). [Continuous detector inference now covers all 11,271 clouds](docs/EXTENDED_FULL_RUN.md): 11,250 frames with supported geometry, 21 unavailable; median processing 132 ms on this Mac. No labelled accuracy is established.
