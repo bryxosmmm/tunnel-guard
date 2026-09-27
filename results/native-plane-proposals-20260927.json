@@ -48,6 +48,15 @@
     },
     "run_to_run_variance_ms": 6.0
   },
+  "kiss_icp_downsampler_source": {
+    "code": "first point per voxel into a tsl::robin_map, then iterate the map - so the output ORDER is robin_map bucket order, and the representative is the first point in input order",
+    "consequence": "The order is load-bearing (map contents under the per-voxel cap, and the ICP's accumulation order), so matching it means using the same container at the same cost, and changing it changes the pose. The 48 ms downsampler is closed: not missing source, and not missing effort - a design property.",
+    "file": "kiss-icp v1.3.0 cpp/kiss_icp/core/VoxelUtils.cpp, VoxelDownsample",
+    "probes": {
+      "insertion_order": "27 656 of 27 658 rows differ",
+      "lexicographic": "does not match"
+    }
+  },
   "limitations": [
     "Equivalence is established on one recording (1386 proposals over 40 scans, and 201 scans of decisions). The port is a transcription and its arithmetic is characterized, but a branch the panel does not exercise could still diverge; the harness re-runs the comparison on any recording.",
     "The stopping rule's break_iteration formula is replayed with the host's libm, so the port is tied to a compatible libm for exactness.",
@@ -76,6 +85,7 @@
   },
   "rejected": {
     "rail_histogram_key_packing": "Replacing _rail_profile's np.unique(..., axis=0) of (longitudinal, lateral) bins with a biased-packed integer key - verified to select the same set on 200 random cases - measured 434.3 -> 449.7 ms per frame at identical decisions. Reverted.",
+    "segmentation_csr_rewrite_revisited": "Re-applied on top of the batched loop (so it ran 43 times per frame instead of 1 476) it still cost 434 -> 455 ms at identical decisions: _local_edges and _components_within each touch the whole parent graph or allocate a node-sized array per call, while scipy's slicing only touches the subset's own rows. Reverted again, with the reason now measured rather than suspected.",
     "segmentation_submatrix_rewrite": "Replacing scipy's CSR submatrix slicing in _separate_running_surface with parent-CSR edge arrays measured 433.4 -> 463.7 ms per frame with identical decisions, and with the gathers restricted to each component's own edges it was still 434 -> 464. Reverted: the per-label scipy work is cheaper than the alternatives, so this is not the way to that 48 ms."
   },
   "rejected_note": "Three measured attempts to cut the remaining Python hotspots by making individual NumPy calls cheaper (segmentation CSR submatrices, parent-CSR edge arrays, rail histogram packing) were all slower than the code they replaced. Those hotspots are dominated by per-call dispatch over many small calls and by data-dependent Python loops, so they can only be cut by moving the loop bodies into native code - a port per site, each needing its own exactness argument.",
@@ -103,6 +113,15 @@
     "other": 40.3
   },
   "scope": "Exact port of Open3D's plane proposals for the tunnel-surface fit; changes no decision.",
+  "segmentation_loop_batched_20260927": {
+    "finding": "_separate_running_surface runs 1 476 times per frame, once per density label, and only about 43 of those labels pass its two skip conditions. The skips are now evaluated for every label at once (reduceat over the label-sorted order); the loop body sees only the labels that need it.",
+    "measured": {
+      "after_ms": 433.5,
+      "before_ms": 440.4,
+      "decisions": "changed_fields {}, max_float 0.0"
+    },
+    "why_only_7_ms": "The per-label overhead is ~5 us, not the 30 us assumed, so the remaining 41 ms of the function is the real work of those ~43 labels: a scipy submatrix, connected_components, a cKDTree build and query, and the per-child numpy loop. Cutting that needs those loop bodies in native code, not cheaper numpy calls."
+  },
   "source": {
     "facts_not_in_the_source": "Eigen evaluates the 4-element dot product, the 3-element norm and the refit sums in sequential order, and the 0.19 wheel is built without contracting products into FMAs. Measured, not assumed: with sequential order and no FMA the port reproduced Open3D's returned plane bit for bit and its inlier set exactly on every call, while both packet reduction orders failed the plane comparison.",
     "file": "cpp/open3d/geometry/PointCloudSegmentation.cpp, v0.19.0, PointCloud::SegmentPlane",
