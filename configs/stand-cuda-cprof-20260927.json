@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-native-planes-20260927.json",
+  "output": "build/cprof434/frames",
+  "every": 1,
+  "max_frames": 30,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Line-level attribution of the remaining 434 ms frame.",
+  "criterion": "Report the inclusive and self time of every detector function over thirty scans."
+}

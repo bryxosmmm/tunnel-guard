@@ -55,7 +55,23 @@
     "why": "An iteration's scan is a serial dependency chain, which a GPU does badly: one thread per iteration cost 8.8 ms for a 31 000-point window (4 warps on one SM, load-latency bound; manual 4x unrolling changed it by 6 %). The iterations are independent of each other and each stays sequential, so cores do the same work in a fraction of the time."
   },
   "rejected": {
+    "rail_histogram_key_packing": "Replacing _rail_profile's np.unique(..., axis=0) of (longitudinal, lateral) bins with a biased-packed integer key - verified to select the same set on 200 random cases - measured 434.3 -> 449.7 ms per frame at identical decisions. Reverted.",
     "segmentation_submatrix_rewrite": "Replacing scipy's CSR submatrix slicing in _separate_running_surface with parent-CSR edge arrays measured 433.4 -> 463.7 ms per frame with identical decisions, and with the gathers restricted to each component's own edges it was still 434 -> 464. Reverted: the per-label scipy work is cheaper than the alternatives, so this is not the way to that 48 ms."
+  },
+  "rejected_note": "Three measured attempts to cut the remaining Python hotspots by making individual NumPy calls cheaper (segmentation CSR submatrices, parent-CSR edge arrays, rail histogram packing) were all slower than the code they replaced. Those hotspots are dominated by per-call dispatch over many small calls and by data-dependent Python loops, so they can only be cut by moving the loop bodies into native code - a port per site, each needing its own exactness argument.",
+  "remaining_frame_20260927": {
+    "kiss_icp_total_ms": 144.1,
+    "of_which_icp_solve_ms": 96.1,
+    "of_which_voxel_downsample_ms": 48.0,
+    "our_code_ms": {
+      "association": 44.1,
+      "clustering_and_density": 119.9,
+      "detector_glue": 18.4,
+      "geometry_construction": 107.9
+    },
+    "panel": "201 scans, p50 434.3 ms",
+    "verdict": "300 ms would need ~133 ms removed from our own 290 ms while kiss-ICP's 144 ms stays. That is a port of nearly every remaining Python hotspot (rail profile 34, segmentation 48, association 44, structural mask 13, the two native kernels 31), each with its own exactness argument, and the cheap subset is exhausted as measured above.",
+    "voxel_downsample_note": "kiss-ICP's own downsampler. A probe compared its output against voxel means and first points in lexicographic order: the voxel count matches, so the key derivation is the same, but the row order is not lexicographic - it comes from their internal container. Reproducing it would mean guessing a third-party hash map's iteration order, and the result feeds the pose. Not replaced."
   },
   "remaining_frame_ms": {
     "association": 43.2,
