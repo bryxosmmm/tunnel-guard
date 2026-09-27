@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-20260927.json",
+  "output": "build/cuda-kernels/frames",
+  "every": 1,
+  "max_frames": 30,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Per-entry-point wall cost with the four ported kernels on the device.",
+  "criterion": "Report the measured per-call cost of every native entry point on the device backend."
+}

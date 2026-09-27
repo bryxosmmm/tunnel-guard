@@ -16,12 +16,33 @@ GRID_CELL_M = 0.25
 
 
 def native(config: dict):
-    """Load the required detector extension or explain how to build it."""
+    """Load the required detector extension or explain how to build it.
+
+    `native_backend` selects the implementation: "cpu" (the default, and the only
+    one the required build produces) or "cuda", which additionally needs the
+    optional device backend from `python setup_cuda.py build_ext --inplace`. The
+    device module exposes the same entry points and forwards the ones it has not
+    ported to `_native`, so a missing kernel degrades to the CPU one rather than
+    to a wrong answer. A "cuda" request that cannot be satisfied is an error, not
+    a silent fallback: a run must not claim a device it did not use.
+    """
     try:
         from . import _native
     except ImportError as exc:
         raise RuntimeError("Required detector kernels are unavailable; build them with `python setup.py build_ext --inplace`.") from exc
-    return _native
+    backend = config.get("native_backend", "cpu")
+    if backend == "cpu":
+        return _native
+    if backend != "cuda":
+        raise ValueError(f"Unknown native_backend {backend!r}; expected 'cpu' or 'cuda'")
+    try:
+        from . import _native_cuda
+    except ImportError as exc:
+        raise RuntimeError(
+            "native_backend is 'cuda' but the device backend is not importable; build it with "
+            "`python setup_cuda.py build_ext --inplace` on a machine with the CUDA toolkit and a GPU."
+        ) from exc
+    return _native_cuda
 
 
 

@@ -48,6 +48,8 @@ def load_config(path: str | Path) -> dict:
     ransac_threads = config.get("background", {}).get("ransac_threads", 1)
     if type(ransac_threads) is not int or ransac_threads < 1:
         raise ValueError("background.ransac_threads must be a positive integer")
+    if config.get("native_backend", "cpu") not in ("cpu", "cuda"):
+        raise ValueError("Unknown native_backend; expected 'cpu' or 'cuda'")
     query_workers = config.get("query_workers", -1)
     if type(query_workers) is not int or (query_workers < 1 and query_workers != -1):
         raise ValueError("query_workers must be -1 (all cores) or a positive integer")

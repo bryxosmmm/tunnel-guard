@@ -67,7 +67,8 @@ def capture_native_sources(destination: Path) -> dict:
     root = Path(__file__).parent.parent
     hashes = {}
     paths = sorted((root / "cpp").glob("*.cpp")) + sorted((root / "cpp").glob("*.h"))
-    paths += [root / "setup.py", root / "MANIFEST.in"]
+    paths += sorted((root / "cpp" / "cuda").glob("*.cu")) + sorted((root / "cpp" / "cuda").glob("*.cuh"))
+    paths += [root / "setup.py", root / "setup_cuda.py", root / "MANIFEST.in"]
     for source in paths:
         if source.is_file():
             relative = source.relative_to(root)
@@ -149,8 +150,16 @@ def main():
         (output / "working-tree.patch").write_bytes(subprocess.check_output(
             ["git", "diff", "HEAD", "--", "tunnel_guard", "configs"], cwd=source_root))
     from . import _native
-    manifest["native_accelerator"] = {"binary_sha256": digest(Path(_native.__file__)),
-        "module": "tunnel_guard._native", "backend": "cpp"}
+    from . import accelerator
+    selected = accelerator.native(config)
+    device_kernels = list(selected.cuda_entry_points()) if hasattr(selected, "cuda_entry_points") else []
+    manifest["native_accelerator"] = {
+        "binary_sha256": digest(Path(selected.__file__)),
+        "module": selected.__name__,
+        "backend": "cuda" if device_kernels else "cpp",
+        "device_entry_points": device_kernels,
+        "cpu_binary_sha256": digest(Path(_native.__file__)),
+        "device": selected.cuda_device_info() if hasattr(selected, "cuda_device_info") else None}
     manifest["native_accelerator"]["sources_sha256"] = capture_native_sources(output / "source")
     write_json(output / "manifest.json", manifest)
     summaries = []

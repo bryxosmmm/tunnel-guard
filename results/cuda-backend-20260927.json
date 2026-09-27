@@ -1,0 +1,122 @@
+{
+  "date": "2026-09-27",
+  "design": {
+    "allocation": "one 512 MiB device slab bumped per call, plus one pinned staging buffer for host transfers: the device counterpart of the CPU arena",
+    "build": "python setup_cuda.py build_ext --inplace (nvcc, --fmad=false to match the CPU build's -ffp-contract=off, no fast math)",
+    "device_entry_points": [
+      "classify_geometry",
+      "range_indices",
+      "select_crop_voxels",
+      "range_summary"
+    ],
+    "drop_in": "every entry point of tunnel_guard._native exists; the four ported ones run on the device and the rest forward to the CPU module by name",
+    "module": "tunnel_guard._native_cuda",
+    "selected_by": "detector config key native_backend = cuda; the default remains cpu, and an unsatisfiable cuda request raises instead of falling back",
+    "small_calls": "calls below the documented size thresholds are served by the CPU kernel, because the transfer costs more than the work"
+  },
+  "equivalence": {
+    "decisions": {
+      "changed_fields": {},
+      "comparison": "scripts/compare_runs.py, CPU backend against CUDA backend",
+      "extra_frames": 0,
+      "largest_compared_float_difference": 0.0,
+      "missing_frames": 0,
+      "panel": "201 real scans of doubleT_obstacle"
+    },
+    "harness": "scripts/bench_cuda_equivalence.py",
+    "kernels": {
+      "classify_geometry": {
+        "bytes_equal": true,
+        "calls": 40
+      },
+      "range_indices": {
+        "bytes_equal": true,
+        "calls": 30
+      },
+      "range_summary": {
+        "bytes_equal": true,
+        "calls": 30
+      },
+      "select_crop_voxels": {
+        "bytes_equal": true,
+        "calls": 30
+      }
+    },
+    "method": "the replay runs on the CPU kernels and the arguments of every real call are captured, then the same call is evaluated on both backends and compared byte for byte",
+    "panel": "30 real scans of doubleT_obstacle"
+  },
+  "host": {
+    "cpu": "AMD EPYC 7742 pinned to eight logical CPUs (taskset 0-7)",
+    "gpu": "NVIDIA GeForce RTX 4080, 16 GB, driver 590.48.01, compute capability 8.9",
+    "note": "The deployment stand is an i7-9700E with an RTX 4070 Ti SUPER. The rented card is the same architecture and the same 1:64 FP64 ratio; the rented CPU is not the stand's."
+  },
+  "limitations": [
+    "Equivalence is established on one recording (201 scans). The ported kernels are element-wise or integer-exact by construction, but no second recording has been run.",
+    "The device kernels were compared on the arguments real frames produce; inputs outside that population (a voxel key outside the packed 21-bit field, or a call below the size threshold) are served by the CPU kernel rather than being handled on the device.",
+    "No target-stand measurement exists. The rented host has the same GPU architecture and FP64 ratio, but a different CPU.",
+    "The device path is deterministic by construction (stable radix sort, integer atomic counters, per-element arithmetic with --fmad=false), but run-to-run repetition of the device path was not measured separately.",
+    "The remaining 421 ms of the frame is Open3D's plane proposals (280 ms) and kiss-ICP (141 ms), neither of which is in this extension."
+  ],
+  "not_ported": {
+    "kernels": [
+      "normal_covariances",
+      "mutual_graph",
+      "cluster_components",
+      "component_labels",
+      "voxel_counts",
+      "ground_values",
+      "ground_profile",
+      "mask_candidates",
+      "mask_apply",
+      "window_indices",
+      "remove_rows",
+      "support_strips",
+      "patch_candidates",
+      "strip_inside",
+      "protrusion_ids",
+      "within_radius",
+      "voxel_indices",
+      "voxel_count"
+    ],
+    "larger_costs_that_are_not_ours": {
+      "kiss_icp_motion": "141 ms/frame (116 with odometry_threads 8)",
+      "open3d_segment_plane": "280 ms/frame (1,037 calls per 30 scans; mean 8.1 ms, p50 1.12 ms, max 42.5 ms)"
+    },
+    "measured_cpu_cost_per_frame": "about 95 ms of the 737 ms frame, split between normal_statistics 21.4, density_graph 19.5 (both already threaded on the CPU), cluster_objects 7.6, ground_profile 4.5, voxel_counts 4.2, mask_apply 3.1, component_labels 1.4"
+  },
+  "scope": "Optional CUDA backend for the detector's native kernels; no decision changed.",
+  "timing_ms_per_frame": {
+    "cpu_backend_p50": 763.9,
+    "cpu_backend_p95": 837.2,
+    "cuda_backend_p50": 714.2,
+    "cuda_backend_p95": 777.0,
+    "delta_ms": -49.7,
+    "delta_percent": -6.5,
+    "entry_point_note": "p50 of the per-call cost over 30 scans; the four ported kernels sum to about 25 ms of the saving on their own.",
+    "entry_points": {
+      "classify_geometry": {
+        "calls_per_frame": 3,
+        "cpu": 15.12,
+        "device": 3.23
+      },
+      "range_indices": {
+        "calls_per_frame": 1,
+        "cpu": 2.44,
+        "device": 2.28
+      },
+      "range_summary": {
+        "calls_per_frame": 1,
+        "cpu": 1.82,
+        "device": 1.82
+      },
+      "select_crop_voxels": {
+        "calls_per_frame": 1,
+        "cpu": 14.6,
+        "device": 1.3
+      }
+    },
+    "first_call_note": "The first device call in a process pays context creation, the pinned staging allocation and cub setup: range_indices' first call measured 168 ms, so a deployment must warm the backend before the stream starts.",
+    "panel": "201 real scans of doubleT_obstacle, CPU backend against CUDA backend, same pinned cpuset",
+    "why_more_than_the_sum": "The device backend also removes those kernels' threads from the eight pinned CPUs, which shortens the CPU-bound stages that share them (Open3D's plane proposals and kiss-ICP are single-threaded but contend for the same cores and memory bandwidth)."
+  }
+}
