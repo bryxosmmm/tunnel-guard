@@ -65,6 +65,12 @@ def segment_plane_seed(seed: int, module):
     module.segment_plane_seed(int(seed))
 
 
+def grouped_medians(coords: np.ndarray, keys: np.ndarray, module) -> np.ndarray:
+    """Per-key median of each coordinate, in ascending key order."""
+    payload = module.grouped_medians(np.ascontiguousarray(coords), np.ascontiguousarray(keys, dtype=np.int64))
+    return np.frombuffer(payload, dtype=np.float64).reshape(-1, 2)
+
+
 def range_indices_open(points: np.ndarray, minimum: float, maximum: float, module):
     """Rows with `minimum < |p| < maximum`, in input order."""
     return np.frombuffer(module.range_indices_open(np.ascontiguousarray(points), minimum, maximum),

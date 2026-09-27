@@ -371,6 +371,85 @@ PyObject* range_indices(PyObject*, PyObject* args) {
     return bytes_of(kept.data(), kept.size() * sizeof(int64_t));
 }
 
+// Per-key medians: one representative per key, in ascending key order.
+//
+// The rail refinement groups a window's head points by longitudinal bin and takes the
+// median position of each group, per coordinate, as that group's representative. A median
+// is an order statistic, so it does not depend on how the group is traversed; what matters
+// is that the rows come back in ascending key order, because that is the row order the
+// least-squares fit that follows sees. Measured, this loop was 29 ms of a frame.
+PyObject* grouped_medians(PyObject*, PyObject* args) {
+    PyObject* coords_object;
+    PyObject* keys_object;
+    if (!PyArg_ParseTuple(args, "OO", &coords_object, &keys_object)) return nullptr;
+    Buffer coords(coords_object);
+    Buffer keys(keys_object);
+    if (!coords.matrix(2) || !keys.integers() || keys.size() != coords.rows()) {
+        PyErr_SetString(PyExc_ValueError, "expected (N,2) float64 coordinates and (N,) int64 keys");
+        return nullptr;
+    }
+    const double* values = coords.doubles();
+    const int64_t* key_data = keys.int64s();
+    const Py_ssize_t n = coords.rows();
+    auto& out = workspace.d0;
+    auto& order = workspace.i0;
+    auto& starts = workspace.i1;
+    auto& buffer = workspace.d1;
+    try {
+        {
+        // The GIL is released only around the computation: building the result below is a
+        // Python call and must happen after this scope has ended.
+        ReleaseGIL released;
+        out.clear();
+        order.resize(static_cast<size_t>(n));
+        for (Py_ssize_t i = 0; i < n; ++i) order[static_cast<size_t>(i)] = i;
+        // Ascending key, stable so equal keys keep their input order.
+        std::stable_sort(order.begin(), order.end(), [key_data](int64_t left, int64_t right) {
+            return key_data[left] < key_data[right];
+        });
+        starts.clear();
+        for (Py_ssize_t i = 0; i < n;) {
+            const int64_t key = key_data[order[static_cast<size_t>(i)]];
+            starts.push_back(i);
+            while (i < n && key_data[order[static_cast<size_t>(i)]] == key) ++i;
+        }
+        starts.push_back(n);
+        const Py_ssize_t groups = static_cast<Py_ssize_t>(starts.size()) - 1;
+        out.assign(static_cast<size_t>(groups) * 2, 0.0);
+        if (!buffer.empty() || n > 0) buffer.resize(static_cast<size_t>(n));
+        for (Py_ssize_t group = 0; group < groups; ++group) {
+            const Py_ssize_t begin = starts[static_cast<size_t>(group)];
+            const Py_ssize_t end = starts[static_cast<size_t>(group) + 1];
+            const Py_ssize_t count = end - begin;
+            const Py_ssize_t middle = count / 2;
+            for (int axis = 0; axis < 2; ++axis) {
+                for (Py_ssize_t i = begin; i < end; ++i)
+                    buffer[static_cast<size_t>(i - begin)] = values[2 * order[static_cast<size_t>(i)] + axis];
+                double value = 0.0;
+                if (count % 2 == 1) {
+                    std::nth_element(buffer.begin(), buffer.begin() + middle, buffer.begin() + count);
+                    value = buffer[static_cast<size_t>(middle)];
+                } else {
+                    // NumPy averages the two central order statistics for an even count;
+                    // scaling by 0.5 is the same operation as dividing by two.
+                    std::nth_element(buffer.begin(), buffer.begin() + middle, buffer.begin() + count);
+                    const double high = buffer[static_cast<size_t>(middle)];
+                    std::nth_element(buffer.begin(), buffer.begin() + middle - 1, buffer.begin() + count);
+                    const double low = buffer[static_cast<size_t>(middle - 1)];
+                    value = 0.5 * (low + high);
+                }
+                out[2 * static_cast<size_t>(group) + axis] = value;
+            }
+        }
+        }
+        return bytes_of(out.data(), out.size() * sizeof(double));
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    catch (const std::exception& error) {
+        PyErr_SetString(PyExc_ValueError, error.what());
+        return nullptr;
+    }
+}
+
 // Radial band with kiss-ICP's strict bounds: min < |p| < max.
 //
 // The odometry's own preprocessor keeps the frame's points whose range falls strictly
@@ -2336,6 +2415,8 @@ static PyMethodDef methods[] = {
      "Component grouping and statistics of the cluster cloud in one pass."},
     {"select_crop_voxels", select_crop_voxels, METH_VARARGS,
      "Longitudinal-window crop and voxel reduction in one slice-partitioned pass."},
+    {"grouped_medians", grouped_medians, METH_VARARGS,
+     "Per-key medians of two coordinates, in ascending key order."},
     {"range_indices_open", range_indices_open, METH_VARARGS,
      "Rows with min < |p| < max, in input order (the odometry preprocessor's selection)."},
     {"range_indices", range_indices, METH_VARARGS,

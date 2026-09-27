@@ -140,7 +140,7 @@ def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, d
     return (best if valid else None), diagnostics
 
 
-def refine_rail_pair(q, x, center, gauge, slope, cfg):
+def refine_rail_pair(q, x, center, gauge, slope, cfg, native):
     """Fit both supported heads at x, balancing longitudinal bins and sides.
 
     Histogram peaks propose a pair; they are not point estimates at the window
@@ -155,9 +155,12 @@ def refine_rail_pair(q, x, center, gauge, slope, cfg):
             if len(head) < 2 or np.ptp(head[:, 0]) < cfg["rail_min_span_m"]:
                 return None
             keys = np.floor(head[:, 0] / .30).astype(np.int64)
-            for key in np.unique(keys):
-                representatives.append(np.median(head[keys == key, :2], axis=0))
-                sides.append(side)
+            # One representative per longitudinal bin: the median position of that bin's
+            # points, per coordinate. A median is an order statistic, so this is the value
+            # the per-bin np.median produced, in the same ascending-bin order.
+            grouped = accelerator.grouped_medians(head[:, :2], keys, native)
+            representatives.extend(grouped)
+            sides.extend([side] * len(grouped))
         a = np.asarray(representatives)
         design = np.column_stack((a[:, 0] - x, np.ones(len(a)), np.asarray(sides) / 2))
         fit, _, rank, _ = np.linalg.lstsq(design, a[:, 1], rcond=None)
@@ -220,6 +223,7 @@ class TrackGeometry:
 
     def _rail_profile(self, points: np.ndarray):
         cfg = self.config
+        native = accelerator.native(cfg)
         z, uncertainty = self.ground(points)
         h = points[:, 2] - z
         lo, hi = cfg["rail_height_bounds_m"]
@@ -294,7 +298,7 @@ class TrackGeometry:
                 break
             _, center, gauge, support = pairs[0]
             if cfg.get("rail_center_estimator", "histogram") == "paired_line":
-                refined = refine_rail_pair(q, x, center, gauge, slope, cfg)
+                refined = refine_rail_pair(q, x, center, gauge, slope, cfg, native)
                 if refined is not None and abs(refined[0] - expected) <= allowed:
                     center, gauge, slope = refined
                     lateral = q[:, 1] - slope * (q[:, 0] - x)

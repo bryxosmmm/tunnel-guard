@@ -62,6 +62,22 @@
     "The stopping rule's break_iteration formula is replayed with the host's libm, so the port is tied to a compatible libm for exactness.",
     "Replacing a third-party kernel in a decision path is a maintenance liability: the port must be revisited if Open3D changes version or build flags. Pinned to 0.19.0 and documented here."
   ],
+  "native_grouped_medians_20260927": {
+    "bug_caught": "The first version built the result inside the GIL-released scope and segfaulted; the same class of bug the CUDA module had. Found by the crash, fixed by scoping.",
+    "checks": [
+      "300 random cases: bitwise equal to np.median per key",
+      "30 real scans: byte-identical decisions",
+      "201 real scans: changed_fields {}, missing 0, extra 0, max_float 0.0"
+    ],
+    "exactness": "A median is an order statistic, so it does not depend on traversal order; the only things that matter are NumPy's even-count average of the two central values and the ascending key order of the output rows, because that row order feeds the least-squares fit that follows.",
+    "measured": {
+      "after_ms": 402.8,
+      "before_ms": 418.6,
+      "p95_after": 474.2,
+      "p95_before": 486.7
+    },
+    "why": "np.median was the single hottest NumPy built-in in the frame: 767 calls per frame, almost all of them inside refine_rail_pair, which groups a window's head points by longitudinal bin and takes the median position of each bin."
+  },
   "not_done": {
     "cpu_backend": "the port lives in the device backend; a run without a GPU keeps Open3D, so the CPU path is unchanged at 763.9 ms",
     "odometry_threads": "still 1. Raising it measured a 2.1e-14 change in the pose at 28 ms/frame; that is a numerics change in the reference frame and is not taken here",
@@ -194,7 +210,7 @@
   },
   "timing_ms_per_frame": {
     "committed_cpu_backend_p50": 763.9,
-    "device_kernels_and_native_planes_p50": 418.6,
+    "device_kernels_and_native_planes_p50": 402.8,
     "device_kernels_only_p50": 714.2,
     "p95": {
       "committed": 837.2,
