@@ -101,7 +101,7 @@ try:
             recorder.count_publishers('/perception/' + topic) == 0 for topic in kinds):
         raise RuntimeError('DDS input/output endpoints were not discovered')
     spin_for(recipe['dds_settle_s'])
-    (out / 'qos.txt').write_text(str(recorder.get_publishers_info_by_topic('/perception/points_display'))) 
+    (out / 'qos.txt').write_text(str(recorder.get_publishers_info_by_topic('/perception/points_display')))
     print('delivery_recorder_ready', flush=True)
     with Reader(Path(recipe['bag'])) as reader:
         inputs = [c for c in reader.connections if c.topic == recipe['input_topic']]
