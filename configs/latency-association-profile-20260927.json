@@ -1,0 +1,12 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-native-planes-20260927.json",
+  "output": "build/latency-20260927/association-profile",
+  "every": 1,
+  "max_frames": 30,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [{"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}],
+  "hypothesis": "Per-object numpy calls inside temporal association dominate the residual cost after independent stages overlap.",
+  "criterion": "Attribute actual detector cumulative time for thirty consecutive recorded scans; do not treat profiler wall times as unprofiled latency."
+}

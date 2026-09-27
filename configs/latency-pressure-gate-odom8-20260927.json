@@ -1,0 +1,12 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-20260927/pressure-gate-odom8",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [{"path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT", "split": "development_not_blind"}],
+  "hypothesis": "Registration is 633 ms median here; eight ICP threads may reduce the scene's dominant stage, unlike the shorter obstacle scene.",
+  "criterion": "Measure all 268 frames; compare every decision to the one-thread replay, quantify pose drift and p50/p95 before any adoption."
+}

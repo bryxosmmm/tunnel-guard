@@ -21,6 +21,7 @@ import subprocess
 import sys
 import time
 
+from kiss_icp.pybind import kiss_icp_pybind
 import numpy as np
 
 from .detector import Detector, load_config
@@ -59,6 +60,8 @@ def environment() -> dict:
     return {"python": sys.version, "platform": platform.platform(), "machine": platform.machine(),
             "cpu_count": os.cpu_count(),
             "packages": packages,
+            "kiss_icp_binary_sha256": digest(Path(kiss_icp_pybind.__file__)),
+            "kiss_icp_gil_free_odometry": bool(getattr(kiss_icp_pybind, "_gil_free_odometry", False)),
             "source_sha256": {str(p): digest(p) for p in sorted(Path(__file__).parent.glob("*.py"))}}
 
 
@@ -69,6 +72,8 @@ def capture_native_sources(destination: Path) -> dict:
     paths = sorted((root / "cpp").glob("*.cpp")) + sorted((root / "cpp").glob("*.h"))
     paths += sorted((root / "cpp" / "cuda").glob("*.cu")) + sorted((root / "cpp" / "cuda").glob("*.cuh"))
     paths += [root / "setup.py", root / "setup_cuda.py", root / "MANIFEST.in"]
+    paths += [root / "patches" / "kiss-icp-1.3.0-release-gil.patch",
+              root / "patches" / "kiss-icp-build-constraints.txt"]
     for source in paths:
         if source.is_file():
             relative = source.relative_to(root)

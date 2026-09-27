@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-tail200/baseline-obstacle-odom8",
+  "every": 1,
+  "max_frames": 201,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "The obstacle-scene post-registration path stays a second independent p95 bottleneck on the comparable host.",
+  "criterion": "All 201 scans retain decisions and p95 is measured against the saved complete-panel reference."
+}

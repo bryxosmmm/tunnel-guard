@@ -1,0 +1,16 @@
+diff --git a/python/kiss_icp/pybind/kiss_icp_pybind.cpp b/python/kiss_icp/pybind/kiss_icp_pybind.cpp
+--- a/python/kiss_icp/pybind/kiss_icp_pybind.cpp
++++ b/python/kiss_icp/pybind/kiss_icp_pybind.cpp
+@@ -54,0 +55 @@
++    m.attr("_gil_free_odometry") = py::bool_(true);
+@@ -77 +78 @@
+-            "points"_a, "pose"_a)
++            py::call_guard<py::gil_scoped_release>(), "points"_a, "pose"_a)
+@@ -111 +112,2 @@
+-            "points"_a, "voxel_map"_a, "initial_guess"_a, "max_correspondance_distance"_a,
++            py::call_guard<py::gil_scoped_release>(), "points"_a, "voxel_map"_a, "initial_guess"_a,
++            "max_correspondance_distance"_a,
+@@ -129 +131,2 @@
+-    m.def("_voxel_down_sample", &VoxelDownsample, "frame"_a, "voxel_size"_a);
++    m.def("_voxel_down_sample", &VoxelDownsample, py::call_guard<py::gil_scoped_release>(),
++          "frame"_a, "voxel_size"_a);

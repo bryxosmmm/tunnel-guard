@@ -1,0 +1,12 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-native-planes-20260927.json",
+  "output": "build/latency-20260927/assoc-inverse",
+  "every": 1,
+  "max_frames": 201,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [{"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}],
+  "hypothesis": "The covariance inverse already computed for assignment is identical to recomputing it per matched track.",
+  "criterion": "No non-timing output difference on the fixed 201-scan panel, with p50/p95 measured. Reject if the inverse reuse changes a decision."
+}

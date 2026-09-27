@@ -1,0 +1,12 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-20260927.json",
+  "output": "build/latency-20260927/kiss-gil-cprofile",
+  "every": 1,
+  "max_frames": 40,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [{"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}],
+  "hypothesis": "The Python running-surface split and background fitting dominate CPU-side frame cost after odometry overlap.",
+  "criterion": "Identify actual-run cumulative hotspots, without interpreting profiler-overhead timing as runtime latency."
+}

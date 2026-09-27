@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from collections import Counter, deque
+from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
 import time
@@ -9,6 +10,7 @@ import time
 import numpy as np
 from kiss_icp.config import KISSConfig
 from kiss_icp.kiss_icp import KissICP
+from kiss_icp.pybind import kiss_icp_pybind
 from scipy.optimize import linear_sum_assignment
 from scipy.spatial import cKDTree
 
@@ -50,6 +52,17 @@ def load_config(path: str | Path) -> dict:
         raise ValueError("background.ransac_threads must be a positive integer")
     if not isinstance(config.get("odometry_native_preprocess", True), bool):
         raise ValueError("odometry_native_preprocess must be boolean")
+    overlap = config.get("overlap_motion_geometry", False)
+    if not isinstance(overlap, bool):
+        raise ValueError("overlap_motion_geometry must be boolean")
+    if overlap and (config.get("deskew_enabled", False)
+                    or not config.get("odometry_native_preprocess", True)
+                    or config.get("background_refit_travel_m", 0.0) > 0
+                    or config.get("background_refit_every_frames", 1) > 1):
+        raise ValueError("overlap_motion_geometry requires no deskew, native odometry preprocessing "
+                         "and a fresh background fit each scan")
+    if overlap and not getattr(kiss_icp_pybind, "_gil_free_odometry", False):
+        raise RuntimeError("overlap_motion_geometry requires the pinned KISS-ICP GIL-release wheel")
     plane_backend = config.get("background", {}).get("plane_backend", "open3d")
     if plane_backend not in ("open3d", "native"):
         raise ValueError("background.plane_backend must be 'open3d' or 'native'")
@@ -361,6 +374,8 @@ class Detector:
         self.display_support = {}
         self.diagnostic_arrays = {}
         self.motion_translation_covariance = np.eye(3) * config["tracking_pose_sigma_m"]**2
+        self.motion_executor = (ThreadPoolExecutor(max_workers=1, thread_name_prefix="tg-motion")
+                                if config.get("overlap_motion_geometry", False) else None)
 
     def _new_odometry(self):
         cfg = KISSConfig()
@@ -377,6 +392,10 @@ class Detector:
                                  "library's preprocessing would include motion compensation")
             odometry.preprocessor = _NativePreprocessor(self.config)
         return odometry
+
+    def _timed_motion(self, points: np.ndarray, point_times: np.ndarray):
+        started = time.perf_counter()
+        return self._motion(points, point_times), time.perf_counter() - started
 
     def _motion(self, points: np.ndarray, point_times: np.ndarray):
         if self.diagnostic_arrays:
@@ -513,11 +532,26 @@ class Detector:
             rows, columns = linear_sum_assignment(padded)
             for row, column in zip(rows, columns):
                 if column < len(pool_columns) and cost[row, column] < 1e6:
-                    matched[int(pool_columns[column])] = pool_ids[row]
+                    matched[int(pool_columns[column])] = (pool_ids[row], inverse[row])
+        # The assignment cost already inverted each innovation covariance.
+        # Propagate the matched covariances together, but keep each state-vector
+        # update in its original matrix-vector order below.
+        updated = {}
+        if matched:
+            order = sorted(matched)
+            prior_covariance = np.stack([predicted[matched[index][0]][1] for index in order])
+            inverse_covariance = np.stack([matched[index][1] for index in order])
+            gain = prior_covariance[:, :, :3] @ inverse_covariance
+            observation = np.zeros((3, 6))
+            observation[:, :3] = np.eye(3)
+            factor = np.eye(6)[None] - gain @ observation
+            next_covariance = (factor @ prior_covariance @ factor.transpose(0, 2, 1)
+                               + gain @ measurement_cov @ gain.transpose(0, 2, 1))
+            updated = {index: (gain[row], next_covariance[row]) for row, index in enumerate(order)}
         pending: list[dict] = []
         for index, obj in enumerate(objects):
-            key = matched.get(index)
-            if key is None:
+            assignment = matched.get(index)
+            if assignment is None:
                 key = self.next_id
                 self.next_id += 1
                 state = np.concatenate((world[index], np.zeros(3)))
@@ -526,13 +560,10 @@ class Detector:
                                     "intersection_history": deque(maxlen=cfg["confirmation_window"]),
                                     "evidence": deque(), "state": state, "covariance": covariance}
             else:
-                state, covariance = predicted[key]
-                gain = covariance[:, :3] @ np.linalg.inv(covariance[:3, :3] + measurement_cov)
+                key = assignment[0]
+                state = predicted[key][0]
+                gain, covariance = updated[index]
                 state += gain @ (world[index] - state[:3])
-                observation = np.zeros((3, 6))
-                observation[:, :3] = np.eye(3)
-                factor = np.eye(6) - gain @ observation
-                covariance = factor @ covariance @ factor.T + gain @ measurement_cov @ gain.T
             track = self.tracks[key]
             support = obj.pop("_support_points")
             self.display_support[key] = support
@@ -757,9 +788,18 @@ class Detector:
             self.odometry = self._new_odometry()
             return result | {"reason": "insufficient_returns", "processing_s": time.perf_counter() - started}
         motion_started = time.perf_counter()
-        frame, pose, motion = self._motion(points, point_times)
+        motion_future = None
+        if self.motion_executor is not None:
+            # With deskew disabled, the odometry returns exactly this strict range selection.
+            # Verify the frame before combining geometry with the registered pose.
+            frame_rows = accelerator.range_indices_open(
+                points, self.config["min_range_m"], self.config["max_range_m"], self.native_kernels)
+            frame = points[frame_rows]
+            motion_future = self.motion_executor.submit(self._timed_motion, points, point_times)
+        else:
+            frame, pose, motion = self._motion(points, point_times)
+            motion_s = time.perf_counter() - motion_started
         self.display_points = frame
-        motion_s = time.perf_counter() - motion_started
         # Provenance through the motion stage: `_motion` transforms one point at a time, so the KISS
         # row-preserving contract is that `frame` keeps the row order and count of `points`, and
         # `keep` still names these decoded rows. A future deskew that resamples must preserve the
@@ -808,7 +848,9 @@ class Detector:
         # the odometry already produced, so it costs nothing to evaluate.
         travel_limit = float(self.config.get("background_refit_travel_m", 0.0))
         cadence = int(self.config.get("background_refit_every_frames", 1))
-        if travel_limit > 0.0:
+        if motion_future is not None:
+            refit_due = True  # Overlap requires a fresh, pose-independent geometry fit.
+        elif travel_limit > 0.0:
             here = np.asarray(pose, dtype=float)[:3, 3]
             refit_due = (self.cached_background is None
                          or float(np.linalg.norm(here - self.background_fit_pose)) >= travel_limit)
@@ -849,6 +891,11 @@ class Detector:
             self.diagnostic_arrays.update(
                 {f"cluster_{key}": value
                  for key, value in point_attributes.arrays(geometry_rows[obj_rows]).items()})
+        if motion_future is not None:
+            (registered_frame, pose, motion), motion_s = motion_future.result()
+            if not np.array_equal(registered_frame, frame, equal_nan=True):
+                raise RuntimeError("KISS-ICP returned a different frame from the strict range selection; "
+                                   "geometry cannot be associated with this pose")
         self._associate(objects, pose, timestamp_s, motion)
         pipeline["association"] = {"state": "ran", "candidates": len(objects),
                                    "confirmed": sum(o["confirmed"] for o in objects),

@@ -14,8 +14,8 @@
 //    product-sum never contracts on one side only.
 //
 // 3. One device slab, bumped per call and reset at its start: the device
-//    counterpart of the CPU arena. No cudaMalloc in steady state, no per-kernel
-//    synchronisation beyond the one copy that returns the result.
+//    counterpart of the CPU arena. Size-dependent compaction and the CPU result
+//    require device/host synchronization; the steady-state slab avoids cudaMalloc.
 //
 // 4. Small calls stay on the CPU. Under the thresholds below the transfer costs
 //    more than the work, so the entry point forwards to the CPU kernel. That is a
@@ -1004,7 +1004,6 @@ PyObject* delegate_to_cpu(const char* name, PyObject* args) {
         return delegate_to_cpu(#NAME, args);                                   \
     }
 
-TG_FORWARD(mutual_graph)
 TG_FORWARD(voxel_counts)
 TG_FORWARD(patch_candidates)
 TG_FORWARD(strip_inside)
@@ -1206,6 +1205,138 @@ void run_iterations(int count, Body body) {
     WorkerPool::instance().run(count, body);
 }
 
+// ------------------------------------------------------- mutual-radius graph
+
+// The device port of the mutual-radius graph. The retained edges are exactly
+// { (i, j) : i < j and d2(i, j) <= min(r_i, r_j)^2 }: a predicate over a pair, so the edge
+// set does not depend on how the enumeration is scheduled, the per-row degrees are
+// integers, and the caller receives a CSR whose columns are sorted. That is what makes
+// this port exact by construction rather than by agreement on recorded scans.
+constexpr int64_t kCellBias = 1 << 20;
+
+__device__ inline uint64_t cell_key_of(double x, double y, double z, double cell) {
+    const int64_t kx = static_cast<int64_t>(floor(x / cell));
+    const int64_t ky = static_cast<int64_t>(floor(y / cell));
+    const int64_t kz = static_cast<int64_t>(floor(z / cell));
+    // Unsigned on purpose: the packed key can set the top bit, and both the radix sort and
+    // this type order keys the same way only if the comparison is unsigned.
+    return ((static_cast<uint64_t>(kx + kCellBias) << 42)
+            | (static_cast<uint64_t>(ky + kCellBias) << 21)
+            | static_cast<uint64_t>(kz + kCellBias));
+}
+
+__global__ void cell_key_kernel(const double* points, Py_ssize_t n, double cell, uint64_t* keys,
+                                int* out_of_range) {
+    const Py_ssize_t i = static_cast<Py_ssize_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i >= n) return;
+    const double x = points[3 * i], y = points[3 * i + 1], z = points[3 * i + 2];
+    const int64_t kx = static_cast<int64_t>(floor(x / cell));
+    const int64_t ky = static_cast<int64_t>(floor(y / cell));
+    const int64_t kz = static_cast<int64_t>(floor(z / cell));
+    if (kx < -kCellBias || kx >= kCellBias || ky < -kCellBias || ky >= kCellBias
+            || kz < -kCellBias || kz >= kCellBias) {
+        atomicExch(out_of_range, 1);
+        return;
+    }
+    keys[i] = cell_key_of(x, y, z, cell);
+}
+
+// Gather both the distinct keys and their true start positions in the sorted
+// point array. The exclusive scan gives cell ranks, not point positions.
+__global__ void gather_cells_kernel(const int* offsets, const uint8_t* head,
+                                    const uint64_t* sorted_keys, int64_t n,
+                                    uint64_t* cell_keys, int64_t* cell_start) {
+    const int64_t i = static_cast<int64_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i >= n) return;
+    if (head[i]) {
+        const int cell = offsets[i];
+        cell_keys[cell] = sorted_keys[i];
+        cell_start[cell] = i;
+    }
+    if (i == n - 1) cell_start[offsets[i] + head[i]] = n;
+}
+
+struct GraphArgs {
+    const double* points;
+    const double* radius;
+    int64_t num_points;
+    double cell;
+    const uint64_t* cell_keys;  // ascending, one per occupied cell
+    int64_t cells;
+    const int64_t* cell_start;  // cells + 1 offsets into the members
+    const int64_t* cell_items;  // member point indices, ascending within a cell
+    int64_t* degree;            // first pass: per-row partner count
+    int* cursor;                // second pass: per-row write position
+    const int64_t* indptr;      // second pass: row starts in `indices`
+    int64_t* indices;
+    bool store;
+};
+
+// One thread per point walks the cells its own radius reaches, in the same lexicographic
+// cell order the CPU kernel walks, and tests the same predicate on each member.
+__global__ void graph_enumerate_kernel(GraphArgs args) {
+    const int64_t i = static_cast<int64_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i >= args.num_points) return;
+    const double ri = args.radius[i];
+    const double xi = args.points[3 * i], yi = args.points[3 * i + 1], zi = args.points[3 * i + 2];
+    int64_t low[3], high[3];
+    for (int axis = 0; axis < 3; ++axis) {
+        const double value = args.points[3 * i + axis];
+        low[axis] = static_cast<int64_t>(floor((value - ri) / args.cell));
+        high[axis] = static_cast<int64_t>(floor((value + ri) / args.cell));
+    }
+    for (int64_t cx = low[0]; cx <= high[0]; ++cx)
+        for (int64_t cy = low[1]; cy <= high[1]; ++cy)
+            for (int64_t cz = low[2]; cz <= high[2]; ++cz) {
+                const uint64_t key = ((static_cast<uint64_t>(cx + kCellBias) << 42)
+                                      | (static_cast<uint64_t>(cy + kCellBias) << 21)
+                                      | static_cast<uint64_t>(cz + kCellBias));
+                int64_t lo = 0, hi = args.cells;
+                while (lo < hi) {
+                    const int64_t middle = (lo + hi) / 2;
+                    if (args.cell_keys[middle] < key) lo = middle + 1; else hi = middle;
+                }
+                if (lo >= args.cells || args.cell_keys[lo] != key) continue;
+                for (int64_t at = args.cell_start[lo]; at < args.cell_start[lo + 1]; ++at) {
+                    const int64_t j = args.cell_items[at];
+                    if (j <= i) continue;
+                    const double dx = xi - args.points[3 * j];
+                    const double dy = yi - args.points[3 * j + 1];
+                    const double dz = zi - args.points[3 * j + 2];
+                    const double other = args.radius[j];
+                    const double bound = ri < other ? ri : other;
+                    if (!(dx * dx + dy * dy + dz * dz <= bound * bound)) continue;
+                    if (!args.store) {
+                        atomicAdd(reinterpret_cast<unsigned long long*>(&args.degree[i]), 1ULL);
+                        atomicAdd(reinterpret_cast<unsigned long long*>(&args.degree[j]), 1ULL);
+                    } else {
+                        const int slot = atomicAdd(&args.cursor[i], 1);
+                        args.indices[args.indptr[i] + slot] = j;
+                        const int other_slot = atomicAdd(&args.cursor[j], 1);
+                        args.indices[args.indptr[j] + other_slot] = i;
+                    }
+                }
+            }
+}
+
+// One thread per row: the CPU kernel sorts each row after scattering it, and a row here is
+// a handful of entries.
+__global__ void graph_sort_rows_kernel(int64_t* indices, const int64_t* indptr, int64_t n) {
+    const int64_t row = static_cast<int64_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (row >= n) return;
+    int64_t* begin = indices + indptr[row];
+    const int64_t count = indptr[row + 1] - indptr[row];
+    for (int64_t a = 1; a < count; ++a) {
+        const int64_t value = begin[a];
+        int64_t b = a - 1;
+        while (b >= 0 && begin[b] > value) {
+            begin[b + 1] = begin[b];
+            --b;
+        }
+        begin[b + 1] = value;
+    }
+}
+
 // The sequential walk, on the host. Used for small windows, where a device round trip
 // costs more than the work, and it is the same algorithm in the same order as the
 // kernel: the two must agree, and the equivalence harness compares both against
@@ -1400,10 +1531,138 @@ PyObject* cuda_segment_plane(PyObject*, PyObject* args) {
     }
 }
 
+PyObject* cuda_mutual_graph(PyObject*, PyObject* args) {
+    PyObject *points_object, *radius_object;
+    double cell;
+    if (!PyArg_ParseTuple(args, "OOd", &points_object, &radius_object, &cell)) return nullptr;
+    HostBuffer points(points_object);
+    HostBuffer radius(radius_object);
+    if (!points.points() || !radius.vector() || radius.size() != points.rows()) {
+        PyErr_SetString(PyExc_ValueError, "expected (N,3) float64 points and matching radius vector");
+        return nullptr;
+    }
+    if (!(std::isfinite(cell) && cell > 0)) {
+        PyErr_SetString(PyExc_ValueError, "grid cell must be finite and positive");
+        return nullptr;
+    }
+    const Py_ssize_t n = points.rows();
+    if (n < 4096 || n > INT_MAX) return delegate_to_cpu("mutual_graph", args);
+    try {
+        Pool& memory = pool();
+        memory.ensure();
+        memory.reset();
+        std::vector<int64_t> indptr_host(static_cast<size_t>(n) + 1, 0);
+        std::vector<int64_t> degree_host(static_cast<size_t>(n), 0);
+        std::vector<int64_t> indices_host;
+        {
+            ReleaseGIL released;
+            const double* device_points = device_copy(points.doubles(), static_cast<size_t>(n) * 3, "points");
+            const double* device_radius = device_copy(radius.doubles(), static_cast<size_t>(n), "radius");
+            uint64_t* keys = static_cast<uint64_t*>(memory.take(static_cast<size_t>(n) * sizeof(uint64_t)));
+            uint64_t* sorted_keys = static_cast<uint64_t*>(memory.take(static_cast<size_t>(n) * sizeof(uint64_t)));
+            int64_t* rows = static_cast<int64_t*>(memory.take(static_cast<size_t>(n) * sizeof(int64_t)));
+            int64_t* sorted_rows = static_cast<int64_t*>(memory.take(static_cast<size_t>(n) * sizeof(int64_t)));
+            int* out_of_range = static_cast<int*>(memory.take(sizeof(int)));
+            check(cudaMemset(out_of_range, 0, sizeof(int)), "clear range flag");
+            cell_key_kernel<<<grid_for(n), kThreads>>>(device_points, n, cell, keys, out_of_range);
+            check(cudaGetLastError(), "cell key launch");
+            {
+                std::vector<int64_t> host_rows(static_cast<size_t>(n));
+                for (Py_ssize_t i = 0; i < n; ++i) host_rows[static_cast<size_t>(i)] = i;
+                check(cudaMemcpy(rows, host_rows.data(), static_cast<size_t>(n) * sizeof(int64_t),
+                                 cudaMemcpyHostToDevice), "row indices");
+            }
+            void* temporary = nullptr;
+            size_t bytes = 0;
+            cub::DeviceRadixSort::SortPairs(temporary, bytes, keys, sorted_keys, rows, sorted_rows,
+                                            static_cast<int>(n), 0, 64);
+            temporary = memory.take(bytes);
+            // Stable: equal keys keep ascending row order, which is the CPU table's order.
+            cub::DeviceRadixSort::SortPairs(temporary, bytes, keys, sorted_keys, rows, sorted_rows,
+                                            static_cast<int>(n), 0, 64);
+            check(cudaGetLastError(), "cell sort");
+            check(cudaDeviceSynchronize(), "cell sort sync");
+            const std::vector<int> range_flag = host_copy(out_of_range, size_t(1), "range flag");
+            if (range_flag[0]) return delegate_to_cpu("mutual_graph", args);
+
+            uint8_t* head = static_cast<uint8_t*>(memory.take(static_cast<size_t>(n)));
+            run_head_kernel<<<grid_for(n), kThreads>>>(sorted_keys, n, head);
+            check(cudaGetLastError(), "cell head launch");
+            check(cudaDeviceSynchronize(), "cell heads");
+            const int* offsets = compact_offsets(head, n);
+            const uint8_t last_head = tail_value(head, n, "last cell head");
+            const Py_ssize_t cells = static_cast<Py_ssize_t>(tail_value(offsets, n, "cell offsets")) + last_head;
+            uint64_t* cell_keys = static_cast<uint64_t*>(memory.take(static_cast<size_t>(cells) * sizeof(uint64_t)));
+            int64_t* cell_start = static_cast<int64_t*>(memory.take(static_cast<size_t>(cells + 1) * sizeof(int64_t)));
+            gather_cells_kernel<<<grid_for(n), kThreads>>>(offsets, head, sorted_keys, n,
+                                                             cell_keys, cell_start);
+            check(cudaGetLastError(), "cell keys and starts");
+
+            int64_t* degree = static_cast<int64_t*>(memory.take(static_cast<size_t>(n) * sizeof(int64_t)));
+            check(cudaMemset(degree, 0, static_cast<size_t>(n) * sizeof(int64_t)), "clear degrees");
+            GraphArgs arguments{};
+            arguments.points = device_points;
+            arguments.radius = device_radius;
+            arguments.num_points = n;
+            arguments.cell = cell;
+            arguments.cell_keys = cell_keys;
+            arguments.cells = cells;
+            arguments.cell_start = cell_start;
+            arguments.cell_items = sorted_rows;
+            arguments.degree = degree;
+            arguments.store = false;
+            graph_enumerate_kernel<<<grid_for(n), kThreads>>>(arguments);
+            check(cudaGetLastError(), "enumerate degrees");
+            check(cudaDeviceSynchronize(), "degrees");
+            degree_host = host_copy(degree, static_cast<size_t>(n), "degree");
+            for (Py_ssize_t i = 0; i < n; ++i)
+                indptr_host[static_cast<size_t>(i) + 1] = indptr_host[static_cast<size_t>(i)]
+                    + degree_host[static_cast<size_t>(i)];
+            const Py_ssize_t total = static_cast<Py_ssize_t>(indptr_host.back());
+            int64_t* device_indptr = device_copy(indptr_host.data(), static_cast<size_t>(n) + 1, "indptr");
+            int64_t* indices = static_cast<int64_t*>(memory.take(static_cast<size_t>(total) * sizeof(int64_t)));
+            int* cursor = static_cast<int*>(memory.take(static_cast<size_t>(n) * sizeof(int)));
+            check(cudaMemset(cursor, 0, static_cast<size_t>(n) * sizeof(int)), "clear cursors");
+            arguments.indptr = device_indptr;
+            arguments.indices = indices;
+            arguments.cursor = cursor;
+            arguments.store = true;
+            graph_enumerate_kernel<<<grid_for(n), kThreads>>>(arguments);
+            check(cudaGetLastError(), "enumerate pairs");
+            graph_sort_rows_kernel<<<grid_for(n), kThreads>>>(indices, device_indptr, n);
+            check(cudaGetLastError(), "row sort");
+            check(cudaDeviceSynchronize(), "csr");
+            indices_host = host_copy(indices, static_cast<size_t>(total), "indices");
+        }
+        const std::vector<uint8_t> weights(static_cast<size_t>(indices_host.size()), 1);
+        PyObject* payload = PyTuple_New(4);
+        if (payload == nullptr) return nullptr;
+        PyObject* items[4] = {
+            bytes_of(indptr_host.data(), indptr_host.size() * sizeof(int64_t)),
+            bytes_of(indices_host.data(), indices_host.size() * sizeof(int64_t)),
+            bytes_of(weights.data(), weights.size()),
+            bytes_of(degree_host.data(), degree_host.size() * sizeof(int64_t))};
+        for (int index = 0; index < 4; ++index) {
+            if (items[index] == nullptr) {
+                for (int other = 0; other < index; ++other) Py_DECREF(items[other]);
+                Py_DECREF(payload);
+                return nullptr;
+            }
+            PyTuple_SET_ITEM(payload, index, items[index]);
+        }
+        return payload;
+    } catch (const std::bad_alloc&) {
+        return PyErr_NoMemory();
+    } catch (const std::exception& error) {
+        PyErr_SetString(PyExc_RuntimeError, error.what());
+        return nullptr;
+    }
+}
+
 PyObject* cuda_entry_points(PyObject*, PyObject*) {
     static const char* names[] = {"classify_geometry", "range_indices", "select_crop_voxels", "range_summary",
-                                  "segment_plane"};
-    const int count = 5;
+                                  "segment_plane", "mutual_graph"};
+    const int count = 6;
     PyObject* list = PyList_New(count);
     if (list == nullptr) return nullptr;
     for (int index = 0; index < count; ++index) {
@@ -1434,7 +1693,7 @@ PyMethodDef methods[] = {
      "CPU kernel: per-key medians of two coordinates."},
     {"select_crop_voxels", cuda_select_crop_voxels, METH_VARARGS, "CUDA crop and voxel reduction."},
     {"range_summary", cuda_range_summary, METH_VARARGS, "CUDA range-bin summary."},
-    {"mutual_graph", cuda_forward_mutual_graph, METH_VARARGS, "CPU kernel (device port pending)."},
+    {"mutual_graph", cuda_mutual_graph, METH_VARARGS, "Device mutual-radius graph."},
     {"voxel_counts", cuda_forward_voxel_counts, METH_VARARGS, "CPU kernel (device port pending)."},
     {"patch_candidates", cuda_forward_patch_candidates, METH_VARARGS, "CPU kernel (device port pending)."},
     {"strip_inside", cuda_forward_strip_inside, METH_VARARGS, "CPU kernel (device port pending)."},

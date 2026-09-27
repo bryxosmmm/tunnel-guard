@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-tail200/baseline-gate-odom8",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "The new RTX 4080 / EPYC host reproduces eight-core p95 near 368 ms on the unchanged pressure-gate scene.",
+  "criterion": "All 268 scans return unchanged detector decisions and p95 is measured as the unmodified tuning baseline."
+}

@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-tail200/cache-obstacle",
+  "every": 1,
+  "max_frames": 201,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Caching native ICP per-voxel nearest distances preserves first-minimum tie semantics and reduces latency without changing configured geometry.",
+  "criterion": "All compared non-timing outputs retain baseline decisions on recorded scans; measure p50/p95 against the same-host baseline."
+}

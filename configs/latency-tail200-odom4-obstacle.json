@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom4-20260927.json",
+  "output": "build/latency-tail200/odom4-obstacle",
+  "every": 1,
+  "max_frames": 201,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Four registration workers reduce eight-core contention with geometry without changing accepted detection.",
+  "criterion": "Compare every recorded decision and p95 to the eight-worker same-host baseline."
+}

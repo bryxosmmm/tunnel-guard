@@ -130,6 +130,17 @@ See [small-object review and calibration limits](docs/ENVELOPE_INTERVAL_REVIEW.m
 
 See [runtime profile and verification](docs/RUNTIME_CONTEXT_OPTIMIZATION.md). Avoiding unused background queries and repeated component scans preserved compared outputs on all 798 real scans. That pre-integration version measured 315–469 ms on the development Mac. See [native integration](docs/NATIVE_INTEGRATION.md) for current timings and remaining bottlenecks; target-hardware performance is unverified.
 
+The [optional CUDA/GIL-release evaluation](docs/NATIVE_INTEGRATION.md#optional-cuda-and-odometry-overlap-evaluation--2026-09-27)
+matches all compared CPU decisions on the complete 2,488-scan six-bag panel.
+With eight ICP workers on an eight-core EPYC allocation, per-scene detector
+processing medians are 218–297 ms (p95 289–368 ms). **The accepted gate,
+p95 ≤200 ms on this RTX 4080 host, is not met.** A second same-class host
+replay found p95 343–354 ms on the two profiled recordings. The serial
+geometry, segmentation and association path alone measured 296 ms p95
+on one recording; [the diagnostic record](results/latency-tail200-20260927.json)
+explains the rejected cache and thread-count trials. ROS delivery, the target
+stand, and field safety remain unverified.
+
 ## Decode and complete offline latency
 
 See [decoder preservation and latency scope](docs/DECODE_AND_LATENCY.md). Paired
