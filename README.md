@@ -16,9 +16,12 @@ including the complete Docker build → launch → bag playback → RViz sequenc
 [docs/ROS2.md](docs/ROS2.md). [docs/RUN_AND_REVIEW.md](docs/RUN_AND_REVIEW.md)
 separates full offline evaluation from live DDS inspection.
 
-The image was not rebuilt here: this machine has no Docker daemon. The existing
-ten-scan emulated run is a compatibility check, not target-runtime, full-bag or
-RViz-GUI acceptance evidence. `tunnel_guard_local` is detector-local output
+The image was built on an Ubuntu 22.04 x86-64 server on 2026-09-27. A ten-scan
+recorded prefix completed in the native Docker image, and a slowed ROS 2 bag
+replay published all ten matching results at 0.1x. At 0.25x the node dropped
+some scans under load. This is a bounded integration check, not target-hardware,
+full-bag, real-time or RViz-GUI acceptance evidence. See [docs/ROS2.md](docs/ROS2.md)
+for the exact scope. `tunnel_guard_local` is detector-local output
 coordinates; it has no published identity TF and does not assert surveyed
 mounting or vehicle extrinsics.
 

@@ -93,3 +93,22 @@ inter-message wall interval.
 This repository does not contain target-hardware Docker, full-bag live DDS, or
 RViz GUI evidence. Those must be run and saved on the target as part of release
 acceptance; the commands above are the entire required command path.
+
+## Bounded Ubuntu server integration run (2026-09-27)
+
+An Ubuntu 22.04 x86-64 server with eight virtual CPUs and 15 GiB RAM built the
+image with `ROS_APT_MIRROR=https://mirror.umd.edu/packages.ros.org/ros2/ubuntu`.
+The base image's signed ROS repository configuration remained in place. The
+container compiled the native C++ module and the ROS package. The entrypoint
+sources ROS setup scripts before enabling Bash `nounset` because the ROS setup
+scripts read unset shell variables.
+
+A derivative bag containing the first ten original serialized PointCloud2
+messages of `roundT_doubleT` was replayed. The offline native detector emitted
+ten rows (one candidate, nine unresolved obstacles), with median processing
+427 ms on this server. Live replay at 0.25x did not process all ten messages.
+At 0.1x, live ROS published ten results with ten distinct original acquisition
+timestamps and identical frame statuses to the offline run, then emitted
+`unknown` after input stopped. This does not establish ten-hertz operation,
+full-bag quality, or sensor-to-display latency. The cloud was also inspected
+in the browser 3D viewer served through an SSH tunnel; RViz GUI was not run.

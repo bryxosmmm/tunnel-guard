@@ -6,7 +6,9 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-RUN apt-get update \
+ARG ROS_APT_MIRROR=http://packages.ros.org/ros2/ubuntu
+RUN python3 -c 'import os; from pathlib import Path; [(p.write_text(p.read_text().replace("http://packages.ros.org/ros2/ubuntu", os.environ["ROS_APT_MIRROR"].rstrip("/")).replace("Types: deb deb-src", "Types: deb"))) for p in Path("/etc/apt/sources.list.d").glob("ros*.sources")]' \
+    && apt-get -o Acquire::Retries=3 -o Acquire::http::Timeout=30 update \
     && apt-get install -y --no-install-recommends \
         build-essential \
         ca-certificates \
@@ -26,6 +28,8 @@ COPY pyproject.toml uv.lock README.md setup.py MANIFEST.in ./
 COPY cpp ./cpp
 COPY docker/constraints.txt ./docker/constraints.txt
 COPY tunnel_guard ./tunnel_guard
+COPY SUSTechPOINTS/public/js/lib/three.module.js SUSTechPOINTS/public/js/lib/OrbitControls.js ./SUSTechPOINTS/public/js/lib/
+COPY SUSTechPOINTS/LICENSE ./SUSTechPOINTS/LICENSE
 COPY configs ./configs
 COPY docs ./docs
 COPY rviz ./rviz
@@ -34,6 +38,7 @@ COPY launch ./launch
 
 RUN python3 -m pip install --no-cache-dir --upgrade pip==24.3.1 setuptools==75.8.0 wheel==0.45.1 \
     && python3 -m pip install -r docker/constraints.txt packaging==24.2 \
+    && python3 setup.py build_ext --inplace \
     && python3 -m pip install --no-build-isolation --no-deps . \
     && python3 -c "from tunnel_guard import _native; import tunnel_guard.ros_node" \
     && source /opt/ros/humble/setup.bash \
