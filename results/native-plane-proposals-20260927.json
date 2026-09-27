@@ -28,6 +28,26 @@
       "planes_bit_equal": 1386
     }
   },
+  "kernel_phase_measurements_20260927": {
+    "how": "cpp/kernels.cpp, compiled with -DTG_KERNEL_TIMING; the runtime-gated version measured 10 ms/frame and was replaced by a compile-time gate",
+    "mutual_graph": {
+      "assemble_ms_per_worker_sum": 3.542,
+      "build_cells_ms_per_worker_sum": 0.394,
+      "enumerate_ms_per_worker_sum": 1.957,
+      "points": 23303,
+      "reading": "Assembly (degree accumulation, scatter, per-row ordering) is 64 % of the parallel work: integer and memory traffic with no slack that preserves the CSR."
+    },
+    "normal_covariances": {
+      "build_cells_ms_per_worker_sum": 0.875,
+      "eigen_ms_per_worker_sum": 21.2,
+      "gather_ms_per_worker_sum": 18.4,
+      "points": 31292,
+      "reading": "Divided by the eight workers this is 0.9 + 2.3 + 2.7 ms of wall time; the fixed-order Jacobi eigen-decomposition is the largest single phase and its arithmetic cannot be reordered without changing the normals the background gate thresholds.",
+      "total_ms_per_worker_sum": 40.4,
+      "workers": 8
+    },
+    "run_to_run_variance_ms": 6.0
+  },
   "limitations": [
     "Equivalence is established on one recording (1386 proposals over 40 scans, and 201 scans of decisions). The port is a transcription and its arithmetic is characterized, but a branch the panel does not exercise could still diverge; the harness re-runs the comparison on any recording.",
     "The stopping rule's break_iteration formula is replayed with the host's libm, so the port is tied to a compatible libm for exactness.",
@@ -91,7 +111,7 @@
   },
   "timing_ms_per_frame": {
     "committed_cpu_backend_p50": 763.9,
-    "device_kernels_and_native_planes_p50": 433.4,
+    "device_kernels_and_native_planes_p50": 437.0,
     "device_kernels_only_p50": 714.2,
     "p95": {
       "committed": 837.2,

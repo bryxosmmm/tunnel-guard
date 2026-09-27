@@ -21,12 +21,27 @@
 
 #include <algorithm>
 #include <atomic>
+#include <chrono>
+#include <cstdio>
+#include <cstdlib>
 #include <cmath>
 #include <cstring>
 #include <stdexcept>
 #include <thread>
 #include <unordered_map>
 #include <utility>
+
+// Phase attribution for the two grid kernels. Compiled in only with
+// -DTG_KERNEL_TIMING: a runtime check around per-point clock reads measured 10 ms per
+// frame, which is more than the phases it was there to explain.
+#ifdef TG_KERNEL_TIMING
+#define TG_CLOCK_NOW() std::chrono::steady_clock::now()
+#define TG_MS_SINCE(start) \
+    (std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - (start)).count())
+#else
+#define TG_CLOCK_NOW() std::chrono::steady_clock::time_point{}
+#define TG_MS_SINCE(start) 0.0
+#endif
 
 Arena& arena() {
     static thread_local Arena instance;
@@ -443,7 +458,9 @@ PyObject* mutual_graph(PyObject*, PyObject* args) {
     auto& degree = workspace.i2;
     try {
         ReleaseGIL released;
+        const auto start_all = TG_CLOCK_NOW();
         build_cells(data, n, cell);
+        const double build_ms = TG_MS_SINCE(start_all);
         Arena& scratch = arena();
         KeyTable& table = scratch.table;
         // Pair enumeration, threaded over points with arena-backed sinks.
@@ -497,6 +514,7 @@ PyObject* mutual_graph(PyObject*, PyObject* args) {
             }
             for (auto& thread : pool) thread.join();
         }
+        const double enumerate_ms = TG_MS_SINCE(start_all) - build_ms;
         size_t total = 0;
         for (const auto& sink : sinks) total += sink.size();
         indptr.assign(static_cast<size_t>(n) + 1, 0);
@@ -520,6 +538,13 @@ PyObject* mutual_graph(PyObject*, PyObject* args) {
             auto begin = indices.begin() + indptr[static_cast<size_t>(i)];
             std::sort(begin, begin + degree[static_cast<size_t>(i)]);
         }
+#ifdef TG_KERNEL_TIMING
+        {
+            const double assemble_ms = TG_MS_SINCE(start_all) - build_ms - enumerate_ms;
+            std::fprintf(stderr, "kernel=mutual_graph n=%lld build=%.3f enumerate=%.3f assemble=%.3f\n",
+                         static_cast<long long>(n), build_ms, enumerate_ms, assemble_ms);
+        }
+#endif
         (void)total;
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     catch (const std::exception& error) {
@@ -1695,7 +1720,9 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
     auto& normals_out = scratch.d2;
     try {
         ReleaseGIL released;
+        const auto start_all = TG_CLOCK_NOW();
         build_cells(data, n, radius);
+        const double build_ms = TG_MS_SINCE(start_all);
         Arena& cells = arena();
         KeyTable& table = cells.table;
         counts.resize(static_cast<size_t>(n));
@@ -1703,12 +1730,17 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
         eigenvalues.resize(static_cast<size_t>(n) * 3);
         normals_out.resize(static_cast<size_t>(n) * 3);
         const unsigned workers = worker_capacity(n);
+        // Diagnostics only: phase attribution for the grid kernels.
+        std::vector<double> gather_totals(workers > 0 ? workers : 1, 0.0);
+        std::vector<double> eigen_totals(workers > 0 ? workers : 1, 0.0);
         // Per-thread scratch: the membership and selection buffers are mutated
         // inside the parallel region, so they cannot live in the shared arena.
-        auto process = [&](Py_ssize_t start, Py_ssize_t stop) {
+        auto process = [&](Py_ssize_t start, Py_ssize_t stop, unsigned worker = 0) {
+            double gather_ms = 0.0, eigen_ms = 0.0;
             std::vector<int64_t> members;
             std::vector<int64_t> picked;
             for (Py_ssize_t i = start; i < stop; ++i) {
+                const auto gather_start = TG_CLOCK_NOW();
                 const double xi = data[3 * i], yi = data[3 * i + 1], zi = data[3 * i + 2];
                 Key low{}, high{};
                 for (int axis = 0; axis < 3; ++axis) {
@@ -1731,6 +1763,8 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
                                 if (distance_squared(data, j, xi, yi, zi) <= radius * radius) members.push_back(j);
                             }
                         }
+                const auto gather_done = TG_CLOCK_NOW();
+                gather_ms += TG_MS_SINCE(gather_start);
                 counts[static_cast<size_t>(i)] = static_cast<int64_t>(members.size());
                 const Py_ssize_t total = static_cast<Py_ssize_t>(members.size());
                 const Py_ssize_t used = total > max_nn ? max_nn : total;
@@ -1791,10 +1825,13 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
                     eigenvalues[3 * static_cast<size_t>(i) + axis] = values[axis];
                     normals_out[3 * static_cast<size_t>(i) + axis] = direction[axis];
                 }
+                eigen_ms += TG_MS_SINCE(gather_done);
             }
+            gather_totals[worker] = gather_ms;
+            eigen_totals[worker] = eigen_ms;
         };
         if (workers <= 1) {
-            process(0, n);
+            process(0, n, 0);
         } else {
             std::vector<std::thread> pool;
             const Py_ssize_t chunk = (n + static_cast<Py_ssize_t>(workers) - 1) / static_cast<Py_ssize_t>(workers);
@@ -1802,10 +1839,25 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
                 const Py_ssize_t start = static_cast<Py_ssize_t>(worker) * chunk;
                 const Py_ssize_t stop = std::min(n, start + chunk);
                 if (start >= stop) break;
-                pool.emplace_back([&process, start, stop] { process(start, stop); });
+                pool.emplace_back([&process, start, stop, worker] { process(start, stop, worker); });
             }
             for (auto& thread : pool) thread.join();
         }
+#ifdef TG_KERNEL_TIMING
+        {
+            double gather = 0.0, eigen = 0.0;
+            for (size_t worker = 0; worker < gather_totals.size(); ++worker) {
+                gather += gather_totals[worker];
+                eigen += eigen_totals[worker];
+            }
+            const double total = build_ms + gather + eigen;
+            std::fprintf(stderr,
+                         "kernel=normal_covariances n=%lld workers=%u build=%.3f gather=%.3f eigen=%.3f "
+                         "total=%.3f ms_per_point_us=%.4f\n",
+                         static_cast<long long>(n), workers, build_ms, gather, eigen, total,
+                         1000.0 * total / static_cast<double>(n));
+        }
+#endif
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     catch (const std::exception& error) {
         PyErr_SetString(PyExc_ValueError, error.what());
