@@ -1,0 +1,18 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/delivery/demo",
+  "every": 1,
+  "max_frames": 201,
+  "prefetch_depth": 0,
+  "visualization": true,
+  "display_max_points": 50000,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "delivery_full_recording",
+      "topic": "/sensing/lidar/hesai128/pointcloud"
+    }
+  ]
+}

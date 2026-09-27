@@ -11,7 +11,6 @@ import rclpy
 from rclpy.clock import Clock, ClockType
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
-from rclpy.serialization import deserialize_message
 from sensor_msgs.msg import PointCloud2
 from std_msgs.msg import Bool, Float32, String
 from visualization_msgs.msg import MarkerArray
@@ -91,15 +90,17 @@ class PerceptionNode(Node):
         conversion_s = publication_s = 0.0
         for topic, message in payloads.items():
             started = time.monotonic()
-            typename, native = self.kinds[topic]
+            typename, _ = self.kinds[topic]
             serialized = self.messages.store.serialize_cdr(message, typename)
-            converted = deserialize_message(bytes(serialized), native)
+            # Humble Publisher.publish accepts serialized CDR bytes. Avoid
+            # constructing native Python messages only to serialize them again.
+            converted = bytes(serialized)
             converted_at = time.monotonic()
             self.publishers_by_topic[topic].publish(converted)
             conversion_s += converted_at - started
             publication_s += time.monotonic() - converted_at
         return self.messages.last_timings | {
-            "cdr_roundtrip_s": conversion_s, "publication_calls_s": publication_s}
+            "cdr_prepare_s": conversion_s, "publication_calls_s": publication_s}
 
     def unavailable(self, reason):
         row = {

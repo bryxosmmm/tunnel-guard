@@ -7,6 +7,8 @@ import subprocess
 import sys
 import time
 import threading
+import hashlib
+import platform
 from collections import Counter
 
 import rclpy
@@ -22,6 +24,12 @@ recipe = json.loads(Path(sys.argv[1]).read_text())
 out = Path(sys.argv[2])
 out.mkdir(parents=True, exist_ok=False)
 (out / 'experiment.json').write_text(json.dumps(recipe, indent=2) + '\n')
+from tunnel_guard import _native
+root = Path(_native.__file__).parent
+hashes = {str(p): hashlib.sha256(p.read_bytes()).hexdigest()
+          for p in list(root.glob('*.py')) + [Path(_native.__file__), Path(recipe['detector_config'])]}
+(out / 'manifest.json').write_text(json.dumps(dict(platform=platform.platform(), python=sys.version,
+    command=sys.argv, sha256=hashes), indent=2) + '\n')
 phase = 'startup'
 counts = Counter()
 sent = Counter()
@@ -99,7 +107,10 @@ try:
         inputs = [c for c in reader.connections if c.topic == recipe['input_topic']]
         source = iter(reader.messages(connections=inputs))
         phase = 'sequential'
-        if recipe['mode'] == 'rate1':
+        if recipe['mode'] == 'startup_silence':
+            phase = 'startup_silence'
+            spin_for(recipe['input_timeout_s'] + 2.0)
+        elif recipe['mode'] == 'rate1':
             failures = []
             def produce():
                 try:
@@ -121,6 +132,8 @@ try:
             if failures:
                 raise RuntimeError(failures)
             spin_for(recipe['drain_s'])
+            if process.poll() is not None:
+                raise RuntimeError(f'Detector exited during rate1: {process.returncode}')
         else:
             def publish_and_observe(message):
                 stamp = message.header.stamp.sec * 10**9 + message.header.stamp.nanosec
@@ -128,7 +141,7 @@ try:
                 deadline = time.monotonic() + recipe['result_timeout_s']
                 while not any(r['result'].get('measurement_timestamp_ns') == stamp for r in statuses):
                     if process.poll() is not None or time.monotonic() > deadline:
-                        raise RuntimeError('No actual result for offered acquisition; inspect retained logs')
+                        raise RuntimeError(f'No actual result for {stamp}; detector exit={process.poll()}; inspect retained logs')
                     spin_for(.05)
                 spin_for(.1)
             for index in range(recipe['sequential_frames']):
@@ -164,6 +177,7 @@ finally:
         except subprocess.TimeoutExpired:
             process.kill()
             process.wait()
+    (out / 'process-exit.json').write_text(json.dumps({'returncode': process.returncode}) + '\n')
     node_log.close()
     writer.close()
     stream.close()
