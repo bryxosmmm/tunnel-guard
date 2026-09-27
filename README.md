@@ -25,6 +25,10 @@ for the exact scope. `tunnel_guard_local` is detector-local output
 coordinates; it has no published identity TF and does not assert surveyed
 mounting or vehicle extrinsics.
 
+[Инструкция по развёртыванию и демонстрации по ТЗ](docs/DEPLOYMENT_TZ.md)
+содержит команды сборки, запуска ROS 2 bag, проверки выходных тем и просмотра
+сохранённой 3D-сцены, а также границы проведённой проверки.
+
 The initial review and its two real 30-frame prefixes are documented in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). Subsequent iterations and historical results below are separate evidence.
 
 The [recorded 3D server demonstration](docs/SERVER_DEMO_20260927.md) documents
