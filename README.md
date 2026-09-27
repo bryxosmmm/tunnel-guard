@@ -90,6 +90,9 @@ sensor-to-display latency. PRs #28 (surface support), #34 (contour-labelled hybr
 cases), and #33 (ROS contract) remain separate candidates requiring integration
 and acceptance; their historical claims are not silently included in this score.
 
+The [recorded 3D server demonstration](docs/SERVER_DEMO_20260927.md) documents
+the transferred complete dataset, two complete real-bag runs, SSH viewing
+commands, and the limits of that evidence.
 
 ## Extended dataset: initial real runs
 
