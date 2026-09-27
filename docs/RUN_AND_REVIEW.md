@@ -29,6 +29,33 @@ unresolved hazard, yellow is unconfirmed candidate evidence, and grey is an
 adjacent object. A displayed box is observed support, not an amodal object
 shape; `no_obstacle_observed` is not route clearance.
 
+### Browser 3D replay
+
+The same server exposes `/3d`, with orbit controls, a forward-facing camera,
+frame navigation, playback, point-size adjustment and envelope/object toggles.
+For the locally retained 201-frame moving sequence:
+
+```sh
+.venv/bin/python -m tunnel_guard.review_viewer \
+  --run build/perf-100ms-after \
+  --bag data/sourcecraft_subset/for_hackathon/roundT_doubleT \
+  --port 8766 --display-max-points 60000
+```
+
+Open `http://127.0.0.1:8766/3d`. This uses the repository's vendored Three.js
+and OrbitControls under `SUSTechPOINTS/public/js/lib`; no CDN is used. Those
+files must be present alongside the repository checkout. The existing source
+identity and acquisition-time checks also apply to this view. Rendering samples
+the display cloud only; saved detector outputs are unchanged.
+
+The camera and clouds are in the per-scan processing frame. This shows the
+surroundings passing the sensor, not a reconstructed world map or a validated
+train trajectory. Speed selection requests acquisition-time pacing; fetching
+and rendering can make playback slower. It is not an inference benchmark.
+Adjacent objects are hidden initially and can be enabled with the grey-object
+checkbox. A blank distance means no confirmed intersection was reported, not
+that the route is clear.
+
 ## ROS 2, Docker and RViz
 
 Use the one release command sequence in [ROS2.md](ROS2.md). The live and

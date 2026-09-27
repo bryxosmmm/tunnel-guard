@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tunnel Guard · 3D</title>
+<style>
+  * { box-sizing: border-box; }
+  body { margin: 0; overflow: hidden; color: #e4edf7; background: #080e18;
+    font: 14px system-ui, sans-serif; }
+  #scene { position: fixed; inset: 0; }
+  header, aside, footer { position: absolute; z-index: 1; background: #101b2bed;
+    border: 1px solid #283a50; border-radius: 14px; backdrop-filter: blur(12px); }
+  header { top: 18px; left: 18px; padding: 16px 20px; max-width: calc(100% - 36px); }
+  h1 { font-size: 20px; margin: 0 0 5px; letter-spacing: .5px; }
+  small, .muted { color: #9fb0c5; }
+  aside { top: 18px; right: 18px; width: 290px; padding: 18px; }
+  #distance { font-size: 32px; font-weight: 650; margin: 6px 0; }
+  #status { margin: 15px 0 8px; color: #ffc976; }
+  #details { line-height: 1.65; white-space: pre-line; }
+  .legend { line-height: 1.9; border-top: 1px solid #283a50; margin-top: 12px; padding-top: 10px; }
+  label { display: block; margin: 9px 0; cursor: pointer; }
+  input { accent-color: #55d7da; }
+  footer { bottom: 18px; left: 18px; right: 18px; padding: 14px 18px; }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  button, select { background: #22344b; color: #e4edf7; border: 1px solid #3d526c;
+    border-radius: 8px; padding: 9px 13px; font: inherit; cursor: pointer; }
+  button:hover { background: #304961; }
+  #play { background: #10656c; min-width: 145px; }
+  #timeline { flex: 1; min-width: 120px; }
+  #help { margin-top: 10px; font-size: 12px; color: #9fb0c5; }
+  #error { color: #ff8c87; margin-top: 8px; }
+  @media(max-width: 850px) { header { right: 18px; } aside { top: 105px; width: 240px; }
+    aside .legend, #details { display: none; } }
+</style>
+<div id="scene"></div>
+<header><h1>TUNNEL GUARD <span style="color:#55d7da">/ 3D</span></h1>
+  <small id="source">Загрузка реальной записи…</small></header>
+<aside>
+  <small>Ближайшее подтверждённое пересечение</small>
+  <div id="distance">—</div>
+  <small>Продольная координата в системе обработки</small>
+  <div id="status">Загрузка…</div><div id="details" class="muted"></div>
+  <div class="legend">
+    <div style="color:#ff646b">● Подтверждённое пересечение</div>
+    <div style="color:#ffad52">● Подтверждённый, положение неясно</div>
+    <div style="color:#ffe083">● Неподтверждённый кандидат</div>
+    <div style="color:#55d7da">● Опорный габарит</div>
+  </div>
+  <label><input id="envelope" type="checkbox" checked> Показывать габарит</label>
+  <label><input id="boxes" type="checkbox" checked> Показывать объекты</label>
+  <label><input id="adjacent" type="checkbox"> Соседние объекты (серые)</label>
+  <label>Размер точек <input id="size" type="range" min="1" max="5" step=".5" value="2"></label>
+  <small>Отсутствие срабатывания не означает свободный путь.</small>
+</aside>
+<footer>
+  <div class="row">
+    <button id="play" disabled>▶ Воспроизвести</button>
+    <button id="prev" title="Предыдущий кадр">←</button>
+    <input id="timeline" type="range" min="0" max="0" value="0" aria-label="Кадр">
+    <button id="next" title="Следующий кадр">→</button>
+    <span id="frame">—</span>
+    <select id="speed" aria-label="Скорость"><option value=".25">0,25×</option>
+      <option value=".5">0,5×</option><option value="1" selected>1×</option><option value="2">2×</option></select>
+    <button id="driver">Вид вперёд</button><button id="orbit">Общий вид</button>
+  </div>
+  <div id="help">Мышь: вращение · колёсико: приближение · правая кнопка: сдвиг · пробел: пауза.
+    Записанные результаты, не живая обработка. Облако показано с разрежением только для визуализации.</div>
+  <div id="error" role="alert"></div>
+</footer>
+<script type="module">
+import * as THREE from '/vendor/three.module.js';
+import { OrbitControls } from '/vendor/OrbitControls.js';
+
+const $ = id => document.getElementById(id);
+const scene = new THREE.Scene(); scene.background = new THREE.Color('#080e18');
+const camera = new THREE.PerspectiveCamera(65, innerWidth / innerHeight, .05, 600);
+camera.up.set(0, 0, 1);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2)); renderer.setSize(innerWidth, innerHeight);
+$('scene').appendChild(renderer.domElement);
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true; controls.minDistance = .2; controls.maxDistance = 300;
+function view(driver) {
+  camera.position.set(...(driver ? [0, 0, 0] : [-9, -15, 9]));
+  controls.target.set(...(driver ? [40, 0, -.3] : [25, 0, -1])); controls.update();
+}
+view(false); $('driver').onclick = () => view(true); $('orbit').onclick = () => view(false);
+const cloudMaterial = new THREE.PointsMaterial({ size: 2, sizeAttenuation: false, vertexColors: true });
+const cloud = new THREE.Points(new THREE.BufferGeometry(), cloudMaterial); scene.add(cloud);
+const envelope = new THREE.LineSegments(new THREE.BufferGeometry(),
+  new THREE.LineBasicMaterial({ color: '#55d7da', transparent: true, opacity: .3 })); scene.add(envelope);
+const boxes = new THREE.LineSegments(new THREE.BufferGeometry(),
+  new THREE.LineBasicMaterial({ vertexColors: true })); scene.add(boxes);
+const colors = { red: new THREE.Color('#ff646b'), orange: new THREE.Color('#ffad52'),
+  yellow: new THREE.Color('#ffe083'), grey: new THREE.Color('#64758b') };
+const statuses = { obstacle: 'Алгоритм подтвердил пересечение', unresolved_obstacle: 'Положение объекта относительно габарита неясно',
+  candidate: 'Есть неподтверждённые кандидаты', no_obstacle_observed: 'Препятствие не наблюдается', unknown: 'Недостаточно данных' };
+let meta, current = 0, currentData, firstStamp, playing = false, timer, requestId = 0;
+const cache = new Map();
+async function json(url) { const r = await fetch(url); const d = await r.json();
+  if (!r.ok) throw new Error(d.error || `HTTP ${r.status}`); return d; }
+function frameData(i) {
+  if (!cache.has(i)) {
+    const p = json(`/frame?index=${i}`).catch(e => { cache.delete(i); throw e; });
+    cache.set(i, p);
+    while (cache.size > 8) cache.delete(cache.keys().next().value);
+  }
+  return cache.get(i);
+}
+function replaceGeometry(object, vertices, rgb) {
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+  if (rgb) g.setAttribute('color', new THREE.Float32BufferAttribute(rgb, 3));
+  object.geometry.dispose(); object.geometry = g;
+}
+function drawBoxes() {
+  const vertices = [], rgb = [];
+  for (const o of currentData.row.objects) {
+    if (o.path_relation === 'adjacent' && !$('adjacent').checked) continue;
+    const c = o.path_relation === 'adjacent' ? colors.grey : o.intersection_confirmed ? colors.red :
+      o.confirmed ? colors.orange : colors.yellow;
+    const corners = Array.from({length: 8}, (_, i) => [0, 1, 2].map(k =>
+      (i & (1 << k)) ? o.bbox_max[k] : o.bbox_min[k]));
+    for (let i = 0; i < 8; i++) for (const bit of [1, 2, 4]) if (i < (i ^ bit)) {
+      vertices.push(...corners[i], ...corners[i ^ bit]); rgb.push(c.r,c.g,c.b,c.r,c.g,c.b);
+    }
+  }
+  replaceGeometry(boxes, vertices, rgb);
+}
+function draw(data) {
+  currentData = data;
+  const vertices = [], rgb = [], c = new THREE.Color();
+  for (const p of data.points) {
+    vertices.push(...p);
+    c.setHSL(.56 - Math.max(0, Math.min(1, (p[2] + 3) / 9)) * .13, .28, .55);
+    rgb.push(c.r, c.g, c.b);
+  }
+  replaceGeometry(cloud, vertices, rgb); replaceGeometry(envelope, data.corridor.flat()); drawBoxes();
+  const row = data.row, distance = data.distances.confirmed_intersection_m;
+  $('distance').textContent = distance == null ? '—' : `${distance.toFixed(1)} м`;
+  $('status').textContent = statuses[row.status] || row.status;
+  $('details').textContent = `Объектов: ${row.objects.length}\nТочек на экране: ${data.points.length.toLocaleString('ru')} / ${data.decoded_points.toLocaleString('ru')}\nКачество данных: ${row.health}\nКадр записи: ${row.frame}`;
+  $('timeline').value = current;
+  $('frame').textContent = `${current + 1} / ${meta.frames.length} · ${(row.timestamp_s - firstStamp).toFixed(1)} с`;
+}
+function pause() { playing = false; clearTimeout(timer); $('play').textContent = '▶ Воспроизвести'; }
+async function load(i) {
+  const id = ++requestId;
+  try {
+    const data = await frameData(i);
+    if (id !== requestId) return false;
+    current = i; draw(data); $('error').textContent = '';
+    if (i + 1 < meta.frames.length) frameData(i + 1).catch(() => {});
+    return true;
+  } catch (e) { if (id === requestId) { pause(); $('error').textContent = `Не удалось открыть кадр: ${e.message}`; } return false; }
+}
+async function tick() {
+  if (!playing) return;
+  if (current + 1 >= meta.frames.length) { pause(); return; }
+  const next = current + 1, id = requestId, started = performance.now();
+  try {
+    const data = await frameData(next);
+    if (!playing || id !== requestId) return;
+    const delay = Math.max(0, (data.row.timestamp_s - currentData.row.timestamp_s) * 1000 / Number($('speed').value));
+    const lag = performance.now() - started;
+    timer = setTimeout(async () => {
+      if (!playing || id !== requestId) return;
+      if (await load(next)) tick();
+    }, Math.max(0, delay - lag));
+  } catch (e) { pause(); $('error').textContent = e.message; }
+}
+$('play').onclick = async () => {
+  if (playing) { pause(); return; }
+  if (current === meta.frames.length - 1 && !await load(0)) return;
+  playing = true; $('play').textContent = 'Ⅱ Пауза'; tick();
+};
+$('timeline').oninput = () => { pause(); load(Number($('timeline').value)); };
+$('prev').onclick = () => { if (meta) { pause(); load(Math.max(0, current - 1)); } };
+$('next').onclick = () => { if (meta) { pause(); load(Math.min(meta.frames.length - 1, current + 1)); } };
+$('envelope').onchange = () => envelope.visible = $('envelope').checked;
+$('boxes').onchange = () => boxes.visible = $('boxes').checked;
+$('adjacent').onchange = () => { if (currentData) drawBoxes(); };
+$('size').oninput = () => cloudMaterial.size = Number($('size').value);
+document.addEventListener('keydown', e => {
+  if (e.code === 'Space' && e.target === document.body && !$('play').disabled) { e.preventDefault(); $('play').click(); }
+});
+addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });
+try {
+  meta = await json('/metadata');
+  $('source').textContent = `${meta.bag} · ${meta.run} · сохранённый прогон`;
+  $('timeline').max = meta.frames.length - 1;
+  const first = await frameData(0); firstStamp = first.row.timestamp_s;
+  if (await load(0)) $('play').disabled = false;
+} catch (e) { $('error').textContent = `Ошибка загрузки: ${e.message}`; }
+</script>
+</html>
