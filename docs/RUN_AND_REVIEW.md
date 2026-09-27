@@ -33,6 +33,11 @@ shape; `no_obstacle_observed` is not route clearance.
 
 The same server exposes `/3d`, with orbit controls, a forward-facing camera,
 frame navigation, playback, point-size adjustment and envelope/object toggles.
+Use `?frame=25&focus=<track_id>` to open a particular observation. The selected
+object's longitudinal distance is shown separately from the nearest confirmed
+intersection; selecting it can isolate its box. Pink points are exact recorded
+support only when that frame saved diagnostic arrays. The track ID is a detector
+association hypothesis, not verified physical identity.
 For the locally retained 201-frame moving sequence:
 
 ```sh
