@@ -6,6 +6,10 @@ Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 
 
 **Research baseline, not a validated collision-warning system.** Recall, infrastructure alarms, generalization, and runtime remain unresolved. `CASE.md` contains the original requirements. Recorded RViz2 export and a live ROS2 Humble adapter are implemented. The AMD64 Humble container processed a ten-scan real replay under Apple Silicon emulation; native target throughput and the RViz GUI remain unverified.
 
+[Инструкция по развёртыванию и демонстрации по ТЗ](docs/DEPLOYMENT_TZ.md)
+содержит команды сборки, запуска ROS 2 bag, проверки выходных тем и просмотра
+сохранённой 3D-сцены, а также границы проведённой проверки.
+
 The initial review and its two real 30-frame prefixes are documented in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). Subsequent iterations and historical results below are separate evidence.
 
 ## Team release integration — 2026-09-27
