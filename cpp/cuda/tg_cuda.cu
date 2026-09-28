@@ -1015,8 +1015,9 @@ TG_FORWARD(ground_values)
 TG_FORWARD(mask_candidates)
 TG_FORWARD(mask_apply)
 TG_FORWARD(cluster_components)
-TG_FORWARD(normal_covariances)
 TG_FORWARD(component_labels)
+TG_FORWARD(induced_subgraph)
+TG_FORWARD(group_degrees)
 TG_FORWARD(window_indices)
 TG_FORWARD(remove_rows)
 TG_FORWARD(support_strips)
@@ -1337,6 +1338,158 @@ __global__ void graph_sort_rows_kernel(int64_t* indices, const int64_t* indptr, 
     }
 }
 
+// One independent normal/covariance problem per sampled surface point. The
+// neighbourhood enumeration and the eight Jacobi sweeps follow the CPU kernel
+// in the same order; a 3x3 FP32 analytic eigen kernel would not preserve the
+// nearly repeated spectra or the downstream normal-alignment decision.
+constexpr int kNormalMaxNeighbors = 64;
+
+__device__ void normal_eigen(double xx, double xy, double xz, double yy, double yz, double zz,
+                             double* values, double* normal) {
+    double a[3][3] = {{xx, xy, xz}, {xy, yy, yz}, {xz, yz, zz}};
+    double v[3][3] = {{1.0, 0.0, 0.0}, {0.0, 1.0, 0.0}, {0.0, 0.0, 1.0}};
+    for (int sweep = 0; sweep < 8; ++sweep) {
+        for (int pair = 0; pair < 3; ++pair) {
+            const int i = pair == 0 ? 0 : (pair == 1 ? 0 : 1);
+            const int j = pair == 0 ? 1 : 2;
+            if (a[i][j] == 0.0) continue;
+            const double theta = (a[j][j] - a[i][i]) / (2.0 * a[i][j]);
+            const double sign = theta >= 0.0 ? 1.0 : -1.0;
+            const double t = sign / (fabs(theta) + sqrt(theta * theta + 1.0));
+            const double c = 1.0 / sqrt(t * t + 1.0);
+            const double s = t * c;
+            for (int k = 0; k < 3; ++k) {
+                const double aik = a[i][k], ajk = a[j][k];
+                a[i][k] = c * aik - s * ajk;
+                a[j][k] = s * aik + c * ajk;
+            }
+            for (int k = 0; k < 3; ++k) {
+                const double aki = a[k][i], akj = a[k][j];
+                a[k][i] = c * aki - s * akj;
+                a[k][j] = s * aki + c * akj;
+            }
+            for (int k = 0; k < 3; ++k) {
+                const double vki = v[k][i], vkj = v[k][j];
+                v[k][i] = c * vki - s * vkj;
+                v[k][j] = s * vki + c * vkj;
+            }
+        }
+    }
+    int smallest = 0, middle = 1, largest = 2;
+    const double diagonal[3] = {a[0][0], a[1][1], a[2][2]};
+    if (diagonal[middle] < diagonal[smallest]) { const int swap = smallest; smallest = middle; middle = swap; }
+    if (diagonal[largest] < diagonal[middle]) { const int swap = middle; middle = largest; largest = swap; }
+    if (diagonal[middle] < diagonal[smallest]) { const int swap = smallest; smallest = middle; middle = swap; }
+    values[0] = diagonal[smallest];
+    values[1] = diagonal[middle];
+    values[2] = diagonal[largest];
+    for (int k = 0; k < 3; ++k) normal[k] = v[k][smallest];
+}
+
+__global__ void normal_cell_key_kernel(const double* points, int64_t n, double cell, uint64_t* keys,
+                                       int* out_of_range) {
+    const int64_t i = static_cast<int64_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i >= n) return;
+    int64_t key[3];
+    for (int axis = 0; axis < 3; ++axis) {
+        const double value = points[3 * i + axis];
+        if (!isfinite(value) || fabs(value / cell) >= static_cast<double>(kCellBias - 2)) {
+            atomicExch(out_of_range, 1);
+            return;
+        }
+        key[axis] = static_cast<int64_t>(floor(value / cell));
+    }
+    keys[i] = ((static_cast<uint64_t>(key[0] + kCellBias) << 42)
+               | (static_cast<uint64_t>(key[1] + kCellBias) << 21)
+               | static_cast<uint64_t>(key[2] + kCellBias));
+}
+
+struct NormalArgs {
+    const double* points;
+    int64_t n;
+    double radius;
+    int max_nn;
+    const uint64_t* cell_keys;
+    int64_t cells;
+    const int64_t* cell_start;
+    const int64_t* cell_items;
+    int64_t* counts;
+    double* covariance;
+    double* eigenvalues;
+    double* normals;
+};
+
+__global__ void normal_covariance_kernel(NormalArgs args) {
+    const int64_t i = static_cast<int64_t>(blockIdx.x) * blockDim.x + threadIdx.x;
+    if (i >= args.n) return;
+    const double xi = args.points[3 * i], yi = args.points[3 * i + 1], zi = args.points[3 * i + 2];
+    int64_t members[kNormalMaxNeighbors], best[kNormalMaxNeighbors];
+    double best_distance[kNormalMaxNeighbors];
+    int total = 0, nearest = 0;
+    int64_t low[3], high[3];
+    for (int axis = 0; axis < 3; ++axis) {
+        const double value = args.points[3 * i + axis];
+        low[axis] = static_cast<int64_t>(floor((value - args.radius) / args.radius));
+        high[axis] = static_cast<int64_t>(floor((value + args.radius) / args.radius));
+    }
+    for (int64_t cx = low[0]; cx <= high[0]; ++cx)
+        for (int64_t cy = low[1]; cy <= high[1]; ++cy)
+            for (int64_t cz = low[2]; cz <= high[2]; ++cz) {
+                const uint64_t key = ((static_cast<uint64_t>(cx + kCellBias) << 42)
+                                      | (static_cast<uint64_t>(cy + kCellBias) << 21)
+                                      | static_cast<uint64_t>(cz + kCellBias));
+                int64_t left = 0, right = args.cells;
+                while (left < right) {
+                    const int64_t mid = (left + right) / 2;
+                    if (args.cell_keys[mid] < key) left = mid + 1; else right = mid;
+                }
+                if (left == args.cells || args.cell_keys[left] != key) continue;
+                for (int64_t at = args.cell_start[left]; at < args.cell_start[left + 1]; ++at) {
+                    const int64_t j = args.cell_items[at];
+                    const double dx = args.points[3 * j] - xi;
+                    const double dy = args.points[3 * j + 1] - yi;
+                    const double dz = args.points[3 * j + 2] - zi;
+                    const double distance = dx * dx + dy * dy + dz * dz;
+                    if (!(distance <= args.radius * args.radius)) continue;
+                    if (total < args.max_nn) members[total] = j;
+                    ++total;
+                    int slot = nearest;
+                    while (slot > 0 && (distance < best_distance[slot - 1]
+                          || (distance == best_distance[slot - 1] && j < best[slot - 1]))) --slot;
+                    if (slot < args.max_nn) {
+                        const int end = nearest < args.max_nn ? nearest : args.max_nn - 1;
+                        for (int pos = end; pos > slot; --pos) {
+                            best_distance[pos] = best_distance[pos - 1];
+                            best[pos] = best[pos - 1];
+                        }
+                        best_distance[slot] = distance;
+                        best[slot] = j;
+                    }
+                    if (nearest < args.max_nn) ++nearest;
+                }
+            }
+    args.counts[i] = total;
+    const int used = total < args.max_nn ? total : args.max_nn;
+    double sx = 0.0, sy = 0.0, sz = 0.0;
+    double xx = 0.0, xy = 0.0, xz = 0.0, yy = 0.0, yz = 0.0, zz = 0.0;
+    for (int slot = 0; slot < used; ++slot) {
+        const int64_t j = total > args.max_nn ? best[slot] : members[slot];
+        const double x = args.points[3 * j], y = args.points[3 * j + 1], z = args.points[3 * j + 2];
+        sx += x; sy += y; sz += z;
+        xx += x * x; xy += x * y; xz += x * z;
+        yy += y * y; yz += y * z; zz += z * z;
+    }
+    const double scale = 1.0 / static_cast<double>(used);
+    xx *= scale; xy *= scale; xz *= scale; yy *= scale; yz *= scale; zz *= scale;
+    const double mean_x = sx * scale, mean_y = sy * scale, mean_z = sz * scale;
+    xx -= mean_x * mean_x; xy -= mean_x * mean_y; xz -= mean_x * mean_z;
+    yy -= mean_y * mean_y; yz -= mean_y * mean_z; zz -= mean_z * mean_z;
+    double* covariance = args.covariance + 6 * i;
+    covariance[0] = xx; covariance[1] = xy; covariance[2] = xz;
+    covariance[3] = yy; covariance[4] = yz; covariance[5] = zz;
+    normal_eigen(xx, xy, xz, yy, yz, zz, args.eigenvalues + 3 * i, args.normals + 3 * i);
+}
+
 // The sequential walk, on the host. Used for small windows, where a device round trip
 // costs more than the work, and it is the same algorithm in the same order as the
 // kernel: the two must agree, and the equivalence harness compares both against
@@ -1531,6 +1684,107 @@ PyObject* cuda_segment_plane(PyObject*, PyObject* args) {
     }
 }
 
+PyObject* cuda_normal_covariances(PyObject*, PyObject* args) {
+    PyObject* object;
+    double radius;
+    int max_nn, min_neighbors;
+    if (!PyArg_ParseTuple(args, "Odii", &object, &radius, &max_nn, &min_neighbors)) return nullptr;
+    HostBuffer points(object);
+    if (!points.points()) {
+        PyErr_SetString(PyExc_ValueError, "expected contiguous native float64 (N,3)");
+        return nullptr;
+    }
+    if (!(std::isfinite(radius) && radius > 0) || max_nn < 1) {
+        PyErr_SetString(PyExc_ValueError, "radius must be positive and max_nn at least one");
+        return nullptr;
+    }
+    const Py_ssize_t n = points.rows();
+    if (n < 4096 || n > INT_MAX || max_nn > kNormalMaxNeighbors)
+        return delegate_to_cpu("normal_covariances", args);
+    try {
+        Pool& memory = pool();
+        memory.ensure();
+        memory.reset();
+        bool out_of_range = false;
+        std::vector<int64_t> count_host;
+        std::vector<double> covariance_host, eigen_host, normal_host;
+        {
+            ReleaseGIL released;
+            const double* device_points = device_copy(points.doubles(), static_cast<size_t>(n) * 3, "normal points");
+            uint64_t* keys = static_cast<uint64_t*>(memory.take(static_cast<size_t>(n) * sizeof(uint64_t)));
+            uint64_t* sorted_keys = static_cast<uint64_t*>(memory.take(static_cast<size_t>(n) * sizeof(uint64_t)));
+            int64_t* rows = static_cast<int64_t*>(memory.take(static_cast<size_t>(n) * sizeof(int64_t)));
+            int64_t* sorted_rows = static_cast<int64_t*>(memory.take(static_cast<size_t>(n) * sizeof(int64_t)));
+            int* range_flag = static_cast<int*>(memory.take(sizeof(int)));
+            check(cudaMemset(range_flag, 0, sizeof(int)), "clear normal range flag");
+            normal_cell_key_kernel<<<grid_for(n), kThreads>>>(device_points, n, radius, keys, range_flag);
+            check(cudaGetLastError(), "normal cell keys");
+            check(cudaDeviceSynchronize(), "normal key sync");
+            out_of_range = host_copy(range_flag, size_t(1), "normal range flag")[0] != 0;
+            if (!out_of_range) {
+                static thread_local std::vector<int64_t> host_rows;
+                host_rows.resize(static_cast<size_t>(n));
+                for (Py_ssize_t i = 0; i < n; ++i) host_rows[static_cast<size_t>(i)] = i;
+                check(cudaMemcpy(rows, host_rows.data(), static_cast<size_t>(n) * sizeof(int64_t),
+                                 cudaMemcpyHostToDevice), "normal rows");
+                void* temporary = nullptr;
+                size_t bytes = 0;
+                cub::DeviceRadixSort::SortPairs(temporary, bytes, keys, sorted_keys, rows, sorted_rows,
+                                                static_cast<int>(n), 0, 64);
+                temporary = memory.take(bytes);
+                cub::DeviceRadixSort::SortPairs(temporary, bytes, keys, sorted_keys, rows, sorted_rows,
+                                                static_cast<int>(n), 0, 64);
+                check(cudaGetLastError(), "normal cell sort");
+                uint8_t* head = static_cast<uint8_t*>(memory.take(static_cast<size_t>(n)));
+                run_head_kernel<<<grid_for(n), kThreads>>>(sorted_keys, n, head);
+                check(cudaGetLastError(), "normal cell heads");
+                check(cudaDeviceSynchronize(), "normal cell head sync");
+                const int* offsets = compact_offsets(head, n);
+                const uint8_t last_head = tail_value(head, n, "last normal cell");
+                const int64_t cells = static_cast<int64_t>(tail_value(offsets, n, "normal cell offsets")) + last_head;
+                uint64_t* cell_keys = static_cast<uint64_t*>(memory.take(static_cast<size_t>(cells) * sizeof(uint64_t)));
+                int64_t* cell_start = static_cast<int64_t*>(memory.take(static_cast<size_t>(cells + 1) * sizeof(int64_t)));
+                gather_cells_kernel<<<grid_for(n), kThreads>>>(offsets, head, sorted_keys, n, cell_keys, cell_start);
+                check(cudaGetLastError(), "normal cell positions");
+                int64_t* counts = static_cast<int64_t*>(memory.take(static_cast<size_t>(n) * sizeof(int64_t)));
+                double* covariance = static_cast<double*>(memory.take(static_cast<size_t>(n) * 6 * sizeof(double)));
+                double* eigenvalues = static_cast<double*>(memory.take(static_cast<size_t>(n) * 3 * sizeof(double)));
+                double* normals = static_cast<double*>(memory.take(static_cast<size_t>(n) * 3 * sizeof(double)));
+                NormalArgs input{device_points, n, radius, max_nn, cell_keys, cells, cell_start,
+                                 sorted_rows, counts, covariance, eigenvalues, normals};
+                normal_covariance_kernel<<<grid_for(n), kThreads>>>(input);
+                check(cudaGetLastError(), "normal covariance launch");
+                check(cudaDeviceSynchronize(), "normal covariance sync");
+                count_host = host_copy(counts, static_cast<size_t>(n), "normal counts");
+                covariance_host = host_copy(covariance, static_cast<size_t>(n) * 6, "normal covariance");
+                eigen_host = host_copy(eigenvalues, static_cast<size_t>(n) * 3, "normal eigenvalues");
+                normal_host = host_copy(normals, static_cast<size_t>(n) * 3, "normal vectors");
+            }
+        }
+        if (out_of_range) return delegate_to_cpu("normal_covariances", args);
+        PyObject* result = PyTuple_New(4);
+        if (result == nullptr) return nullptr;
+        PyObject* parts[4] = {
+            bytes_of(count_host.data(), count_host.size() * sizeof(int64_t)),
+            bytes_of(covariance_host.data(), covariance_host.size() * sizeof(double)),
+            bytes_of(eigen_host.data(), eigen_host.size() * sizeof(double)),
+            bytes_of(normal_host.data(), normal_host.size() * sizeof(double))};
+        for (int index = 0; index < 4; ++index) {
+            if (parts[index] == nullptr) {
+                for (int previous = 0; previous < index; ++previous) Py_DECREF(parts[previous]);
+                Py_DECREF(result);
+                return nullptr;
+            }
+            PyTuple_SET_ITEM(result, index, parts[index]);
+        }
+        return result;
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    catch (const std::exception& error) {
+        PyErr_SetString(PyExc_RuntimeError, error.what());
+        return nullptr;
+    }
+}
+
 PyObject* cuda_mutual_graph(PyObject*, PyObject* args) {
     PyObject *points_object, *radius_object;
     double cell;
@@ -1661,8 +1915,8 @@ PyObject* cuda_mutual_graph(PyObject*, PyObject* args) {
 
 PyObject* cuda_entry_points(PyObject*, PyObject*) {
     static const char* names[] = {"classify_geometry", "range_indices", "select_crop_voxels", "range_summary",
-                                  "segment_plane", "mutual_graph"};
-    const int count = 6;
+                                  "segment_plane", "mutual_graph", "normal_covariances"};
+    const int count = 7;
     PyObject* list = PyList_New(count);
     if (list == nullptr) return nullptr;
     for (int index = 0; index < count; ++index) {
@@ -1703,8 +1957,10 @@ PyMethodDef methods[] = {
     {"mask_candidates", cuda_forward_mask_candidates, METH_VARARGS, "CPU kernel (device port pending)."},
     {"mask_apply", cuda_forward_mask_apply, METH_VARARGS, "CPU kernel (device port pending)."},
     {"cluster_components", cuda_forward_cluster_components, METH_VARARGS, "CPU kernel (device port pending)."},
-    {"normal_covariances", cuda_forward_normal_covariances, METH_VARARGS, "CPU kernel (device port pending)."},
+    {"normal_covariances", cuda_normal_covariances, METH_VARARGS, "Device radius covariances and 3x3 eigensolver."},
     {"component_labels", cuda_forward_component_labels, METH_VARARGS, "CPU kernel (device port pending)."},
+    {"induced_subgraph", cuda_forward_induced_subgraph, METH_VARARGS, "CPU induced CSR subgraph."},
+    {"group_degrees", cuda_forward_group_degrees, METH_VARARGS, "CPU kernel (device port pending)."},
     {"window_indices", cuda_forward_window_indices, METH_VARARGS, "CPU kernel (device port pending)."},
     {"remove_rows", cuda_forward_remove_rows, METH_VARARGS, "CPU kernel (device port pending)."},
     {"support_strips", cuda_forward_support_strips, METH_VARARGS, "CPU kernel (device port pending)."},

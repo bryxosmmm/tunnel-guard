@@ -101,16 +101,24 @@ def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, d
     design = np.column_stack((sample[:, :2], np.ones(len(sample))))
     best, best_count = None, 0
     tolerance = config["ground_inlier_m"]
-    # The proposals are drawn and solved one at a time, exactly as before, so the
-    # random stream and the singular-trial skips are unchanged. Only the inlier
-    # counting is batched over proposals afterwards.
+    # The three-point draws and their order determine proposal tie-breaking.
+    # Batch the independent solves without changing the random stream; a
+    # singular matrix makes NumPy reject the entire batch, so use the original
+    # per-proposal path for that frame rather than dropping any valid draws.
+    draws = np.empty((config["ground_ransac_trials"], 3), dtype=np.intp)
+    for ids in draws:
+        ids[:] = rng.choice(len(sample), 3, replace=False)
+    try:
+        trial_planes = np.linalg.solve(design[draws], sample[draws, 2, None])[..., 0]
+    except np.linalg.LinAlgError:
+        trial_planes = []
+        for ids in draws:
+            try:
+                trial_planes.append(np.linalg.solve(design[ids], sample[ids, 2]))
+            except np.linalg.LinAlgError:
+                continue
     proposals = []
-    for _ in range(config["ground_ransac_trials"]):
-        ids = rng.choice(len(sample), 3, replace=False)
-        try:
-            plane = np.linalg.solve(design[ids], sample[ids, 2])
-        except np.linalg.LinAlgError:
-            continue
+    for plane in trial_planes:
         if (np.any(np.abs(plane[:2]) > config["ground_max_slopes"])
                 or not -max_height < plane[2] < -min_height):
             continue
@@ -591,10 +599,13 @@ class TrackGeometry:
             # that sparse and a 3 m object continuous, which is backwards.
             span = (stations[stops - 1][cell_of] - stations[starts][cell_of] + 1) * station
             count = (stops - starts)[cell_of]
-            per_cell = np.zeros(len(starts), dtype=bool)
-            np.logical_or.at(per_cell, cell_of,
-                             (span >= float(cfg.get("structure_min_length_m", 5.0)))
-                             & (count >= int(cfg.get("structure_min_stations", 3))))
+            accepted = ((span >= float(cfg.get("structure_min_length_m", 5.0)))
+                        & (count >= int(cfg.get("structure_min_stations", 3))))
+            # "Any point of this cell is accepted" is the same value as "the number of
+            # accepted points in this cell is non-zero", and counting is a buffered
+            # scatter: `np.logical_or.at` is unbuffered and writes cell by cell, which
+            # cost more than the sort above it on every scan.
+            per_cell = np.bincount(cell_of[accepted], minlength=len(starts)) > 0
             support[order] = per_cell[cell_of]
         # Outward reach, on a cross-section thickened by one row and by the reach gap: a
         # vertical face is joined to the top surface it carries, and a surface whose inner

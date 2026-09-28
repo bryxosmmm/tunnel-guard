@@ -1,0 +1,19 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-20260928/six-panel",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"},
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_platform", "split": "development_not_blind"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT", "split": "development_not_blind"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT", "split": "development_not_blind"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT", "split": "development_not_blind"},
+    {"path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch", "split": "development_not_blind"}
+  ],
+  "hypothesis": "Exact native CSR graph induction plus FP64 CUDA neighborhood covariances improve p95 while preserving detector decisions on the complete fixed panel.",
+  "criterion": "All 2488 frames retain status, geometric support, and tracker identity versus the saved CPU-reference panel; record each scene p50/p95 and remaining misses of 200 ms."
+}

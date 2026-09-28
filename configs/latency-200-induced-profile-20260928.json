@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-20260928/induced-profile",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}
+  ],
+  "hypothesis": "Induced CSR construction reduces the running-surface split cost even if whole-frame p95 varies between runs.",
+  "criterion": "Compare 201 median split-stage samples with the unchanged baseline stage profile, not only whole-frame medians."
+}

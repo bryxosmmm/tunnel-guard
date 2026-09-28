@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-20260928/obstacle-aabb-profile",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}
+  ],
+  "hypothesis": "The 201-scan obstacle scene's p95 tail includes substantial frame setup or serial after-clustering overhead not captured by coarse stage timing.",
+  "criterion": "Profile accelerator prefilter, geometry, segmentation and association calls separately; select only exact operations with measurable savings."
+}

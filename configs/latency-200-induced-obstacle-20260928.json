@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-20260928/induced-obstacle",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}
+  ],
+  "hypothesis": "Building only selected CSR rows removes redundant per-candidate sparse slicing without changing running-surface splits.",
+  "criterion": "All 201 non-timing detector records match the untouched same-host baseline; compare uninstrumented p95 and reject the change if it is slower."
+}

@@ -46,6 +46,23 @@ def native(config: dict):
 
 
 
+def cpu_native(config: dict):
+    """The CPU kernels, for a caller that must not touch the device backend.
+
+    The device module keeps its scratch in device memory, so two threads calling the same
+    device entry point at the same time would corrupt each other: measured, a reader thread
+    that prepared scans with `native()` while the detector ran changed the detector's own
+    decisions on doubleT_obstacle. Every CPU kernel keeps its scratch in thread-local
+    storage, so it is safe to call from a second thread alongside the detector.
+    """
+    try:
+        from . import _native
+    except ImportError as exc:
+        raise RuntimeError("Required detector kernels are unavailable; build them with "
+                           "`python setup.py build_ext --inplace`.") from exc
+    return _native
+
+
 def segment_plane(points: np.ndarray, threshold: float, ransac_n: int, iterations: int, probability: float,
                   module):
     """Exact port of Open3D's SegmentPlane: same plane and same inlier set.
@@ -119,6 +136,28 @@ def component_labels(graph, subset, module):
                                      np.ascontiguousarray(graph.indices, dtype=np.int64),
                                      np.ascontiguousarray(subset))
     return np.frombuffer(payload, dtype=np.int64)
+
+
+def induced_subgraph(graph, rows: np.ndarray, module):
+    """Unit-weight CSR subgraph for sorted unique nodes, preserving their row order."""
+    offsets, columns = module.induced_subgraph(
+        np.ascontiguousarray(graph.indptr, dtype=np.int64),
+        np.ascontiguousarray(graph.indices, dtype=np.int64),
+        np.ascontiguousarray(rows, dtype=np.int64))
+    indices = np.frombuffer(columns, dtype=np.int64)
+    size = len(rows)
+    return csr_matrix((np.ones(len(indices), dtype=np.uint8), indices,
+                       np.frombuffer(offsets, dtype=np.int64)), shape=(size, size))
+
+def group_degrees(graph, rows: np.ndarray, group: np.ndarray, selected: np.ndarray, module):
+    """In-group neighbour counts per row, in row order: all members, and only selected ones."""
+    payload = module.group_degrees(
+        np.ascontiguousarray(graph.indptr, dtype=np.int64),
+        np.ascontiguousarray(graph.indices, dtype=np.int64),
+        np.ascontiguousarray(rows, dtype=np.int64),
+        np.ascontiguousarray(group, dtype=np.int64),
+        np.ascontiguousarray(selected, dtype=bool))
+    return (np.frombuffer(payload[0], dtype=np.int64), np.frombuffer(payload[1], dtype=np.int64))
 
 
 def crop_voxels(frame, min_forward, half_width, size, module):

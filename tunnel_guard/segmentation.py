@@ -92,28 +92,73 @@ def _separate_running_surface(points, metric, labels, core, graph, radius, requi
     core_counts = np.add.reduceat(core[order].astype(np.int64), starts)
     height_low = np.minimum.reduceat(points[order, 2].astype(float, copy=False), starts)
     height_high = np.maximum.reduceat(points[order, 2].astype(float, copy=False), starts)
+    # A split needs an ANCHORED body: at least `immediate_min_voxels` points of one child whose
+    # own in-child degree reaches `required` and whose height span reaches
+    # `immediate_min_height_m`. A child of the elevated core is a subset of the label's
+    # elevated-core points, so a label holding fewer of those than a body needs, or whose
+    # elevated core does not span that height, cannot produce one. The two tests are strictly
+    # necessary - a superset spans at least as far as its subset - and they are taken from
+    # reductions over the same runs, so a label excluded here is one the per-label partition
+    # below would have discarded anyway, after paying for its subgraph, components and query.
+    elevated_core_counts = np.add.reduceat(elevated_core[order].astype(np.int64), starts)
+    elevated_height = np.where(elevated_core[order], points[order, 2], -np.inf)
+    # A label with no elevated core carries the sentinel at both ends; the span of those is a
+    # NaN, which fails the comparison below exactly as an impossible span should. The sentinel
+    # is deliberate, so the subtraction's invalid-value warning is suppressed rather than
+    # avoided by inventing a height.
+    with np.errstate(invalid="ignore"):
+        elevated_low = np.minimum.reduceat(elevated_height, starts)
+        elevated_high = np.maximum.reduceat(elevated_height, starts)
+        elevated_span = elevated_high - elevated_low
     candidates = np.flatnonzero(has_contact & has_elevated
                                & (core_counts >= config["immediate_min_voxels"])
-                               & ((height_high - height_low) >= config["immediate_min_height_m"]))
+                               & ((height_high - height_low) >= config["immediate_min_height_m"])
+                               & (elevated_core_counts >= config["immediate_min_voxels"])
+                               & (elevated_span >= config["immediate_min_height_m"]))
     next_label = int(labels.max()) + 1
+    native = accelerator.native(config)
+    # The elevated core is labelled once for the whole scan, and each parent's in-child neighbour
+    # counts come from one native pass over the graph's own edges, instead of inducing a subgraph
+    # per parent and per child: measured on doubleT_obstacle the split made 54 induced-subgraph
+    # calls per scan for 12 candidates, 11.4 ms of the stage's 28.6 ms. A parent's children ARE the
+    # elevated-core components inside it, because two elevated-core points in different parents
+    # belong to different density components and so cannot share an edge. A parent's numbering is
+    # recovered from the global labels by ranking its children by their first row, which is the
+    # order a per-parent labelling assigns (verified against the per-parent call on 605 parents
+    # drawn from 300 random graphs by `check_global_labels.py`).
+    child_of_point = np.full(len(points), -1, dtype=np.int64)
+    group_of_point = np.full(len(points), -1, dtype=np.int64)
+    if len(candidates):
+        child_of_point[np.flatnonzero(elevated_core)] = accelerator.component_labels(
+            graph, elevated_core, native)
     for index in candidates:
         start, end = int(starts[index]), int(boundaries[index + 1])
         indices = order[start:end]
-        local_graph = graph[indices][:, indices]
         core_ids = np.flatnonzero(elevated_core[indices])
-        count, core_labels = connected_components(local_graph[core_ids][:, core_ids], directed=False)
+        core_rows = indices[core_ids]
+        child_values, child_first, child_inverse = np.unique(
+            child_of_point[core_rows], return_index=True, return_inverse=True)
+        rank = np.empty(len(child_values), dtype=np.int64)
+        rank[np.argsort(child_first, kind="stable")] = np.arange(len(child_values))
+        core_labels = rank[child_inverse]
+        count = len(child_values)
         children = np.full(len(indices), -1, dtype=np.int32)
         children[core_ids] = core_labels
         borders = np.flatnonzero(~elevated_core[indices])
-        dd, near = cKDTree(metric[indices[core_ids]]).query(metric[indices[borders]], workers=1)
-        accepted = dd <= np.minimum(radius[indices[borders]], radius[indices[core_ids[near]]])
+        dd, near = cKDTree(metric[core_rows]).query(metric[indices[borders]], workers=1)
+        accepted = dd <= np.minimum(radius[indices[borders]], radius[core_rows[near]])
         children[borders[accepted]] = core_labels[near[accepted]]
         remainder = np.flatnonzero(children < 0)
         if len(remainder):
-            _, remaining_labels = connected_components(local_graph[remainder][:, remainder], directed=False)
+            _, remaining_labels = connected_components(
+                accelerator.induced_subgraph(graph, indices[remainder], native), directed=False)
             children[remainder] = count + remaining_labels
         if count == 1 and not len(remainder):
             continue
+        group_of_point[indices] = children
+        child_degree, child_marked_degree = accelerator.group_degrees(
+            graph, indices, group_of_point, elevated, native)
+        group_of_point[indices] = -1
         supported = []
         anchored = False
         for child in np.unique(children):
@@ -124,14 +169,15 @@ def _separate_running_surface(points, metric, labels, core, graph, radius, requi
             extent = np.ptp(points[child_indices].astype(float, copy=False), axis=0)
             if extent.max() < config["cluster_min_extent_m"]:
                 continue
-            child_graph = local_graph[members][:, members]
-            own_degree = np.asarray(child_graph.sum(axis=1)).ravel() + 1
+            own_degree = child_degree[members]
             if np.any(own_degree >= required[child_indices]):
                 supported.append(child)
             if not anchored and child < count:
+                # A core child holds its assigned borders too, and those are not elevated, so
+                # the anchored body is measured with the elevated-only count, exactly as the
+                # per-child `child_graph @ elevated` produced it.
                 above = elevated[child_indices]
-                above_degree = np.asarray(child_graph @ above.astype(np.int32)).ravel() + 1
-                body = child_indices[above & (above_degree >= required[child_indices])]
+                body = child_indices[above & (child_marked_degree[members] >= required[child_indices])]
                 if (len(body) >= config["immediate_min_voxels"]
                         and np.ptp(points[body, 2].astype(float, copy=False)) >= config["immediate_min_height_m"]):
                     vertical_span = np.ptp(points[body] @ rotation[2])
@@ -141,6 +187,9 @@ def _separate_running_surface(points, metric, labels, core, graph, radius, requi
         unassigned = np.flatnonzero(~np.isin(children, supported))
         if len(unassigned):
             seeds = np.flatnonzero(np.isin(children, supported))
+            # The parent's own subgraph is induced only where a weighted search needs it -
+            # measured, that is about one candidate in 40.
+            local_graph = accelerator.induced_subgraph(graph, indices, native)
             weighted = local_graph.astype(float)
             source = np.repeat(np.arange(len(indices)), np.diff(weighted.indptr))
             weighted.data[:] = np.linalg.norm(

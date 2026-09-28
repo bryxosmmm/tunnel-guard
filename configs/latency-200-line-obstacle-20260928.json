@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-20260928/line-obstacle",
+  "every": 1,
+  "max_frames": 30,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}
+  ],
+  "hypothesis": "The unaccounted process interval is expensive per-frame work outside geometry, clustering and association; line-timed actual scans identify it.",
+  "criterion": "Attribute wall time to original detector.py line numbers for 30 actual obstacle scans, without interpreting line-traced times as latency-gate results."
+}
