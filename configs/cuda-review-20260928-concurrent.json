@@ -1,0 +1,11 @@
+{
+  "seed": 20260915,
+  "hypothesis": "Shared CUDA storage and plane worker synchronization preserve independent detector streams on the same real acquisitions.",
+  "criterion": "Report every result, pose, object and identity difference versus a serial replay, including missing acquisitions; retain CUDA memory-checker findings.",
+  "detector_config": "configs/cuda-review-20260928-planes-detector.json",
+  "bag": "build/cuda-review-20260928/smoke-input/doubleT_obstacle",
+  "frames": 3,
+  "streams": 2,
+  "repetitions": 3,
+  "output": "build/cuda-review-20260928/concurrent"
+}

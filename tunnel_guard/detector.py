@@ -875,6 +875,9 @@ class Detector:
             return result | {"reason": "insufficient_returns", "processing_s": time.perf_counter() - started}
         motion_started = time.perf_counter()
         motion_future = None
+        trace_motion = (self.odometry.last_delta.copy()
+                        if capture_diagnostics and point_attributes is not None
+                        and self.config.get("deskew_enabled", False) and len(point_times) else None)
         if self.motion_executor is not None:
             # With deskew disabled, the odometry returns exactly this strict range selection;
             # `frame` is the subset the geometry stage classifies, and both come from
@@ -893,20 +896,28 @@ class Detector:
                     self.config["geometry_voxel_m"], self.native_kernels)
                 reduced = frame[voxel_rows]
         self.display_points = frame
-        # Provenance through the motion stage: `_motion` transforms one point at a time, so the KISS
-        # row-preserving contract is that `frame` keeps the row order and count of `points`, and
-        # `keep` still names these decoded rows. A future deskew that resamples must preserve the
-        # count or fail here: dropping the trace on a mismatch would silently lose provenance, and a
-        # count alone cannot prove order, so this asserts the contract instead of guarding it.
-        trace_rows = keep if capture_diagnostics and point_attributes is not None else None
-        if trace_rows is not None and len(frame) != len(points):
-            raise RuntimeError(
-                f"motion stage changed the point count ({len(points)} -> {len(frame)}); "
-                "sensor provenance cannot be carried through this scan")
+        trace_rows = None
+        if capture_diagnostics and point_attributes is not None:
+            trace_frame = points
+            if trace_motion is not None:
+                # Reuse the upstream transform, without its range crop, only for
+                # diagnostic provenance. Never infer source rows by nearest points.
+                from kiss_icp.preprocess import Preprocessor
+                trace_frame = Preprocessor(
+                    max_range=float("inf"), min_range=-float("inf"), deskew=True,
+                    max_num_threads=self.config["odometry_threads"]).preprocess(
+                        points, point_times, trace_motion)
+            motion_rows = accelerator.range_indices_open(
+                trace_frame, self.config["min_range_m"], self.config["max_range_m"],
+                self.native_kernels)
+            if not np.array_equal(trace_frame[motion_rows], frame):
+                raise RuntimeError("KISS preprocessing does not match the exact diagnostic source-row selection")
+            trace_rows = keep[motion_rows]
+            self.diagnostic_arrays["registered_source_indices"] = point_attributes.source_indices[trace_rows]
         # Fixed band around the sensor axis: a corridor-following window (the previous frame's
         # extrapolated centre) added ambiguous hazards without changing any frame decision, so the
-        # base window is used unconditionally. `crop` and `reduced` come from `prepare_scan`,
-        # which applies this same crop inside the native reducer and hands back the reduced cloud.
+        # base window is used unconditionally. Reader-prepared geometry is reused
+        # without deskew; motion-compensated geometry is rebuilt above otherwise.
         accelerator_module = self.native_kernels
         geometry_rows = None
         if capture_diagnostics:

@@ -101,15 +101,11 @@ def _separate_running_surface(points, metric, labels, core, graph, radius, requi
     # reductions over the same runs, so a label excluded here is one the per-label partition
     # below would have discarded anyway, after paying for its subgraph, components and query.
     elevated_core_counts = np.add.reduceat(elevated_core[order].astype(np.int64), starts)
-    elevated_height = np.where(elevated_core[order], points[order, 2], -np.inf)
-    # A label with no elevated core carries the sentinel at both ends; the span of those is a
-    # NaN, which fails the comparison below exactly as an impossible span should. The sentinel
-    # is deliberate, so the subtraction's invalid-value warning is suppressed rather than
-    # avoided by inventing a height.
-    with np.errstate(invalid="ignore"):
-        elevated_low = np.minimum.reduceat(elevated_height, starts)
-        elevated_high = np.maximum.reduceat(elevated_height, starts)
-        elevated_span = elevated_high - elevated_low
+    elevated_rows = elevated_core[order]
+    elevated_low = np.minimum.reduceat(np.where(elevated_rows, points[order, 2], np.inf), starts)
+    elevated_high = np.maximum.reduceat(np.where(elevated_rows, points[order, 2], -np.inf), starts)
+    # Empty support yields -inf, while non-core rows cannot widen a real span.
+    elevated_span = elevated_high - elevated_low
     candidates = np.flatnonzero(has_contact & has_elevated
                                & (core_counts >= config["immediate_min_voxels"])
                                & ((height_high - height_low) >= config["immediate_min_height_m"])

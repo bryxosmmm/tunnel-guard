@@ -1,4 +1,4 @@
 include cpp/*.cpp cpp/*.h
 include setup_cuda.py
 recursive-include cpp/cuda *.cu *.cuh *LICENSE.txt
-include patches/kiss-icp-1.3.0-release-gil.patch patches/kiss-icp-build-constraints.txt
+include patches/kiss-icp-*.patch patches/kiss-icp-build-constraints.txt

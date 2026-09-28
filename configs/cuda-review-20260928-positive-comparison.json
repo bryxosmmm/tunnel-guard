@@ -1,0 +1,9 @@
+{
+  "bags": [
+    {
+      "bag": "cloud_with_fake_obj",
+      "before": "build/cuda-review-20260928/cuda/cloud_with_fake_obj.jsonl",
+      "after": "build/cuda-review-20260928/positive/cloud_with_fake_obj.jsonl"
+    }
+  ]
+}

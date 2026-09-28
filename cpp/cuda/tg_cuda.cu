@@ -1793,12 +1793,14 @@ PyObject* cuda_normal_covariances(PyObject*, PyObject* args) {
             bytes_of(covariance_host.data(), covariance_host.size() * sizeof(double)),
             bytes_of(eigen_host.data(), eigen_host.size() * sizeof(double)),
             bytes_of(normal_host.data(), normal_host.size() * sizeof(double))};
-        for (int index = 0; index < 4; ++index) {
-            if (parts[index] == nullptr) {
-                for (int previous = 0; previous < index; ++previous) Py_DECREF(parts[previous]);
+        for (PyObject* part : parts) {
+            if (part == nullptr) {
+                for (PyObject* allocated : parts) Py_XDECREF(allocated);
                 Py_DECREF(result);
                 return nullptr;
             }
+        }
+        for (int index = 0; index < 4; ++index) {
             PyTuple_SET_ITEM(result, index, parts[index]);
         }
         return result;
@@ -1999,7 +2001,7 @@ PyMethodDef methods[] = {
     {"segment_plane", cuda_segment_plane, METH_VARARGS,
      "Exact port of Open3D 0.19 SegmentPlane (plane and inlier set bit-identical)."},
     {"segment_plane_seed", cuda_segment_plane_seed, METH_VARARGS,
-     "Seed the global proposal stream, mirroring o3d.utility.random.seed."},
+     "Seed this thread's proposal stream, mirroring o3d.utility.random.seed."},
     {"cuda_entry_points", cuda_entry_points, METH_NOARGS, "Entry points that run on the device."},
     {"cuda_device_info", cuda_device_info, METH_NOARGS, "Device report."},
     {nullptr, nullptr, 0, nullptr},

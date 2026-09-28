@@ -1,0 +1,22 @@
+{
+  "seed": 20260915,
+  "hypothesis": "CUDA execution and reviewed optimizations preserve measured object support, localization, unknown coverage and temporal decisions on fixed recordings.",
+  "criterion": "Complete every acquisition; compare source timestamps, discrete decisions and IDs exactly and numeric geometry at the existing 1e-10 panel tolerance. Report every mismatch and all scene p95 values; do not change detector policy.",
+  "detector_config": "configs/cuda-review-20260928-deskew-detector.json",
+  "output": "build/cuda-review-20260928/deskew-final",
+  "every": 1,
+  "max_frames": 3,
+  "prefetch_depth": 1,
+  "visualization": false,
+  "diagnostic_frames": [
+    0,
+    1,
+    2
+  ],
+  "bags": [
+    {
+      "path": "build/cuda-review-20260928/smoke-input/doubleT_obstacle",
+      "split": "recorded_deskew_provenance"
+    }
+  ]
+}

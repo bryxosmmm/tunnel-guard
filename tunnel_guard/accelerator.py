@@ -49,11 +49,9 @@ def native(config: dict):
 def cpu_native(config: dict):
     """The CPU kernels, for a caller that must not touch the device backend.
 
-    The device module keeps its scratch in device memory, so two threads calling the same
-    device entry point at the same time would corrupt each other: measured, a reader thread
-    that prepared scans with `native()` while the detector ran changed the detector's own
-    decisions on doubleT_obstacle. Every CPU kernel keeps its scratch in thread-local
-    storage, so it is safe to call from a second thread alongside the detector.
+    Reader preparation stays on the CPU while the detector uses the device.
+    CUDA calls serialize access to shared device scratch; sending reader work
+    there would add contention and transfers. CPU scratch is thread-local.
     """
     try:
         from . import _native
