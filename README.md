@@ -24,10 +24,16 @@ Actual CPU replay preserved every non-runtime result/status field across 546
 acquisitions and all four non-status serialized topics across 2,730 total messages.
 The installed-wheel 3D viewer was exercised in a browser. Incomplete replay
 comparisons now fail instead of accepting a matching prefix.
-CUDA corrections remain uncompiled/unexecuted on NVIDIA hardware; no new full-panel,
-small-obstacle, live DDS or target-latency acceptance is claimed. Local timings were
-slower than the historical reference under concurrent verification workloads and
-are not a controlled performance comparison. This branch is not promoted to `main`.
+The subsequent RTX 5090 CUDA review executed five complete 3,998-acquisition
+panels plus a 1,510-acquisition original-return attribution replay. All compared
+non-runtime fields were preserved within the fixed tolerance; eight-worker ICP
+introduced numeric differences up to 2.84e-12, not decision changes. The overlap
+recipe measured 109.5–149.7 ms process p95 across the six real recordings on this
+Ryzen/5090 host—not the specified vehicle stand or live sensor-to-display latency.
+Person misses and fragmented small-object tracks remain. See
+[CUDA evidence](results/cuda-review-20260928.json) and
+[qualification limits](docs/NATIVE_INTEGRATION.md#rtx-5090-review-verification--2026-09-28).
+This branch is not promoted to `main`.
 
 ## Team release integration — 2026-09-27
 

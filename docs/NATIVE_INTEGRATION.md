@@ -248,9 +248,54 @@ kernels, not actual call counts, and no longer lists the CPU-only plane proposal
 The Open3D MIT notice, CUDA source/build recipe and dependency patch are included
 in source distributions and the native-source capture.
 
-These CUDA corrections require a fresh real-GPU replay; the earlier GPU measurements
-above predate them. Local deskew/recorded-delivery and installed-viewer evidence is
-reported separately in `results/review-integration-20260928.json`.
+The historical GPU measurements above predate these corrections. Local
+recorded-delivery and installed-viewer evidence remains separately recorded in
+`results/review-integration-20260928.json`.
+
+### RTX 5090 review verification — 2026-09-28
+
+Reviewed PR #44 at `bf3a27b`; integrated corrections are at `ee78b92`.
+The new normal kernel now leases shared CUDA storage, and its Python result
+allocation checks every buffer before transferring ownership into a tuple.
+Reader-prepared geometry is rebuilt after deskew. Diagnostic source rows are
+recovered by the same KISS preprocessor without range cropping, followed by exact
+range selection and exact coordinate equality—not nearest-neighbor attribution.
+The actual third scan lost six range-boundary rows (342710 → 342704); corrected
+CPU and CUDA diagnostic replays completed, with exact voxel/source correspondence.
+Elevated-component height bounds now exclude non-core rows with the correct
+min/max identities instead of producing an infinite span.
+
+Hardware: RTX 5090, driver 580.105.08, CUDA 12.8, Ryzen 7 7800X3D, physical CPU
+cores 0–7. Recipes use seed 20260915 and are explicit in
+`configs/cuda-review-20260928-*.json`. Five sequential modes each processed the
+six complete real recordings (2488 acquisitions) and the organizer insertion
+recording (1510): frozen main `7689b80`, current CPU, CUDA, native CPU plane
+proposals plus CUDA, and eight-worker odometry overlap.
+
+All non-runtime fields were compared at fixed absolute/relative tolerance 1e-10;
+discrete decisions and IDs were exact. No missing acquisitions or changed fields
+were found. The first three comparisons had zero numeric difference; overlap
+varied by at most 2.84e-12. Person evaluation retained 99 matched / 6 missed
+annotated boxes, mean matched IoU 0.4264; these are provisional, nonexhaustive
+labels. All ten inserted events had some attributed confirmation, but weak
+exposures and fragmented track identities remain—not continuous field recall.
+
+Overlap process p95 by real scene: obstacle 139.4 ms, platform 109.5 ms,
+round/double 119.8 ms, pressure gate 149.7 ms, square/pressure gate 124.7 ms,
+switch 112.0 ms. These are one ordered offline pass on a different CPU/GPU,
+not acceptance of the i7-9700E / RTX 4070 Ti SUPER stand or live DDS latency.
+Reader preparation can overlap processing; preserve wall-time and ingestion
+metrics when interpreting speed. The detector recipe and thresholds are unchanged.
+
+Compute Sanitizer reported zero errors for the recorded smoke, concurrent
+detectors and packed-grid fallback audit. The fallback audit used untouched
+recorded points with a numerical 10 µm query, not a hardware-range claim.
+Those sanitizer runs precede the final tuple-allocation failure-path correction;
+the complete matrix used the final binary. Allocation-failure ownership was
+reviewed statically, not fault-injected. The experimental KISS AABB patch was
+packaged but not activated. Full metrics, source/binary identities and limitations:
+`results/cuda-review-20260928.json`; execution tools:
+`results/cuda-review-tools-20260928.zip`.
 
 ### Follow-up: the actual acceptance gate is p95 ≤200 ms
 
