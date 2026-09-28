@@ -117,10 +117,9 @@ def main():
                     )
                 elif url.path in ("/vendor/three.module.js", "/vendor/OrbitControls.js"):
                     # Serve only these two vendored modules; never arbitrary paths.
-                    library = (Path(__file__).resolve().parent.parent
-                               / "SUSTechPOINTS/public/js/lib" / Path(url.path).name)
+                    library = Path(__file__).with_name("vendor") / Path(url.path).name
                     if not library.is_file():
-                        self.send_error(404, "3D view requires the repository's SUSTechPOINTS libraries")
+                        self.send_error(404, "Packaged 3D renderer is missing; reinstall tunnel-guard")
                         return
                     payload, kind = library.read_bytes(), "text/javascript; charset=utf-8"
                 elif url.path == "/metadata":

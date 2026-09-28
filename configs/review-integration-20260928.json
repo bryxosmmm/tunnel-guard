@@ -1,0 +1,24 @@
+{
+  "hypothesis": "Integrating exact CPU optimizations, raw-CDR delivery and packaged viewer preserves recorded main decisions and five-topic export.",
+  "success_criterion": "All201person and345platform scans complete; exact non-timing detector equality and identical non-status CDR output versus7689b80.",
+  "seed": 20260915,
+  "detector_config": "configs/detector.json",
+  "output": "build/review-integration-20260928/replay",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 1,
+  "result_compression": "none",
+  "diagnostic_frames": [],
+  "visualization": true,
+  "display_max_points": 10000,
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "integration_person"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "integration_negative"
+    }
+  ]
+}

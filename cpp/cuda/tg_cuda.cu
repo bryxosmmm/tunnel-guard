@@ -21,6 +21,10 @@
 //    more than the work, so the entry point forwards to the CPU kernel. That is a
 //    documented policy, not a silent fallback, and it is listed in the module's
 //    own report.
+// Plane proposal routines adapted from Open3D v0.19.0.
+// Copyright (c) 2018-2024 www.open3d.org
+// SPDX-License-Identifier: MIT
+// The upstream permission notice is retained in Open3D-LICENSE.txt.
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
@@ -66,6 +70,7 @@ void check(cudaError_t status, const char* what) {
 }
 
 struct Pool {
+    std::mutex mutex;
     char* base = nullptr;
     size_t capacity = 0;
     size_t used = 0;
@@ -74,6 +79,7 @@ struct Pool {
     ~Pool() {
         for (void* block : extra) cudaFree(block);
         if (base) cudaFree(base);
+        if (pinned) cudaFreeHost(pinned);
     }
 
     void* take(size_t bytes, size_t alignment = 256) {
@@ -98,7 +104,11 @@ struct Pool {
 
     void* stage(size_t bytes) {
         if (bytes <= pinned_bytes) return pinned;
-        if (pinned) cudaFreeHost(pinned);
+        if (pinned) {
+            check(cudaFreeHost(pinned), "cudaFreeHost");
+            pinned = nullptr;
+            pinned_bytes = 0;
+        }
         size_t capacity_target = 1 << 16;
         while (capacity_target < bytes) capacity_target <<= 1;
         check(cudaMallocHost(&pinned, capacity_target), "cudaMallocHost");
@@ -130,6 +140,14 @@ struct ReleaseGIL {
     PyThreadState* state = PyEval_SaveThread();
     ~ReleaseGIL() { PyEval_RestoreThread(state); }
 };
+
+// Calls release the GIL while using the shared slab. Serialize its entire
+// lifetime, including result copies, without blocking a GIL reacquisition.
+std::unique_lock<std::mutex> lock_pool() {
+    Pool& memory = pool();
+    ReleaseGIL released;
+    return std::unique_lock<std::mutex>(memory.mutex);
+}
 
 // Entry points that are not ported yet, and calls below the size thresholds, are
 // served by the CPU extension. Declared here because the CUDA entry points use it.
@@ -578,6 +596,7 @@ PyObject* cuda_classify_geometry(PyObject*, PyObject* args) {
     }
     try {
         Pool& memory = pool();
+        auto lease = lock_pool();
         memory.ensure();
         memory.reset();
         const double* host_points = points.doubles();
@@ -792,6 +811,7 @@ PyObject* cuda_range_indices(PyObject*, PyObject* args) {
     if (n < kRangeMinimum || n > INT_MAX) return delegate_to_cpu("range_indices", args);
     try {
         Pool& memory = pool();
+        auto lease = lock_pool();
         memory.ensure();
         memory.reset();
         int64_t* indices = nullptr;
@@ -840,6 +860,7 @@ PyObject* cuda_select_crop_voxels(PyObject*, PyObject* args) {
     if (n < kFrontMinimum || n > INT_MAX) return delegate_to_cpu("select_crop_voxels", args);
     try {
         Pool& memory = pool();
+        auto lease = lock_pool();
         memory.ensure();
         memory.reset();
         int64_t* result = nullptr;
@@ -933,6 +954,7 @@ PyObject* cuda_range_summary(PyObject*, PyObject* args) {
     if (rows < kFrontMinimum) return delegate_to_cpu("range_summary", args);
     try {
         Pool& memory = pool();
+        auto lease = lock_pool();
         memory.ensure();
         memory.reset();
         const double* device_edges = device_copy(bins.doubles(), static_cast<size_t>(2 * count), "bin edges");
@@ -1024,12 +1046,11 @@ TG_FORWARD(ground_profile)
 TG_FORWARD(voxel_indices)
 TG_FORWARD(voxel_count)
 
-// The global engine mirrors open3d::utility::random: one stream, seeded once per
-// frame, consumed by every proposal in order. Replicating the stream is what makes
-// the sampled clouds identical, and the draws are data-independent, so the number
-// consumed by a call is fixed by the point count alone.
+// Each calling thread mirrors Open3D's seeded proposal stream independently.
+// Seed once per background fit, then consume proposals in the original order.
+// Thread-local state prevents another detector from reseeding an active fit.
 std::mt19937& plane_engine() {
-    static std::mt19937 engine;
+    static thread_local std::mt19937 engine;
     return engine;
 }
 
@@ -1117,6 +1138,7 @@ public:
     template <typename Body>
     void run(int count, Body body) {
         if (count <= 0) return;
+        std::lock_guard<std::mutex> invocation(invocation_mutex_);
         start();
         if (threads_.empty()) {
             for (int index = 0; index < count; ++index) body(index);
@@ -1187,6 +1209,7 @@ private:
     }
 
     std::mutex mutex_;
+    std::mutex invocation_mutex_;
     std::condition_variable work_;
     std::condition_variable finished_;
     std::vector<std::thread> threads_;
@@ -1473,8 +1496,8 @@ PyObject* cuda_segment_plane(PyObject*, PyObject* args) {
         return nullptr;
     }
     const Py_ssize_t n = buffer.rows();
-    if (!(probability > 0.0 && probability <= 1.0) || ransac_n < 3 || iterations < 1) {
-        PyErr_SetString(PyExc_ValueError, "probability must be in (0, 1], ransac_n >= 3 and iterations >= 1");
+    if (!(probability > 0.0 && probability <= 1.0) || ransac_n != 3 || iterations < 1) {
+        PyErr_SetString(PyExc_ValueError, "probability must be in (0, 1], ransac_n == 3 and iterations >= 1");
         return nullptr;
     }
     if (static_cast<size_t>(n) < static_cast<size_t>(ransac_n) || n == 0) {
@@ -1549,11 +1572,13 @@ PyObject* cuda_mutual_graph(PyObject*, PyObject* args) {
     if (n < 4096 || n > INT_MAX) return delegate_to_cpu("mutual_graph", args);
     try {
         Pool& memory = pool();
+        auto lease = lock_pool();
         memory.ensure();
         memory.reset();
         std::vector<int64_t> indptr_host(static_cast<size_t>(n) + 1, 0);
         std::vector<int64_t> degree_host(static_cast<size_t>(n), 0);
         std::vector<int64_t> indices_host;
+        bool use_cpu = false;
         {
             ReleaseGIL released;
             const double* device_points = device_copy(points.doubles(), static_cast<size_t>(n) * 3, "points");
@@ -1583,7 +1608,8 @@ PyObject* cuda_mutual_graph(PyObject*, PyObject* args) {
             check(cudaGetLastError(), "cell sort");
             check(cudaDeviceSynchronize(), "cell sort sync");
             const std::vector<int> range_flag = host_copy(out_of_range, size_t(1), "range flag");
-            if (range_flag[0]) return delegate_to_cpu("mutual_graph", args);
+            use_cpu = range_flag[0] != 0;
+            if (!use_cpu) {
 
             uint8_t* head = static_cast<uint8_t*>(memory.take(static_cast<size_t>(n)));
             run_head_kernel<<<grid_for(n), kThreads>>>(sorted_keys, n, head);
@@ -1633,7 +1659,9 @@ PyObject* cuda_mutual_graph(PyObject*, PyObject* args) {
             check(cudaGetLastError(), "row sort");
             check(cudaDeviceSynchronize(), "csr");
             indices_host = host_copy(indices, static_cast<size_t>(total), "indices");
+            }
         }
+        if (use_cpu) return delegate_to_cpu("mutual_graph", args);
         const std::vector<uint8_t> weights(static_cast<size_t>(indices_host.size()), 1);
         PyObject* payload = PyTuple_New(4);
         if (payload == nullptr) return nullptr;
@@ -1660,9 +1688,9 @@ PyObject* cuda_mutual_graph(PyObject*, PyObject* args) {
 }
 
 PyObject* cuda_entry_points(PyObject*, PyObject*) {
-    static const char* names[] = {"classify_geometry", "range_indices", "select_crop_voxels", "range_summary",
-                                  "segment_plane", "mutual_graph"};
-    const int count = 6;
+    static const char* names[] = {"classify_geometry", "range_indices", "select_crop_voxels",
+                                  "range_summary", "mutual_graph"};
+    const int count = 5;
     PyObject* list = PyList_New(count);
     if (list == nullptr) return nullptr;
     for (int index = 0; index < count; ++index) {

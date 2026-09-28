@@ -1,7 +1,7 @@
 {
   "hypothesis": "Demonstrate the complete native detector on two supplied, unlabelled ROS 2 bags without using their names to tune decisions.",
   "seed": 20260915,
-  "detector_config": "/opt/tunnel-guard/configs/detector-native.json",
+  "detector_config": "/opt/tunnel-guard/configs/detector.json",
   "output": "/results/tz-demo-full",
   "every": 1,
   "max_frames": null,

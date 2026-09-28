@@ -14,12 +14,12 @@ RAM, RTX 4070 Ti SUPER и 5,8 TB диска. Для запуска нужны Do
 проекта и извлечённые ROS 2 bag-каталоги. ROS 2 Humble, Python-зависимости,
 нативное C++-расширение и RViz2 устанавливаются **внутри образа** при сборке;
 системный ROS 2 на хосте не обязателен. GPU текущий основной рецепт не использует.
-Возьмите исходный код ветки `experiments/buyanov` или архив той же ревизии;
-`Dockerfile` находится в корне проекта.
+Используйте проверенную интеграционную ревизию, а не старую экспериментальную
+ветку: `Dockerfile` находится в корне проекта. Зафиксируйте её полный commit SHA.
 При наличии доступа к приватному репозиторию:
 
 ```sh
-git clone --branch experiments/buyanov --single-branch \
+git clone --branch fix/review-integration-20260928 --single-branch \
   https://github.com/bryxosmmm/tunnel-guard.git
 cd tunnel-guard
 ```
@@ -62,13 +62,10 @@ cd "$HOME/tunnel-guard-deploy/source"
 ## 2. Собрать образ
 
 ```sh
-sudo docker build \
-  --build-arg ROS_APT_MIRROR=https://mirror.umd.edu/packages.ros.org/ros2/ubuntu \
-  -t tunnel-guard:demo .
+sudo docker build -t tunnel-guard:demo .
 ```
 
-Этот адрес зеркала использовался на демонстрационном сервере; при доступном
-официальном ROS-репозитории аргумент можно опустить. Сборка требует сети.
+Сборка использует официальный ROS-репозиторий базового образа и требует сети.
 Перед демонстрацией проверьте доступность образа и тему конкретного bag:
 
 ```sh
@@ -94,7 +91,7 @@ sudo docker run --rm -d --name tunnel-guard-live \
   --network host --ipc=host \
   -v "$DEMO_DATA_DIR:/data:ro" \
   tunnel-guard:demo \
-  ros2 launch tunnel_guard_ros tunnel_guard.launch.py \
+  ros2 launch /opt/tunnel-guard/launch/tunnel_guard.launch.py \
   input_topic:=/sensing/lidar/hesai128/pointcloud \
   input_reliability:=reliable input_timeout_s:=3.0
 sudo docker logs --tail 20 tunnel-guard-live
@@ -109,7 +106,7 @@ best-effort, укажите `input_reliability:=best_effort`. Подписка �
 
 ```sh
 sudo docker exec -it tunnel-guard-live bash -lc \
-  'source /opt/ros/humble/setup.bash && ros2 topic echo /tunnel_guard/result'
+  'source /opt/ros/humble/setup.bash && ros2 topic echo /perception/status'
 ```
 
 Терминал 3 — исходный PointCloud2 (его поступление, без вывода миллионов точек):
@@ -127,13 +124,14 @@ sudo docker exec -it tunnel-guard-live bash -lc \
   'source /opt/ros/humble/setup.bash && ros2 bag play /data/for_hackathon/doubleT_obstacle --rate 0.1'
 ```
 
-Смотрите в `/tunnel_guard/result` поля `status`, `objects`,
-`nearest_obstacle_m`, `measurement_timestamp_ns` и
-`callback_to_publish_s`. В ТЗ нужна дистанция до препятствия; здесь
-`nearest_obstacle_m` относится только к **подтверждённому пересечению**
-опорного габарита. Более близкие наблюдения могут иметь состояние
-`unresolved_obstacle` или `candidate`; их нельзя выдавать за подтверждённое
-столкновение. `/tunnel_guard/obstacle` — признак необходимости внимания,
+Смотрите в `/perception/status` поля `status`, `objects`,
+`nearest_obstacle_m` и `measurement_timestamp_ns`. Время
+`callback_to_publish_s` выводится в журнале узла, не в сообщении статуса.
+`nearest_obstacle_m` относится к ближайшему **подтверждённому опасному объекту**:
+как с подтверждённым пересечением, так и с неразрешённым отношением к контуру.
+Для подтверждённого пересечения отдельно используйте
+`distance_summary.confirmed_intersection_m`. `/perception/attention_required` —
+признак необходимости внимания,
 **не команда торможения**. `no_obstacle_observed` также не доказывает
 свободный путь. После остановки входа watchdog публикует `unknown` и очищает
 живые маркеры. Перед повтором bag с начала перезапустите контейнер детектора:
@@ -143,8 +141,8 @@ sudo docker exec -it tunnel-guard-live bash -lc \
 ## 4. Показать облако и результат в 3D
 
 Для живой визуализации на машине с рабочим графическим сеансом и RViz2
-откройте `rviz/tunnel_guard_live.rviz`. Конфигурация подписана на
-`/tunnel_guard/points` и `/tunnel_guard/markers`; фиксированная система
+откройте `rviz/tunnel_guard.rviz`. Конфигурация подписана на
+`/perception/points_display` и `/perception/debug_markers`; фиксированная система
 координат — `tunnel_guard_local`. Это координаты обработки, **не**
 калиброванная система поезда. Облако в RViz разрежено только для показа:
 детектор использует полные данные скана. Если на хосте есть ROS 2 Humble и
@@ -152,7 +150,7 @@ sudo docker exec -it tunnel-guard-live bash -lc \
 
 ```sh
 source /opt/ros/humble/setup.bash
-rviz2 -d "$PWD/rviz/tunnel_guard_live.rviz"
+rviz2 -d "$PWD/rviz/tunnel_guard.rviz"
 ```
 
 На нынешнем сервере GUI RViz2 не проверялся.
@@ -187,7 +185,7 @@ sudo docker run --rm --network none --user "$(id -u):$(id -g)" -e HOME=/tmp \
   -v "$DEMO_DATA_DIR:/data:ro" -v "$PWD/results:/results" \
   -v "$PWD/configs/deployment-tz-demo.json:/recipes/demo.json:ro" \
   tunnel-guard:demo python3 -m tunnel_guard.run \
-  --experiment /recipes/demo.json --workers 1
+  --experiment /recipes/demo.json
 ```
 
 После завершения откройте результат в отдельном контейнере. Порт 8768 должен
@@ -212,9 +210,9 @@ sudo docker run -d --name tunnel-guard-review-tz --restart unless-stopped \
 ## 5. Параметры и приёмка
 
 `input_topic`, `input_reliability`, `input_timeout_s` — параметры запуска
-ROS 2-узла. `config_path` выбирает JSON-рецепт детектора; по умолчанию это
-`/opt/tunnel-guard/configs/detector-native.json`. Основные физические
-допущения в нём: преобразование системы сенсора, диапазон 1–220 м,
+ROS 2-узла. `config` выбирает JSON-рецепт детектора; по умолчанию это
+`/opt/tunnel-guard/configs/detector.json`. Основные физические
+допущения в нём: преобразование системы сенсора, диапазон из `min_range_m`/`max_range_m`,
 оценка грунта и рельсов, ширина колеи, опорный габарит, условия кластеризации
 и временного подтверждения. Менять их под известный bag ради красивого
 видео нельзя: на контрольных данных ТЗ это не будет обобщением. Состав
@@ -226,13 +224,15 @@ ROS 2-узла. `config_path` выбирает JSON-рецепт детекто�
 расстояние и маркеры`. Она показывает, какие именно данные проходят между
 модулями; подробности алгоритма и его ограничения приведены в [README.md](../README.md).
 
-На сервере с 16 GiB RAM проверено: Docker-сборка; 10 исходных кадров через
+Исторически на сервере с 16 GiB RAM и веткой `experiments/buyanov` проверено:
+Docker-сборка; 10 исходных кадров через
 живой ROS 2 при `0.1x` с совпадающими статусами офлайн-прогона; два полных
 **офлайн**-прогона на 252 и 201 кадр; сохранённый 3D-просмотр. Их медианное
 время обработки — 475 и 613 мс соответственно. При `0.25x` в ограниченном
 живом прогоне были пропуски. Это не подтверждает работу в реальном времени,
 точность на скрытом контрольном bag, предельную дальность обнаружения,
 ложные тревоги по исчерпывающей разметке или безопасность движения.
+Эти исторические замеры не квалифицируют текущую интеграционную ревизию.
 
 В пакет сдачи по ТЗ нужно включить видео и явно указать, где находятся
 описание архитектуры и алгоритма и отчёт об экспериментах. Полноценный прогон

@@ -12,6 +12,23 @@ Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 
 
 The initial review and its two real 30-frame prefixes are documented in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). Subsequent iterations and historical results below are separate evidence.
 
+## Refreshed integration review — 2026-09-28
+
+The `fix/review-integration-20260928` branch combines PRs #43/#44 and the compatible
+new Buyanov viewer/deployment work, with review corrections. The
+[branch inventory and evidence](results/review-integration-20260928.json) account
+for all 34 fetched remote heads; unchanged research branches retain their explicit
+defer/reject decisions rather than replacing the frozen detector.
+
+Actual CPU replay preserved every non-runtime result/status field across 546
+acquisitions and all four non-status serialized topics across 2,730 total messages.
+The installed-wheel 3D viewer was exercised in a browser. Incomplete replay
+comparisons now fail instead of accepting a matching prefix.
+CUDA corrections remain uncompiled/unexecuted on NVIDIA hardware; no new full-panel,
+small-obstacle, live DDS or target-latency acceptance is claimed. Local timings were
+slower than the historical reference under concurrent verification workloads and
+are not a controlled performance comparison. This branch is not promoted to `main`.
+
 ## Team release integration — 2026-09-27
 
 The release keeps the qualified `8539a3e` detector, native kernels and detector

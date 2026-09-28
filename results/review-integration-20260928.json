@@ -1,0 +1,559 @@
+{
+  "date": "2026-09-28",
+  "branch": "fix/review-integration-20260928",
+  "decision": "CPU recorded-output equivalence established; draft integration, not GPU or field-safety qualification. main unchanged.",
+  "frozen_main": "7689b8057a3e35ab39ce0e671c37d7efc9cfd1d6",
+  "integrated_pr44": "617750489266db6fcd637fd229e521175eaec5e1",
+  "integrated_pr43": "47224a2714ca7d735c88060d941b7d0f0c5bcd3b",
+  "branch_inventory": [
+    {
+      "ref": "origin/annotations/doubleT-obstacle-person-crossing",
+      "sha": "958cdb0db317cdb72006b6f75a8e138087946daa",
+      "decision": "include: PR40 exact annotations and raw labels, already used in the full accepted repair panel; cherry-pick only958cdb0, not old detector ancestry.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/audit/sensor-attributes-integrated",
+      "sha": "97ea60cf6cde92eac06d9937fb1bf7554e1b4ed8",
+      "decision": "retain_research: Detailed attribute audit/comparator belongs to its historic profile. Compact sensor preservation already integrated; do not replace the current comparator with a1237-line historical variant for release.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/autoresearch/issue-24-hybrid-synthetic",
+      "sha": "31cbbfd81ca55d7238520d297c9603c111d053eb",
+      "decision": "defer: PR39 adds a second incompatible realistic_stress/report implementation on old Popov lineage; published acceptance failed. Prefer the existing generator and PR34 contour corrections, not an old-core merge.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/autoresearch/issue-24-session-panel",
+      "sha": "a5a71972390e5c9ce8a73388d953bb99209eaec6",
+      "decision": "defer_research_handoff: Late arrival reviewed before publication. Corrects railhead datum and per-frame full-form sampling, adds attached-surface provenance and an isolated66-frame author run. It still retains the exact zero-denominator reporter expression reproduced from PR34; four-centimetre full-form sampling remains an approximation. Preserve as next-stage research, not a detector release improvement. No new rerun of this branch claimed.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/autoresearch/session-20260925",
+      "sha": "8539a3e1a8764a49b3647558c895a611eebf6a13",
+      "decision": "release_base: 8539a3e fully qualified15269frames+30probes, far99/105, preserved positives, negative113. Detector/config/native frozen.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/autoresearch/six-tunnel-recall-and-nuisance",
+      "sha": "f5b0983a7d4bcdc95b28dc2b8e09b1c068cfc376",
+      "decision": "already_in_history: Native integration is an ancestor; later crash, unknown-geometry and evidence fixes must not be rolled back.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/codex/frozen-delivery-profile",
+      "sha": "47224a2714ca7d735c88060d941b7d0f0c5bcd3b",
+      "decision": "Reviewed PR43 at47224a2; integrated rawCDR and exact display batching. Corrected incomplete recorded-output comparator and retained historical evidence.",
+      "same_head_as_previous_inventory": false
+    },
+    {
+      "ref": "origin/codex/issue-2-native-only",
+      "sha": "f1dba0a99e0cca8427e49fa73887675b54084d59",
+      "decision": "superseded: Mandatory native production path already integrated and subsequently fixed. This old patch still touches retired backends/tools; no duplicate cutover.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/codex/issue24-contour-labels",
+      "sha": "a8149abaee00e456d1ded932ae12ac4769124f02",
+      "decision": "rejected_integration: Actual25-case adjacent-only run completes but reporter crashes on zero denominator. Also inspect source/result contour-datum mismatch; retain actual evidence, revert imported generator/report before main.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/codex/issue26-rviz-delivery",
+      "sha": "97e3fdfdb5a64d2ac3e40da1b70b99b2a1607bd0",
+      "decision": "include: PR38 corrects Humble MarkerArray Topic and consistent target acceptance instructions. RViz/Intel actual GUI acceptance remains external, not claimed.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/codex/release-22-ros",
+      "sha": "be9648ed4f482a52e376e0e3d2c8f022e043e7ce",
+      "decision": "already_integrated_by_content: ros_node.py and visualization.py byte-identical to frozen production; keep our pip timeout and more complete actual-DDS evidence/docs. No source rollback.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/experiments/buyanov",
+      "sha": "7526059cbd335894c97ea5bb32d945e5cb5059f2",
+      "decision": "Reviewed five new commits fba271a..7526059; ported viewer and docs, preserving currentmain deployment contract. Corrected stale CLI/topics/config, packaged offline renderer.",
+      "same_head_as_previous_inventory": false
+    },
+    {
+      "ref": "origin/experiments/dolgov",
+      "sha": "e9e56010f9493cd37fc0fca4f6425898c8944e31",
+      "decision": "retain_research: Latest issue27 analyses measure extrapolated certification and request exact path support; no independently validated replacement. Keep research branch/source links; do not introduce old geometry, learned offset or learning dependencies.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/experiments/gerasimov",
+      "sha": "71b293edaef4c43af744ea3c7e7265fcc11f58a5",
+      "decision": "defer_optimization: Old optimization patch touches native ABI, geometry classification, association and far-field bounds. Qualified reimplementations remain isolated evidence; no combined/current i7 acceptance, no detector change in this release.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/experiments/issue-4-rail-odometry",
+      "sha": "43b6a9b9756ac0ff34c9179b057fa9bc7a69f56e",
+      "decision": "rejected_experiment: Own full-panel report rejects rail-motion correction; retain evidence, do not enable.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/experiments/morev",
+      "sha": "b17916bcbb3b3e03feae6cf9e391597561fe60fb",
+      "decision": "retain_research: Joint rail-surface/local3d experiments and analytic-scene reports do not establish a better production bed-frame estimator; no revival of unsupported local3d.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/experiments/object-evidence-chain",
+      "sha": "5ceb905d4636bee897fe2eb9aa615ada13f37b49",
+      "decision": "already_in_history: Presence separated from corridor confirmation in current detector.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/experiments/popov",
+      "sha": "661e7aed4292b2f398c0c230e1aad47222f80e3d",
+      "decision": "superseded: Old geometry/config/container line is not the qualified detector. Do not import its old source or dependency/submodule expansion.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/experiments/rail-object-evidence",
+      "sha": "49a66dc7d9d1b9d56770ac5538cd03aae22f214b",
+      "decision": "retain_research: Measured low-rail support/merging reports, not adjudicated object identities or an accepted detector improvement.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/feat/geometry-independent-candidates",
+      "sha": "9e7fc92f7afc6a0527024a96110e61ee095e21f8",
+      "decision": "already_in_history: Measured candidate preservation when rail geometry is unavailable is already integrated.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/fix/issue-23-pose-independent-evidence",
+      "sha": "a4789d9127906a0270a218a7ffbe0a5565592979",
+      "decision": "already_in_history: Parent of accepted local_confirmation profile and current repair; no replay of old default-off config.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/fix/issue-5-sensor-attributes",
+      "sha": "0b26bc12562a39cfde8560c6af3d3d122ee73c88",
+      "decision": "superseded_by_compact: Compact replacement and subsequent integrated evidence already merged; original large branch must not roll back current viewer/adapter.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/fix/issue-7-operator-decision",
+      "sha": "3d82f02effdfe7cf7b0b3a2af10dfcfe21763b10",
+      "decision": "defer_policy: Adds a new operator policy/output contract and old live adapter changes. Current fail-visible attention/unknown contract retained; train policy and target timing not qualified.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/fix/issue-9-support-stability",
+      "sha": "f2dd7c4f5619992572756c7cb6518a41630e2b77",
+      "decision": "already_in_history: Centered support counting and serial odometry default integrated; retain default thread count.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/fix/issue23-surface-autoresearch",
+      "sha": "216bbae0bf7e81abf80b7b849f31cdd6351d9065",
+      "decision": "rejected_for_release: Exact candidate previously lost fixed positive frames; no blind shared-surface suppression or threshold-based promotion.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/fix/issue23-surface-support-handoff",
+      "sha": "f3e0815a0a74ec7e6e14532d319c3d32335f9d80",
+      "decision": "rejected_for_release: Same fine-cell explanation mechanism; author reports unresolved6→21 and alarm reduction on1–2voxels, with no fixed positive acceptance. No evidence overturning the measured related regression.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/fix/post-merge-integration",
+      "sha": "e89d51065b4e58d1d29ed538ebe21b6a56dd8b09",
+      "decision": "already_in_history: Native insufficient-geometry crash fix and its evidence already integrated.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/fix/sensor-attributes-compact",
+      "sha": "66ff71dbfd27e65e387c93abe8a8bd7c7358e0b7",
+      "decision": "already_in_history: Compact measured sensor-attribute preservation already integrated.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/investigation/issue-9-reproducibility",
+      "sha": "0189eb012986559b6dc18f6dad64336206b3eb1e",
+      "decision": "include_evidence: PR37 retains2488-frame repeated-run evidence on a4789d9 with source/control attribution. Historical evidence, not a newly rerun current-release benchmark.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/investigation/person-specific-evidence",
+      "sha": "5d80ef39ece0c9164c2770a970c59b36e0a2183d",
+      "decision": "already_in_history: Presence/localization versus non-target alarm attribution already integrated.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/main",
+      "sha": "7689b8057a3e35ab39ce0e671c37d7efc9cfd1d6",
+      "decision": "Published7689b80 remains unchanged; fixes developed separately.",
+      "same_head_as_previous_inventory": false
+    },
+    {
+      "ref": "origin/perf/cuda-tail-latency-20260927",
+      "sha": "617750489266db6fcd637fd229e521175eaec5e1",
+      "decision": "Reviewed entire PR44 at6177504; merged into isolated correction branch; corrected GIL fallback, concurrency, deskew compatibility, patch, licensing and source packaging. GPU verification pending.",
+      "same_head_as_previous_inventory": false
+    },
+    {
+      "ref": "origin/popov/issue-6-reference-envelope",
+      "sha": "c4207a032e510b890c3e72df6cfa4f31582a6885",
+      "decision": "defer_native_audit: Useful reference-versus-swept distinction, but optional native margin audit changes ABI and metadata and lacks current qualification. Existing release already states no validated vehicle swept envelope.",
+      "same_head_as_previous_inventory": true
+    },
+    {
+      "ref": "origin/release/team-integration-20260926",
+      "sha": "5de37dccf0e28626b496124a52aa46d9044a694a",
+      "decision": "Retained published historical release5de37dc; no mutation.",
+      "same_head_as_previous_inventory": false
+    }
+  ],
+  "fixes": [
+    "Restore implicit deskew compatibility; reject explicitly incompatible native preprocessing.",
+    "Context-bearing upstream KISS-ICP GIL patch applies with ordinary git apply.",
+    "Reacquire GIL before CUDA graph CPU fallback; serialize shared CUDA staging and worker submissions without holding GIL while waiting; thread-local proposal generator.",
+    "Reject unsupported plane sample counts; distinguish GPU-capable entry points from CPU plane routine.",
+    "Include Open3D MIT attribution and native build sources/patches in source distribution and captured provenance.",
+    "Package Three.js, controls and MIT attribution; installed 3D viewer no longer depends on adjacent SUSTech checkout.",
+    "Reject incomplete recorded comparisons, absent fields, missing topics and trailing records/messages.",
+    "Keep current ROS deployment contract; correct stale config names, launch commands, topics and unsupported flags."
+  ],
+  "verification": {
+    "frames": 546,
+    "messages": 2730,
+    "comparisons": {
+      "person": {
+        "before_frames": 201,
+        "after_frames": 201,
+        "ignored_runtime_fields": [
+          "decode_s",
+          "deserialize_s",
+          "diagnostic_write_s",
+          "inference_s",
+          "ingestion_s",
+          "motion_s",
+          "mounting_observation_s",
+          "processing_s",
+          "read_and_process_s",
+          "visualization_s"
+        ],
+        "decision_differences": [],
+        "message_order_or_timestamp_mismatches": 0,
+        "display_messages_compared": {
+          "/perception/points_display": 201,
+          "/perception/debug_markers": 201,
+          "/perception/attention_required": 201,
+          "/perception/nearest_obstacle_m": 201
+        },
+        "display_cdr_differences": {},
+        "status_semantic_differences": [],
+        "before_message_count": 1005,
+        "after_message_count": 1005,
+        "complete_five_topic_delivery": true,
+        "before_ms": {
+          "ingestion_s": {
+            "p50": 0.5976250395178795,
+            "p95": 1.1378340423107147,
+            "p99": 1.5839580446481705
+          },
+          "deserialize_s": {
+            "p50": 1.5945001505315304,
+            "p95": 2.803041832521558,
+            "p99": 18.193583004176617
+          },
+          "decode_s": {
+            "p50": 39.304499980062246,
+            "p95": 58.17354191094637,
+            "p99": 99.14216701872647
+          },
+          "inference_s": {
+            "p50": 223.27670804224908,
+            "p95": 275.6603329908103,
+            "p99": 469.4857499562204
+          },
+          "visualization_s": {
+            "p50": 71.0654160939157,
+            "p95": 103.09275006875396,
+            "p99": 115.89174997061491
+          },
+          "diagnostic_write_s": {
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          },
+          "result_serialize_and_buffer_write_s": {
+            "p50": 5.9202921111136675,
+            "p95": 6.605708040297031,
+            "p99": 7.439958862960339
+          },
+          "offline_iteration_s": {
+            "p50": 311.5681251510978,
+            "p95": 367.89795896038413,
+            "p99": 590.6793330796063
+          }
+        },
+        "after_ms": {
+          "ingestion_s": {
+            "p50": 0.9077088907361031,
+            "p95": 2.1755830384790897,
+            "p99": 4.365166882053018
+          },
+          "deserialize_s": {
+            "p50": 4.37729200348258,
+            "p95": 108.72991592623293,
+            "p99": 176.08424997888505
+          },
+          "decode_s": {
+            "p50": 114.04999997466803,
+            "p95": 195.0182500295341,
+            "p99": 327.7289168909192
+          },
+          "inference_s": {
+            "p50": 609.7311670891941,
+            "p95": 843.856459017843,
+            "p99": 1282.851791009307
+          },
+          "display_cloud_s": {
+            "p50": 0.2880000974982977,
+            "p95": 0.7637499365955591,
+            "p99": 1.919083995744586
+          },
+          "display_markers_s": {
+            "p50": 142.5727498717606,
+            "p95": 241.06091680005193,
+            "p99": 351.0380000807345
+          },
+          "display_build_s": {
+            "p50": 156.38766717165709,
+            "p95": 272.73470908403397,
+            "p99": 364.11349987611175
+          },
+          "visualization_s": {
+            "p50": 209.19691701419652,
+            "p95": 350.765542127192,
+            "p99": 440.3527081012726
+          },
+          "diagnostic_write_s": {
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          },
+          "result_serialize_and_buffer_write_s": {
+            "p50": 14.74354206584394,
+            "p95": 25.580249959602952,
+            "p99": 58.368541998788714
+          },
+          "offline_iteration_s": {
+            "p50": 841.0117090679705,
+            "p95": 1084.1913330368698,
+            "p99": 1694.0152500756085
+          }
+        },
+        "scope": "Actual recorded outputs, not DDS or GUI. All non-runtime row/status fields and four non-status CDR topics.",
+        "equivalent": true
+      },
+      "platform": {
+        "before_frames": 345,
+        "after_frames": 345,
+        "ignored_runtime_fields": [
+          "decode_s",
+          "deserialize_s",
+          "diagnostic_write_s",
+          "inference_s",
+          "ingestion_s",
+          "motion_s",
+          "mounting_observation_s",
+          "processing_s",
+          "read_and_process_s",
+          "visualization_s"
+        ],
+        "decision_differences": [],
+        "message_order_or_timestamp_mismatches": 0,
+        "display_messages_compared": {
+          "/perception/points_display": 345,
+          "/perception/debug_markers": 345,
+          "/perception/attention_required": 345,
+          "/perception/nearest_obstacle_m": 345
+        },
+        "display_cdr_differences": {},
+        "status_semantic_differences": [],
+        "before_message_count": 1725,
+        "after_message_count": 1725,
+        "complete_five_topic_delivery": true,
+        "before_ms": {
+          "ingestion_s": {
+            "p50": 0.2757909242063761,
+            "p95": 1.019333163276315,
+            "p99": 1.500737983733416
+          },
+          "deserialize_s": {
+            "p50": 0.7460420019924641,
+            "p95": 1.289308536797763,
+            "p99": 2.7160565182566674
+          },
+          "decode_s": {
+            "p50": 131.56429212540388,
+            "p95": 353.9372664410621,
+            "p99": 476.6613065265119
+          },
+          "inference_s": {
+            "p50": 259.03608300723135,
+            "p95": 473.2968586497009,
+            "p99": 599.7712950501591
+          },
+          "visualization_s": {
+            "p50": 59.16516692377627,
+            "p95": 95.31815010122956,
+            "p99": 111.74976797774436
+          },
+          "diagnostic_write_s": {
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          },
+          "result_serialize_and_buffer_write_s": {
+            "p50": 5.010084016248584,
+            "p95": 6.290158722549677,
+            "p99": 7.642078632488847
+          },
+          "offline_iteration_s": {
+            "p50": 328.2962909433991,
+            "p95": 552.9184082057327,
+            "p99": 683.4527621604502
+          }
+        },
+        "after_ms": {
+          "ingestion_s": {
+            "p50": 0.4217920359224081,
+            "p95": 1.4036920387297873,
+            "p99": 4.190383488312367
+          },
+          "deserialize_s": {
+            "p50": 1.4972498174756765,
+            "p95": 2.882333006709816,
+            "p99": 13.828956512734305
+          },
+          "decode_s": {
+            "p50": 369.00554108433425,
+            "p95": 1228.947816509754,
+            "p99": 1512.4002864304932
+          },
+          "inference_s": {
+            "p50": 770.7827920094132,
+            "p95": 1630.8407330885532,
+            "p99": 1938.4340950474145
+          },
+          "display_cloud_s": {
+            "p50": 0.4050841089338064,
+            "p95": 0.7875001057982445,
+            "p99": 3.217230029404165
+          },
+          "display_markers_s": {
+            "p50": 73.1422919780016,
+            "p95": 177.96143386513,
+            "p99": 207.42093687877062
+          },
+          "display_build_s": {
+            "p50": 89.6683328319341,
+            "p95": 192.11717452853918,
+            "p99": 227.08426801487806
+          },
+          "visualization_s": {
+            "p50": 137.58512516506016,
+            "p95": 248.28668381087485,
+            "p99": 286.55212187208235
+          },
+          "diagnostic_write_s": {
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0
+          },
+          "result_serialize_and_buffer_write_s": {
+            "p50": 12.155584059655666,
+            "p95": 23.074508551508192,
+            "p99": 33.99702149443329
+          },
+          "offline_iteration_s": {
+            "p50": 940.5913329683244,
+            "p95": 1769.501058291644,
+            "p99": 2039.845149992034
+          }
+        },
+        "scope": "Actual recorded outputs, not DDS or GUI. All non-runtime row/status fields and four non-status CDR topics.",
+        "equivalent": true
+      }
+    },
+    "deskew": "Actual CLI completed one original scan from each of two bags; startup compatibility only, not deskew accuracy qualification.",
+    "kiss_patch": "Ordinary git apply succeeded against exact upstream b16835283aee62f7d5e2bdf6c1c3bb2930de74ff; no patched binding built locally.",
+    "comparator_missing_tail": {
+      "inputs": "Actual 201-acquisition replay versus actual one-acquisition replay, not edited fixtures",
+      "before_exit": 0,
+      "after_exit": 1,
+      "missing_frames": 200,
+      "unmatched_messages": 1000
+    },
+    "packaging_viewer": {
+      "wheel": "build/review-integration-20260928/dist/tunnel_guard-0.1.0-cp312-cp312-macosx_10_13_universal2.whl",
+      "wheel_sha256": "b2f7cd81f4d48346d63aa0e9277cdac8ca8163a0da57551a088456a220708580",
+      "installed_to": "build/review-integration-20260928/installed",
+      "execution_cwd": "/tmp",
+      "viewer_url": "http://127.0.0.1:8880/3d?frame=25&focus=176",
+      "selected_track": 176,
+      "frame_label": "26 / 201 · 2.5 с",
+      "javascript_errors": [],
+      "screenshots": [
+        "viewer-overview.webp",
+        "viewer-forward-selected.webp",
+        "viewer-installed.webp"
+      ],
+      "dependency_policy": "Exact pre-existing Three.js and OrbitControls bytes packaged with MIT notice; no CDN dependency."
+    },
+    "automated_tests": "Not created or run. Verification used actual CLI, recorded data, package build/install and browser."
+  },
+  "replay_provenance": {
+    "git_revision": "79e16556d2194e9c0b15c2b2b21ee02efc3a6dc4",
+    "config_sha256": "f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa",
+    "native_accelerator": {
+      "binary_sha256": "36df5e30bffe97cc70580639769cdfd6639fa5580e51372ce660bb9ee6381a27",
+      "module": "tunnel_guard._native",
+      "backend": "cpp",
+      "device_entry_points": [],
+      "cpu_binary_sha256": "36df5e30bffe97cc70580639769cdfd6639fa5580e51372ce660bb9ee6381a27",
+      "device": null,
+      "sources_sha256": {
+        "cpp/kernels.cpp": "c6bf6ae8cfdb3c0c2873c909fca3342b986962177f5863beebe186a7c574ed12",
+        "cpp/voxel.cpp": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+        "cpp/native.h": "7b56cdd7b35eb159f37fe38d5ebf18a6e45cc740655d042ad1033160f86e60a4",
+        "cpp/cuda/tg_cuda.cu": "b29a8cff0a882a791fad3e070d367db74a76043f817d9e3a7166e31d37b40173",
+        "cpp/cuda/Open3D-LICENSE.txt": "e5439bd70250da5f17b3435ff9efb05e96e7f9fdc34248d3355b0026baadaa41",
+        "setup.py": "1315ab98ae387d30bcbd8ad20080442b7ab01511d703e7dcb0ecf8db0a5a94a2",
+        "setup_cuda.py": "f71e980b3c7a4395441ec4e7bc6329fa455103b7885d6d199d7c50d5a5ffc73a",
+        "MANIFEST.in": "6b91050541a50bca6adc2499344e74ac717e2ee4fdb745b7443ae20bee171185",
+        "patches/kiss-icp-1.3.0-release-gil.patch": "68a9b75126ba017a1a0197b860d37915b83dab5932dc21cf7305291ed7d053e1",
+        "patches/kiss-icp-build-constraints.txt": "127dda78c1dd48240fdc28ba1a7ee9497ded460bd2c642a118c2e663e7ed6bee"
+      }
+    },
+    "kiss_icp_binary_sha256": "ec57edcaaaafe4fc1b5842990495a820877db774c661202258fee6472bcfb18d",
+    "kiss_icp_gil_free_odometry": false,
+    "command": [
+      "/Users/mors1337/Code/DL/tunnel-guard-autoresearch-ready/tunnel_guard/run.py",
+      "--experiment",
+      "configs/review-integration-20260928.json"
+    ]
+  },
+  "seed": 20260915,
+  "recipe": "configs/review-integration-20260928.json",
+  "local_evidence": "build/review-integration-20260928",
+  "limitations": [
+    "CUDA fixes have not been compiled or executed on NVIDIA hardware.",
+    "No full fixed-panel or new ten-event small-obstacle qualification in this integration.",
+    "No live DDS, Intel i7 throughput or RViz GUI qualification.",
+    "Observed local timings are slower than historical reference; concurrent browser/package activity makes this run unsuitable for attributing a performance regression. No speedup claim.",
+    "Unchanged research branches retain prior explicit defer/reject decisions, including the PR41 evaluation defect; they were not activated.",
+    "No Vast rental, API-key persistence or expenditure.",
+    "Replay captured uncommitted corrections atop the recorded integration commit. Later CUDA comment and documentation cleanup does not alter the CPU execution."
+  ]
+}

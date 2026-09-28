@@ -386,7 +386,7 @@ class Detector:
         cfg.registration.max_num_iterations = self.config["odometry_max_iterations"]
         cfg.registration.max_num_threads = self.config["odometry_threads"]
         odometry = KissICP(cfg)
-        if self.config.get("odometry_native_preprocess", True):
+        if self.config.get("odometry_native_preprocess", not cfg.data.deskew):
             if cfg.data.deskew:
                 raise ValueError("odometry_native_preprocess requires deskew to be disabled: the "
                                  "library's preprocessing would include motion compensation")

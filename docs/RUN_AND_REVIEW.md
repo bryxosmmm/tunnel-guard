@@ -127,10 +127,10 @@ For the locally retained 201-frame moving sequence:
   --port 8766 --display-max-points 60000
 ```
 
-Open `http://127.0.0.1:8766/3d`. This uses the repository's vendored Three.js
-and OrbitControls under `SUSTechPOINTS/public/js/lib`; no CDN is used. Those
-files must be present alongside the repository checkout. The existing source
-identity and acquisition-time checks also apply to this view. Rendering samples
+Open `http://127.0.0.1:8766/3d`. Three.js and OrbitControls are bundled in
+`tunnel_guard/vendor` with their MIT notice; no CDN or SUSTechPOINTS checkout
+is needed by the installed viewer. The existing source identity and
+acquisition-time checks also apply to this view. Rendering samples
 the display cloud only; saved detector outputs are unchanged.
 
 The camera and clouds are in the per-scan processing frame. This shows the

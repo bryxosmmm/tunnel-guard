@@ -20,4 +20,4 @@ tunnel-guard-evaluate = "tunnel_guard.evaluate:main"
 include = ["tunnel_guard*"]
 
 [tool.setuptools.package-data]
-tunnel_guard = ["review.html", "review_3d.html"]
+tunnel_guard = ["review.html", "review_3d.html", "vendor/*.js", "vendor/*LICENSE.txt"]

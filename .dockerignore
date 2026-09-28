@@ -13,13 +13,9 @@
 !launch/*.py
 !tunnel_guard/review.html
 !tunnel_guard/review_3d.html
-!SUSTechPOINTS/
-!SUSTechPOINTS/public/
-!SUSTechPOINTS/public/js/
-!SUSTechPOINTS/public/js/lib/
-!SUSTechPOINTS/public/js/lib/three.module.js
-!SUSTechPOINTS/public/js/lib/OrbitControls.js
-!SUSTechPOINTS/LICENSE
+!tunnel_guard/vendor/
+!tunnel_guard/vendor/*.js
+!tunnel_guard/vendor/*LICENSE.txt
 
 !setup.py
 !cpp/

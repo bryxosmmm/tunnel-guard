@@ -235,6 +235,23 @@ a 200 ms tail on any measured scene. Do not meet the number by reusing stale
 background, discarding sparse returns, weakening ICP validity, or changing
 the object/clearance policy.
 
+### Review corrections — 2026-09-28
+
+The KISS-ICP patch now includes context and applies with the documented plain
+`git apply`. Existing deskew configurations keep the library preprocessor when
+`odometry_native_preprocess` is omitted; explicitly enabling both remains an error.
+The CUDA graph's out-of-range CPU fallback now runs after reacquiring the GIL.
+CUDA slab/staging access and plane worker-pool submissions are serialized across
+callers, with no mutex wait holding the GIL; proposal generators are thread-local.
+Native proposals require exactly three samples. `cuda_entry_points` lists GPU-capable
+kernels, not actual call counts, and no longer lists the CPU-only plane proposal.
+The Open3D MIT notice, CUDA source/build recipe and dependency patch are included
+in source distributions and the native-source capture.
+
+These CUDA corrections require a fresh real-GPU replay; the earlier GPU measurements
+above predate them. Local deskew/recorded-delivery and installed-viewer evidence is
+reported separately in `results/review-integration-20260928.json`.
+
 ### Follow-up: the actual acceptance gate is p95 ≤200 ms
 
 The user selected **p95 processing ≤200 ms on the measured RTX 4080

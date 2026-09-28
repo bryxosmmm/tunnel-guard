@@ -71,6 +71,7 @@ def capture_native_sources(destination: Path) -> dict:
     hashes = {}
     paths = sorted((root / "cpp").glob("*.cpp")) + sorted((root / "cpp").glob("*.h"))
     paths += sorted((root / "cpp" / "cuda").glob("*.cu")) + sorted((root / "cpp" / "cuda").glob("*.cuh"))
+    paths += sorted((root / "cpp" / "cuda").glob("*LICENSE.txt"))
     paths += [root / "setup.py", root / "setup_cuda.py", root / "MANIFEST.in"]
     paths += [root / "patches" / "kiss-icp-1.3.0-release-gil.patch",
               root / "patches" / "kiss-icp-build-constraints.txt"]

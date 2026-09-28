@@ -2,14 +2,16 @@
 
 ## Source boundary
 
-The user identifies current `main` as the frozen final detector. This delivery branch
-is based on **7689b8057a3e35ab39ce0e671c37d7efc9cfd1d6** (PR #42 merge).
+This document records PR #43's delivery-only work, based on frozen
+**7689b8057a3e35ab39ce0e671c37d7efc9cfd1d6** (PR #42 merge).
 The inference source, native source and `configs/detector.json` at that commit match
 PR #35 head **8539a3e1a8764a49b3647558c895a611eebf6a13**; the only change under
 `tunnel_guard/` is `sustech.py`, which exports annotations. The earlier verified
 baseline **ec311a0bc78363791b5fe9bfaf1ea759bbf2b16a** is retained as historical
-comparison evidence. This PR changes no detector or detector configuration file
-relative to `main`.
+comparison evidence. PR #43 changed no detector or detector configuration file.
+The later integration also contains PR #44's native/CPU optimizations and review
+corrections; this historical report does not qualify those changes. Its current
+evidence is `results/review-integration-20260928.json`.
 
 `configs/detector.json` SHA256 at the frozen `main` commit:
 `f1b0d0ea760c8b3a4e7171b6e9feb37c7e0ac9a38a5c310517b3fa41bcab9efa`.
@@ -48,6 +50,11 @@ annotation provenance; frame 80 is the clear outside example. The scene can stil
 say `obstacle` due to another component after the person exits. Do not hide it or
 present that status as the person's state. Neither boxes nor thresholds are adjusted.
 Repeated frames are one event, and the labels are nonexhaustive.
+
+`tools/compare_delivery.py BEFORE AFTER --output REPORT` now exits nonzero for
+missing/extra acquisitions, missing topic messages, or changed non-runtime output.
+It compares serialized status semantics as well as the four other CDR topics;
+a matching common prefix is not a complete equivalent replay.
 
 ## Actual ROS delivery experiment
 
