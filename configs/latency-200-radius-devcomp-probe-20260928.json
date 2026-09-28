@@ -1,0 +1,18 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-radius-20260928/devcomp_probe",
+  "every": 1,
+  "max_frames": 40,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Thread allocation between the concurrent odometry and the serial detector path changes Detector.process p95 on the same recording and host without changing any pose or decision.",
+  "criterion": "Every compared decision and support field identical across the five allocations; p95 is compared as the promotion signal.",
+  "prefetch_depth": 0
+}

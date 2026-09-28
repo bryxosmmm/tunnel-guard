@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-20260928/deferred-obstacle",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}
+  ],
+  "hypothesis": "Defer materializing full split-candidate CSR graphs until a second component or unresolved remainder exists.",
+  "criterion": "Compare every non-timing record on all 201 scans to the GPU-normal run; reduce the split stage and p95 without lowering any admission threshold."
+}

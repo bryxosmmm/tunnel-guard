@@ -85,8 +85,8 @@ struct KeyTable {
 // Per-thread scratch that grows to the largest frame seen and is then reused, so
 // steady-state frames allocate nothing beyond the copies the caller receives.
 struct Arena {
-    std::vector<double> d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10;
-    std::vector<int64_t> i0, i1, i2, i3, i4, i5, i6;
+    std::vector<double> d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16;
+    std::vector<int64_t> i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14, i15, i16, i17, i18, i19;
     std::vector<uint8_t> b0, b1, b2, b3, b4;
     std::vector<std::pair<Key, int64_t>> ordered;
     std::vector<std::pair<uint64_t, int64_t>> packed;
@@ -160,6 +160,8 @@ PyObject* mask_apply(PyObject* self, PyObject* args);
 PyObject* cluster_components(PyObject* self, PyObject* args);
 PyObject* normal_covariances(PyObject* self, PyObject* args);
 PyObject* component_labels(PyObject* self, PyObject* args);
+PyObject* induced_subgraph(PyObject* self, PyObject* args);
+PyObject* group_degrees(PyObject* self, PyObject* args);
 PyObject* window_indices(PyObject* self, PyObject* args);
 PyObject* remove_rows(PyObject* self, PyObject* args);
 PyObject* support_strips(PyObject* self, PyObject* args);

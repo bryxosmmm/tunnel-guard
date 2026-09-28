@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-20260928/baseline-obstacle",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}
+  ],
+  "hypothesis": "The unmodified detector retains its 201-scan obstacle-scene latency on the new pinned eight-core RTX 4080 proxy.",
+  "criterion": "Record all 201 outputs and per-scene p95 processing latency before code changes; compare complete non-timing records against each candidate."
+}

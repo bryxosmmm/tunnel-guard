@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-20260928/nocopy-diagnostic",
+  "every": 1,
+  "max_frames": 3,
+  "visualization": false,
+  "diagnostic_frames": [1],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}
+  ],
+  "hypothesis": "Rows from the direct native crop still map exactly to source PointCloud2 slots in the diagnostic provenance channel.",
+  "criterion": "Inspect the actual frame-1 .npz source indices, geometry voxel points and decoded source array for exact row correspondence."
+}

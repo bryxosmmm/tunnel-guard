@@ -73,8 +73,8 @@ def capture_native_sources(destination: Path) -> dict:
     paths += sorted((root / "cpp" / "cuda").glob("*.cu")) + sorted((root / "cpp" / "cuda").glob("*.cuh"))
     paths += sorted((root / "cpp" / "cuda").glob("*LICENSE.txt"))
     paths += [root / "setup.py", root / "setup_cuda.py", root / "MANIFEST.in"]
-    paths += [root / "patches" / "kiss-icp-1.3.0-release-gil.patch",
-              root / "patches" / "kiss-icp-build-constraints.txt"]
+    paths += sorted((root / "patches").glob("kiss-icp-*.patch"))
+    paths.append(root / "patches" / "kiss-icp-build-constraints.txt")
     for source in paths:
         if source.is_file():
             relative = source.relative_to(root)
@@ -184,7 +184,8 @@ def main():
         prefetch_depth = int(experiment.get("prefetch_depth", 1))
         iterator = prefetch(iter_bag(bag, config, every=experiment["every"],
                                      max_frames=experiment["max_frames"],
-                                     topic=entry.get("topic"), diagnostics=ingestion),
+                                     topic=entry.get("topic"), diagnostics=ingestion,
+                                     prepare=prefetch_depth >= 1),
                             depth=prefetch_depth)
         from contextlib import nullcontext
         from .visualization import ResultBag
@@ -206,7 +207,7 @@ def main():
                 ingestion_s = inference_start - frame_start
                 row = detector.process(scan.points, scan.timestamp_s, scan.point_times,
                                        capture_diagnostics=scan.index in diagnostic_frames,
-                                       point_attributes=scan.attributes)
+                                       point_attributes=scan.attributes, prepared=scan.prepared)
                 inference_s = time.perf_counter() - inference_start
                 row.update(frame=scan.index, bag=bag.name, raw_points=scan.raw_points,
                            invalid_points=scan.invalid_points, sensor_frame=scan.frame_id,

@@ -1,0 +1,6 @@
+{
+  "bags": [
+    {"bag": "doubleT_obstacle", "before": "build/latency-200-split-20260928/reference/doubleT_obstacle.jsonl", "after": "build/latency-200-split-20260928/ground-batched-v2/doubleT_obstacle.jsonl"},
+    {"bag": "roundT_pressureGate_roundT", "before": "build/latency-200-split-20260928/reference/roundT_pressureGate_roundT.jsonl", "after": "build/latency-200-split-20260928/ground-batched-v2/roundT_pressureGate_roundT.jsonl"}
+  ]
+}

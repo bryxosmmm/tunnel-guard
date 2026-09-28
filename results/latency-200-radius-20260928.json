@@ -1,0 +1,159 @@
+{
+  "decision": "retain_exact_work_reductions_but_do_not_promote_200ms_goal",
+  "goal": "Detector.process p95 at or below 200 ms on every complete development recording, without changing any compared decision or support field.",
+  "seed": 20260915,
+  "hardware": {
+    "proxy_this_iteration": "Vast RTX 4080, AMD Ryzen Threadripper PRO 3955WX pinned to cores 0-7 (32 effective), Ubuntu 24.04, Python 3.12.3, CUDA 12.6, OPENBLAS_NUM_THREADS=1, OMP_NUM_THREADS=8",
+    "proxy_previous_iteration": "Vast RTX 4080, AMD EPYC 7R13 pinned to cores 0-7",
+    "competition_stand": "Intel Core i7-9700E (8 cores, 2.60 GHz), RTX 4070 Ti SUPER, Ubuntu 22.04 / ROS 2 Humble - NOT rented, never measured",
+    "caveat": "Neither proxy is the stand. Cross-host and cross-scene p95 comparisons are context, not stand latency."
+  },
+  "gate_status": "FAILED on the proxy: the worst recording's p95 is about 250 ms in five independent runs of the unchanged detector, and four of six recordings exceed 200 ms.",
+  "unchanged_detector_p95_ms_this_host": {
+    "doubleT_obstacle": [249.9, 250.3, 250.4, 251.8, 252.1],
+    "p50_range": [191.8, 195.4]
+  },
+  "unchanged_detector_p50_p95_ms_previous_host": {
+    "doubleT_obstacle": [188.8, 248.4],
+    "doubleT_platform": [145.9, 178.7],
+    "roundT_doubleT": [155.2, 202.4],
+    "roundT_pressureGate_roundT": [160.7, 212.7],
+    "roundT_squareT_pressureGate_squareT": [148.8, 197.6],
+    "squareT_platform_squareT_switch": [147.9, 197.3]
+  },
+  "retained_changes": [
+    {
+      "change": "Batch the per-component evidence counts in cluster_candidates with one counting pass over the concatenated support rows.",
+      "evidence": "0 changed compared fields on 201 scans (local CPU configuration); 51 fewer NumPy calls per scan at 310 objects, which measured 7.01 s of the 39.1 s main-thread profile."
+    },
+    {
+      "change": "Skip the range-filter copy of the raw scan when the filter keeps every row.",
+      "evidence": "0 changed compared fields; removes a 921 600 x 3 copy (2.9 ms/scan measured by sampling profile) when nothing is dropped."
+    },
+    {
+      "change": "Two strictly necessary labels preconditions before the per-candidate running-surface partition.",
+      "evidence": "Candidate count 12.3 -> 9.6 per scan (526 of 2 465 candidates removed, 21.3%) on 201 real scans; 0 changed compared fields."
+    },
+    {
+      "change": "Count accepted structure cells with np.bincount instead of the unbuffered np.logical_or.at accumulation.",
+      "evidence": "0 changed compared fields; same predicate, buffered scatter."
+    },
+    {
+      "change": "Remove an unused per-call index fill in the native within_radius kernel.",
+      "evidence": "The filled workspace.i4 was never read."
+    },
+    {
+      "change": "Extend profile_run with the consumers the coarse stages could not separate (classify_geometry, cluster_objects, the crop/range reducers, the graph helpers, linear_sum_assignment).",
+      "evidence": "This instrumentation closed the accounting on the tail scans; see attribution below."
+    }
+  ],
+  "rejected_candidates": [
+    {
+      "name": "exact cell grid inside native within_radius",
+      "reason": "Measured need absent: on doubleT_obstacle the caller makes 88 calls per recording with at most 96 x 96 pairs, 1.7 ms in total, largest single call 0.033 ms. The index would cost more than it saves; reverted."
+    },
+    {
+      "name": "box-maintaining footprint merge in the running-surface split",
+      "reason": "Measured input size: 151 calls over 201 scans, median 2 and maximum 10 child groups, so the rebuild it replaced was already trivial. Reverted as unmeasured complexity."
+    },
+    {
+      "name": "fewer odometry or query threads to stop starving the serial path",
+      "reason": "Five allocations measured on the same recording (odometry 8/6/4/2 threads x query 8/4 workers): p50 191.8-195.4 ms, p95 249.9-252.1 ms. No effect; the detector is not CPU-starved by the motion thread."
+    },
+    {
+      "name": "nanoflann for exact nearest-neighbour queries",
+      "reason": "Preserved real split inputs: about 1.0-1.2 ms saved per build/query on the five largest pairs, with no mismatched index. Too little total benefit to justify a new dependency in the required build."
+    },
+    {
+      "name": "external GPU clustering kernels (cuda_cone_rush, cuPCL, cuML DBSCAN)",
+      "reason": "None preserves the adaptive mutual-radius edges, running-surface support and instance behaviour this detector's decisions rest on; none was substituted."
+    }
+  ],
+  "attribution_this_host_ms_per_scan": {
+    "process_median": 193.0,
+    "track_geometry_init": 57.6,
+    "tunnel_background_init": 34.2,
+    "background_segment_plane": 8.1,
+    "background_kdtree_build": 6.6,
+    "background_voxel_down_sample": 6.3,
+    "rail_profile": 12.9,
+    "robust_plane": 6.5,
+    "structural_mask": 10.8,
+    "cluster_candidates": 74.8,
+    "density_labels": 42.1,
+    "separate_running_surface": 28.6,
+    "induced_subgraph_inside_split": 11.4,
+    "connected_components_inside_split": 4.2,
+    "cluster_objects": 6.2,
+    "association": 28.3,
+    "process_own_lines": 21.0,
+    "motion_concurrent": 73.6,
+    "note": "Inclusive, overlapping, scene-specific; not additive. Local CPU and remote CUDA backends agree on the ordering of the consumers."
+  },
+  "tail_findings": {
+    "p95_frame_composition_delta_over_median": {
+      "cluster_objects": 24.9,
+      "association": 19.3,
+      "separate_running_surface": 11.7,
+      "cluster_candidates_total": 37.1,
+      "everything_else": 2.1
+    },
+    "flat_costs": "Segment-plane, KD-tree build, voxel down-sample, rail profile, structural mask, robust plane and motion are flat across the p95 band (delta <= 0.1 ms), so the tail is not the geometry stage.",
+    "unexplained": "cluster_objects reached 61.3-62.6 ms on 8 of 201 scans (median 6.04, p95 7.46) with identical input sizes (cloud 22.9k-24.7k, 1417-1591 labels, 273-330 accepted components). A ten-fold stall at constant size is not an algorithmic term; the retained explanation is host-side scheduling or memory stalls, which no algorithmic change in this iteration addresses.",
+    "nondeterminism": "The slowest frames differ between runs of the same recording (overlap only partial), consistent with host noise rather than a per-frame property of the data."
+  },
+  "local_equivalence_of_final_bundle": {
+    "configuration": "CPU native backend with the Open3D plane backend (the CUDA profile cannot be built on this workstation)",
+    "recording": "doubleT_obstacle, 201 scans",
+    "changed_compared_fields": 0,
+    "missing_frames": 0,
+    "extra_frames": 0,
+    "measurement_identity_errors": 0,
+    "largest_compared_float_difference": 8.646604482756559e-14,
+    "local_p50_p95_ms": {"before": [140.66, 164.29], "after": [139.15, 161.88]},
+    "limit": "Equivalence is established on one development recording in a CPU configuration; the CUDA-configuration six-scene panel could not be re-run because the rental account ran out of credit."
+  },
+  "blocker": "The Vast account has no remaining credit ('Your account lacks credit'), so the stopped instance could not be restarted and no further proxy could be rented. The instance (53160114) was destroyed after its artifacts were collected. The CUDA-configuration six-scene panel and the prefetch-depth hypothesis remain unverified.",
+  "next_steps": [
+    "Restore rental credit, rebuild the runtime with build/latency-200-radius-20260928/setup_remote.sh, and run the six-scene panel (configs/latency-200-six-radius-20260928.json) to measure the retained bundle on the CUDA configuration.",
+    "Test the untested hypothesis that the ~60 ms stalls are interference from the bag-decode producer thread: compare prefetch_depth 0, 1, 2, 4 on the same recording; a fixed depth is exactly equivalent, the detector sees the same scans.",
+    "Port the remaining Python-level per-object work (association bookkeeping, per-candidate partition) or the component builder's per-call allocation to the arena, then re-measure; the measured addressable Python and allocation overhead is about 30-40 ms per scan of the 193 ms median.",
+    "Measure the competition stand itself: no proxy result substitutes for the i7-9700E / RTX 4070 Ti SUPER timing."
+  ],
+  "artifacts": {
+    "recipes": [
+      "configs/latency-200-radius-obstacle-odom8-workers8-20260928.json",
+      "configs/latency-200-radius-stages-obstacle-20260928.json",
+      "configs/latency-200-radius-stages-fine-obstacle-20260928.json",
+      "configs/latency-200-radius-split-probe-20260928.json",
+      "configs/latency-200-radius-component-probe-20260928.json",
+      "configs/latency-200-radius-overlap-obstacle-20260928.json",
+      "configs/latency-200-radius-speedscope-obstacle-20260928.json",
+      "configs/latency-200-six-reference-20260928.json",
+      "configs/latency-200-six-radius-20260928.json",
+      "configs/latency-200-six-radius-comparison-20260928.json",
+      "configs/latency-200-radius-local-final-20260928.json",
+      "configs/latency-200-radius-local-final-comparison-20260928.json",
+      "configs/latency-200-radius-thread-comparison-20260928.json"
+    ],
+    "measurements": [
+      "build/latency-200-radius-20260928/speedscope-obstacle.json",
+      "build/latency-200-radius-20260928/stages-obstacle-baseline.json",
+      "build/latency-200-radius-20260928/stages-obstacle-fine.json",
+      "build/latency-200-radius-20260928/split-attribution.json",
+      "build/latency-200-radius-20260928/component-probe",
+      "build/latency-200-radius-20260928/overlap-profile-obstacle-baseline.json",
+      "build/latency-200-radius-20260928/local-cpu-candidates",
+      "build/latency-200-radius-20260928/local-cpu-final-comparison.json"
+    ],
+    "probes": [
+      "build/latency-200-radius-20260928/profile_overlap.py",
+      "build/latency-200-radius-20260928/probe_split.py",
+      "build/latency-200-radius-20260928/probe_components.py",
+      "build/latency-200-radius-20260928/probe_candidates.py",
+      "build/latency-200-radius-20260928/cprofile_scene.py",
+      "build/latency-200-radius-20260928/aggregate_speedscope.py",
+      "build/latency-200-radius-20260928/setup_remote.sh"
+    ]
+  }
+}

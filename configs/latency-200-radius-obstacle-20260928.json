@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-radius-20260928/obstacle-cprofile",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}
+  ],
+  "hypothesis": "The worst-p95 recording's cost is concentrated in a few Python-level consumers that a profiler can name, so the next change can target a measured component instead of a guessed one.",
+  "criterion": "Attribute at least the dominant share of Detector.process wall time to named functions on the complete 201-scan obstacle recording, and confirm the outputs still match the saved six-scene reference in every compared decision and support field."
+}

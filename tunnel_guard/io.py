@@ -29,6 +29,10 @@ class Scan:
     deserialize_s: float = 0.0
     decode_s: float = 0.0
     attributes: PointAttributes | None = None
+    # `detector.prepare_scan` for exactly these `points` and `point_times`, computed here because
+    # this thread is otherwise idle while the detector works on the previous scan. It changes no
+    # value: the same functions on the same inputs produce the same arrays.
+    prepared: tuple | None = None
 
 
 _ATTRIBUTE_KEYS = ("intensity", "ring", "raw_time")
@@ -245,10 +249,16 @@ def decode_cloud(message, rotation: np.ndarray, translation: np.ndarray):
 
 
 def iter_bag(path: Path, config: dict, *, topic: str | None = None, every: int = 1,
-             max_frames: int | None = None, diagnostics: dict | None = None):
+             max_frames: int | None = None, diagnostics: dict | None = None,
+             prepare: bool = True):
     if every < 1 or (max_frames is not None and max_frames < 1):
         raise ValueError("every and max_frames must be positive")
     store = get_typestore(Stores.ROS2_HUMBLE)
+    from . import accelerator
+    from .detector import prepare_scan
+    # The reader thread only ever calls the CPU kernels: the device module's scratch is shared,
+    # so a device call from here would corrupt a scan the detector is still working on.
+    module = accelerator.cpu_native(config)
     rotation = np.asarray(config["sensor_rotation"], dtype=float)
     translation = np.asarray(config["sensor_translation"], dtype=float)
     stats = diagnostics if diagnostics is not None else {}
@@ -292,9 +302,13 @@ def iter_bag(path: Path, config: dict, *, topic: str | None = None, every: int =
             decode_start = time.perf_counter()
             points, times, invalid, duration, attributes = decode_cloud(message, rotation, translation)
             decode_s = time.perf_counter() - decode_start
+            # Only worth doing when a reader thread exists to run ahead of the detector;
+            # without one this runs on the consumer, where the device kernels are faster
+            # (measured, the crop/reduce pair costs 12.5 ms on the CPU against 2.2 ms there).
+            prepared = prepare_scan(points, times, config, module) if prepare else None
             stats["emitted_scans"] += 1
             yield Scan(index, measurement_ns * 1e-9, points, times, message.header.frame_id,
                        connection.topic, message.height * message.width, invalid, duration,
                        measurement_ns, timestamp_ns, duplicates, deserialize_s, decode_s,
-                       attributes)
+                       attributes, prepared)
             emitted += 1

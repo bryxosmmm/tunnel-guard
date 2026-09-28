@@ -1,0 +1,9 @@
+{
+  "bags": [
+    {
+      "bag": "doubleT_obstacle",
+      "before": "build/latency-200-radius-20260928/local-cpu-globalchildren/doubleT_obstacle.jsonl",
+      "after": "build/latency-200-radius-20260928/local-cpu-hosts/doubleT_obstacle.jsonl"
+    }
+  ]
+}

@@ -1,0 +1,49 @@
+{
+  "decision": "retain_ground_proposal_batch_but_do_not_promote_200ms_goal",
+  "hypothesis": "Solve the identical seeded three-point ground proposals in one NumPy batch to remove per-proposal Python/LAPACK dispatch while keeping source returns, admission rules, support and decisions unchanged.",
+  "seed": 20260915,
+  "hardware": "Vast RTX 4080, AMD EPYC 7R13 pinned to cores 0-7, Ubuntu 24.04, CUDA 12.6, OPENBLAS_NUM_THREADS=1, OMP_NUM_THREADS=8; NOT the i7-9700E / RTX 4070 Ti SUPER competition stand",
+  "manifest": "build/latency-200-split-20260928/six-ground-batched/manifest.json",
+  "recipe": "configs/latency-200-six-ground-batched-20260928.json",
+  "quality_comparison_recipe": "configs/latency-200-six-ground-batched-comparison-20260928.json",
+  "quality_comparison": "build/latency-200-split-20260928/six-ground-batched-comparison.json",
+  "paired_same_host_reference": "build/latency-200-split-20260928/reference",
+  "paired_same_host_candidate": "build/latency-200-split-20260928/ground-batched-v2",
+  "paired_stage_profiles": ["build/latency-200-split-20260928/stages-reference/wall-profile.json", "build/latency-200-split-20260928/stages-ground-batched/wall-profile.json"],
+  "quality": {
+    "frames": 2488,
+    "changed_compared_fields": 0,
+    "missing_frames": 0,
+    "extra_frames": 0,
+    "measurement_identity_errors": 0,
+    "largest_compared_float_difference": 5.295902605340075e-13,
+    "limits": "Equivalence on nonexhaustively labelled development recordings is not recall, precision, independent-event false-alarm rate, or field safety."
+  },
+  "full_panel_process_p95_ms": {
+    "doubleT_obstacle": 248.40350821614265,
+    "doubleT_platform": 178.6567777395249,
+    "roundT_doubleT": 202.40935469046235,
+    "roundT_pressureGate_roundT": 212.7019597683102,
+    "roundT_squareT_pressureGate_squareT": 197.6151030510664,
+    "squareT_platform_squareT_switch": 197.31883853673935
+  },
+  "same_host_paired_process_p95_ms": {
+    "doubleT_obstacle": {"reference": 273.4626419842243, "batch": 246.13590817898512},
+    "roundT_pressureGate_roundT": {"reference": 234.52581819146866, "batch": 223.20134406909338}
+  },
+  "rejected_candidates": [
+    {
+      "name": "fused_child_degrees",
+      "trial": "build/latency-200-split-20260928/degree-fusion",
+      "comparison": "build/latency-200-split-20260928/degree-fusion-comparison.json",
+      "reason": "Only 1-2 ms p95 improvement on two complete scenes, within run-to-run variation; implementation reverted."
+    },
+    {
+      "name": "nanoflann_exact_nearest",
+      "benchmark": "build/latency-200-split-20260928/bench-nanoflann.json",
+      "samples": "build/latency-200-split-20260928/split-pairs-replay/split-pairs.npz",
+      "reason": "Five largest preserved real split pairs save only about 1-1.2 ms per build/query; no mismatch on ten pairs, but no complete-panel tie audit or material end-to-end saving to warrant an additional dependency."
+    }
+  ],
+  "gate": "FAILED: three of six complete recordings have Detector.process p95 >200 ms even on the faster proxy; actual stand remains unverified."
+}

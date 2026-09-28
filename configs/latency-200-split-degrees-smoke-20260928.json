@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-split-20260928/degree-smoke",
+  "every": 1,
+  "max_frames": 3,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}
+  ],
+  "hypothesis": "The native same-child CSR degree counter consumes every retained surface-split edge once with the same self count.",
+  "criterion": "Real detector processes the first three scans with valid geometry and without degrading its reported support or motion state; the complete-panel quality comparator is separate."
+}

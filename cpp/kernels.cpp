@@ -762,6 +762,11 @@ PyObject* protrusion_ids(PyObject*, PyObject* args) {
 }
 
 // Per-query flag: some target point lies within the Euclidean protection radius.
+//
+// The caller compares its own point supports, which are tens to a few hundred returns:
+// measured on doubleT_obstacle, the largest call was 96 queries against 96 targets, and all
+// 88 calls in the recording together took 1.7 ms. A grid or tree would spend more on its own
+// construction than the pair loop it replaced, so the direct enumeration stays.
 PyObject* within_radius(PyObject*, PyObject* args) {
     PyObject* query_object;
     PyObject* target_object;
@@ -774,15 +779,12 @@ PyObject* within_radius(PyObject*, PyObject* args) {
         return nullptr;
     }
     const Py_ssize_t queries = query.rows();
-    auto& ids = workspace.i4;
+    const Py_ssize_t targets = target.rows();
     auto& hit = workspace.b1;
     try {
-        ids.clear();
-        for (Py_ssize_t i = 0; i < queries; ++i) ids.push_back(static_cast<int64_t>(i));
         hit.assign(static_cast<size_t>(queries), 0);
         const double* q = query.doubles();
         const double* t = target.doubles();
-        const Py_ssize_t targets = target.rows();
         for (Py_ssize_t i = 0; i < queries; ++i) {
             const double x = q[3 * i], y = q[3 * i + 1], z = q[3 * i + 2];
             for (Py_ssize_t j = 0; j < targets; ++j) {
@@ -794,6 +796,71 @@ PyObject* within_radius(PyObject*, PyObject* args) {
         }
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     return bytes_of(hit.data(), hit.size());
+}
+
+// Neighbour counts of every listed row inside its own child group, in the listed order.
+//
+// `group` is indexed by node and holds a non-negative child tag for the listed rows only; a
+// second array counts only the neighbours the `selected` mask marks. The two counts are the
+// quantities `induced_subgraph(rows).sum(axis=1) + 1` and `induced_subgraph(rows) @ selected
+// + 1` evaluated on the same edges, without materialising a subgraph or running a SciPy
+// reduction. They differ for a group that holds both selected and unselected members, which
+// is exactly what the running-surface partition's core children are: the borders assigned to
+// them are members of the child and are not elevated. A row outside any group counts one,
+// the value a subgraph containing only that row would report.
+PyObject* group_degrees(PyObject*, PyObject* args) {
+    PyObject *indptr_object, *indices_object, *rows_object, *group_object, *selected_object;
+    if (!PyArg_ParseTuple(args, "OOOOO", &indptr_object, &indices_object, &rows_object, &group_object,
+                          &selected_object)) return nullptr;
+    Buffer indptr(indptr_object);
+    Buffer columns(indices_object);
+    Buffer rows(rows_object);
+    Buffer group(group_object);
+    Buffer selected(selected_object);
+    if (!indptr.integers() || !columns.integers() || !rows.integers() || !group.integers()
+            || !selected.flags()) {
+        PyErr_SetString(PyExc_ValueError,
+                        "expected integer indptr, indices, rows and group arrays and a bool selection");
+        return nullptr;
+    }
+    const Py_ssize_t count = rows.size();
+    auto& out = workspace.i6;
+    auto& masked_out = workspace.i5;
+    try {
+        out.assign(static_cast<size_t>(count), 0);
+        masked_out.assign(static_cast<size_t>(count), 0);
+        const int64_t* offsets = indptr.int64s();
+        const int64_t* neighbours = columns.int64s();
+        const int64_t* listed = rows.int64s();
+        const int64_t* tag = group.int64s();
+        const bool* marked = selected.bools();
+        for (Py_ssize_t i = 0; i < count; ++i) {
+            const int64_t row = listed[i];
+            const int64_t own = tag[row];
+            int64_t within = 0, selected_within = 0;
+            if (own >= 0) {
+                for (int64_t edge = offsets[row]; edge < offsets[row + 1]; ++edge) {
+                    const int64_t neighbour = neighbours[edge];
+                    if (tag[neighbour] != own) continue;
+                    ++within;
+                    if (marked[neighbour]) ++selected_within;
+                }
+            }
+            out[static_cast<size_t>(i)] = within + 1;
+            masked_out[static_cast<size_t>(i)] = selected_within + 1;
+        }
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    PyObject* payload = PyTuple_New(2);
+    if (payload == nullptr) return nullptr;
+    PyObject* first = bytes_of(out.data(), out.size() * sizeof(int64_t));
+    PyObject* second = bytes_of(masked_out.data(), masked_out.size() * sizeof(int64_t));
+    if (first == nullptr || second == nullptr) {
+        Py_XDECREF(first); Py_XDECREF(second); Py_DECREF(payload);
+        return nullptr;
+    }
+    PyTuple_SET_ITEM(payload, 0, first);
+    PyTuple_SET_ITEM(payload, 1, second);
+    return payload;
 }
 
 // Track-bed reference: interpolated shift, nearest-anchor extrapolation penalty
@@ -1563,14 +1630,61 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
     const double* bed_height = heights.doubles();
     const bool* is_uncertain = uncertain.bools();
     Arena& scratch = arena();
-    std::vector<int64_t> label_rows, offsets_out, member_rows, reason_codes, relations,
-        distance_codes, support_counts, dense_counts, envelope_counts,
-        uncertain_counts, boundary_counts, support_points, interior_dense;
-    std::vector<double> bbox_min, bbox_max, centres, extents, height_spans, witnesses, distances,
-        nearest_cluster, nearest_supported, nearest_unresolved, interior_heights;
-    std::vector<uint8_t> immediate_flags, intersection_flags;
+    // These are the same buffers every scan, held in the arena rather than reallocated: with
+    // ~1500 components the 26 vectors below used to grow to their own sizes on every call,
+    // several hundred mallocs and frees per scan, on a kernel that must run at the scan rate.
+    auto& label_rows = scratch.i5;
+    auto& offsets_out = scratch.i6;
+    auto& member_rows = scratch.i7;
+    auto& reason_codes = scratch.i8;
+    auto& relations = scratch.i9;
+    auto& distance_codes = scratch.i10;
+    auto& support_counts = scratch.i11;
+    auto& dense_counts = scratch.i12;
+    auto& envelope_counts = scratch.i13;
+    auto& uncertain_counts = scratch.i14;
+    auto& boundary_counts = scratch.i15;
+    auto& support_points = scratch.i16;
+    auto& interior_dense = scratch.i17;
+    auto& bbox_min = scratch.d4;
+    auto& bbox_max = scratch.d5;
+    auto& centres = scratch.d6;
+    auto& extents = scratch.d7;
+    auto& height_spans = scratch.d8;
+    auto& witnesses = scratch.d9;
+    auto& distances = scratch.d10;
+    auto& nearest_cluster = scratch.d11;
+    auto& nearest_supported = scratch.d12;
+    auto& nearest_unresolved = scratch.d13;
+    auto& interior_heights = scratch.d14;
+    auto& immediate_flags = scratch.b1;
+    auto& intersection_flags = scratch.b2;
     try {
         ReleaseGIL released;
+        label_rows.clear();
+        reason_codes.clear();
+        relations.clear();
+        distance_codes.clear();
+        support_counts.clear();
+        dense_counts.clear();
+        envelope_counts.clear();
+        uncertain_counts.clear();
+        boundary_counts.clear();
+        support_points.clear();
+        interior_dense.clear();
+        bbox_min.clear();
+        bbox_max.clear();
+        centres.clear();
+        extents.clear();
+        height_spans.clear();
+        witnesses.clear();
+        distances.clear();
+        nearest_cluster.clear();
+        nearest_supported.clear();
+        nearest_unresolved.clear();
+        interior_heights.clear();
+        immediate_flags.clear();
+        intersection_flags.clear();
         int64_t lowest = 0, highest = -1;
         for (Py_ssize_t i = 0; i < n; ++i) {
             const int64_t value = tag[i];
@@ -1798,8 +1912,8 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
 //
 //   * neighbours are the points within `radius`, capped to the `max_nn` nearest;
 //   * the covariance is sum((x - mean) (x - mean)^T) / n over that capped set;
-//   * the eigen-decomposition stays with NumPy, so the eigenvalues and the
-//     smallest eigenvector are produced by the same solver as before.
+//   * a fixed-order eight-sweep Jacobi eigensolver returns the smallest
+//     eigenvector and all three eigenvalues for each covariance.
 //
 // One grid pass therefore replaces two KD-tree traversals per point and yields
 // the uncapped count as well, which the planarity gate needs. Accumulation order
@@ -1992,6 +2106,69 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
     PyTuple_SET_ITEM(payload, 2, eigenvalue_bytes);
     PyTuple_SET_ITEM(payload, 3, normal_bytes);
     return payload;
+}
+
+// Construct a CSR induced subgraph by visiting only the selected nodes' rows.
+// SciPy's graph[rows][:, rows] scans/copies intermediate parent-sized structures
+// for each split candidate. The selected rows here are unique and ascending;
+// their original sorted neighbor order therefore remains sorted locally.
+PyObject* induced_subgraph(PyObject*, PyObject* args) {
+    PyObject *indptr_object, *indices_object, *rows_object;
+    if (!PyArg_ParseTuple(args, "OOO", &indptr_object, &indices_object, &rows_object)) return nullptr;
+    Buffer indptr(indptr_object), indices(indices_object), rows(rows_object);
+    if (!indptr.integers() || !indices.integers() || !rows.integers() || indptr.size() < 1) {
+        PyErr_SetString(PyExc_ValueError, "expected int64 CSR offsets, columns and sorted unique row indices");
+        return nullptr;
+    }
+    const Py_ssize_t n = indptr.size() - 1;
+    const int64_t* start = indptr.int64s();
+    const int64_t* columns = indices.int64s();
+    const int64_t* selected = rows.int64s();
+    const Py_ssize_t count = rows.size();
+    if (start[0] != 0 || start[n] != indices.size()) {
+        PyErr_SetString(PyExc_ValueError, "invalid CSR offsets");
+        return nullptr;
+    }
+    Arena& scratch = arena();
+    auto& positions = scratch.i0;
+    auto& offsets = scratch.i1;
+    auto& subcolumns = scratch.i2;
+    try {
+        {
+            ReleaseGIL released;
+            positions.assign(static_cast<size_t>(n), -1);
+            for (Py_ssize_t i = 0; i < count; ++i) {
+                const int64_t row = selected[i];
+                if (row < 0 || row >= n || (i && row <= selected[i - 1]))
+                    throw std::invalid_argument("subgraph rows must be sorted, unique and in range");
+                positions[static_cast<size_t>(row)] = i;
+            }
+            offsets.resize(static_cast<size_t>(count) + 1);
+            subcolumns.clear();
+            for (Py_ssize_t i = 0; i < count; ++i) {
+                const int64_t row = selected[i];
+                if (start[row] < 0 || start[row + 1] < start[row] || start[row + 1] > indices.size())
+                    throw std::invalid_argument("invalid CSR row offsets");
+                offsets[static_cast<size_t>(i)] = static_cast<int64_t>(subcolumns.size());
+                for (int64_t edge = start[row]; edge < start[row + 1]; ++edge) {
+                    const int64_t column = columns[edge];
+                    if (column < 0 || column >= n) throw std::invalid_argument("invalid CSR column");
+                    const int64_t local = positions[static_cast<size_t>(column)];
+                    if (local >= 0) subcolumns.push_back(local);
+                }
+            }
+            offsets[static_cast<size_t>(count)] = static_cast<int64_t>(subcolumns.size());
+        }
+        PyObject* left = bytes_of(offsets.data(), offsets.size() * sizeof(int64_t));
+        if (!left) return nullptr;
+        PyObject* right = bytes_of(subcolumns.data(), subcolumns.size() * sizeof(int64_t));
+        if (!right) { Py_DECREF(left); return nullptr; }
+        return Py_BuildValue("NN", left, right);
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    catch (const std::invalid_argument& error) {
+        PyErr_SetString(PyExc_ValueError, error.what());
+        return nullptr;
+    }
 }
 
 // Connected-component labels of a subset of a graph.
@@ -2409,6 +2586,10 @@ static PyMethodDef methods[] = {
      "Observed longitudinal strips of a plane's support."},
     {"component_labels", component_labels, METH_VARARGS,
      "Union-find component labels of a subset, numbered like scipy's."},
+    {"induced_subgraph", induced_subgraph, METH_VARARGS,
+     "CSR induced subgraph for sorted unique rows, with unit weights."},
+    {"group_degrees", group_degrees, METH_VARARGS,
+     "Neighbour count of each row inside its own child group."},
     {"normal_covariances", normal_covariances, METH_VARARGS,
      "Neighbour counts and mean-centred covariances in one grid pass."},
     {"cluster_components", cluster_components, METH_VARARGS,
