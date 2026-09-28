@@ -229,6 +229,7 @@ def main():
                     display_started = time.perf_counter()
                     display.write(row, detector.display_points, scan.measurement_timestamp_ns, detector.display_support)
                     row["visualization_s"] = time.perf_counter() - display_started
+                    display_timings = display.last_timings
                 write_start = time.perf_counter()
                 stream.write(json.dumps(row, allow_nan=False) + "\n")
                 result_write_s = time.perf_counter() - write_start
@@ -238,6 +239,7 @@ def main():
                     "prefetch_depth": prefetch_depth,
                     "ingestion_s": ingestion_s, "deserialize_s": scan.deserialize_s,
                     "decode_s": scan.decode_s, "inference_s": inference_s,
+                    **(display_timings if display is not None else {}),
                     "visualization_s": row.get("visualization_s", 0),
                     "diagnostic_write_s": row.get("diagnostic_write_s", 0),
                     "result_serialize_and_buffer_write_s": result_write_s,

@@ -4,6 +4,7 @@ from __future__ import annotations
 from itertools import product
 from pathlib import Path
 import json
+import time
 
 import numpy as np
 from rosbags.rosbag2 import Writer
@@ -47,16 +48,22 @@ def corridor_edges(description: dict, config: dict) -> np.ndarray:
     edges, previous = [], None
     slope = geometry.plane[1]
     normal = np.sqrt(1 + np.sum(geometry.plane[:2] ** 2))
-    for x in np.arange(config["min_forward_m"], config["max_range_m"], 2.0):
-        center, _, path_uncertainty = geometry.path(np.array([x]))
-        ring = []
-        supported = path_uncertainty[0] <= config["path_max_uncertainty_m"]
-        for h, lateral in contour:
-            dy = (lateral * np.sqrt(1 + slope**2) - slope * h * normal) / (1 + slope**2)
-            p = np.array([[x, center[0] + dy, 0.0]])
-            ground, uncertainty = geometry.ground(p)
-            supported &= uncertainty[0] <= config["ground_max_uncertainty_m"]
-            ring.append([x, p[0, 1], ground[0] + geometry.rail_head_height_m + h * normal])
+    # Batch independent display vertices through the unchanged geometry API.
+    # Keep contour order and support gaps exactly as in the scalar construction.
+    xs = np.arange(config["min_forward_m"], config["max_range_m"], 2.0)
+    centers, _, path_uncertainty = geometry.path(xs)
+    heights, laterals = np.asarray(contour).T
+    dy = (laterals * np.sqrt(1 + slope**2) - slope * heights * normal) / (1 + slope**2)
+    rings = np.zeros((len(xs), len(contour), 3))
+    rings[:, :, 0] = xs[:, None]
+    rings[:, :, 1] = centers[:, None] + dy[None, :]
+    ground, uncertainty = geometry.ground(rings.reshape(-1, 3))
+    rings[:, :, 2] = (ground.reshape(len(xs), -1) + geometry.rail_head_height_m
+                       + heights[None, :] * normal)
+    supported_rings = ((path_uncertainty <= config["path_max_uncertainty_m"])
+                       & (uncertainty.reshape(len(xs), -1)
+                          <= config["ground_max_uncertainty_m"]).all(axis=1))
+    for ring, supported in zip(rings, supported_rings):
         if not supported:
             previous = None
             continue
@@ -91,6 +98,7 @@ class ResultMessages:
 
     def marker(self, header, ns, identity, kind, xyz=(), color=(0., .8, 1., .45), text="", position=(0., 0., 0.), action=0):
         m = self.message
+        point_type = self.store.types["geometry_msgs/msg/Point"]
         empty = np.empty(0, dtype=np.uint8)
         return m("visualization_msgs/msg/Marker", header=header, ns=ns, id=identity, type=kind, action=action,
                  pose=m("geometry_msgs/msg/Pose", m("geometry_msgs/msg/Point", *map(float, position)),
@@ -98,12 +106,13 @@ class ResultMessages:
                  scale=m("geometry_msgs/msg/Vector3", .035, .035, .35 if kind == 9 else .035),
                  color=m("std_msgs/msg/ColorRGBA", *color),
                  lifetime=m("builtin_interfaces/msg/Duration", 0, 300000000), frame_locked=False,
-                 points=[m("geometry_msgs/msg/Point", *map(float, p)) for p in xyz], colors=[],
+                 points=[point_type(*map(float, p)) for p in xyz], colors=[],
                  texture_resource="", texture=m("sensor_msgs/msg/CompressedImage", header, "", empty),
                  uv_coordinates=[], text=text, mesh_resource="",
                  mesh_file=m("visualization_msgs/msg/MeshFile", "", empty), mesh_use_embedded_materials=False)
 
     def build(self, row: dict, points: np.ndarray, timestamp_ns: int, support: dict | None = None):
+        started = time.perf_counter()
         m = self.message
         header = m("std_msgs/msg/Header", m("builtin_interfaces/msg/Time", *divmod(timestamp_ns, 1000000000)),
                    row["coordinate_frame"])
@@ -113,6 +122,7 @@ class ResultMessages:
         fields = [m("sensor_msgs/msg/PointField", name, i * 4, 7, 1) for i, name in enumerate(("x", "y", "z"))]
         point_message = m("sensor_msgs/msg/PointCloud2", header, 1, len(cloud), fields, False, 12,
                           len(cloud) * 12, cloud.view(np.uint8).reshape(-1), True)
+        cloud_done = time.perf_counter()
         markers = [self.marker(header, "clear", 0, 5, action=3)]
         mounting = row.get("mounting")
         if mounting and mounting.get("support_points"):
@@ -142,6 +152,7 @@ class ResultMessages:
                 label += f" | {obj['distance_method']}"
             markers.append(self.marker(header, "object_labels", obj["track_id"], 9, color=color,
                                        text=label, position=obj["bbox_max"]))
+        markers_done = time.perf_counter()
         distances = distance_summary(row)
         text = (f"{self.presentation.upper()} | {row['status']}\n"
                 f"Intrusion={distances['confirmed_intersection_m']} m | uncertain={distances['unresolved_confirmed_m']} m\n"
@@ -163,6 +174,9 @@ class ResultMessages:
                     "nearest_obstacle_m": m("std_msgs/msg/Float32", float(
                         row["nearest_obstacle_m"] if row["nearest_obstacle_m"] is not None else np.nan)),
                     }
+        self.last_timings = {"display_cloud_s": cloud_done - started,
+                             "display_markers_s": markers_done - cloud_done,
+                             "display_build_s": time.perf_counter() - started}
         return payloads
 
 

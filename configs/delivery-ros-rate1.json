@@ -1,0 +1,17 @@
+{
+  "bag": "/input/bag",
+  "input_topic": "/sensing/lidar/hesai128/pointcloud",
+  "detector_config": "/opt/tunnel-guard/configs/detector.json",
+  "input_timeout_s": 3.0,
+  "use_sim_time": false,
+  "dds_settle_s": 2.0,
+  "mode": "rate1",
+  "sequential_frames": 12,
+  "result_timeout_s": 60,
+  "duplicate_duration_s": 5.0,
+  "duplicate_interval_s": 0.1,
+  "silence_duration_s": 4.0,
+  "recovery_frames": 3,
+  "limits": "Actual source record-time schedule at rate 1.0. Record host architecture separately. Send/receipt use host monotonic time, not sensor age.",
+  "drain_s": 15.0
+}

@@ -1,5 +1,7 @@
 # Tunnel Guard
 
+Delivery profiling and the recorded crossing demo: [reproducible recipe](docs/DELIVERY_DEMO.md).
+
 Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 PointCloud2 bags directly; no ROS installation, Docker, or pretrained weights required for the default pipeline.
 
 **Research baseline, not a validated collision-warning system.** Recall, infrastructure alarms, generalization, and runtime remain unresolved. `CASE.md` contains the original requirements. Recorded RViz2 export and a live ROS2 Humble adapter are implemented. The AMD64 Humble container processed a ten-scan real replay under Apple Silicon emulation; native target throughput and the RViz GUI remain unverified.
