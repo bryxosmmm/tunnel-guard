@@ -33,7 +33,8 @@ Ryzen/5090 host—not the specified vehicle stand or live sensor-to-display late
 Person misses and fragmented small-object tracks remain. See
 [CUDA evidence](results/cuda-review-20260928.json) and
 [qualification limits](docs/NATIVE_INTEGRATION.md#rtx-5090-review-verification--2026-09-28).
-This branch is not promoted to `main`.
+This integration was merged into `main` at `8b2c300` on 2026-09-29. The
+recorded measurements above retain their original hardware and run scope.
 
 ## Team release integration — 2026-09-27
 

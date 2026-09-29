@@ -14,14 +14,16 @@ RAM, RTX 4070 Ti SUPER и 5,8 TB диска. Для запуска нужны Do
 проекта и извлечённые ROS 2 bag-каталоги. ROS 2 Humble, Python-зависимости,
 нативное C++-расширение и RViz2 устанавливаются **внутри образа** при сборке;
 системный ROS 2 на хосте не обязателен. GPU текущий основной рецепт не использует.
-Используйте проверенную интеграционную ревизию, а не старую экспериментальную
-ветку: `Dockerfile` находится в корне проекта. Зафиксируйте её полный commit SHA.
-При наличии доступа к приватному репозиторию:
+Собирайте образ из `main`: `Dockerfile` находится в корне проекта. Зафиксируйте
+полный commit SHA перед сборкой. На подготовленном демонстрационном сервере
+`~/tunnel-guard-deploy/source` содержит прежнюю версию решения; не используйте
+этот каталог для сборки текущего `main`. При наличии доступа к репозиторию:
 
 ```sh
-git clone --branch fix/review-integration-20260928 --single-branch \
-  https://github.com/bryxosmmm/tunnel-guard.git
-cd tunnel-guard
+git clone --branch main --single-branch \
+  https://github.com/bryxosmmm/tunnel-guard.git tunnel-guard-main
+cd tunnel-guard-main
+git rev-parse HEAD
 ```
 
 Текущий демонстрационный сервер тоже работает на Ubuntu 22.04 и восьми vCPU,
@@ -49,11 +51,9 @@ data/
 bag-каталоги, сохранив `metadata.yaml` и `.db3` вместе. Для текущего сервера:
 
 ```sh
-cd ~/tunnel-guard-deploy/source
 DEMO_DATA_DIR="$HOME/tunnel-guard-deploy/data"
 test -f "$DEMO_DATA_DIR/for_hackathon/doubleT_obstacle/metadata.yaml"
-cd "$HOME/tunnel-guard-deploy/dataset" && sha256sum -c ../tunnel-guard-SHA256SUMS
-cd "$HOME/tunnel-guard-deploy/source"
+(cd "$HOME/tunnel-guard-deploy/dataset" && sha256sum -c ../tunnel-guard-SHA256SUMS)
 ```
 
 На другом стенде установите `DEMO_DATA_DIR` в абсолютный путь к извлечённому
@@ -97,7 +97,8 @@ sudo docker run --rm -d --name tunnel-guard-live \
 sudo docker logs --tail 20 tunnel-guard-live
 ```
 
-В журнале ожидается `Listening on /sensing/lidar/hesai128/pointcloud`.
+В журнале ожидается `Ready. Reliability=reliable, queue depth=1`. Сверьте
+`input_topic` в команде запуска с темой, указанной в `ros2 bag info`.
 Для другого bag измените `input_topic`. Если источник предлагает только
 best-effort, укажите `input_reliability:=best_effort`. Подписка хранит один
 последний кадр: при перегрузке промежуточные кадры могут выпадать.
@@ -126,7 +127,7 @@ sudo docker exec -it tunnel-guard-live bash -lc \
 
 Смотрите в `/perception/status` поля `status`, `objects`,
 `nearest_obstacle_m` и `measurement_timestamp_ns`. Время
-`callback_to_publish_s` выводится в журнале узла, не в сообщении статуса.
+`callback_to_publish_return_s` выводится в журнале узла, не в сообщении статуса.
 `nearest_obstacle_m` относится к ближайшему **подтверждённому опасному объекту**:
 как с подтверждённым пересечением, так и с неразрешённым отношением к контуру.
 Для подтверждённого пересечения отдельно используйте
