@@ -1,0 +1,9 @@
+{
+  "bags": [
+    {
+      "bag": "doubleT_obstacle",
+      "before": "build/latency-200-20260928/baseline-obstacle/doubleT_obstacle.jsonl",
+      "after": "build/latency-200-20260928/induced-obstacle/doubleT_obstacle.jsonl"
+    }
+  ]
+}

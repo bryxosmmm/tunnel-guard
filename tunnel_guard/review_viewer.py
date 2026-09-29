@@ -108,11 +108,20 @@ def main():
         def do_GET(self):
             url = urlparse(self.path)
             try:
-                if url.path == "/":
+                if url.path in ("/", "/3d"):
                     payload, kind = (
-                        Path(__file__).with_name("review.html").read_bytes(),
+                        Path(__file__).with_name(
+                            "review_3d.html" if url.path == "/3d" else "review.html"
+                        ).read_bytes(),
                         "text/html; charset=utf-8",
                     )
+                elif url.path in ("/vendor/three.module.js", "/vendor/OrbitControls.js"):
+                    # Serve only these two vendored modules; never arbitrary paths.
+                    library = Path(__file__).with_name("vendor") / Path(url.path).name
+                    if not library.is_file():
+                        self.send_error(404, "Packaged 3D renderer is missing; reinstall tunnel-guard")
+                        return
+                    payload, kind = library.read_bytes(), "text/javascript; charset=utf-8"
                 elif url.path == "/metadata":
                     payload = json.dumps(
                         {"bag": args.bag.name, "run": args.run.name,

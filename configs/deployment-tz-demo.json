@@ -1,0 +1,15 @@
+{
+  "hypothesis": "Demonstrate the complete native detector on two supplied, unlabelled ROS 2 bags without using their names to tune decisions.",
+  "seed": 20260915,
+  "detector_config": "/opt/tunnel-guard/configs/detector.json",
+  "output": "/results/tz-demo-full",
+  "every": 1,
+  "max_frames": null,
+  "prefetch_depth": 0,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "/data/for_hackathon/roundT_doubleT", "split": "development"},
+    {"path": "/data/for_hackathon/doubleT_obstacle", "split": "development"}
+  ]
+}

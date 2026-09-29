@@ -1,0 +1,12 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-20260927.json",
+  "output": "build/latency-20260927/cuda-overlap",
+  "every": 1,
+  "max_frames": 201,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [{"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}],
+  "hypothesis": "Registration and independent scan geometry overlap while still using exactly the returned preprocessed frame and current pose.",
+  "criterion": "Every non-timing output field matches the sequential CUDA panel on 201 recorded scans and p50/p95 processing time decreases."
+}

@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-20260928/source-capture",
+  "every": 1,
+  "max_frames": 3,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}
+  ],
+  "hypothesis": "Run metadata retains the complete patched KISS-ICP build source along with the installed binary hash.",
+  "criterion": "Three actual scans complete; source snapshot includes the new exact-search patch with the same local SHA-256."
+}

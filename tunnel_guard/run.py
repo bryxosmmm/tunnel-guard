@@ -21,6 +21,7 @@ import subprocess
 import sys
 import time
 
+from kiss_icp.pybind import kiss_icp_pybind
 import numpy as np
 
 from .detector import Detector, load_config
@@ -59,6 +60,8 @@ def environment() -> dict:
     return {"python": sys.version, "platform": platform.platform(), "machine": platform.machine(),
             "cpu_count": os.cpu_count(),
             "packages": packages,
+            "kiss_icp_binary_sha256": digest(Path(kiss_icp_pybind.__file__)),
+            "kiss_icp_gil_free_odometry": bool(getattr(kiss_icp_pybind, "_gil_free_odometry", False)),
             "source_sha256": {str(p): digest(p) for p in sorted(Path(__file__).parent.glob("*.py"))}}
 
 
@@ -67,7 +70,11 @@ def capture_native_sources(destination: Path) -> dict:
     root = Path(__file__).parent.parent
     hashes = {}
     paths = sorted((root / "cpp").glob("*.cpp")) + sorted((root / "cpp").glob("*.h"))
-    paths += [root / "setup.py", root / "MANIFEST.in"]
+    paths += sorted((root / "cpp" / "cuda").glob("*.cu")) + sorted((root / "cpp" / "cuda").glob("*.cuh"))
+    paths += sorted((root / "cpp" / "cuda").glob("*LICENSE.txt"))
+    paths += [root / "setup.py", root / "setup_cuda.py", root / "MANIFEST.in"]
+    paths += sorted((root / "patches").glob("kiss-icp-*.patch"))
+    paths.append(root / "patches" / "kiss-icp-build-constraints.txt")
     for source in paths:
         if source.is_file():
             relative = source.relative_to(root)
@@ -149,8 +156,16 @@ def main():
         (output / "working-tree.patch").write_bytes(subprocess.check_output(
             ["git", "diff", "HEAD", "--", "tunnel_guard", "configs"], cwd=source_root))
     from . import _native
-    manifest["native_accelerator"] = {"binary_sha256": digest(Path(_native.__file__)),
-        "module": "tunnel_guard._native", "backend": "cpp"}
+    from . import accelerator
+    selected = accelerator.native(config)
+    device_kernels = list(selected.cuda_entry_points()) if hasattr(selected, "cuda_entry_points") else []
+    manifest["native_accelerator"] = {
+        "binary_sha256": digest(Path(selected.__file__)),
+        "module": selected.__name__,
+        "backend": "cuda" if device_kernels else "cpp",
+        "device_entry_points": device_kernels,
+        "cpu_binary_sha256": digest(Path(_native.__file__)),
+        "device": selected.cuda_device_info() if hasattr(selected, "cuda_device_info") else None}
     manifest["native_accelerator"]["sources_sha256"] = capture_native_sources(output / "source")
     write_json(output / "manifest.json", manifest)
     summaries = []
@@ -169,7 +184,8 @@ def main():
         prefetch_depth = int(experiment.get("prefetch_depth", 1))
         iterator = prefetch(iter_bag(bag, config, every=experiment["every"],
                                      max_frames=experiment["max_frames"],
-                                     topic=entry.get("topic"), diagnostics=ingestion),
+                                     topic=entry.get("topic"), diagnostics=ingestion,
+                                     prepare=prefetch_depth >= 1),
                             depth=prefetch_depth)
         from contextlib import nullcontext
         from .visualization import ResultBag
@@ -191,7 +207,7 @@ def main():
                 ingestion_s = inference_start - frame_start
                 row = detector.process(scan.points, scan.timestamp_s, scan.point_times,
                                        capture_diagnostics=scan.index in diagnostic_frames,
-                                       point_attributes=scan.attributes)
+                                       point_attributes=scan.attributes, prepared=scan.prepared)
                 inference_s = time.perf_counter() - inference_start
                 row.update(frame=scan.index, bag=bag.name, raw_points=scan.raw_points,
                            invalid_points=scan.invalid_points, sensor_frame=scan.frame_id,
@@ -215,6 +231,7 @@ def main():
                     display_started = time.perf_counter()
                     display.write(row, detector.display_points, scan.measurement_timestamp_ns, detector.display_support)
                     row["visualization_s"] = time.perf_counter() - display_started
+                    display_timings = display.last_timings
                 write_start = time.perf_counter()
                 stream.write(json.dumps(row, allow_nan=False) + "\n")
                 result_write_s = time.perf_counter() - write_start
@@ -224,6 +241,7 @@ def main():
                     "prefetch_depth": prefetch_depth,
                     "ingestion_s": ingestion_s, "deserialize_s": scan.deserialize_s,
                     "decode_s": scan.decode_s, "inference_s": inference_s,
+                    **(display_timings if display is not None else {}),
                     "visualization_s": row.get("visualization_s", 0),
                     "diagnostic_write_s": row.get("diagnostic_write_s", 0),
                     "result_serialize_and_buffer_write_s": result_write_s,

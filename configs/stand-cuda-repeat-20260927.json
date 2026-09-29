@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-native-planes-20260927.json",
+  "output": "build/panel/cuda-repeat",
+  "every": 1,
+  "max_frames": 300,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Repeat of the same panel on the same tree, for a determinism check at the current state.",
+  "criterion": "Identical compared fields to the previous run of the same recipe."
+}

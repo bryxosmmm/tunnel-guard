@@ -1,0 +1,17 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-equivalent-20260927.json",
+  "output": "build/ransac-probe/frames",
+  "every": 1,
+  "max_frames": 5,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Feasibility: whether Open3D's SegmentPlane can be reproduced bit for bit by a reimplementation, for the plane and for the inlier set, on the real clouds the detector hands it.",
+  "criterion": "Report which reduction-order and FMA combination matches Open3D's returned plane and indices exactly."
+}

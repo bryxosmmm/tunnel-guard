@@ -1,0 +1,16 @@
+{
+  "bag": "/input/bag",
+  "input_topic": "/sensing/lidar/hesai128/pointcloud",
+  "detector_config": "/opt/tunnel-guard/configs/detector.json",
+  "input_timeout_s": 3.0,
+  "use_sim_time": true,
+  "dds_settle_s": 2.0,
+  "mode": "complete",
+  "sequential_frames": 12,
+  "result_timeout_s": 120,
+  "duplicate_duration_s": 5.0,
+  "duplicate_interval_s": 0.1,
+  "silence_duration_s": 4.0,
+  "recovery_frames": 3,
+  "limits": "Actual ROS Humble DDS recording. Complete mode waits for every result; it is not a native-rate benchmark. Record host architecture separately."
+}

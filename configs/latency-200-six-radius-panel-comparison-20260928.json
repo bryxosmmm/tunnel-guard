@@ -1,0 +1,34 @@
+{
+  "bags": [
+    {
+      "bag": "doubleT_obstacle",
+      "before": "build/latency-200-split-20260928/six-ground-batched/doubleT_obstacle.jsonl",
+      "after": "build/latency-200-radius-20260928/six-radius/doubleT_obstacle.jsonl"
+    },
+    {
+      "bag": "doubleT_platform",
+      "before": "build/latency-200-split-20260928/six-ground-batched/doubleT_platform.jsonl",
+      "after": "build/latency-200-radius-20260928/six-radius/doubleT_platform.jsonl"
+    },
+    {
+      "bag": "roundT_doubleT",
+      "before": "build/latency-200-split-20260928/six-ground-batched/roundT_doubleT.jsonl",
+      "after": "build/latency-200-radius-20260928/six-radius/roundT_doubleT.jsonl"
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "before": "build/latency-200-split-20260928/six-ground-batched/roundT_pressureGate_roundT.jsonl",
+      "after": "build/latency-200-radius-20260928/six-radius/roundT_pressureGate_roundT.jsonl"
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "before": "build/latency-200-split-20260928/six-ground-batched/roundT_squareT_pressureGate_squareT.jsonl",
+      "after": "build/latency-200-radius-20260928/six-radius/roundT_squareT_pressureGate_squareT.jsonl"
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "before": "build/latency-200-split-20260928/six-ground-batched/squareT_platform_squareT_switch.jsonl",
+      "after": "build/latency-200-radius-20260928/six-radius/squareT_platform_squareT_switch.jsonl"
+    }
+  ]
+}

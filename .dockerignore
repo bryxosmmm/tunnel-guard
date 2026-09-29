@@ -12,6 +12,10 @@
 !launch/
 !launch/*.py
 !tunnel_guard/review.html
+!tunnel_guard/review_3d.html
+!tunnel_guard/vendor/
+!tunnel_guard/vendor/*.js
+!tunnel_guard/vendor/*LICENSE.txt
 
 !setup.py
 !cpp/

@@ -1,0 +1,28 @@
+<!doctype html><html lang="ru"><meta charset="utf-8"><title>Доставка · реальная запись</title>
+<style>body{margin:24px;font:16px system-ui;background:#151b24;color:#e5ebf2}h1{font-size:25px;margin:0 0 12px}p{max-width:1150px;line-height:1.45}button,select{font:inherit;padding:8px;margin:4px}section{display:flex;gap:16px;flex-wrap:wrap}.panel{flex:1;min-width:360px}canvas{width:100%;background:#0d121a}#status{padding:12px;background:#253244;line-height:1.6;margin:12px 0}small{color:#b5c3d3}.legend{color:#46c9dd}pre{white-space:pre-wrap;font-size:13px}</style>
+<h1>doubleT_obstacle · измерения и решения</h1>
+<p>Опорный контур — не доказанный габарит конкретного поезда. Серое: измеренное display-облако; голубое: контур; цветные точки и сплошной бокс: поддержка детектора; пунктир: объём из PR #40. Координаты, боксы и пороги сохранены.</p>
+<label>Состояние <select id="frame"></select></label><button id="prev">←</button><button id="next">→</button>
+<div id="status" aria-live="polite"></div><section><div class="panel"><h3>Обзор · x/y, м</h3><canvas id="overview" width="1000" height="470"></canvas></div><div class="panel"><h3>Объект · x/y, м</h3><canvas id="zoom" width="1000" height="470"></canvas></div></section>
+<section><div class="panel"><h3>Объект · x/z, м</h3><canvas id="side" width="1000" height="400"></canvas></div><div class="panel"><h3>Свидетельства</h3><pre id="evidence"></pre></div></section>
+<p><small>Это браузерный просмотр сохранённых результатов. Выбор кадров служит объяснению сцены и не измеряет производительность. __LIVE_SCOPE__; проверка RViz GUI и целевой i7 выполняется отдельно. Статус всей сцены может оставаться obstacle после выхода человека из-за других объектов.</small></p>
+<script>
+const frames=__RECORDED_FRAMES__;
+const select=document.getElementById('frame');
+frames.forEach((f,i)=>select.add(new Option(f.title,i)));
+function draw(id,f,dim,box){const c=document.getElementById(id),g=c.getContext('2d'),[x0,x1,y0,y1]=box;
+ g.clearRect(0,0,c.width,c.height);const X=x=>50+(x-x0)/(x1-x0)*(c.width-70),Y=y=>c.height-35-(y-y0)/(y1-y0)*(c.height-65);
+ g.font='25px system-ui';g.strokeStyle='#334252';g.fillStyle='#b6c5d4';
+ for(let i=0;i<=5;i++){const x=x0+(x1-x0)*i/5,y=y0+(y1-y0)*i/5;g.beginPath();g.moveTo(X(x),Y(y0));g.lineTo(X(x),Y(y1));g.stroke();g.fillText(x.toFixed(1),X(x)-15,c.height-10);g.fillText(y.toFixed(1),0,Y(y));}
+ g.save();g.beginPath();g.rect(50,30,c.width-70,c.height-65);g.clip();g.fillStyle='#84919e';
+ for(const p of f.cloud){if(p[0]>=x0&&p[0]<=x1&&p[dim]>=y0&&p[dim]<=y1)g.fillRect(X(p[0]),Y(p[dim]),2,2)}
+ for(const m of f.markers){g.strokeStyle=m.ns==='reference_envelope'?'#46c9dd':`rgb(${m.color.map(x=>Math.round(x*255)).join(',')})`;g.fillStyle=g.strokeStyle;g.lineWidth=m.ns==='reference_envelope'?1:2;
+ if(m.type===5){g.beginPath();for(let i=0;i<m.xyz.length;i+=2){g.moveTo(X(m.xyz[i][0]),Y(m.xyz[i][dim]));g.lineTo(X(m.xyz[i+1][0]),Y(m.xyz[i+1][dim]));}g.stroke()}
+ else for(const p of m.xyz)g.fillRect(X(p[0])-2,Y(p[dim])-2,4,4);}
+ if(f.annotation){let a=f.annotation;g.setLineDash([9,5]);g.strokeStyle='#d38cf0';g.lineWidth=2;g.strokeRect(X(a.bbox_min[0]),Y(a.bbox_max[dim]),X(a.bbox_max[0])-X(a.bbox_min[0]),Y(a.bbox_min[dim])-Y(a.bbox_max[dim]));}g.restore();}
+function update(){let f=frames[+select.value],o=f.target;
+ document.getElementById('status').textContent=f.title+' | timestamp_ns: '+f.stamp+' | сцена: '+f.status+' | объектов: '+f.all_objects+' | display-точек: '+f.cloud.length;
+ document.getElementById('evidence').textContent=o?`Объект выбран по максимальному 3D IoU с разметкой PR #40\nID: ${o.track_id}\nОтношение к контуру: ${o.path_relation}\nПрисутствие confirmed: ${o.confirmed} (${o.confirmation})\nПересечение confirmed: ${o.intersection_confirmed} (${o.intersection_confirmation})\nРасстояние: ${o.distance_m.toFixed(3)} м\nМетод: ${o.distance_method}\nБокс — наблюдаемая поддержка, не амодальная форма человека\n\nHealth: ${f.health}\n${f.reasons.join(', ')}`:`Health: ${f.health}\n${f.reasons.join(', ')}\nTimestamp: ${f.stamp}\nОблако: ${f.cloud.length} точек\nОбъектов: ${f.all_objects}\nСвежесть показана по фактически записанным DDS-сообщениям.\nВозраст от сенсора до хоста не вычислялся.`;
+ draw('overview',f,1,[0,100,-8,8]);draw('zoom',f,1,[52,60,-5,3]);draw('side',f,2,[52,60,-3.5,0]);}
+select.onchange=update;document.getElementById('prev').onclick=()=>{select.value=Math.max(0,+select.value-1);update()};document.getElementById('next').onclick=()=>{select.value=Math.min(frames.length-1,+select.value+1);update()};update();
+</script></html>

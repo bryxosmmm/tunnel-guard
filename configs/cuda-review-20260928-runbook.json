@@ -1,0 +1,39 @@
+{
+  "candidate_archive_commit": "5a2271f",
+  "reference_commit": "7689b8057a3e35ab39ce0e671c37d7efc9cfd1d6",
+  "seed": 20260915,
+  "cpu_affinity": "0-7",
+  "cuda_architecture": "sm_120",
+  "variants": [
+    "reference",
+    "cpu",
+    "cuda",
+    "planes",
+    "overlap"
+  ],
+  "environment": {
+    "PYTHONPATH": ".",
+    "PYTHONHASHSEED": "20260915",
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1"
+  },
+  "ignored_runtime_fields": [
+    "processing_s",
+    "motion_s",
+    "mounting_observation_s",
+    "deserialize_s",
+    "decode_s",
+    "ingestion_s",
+    "inference_s",
+    "read_and_process_s",
+    "visualization_s",
+    "diagnostic_write_s"
+  ],
+  "source_corrections_after_archive": [
+    "tunnel_guard/detector.py: exact deskew crop provenance",
+    "tunnel_guard/segmentation.py: finite elevated-support span"
+  ],
+  "reference_config_note": "Same query_workers=8 and one odometry worker as strict CUDA; no detector thresholds changed."
+}

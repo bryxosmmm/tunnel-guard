@@ -1,0 +1,19 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-20260928/six-aabb",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"},
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_platform", "split": "development_not_blind"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT", "split": "development_not_blind"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT", "split": "development_not_blind"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT", "split": "development_not_blind"},
+    {"path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch", "split": "development_not_blind"}
+  ],
+  "hypothesis": "A strictly conservative KISS-ICP voxel AABB lower bound combines with exact GPU normal covariances and induced CSR subgraphs to improve per-frame latency without changing detector decisions.",
+  "criterion": "All 2488 fixed development frames preserve status, support and tracker identity versus the saved CPU baseline; report p50/p95 per scene and whether p95 is below 200 ms."
+}

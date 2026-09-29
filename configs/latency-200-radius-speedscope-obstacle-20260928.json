@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-radius-20260928/speedscope-obstacle",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}
+  ],
+  "hypothesis": "A sampling profile of the unchanged worst-p95 recording attributes its wall time to specific functions and lines, including the native calls that a per-function profile cannot break down further.",
+  "criterion": "Identify the dominant inclusive consumers on the complete 201-scan obstacle recording, with every decision and support field unchanged against the saved reference."
+}

@@ -4,7 +4,9 @@
 #include <Python.h>
 
 #include <array>
+#include <algorithm>
 #include <cstdint>
+#include <thread>
 #include <vector>
 
 // Voxel key: floor(point / size) per axis, the same derivation for every kernel
@@ -83,8 +85,8 @@ struct KeyTable {
 // Per-thread scratch that grows to the largest frame seen and is then reused, so
 // steady-state frames allocate nothing beyond the copies the caller receives.
 struct Arena {
-    std::vector<double> d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10;
-    std::vector<int64_t> i0, i1, i2, i3, i4, i5, i6;
+    std::vector<double> d0, d1, d2, d3, d4, d5, d6, d7, d8, d9, d10, d11, d12, d13, d14, d15, d16;
+    std::vector<int64_t> i0, i1, i2, i3, i4, i5, i6, i7, i8, i9, i10, i11, i12, i13, i14, i15, i16, i17, i18, i19;
     std::vector<uint8_t> b0, b1, b2, b3, b4;
     std::vector<std::pair<Key, int64_t>> ordered;
     std::vector<std::pair<uint64_t, int64_t>> packed;
@@ -93,9 +95,43 @@ struct Arena {
     std::vector<int64_t> cell_start;   // prefix sums over table slots + 1
     std::vector<int64_t> cell_items;   // flattened memberships, insert order
     std::vector<int64_t> cell_cursor;
+    std::vector<Key> keys;             // per-point voxel keys, computed in parallel
+    std::vector<uint8_t> flags;        // per-point crop/predicate results
+    std::vector<std::pair<int64_t, int64_t>> spans;  // non-empty column extents
 };
 
 Arena& arena();
+
+// Worker count for a pass over `rows` values: one below the threshold where
+// thread setup would cost more than the work, otherwise the cores the process
+// can actually use. `parallel_chunks` and its callers must agree on this value,
+// so it is asked once and passed in.
+unsigned worker_capacity(Py_ssize_t rows);
+
+// Runs [0, rows) as contiguous chunks, one thread per worker, calling
+// body(start, stop, worker). Element-wise kernels use it to get the cores the
+// frame is otherwise leaving idle; because a chunk only ever writes the output
+// elements it owns and the chunks are contiguous, every output element is
+// computed by exactly the same arithmetic, in the same order, as the serial
+// loop it replaces. Kernels that filter keep one sink per worker and
+// concatenate them in worker order, which is the serial order again.
+template <typename Body>
+void parallel_chunks(Py_ssize_t rows, unsigned workers, Body body) {
+    if (rows <= 0) return;
+    if (workers <= 1) {
+        body(static_cast<Py_ssize_t>(0), rows, 0u);
+        return;
+    }
+    std::vector<std::thread> pool;
+    const Py_ssize_t chunk = (rows + static_cast<Py_ssize_t>(workers) - 1) / static_cast<Py_ssize_t>(workers);
+    for (unsigned worker = 0; worker < workers; ++worker) {
+        const Py_ssize_t start = static_cast<Py_ssize_t>(worker) * chunk;
+        const Py_ssize_t stop = std::min(rows, start + chunk);
+        if (start >= stop) break;
+        pool.emplace_back([&body, start, stop, worker] { body(start, stop, worker); });
+    }
+    for (auto& thread : pool) thread.join();
+}
 
 // Group point indices by voxel cell of the given size into the arena's table and
 // flat membership arrays. Any point within `size` of another shares a cell, so
@@ -109,6 +145,8 @@ PyObject* select_crop_voxels(PyObject* self, PyObject* args);
 
 // cpp/kernels.cpp -- registered in kernels.cpp
 PyObject* range_indices(PyObject* self, PyObject* args);
+PyObject* range_indices_open(PyObject* self, PyObject* args);
+PyObject* grouped_medians(PyObject* self, PyObject* args);
 PyObject* mutual_graph(PyObject* self, PyObject* args);
 PyObject* voxel_counts(PyObject* self, PyObject* args);
 PyObject* patch_candidates(PyObject* self, PyObject* args);
@@ -122,6 +160,8 @@ PyObject* mask_apply(PyObject* self, PyObject* args);
 PyObject* cluster_components(PyObject* self, PyObject* args);
 PyObject* normal_covariances(PyObject* self, PyObject* args);
 PyObject* component_labels(PyObject* self, PyObject* args);
+PyObject* induced_subgraph(PyObject* self, PyObject* args);
+PyObject* group_degrees(PyObject* self, PyObject* args);
 PyObject* window_indices(PyObject* self, PyObject* args);
 PyObject* remove_rows(PyObject* self, PyObject* args);
 PyObject* support_strips(PyObject* self, PyObject* args);

@@ -1,0 +1,9 @@
+{
+  "bags": [
+    {
+      "bag": "doubleT_obstacle",
+      "before": "build/latency-200-radius-20260928/local-cpu-merged/doubleT_obstacle.jsonl",
+      "after": "build/latency-200-radius-20260928/local-cpu-batched-annotations/doubleT_obstacle.jsonl"
+    }
+  ]
+}

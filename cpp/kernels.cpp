@@ -20,6 +20,10 @@
 #include "native.h"
 
 #include <algorithm>
+#include <atomic>
+#include <chrono>
+#include <cstdio>
+#include <cstdlib>
 #include <cmath>
 #include <cstring>
 #include <stdexcept>
@@ -27,9 +31,27 @@
 #include <unordered_map>
 #include <utility>
 
+// Phase attribution for the two grid kernels. Compiled in only with
+// -DTG_KERNEL_TIMING: a runtime check around per-point clock reads measured 10 ms per
+// frame, which is more than the phases it was there to explain.
+#ifdef TG_KERNEL_TIMING
+#define TG_CLOCK_NOW() std::chrono::steady_clock::now()
+#define TG_MS_SINCE(start) \
+    (std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - (start)).count())
+#else
+#define TG_CLOCK_NOW() std::chrono::steady_clock::time_point{}
+#define TG_MS_SINCE(start) 0.0
+#endif
+
 Arena& arena() {
     static thread_local Arena instance;
     return instance;
+}
+
+unsigned worker_capacity(Py_ssize_t rows) {
+    if (rows < 4096) return 1;
+    const unsigned hardware = std::thread::hardware_concurrency();
+    return std::max(1u, std::min(hardware ? hardware : 1u, 8u));
 }
 
 void build_cells(const double* points, Py_ssize_t n, double size) {
@@ -132,12 +154,6 @@ PyObject* bytes_of(const void* data, size_t bytes) {
     return PyBytes_FromStringAndSize(static_cast<const char*>(data), static_cast<Py_ssize_t>(bytes));
 }
 
-unsigned worker_count(Py_ssize_t n) {
-    if (n < 4096) return 1;
-    const unsigned hardware = std::thread::hardware_concurrency();
-    return std::max(1u, std::min(hardware ? hardware : 1u, 8u));
-}
-
 // Eigen-decomposition of a symmetric 3x3 matrix: eigenvalues ascending and the
 // eigenvector of the smallest one.
 //
@@ -212,39 +228,45 @@ void interp_into(const double* x, Py_ssize_t n, const double* xp, const double* 
         for (Py_ssize_t i = 0; i < n; ++i) out[i] = fp[0];
         return;
     }
-    for (Py_ssize_t i = 0; i < n; ++i) {
-        const double value = x[i];
-        if (std::isnan(value)) { out[i] = value; continue; }
-        if (value <= xp[0]) { out[i] = fp[0]; continue; }
-        if (value >= xp[m - 1]) { out[i] = fp[m - 1]; continue; }
-        Py_ssize_t low = 0, high = m - 1;
-        while (high - low > 1) {
-            const Py_ssize_t middle = (low + high) / 2;
-            if (xp[middle] <= value) low = middle; else high = middle;
+    const unsigned workers = worker_capacity(n);
+    parallel_chunks(n, workers, [&](Py_ssize_t start, Py_ssize_t stop, unsigned) {
+        for (Py_ssize_t i = start; i < stop; ++i) {
+            const double value = x[i];
+            if (std::isnan(value)) { out[i] = value; continue; }
+            if (value <= xp[0]) { out[i] = fp[0]; continue; }
+            if (value >= xp[m - 1]) { out[i] = fp[m - 1]; continue; }
+            Py_ssize_t low = 0, high = m - 1;
+            while (high - low > 1) {
+                const Py_ssize_t middle = (low + high) / 2;
+                if (xp[middle] <= value) low = middle; else high = middle;
+            }
+            const double slope = (fp[low + 1] - fp[low]) / (xp[low + 1] - xp[low]);
+            out[i] = std::fma(slope, value - xp[low], fp[low]);
         }
-        const double slope = (fp[low + 1] - fp[low]) / (xp[low + 1] - xp[low]);
-        out[i] = std::fma(slope, value - xp[low], fp[low]);
-    }
+    });
 }
 
 void nearest_anchor_into(const double* x, Py_ssize_t n, const double* anchor_x, Py_ssize_t m, double* out) {
-    for (Py_ssize_t i = 0; i < n; ++i) {
-        const double value = x[i];
-        Py_ssize_t position = m;
-        if (!std::isnan(value)) {
-            Py_ssize_t low = 0, high = m;
-            while (low < high) {
-                const Py_ssize_t middle = (low + high) / 2;
-                if (anchor_x[middle] < value) low = middle + 1; else high = middle;
+    const unsigned workers = worker_capacity(n);
+    parallel_chunks(n, workers, [&](Py_ssize_t start, Py_ssize_t stop, unsigned) {
+        for (Py_ssize_t i = start; i < stop; ++i) {
+            const double value = x[i];
+            Py_ssize_t position = m;
+            if (!std::isnan(value)) {
+                Py_ssize_t low = 0, high = m;
+                while (low < high) {
+                    const Py_ssize_t middle = (low + high) / 2;
+                    if (anchor_x[middle] < value) low = middle + 1; else high = middle;
+                }
+                position = low;
             }
-            position = low;
+            if (position < 1) position = 1;
+            if (position > m - 1) position = m - 1;
+            const double left = std::abs(value - anchor_x[position - 1]);
+            const double right = std::abs(anchor_x[position] - value);
+            out[i] = left < right ? left : right;
         }
-        if (position < 1) position = 1;
-        if (position > m - 1) position = m - 1;
-        const double left = std::abs(value - anchor_x[position - 1]);
-        const double right = std::abs(anchor_x[position] - value);
-        out[i] = left < right ? left : right;
-    }
+    });
 }
 
 Py_ssize_t segment_index(const double* edges, Py_ssize_t m, double value) {
@@ -336,12 +358,123 @@ PyObject* range_indices(PyObject*, PyObject* args) {
     auto& kept = workspace.i0;
     try {
         ReleaseGIL released;
+        // Serial: the body is a square root and two comparisons, so a 350k-row pass costs
+        // less than the threads it would take to split it.
         kept.clear();
         for (Py_ssize_t i = 0; i < n; ++i) {
             const double x = data[3 * i], y = data[3 * i + 1], z = data[3 * i + 2];
             const double radius = std::sqrt(x * x + y * y + z * z);
             // A non-finite coordinate yields a non-finite radius and fails a bound.
             if (radius >= minimum && radius <= maximum) kept.push_back(static_cast<int64_t>(i));
+        }
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    return bytes_of(kept.data(), kept.size() * sizeof(int64_t));
+}
+
+// Per-key medians: one representative per key, in ascending key order.
+//
+// The rail refinement groups a window's head points by longitudinal bin and takes the
+// median position of each group, per coordinate, as that group's representative. A median
+// is an order statistic, so it does not depend on how the group is traversed; what matters
+// is that the rows come back in ascending key order, because that is the row order the
+// least-squares fit that follows sees. Measured, this loop was 29 ms of a frame.
+PyObject* grouped_medians(PyObject*, PyObject* args) {
+    PyObject* coords_object;
+    PyObject* keys_object;
+    if (!PyArg_ParseTuple(args, "OO", &coords_object, &keys_object)) return nullptr;
+    Buffer coords(coords_object);
+    Buffer keys(keys_object);
+    if (!coords.matrix(2) || !keys.integers() || keys.size() != coords.rows()) {
+        PyErr_SetString(PyExc_ValueError, "expected (N,2) float64 coordinates and (N,) int64 keys");
+        return nullptr;
+    }
+    const double* values = coords.doubles();
+    const int64_t* key_data = keys.int64s();
+    const Py_ssize_t n = coords.rows();
+    auto& out = workspace.d0;
+    auto& order = workspace.i0;
+    auto& starts = workspace.i1;
+    auto& buffer = workspace.d1;
+    try {
+        {
+        // The GIL is released only around the computation: building the result below is a
+        // Python call and must happen after this scope has ended.
+        ReleaseGIL released;
+        out.clear();
+        order.resize(static_cast<size_t>(n));
+        for (Py_ssize_t i = 0; i < n; ++i) order[static_cast<size_t>(i)] = i;
+        // Ascending key, stable so equal keys keep their input order.
+        std::stable_sort(order.begin(), order.end(), [key_data](int64_t left, int64_t right) {
+            return key_data[left] < key_data[right];
+        });
+        starts.clear();
+        for (Py_ssize_t i = 0; i < n;) {
+            const int64_t key = key_data[order[static_cast<size_t>(i)]];
+            starts.push_back(i);
+            while (i < n && key_data[order[static_cast<size_t>(i)]] == key) ++i;
+        }
+        starts.push_back(n);
+        const Py_ssize_t groups = static_cast<Py_ssize_t>(starts.size()) - 1;
+        out.assign(static_cast<size_t>(groups) * 2, 0.0);
+        if (!buffer.empty() || n > 0) buffer.resize(static_cast<size_t>(n));
+        for (Py_ssize_t group = 0; group < groups; ++group) {
+            const Py_ssize_t begin = starts[static_cast<size_t>(group)];
+            const Py_ssize_t end = starts[static_cast<size_t>(group) + 1];
+            const Py_ssize_t count = end - begin;
+            const Py_ssize_t middle = count / 2;
+            for (int axis = 0; axis < 2; ++axis) {
+                for (Py_ssize_t i = begin; i < end; ++i)
+                    buffer[static_cast<size_t>(i - begin)] = values[2 * order[static_cast<size_t>(i)] + axis];
+                double value = 0.0;
+                if (count % 2 == 1) {
+                    std::nth_element(buffer.begin(), buffer.begin() + middle, buffer.begin() + count);
+                    value = buffer[static_cast<size_t>(middle)];
+                } else {
+                    // NumPy averages the two central order statistics for an even count;
+                    // scaling by 0.5 is the same operation as dividing by two.
+                    std::nth_element(buffer.begin(), buffer.begin() + middle, buffer.begin() + count);
+                    const double high = buffer[static_cast<size_t>(middle)];
+                    std::nth_element(buffer.begin(), buffer.begin() + middle - 1, buffer.begin() + count);
+                    const double low = buffer[static_cast<size_t>(middle - 1)];
+                    value = 0.5 * (low + high);
+                }
+                out[2 * static_cast<size_t>(group) + axis] = value;
+            }
+        }
+        }
+        return bytes_of(out.data(), out.size() * sizeof(double));
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    catch (const std::exception& error) {
+        PyErr_SetString(PyExc_ValueError, error.what());
+        return nullptr;
+    }
+}
+
+// Radial band with kiss-ICP's strict bounds: min < |p| < max.
+//
+// The odometry's own preprocessor keeps the frame's points whose range falls strictly
+// inside the configured band, in input order and unchanged. That is a selection, not
+// arithmetic, so this returns the same rows the library would and the odometry sees the
+// same frame; the strict comparison is what keeps it identical at the bounds.
+PyObject* range_indices_open(PyObject*, PyObject* args) {
+    PyObject* object;
+    double minimum, maximum;
+    if (!PyArg_ParseTuple(args, "Odd", &object, &minimum, &maximum)) return nullptr;
+    Buffer points(object);
+    if (!points.points()) {
+        PyErr_SetString(PyExc_ValueError, "expected contiguous native float64 (N,3)");
+        return nullptr;
+    }
+    const auto* data = points.doubles();
+    const Py_ssize_t n = points.rows();
+    auto& kept = workspace.i0;
+    try {
+        ReleaseGIL released;
+        kept.clear();
+        for (Py_ssize_t i = 0; i < n; ++i) {
+            const double x = data[3 * i], y = data[3 * i + 1], z = data[3 * i + 2];
+            const double radius = std::sqrt((x * x + y * y) + z * z);
+            if (radius < maximum && radius > minimum) kept.push_back(static_cast<int64_t>(i));
         }
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     return bytes_of(kept.data(), kept.size() * sizeof(int64_t));
@@ -434,12 +567,14 @@ PyObject* mutual_graph(PyObject*, PyObject* args) {
     auto& degree = workspace.i2;
     try {
         ReleaseGIL released;
+        const auto start_all = TG_CLOCK_NOW();
         build_cells(data, n, cell);
+        const double build_ms = TG_MS_SINCE(start_all);
         Arena& scratch = arena();
         KeyTable& table = scratch.table;
         // Pair enumeration, threaded over points with arena-backed sinks.
         auto& sinks = workspace.sinks;
-        const unsigned workers = worker_count(n);
+        const unsigned workers = worker_capacity(n);
         sinks.resize(workers);
         for (auto& sink : sinks) sink.clear();
         const auto collect = [&](Py_ssize_t start, Py_ssize_t stop, std::vector<int64_t>& sink) {
@@ -488,6 +623,7 @@ PyObject* mutual_graph(PyObject*, PyObject* args) {
             }
             for (auto& thread : pool) thread.join();
         }
+        const double enumerate_ms = TG_MS_SINCE(start_all) - build_ms;
         size_t total = 0;
         for (const auto& sink : sinks) total += sink.size();
         indptr.assign(static_cast<size_t>(n) + 1, 0);
@@ -511,6 +647,13 @@ PyObject* mutual_graph(PyObject*, PyObject* args) {
             auto begin = indices.begin() + indptr[static_cast<size_t>(i)];
             std::sort(begin, begin + degree[static_cast<size_t>(i)]);
         }
+#ifdef TG_KERNEL_TIMING
+        {
+            const double assemble_ms = TG_MS_SINCE(start_all) - build_ms - enumerate_ms;
+            std::fprintf(stderr, "kernel=mutual_graph n=%lld build=%.3f enumerate=%.3f assemble=%.3f\n",
+                         static_cast<long long>(n), build_ms, enumerate_ms, assemble_ms);
+        }
+#endif
         (void)total;
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     catch (const std::exception& error) {
@@ -619,6 +762,11 @@ PyObject* protrusion_ids(PyObject*, PyObject* args) {
 }
 
 // Per-query flag: some target point lies within the Euclidean protection radius.
+//
+// The caller compares its own point supports, which are tens to a few hundred returns:
+// measured on doubleT_obstacle, the largest call was 96 queries against 96 targets, and all
+// 88 calls in the recording together took 1.7 ms. A grid or tree would spend more on its own
+// construction than the pair loop it replaced, so the direct enumeration stays.
 PyObject* within_radius(PyObject*, PyObject* args) {
     PyObject* query_object;
     PyObject* target_object;
@@ -631,15 +779,12 @@ PyObject* within_radius(PyObject*, PyObject* args) {
         return nullptr;
     }
     const Py_ssize_t queries = query.rows();
-    auto& ids = workspace.i4;
+    const Py_ssize_t targets = target.rows();
     auto& hit = workspace.b1;
     try {
-        ids.clear();
-        for (Py_ssize_t i = 0; i < queries; ++i) ids.push_back(static_cast<int64_t>(i));
         hit.assign(static_cast<size_t>(queries), 0);
         const double* q = query.doubles();
         const double* t = target.doubles();
-        const Py_ssize_t targets = target.rows();
         for (Py_ssize_t i = 0; i < queries; ++i) {
             const double x = q[3 * i], y = q[3 * i + 1], z = q[3 * i + 2];
             for (Py_ssize_t j = 0; j < targets; ++j) {
@@ -651,6 +796,71 @@ PyObject* within_radius(PyObject*, PyObject* args) {
         }
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     return bytes_of(hit.data(), hit.size());
+}
+
+// Neighbour counts of every listed row inside its own child group, in the listed order.
+//
+// `group` is indexed by node and holds a non-negative child tag for the listed rows only; a
+// second array counts only the neighbours the `selected` mask marks. The two counts are the
+// quantities `induced_subgraph(rows).sum(axis=1) + 1` and `induced_subgraph(rows) @ selected
+// + 1` evaluated on the same edges, without materialising a subgraph or running a SciPy
+// reduction. They differ for a group that holds both selected and unselected members, which
+// is exactly what the running-surface partition's core children are: the borders assigned to
+// them are members of the child and are not elevated. A row outside any group counts one,
+// the value a subgraph containing only that row would report.
+PyObject* group_degrees(PyObject*, PyObject* args) {
+    PyObject *indptr_object, *indices_object, *rows_object, *group_object, *selected_object;
+    if (!PyArg_ParseTuple(args, "OOOOO", &indptr_object, &indices_object, &rows_object, &group_object,
+                          &selected_object)) return nullptr;
+    Buffer indptr(indptr_object);
+    Buffer columns(indices_object);
+    Buffer rows(rows_object);
+    Buffer group(group_object);
+    Buffer selected(selected_object);
+    if (!indptr.integers() || !columns.integers() || !rows.integers() || !group.integers()
+            || !selected.flags()) {
+        PyErr_SetString(PyExc_ValueError,
+                        "expected integer indptr, indices, rows and group arrays and a bool selection");
+        return nullptr;
+    }
+    const Py_ssize_t count = rows.size();
+    auto& out = workspace.i6;
+    auto& masked_out = workspace.i5;
+    try {
+        out.assign(static_cast<size_t>(count), 0);
+        masked_out.assign(static_cast<size_t>(count), 0);
+        const int64_t* offsets = indptr.int64s();
+        const int64_t* neighbours = columns.int64s();
+        const int64_t* listed = rows.int64s();
+        const int64_t* tag = group.int64s();
+        const bool* marked = selected.bools();
+        for (Py_ssize_t i = 0; i < count; ++i) {
+            const int64_t row = listed[i];
+            const int64_t own = tag[row];
+            int64_t within = 0, selected_within = 0;
+            if (own >= 0) {
+                for (int64_t edge = offsets[row]; edge < offsets[row + 1]; ++edge) {
+                    const int64_t neighbour = neighbours[edge];
+                    if (tag[neighbour] != own) continue;
+                    ++within;
+                    if (marked[neighbour]) ++selected_within;
+                }
+            }
+            out[static_cast<size_t>(i)] = within + 1;
+            masked_out[static_cast<size_t>(i)] = selected_within + 1;
+        }
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    PyObject* payload = PyTuple_New(2);
+    if (payload == nullptr) return nullptr;
+    PyObject* first = bytes_of(out.data(), out.size() * sizeof(int64_t));
+    PyObject* second = bytes_of(masked_out.data(), masked_out.size() * sizeof(int64_t));
+    if (first == nullptr || second == nullptr) {
+        Py_XDECREF(first); Py_XDECREF(second); Py_DECREF(payload);
+        return nullptr;
+    }
+    PyTuple_SET_ITEM(payload, 0, first);
+    PyTuple_SET_ITEM(payload, 1, second);
+    return payload;
 }
 
 // Track-bed reference: interpolated shift, nearest-anchor extrapolation penalty
@@ -940,7 +1150,9 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
         const double normal_scale =
             plane.size() == 3 ? std::sqrt(1.0 + (model[0] * model[0] + model[1] * model[1])) : 1.0;
         const double lateral_scale = std::sqrt(1.0 + slope_plane * slope_plane);
-        for (Py_ssize_t i = 0; i < n; ++i) {
+        const unsigned workers = worker_capacity(n);
+        parallel_chunks(n, workers, [&](Py_ssize_t begin, Py_ssize_t end, unsigned) {
+        for (Py_ssize_t i = begin; i < end; ++i) {
             const size_t index = static_cast<size_t>(i);
             const double relative = height[index] - rail_head;
             const double running_height = relative / normal_scale;
@@ -1013,6 +1225,7 @@ PyObject* classify_geometry(PyObject*, PyObject* args) {
                 lateral[index] = running[index] = NAN;
             }
         }
+        });
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     PyObject* payload = PyTuple_New(9);
     if (payload == nullptr) return nullptr;
@@ -1162,7 +1375,7 @@ PyObject* mask_apply(PyObject*, PyObject* args) {
         {
             std::vector<std::vector<int64_t>> local(static_cast<size_t>(patches));
             std::vector<std::thread> pool;
-            const unsigned workers = worker_count(patches * sample.rows() / 64);
+            const unsigned workers = worker_capacity(patches * sample.rows() / 64);
             const Py_ssize_t chunk = (patches + static_cast<Py_ssize_t>(workers) - 1) / static_cast<Py_ssize_t>(workers);
             for (unsigned worker = 0; worker < workers; ++worker) {
                 const Py_ssize_t start = static_cast<Py_ssize_t>(worker) * chunk;
@@ -1272,14 +1485,36 @@ PyObject* select_crop_voxels(PyObject*, PyObject* args) {
             ReleaseGIL released;
             KeyTable& table = scratch.table;
             table.reset(static_cast<size_t>(n));
+            auto& keys = scratch.keys;
+            auto& flags = scratch.flags;
+            keys.resize(static_cast<size_t>(n));
+            flags.assign(static_cast<size_t>(n), 0);
+            // Key derivation is per point and is the bulk of the work: compute the crop
+            // predicate and the key together, in parallel, exactly where the serial loop
+            // computed them, then insert in input order so the first representative of a
+            // voxel is still the first measurement in the frame.
+            std::atomic<bool> invalid{false};
+            const unsigned workers = worker_capacity(n);
+            parallel_chunks(n, workers, [&](Py_ssize_t begin, Py_ssize_t stop, unsigned) {
+                for (Py_ssize_t i = begin; i < stop; ++i) {
+                    const double x = data[3 * i], y = data[3 * i + 1];
+                    if (!(x >= min_forward && std::abs(y) < half_width)) continue;
+                    Key key{};
+                    if (!voxel_key_of(data + 3 * i, size, key)) {
+                        invalid.store(true, std::memory_order_relaxed);
+                        return;
+                    }
+                    keys[static_cast<size_t>(i)] = key;
+                    flags[static_cast<size_t>(i)] = 1;
+                }
+            });
+            if (invalid.load(std::memory_order_relaxed))
+                throw std::invalid_argument("nonfinite or out-of-range voxel coordinate");
             int64_t lowest = 0, highest = 0;
             bool any = false;
             for (Py_ssize_t i = 0; i < n; ++i) {
-                const double x = data[3 * i], y = data[3 * i + 1];
-                if (!(x >= min_forward && std::abs(y) < half_width)) continue;
-                Key key{};
-                if (!voxel_key_of(data + 3 * i, size, key))
-                    throw std::invalid_argument("nonfinite or out-of-range voxel coordinate");
+                if (!flags[static_cast<size_t>(i)]) continue;
+                const Key& key = keys[static_cast<size_t>(i)];
                 bool inserted = false;
                 const size_t slot = table.slot_of(key, inserted);
                 if (inserted) table.values[slot] = static_cast<int64_t>(i);
@@ -1302,24 +1537,37 @@ PyObject* select_crop_voxels(PyObject*, PyObject* args) {
                 for (size_t slot = 0; slot < table.keys.size(); ++slot)
                     if (table.used[slot])
                         column_slots[static_cast<size_t>(cursor[static_cast<size_t>(table.keys[slot][0] - lowest)]++)] = static_cast<int64_t>(slot);
-                indices.reserve(table.count);
-                const Key* keys = table.keys.data();
+                // The output position of a column's representatives is its own offsets, so the
+                // per-column ordering can be done independently and written straight into place.
+                auto& spans = scratch.spans;
+                spans.clear();
                 for (int64_t column = 0; column < columns; ++column) {
                     const int64_t begin = offsets[static_cast<size_t>(column)];
                     const int64_t end = offsets[static_cast<size_t>(column) + 1];
-                    if (end == begin) continue;
-                    auto first = column_slots.begin() + begin;
-                    auto last = column_slots.begin() + end;
-                    // Only the representatives inside one column are ordered here.
-                    std::sort(first, last, [keys](int64_t left, int64_t right) {
-                        const Key& a = keys[left];
-                        const Key& b = keys[right];
-                        if (a[1] != b[1]) return a[1] < b[1];
-                        return a[2] < b[2];
-                    });
-                    for (auto entry = first; entry != last; ++entry)
-                        indices.push_back(table.values[static_cast<size_t>(*entry)]);
+                    if (end > begin) spans.emplace_back(begin, end);
                 }
+                indices.assign(static_cast<size_t>(table.count), 0);
+                const Key* table_keys = table.keys.data();
+                const int64_t* values = table.values.data();
+                int64_t* slots = column_slots.data();
+                int64_t* output = indices.data();
+                const unsigned sort_workers = worker_capacity(static_cast<Py_ssize_t>(spans.size()) * 64);
+                parallel_chunks(static_cast<Py_ssize_t>(spans.size()), sort_workers,
+                                [&](Py_ssize_t begin, Py_ssize_t stop, unsigned) {
+                    for (Py_ssize_t index = begin; index < stop; ++index) {
+                        const int64_t first = spans[static_cast<size_t>(index)].first;
+                        const int64_t last = spans[static_cast<size_t>(index)].second;
+                        // Only the representatives inside one column are ordered here.
+                        std::sort(slots + first, slots + last, [table_keys](int64_t left, int64_t right) {
+                            const Key& a = table_keys[left];
+                            const Key& b = table_keys[right];
+                            if (a[1] != b[1]) return a[1] < b[1];
+                            return a[2] < b[2];
+                        });
+                        for (int64_t at = first; at < last; ++at)
+                            output[at] = values[slots[at]];
+                    }
+                });
             }
         }
         return bytes_of(indices.data(), indices.size() * sizeof(int64_t));
@@ -1382,14 +1630,61 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
     const double* bed_height = heights.doubles();
     const bool* is_uncertain = uncertain.bools();
     Arena& scratch = arena();
-    std::vector<int64_t> label_rows, offsets_out, member_rows, reason_codes, relations,
-        distance_codes, support_counts, dense_counts, envelope_counts,
-        uncertain_counts, boundary_counts, support_points, interior_dense;
-    std::vector<double> bbox_min, bbox_max, centres, extents, height_spans, witnesses, distances,
-        nearest_cluster, nearest_supported, nearest_unresolved, interior_heights;
-    std::vector<uint8_t> immediate_flags, intersection_flags;
+    // These are the same buffers every scan, held in the arena rather than reallocated: with
+    // ~1500 components the 26 vectors below used to grow to their own sizes on every call,
+    // several hundred mallocs and frees per scan, on a kernel that must run at the scan rate.
+    auto& label_rows = scratch.i5;
+    auto& offsets_out = scratch.i6;
+    auto& member_rows = scratch.i7;
+    auto& reason_codes = scratch.i8;
+    auto& relations = scratch.i9;
+    auto& distance_codes = scratch.i10;
+    auto& support_counts = scratch.i11;
+    auto& dense_counts = scratch.i12;
+    auto& envelope_counts = scratch.i13;
+    auto& uncertain_counts = scratch.i14;
+    auto& boundary_counts = scratch.i15;
+    auto& support_points = scratch.i16;
+    auto& interior_dense = scratch.i17;
+    auto& bbox_min = scratch.d4;
+    auto& bbox_max = scratch.d5;
+    auto& centres = scratch.d6;
+    auto& extents = scratch.d7;
+    auto& height_spans = scratch.d8;
+    auto& witnesses = scratch.d9;
+    auto& distances = scratch.d10;
+    auto& nearest_cluster = scratch.d11;
+    auto& nearest_supported = scratch.d12;
+    auto& nearest_unresolved = scratch.d13;
+    auto& interior_heights = scratch.d14;
+    auto& immediate_flags = scratch.b1;
+    auto& intersection_flags = scratch.b2;
     try {
         ReleaseGIL released;
+        label_rows.clear();
+        reason_codes.clear();
+        relations.clear();
+        distance_codes.clear();
+        support_counts.clear();
+        dense_counts.clear();
+        envelope_counts.clear();
+        uncertain_counts.clear();
+        boundary_counts.clear();
+        support_points.clear();
+        interior_dense.clear();
+        bbox_min.clear();
+        bbox_max.clear();
+        centres.clear();
+        extents.clear();
+        height_spans.clear();
+        witnesses.clear();
+        distances.clear();
+        nearest_cluster.clear();
+        nearest_supported.clear();
+        nearest_unresolved.clear();
+        interior_heights.clear();
+        immediate_flags.clear();
+        intersection_flags.clear();
         int64_t lowest = 0, highest = -1;
         for (Py_ssize_t i = 0; i < n; ++i) {
             const int64_t value = tag[i];
@@ -1617,8 +1912,8 @@ PyObject* cluster_components(PyObject*, PyObject* args) {
 //
 //   * neighbours are the points within `radius`, capped to the `max_nn` nearest;
 //   * the covariance is sum((x - mean) (x - mean)^T) / n over that capped set;
-//   * the eigen-decomposition stays with NumPy, so the eigenvalues and the
-//     smallest eigenvector are produced by the same solver as before.
+//   * a fixed-order eight-sweep Jacobi eigensolver returns the smallest
+//     eigenvector and all three eigenvalues for each covariance.
 //
 // One grid pass therefore replaces two KD-tree traversals per point and yields
 // the uncapped count as well, which the planarity gate needs. Accumulation order
@@ -1648,20 +1943,27 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
     auto& normals_out = scratch.d2;
     try {
         ReleaseGIL released;
+        const auto start_all = TG_CLOCK_NOW();
         build_cells(data, n, radius);
+        const double build_ms = TG_MS_SINCE(start_all);
         Arena& cells = arena();
         KeyTable& table = cells.table;
         counts.resize(static_cast<size_t>(n));
         covariances.resize(static_cast<size_t>(n) * 6);
         eigenvalues.resize(static_cast<size_t>(n) * 3);
         normals_out.resize(static_cast<size_t>(n) * 3);
-        const unsigned workers = worker_count(n);
+        const unsigned workers = worker_capacity(n);
+        // Diagnostics only: phase attribution for the grid kernels.
+        std::vector<double> gather_totals(workers > 0 ? workers : 1, 0.0);
+        std::vector<double> eigen_totals(workers > 0 ? workers : 1, 0.0);
         // Per-thread scratch: the membership and selection buffers are mutated
         // inside the parallel region, so they cannot live in the shared arena.
-        auto process = [&](Py_ssize_t start, Py_ssize_t stop) {
+        auto process = [&](Py_ssize_t start, Py_ssize_t stop, unsigned worker = 0) {
+            double gather_ms = 0.0, eigen_ms = 0.0;
             std::vector<int64_t> members;
             std::vector<int64_t> picked;
             for (Py_ssize_t i = start; i < stop; ++i) {
+                const auto gather_start = TG_CLOCK_NOW();
                 const double xi = data[3 * i], yi = data[3 * i + 1], zi = data[3 * i + 2];
                 Key low{}, high{};
                 for (int axis = 0; axis < 3; ++axis) {
@@ -1684,6 +1986,8 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
                                 if (distance_squared(data, j, xi, yi, zi) <= radius * radius) members.push_back(j);
                             }
                         }
+                const auto gather_done = TG_CLOCK_NOW();
+                gather_ms += TG_MS_SINCE(gather_start);
                 counts[static_cast<size_t>(i)] = static_cast<int64_t>(members.size());
                 const Py_ssize_t total = static_cast<Py_ssize_t>(members.size());
                 const Py_ssize_t used = total > max_nn ? max_nn : total;
@@ -1744,10 +2048,13 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
                     eigenvalues[3 * static_cast<size_t>(i) + axis] = values[axis];
                     normals_out[3 * static_cast<size_t>(i) + axis] = direction[axis];
                 }
+                eigen_ms += TG_MS_SINCE(gather_done);
             }
+            gather_totals[worker] = gather_ms;
+            eigen_totals[worker] = eigen_ms;
         };
         if (workers <= 1) {
-            process(0, n);
+            process(0, n, 0);
         } else {
             std::vector<std::thread> pool;
             const Py_ssize_t chunk = (n + static_cast<Py_ssize_t>(workers) - 1) / static_cast<Py_ssize_t>(workers);
@@ -1755,10 +2062,25 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
                 const Py_ssize_t start = static_cast<Py_ssize_t>(worker) * chunk;
                 const Py_ssize_t stop = std::min(n, start + chunk);
                 if (start >= stop) break;
-                pool.emplace_back([&process, start, stop] { process(start, stop); });
+                pool.emplace_back([&process, start, stop, worker] { process(start, stop, worker); });
             }
             for (auto& thread : pool) thread.join();
         }
+#ifdef TG_KERNEL_TIMING
+        {
+            double gather = 0.0, eigen = 0.0;
+            for (size_t worker = 0; worker < gather_totals.size(); ++worker) {
+                gather += gather_totals[worker];
+                eigen += eigen_totals[worker];
+            }
+            const double total = build_ms + gather + eigen;
+            std::fprintf(stderr,
+                         "kernel=normal_covariances n=%lld workers=%u build=%.3f gather=%.3f eigen=%.3f "
+                         "total=%.3f ms_per_point_us=%.4f\n",
+                         static_cast<long long>(n), workers, build_ms, gather, eigen, total,
+                         1000.0 * total / static_cast<double>(n));
+        }
+#endif
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
     catch (const std::exception& error) {
         PyErr_SetString(PyExc_ValueError, error.what());
@@ -1784,6 +2106,69 @@ PyObject* normal_covariances(PyObject*, PyObject* args) {
     PyTuple_SET_ITEM(payload, 2, eigenvalue_bytes);
     PyTuple_SET_ITEM(payload, 3, normal_bytes);
     return payload;
+}
+
+// Construct a CSR induced subgraph by visiting only the selected nodes' rows.
+// SciPy's graph[rows][:, rows] scans/copies intermediate parent-sized structures
+// for each split candidate. The selected rows here are unique and ascending;
+// their original sorted neighbor order therefore remains sorted locally.
+PyObject* induced_subgraph(PyObject*, PyObject* args) {
+    PyObject *indptr_object, *indices_object, *rows_object;
+    if (!PyArg_ParseTuple(args, "OOO", &indptr_object, &indices_object, &rows_object)) return nullptr;
+    Buffer indptr(indptr_object), indices(indices_object), rows(rows_object);
+    if (!indptr.integers() || !indices.integers() || !rows.integers() || indptr.size() < 1) {
+        PyErr_SetString(PyExc_ValueError, "expected int64 CSR offsets, columns and sorted unique row indices");
+        return nullptr;
+    }
+    const Py_ssize_t n = indptr.size() - 1;
+    const int64_t* start = indptr.int64s();
+    const int64_t* columns = indices.int64s();
+    const int64_t* selected = rows.int64s();
+    const Py_ssize_t count = rows.size();
+    if (start[0] != 0 || start[n] != indices.size()) {
+        PyErr_SetString(PyExc_ValueError, "invalid CSR offsets");
+        return nullptr;
+    }
+    Arena& scratch = arena();
+    auto& positions = scratch.i0;
+    auto& offsets = scratch.i1;
+    auto& subcolumns = scratch.i2;
+    try {
+        {
+            ReleaseGIL released;
+            positions.assign(static_cast<size_t>(n), -1);
+            for (Py_ssize_t i = 0; i < count; ++i) {
+                const int64_t row = selected[i];
+                if (row < 0 || row >= n || (i && row <= selected[i - 1]))
+                    throw std::invalid_argument("subgraph rows must be sorted, unique and in range");
+                positions[static_cast<size_t>(row)] = i;
+            }
+            offsets.resize(static_cast<size_t>(count) + 1);
+            subcolumns.clear();
+            for (Py_ssize_t i = 0; i < count; ++i) {
+                const int64_t row = selected[i];
+                if (start[row] < 0 || start[row + 1] < start[row] || start[row + 1] > indices.size())
+                    throw std::invalid_argument("invalid CSR row offsets");
+                offsets[static_cast<size_t>(i)] = static_cast<int64_t>(subcolumns.size());
+                for (int64_t edge = start[row]; edge < start[row + 1]; ++edge) {
+                    const int64_t column = columns[edge];
+                    if (column < 0 || column >= n) throw std::invalid_argument("invalid CSR column");
+                    const int64_t local = positions[static_cast<size_t>(column)];
+                    if (local >= 0) subcolumns.push_back(local);
+                }
+            }
+            offsets[static_cast<size_t>(count)] = static_cast<int64_t>(subcolumns.size());
+        }
+        PyObject* left = bytes_of(offsets.data(), offsets.size() * sizeof(int64_t));
+        if (!left) return nullptr;
+        PyObject* right = bytes_of(subcolumns.data(), subcolumns.size() * sizeof(int64_t));
+        if (!right) { Py_DECREF(left); return nullptr; }
+        return Py_BuildValue("NN", left, right);
+    } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
+    catch (const std::invalid_argument& error) {
+        PyErr_SetString(PyExc_ValueError, error.what());
+        return nullptr;
+    }
 }
 
 // Connected-component labels of a subset of a graph.
@@ -2153,24 +2538,30 @@ PyObject* range_summary(PyObject*, PyObject* args) {
         {
             ReleaseGIL released;
             result->assign(static_cast<size_t>(count) * 3, 0);
-            for (Py_ssize_t bin = 0; bin < count; ++bin) {
-                const double low = edges[2 * bin], high = edges[2 * bin + 1];
-                int64_t inside = 0, before = 0, with_geometry = 0;
-                for (Py_ssize_t i = 0; i < rows; ++i) {
-                    const double x = clouds[3 * i];
-                    if (x >= low && x < high) {
-                        ++inside;
-                        if (supported[i]) ++with_geometry;
+            // One pass per bin, bins spread over the workers: the counts are integers and
+            // each bin owns its three output slots, so the result is the serial one.
+            const unsigned workers = count > 0
+                ? std::min(worker_capacity(rows), static_cast<unsigned>(count)) : 1u;
+            parallel_chunks(count, workers, [&](Py_ssize_t begin, Py_ssize_t end, unsigned) {
+                for (Py_ssize_t bin = begin; bin < end; ++bin) {
+                    const double low = edges[2 * bin], high = edges[2 * bin + 1];
+                    int64_t inside = 0, before = 0, with_geometry = 0;
+                    for (Py_ssize_t i = 0; i < rows; ++i) {
+                        const double x = clouds[3 * i];
+                        if (x >= low && x < high) {
+                            ++inside;
+                            if (supported[i]) ++with_geometry;
+                        }
                     }
+                    for (Py_ssize_t i = 0; i < raw_rows; ++i) {
+                        const double x = raw[3 * i];
+                        if (keep[i] && x >= low && x < high) ++before;
+                    }
+                    (*result)[3 * bin] = inside;
+                    (*result)[3 * bin + 1] = before;
+                    (*result)[3 * bin + 2] = with_geometry;
                 }
-                for (Py_ssize_t i = 0; i < raw_rows; ++i) {
-                    const double x = raw[3 * i];
-                    if (keep[i] && x >= low && x < high) ++before;
-                }
-                (*result)[3 * bin] = inside;
-                (*result)[3 * bin + 1] = before;
-                (*result)[3 * bin + 2] = with_geometry;
-            }
+            });
         }
         return bytes_of(result->data(), result->size() * sizeof(int64_t));
     } catch (const std::bad_alloc&) { return PyErr_NoMemory(); }
@@ -2195,12 +2586,20 @@ static PyMethodDef methods[] = {
      "Observed longitudinal strips of a plane's support."},
     {"component_labels", component_labels, METH_VARARGS,
      "Union-find component labels of a subset, numbered like scipy's."},
+    {"induced_subgraph", induced_subgraph, METH_VARARGS,
+     "CSR induced subgraph for sorted unique rows, with unit weights."},
+    {"group_degrees", group_degrees, METH_VARARGS,
+     "Neighbour count of each row inside its own child group."},
     {"normal_covariances", normal_covariances, METH_VARARGS,
      "Neighbour counts and mean-centred covariances in one grid pass."},
     {"cluster_components", cluster_components, METH_VARARGS,
      "Component grouping and statistics of the cluster cloud in one pass."},
     {"select_crop_voxels", select_crop_voxels, METH_VARARGS,
      "Longitudinal-window crop and voxel reduction in one slice-partitioned pass."},
+    {"grouped_medians", grouped_medians, METH_VARARGS,
+     "Per-key medians of two coordinates, in ascending key order."},
+    {"range_indices_open", range_indices_open, METH_VARARGS,
+     "Rows with min < |p| < max, in input order (the odometry preprocessor's selection)."},
     {"range_indices", range_indices, METH_VARARGS,
      "Measurement indices with |p| inside a radial band; non-finite fails a bound."},
     {"mutual_graph", mutual_graph, METH_VARARGS,

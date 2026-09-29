@@ -1,0 +1,36 @@
+{
+  "seed": 20260915,
+  "criterion": "Detector.process per-scene p95 <= 200 ms on the measured RTX 4080 proxy with eight pinned EPYC 7742 CPU cores; unchanged compared quality on all 2488 fixed development frames",
+  "satisfied": false,
+  "proxy": {
+    "instance_id": 53125731,
+    "gpu": "NVIDIA GeForce RTX 4080",
+    "cpu": "AMD EPYC 7742",
+    "pinned_cpus": "0-7",
+    "os": "Ubuntu 24.04",
+    "python": "3.12.3"
+  },
+  "target_mismatch": "CASE.md specifies Intel Core i7-9700E, RTX 4070 Ti SUPER, Ubuntu 22.04 and ROS 2 Humble; these measurements do not prove timing there",
+  "fixed_panel": "configs/latency-200-six-nocopy-20260928.json",
+  "quality_comparison": "build/latency-200-20260928/six-nocopy-comparison.json",
+  "quality": {
+    "frames": 2488,
+    "changed_frames_by_field": {},
+    "missing_frames": 0,
+    "extra_frames": 0,
+    "measurement_identity_errors": 0,
+    "largest_compared_float_difference": 1.0187406473960436e-12,
+    "limitation": "Saved development-recording detector outputs, not exhaustive ground truth, blind-set accuracy or field safety"
+  },
+  "scenes": [
+    {"name": "doubleT_obstacle", "frames": 201, "processing_ms": {"p50": 244.63164107874036, "p95": 309.6168413758278}},
+    {"name": "doubleT_platform", "frames": 345, "processing_ms": {"p50": 190.12815691530704, "p95": 238.8871858827771}},
+    {"name": "roundT_doubleT", "frames": 252, "processing_ms": {"p50": 202.71957106888294, "p95": 267.892537289299}},
+    {"name": "roundT_pressureGate_roundT", "frames": 268, "processing_ms": {"p50": 213.0595480557531, "p95": 276.27110728062684}},
+    {"name": "roundT_squareT_pressureGate_squareT", "frames": 545, "processing_ms": {"p50": 198.67073511704803, "p95": 258.74251369386906}},
+    {"name": "squareT_platform_squareT_switch", "frames": 877, "processing_ms": {"p50": 197.75999477133155, "p95": 262.755655683577}}
+  ],
+  "same_host_obstacle_reference_processing_p95_ms": 353.3528270199895,
+  "remaining_limit": "Sequential geometry, density/surface segmentation, and temporal association dominate after exact CUDA normals and KISS-ICP search pruning; no detector acceptance thresholds or return support were changed",
+  "artifacts": "build/latency-200-20260928/"
+}

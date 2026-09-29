@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-20260928/cprofile-gate",
+  "every": 1,
+  "max_frames": 60,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT", "split": "development_not_blind"}
+  ],
+  "hypothesis": "Python object-level loops and sparse split components account for most remaining serial clustering and association time.",
+  "criterion": "Profile 60 actual gate scans with cProfile; use call counts and cumulative costs only to guide an exact implementation, not as uninstrumented p95."
+}

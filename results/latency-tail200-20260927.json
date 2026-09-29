@@ -1,0 +1,86 @@
+{
+  "seed": 20260915,
+  "target": "Detector.process p95 <= 200 ms on RTX 4080 with EPYC 7742 restricted to CPU cores 0-7",
+  "satisfied": false,
+  "host_reference": {
+    "instance_id": 52986173,
+    "gpu": "RTX 4080",
+    "cpu": "EPYC 7742",
+    "cpu_pinning": "0-7"
+  },
+  "trials": [
+    {
+      "scene": "roundT_pressureGate_roundT",
+      "frames": 268,
+      "baseline_processing_ms": {
+        "p50": 279.5016705058515,
+        "p95": 353.9625174831599,
+        "p99": 391.18326637428254
+      },
+      "cached_icp_processing_ms": {
+        "p50": 263.43028736300766,
+        "p95": 334.6819534664973,
+        "p99": 357.55303859710665
+      },
+      "compared_discrete_fields_identical": true,
+      "largest_compared_float_difference": 6.039613253960852e-14
+    },
+    {
+      "scene": "doubleT_obstacle",
+      "frames": 201,
+      "baseline_processing_ms": {
+        "p50": 276.46103827282786,
+        "p95": 342.7014499902725,
+        "p99": 381.21787877753377
+      },
+      "cached_icp_processing_ms": {
+        "p50": 274.17330630123615,
+        "p95": 341.05484187602997,
+        "p99": 387.73519406095147
+      },
+      "compared_discrete_fields_identical": true,
+      "largest_compared_float_difference": 9.227243535220309e-14
+    }
+  ],
+  "registration_gate_ms": {
+    "KissICP.voxelize": {
+      "p50_ms": 10.96,
+      "p95_ms": 27.107
+    },
+    "Registration.align_points_to_map": {
+      "p50_ms": 155.68,
+      "p95_ms": 242.514
+    },
+    "AdaptiveThreshold.update_model_deviation": {
+      "p50_ms": 0.023,
+      "p95_ms": 0.025
+    },
+    "VoxelHashMap.update": {
+      "p50_ms": 2.934,
+      "p95_ms": 4.101
+    },
+    "KissICP.register_frame": {
+      "p50_ms": 181.71,
+      "p95_ms": 271.975
+    }
+  },
+  "obstacle_serial_geometry_cluster_association_ms": {
+    "p50": 229.16751448065042,
+    "p95": 295.5548595637083,
+    "min": 214.8811905644834
+  },
+  "four_worker_trial": {
+    "gate": {
+      "p50": 447.788973338902,
+      "p95": 566.3317551836371,
+      "p99": 609.8795461701227
+    },
+    "obstacle": {
+      "p50": 447.28778721764684,
+      "p95": 542.2280328348279,
+      "p99": 595.6441899761558
+    }
+  },
+  "failure_analysis": "Optimized exact-neighbor cache saved only 19 ms at the gate p95; pressure-gate ICP registration and obstacle scene serial geometry/clustering independently exceed available time. No threshold or support reduction was made.",
+  "artifacts": "build/latency-tail200/"
+}

@@ -1,0 +1,12 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-20260927.json",
+  "output": "build/latency-20260927/kiss-gil-overlap-16cpu",
+  "every": 1,
+  "max_frames": 201,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [{"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}],
+  "hypothesis": "More available physical CPU cores reduce contention between GIL-free registration and geometry without changing detections.",
+  "criterion": "Measure p50/p95 across 201 frames pinned to cores 0-15 and compare decisions to the eight-core replay."
+}

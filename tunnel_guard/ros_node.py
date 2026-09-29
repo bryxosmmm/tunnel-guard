@@ -11,7 +11,6 @@ import rclpy
 from rclpy.clock import Clock, ClockType
 from rclpy.node import Node
 from rclpy.qos import QoSProfile, ReliabilityPolicy, HistoryPolicy
-from rclpy.serialization import deserialize_message
 from sensor_msgs.msg import PointCloud2
 from std_msgs.msg import Bool, Float32, String
 from visualization_msgs.msg import MarkerArray
@@ -88,12 +87,20 @@ class PerceptionNode(Node):
 
     def publish(self, row, points, stamp, support=None):
         payloads = self.messages.build(row, points, stamp, support)
+        conversion_s = publication_s = 0.0
         for topic, message in payloads.items():
-            typename, native = self.kinds[topic]
+            started = time.monotonic()
+            typename, _ = self.kinds[topic]
             serialized = self.messages.store.serialize_cdr(message, typename)
-            self.publishers_by_topic[topic].publish(
-                deserialize_message(bytes(serialized), native)
-            )
+            # Humble Publisher.publish accepts serialized CDR bytes. Avoid
+            # constructing native Python messages only to serialize them again.
+            converted = bytes(serialized)
+            converted_at = time.monotonic()
+            self.publishers_by_topic[topic].publish(converted)
+            conversion_s += converted_at - started
+            publication_s += time.monotonic() - converted_at
+        return self.messages.last_timings | {
+            "cdr_prepare_s": conversion_s, "publication_calls_s": publication_s}
 
     def unavailable(self, reason):
         row = {
@@ -174,7 +181,9 @@ class PerceptionNode(Node):
                 message, self.rotation, self.translation
             )
             decode_s = time.monotonic() - decode_started
+            detector_started = time.monotonic()
             row = self.detector.process(points, ns * 1e-9, times, point_attributes=attributes)
+            detector_process_s = time.monotonic() - detector_started
             self.last_stamp, self.source_frame = ns, message.header.frame_id
             # Receiving a duplicate does not renew the last usable measurement.
             self.last_received = received
@@ -207,7 +216,7 @@ class PerceptionNode(Node):
                 if row["health"] == "normal":
                     row["health"] = "degraded"
             publish_started = time.monotonic()
-            self.publish(
+            display_timings = self.publish(
                 row, self.detector.display_points, ns, self.detector.display_support
             )
             publish_s = time.monotonic() - publish_started
@@ -215,6 +224,8 @@ class PerceptionNode(Node):
             self.get_logger().info(
                 json.dumps(
                     {
+                        **display_timings,
+                        "detector_process_s": detector_process_s,
                         "scan": self.processed,
                         "stamp_ns": ns,
                         "status": row["status"],

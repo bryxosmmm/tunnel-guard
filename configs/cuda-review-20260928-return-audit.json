@@ -1,0 +1,12 @@
+{
+  "seed": 20260915,
+  "hypothesis": "Packed-grid overflow falls back safely and preserves CPU return-neighborhood results on original recorded coordinates.",
+  "criterion": "Record overflow population, output block digests and every CPU/CUDA discrepancy; this is a raw-return numerical audit, not a detector recipe or field recall measurement.",
+  "detector_config": "configs/cuda-review-20260928-cuda-detector.json",
+  "bag": "build/cuda-review-20260928/smoke-input/doubleT_obstacle",
+  "radius_m": 0.00001,
+  "cell_m": 0.00001,
+  "max_neighbors": 30,
+  "min_neighbors": 6,
+  "output": "build/cuda-review-20260928/return-audit.json"
+}

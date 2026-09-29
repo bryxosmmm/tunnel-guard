@@ -1,10 +1,39 @@
 # Tunnel Guard
 
+Delivery profiling and the recorded crossing demo: [reproducible recipe](docs/DELIVERY_DEMO.md).
+
 Class-agnostic LiDAR obstacle-detection baseline for metro tunnels. Reads ROS 2 PointCloud2 bags directly; no ROS installation, Docker, or pretrained weights required for the default pipeline.
 
 **Research baseline, not a validated collision-warning system.** Recall, infrastructure alarms, generalization, and runtime remain unresolved. `CASE.md` contains the original requirements. Recorded RViz2 export and a live ROS2 Humble adapter are implemented. The AMD64 Humble container processed a ten-scan real replay under Apple Silicon emulation; native target throughput and the RViz GUI remain unverified.
 
+[Инструкция по развёртыванию и демонстрации по ТЗ](docs/DEPLOYMENT_TZ.md)
+содержит команды сборки, запуска ROS 2 bag, проверки выходных тем и просмотра
+сохранённой 3D-сцены, а также границы проведённой проверки.
+
 The initial review and its two real 30-frame prefixes are documented in [docs/AUDIT.md](docs/AUDIT.md) and [docs/EXPERIMENTS.md](docs/EXPERIMENTS.md). Subsequent iterations and historical results below are separate evidence.
+
+## Refreshed integration review — 2026-09-28
+
+The `fix/review-integration-20260928` branch combines PRs #43/#44 and the compatible
+new Buyanov viewer/deployment work, with review corrections. The
+[branch inventory and evidence](results/review-integration-20260928.json) account
+for all 34 fetched remote heads; unchanged research branches retain their explicit
+defer/reject decisions rather than replacing the frozen detector.
+
+Actual CPU replay preserved every non-runtime result/status field across 546
+acquisitions and all four non-status serialized topics across 2,730 total messages.
+The installed-wheel 3D viewer was exercised in a browser. Incomplete replay
+comparisons now fail instead of accepting a matching prefix.
+The subsequent RTX 5090 CUDA review executed five complete 3,998-acquisition
+panels plus a 1,510-acquisition original-return attribution replay. All compared
+non-runtime fields were preserved within the fixed tolerance; eight-worker ICP
+introduced numeric differences up to 2.84e-12, not decision changes. The overlap
+recipe measured 109.5–149.7 ms process p95 across the six real recordings on this
+Ryzen/5090 host—not the specified vehicle stand or live sensor-to-display latency.
+Person misses and fragmented small-object tracks remain. See
+[CUDA evidence](results/cuda-review-20260928.json) and
+[qualification limits](docs/NATIVE_INTEGRATION.md#rtx-5090-review-verification--2026-09-28).
+This branch is not promoted to `main`.
 
 ## Team release integration — 2026-09-27
 
@@ -88,6 +117,9 @@ sensor-to-display latency. PRs #28 (surface support), #34 (contour-labelled hybr
 cases), and #33 (ROS contract) remain separate candidates requiring integration
 and acceptance; their historical claims are not silently included in this score.
 
+The [recorded 3D server demonstration](docs/SERVER_DEMO_20260927.md) documents
+the transferred complete dataset, two complete real-bag runs, SSH viewing
+commands, and the limits of that evidence.
 
 ## Extended dataset: initial real runs
 
@@ -129,6 +161,17 @@ See [small-object review and calibration limits](docs/ENVELOPE_INTERVAL_REVIEW.m
 ## Runtime reduction without reducing coverage
 
 See [runtime profile and verification](docs/RUNTIME_CONTEXT_OPTIMIZATION.md). Avoiding unused background queries and repeated component scans preserved compared outputs on all 798 real scans. That pre-integration version measured 315–469 ms on the development Mac. See [native integration](docs/NATIVE_INTEGRATION.md) for current timings and remaining bottlenecks; target-hardware performance is unverified.
+
+The [optional CUDA/GIL-release evaluation](docs/NATIVE_INTEGRATION.md#optional-cuda-and-odometry-overlap-evaluation--2026-09-27)
+matches all compared CPU decisions on the complete 2,488-scan six-bag panel.
+With eight ICP workers on an eight-core EPYC allocation, per-scene detector
+processing medians are 218–297 ms (p95 289–368 ms). **The accepted gate,
+p95 ≤200 ms on this RTX 4080 host, is not met.** A second same-class host
+replay found p95 343–354 ms on the two profiled recordings. The serial
+geometry, segmentation and association path alone measured 296 ms p95
+on one recording; [the diagnostic record](results/latency-tail200-20260927.json)
+explains the rejected cache and thread-count trials. ROS delivery, the target
+stand, and field safety remain unverified.
 
 ## Decode and complete offline latency
 

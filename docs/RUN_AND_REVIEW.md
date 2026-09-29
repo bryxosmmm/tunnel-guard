@@ -109,6 +109,38 @@ mv SUSTechPOINTS/data/doubleT_obstacle SUSTechPOINTS/data/doubleT_obstacle_perso
 The recipe reads the committed `annotations/sustech-raw/doubleT_obstacle_person`
 labels, rather than requiring the author's untracked `label/` directory.
 
+### Browser 3D replay
+
+The same server exposes `/3d`, with orbit controls, a forward-facing camera,
+frame navigation, playback, point-size adjustment and envelope/object toggles.
+Use `?frame=25&focus=<track_id>` to open a particular observation. The selected
+object's longitudinal distance is shown separately from the nearest confirmed
+intersection; selecting it can isolate its box. Pink points are exact recorded
+support only when that frame saved diagnostic arrays. The track ID is a detector
+association hypothesis, not verified physical identity.
+For the locally retained 201-frame moving sequence:
+
+```sh
+.venv/bin/python -m tunnel_guard.review_viewer \
+  --run build/perf-100ms-after \
+  --bag data/sourcecraft_subset/for_hackathon/roundT_doubleT \
+  --port 8766 --display-max-points 60000
+```
+
+Open `http://127.0.0.1:8766/3d`. Three.js and OrbitControls are bundled in
+`tunnel_guard/vendor` with their MIT notice; no CDN or SUSTechPOINTS checkout
+is needed by the installed viewer. The existing source identity and
+acquisition-time checks also apply to this view. Rendering samples
+the display cloud only; saved detector outputs are unchanged.
+
+The camera and clouds are in the per-scan processing frame. This shows the
+surroundings passing the sensor, not a reconstructed world map or a validated
+train trajectory. Speed selection requests acquisition-time pacing; fetching
+and rendering can make playback slower. It is not an inference benchmark.
+Adjacent objects are hidden initially and can be enabled with the grey-object
+checkbox. A blank distance means no confirmed intersection was reported, not
+that the route is clear.
+
 ## ROS2 Humble container
 
 Container build and runtime evidence are tracked in the iteration report; do not

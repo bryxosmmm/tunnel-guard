@@ -1,0 +1,37 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-20260927.json",
+  "output": "build/latency-20260927/full-six-gil-overlap",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_platform",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_doubleT",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/roundT_squareT_pressureGate_squareT",
+      "split": "development_not_blind"
+    },
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/squareT_platform_squareT_switch",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "The optimized detector retains every CPU decision through late switches, platform segments and pressure-gate transitions, not just the first 201 scans.",
+  "criterion": "Compare all 900 recorded scans per scene where available; require identical decisions and quantify every numeric difference, retained metadata and latency."
+}

@@ -1,0 +1,205 @@
+{
+  "hypothesis": "Preserve recorded detector decisions while reducing processing toward 200 ms.",
+  "criterion": "No changed decisions on all 2488 six-bag scans; target median 200 ms on every scene.",
+  "met_200_ms_on_all_scenes": false,
+  "seed": 20260915,
+  "hardware": "Vast RTX 4080, EPYC 7742, pinned to CPU cores 0-7 for three full replays",
+  "environment": {
+    "python": "3.12.3 (main, Mar 23 2026, 19:04:32) [GCC 13.3.0]",
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "rosbags": "0.11.5",
+      "kiss-icp": "1.3.0",
+      "open3d": "0.19.0",
+      "travel-seg": null,
+      "hdbscan": null,
+      "pypatchworkpp": null
+    },
+    "kiss_icp_gil_free_odometry": true,
+    "kiss_icp_binary_sha256": "27a62417bc10e156c1ee4373cde004df4e953d106247d4a0cb0d62f741e06815"
+  },
+  "scenes": [
+    {
+      "bag": "doubleT_obstacle",
+      "frames": 201,
+      "cpu_processing_ms": {
+        "p50": 663.6562556959689,
+        "p95": 734.8186685703695,
+        "p99": 771.4141430333257
+      },
+      "cuda_odom1_processing_ms": {
+        "p50": 263.97284120321274,
+        "p95": 336.2222402356565,
+        "p99": 341.5048960596323
+      },
+      "cuda_odom8_processing_ms": {
+        "p50": 285.01112619414926,
+        "p95": 358.41424111276865,
+        "p99": 391.3159780204296
+      },
+      "status_frames": {
+        "no_obstacle_observed": 34,
+        "unresolved_obstacle": 10,
+        "obstacle": 155,
+        "candidate": 2
+      }
+    },
+    {
+      "bag": "doubleT_platform",
+      "frames": 345,
+      "cpu_processing_ms": {
+        "p50": 624.9240217730403,
+        "p95": 1109.7890681587164,
+        "p99": 1325.5445414595306
+      },
+      "cuda_odom1_processing_ms": {
+        "p50": 338.1895236670971,
+        "p95": 816.1712893284858,
+        "p99": 1065.1513243466616
+      },
+      "cuda_odom8_processing_ms": {
+        "p50": 245.87949085980654,
+        "p95": 299.3760053999722,
+        "p99": 331.42110377550125
+      },
+      "status_frames": {
+        "candidate": 3,
+        "no_obstacle_observed": 303,
+        "unresolved_obstacle": 18,
+        "obstacle": 21
+      }
+    },
+    {
+      "bag": "roundT_doubleT",
+      "frames": 252,
+      "cpu_processing_ms": {
+        "p50": 700.8345196954906,
+        "p95": 968.2155785383655,
+        "p99": 1033.336872784421
+      },
+      "cuda_odom1_processing_ms": {
+        "p50": 314.82289312407374,
+        "p95": 614.2348664579912,
+        "p99": 639.4693388510497
+      },
+      "cuda_odom8_processing_ms": {
+        "p50": 259.3051784206182,
+        "p95": 317.30830082669854,
+        "p99": 340.4154087929056
+      },
+      "status_frames": {
+        "no_obstacle_observed": 237,
+        "unresolved_obstacle": 7,
+        "obstacle": 7,
+        "candidate": 1
+      }
+    },
+    {
+      "bag": "roundT_pressureGate_roundT",
+      "frames": 268,
+      "cpu_processing_ms": {
+        "p50": 1128.2315868884325,
+        "p95": 1890.4174819821492,
+        "p99": 2042.842767615802
+      },
+      "cuda_odom1_processing_ms": {
+        "p50": 718.2203773409128,
+        "p95": 1316.4338615955785,
+        "p99": 1360.1350385881958
+      },
+      "cuda_odom8_processing_ms": {
+        "p50": 296.54780379496515,
+        "p95": 368.42275459785014,
+        "p99": 402.5730513408777
+      },
+      "status_frames": {
+        "no_obstacle_observed": 254,
+        "unknown": 1,
+        "unresolved_obstacle": 7,
+        "obstacle": 3,
+        "candidate": 3
+      }
+    },
+    {
+      "bag": "roundT_squareT_pressureGate_squareT",
+      "frames": 545,
+      "cpu_processing_ms": {
+        "p50": 831.6208757460117,
+        "p95": 1475.9514187462628,
+        "p99": 1709.4955991022287
+      },
+      "cuda_odom1_processing_ms": {
+        "p50": 452.1946660242975,
+        "p95": 978.7989751435815,
+        "p99": 1059.7679970972238
+      },
+      "cuda_odom8_processing_ms": {
+        "p50": 256.0878009535372,
+        "p95": 324.3539810180663,
+        "p99": 356.1719637550411
+      },
+      "status_frames": {
+        "no_obstacle_observed": 532,
+        "candidate": 3,
+        "unresolved_obstacle": 2,
+        "obstacle": 8
+      }
+    },
+    {
+      "bag": "squareT_platform_squareT_switch",
+      "frames": 877,
+      "cpu_processing_ms": {
+        "p50": 515.1446270756423,
+        "p95": 844.1105157136915,
+        "p99": 1024.409674461931
+      },
+      "cuda_odom1_processing_ms": {
+        "p50": 222.3212467506528,
+        "p95": 436.9798117317257,
+        "p99": 595.7655972614884
+      },
+      "cuda_odom8_processing_ms": {
+        "p50": 217.77388034388423,
+        "p95": 288.9286242425441,
+        "p99": 319.5509868487716
+      },
+      "status_frames": {
+        "no_obstacle_observed": 875,
+        "candidate": 1,
+        "unresolved_obstacle": 1
+      }
+    }
+  ],
+  "quality": {
+    "cuda_odom1": {
+      "identical_discrete_fields": true,
+      "max_float_difference": 0.0,
+      "missing_frames": 0,
+      "extra_frames": 0
+    },
+    "cuda_odom8": {
+      "identical_discrete_fields": true,
+      "max_float_difference": 1.149302875091962e-12,
+      "missing_frames": 0,
+      "extra_frames": 0
+    }
+  },
+  "limitations": [
+    "Recorded output equivalence is not independent field accuracy; negative labels are nonexhaustive.",
+    "Eight registration workers use TBB reductions with non-bitwise pose repeatability.",
+    "Processing excludes decoding, serialization, ROS queues, transport and sensor-to-warning age.",
+    "Single sequential replay per variant on a shared GPU host; quantiles are descriptive, not a hard deadline.",
+    "The target i7-9700E stand was not measured."
+  ],
+  "artifacts": {
+    "cpu": "build/latency-20260927/full-six-cpu",
+    "cuda_odom1": "build/latency-20260927/full-six-gil-overlap",
+    "cuda_odom8": "build/latency-20260927/full-six-gil-odom8",
+    "comparisons": [
+      "build/latency-20260927/full-six-comparison.json",
+      "build/latency-20260927/full-six-odom8-comparison.json"
+    ],
+    "wheel_sha256": "169403762d157a758e0748db5c19bdba4e466bcaa9980593beedbbded95fd765"
+  }
+}

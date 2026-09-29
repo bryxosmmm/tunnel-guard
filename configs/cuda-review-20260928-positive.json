@@ -1,0 +1,8 @@
+{
+  "seed": 20260915,
+  "hypothesis": "The CUDA backend retains original-return-attributed presence and corridor evidence for the ten frozen organizer insertions.",
+  "criterion": "Complete all 1510 acquisitions; report every event separately with presence, intersection, source identity and track IDs. Preserve historical contour disagreements and non-field validity limits.",
+  "frozen_plan": "configs/autoresearch-issue23.json",
+  "detector_config": "configs/cuda-review-20260928-cuda-detector.json",
+  "output": "build/cuda-review-20260928/positive"
+}

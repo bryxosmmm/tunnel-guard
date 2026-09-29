@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from collections import Counter, deque
+from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
 import time
@@ -9,6 +10,7 @@ import time
 import numpy as np
 from kiss_icp.config import KISSConfig
 from kiss_icp.kiss_icp import KissICP
+from kiss_icp.pybind import kiss_icp_pybind
 from scipy.optimize import linear_sum_assignment
 from scipy.spatial import cKDTree
 
@@ -48,6 +50,27 @@ def load_config(path: str | Path) -> dict:
     ransac_threads = config.get("background", {}).get("ransac_threads", 1)
     if type(ransac_threads) is not int or ransac_threads < 1:
         raise ValueError("background.ransac_threads must be a positive integer")
+    if not isinstance(config.get("odometry_native_preprocess", True), bool):
+        raise ValueError("odometry_native_preprocess must be boolean")
+    overlap = config.get("overlap_motion_geometry", False)
+    if not isinstance(overlap, bool):
+        raise ValueError("overlap_motion_geometry must be boolean")
+    if overlap and (config.get("deskew_enabled", False)
+                    or not config.get("odometry_native_preprocess", True)
+                    or config.get("background_refit_travel_m", 0.0) > 0
+                    or config.get("background_refit_every_frames", 1) > 1):
+        raise ValueError("overlap_motion_geometry requires no deskew, native odometry preprocessing "
+                         "and a fresh background fit each scan")
+    if overlap and not getattr(kiss_icp_pybind, "_gil_free_odometry", False):
+        raise RuntimeError("overlap_motion_geometry requires the pinned KISS-ICP GIL-release wheel")
+    plane_backend = config.get("background", {}).get("plane_backend", "open3d")
+    if plane_backend not in ("open3d", "native"):
+        raise ValueError("background.plane_backend must be 'open3d' or 'native'")
+    if plane_backend == "native" and config.get("native_backend", "cpu") != "cuda":
+        raise ValueError("background.plane_backend 'native' needs native_backend 'cuda': the exact port "
+                         "lives in the device backend")
+    if config.get("native_backend", "cpu") not in ("cpu", "cuda"):
+        raise ValueError("Unknown native_backend; expected 'cpu' or 'cuda'")
     query_workers = config.get("query_workers", -1)
     if type(query_workers) is not int or (query_workers < 1 and query_workers != -1):
         raise ValueError("query_workers must be -1 (all cores) or a positive integer")
@@ -82,20 +105,41 @@ def voxel_unique_at(config: dict, reductive_size: float | None) -> bool:
     return size == reductive_size
 
 
-def _far_field_bound(distance_m: float, geometry: TrackGeometry, config: dict) -> float | None:
-    """The path uncertainty the classifier itself used at that distance, reported per object.
+def _far_field_bounds(distances_m: np.ndarray, geometry: TrackGeometry) -> list:
+    """The path uncertainty the classifier itself used at each distance.
 
-    Reporting the same sigma keeps the stated uncertainty and the decision consistent by
-    construction: inside the modelled horizon it is the small calibrated value (measured centre error
-    / claimed sigma was 0.46-1.34 over 10-110 m of extrapolation in
-    results/alignment-long-lever-20260919.json), and beyond the horizon it is not bounded at all -
-    reported as None rather than as an invented finite number, because there the corridor is not used
-    for any decision and a numeric bound would imply knowledge that does not exist.
+    Same value as one `_far_field_bound` call per distance: `TrackGeometry.path` applies only
+    element-wise operations, so evaluating the distances together returns the identical
+    numbers for each of them and costs one NumPy dispatch instead of one per object.
     """
     if len(geometry.rail_anchors) < 2:
-        return None
-    uncertainty = float(geometry.path(np.array([distance_m]))[2][0])
-    return uncertainty if np.isfinite(uncertainty) else None
+        return [None] * len(distances_m)
+    if not len(distances_m):
+        return []
+    uncertainty = geometry.path(np.asarray(distances_m, dtype=float))[2]
+    return [float(value) if np.isfinite(value) else None for value in uncertainty]
+
+
+class _NativePreprocessor:
+    """kiss-ICP's frame preprocessing, replaced by the selection it performs.
+
+    With deskew disabled the library keeps the points whose range falls strictly inside the
+    configured band, in input order and unchanged - a selection, not arithmetic. Doing it
+    here is therefore the same frame, and it is measured at a fraction of the cost. If the
+    deskew is ever enabled this refuses to stand in, because then the preprocessing includes
+    motion compensation.
+    """
+
+    def __init__(self, config: dict):
+        self.minimum = float(config["min_range_m"])
+        self.maximum = float(config["max_range_m"])
+        self.native = accelerator.native(config)
+
+    def preprocess(self, frame: np.ndarray, timestamps: np.ndarray, relative_motion: np.ndarray):
+        # Timestamps may be present while the deskew is disabled: the library ignores them in
+        # exactly that case, and the deskew flag is checked where this object is installed.
+        rows = accelerator.range_indices_open(frame, self.minimum, self.maximum, self.native)
+        return frame[rows]
 
 
 def relation_reason(obj: dict) -> str:
@@ -257,7 +301,46 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     # backends, so a reported reason and the decision it explains can never come from
     # different code. `_support_indices` indexes this cluster cloud, the same array the masks
     # above index.
-    for obj in objects:
+    # Every count below is a property of a component's own rows, so the reductions are taken
+    # once over the concatenation of those rows, keyed by component, instead of per component.
+    # Measured on doubleT_obstacle, 310 objects made this six reductions and four order
+    # statistics per object - about 3 100 NumPy calls per scan - which cost more than the
+    # counting itself.
+    support_rows = [obj.pop("_support_indices") for obj in objects]
+    lengths = np.fromiter((len(rows) for rows in support_rows), dtype=np.int64, count=len(objects))
+    filled = np.flatnonzero(lengths)
+    if len(filled):
+        flat_rows = np.concatenate([support_rows[index] for index in filled])
+        starts = np.r_[0, np.cumsum(lengths[filled])[:-1]].astype(np.int64)
+        owner = np.repeat(filled, lengths[filled])
+    else:
+        flat_rows = np.empty(0, dtype=np.int64)
+        starts = np.empty(0, dtype=np.int64)
+        owner = np.empty(0, dtype=np.int64)
+
+    def per_component(selection: np.ndarray) -> np.ndarray:
+        """Number of selected support rows in each component, in object order."""
+        if not len(filled):
+            return np.zeros(len(objects), dtype=np.int64)
+        return np.bincount(owner[selection[flat_rows]], minlength=len(objects))
+
+    interior_counts = per_component(nominal_overlap)
+    certified_counts = per_component(core & ~structural)
+    structural_counts = per_component(nominal_overlap & structural)
+    unmeasured_counts = per_component(unmeasured & ~structural)
+    claim_counts = per_component(claim)
+    boundary_counts = per_component(boundary & ~structural)
+    lateral_low = np.zeros(len(objects))
+    lateral_high = np.zeros(len(objects))
+    height_low = np.zeros(len(objects))
+    height_high = np.zeros(len(objects))
+    if geometry.valid and len(filled):
+        lateral_low[filled] = np.minimum.reduceat(lateral[flat_rows], starts)
+        lateral_high[filled] = np.maximum.reduceat(lateral[flat_rows], starts)
+        height_low[filled] = np.minimum.reduceat(running_height[flat_rows], starts)
+        height_high[filled] = np.maximum.reduceat(running_height[flat_rows], starts)
+
+    for position, obj in enumerate(objects):
         group = split_groups.get(obj["component_id"])
         secondary = group is not None and group["parent"] != obj["component_id"]
         obj["_split_secondary"] = secondary
@@ -268,20 +351,22 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
         if group is not None and not secondary:
             obj["tracking_reference_bounds"] = {
                 "bbox_min": group["bbox_min"], "bbox_max": group["bbox_max"]}
-        rows = obj.pop("_support_indices")
-        obj["lateral_m"] = ([float(lateral[rows].min()), float(lateral[rows].max())]
+        obj["lateral_m"] = ([float(lateral_low[position]), float(lateral_high[position])]
                             if geometry.valid else [None, None])
-        obj["height_above_railhead_m"] = ([float(running_height[rows].min()),
-                                          float(running_height[rows].max())]
+        obj["height_above_railhead_m"] = ([float(height_low[position]), float(height_high[position])]
                                          if geometry.valid else [None, None])
-        obj["interior_voxels"] = int(np.count_nonzero(nominal_overlap[rows]))
-        obj["certified_unexplained_voxels"] = int(np.count_nonzero(core[rows] & ~structural[rows]))
-        obj["interior_structural_voxels"] = int(np.count_nonzero(nominal_overlap[rows] & structural[rows]))
-        obj["interior_unmeasured_voxels"] = int(np.count_nonzero(unmeasured[rows] & ~structural[rows]))
-        obj["claim_voxels"] = int(np.count_nonzero(claim[rows]))
-        obj["boundary_unexplained_voxels"] = int(np.count_nonzero(boundary[rows] & ~structural[rows]))
+        obj["interior_voxels"] = int(interior_counts[position])
+        obj["certified_unexplained_voxels"] = int(certified_counts[position])
+        obj["interior_structural_voxels"] = int(structural_counts[position])
+        obj["interior_unmeasured_voxels"] = int(unmeasured_counts[position])
+        obj["claim_voxels"] = int(claim_counts[position])
+        obj["boundary_unexplained_voxels"] = int(boundary_counts[position])
         obj["path_relation_reason"] = relation_reason(obj)
-        obj["_unexplained"] = rows[boundary[rows] & ~structural[rows]]
+        # Only the components that reported unexplained boundary evidence can contribute a
+        # probe, and the count just taken is the same predicate this subset applies.
+        rows = support_rows[position]
+        obj["_unexplained"] = (rows[boundary[rows] & ~structural[rows]]
+                               if boundary_counts[position] else np.empty(0, dtype=np.int64))
     # How far edge-uncertain evidence sits from the tunnel's own cross-section. The cell test
     # cannot hold a surface whose rail-relative position moves more than a cell along the
     # scan - measured, the tunnel's own wall base and platform edge do - so a few of their
@@ -312,6 +397,35 @@ def cluster_candidates(points: np.ndarray, geometry: TrackGeometry, config: dict
     # Keep association order independent of the selected distance definition.
     return sorted(objects, key=lambda o: o["cluster_nearest_x_m"])
 
+def prepare_scan(points: np.ndarray, point_times: np.ndarray, config: dict, module) -> tuple:
+    """The reductions of a scan that depend on the configuration alone.
+
+    A non-finite coordinate always yields a non-finite radius, which fails one of the range
+    bounds, so an explicit finite test would drop exactly the same rows; measurements are
+    decoded as float64 triples. These arrays are identical wherever they are computed, so the
+    bag reader can take them while the detector is still busy with the previous scan. Returns
+    the in-range returns, their point times, the exact rows the range filter kept, the subset
+    the geometry stage classifies, that subset's context mask, the geometry voxel rows and the
+    reduced cloud.
+    """
+    keep = accelerator.range_indices(points, config["min_range_m"], config["max_range_m"], module)
+    # A scan whose returns are all in range does not need a copy of itself, and nothing
+    # downstream writes into the array.
+    in_range = points[keep] if len(keep) != len(points) else points
+    times = point_times
+    if len(times):
+        times = times[keep]
+        if len(times) and np.ptp(times) == 0:
+            times = np.empty(0)
+    frame_rows = accelerator.range_indices_open(in_range, config["min_range_m"], config["max_range_m"], module)
+    frame = in_range if len(frame_rows) == len(in_range) else in_range[frame_rows]
+    half = float(config["context_half_width_m"])
+    crop = (frame[:, 0] >= config["min_forward_m"]) & (np.abs(frame[:, 1]) < half)
+    voxel_rows = accelerator.crop_voxels(frame, config["min_forward_m"], half,
+                                         config["geometry_voxel_m"], module)
+    return in_range, times, keep, frame, crop, voxel_rows, frame[voxel_rows]
+
+
 class Detector:
     def __init__(self, config: dict):
         self.native_kernels = accelerator.native(config)
@@ -330,6 +444,8 @@ class Detector:
         self.display_support = {}
         self.diagnostic_arrays = {}
         self.motion_translation_covariance = np.eye(3) * config["tracking_pose_sigma_m"]**2
+        self.motion_executor = (ThreadPoolExecutor(max_workers=1, thread_name_prefix="tg-motion")
+                                if config.get("overlap_motion_geometry", False) else None)
 
     def _new_odometry(self):
         cfg = KISSConfig()
@@ -339,7 +455,17 @@ class Detector:
         cfg.mapping.voxel_size = self.config["odometry_voxel_m"]
         cfg.registration.max_num_iterations = self.config["odometry_max_iterations"]
         cfg.registration.max_num_threads = self.config["odometry_threads"]
-        return KissICP(cfg)
+        odometry = KissICP(cfg)
+        if self.config.get("odometry_native_preprocess", not cfg.data.deskew):
+            if cfg.data.deskew:
+                raise ValueError("odometry_native_preprocess requires deskew to be disabled: the "
+                                 "library's preprocessing would include motion compensation")
+            odometry.preprocessor = _NativePreprocessor(self.config)
+        return odometry
+
+    def _timed_motion(self, points: np.ndarray, point_times: np.ndarray):
+        started = time.perf_counter()
+        return self._motion(points, point_times), time.perf_counter() - started
 
     def _motion(self, points: np.ndarray, point_times: np.ndarray):
         if self.diagnostic_arrays:
@@ -476,26 +602,50 @@ class Detector:
             rows, columns = linear_sum_assignment(padded)
             for row, column in zip(rows, columns):
                 if column < len(pool_columns) and cost[row, column] < 1e6:
-                    matched[int(pool_columns[column])] = pool_ids[row]
+                    matched[int(pool_columns[column])] = (pool_ids[row], inverse[row])
+        # The assignment cost already inverted each innovation covariance.
+        # Propagate the matched covariances together, but keep each state-vector
+        # update in its original matrix-vector order below.
+        updated = {}
+        if matched:
+            order = sorted(matched)
+            prior_covariance = np.stack([predicted[matched[index][0]][1] for index in order])
+            inverse_covariance = np.stack([matched[index][1] for index in order])
+            gain = prior_covariance[:, :, :3] @ inverse_covariance
+            observation = np.zeros((3, 6))
+            observation[:, :3] = np.eye(3)
+            factor = np.eye(6)[None] - gain @ observation
+            next_covariance = (factor @ prior_covariance @ factor.transpose(0, 2, 1)
+                               + gain @ measurement_cov @ gain.transpose(0, 2, 1))
+            updated = {index: (gain[row], next_covariance[row]) for row, index in enumerate(order)}
         pending: list[dict] = []
+        # Values the loop below used to re-evaluate for every one of ~310 objects: the pose
+        # rotation (a slice and a transpose per object), the frame window and the initial
+        # covariance of a new track. Same expressions, evaluated once.
+        frame_number = self.frame_number
+        window = cfg["confirmation_window"]
+        window_start = frame_number - window
+        confirmation_hits = cfg["confirmation_hits"]
+        evidence_window = cfg["evidence_window_s"]
+        evidence_min_points = cfg["evidence_min_points"]
+        pose_rotation = pose[:3, :3].T
+        new_covariance = np.diag([cfg["tracking_position_sigma_m"]**2] * 3 + [1.] * 3)
+        association_extent_array = np.asarray(association_extents, dtype=float).reshape(-1, 3)
         for index, obj in enumerate(objects):
-            key = matched.get(index)
-            if key is None:
+            assignment = matched.get(index)
+            if assignment is None:
                 key = self.next_id
                 self.next_id += 1
                 state = np.concatenate((world[index], np.zeros(3)))
-                covariance = np.diag([cfg["tracking_position_sigma_m"]**2] * 3 + [1.] * 3)
-                self.tracks[key] = {"history": deque(maxlen=cfg["confirmation_window"]), "first_stamp": stamp,
-                                    "intersection_history": deque(maxlen=cfg["confirmation_window"]),
+                covariance = new_covariance.copy()
+                self.tracks[key] = {"history": deque(maxlen=window), "first_stamp": stamp,
+                                    "intersection_history": deque(maxlen=window),
                                     "evidence": deque(), "state": state, "covariance": covariance}
             else:
-                state, covariance = predicted[key]
-                gain = covariance[:, :3] @ np.linalg.inv(covariance[:3, :3] + measurement_cov)
+                key = assignment[0]
+                state = predicted[key][0]
+                gain, covariance = updated[index]
                 state += gain @ (world[index] - state[:3])
-                observation = np.zeros((3, 6))
-                observation[:, :3] = np.eye(3)
-                factor = np.eye(6) - gain @ observation
-                covariance = factor @ covariance @ factor.T + gain @ measurement_cov @ gain.T
             track = self.tracks[key]
             support = obj.pop("_support_points")
             self.display_support[key] = support
@@ -506,11 +656,11 @@ class Detector:
                 # this evidence. No rejected pose enters the comparison or support count.
                 eligible = (obj["path_relation"] == "intersecting"
                             and obj["certified_unexplained_voxels"] >= cfg["claim_min_support_voxels"]
-                            and len(support) >= cfg["evidence_min_points"])
+                            and len(support) >= evidence_min_points)
                 if eligible:
                     local_shape = support - centers[index]
                     previous_shape = track.get("local_shape")
-                    consecutive = track.get("local_frame") == self.frame_number - 1
+                    consecutive = track.get("local_frame") == frame_number - 1
                     if consecutive and previous_shape is not None:
                         radius = float(local_config["shape_radius_m"])
                         forward = accelerator.keep_outside_radius(
@@ -519,10 +669,10 @@ class Detector:
                             previous_shape, local_shape, radius, self.native_kernels)
                         local_overlap = min(1.0 - float(forward.mean()),
                                             1.0 - float(backward.mean()))
-                    local_hits = (min(track.get("local_hits", 0) + 1, cfg["confirmation_window"])
+                    local_hits = (min(track.get("local_hits", 0) + 1, window)
                                   if local_overlap is not None
                                   and local_overlap >= local_config["minimum_symmetric_overlap"] else 1)
-                    track.update(local_shape=local_shape, local_frame=self.frame_number,
+                    track.update(local_shape=local_shape, local_frame=frame_number,
                                  local_hits=local_hits)
                 else:
                     track.pop("local_shape", None)
@@ -530,10 +680,10 @@ class Detector:
                     track["local_hits"] = 0
                 obj.update(sensor_frame_hits=local_hits, sensor_frame_shape_overlap=local_overlap)
             local_confirmed = (not motion_valid and local_config is not None
-                               and local_hits >= cfg["confirmation_hits"])
+                               and local_hits >= confirmation_hits)
             if self.diagnostic_arrays:
                 self.diagnostic_arrays[f"support_{key}"] = support
-                self.diagnostic_arrays[f"support_world_{key}"] = support @ pose[:3, :3].T + pose[:3, 3]
+                self.diagnostic_arrays[f"support_world_{key}"] = support @ pose_rotation + pose[:3, 3]
                 self.diagnostic_arrays[f"support_relative_{key}"] = support - centers[index]
             # Track-local spatial evidence compensates estimated object translation.
             # Bounds remain from this frame; past points never fabricate present shape.
@@ -542,22 +692,22 @@ class Detector:
             if motion_valid:
                 # R(p-c), not (Rp+t)-(Rc+t): a point at its own center must
                 # stay exactly zero, rather than creating cells across floor(0).
-                track["evidence"].append((stamp, (support - centers[index]) @ pose[:3, :3].T))
-                while track["evidence"] and stamp - track["evidence"][0][0] > cfg["evidence_window_s"]:
+                track["evidence"].append((stamp, (support - centers[index]) @ pose_rotation))
+                while track["evidence"] and stamp - track["evidence"][0][0] > evidence_window:
                     track["evidence"].popleft()
-                if not track["history"] or track["history"][-1] != self.frame_number:
-                    track["history"].append(self.frame_number)
-            hits = sum(f > self.frame_number - cfg["confirmation_window"] for f in track["history"])
+                if not track["history"] or track["history"][-1] != frame_number:
+                    track["history"].append(frame_number)
+            hits = sum(f > window_start for f in track["history"])
             # Object persistence cannot confirm a new path intrusion. Count only
             # current-scan interior evidence, once per strictly increasing scan.
             interior_history = track["intersection_history"]
             if motion_valid and obj["path_relation"] == "intersecting" and (
-                    not interior_history or interior_history[-1][0] != self.frame_number):
-                interior_history.append((self.frame_number, stamp))
-            recent_interior = [(f, s) for f, s in interior_history
-                               if f > self.frame_number - cfg["confirmation_window"]]
+                    not interior_history or interior_history[-1][0] != frame_number):
+                interior_history.append((frame_number, stamp))
+            recent_interior = [(f, s) for f, s in interior_history if f > window_start]
             track.update(state=state, covariance=covariance, stamp=stamp,
-                         extent=np.asarray(association_extents[index]), split_secondary=bool(secondary[index]))
+                         extent=association_extent_array[index].copy(),
+                         split_secondary=bool(secondary[index]))
             # Accumulated support is the one quantity that needs its own call per
             # track; the stacks are counted together after this loop, so the field
             # writes below keep their original order.
@@ -584,8 +734,8 @@ class Detector:
             # Presence is evidence for a measured component, not a corridor claim.
             # Dense adjacent objects may be present without becoming hazards.
             presence_confirmed = (local_confirmed or obj["immediate"]
-                                  or (hits >= cfg["confirmation_hits"]
-                                      and int(record["count"]) >= cfg["evidence_min_points"]))
+                                  or (hits >= confirmation_hits
+                                      and int(record["count"]) >= evidence_min_points))
             # ADMISSION vs CERTIFICATION: `weak_min_voxels` decides what a component needs to be
             # REPORTED at all; `claim_min_support_voxels` is the count of interior-support voxels a
             # candidate needs to CLAIM a hazard. The support count, not the component's size, is what
@@ -601,11 +751,11 @@ class Detector:
             confirmed = (local_confirmed or obj["intersection_immediate"]
                          or (int(obj["uncertain_voxels"]) >= cfg.get("claim_min_support_voxels",
                                                                      cfg["weak_min_voxels"])
-                             and hits >= cfg["confirmation_hits"]
-                             and int(record["count"]) >= cfg["evidence_min_points"]))
+                             and hits >= confirmation_hits
+                             and int(record["count"]) >= evidence_min_points))
             intersection_confirmed = (confirmed and obj["path_relation"] == "intersecting"
                                       and (local_confirmed or obj["intersection_immediate"]
-                                           or len(recent_interior) >= cfg["confirmation_hits"]))
+                                           or len(recent_interior) >= confirmation_hits))
             obj.update(track_id=key, hits=hits, confirmed=bool(confirmed),
                        presence_confirmed=bool(presence_confirmed),
                        presence_confirmation=("sensor_frame_shape_recurrence" if local_confirmed
@@ -628,8 +778,16 @@ class Detector:
                        track_age_s=stamp - track["first_stamp"])
 
     def process(self, points: np.ndarray, timestamp_s: float, point_times: np.ndarray | None = None,
-                *, capture_diagnostics: bool = False, point_attributes=None) -> dict:
+                *, capture_diagnostics: bool = False, point_attributes=None,
+                prepared: tuple | None = None) -> dict:
         """Detect on one scan.
+
+        `prepared` is the tuple `prepare_scan` returns for exactly these `points` and
+        `point_times`; a caller that already computed it - the bag reader does, while this
+        thread is busy, using `accelerator.cpu_native` so it never touches the device
+        module's shared scratch - avoids repeating the range selection, the crop and the
+        voxel reduction. Passing it changes no value: the arrays are the ones the same
+        functions produce from the same inputs. Callers that do not have it pass nothing.
 
         `point_attributes` is optional sensor metadata decoded for exactly these `points` rows
         (see `io.PointAttributes`). It is never an input to a decision: the detection, support and
@@ -681,12 +839,12 @@ class Detector:
                 {f"decoded_{key}": value for key, value in point_attributes.arrays().items()})
         pipeline = {"geometry": {"state": "not_run"}, "segmentation": {"state": "not_run"},
                     "association": {"state": "not_run"}}
-        # A non-finite coordinate always yields a non-finite radius, which fails
-        # one of the range bounds, so an explicit finite test would drop exactly
-        # the same rows. Measurements are decoded as float64 triples.
-        keep = accelerator.range_indices(points, self.config["min_range_m"], self.config["max_range_m"],
-                                         self.native_kernels)
-        points = points[keep]
+        # `prepare_scan` holds the derivations that depend on the configuration alone; a caller
+        # that already computed them - the bag reader does, on the thread that would otherwise
+        # idle while this one works - passes them in and they are not repeated here.
+        if prepared is None:
+            prepared = prepare_scan(points, point_times, self.config, self.native_kernels)
+        points, point_times, keep, frame, crop, voxel_rows, reduced = prepared
         if capture_diagnostics:
             self.diagnostic_arrays["range_points"] = points
             if point_attributes is not None:
@@ -695,10 +853,6 @@ class Detector:
                 self.diagnostic_arrays.update(
                     {f"range_{key}": value for key, value in point_attributes.arrays(keep).items()})
         self.display_points = points
-        if len(point_times):
-            point_times = point_times[keep]
-            if len(point_times) and np.ptp(point_times) == 0:
-                point_times = np.empty(0)
         result = {"timestamp_s": timestamp_s, "status": "unknown", "objects": [], "nearest_obstacle_m": None,
                   "input_valid_points": len(points), "gap_reset": reset,
                   "coordinate_frame": "tunnel_guard_local",
@@ -720,49 +874,58 @@ class Detector:
             self.odometry = self._new_odometry()
             return result | {"reason": "insufficient_returns", "processing_s": time.perf_counter() - started}
         motion_started = time.perf_counter()
-        frame, pose, motion = self._motion(points, point_times)
+        motion_future = None
+        trace_motion = (self.odometry.last_delta.copy()
+                        if capture_diagnostics and point_attributes is not None
+                        and self.config.get("deskew_enabled", False) and len(point_times) else None)
+        if self.motion_executor is not None:
+            # With deskew disabled, the odometry returns exactly this strict range selection;
+            # `frame` is the subset the geometry stage classifies, and both come from
+            # `prepare_scan`, so the selection is the one either path takes.
+            motion_future = self.motion_executor.submit(self._timed_motion, points, point_times)
+        else:
+            frame, pose, motion = self._motion(points, point_times)
+            motion_s = time.perf_counter() - motion_started
+            if self.config.get("deskew_enabled", False):
+                # Deskew changes coordinates before cropping and voxel selection.
+                # Reader-prepared geometry belongs to the uncompensated cloud.
+                half = float(self.config["context_half_width_m"])
+                crop = (frame[:, 0] >= self.config["min_forward_m"]) & (np.abs(frame[:, 1]) < half)
+                voxel_rows = accelerator.crop_voxels(
+                    frame, self.config["min_forward_m"], half,
+                    self.config["geometry_voxel_m"], self.native_kernels)
+                reduced = frame[voxel_rows]
         self.display_points = frame
-        motion_s = time.perf_counter() - motion_started
-        # Provenance through the motion stage: `_motion` transforms one point at a time, so the KISS
-        # row-preserving contract is that `frame` keeps the row order and count of `points`, and
-        # `keep` still names these decoded rows. A future deskew that resamples must preserve the
-        # count or fail here: dropping the trace on a mismatch would silently lose provenance, and a
-        # count alone cannot prove order, so this asserts the contract instead of guarding it.
-        trace_rows = keep if capture_diagnostics and point_attributes is not None else None
-        if trace_rows is not None and len(frame) != len(points):
-            raise RuntimeError(
-                f"motion stage changed the point count ({len(points)} -> {len(frame)}); "
-                "sensor provenance cannot be carried through this scan")
+        trace_rows = None
+        if capture_diagnostics and point_attributes is not None:
+            trace_frame = points
+            if trace_motion is not None:
+                # Reuse the upstream transform, without its range crop, only for
+                # diagnostic provenance. Never infer source rows by nearest points.
+                from kiss_icp.preprocess import Preprocessor
+                trace_frame = Preprocessor(
+                    max_range=float("inf"), min_range=-float("inf"), deskew=True,
+                    max_num_threads=self.config["odometry_threads"]).preprocess(
+                        points, point_times, trace_motion)
+            motion_rows = accelerator.range_indices_open(
+                trace_frame, self.config["min_range_m"], self.config["max_range_m"],
+                self.native_kernels)
+            if not np.array_equal(trace_frame[motion_rows], frame):
+                raise RuntimeError("KISS preprocessing does not match the exact diagnostic source-row selection")
+            trace_rows = keep[motion_rows]
+            self.diagnostic_arrays["registered_source_indices"] = point_attributes.source_indices[trace_rows]
         # Fixed band around the sensor axis: a corridor-following window (the previous frame's
         # extrapolated centre) added ambiguous hazards without changing any frame decision, so the
-        # base window is used unconditionally.
-        base_half = float(self.config["context_half_width_m"])
-        crop = (frame[:, 0] >= self.config["min_forward_m"]) & (np.abs(frame[:, 1]) < base_half)
-        # Crop and reduce in one pass: the cropped copy is never materialised, and
-        # the native kernel partitions by the leading key axis so each slice is
-        # deduplicated and sorted in cache. The kernel is handed the masked cloud with a
-        # half-width that covers it, so its partition stays exact.
+        # base window is used unconditionally. Reader-prepared geometry is reused
+        # without deskew; motion-compensated geometry is rebuilt above otherwise.
         accelerator_module = self.native_kernels
-        # The kernel returns indices into the array it is given and re-clips laterally, so it is handed
-        # the already-masked subset with a half-width that cannot clip it again.
-        subset = frame[crop]
-        # The kernel applies its own symmetric lateral limit, so the limit is read off the masked
-        # subset itself plus one voxel, which clears the strict inequality and keeps the grid as
-        # tight as the data allows without dropping a point the mask kept.
-        reach = (max(abs(float(subset[:, 1].min())), abs(float(subset[:, 1].max())))
-                 + self.config["geometry_voxel_m"]) if len(subset) else base_half
-        voxel_rows = accelerator.crop_voxels(subset, self.config["min_forward_m"], reach,
-                                             self.config["geometry_voxel_m"], accelerator_module)
-        reduced = subset[voxel_rows]
         geometry_rows = None
         if capture_diagnostics:
             self.diagnostic_arrays.update(registered_points=frame, cropped_points=frame[crop], geometry_voxel_points=reduced)
             if trace_rows is not None:
-                # `crop` then `voxel_rows` are the exact selections above, composed: the rows
-                # into `frame` are `flatnonzero(crop)` and the kept rows into that subset are
-                # `voxel_rows`. `reduced` is not re-searched for.
-                crop_rows = np.flatnonzero(crop)
-                geometry_rows = trace_rows[crop_rows[voxel_rows]]
+                # Voxel rows already index the registered frame after its exact
+                # crop, so provenance requires no remapping through a copy.
+                geometry_rows = trace_rows[voxel_rows]
                 self.diagnostic_arrays.update(
                     {f"geometry_voxel_{key}": value
                      for key, value in point_attributes.arrays(geometry_rows).items()})
@@ -771,7 +934,9 @@ class Detector:
         # the odometry already produced, so it costs nothing to evaluate.
         travel_limit = float(self.config.get("background_refit_travel_m", 0.0))
         cadence = int(self.config.get("background_refit_every_frames", 1))
-        if travel_limit > 0.0:
+        if motion_future is not None:
+            refit_due = True  # Overlap requires a fresh, pose-independent geometry fit.
+        elif travel_limit > 0.0:
             here = np.asarray(pose, dtype=float)[:3, 3]
             refit_due = (self.cached_background is None
                          or float(np.linalg.norm(here - self.background_fit_pose)) >= travel_limit)
@@ -812,6 +977,11 @@ class Detector:
             self.diagnostic_arrays.update(
                 {f"cluster_{key}": value
                  for key, value in point_attributes.arrays(geometry_rows[obj_rows]).items()})
+        if motion_future is not None:
+            (registered_frame, pose, motion), motion_s = motion_future.result()
+            if not np.array_equal(registered_frame, frame, equal_nan=True):
+                raise RuntimeError("KISS-ICP returned a different frame from the strict range selection; "
+                                   "geometry cannot be associated with this pose")
         self._associate(objects, pose, timestamp_s, motion)
         pipeline["association"] = {"state": "ran", "candidates": len(objects),
                                    "confirmed": sum(o["confirmed"] for o in objects),
@@ -886,8 +1056,10 @@ class Detector:
             calibration_caveats.append("deskew_timestamps_unavailable")
         # One place for the native path: the native component path builds its own records, so the
         # far-field lateral bound is attached here rather than inside either builder.
-        for obj in objects:
-            obj["far_field_lateral_bound_m"] = _far_field_bound(obj["distance_m"], geometry, self.config)
+        if objects:
+            bounds = _far_field_bounds([obj["distance_m"] for obj in objects], geometry)
+            for obj, bound in zip(objects, bounds):
+                obj["far_field_lateral_bound_m"] = bound
         return result | {"status": status, "reason": geometry.reason,
                          "supported_range_m": geometry.supported_range_m(), "objects": objects,
                          "health": "unavailable" if not geometry.valid else ("degraded" if health_reasons else "normal"),

@@ -1,0 +1,76 @@
+diff --git a/cpp/kiss_icp/core/VoxelHashMap.cpp b/cpp/kiss_icp/core/VoxelHashMap.cpp
+index 69a87ec..02f4660 100644
+--- a/cpp/kiss_icp/core/VoxelHashMap.cpp
++++ b/cpp/kiss_icp/core/VoxelHashMap.cpp
+@@ -47,10 +47,29 @@ std::tuple<Eigen::Vector3d, double> VoxelHashMap::GetClosestNeighbor(
+     const Eigen::Vector3d &query) const {
+     // Convert the point to voxel coordinates
+     const auto &voxel = PointToVoxel(query, voxel_size_);
++    const Eigen::Vector3d within_voxel = query - voxel.cast<double>() * voxel_size_;
++    const double guard = 64.0 * std::numeric_limits<double>::epsilon() *
++                         (1.0 + query.cwiseAbs().maxCoeff() +
++                          voxel_size_ * voxel.cwiseAbs().maxCoeff());
+     // Find the nearest neighbor
+     Eigen::Vector3d closest_neighbor = Eigen::Vector3d::Zero();
+     double closest_distance = std::numeric_limits<double>::max();
+     std::for_each(voxel_shifts.cbegin(), voxel_shifts.cend(), [&](const auto &voxel_shift) {
++        // If a previously visited cell contains a closer point than this
++        // cell's Euclidean lower bound, probing its hash table cannot improve
++        // the answer. Visit order and equal-distance behavior stay unchanged.
++        // The guard covers rounding in the voxel origin and boundary.
++        if (closest_distance < std::numeric_limits<double>::max()) {
++            double lower_bound2 = 0.0;
++            for (int axis = 0; axis < 3; ++axis) {
++                const double low = voxel_shift[axis] * voxel_size_ - within_voxel[axis];
++                const double high = within_voxel[axis] - (voxel_shift[axis] + 1) * voxel_size_;
++                const double gap = std::max({0.0, low, high});
++                lower_bound2 += gap * gap;
++            }
++            const double guarded_best = closest_distance + guard;
++            if (lower_bound2 > guarded_best * guarded_best) return;
++        }
+         const auto &query_voxel = voxel + voxel_shift;
+         auto search = map_.find(query_voxel);
+         if (search != map_.end()) {
+diff --git a/python/kiss_icp/pybind/kiss_icp_pybind.cpp b/python/kiss_icp/pybind/kiss_icp_pybind.cpp
+index ab1c143..dba66f8 100644
+--- a/python/kiss_icp/pybind/kiss_icp_pybind.cpp
++++ b/python/kiss_icp/pybind/kiss_icp_pybind.cpp
+@@ -46,6 +46,7 @@ PYBIND11_MAKE_OPAQUE(std::vector<Eigen::Vector3d>);
+ 
+ namespace kiss_icp {
+ PYBIND11_MODULE(kiss_icp_pybind, m) {
++    m.attr("_gil_free_odometry") = py::bool_(true);
+     auto vector3dvector = pybind_eigen_vector_of_vector<Eigen::Vector3d>(
+         m, "_Vector3dVector", "std::vector<Eigen::Vector3d>",
+         py::py_array_to_vectors_double<Eigen::Vector3d>);
+@@ -68,7 +69,7 @@ PYBIND11_MODULE(kiss_icp_pybind, m) {
+                 Sophus::SE3d pose(T);
+                 self.Update(points, pose);
+             },
+-            "points"_a, "pose"_a)
++            py::call_guard<py::gil_scoped_release>(), "points"_a, "pose"_a)
+         .def("_add_points", &VoxelHashMap::AddPoints, "points"_a)
+         .def("_remove_far_away_points", &VoxelHashMap::RemovePointsFarFromLocation, "origin"_a)
+         .def("_point_cloud", &VoxelHashMap::Pointcloud);
+@@ -102,8 +103,8 @@ PYBIND11_MODULE(kiss_icp_pybind, m) {
+                                       kernel)
+                     .matrix();
+             },
+-            "points"_a, "voxel_map"_a, "initial_guess"_a, "max_correspondance_distance"_a,
+-            "kernel"_a);
++            py::call_guard<py::gil_scoped_release>(), "points"_a, "voxel_map"_a,
++            "initial_guess"_a, "max_correspondance_distance"_a, "kernel"_a);
+ 
+     // AdaptiveThreshold bindings
+     py::class_<AdaptiveThreshold> adaptive_threshold(m, "_AdaptiveThreshold", "Don't use this");
+@@ -120,7 +121,8 @@ PYBIND11_MODULE(kiss_icp_pybind, m) {
+             "model_deviation"_a);
+ 
+     // prerpocessing modules
+-    m.def("_voxel_down_sample", &VoxelDownsample, "frame"_a, "voxel_size"_a);
++    m.def("_voxel_down_sample", &VoxelDownsample, py::call_guard<py::gil_scoped_release>(),
++          "frame"_a, "voxel_size"_a);
+     /// This function only applies for the KITTI dataset, and should NOT be used by any other
+     /// dataset, the original idea and part of the implementation is taking from CT-ICP(Although
+     /// IMLS-SLAM Originally introduced the calibration factor)

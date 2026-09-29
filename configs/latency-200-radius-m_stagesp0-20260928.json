@@ -1,0 +1,18 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-radius-20260928/m_stagesp0",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ],
+  "hypothesis": "Per-scan inclusive stage times on the worst-p95 recording name which stage carries the tail, not just the average.",
+  "criterion": "Inclusive per-frame times for geometry, density, split, association and motion on the complete 201-scan obstacle recording with unchanged decisions.",
+  "prefetch_depth": 0
+}

@@ -1,0 +1,12 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-equivalent-20260927.json",
+  "output": "build/latency-20260927/cpu-panel",
+  "every": 1,
+  "max_frames": 300,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [{"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}],
+  "hypothesis": "GPU backend cuts inference latency without changing observed decisions on the same recorded scans.",
+  "criterion": "All non-timing result fields match the CPU reference and the p50 and p95 inference times are reported. This nonexhaustive panel does not establish field safety."
+}

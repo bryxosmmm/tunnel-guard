@@ -1,0 +1,198 @@
+{
+  "iteration": "second proxy: reader-thread offload, a concurrency defect, and a device port rejected on measurement",
+  "date": "2026-09-28",
+  "seed": 20260915,
+  "host": {
+    "gpu": "RTX 4080 16 GiB, driver 595.71.05, PCIe 12.7 GB/s",
+    "cpu": "AMD Ryzen 7 5700, 8 physical cores (16 threads), 31 GiB RAM",
+    "os": "Ubuntu 24.04 in the pytorch 2.12.1-cuda12.6 image, Python 3.12.3, CUDA 12.6",
+    "pinning": "taskset -c 0-7 with OPENBLAS_NUM_THREADS=1 OMP_NUM_THREADS=8, which is CPU 0-7 = eight distinct physical cores (thread_siblings_list 0,8)",
+    "caveat": "Not the i7-9700E / RTX 4070 Ti SUPER stand. This host is faster per core than the two earlier proxies, so its absolute numbers flatter the result and are not stand latency."
+  },
+  "paired_baseline": {
+    "how": "Every run's output directory contains an exact source snapshot under source/. The pre-change tree was rebuilt from build/latency-200-radius-20260928/obstacle-prefetch0/source into /workspace/lct-baseline, with the same venv, both extensions built there, and data symlinked; all comparisons below are same-host, same-data, same-config.",
+    "obstacle_prefetch0_baseline_ms": {
+      "p50": 140.6,
+      "p95": 201.1,
+      "wall_s": 44.9
+    }
+  },
+  "six_scene_panel_final": {
+    "recipe": "configs/latency-200-six-fixed-20260928.json",
+    "outputs": "build/latency-200-radius-20260928/six-fixed",
+    "per_recording_process_ms": {
+      "doubleT_obstacle": {
+        "frames": 201,
+        "p50": 159.0,
+        "p95": 225.3,
+        "wall_s": 36.2
+      },
+      "doubleT_platform": {
+        "frames": 345,
+        "p50": 117.7,
+        "p95": 164.5,
+        "wall_s": 43.2
+      },
+      "roundT_doubleT": {
+        "frames": 252,
+        "p50": 127.2,
+        "p95": 180.6,
+        "wall_s": 34.9
+      },
+      "roundT_pressureGate_roundT": {
+        "frames": 268,
+        "p50": 131.0,
+        "p95": 194.9,
+        "wall_s": 39.2
+      },
+      "roundT_squareT_pressureGate_squareT": {
+        "frames": 545,
+        "p50": 121.3,
+        "p95": 181.2,
+        "wall_s": 76.2
+      },
+      "squareT_platform_squareT_switch": {
+        "frames": 877,
+        "p50": 118.0,
+        "p95": 171.5,
+        "wall_s": 112.8
+      }
+    },
+    "gate": "FIVE of six recordings meet p95 <= 200 ms on this host; doubleT_obstacle does not (225.3 ms).",
+    "equivalence_vs_saved_reference": {
+      "comparison": "build/latency-200-radius-20260928/six-fixed-comparison.json",
+      "recipe": "configs/latency-200-six-fixed-comparison-20260928.json",
+      "before": "build/latency-200-split-20260928/six-ground-batched",
+      "frames": 2488,
+      "changed_compared_fields": 0,
+      "missing_frames": 0,
+      "extra_frames": 0,
+      "measurement_identity_errors": 0,
+      "largest_compared_float_difference": 5.559996907322784e-13,
+      "limits": "Equivalence on nonexhaustively labelled development recordings is not recall, precision, independent-event false-alarm rate or field safety."
+    }
+  },
+  "retained_changes": [
+    {
+      "change": "Reader-thread scan preparation: the range selection, the open-range subset, its context mask and the geometry voxel reduction are computed in the bag reader from configuration alone, through accelerator.cpu_native, and passed to Detector.process as `prepared`; gated so it only happens when a reader thread exists (prefetch_depth >= 1).",
+      "evidence": "Consumer Detector.process p50 172 -> 159 ms (baseline prefetch1 inferred from the malloc-tuned paired run at 171.9) and wall 44.9 -> 34.5 s for 201 obstacle scans (-23%); at prefetch 0 the same code measures 139-148 ms p50, i.e. the offload trades ~10-16 ms of the gate metric for the throughput. Zero changed compared fields in the six-scene panel."
+    },
+    {
+      "change": "accelerator.cpu_native(config): the CPU kernels, for a caller that must not touch the device backend.",
+      "evidence": "Its absence was a defect, not a style choice: see the concurrency defect below. The reader now only ever calls thread-local-scratch kernels."
+    },
+    {
+      "change": "One global elevated-core component labelling plus a native two-count degree kernel (group_degrees) replacing the split's per-candidate subgraph construction and per-child SciPy reductions.",
+      "evidence": "Exact (zero changed compared fields). Measured NEUTRAL on this workload: _separate_running_surface 12.96 -> 13.08 ms median and induced_subgraph 705 calls in both trees (3.5 per scan, not the 54 per scan measured on the earlier host), so there was almost nothing to remove. Kept because it removes the quadratic-in-children shape and the group_degrees kernel is what the fixed anchored test needs."
+    },
+    {
+      "change": "Arena storage for the native component builder's 26 per-call vectors.",
+      "evidence": "Exact. Measured NEUTRAL: cluster_objects 5.59 -> 5.53 ms median, total 8.27 -> 7.93 ms per scan, and its spike (75-82 ms at constant input size) is unchanged, so the spike is not allocation-driven. Kept because it removes ~26 vectors' worth of per-call allocation for no cost."
+    },
+    {
+      "change": "Association loop invariants hoisted out of the per-object loop (pose rotation, frame window, evidence window, confirmation hits, evidence-minimum support, the initial track covariance, the association extents array).",
+      "evidence": "Exact; each replacement evaluates the same expression once instead of ~310 times."
+    }
+  ],
+  "defects_found_and_fixed": [
+    {
+      "defect": "The device module's scratch is shared, so a second thread calling a device kernel corrupts the detector's own work.",
+      "observed": "With the reader preparing scans through accelerator.native(config), the obstacle recording's frame states changed from {no_obstacle_observed 34, unresolved 10, obstacle 155, candidate 2} to {40, 14, 137, 6} and every frame's object list changed; with prefetch_depth 0 (no reader thread) the same code reproduced the reference exactly.",
+      "fix": "The reader uses accelerator.cpu_native(config), whose kernels keep all scratch in thread-local storage, and only prepares when a reader thread exists.",
+      "lesson": "Any future reader-side or second-thread native call must take the CPU module; only the detector thread may marshal the device entry points."
+    },
+    {
+      "defect": "The first version of the split rewrite measured the anchored body with the all-neighbour in-child degree.",
+      "observed": "The six-scene comparison reported changed `objects` on 5 of 6 recordings (e.g. 191 vs 192 objects on doubleT_platform) while every frame state agreed; the obstacle-only local checks had not covered those recordings.",
+      "cause": "A core child holds the border points assigned to it, and those are not elevated, so the original's `child_graph @ elevated` counts fewer neighbours than `child_graph.sum(axis=1)`. `group_degrees` now returns both counts and the anchored test uses the elevated-only one.",
+      "fix_verified": "The corrected panel returns zero changed compared fields on all 2488 frames."
+    }
+  ],
+  "rejected_on_measurement": [
+    {
+      "name": "device component builder (cluster_components)",
+      "work": "Written as a full CUDA port: a radix sort keyed on (label, point index) so members stay in ascending point order, one thread per component applying the same admission rules, 26 returned blocks in the CPU's order.",
+      "isolated": {
+        "cpu_ms": 0.61,
+        "device_ms": 0.81,
+        "note": "20 repetitions, 24500 points, 1500 components"
+      },
+      "in_frame": {
+        "cpu_ms_per_scan": 7.93,
+        "device_ms_per_scan": 17.1,
+        "cpu_p50_ms": 5.53,
+        "device_p50_ms": 14.94
+      },
+      "correctness": "Byte-identical to the CPU kernel on 40 real scans, all 26 blocks, and the same frame states.",
+      "reason": "2.2x slower per scan inside the frame although only 0.2 ms slower in isolation. The transfer and synchronisation count (about 50 synchronous copies and four device syncs per call) costs more than this kernel's CPU work at 24.5k points, which is the module's own stated policy for small calls. Reverted.",
+      "not_tried": "A fused kernel that also produced the 26 blocks in fewer, larger transfers; or moving the whole cluster stage to the device together, so the point cloud and labels stay resident between calls."
+    },
+    {
+      "name": "grid nearest-neighbour for the two cKDTree builds",
+      "reason": "Analysis, not a run: at the density query's 0.75 m cell size the 27-cell scan visits many hundreds of candidates per query (slower than the tree), and the background query's net saving is only ~3-4 ms against a tie-break cKDTree does not document."
+    },
+    {
+      "name": "malloc tuning and thread reallocation",
+      "reason": "No measured effect: five thread allocations gave p95 249.9-252.1 ms on the earlier host, and the malloc-tuned runs were not better once the confounding with prefetch depth was removed."
+    }
+  ],
+  "tail_attribution_this_host": {
+    "p95_band_minus_median_ms": 64,
+    "cluster_objects": 31.3,
+    "association": 22.6,
+    "separate_running_surface": 8.5,
+    "density_labels": 8.7,
+    "flat": "segment plane, KD builds, voxel down-sample, rail profile, structural mask and motion are flat to within 0.3 ms across the p95 band",
+    "note": "cluster_objects reaches 75-82 ms at CONSTANT input size, which no algorithmic change in this iteration moved."
+  },
+  "next_steps": [
+    "The obstacle recording is the only scene over the gate. Its tail is cluster_objects (+31 ms) and the association loop (+23 ms); the next device attempt should fuse the component statistics into one resident pass rather than 26 copied blocks.",
+    "The correlation between the two-count degree kernel and the split's candidate count should be re-measured where the split actually has candidates (the earlier host's 54 subgraph calls per scan were not reproduced here).",
+    "Measure the stand itself: no proxy result substitutes for the i7-9700E / RTX 4070 Ti SUPER timing, and this host is faster per core than both earlier proxies."
+  ],
+  "stand_acceptance": {
+    "status": "not measured: the i7-9700E / RTX 4070 Ti SUPER stand is not rentable and no proxy substitutes for it",
+    "prerequisite_found": "Dockerfile builds only the required CPU extension, so a container built from it cannot satisfy native_backend 'cuda'; load_config refuses that request instead of silently running slower. A stand image needs `python3 setup_cuda.py build_ext --inplace` with the CUDA toolkit present (the 4070 Ti SUPER is sm_89, the architecture every measured recipe was built for).",
+    "estimated_from_measured_components": {
+      "proxy_all_core_clock_ghz": [
+        4.0,
+        4.2
+      ],
+      "stand_all_core_clock_ghz": [
+        3.0,
+        3.3
+      ],
+      "per_core_factor_stand_over_proxy": 0.76,
+      "per_core_bound_share_of_frame": 0.85,
+      "estimated_time_factor": 1.32,
+      "estimated_p50_p95_ms": {
+        "doubleT_obstacle": [
+          210,
+          297
+        ],
+        "doubleT_platform": [
+          155,
+          217
+        ],
+        "roundT_doubleT": [
+          168,
+          238
+        ],
+        "roundT_pressureGate_roundT": [
+          173,
+          257
+        ],
+        "roundT_squareT_pressureGate_squareT": [
+          160,
+          239
+        ],
+        "squareT_platform_squareT_switch": [
+          156,
+          226
+        ]
+      },
+      "conclusion": "All six recordings are expected over the 200 ms p95 gate on the stand; the remaining work is about 1.4-1.5x on the serial path, concentrated in the two measured tail items.",
+      "uncertainty": "The stand's sustained all-core clock is the load-bearing assumption and is unmeasured: at 3.5 GHz the factor is ~1.15 (obstacle ~183/259), at 2.6 GHz ~1.5 (obstacle ~239/338)."
+    }
+  }
+}

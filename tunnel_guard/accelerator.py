@@ -16,13 +16,80 @@ GRID_CELL_M = 0.25
 
 
 def native(config: dict):
-    """Load the required detector extension or explain how to build it."""
+    """Load the required detector extension or explain how to build it.
+
+    `native_backend` selects the implementation: "cpu" (the default, and the only
+    one the required build produces) or "cuda", which additionally needs the
+    optional device backend from `python setup_cuda.py build_ext --inplace`. The
+    device module exposes the same entry points and forwards the ones it has not
+    ported to `_native`, so a missing kernel degrades to the CPU one rather than
+    to a wrong answer. A "cuda" request that cannot be satisfied is an error, not
+    a silent fallback: a run must not claim a device it did not use.
+    """
     try:
         from . import _native
     except ImportError as exc:
         raise RuntimeError("Required detector kernels are unavailable; build them with `python setup.py build_ext --inplace`.") from exc
+    backend = config.get("native_backend", "cpu")
+    if backend == "cpu":
+        return _native
+    if backend != "cuda":
+        raise ValueError(f"Unknown native_backend {backend!r}; expected 'cpu' or 'cuda'")
+    try:
+        from . import _native_cuda
+    except ImportError as exc:
+        raise RuntimeError(
+            "native_backend is 'cuda' but the device backend is not importable; build it with "
+            "`python setup_cuda.py build_ext --inplace` on a machine with the CUDA toolkit and a GPU."
+        ) from exc
+    return _native_cuda
+
+
+
+def cpu_native(config: dict):
+    """The CPU kernels, for a caller that must not touch the device backend.
+
+    Reader preparation stays on the CPU while the detector uses the device.
+    CUDA calls serialize access to shared device scratch; sending reader work
+    there would add contention and transfers. CPU scratch is thread-local.
+    """
+    try:
+        from . import _native
+    except ImportError as exc:
+        raise RuntimeError("Required detector kernels are unavailable; build them with "
+                           "`python setup.py build_ext --inplace`.") from exc
     return _native
 
+
+def segment_plane(points: np.ndarray, threshold: float, ransac_n: int, iterations: int, probability: float,
+                  module):
+    """Exact port of Open3D's SegmentPlane: same plane and same inlier set.
+
+    Only the device backend implements it, and only `background.plane_backend: native`
+    selects it. The port is verified against Open3D call by call by
+    `scripts/bench_ransac_equivalence.py`, because these proposals define the tunnel
+    surface the detector claims are measured against.
+    """
+    plane, indices = module.segment_plane(np.ascontiguousarray(points), threshold, int(ransac_n),
+                                          int(iterations), probability)
+    return np.frombuffer(plane, dtype=np.float64), np.frombuffer(indices, dtype=np.int64)
+
+
+def segment_plane_seed(seed: int, module):
+    """Seed the proposal stream, mirroring `o3d.utility.random.seed`."""
+    module.segment_plane_seed(int(seed))
+
+
+def grouped_medians(coords: np.ndarray, keys: np.ndarray, module) -> np.ndarray:
+    """Per-key median of each coordinate, in ascending key order."""
+    payload = module.grouped_medians(np.ascontiguousarray(coords), np.ascontiguousarray(keys, dtype=np.int64))
+    return np.frombuffer(payload, dtype=np.float64).reshape(-1, 2)
+
+
+def range_indices_open(points: np.ndarray, minimum: float, maximum: float, module):
+    """Rows with `minimum < |p| < maximum`, in input order."""
+    return np.frombuffer(module.range_indices_open(np.ascontiguousarray(points), minimum, maximum),
+                         dtype=np.int64)
 
 
 def range_summary(reduced: np.ndarray, frame: np.ndarray, crop: np.ndarray, observed: np.ndarray,
@@ -67,6 +134,28 @@ def component_labels(graph, subset, module):
                                      np.ascontiguousarray(graph.indices, dtype=np.int64),
                                      np.ascontiguousarray(subset))
     return np.frombuffer(payload, dtype=np.int64)
+
+
+def induced_subgraph(graph, rows: np.ndarray, module):
+    """Unit-weight CSR subgraph for sorted unique nodes, preserving their row order."""
+    offsets, columns = module.induced_subgraph(
+        np.ascontiguousarray(graph.indptr, dtype=np.int64),
+        np.ascontiguousarray(graph.indices, dtype=np.int64),
+        np.ascontiguousarray(rows, dtype=np.int64))
+    indices = np.frombuffer(columns, dtype=np.int64)
+    size = len(rows)
+    return csr_matrix((np.ones(len(indices), dtype=np.uint8), indices,
+                       np.frombuffer(offsets, dtype=np.int64)), shape=(size, size))
+
+def group_degrees(graph, rows: np.ndarray, group: np.ndarray, selected: np.ndarray, module):
+    """In-group neighbour counts per row, in row order: all members, and only selected ones."""
+    payload = module.group_degrees(
+        np.ascontiguousarray(graph.indptr, dtype=np.int64),
+        np.ascontiguousarray(graph.indices, dtype=np.int64),
+        np.ascontiguousarray(rows, dtype=np.int64),
+        np.ascontiguousarray(group, dtype=np.int64),
+        np.ascontiguousarray(selected, dtype=bool))
+    return (np.frombuffer(payload[0], dtype=np.int64), np.frombuffer(payload[1], dtype=np.int64))
 
 
 def crop_voxels(frame, min_forward, half_width, size, module):

@@ -1,0 +1,14 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-20260928/nocopy-obstacle",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"}
+  ],
+  "hypothesis": "The native crop/voxel reducer already enforces the fixed corridor mask; removing a redundant full cropped-cloud copy and avoiding identical full-row selection reduces obstacle-scene process latency.",
+  "criterion": "Every one of 201 obstacle frames matches the full six-scene AABB run in output decisions and compared values; report p50/p95 relative to the same host and binary."
+}

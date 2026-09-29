@@ -1,0 +1,15 @@
+{
+  "seed": 20260915,
+  "detector_config": "configs/detector-stand-cuda-overlap-odom8-20260927.json",
+  "output": "build/latency-200-split-20260928/reference",
+  "every": 1,
+  "max_frames": 900,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "bags": [
+    {"path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle", "split": "development_not_blind"},
+    {"path": "data/sourcecraft_subset/for_hackathon/roundT_pressureGate_roundT", "split": "development_not_blind"}
+  ],
+  "hypothesis": "Batch the exact per-component running-surface partition rather than dispatching Python/NumPy/SciPy for each of roughly 43 eligible parent components per scan; preserve all admitted support and per-object evidence.",
+  "criterion": "On the same pinned eight-core RTX 4080 proxy, improve Detector.process p95 on both complete development scenes without losing annotated obstacle detections or increasing observed nuisance alarms; all compared decision and support fields must agree with the saved reference unless a difference is independently explained by stronger validated evidence. Promotion still requires <=200 ms p95 on every complete six-scene replay."
+}

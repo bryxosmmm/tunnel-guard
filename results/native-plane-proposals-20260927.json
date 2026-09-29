@@ -1,0 +1,230 @@
+{
+  "date": "2026-09-27",
+  "design": {
+    "final_step": "the final inlier pass is element-wise and therefore parallel, and the refit that follows it is a sequential accumulation on the host, in ascending index order",
+    "parallelism": "one thread per RANSAC iteration, each scanning the cloud in the original order, so every iteration's inlier count, squared error and rmse are the sequential values; the best-result update and the break_iteration stopping rule depend on iteration order and are replayed afterwards on the host, where std::log and std::pow are the same libm calls Open3D used",
+    "selection": "background.plane_backend: 'open3d' (default) or 'native'; the native port needs the device backend and the configuration rejects it otherwise",
+    "stream": "std::mt19937 seeded once per frame, exactly as o3d.utility.random.seed does, and consumed in the same order; the draws are data-independent, so the number consumed by a call is fixed by the point count"
+  },
+  "equivalence": {
+    "decisions": {
+      "changed_fields": {},
+      "comparison": "scripts/compare_runs.py against the committed detector",
+      "extra_frames": 0,
+      "largest_compared_float_difference": 0.0,
+      "missing_frames": 0,
+      "panel": "201 real scans of doubleT_obstacle"
+    },
+    "determinism": {
+      "changed_fields": {},
+      "largest_compared_float_difference": 0.0,
+      "method": "two independent 201-scan runs of the same recipe"
+    },
+    "per_call": {
+      "calls": 1386,
+      "harness": "scripts/bench_ransac_equivalence.py",
+      "inlier_sets_equal": 1386,
+      "panel": "40 real scans, both implementations driven in lockstep from the same seed",
+      "planes_bit_equal": 1386
+    }
+  },
+  "kernel_phase_measurements_20260927": {
+    "how": "cpp/kernels.cpp, compiled with -DTG_KERNEL_TIMING; the runtime-gated version measured 10 ms/frame and was replaced by a compile-time gate",
+    "mutual_graph": {
+      "assemble_ms_per_worker_sum": 3.542,
+      "build_cells_ms_per_worker_sum": 0.394,
+      "enumerate_ms_per_worker_sum": 1.957,
+      "points": 23303,
+      "reading": "Assembly (degree accumulation, scatter, per-row ordering) is 64 % of the parallel work: integer and memory traffic with no slack that preserves the CSR."
+    },
+    "normal_covariances": {
+      "build_cells_ms_per_worker_sum": 0.875,
+      "eigen_ms_per_worker_sum": 21.2,
+      "gather_ms_per_worker_sum": 18.4,
+      "points": 31292,
+      "reading": "Divided by the eight workers this is 0.9 + 2.3 + 2.7 ms of wall time; the fixed-order Jacobi eigen-decomposition is the largest single phase and its arithmetic cannot be reordered without changing the normals the background gate thresholds.",
+      "total_ms_per_worker_sum": 40.4,
+      "workers": 8
+    },
+    "run_to_run_variance_ms": 6.0
+  },
+  "kiss_icp_downsampler_source": {
+    "code": "first point per voxel into a tsl::robin_map, then iterate the map - so the output ORDER is robin_map bucket order, and the representative is the first point in input order",
+    "consequence": "The order is load-bearing (map contents under the per-voxel cap, and the ICP's accumulation order), so matching it means using the same container at the same cost, and changing it changes the pose. The 48 ms downsampler is closed: not missing source, and not missing effort - a design property.",
+    "file": "kiss-icp v1.3.0 cpp/kiss_icp/core/VoxelUtils.cpp, VoxelDownsample",
+    "probes": {
+      "insertion_order": "27 656 of 27 658 rows differ",
+      "lexicographic": "does not match"
+    }
+  },
+  "limitations": [
+    "Equivalence is established on one recording (1386 proposals over 40 scans, and 201 scans of decisions). The port is a transcription and its arithmetic is characterized, but a branch the panel does not exercise could still diverge; the harness re-runs the comparison on any recording.",
+    "The stopping rule's break_iteration formula is replayed with the host's libm, so the port is tied to a compatible libm for exactness.",
+    "Replacing a third-party kernel in a decision path is a maintenance liability: the port must be revisited if Open3D changes version or build flags. Pinned to 0.19.0 and documented here."
+  ],
+  "native_grouped_medians_20260927": {
+    "bug_caught": "The first version built the result inside the GIL-released scope and segfaulted; the same class of bug the CUDA module had. Found by the crash, fixed by scoping.",
+    "checks": [
+      "300 random cases: bitwise equal to np.median per key",
+      "30 real scans: byte-identical decisions",
+      "201 real scans: changed_fields {}, missing 0, extra 0, max_float 0.0"
+    ],
+    "exactness": "A median is an order statistic, so it does not depend on traversal order; the only things that matter are NumPy's even-count average of the two central values and the ascending key order of the output rows, because that row order feeds the least-squares fit that follows.",
+    "measured": {
+      "after_ms": 402.8,
+      "before_ms": 418.6,
+      "p95_after": 474.2,
+      "p95_before": 486.7
+    },
+    "why": "np.median was the single hottest NumPy built-in in the frame: 767 calls per frame, almost all of them inside refine_rail_pair, which groups a window's head points by longitudinal bin and takes the median position of each bin."
+  },
+  "not_done": {
+    "cpu_backend": "the port lives in the device backend; a run without a GPU keeps Open3D, so the CPU path is unchanged at 763.9 ms",
+    "odometry_threads": "still 1. Raising it measured a 2.1e-14 change in the pose at 28 ms/frame; that is a numerics change in the reference frame and is not taken here",
+    "ransac_n": "only 3 is supported, the only value this project uses; any other value is rejected rather than approximated"
+  },
+  "odometry_preprocess_replaced_20260927": {
+    "guards": "installed only when the config's deskew is disabled (otherwise the library's preprocessing would include motion compensation, and this raises); switchable with odometry_native_preprocess; the strict comparison is kept so points exactly at the bound behave as the library's.",
+    "measured": {
+      "after_ms": 418.6,
+      "before_ms": 433.5,
+      "p95_after": 486.7,
+      "p95_before": 503.0
+    },
+    "note": "kiss-ICP own preprocess measured 20 ms/frame in the profile before this change.",
+    "what": "kiss-ICP's preprocessor is replaced by the selection it performs. With deskew disabled, Preprocessing.cpp (v1.3.0) keeps the frame's points whose range falls strictly inside the configured band, in input order and unchanged - a selection, not arithmetic.",
+    "why_exact": "The substitution is a selection with the same predicate, so the odometry sees the same frame. Verified on 201 real scans: changed_fields {}, missing 0, extra 0, max_float 0.0, which includes the pose and the motion record - the whole trajectory is bit-identical."
+  },
+  "parallelisation": {
+    "changed": "The per-iteration scan now runs on a persistent CPU worker pool instead of one CUDA thread per iteration, and the final inlier pass and refit run on the host instead of two more device round trips.",
+    "measured": {
+      "harness": "scripts/cuda_plane_bands.py",
+      "plane_proposals_after_ms_per_frame": 12.9,
+      "plane_proposals_before_ms_per_frame": 61.6,
+      "window_31000_points_after_ms_per_call": 1.21,
+      "window_31000_points_before_ms_per_call": 7.65
+    },
+    "still_verified": {
+      "calls": 1386,
+      "inlier_sets_equal": 1386,
+      "planes_bit_equal": 1386
+    },
+    "why": "An iteration's scan is a serial dependency chain, which a GPU does badly: one thread per iteration cost 8.8 ms for a 31 000-point window (4 warps on one SM, load-latency bound; manual 4x unrolling changed it by 6 %). The iterations are independent of each other and each stays sequential, so cores do the same work in a fraction of the time."
+  },
+  "programme_to_200_ms": {
+    "alternative": "odometry_threads 8 measured -28 ms but changes the pose at 2.1e-14; rejected as a quality change rather than an optimisation",
+    "cost": "roughly 1,500+ lines of native code across several sessions; each item needs its own per-call equivalence harness like scripts/bench_ransac_equivalence.py and the 201-scan panel comparison before it is enabled",
+    "items": [
+      {
+        "estimate_ms": -25,
+        "measured_ms": 44,
+        "plan": "native port of the batched tracking math; scipy LAP kept, or ported with a tie-detecting fallback",
+        "target": "_associate"
+      },
+      {
+        "estimate_ms": -30,
+        "measured_ms": 41,
+        "plan": "native port of the per-label work: local edge list, components, border assignment (own nearest-neighbour with a tie fallback to scipy), child statistics and box merge; geodesic reassignment stays in scipy",
+        "target": "_separate_running_surface body"
+      },
+      {
+        "estimate_ms": -26,
+        "measured_ms": 34,
+        "plan": "native port of the station loop and refine_rail_pair, with scipy's find_peaks plateau semantics reproduced from its source",
+        "target": "_rail_profile"
+      },
+      {
+        "estimate_ms": -30,
+        "measured_ms": 35,
+        "plan": "one native clustering pack: density graph, components, split, structural mask and component statistics in a single call",
+        "target": "clustering glue + structural_mask"
+      },
+      {
+        "estimate_ms": -26,
+        "measured_ms": 32,
+        "plan": "device port; mutual_graph is order-independent (edge set plus sorted CSR) so exact by construction, normal_covariances needs the cell walk reproduced",
+        "target": "mutual_graph + normal_covariances"
+      },
+      {
+        "estimate_ms": -30,
+        "measured_ms": 50,
+        "plan": "batch the remaining per-object and per-patch Python into native calls",
+        "target": "residual detector/background/cluster glue"
+      }
+    ],
+    "projected_ms": 200,
+    "remaining_ms": 221
+  },
+  "rejected": {
+    "rail_histogram_key_packing": "Replacing _rail_profile's np.unique(..., axis=0) of (longitudinal, lateral) bins with a biased-packed integer key - verified to select the same set on 200 random cases - measured 434.3 -> 449.7 ms per frame at identical decisions. Reverted.",
+    "segmentation_csr_rewrite_revisited": "Re-applied on top of the batched loop (so it ran 43 times per frame instead of 1 476) it still cost 434 -> 455 ms at identical decisions: _local_edges and _components_within each touch the whole parent graph or allocate a node-sized array per call, while scipy's slicing only touches the subset's own rows. Reverted again, with the reason now measured rather than suspected.",
+    "segmentation_submatrix_rewrite": "Replacing scipy's CSR submatrix slicing in _separate_running_surface with parent-CSR edge arrays measured 433.4 -> 463.7 ms per frame with identical decisions, and with the gathers restricted to each component's own edges it was still 434 -> 464. Reverted: the per-label scipy work is cheaper than the alternatives, so this is not the way to that 48 ms."
+  },
+  "rejected_note": "Three measured attempts to cut the remaining Python hotspots by making individual NumPy calls cheaper (segmentation CSR submatrices, parent-CSR edge arrays, rail histogram packing) were all slower than the code they replaced. Those hotspots are dominated by per-call dispatch over many small calls and by data-dependent Python loops, so they can only be cut by moving the loop bodies into native code - a port per site, each needing its own exactness argument.",
+  "remaining_frame_20260927": {
+    "kiss_icp_total_ms": 144.1,
+    "of_which_icp_solve_ms": 96.1,
+    "of_which_voxel_downsample_ms": 48.0,
+    "our_code_ms": {
+      "association": 44.1,
+      "clustering_and_density": 119.9,
+      "detector_glue": 18.4,
+      "geometry_construction": 107.9
+    },
+    "panel": "201 scans, p50 434.3 ms",
+    "verdict": "300 ms would need ~133 ms removed from our own 290 ms while kiss-ICP's 144 ms stays. That is a port of nearly every remaining Python hotspot (rail profile 34, segmentation 48, association 44, structural mask 13, the two native kernels 31), each with its own exactness argument, and the cheap subset is exhausted as measured above.",
+    "voxel_downsample_note": "kiss-ICP's own downsampler. A probe compared its output against voxel means and first points in lexicographic order: the voxel count matches, so the key derivation is the same, but the row order is not lexicographic - it comes from their internal container. Reproducing it would mean guessing a third-party hash map's iteration order, and the result feeds the pose. Not replaced."
+  },
+  "remaining_frame_ms": {
+    "association": 43.2,
+    "clustering_and_density": 115.1,
+    "geometry_construction": 156.2,
+    "kiss_icp_motion": 142.9,
+    "note": "This is where the next hundred milliseconds are.",
+    "of_which_background": 110.9,
+    "other": 40.3
+  },
+  "scope": "Exact port of Open3D's plane proposals for the tunnel-surface fit; changes no decision.",
+  "segmentation_loop_batched_20260927": {
+    "finding": "_separate_running_surface runs 1 476 times per frame, once per density label, and only about 43 of those labels pass its two skip conditions. The skips are now evaluated for every label at once (reduceat over the label-sorted order); the loop body sees only the labels that need it.",
+    "measured": {
+      "after_ms": 433.5,
+      "before_ms": 440.4,
+      "decisions": "changed_fields {}, max_float 0.0"
+    },
+    "why_only_7_ms": "The per-label overhead is ~5 us, not the 30 us assumed, so the remaining 41 ms of the function is the real work of those ~43 labels: a scipy submatrix, connected_components, a cKDTree build and query, and the per-child numpy loop. Cutting that needs those loop bodies in native code, not cheaper numpy calls."
+  },
+  "source": {
+    "facts_not_in_the_source": "Eigen evaluates the 4-element dot product, the 3-element norm and the refit sums in sequential order, and the 0.19 wheel is built without contracting products into FMAs. Measured, not assumed: with sequential order and no FMA the port reproduced Open3D's returned plane bit for bit and its inlier set exactly on every call, while both packet reduction orders failed the plane comparison.",
+    "file": "cpp/open3d/geometry/PointCloudSegmentation.cpp, v0.19.0, PointCloud::SegmentPlane",
+    "plus": "cpp/open3d/geometry/TriangleMesh.cpp ComputeTrianglePlane, and utility/Random.cpp for the proposal stream",
+    "probe": "scripts/cuda_ransac_probe.py (num_iterations=1 makes the evaluated model knowable from the sampled indices)"
+  },
+  "state_20260927_end_of_session": {
+    "all_steps_verified": "every change compared against the committed detector on 201 real scans; no step accepted without changed_fields {} and max_float 0.0",
+    "committed_detector_ms": 763.9,
+    "note": "two runs of the same recipe on the same tree: 418.6 and 424.7 ms, byte-identical decisions",
+    "p50_ms": 421.0,
+    "p95_ms": 495.0,
+    "reduction_percent": 44.9
+  },
+  "timing_ms_per_frame": {
+    "committed_cpu_backend_p50": 763.9,
+    "device_kernels_and_native_planes_p50": 402.8,
+    "device_kernels_only_p50": 714.2,
+    "p95": {
+      "committed": 837.2,
+      "device_kernels_only": 777.0,
+      "with_native_planes": 511.2
+    },
+    "panel": "201 real scans of doubleT_obstacle, eight pinned CPUs, RTX 4080",
+    "plane_note": "The native per-call mean is far above its p50: the first call of each frame and the first call of the process pay context, pinned-staging and pool setup, and the largest window carries four times the points of a typical one.",
+    "plane_proposals": {
+      "calls_per_frame": 34.6,
+      "native_ms_per_frame": 66.4,
+      "native_per_call_p50_ms": 0.34,
+      "open3d_ms_per_frame": 280.4
+    }
+  },
+  "why": "Open3D's segment_plane was 280 ms of a 714 ms frame, and it is the model the detector's corridor claims are measured against, so it could not be replaced by an approximation."
+}

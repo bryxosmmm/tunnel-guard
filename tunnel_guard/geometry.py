@@ -101,16 +101,24 @@ def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, d
     design = np.column_stack((sample[:, :2], np.ones(len(sample))))
     best, best_count = None, 0
     tolerance = config["ground_inlier_m"]
-    # The proposals are drawn and solved one at a time, exactly as before, so the
-    # random stream and the singular-trial skips are unchanged. Only the inlier
-    # counting is batched over proposals afterwards.
+    # The three-point draws and their order determine proposal tie-breaking.
+    # Batch the independent solves without changing the random stream; a
+    # singular matrix makes NumPy reject the entire batch, so use the original
+    # per-proposal path for that frame rather than dropping any valid draws.
+    draws = np.empty((config["ground_ransac_trials"], 3), dtype=np.intp)
+    for ids in draws:
+        ids[:] = rng.choice(len(sample), 3, replace=False)
+    try:
+        trial_planes = np.linalg.solve(design[draws], sample[draws, 2, None])[..., 0]
+    except np.linalg.LinAlgError:
+        trial_planes = []
+        for ids in draws:
+            try:
+                trial_planes.append(np.linalg.solve(design[ids], sample[ids, 2]))
+            except np.linalg.LinAlgError:
+                continue
     proposals = []
-    for _ in range(config["ground_ransac_trials"]):
-        ids = rng.choice(len(sample), 3, replace=False)
-        try:
-            plane = np.linalg.solve(design[ids], sample[ids, 2])
-        except np.linalg.LinAlgError:
-            continue
+    for plane in trial_planes:
         if (np.any(np.abs(plane[:2]) > config["ground_max_slopes"])
                 or not -max_height < plane[2] < -min_height):
             continue
@@ -140,7 +148,7 @@ def robust_plane(points: np.ndarray, config: dict) -> tuple[np.ndarray | None, d
     return (best if valid else None), diagnostics
 
 
-def refine_rail_pair(q, x, center, gauge, slope, cfg):
+def refine_rail_pair(q, x, center, gauge, slope, cfg, native):
     """Fit both supported heads at x, balancing longitudinal bins and sides.
 
     Histogram peaks propose a pair; they are not point estimates at the window
@@ -155,9 +163,12 @@ def refine_rail_pair(q, x, center, gauge, slope, cfg):
             if len(head) < 2 or np.ptp(head[:, 0]) < cfg["rail_min_span_m"]:
                 return None
             keys = np.floor(head[:, 0] / .30).astype(np.int64)
-            for key in np.unique(keys):
-                representatives.append(np.median(head[keys == key, :2], axis=0))
-                sides.append(side)
+            # One representative per longitudinal bin: the median position of that bin's
+            # points, per coordinate. A median is an order statistic, so this is the value
+            # the per-bin np.median produced, in the same ascending-bin order.
+            grouped = accelerator.grouped_medians(head[:, :2], keys, native)
+            representatives.extend(grouped)
+            sides.extend([side] * len(grouped))
         a = np.asarray(representatives)
         design = np.column_stack((a[:, 0] - x, np.ones(len(a)), np.asarray(sides) / 2))
         fit, _, rank, _ = np.linalg.lstsq(design, a[:, 1], rcond=None)
@@ -220,6 +231,7 @@ class TrackGeometry:
 
     def _rail_profile(self, points: np.ndarray):
         cfg = self.config
+        native = accelerator.native(cfg)
         z, uncertainty = self.ground(points)
         h = points[:, 2] - z
         lo, hi = cfg["rail_height_bounds_m"]
@@ -294,7 +306,7 @@ class TrackGeometry:
                 break
             _, center, gauge, support = pairs[0]
             if cfg.get("rail_center_estimator", "histogram") == "paired_line":
-                refined = refine_rail_pair(q, x, center, gauge, slope, cfg)
+                refined = refine_rail_pair(q, x, center, gauge, slope, cfg, native)
                 if refined is not None and abs(refined[0] - expected) <= allowed:
                     center, gauge, slope = refined
                     lateral = q[:, 1] - slope * (q[:, 0] - x)
@@ -587,10 +599,13 @@ class TrackGeometry:
             # that sparse and a 3 m object continuous, which is backwards.
             span = (stations[stops - 1][cell_of] - stations[starts][cell_of] + 1) * station
             count = (stops - starts)[cell_of]
-            per_cell = np.zeros(len(starts), dtype=bool)
-            np.logical_or.at(per_cell, cell_of,
-                             (span >= float(cfg.get("structure_min_length_m", 5.0)))
-                             & (count >= int(cfg.get("structure_min_stations", 3))))
+            accepted = ((span >= float(cfg.get("structure_min_length_m", 5.0)))
+                        & (count >= int(cfg.get("structure_min_stations", 3))))
+            # "Any point of this cell is accepted" is the same value as "the number of
+            # accepted points in this cell is non-zero", and counting is a buffered
+            # scatter: `np.logical_or.at` is unbuffered and writes cell by cell, which
+            # cost more than the sort above it on every scan.
+            per_cell = np.bincount(cell_of[accepted], minlength=len(starts)) > 0
             support[order] = per_cell[cell_of]
         # Outward reach, on a cross-section thickened by one row and by the reach gap: a
         # vertical face is joined to the top surface it carries, and a surface whose inner

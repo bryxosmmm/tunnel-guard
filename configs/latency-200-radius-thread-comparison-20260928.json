@@ -1,0 +1,24 @@
+{
+  "bags": [
+    {
+      "bag": "odom6-workers8",
+      "before": "build/latency-200-radius-20260928/obstacle-odom8-workers8/doubleT_obstacle.jsonl",
+      "after": "build/latency-200-radius-20260928/obstacle-odom6-workers8/doubleT_obstacle.jsonl"
+    },
+    {
+      "bag": "odom4-workers8",
+      "before": "build/latency-200-radius-20260928/obstacle-odom8-workers8/doubleT_obstacle.jsonl",
+      "after": "build/latency-200-radius-20260928/obstacle-odom4-workers8/doubleT_obstacle.jsonl"
+    },
+    {
+      "bag": "odom4-workers4",
+      "before": "build/latency-200-radius-20260928/obstacle-odom8-workers8/doubleT_obstacle.jsonl",
+      "after": "build/latency-200-radius-20260928/obstacle-odom4-workers4/doubleT_obstacle.jsonl"
+    },
+    {
+      "bag": "odom2-workers8",
+      "before": "build/latency-200-radius-20260928/obstacle-odom8-workers8/doubleT_obstacle.jsonl",
+      "after": "build/latency-200-radius-20260928/obstacle-odom2-workers8/doubleT_obstacle.jsonl"
+    }
+  ]
+}

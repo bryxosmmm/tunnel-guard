@@ -1,0 +1,13 @@
+{
+  "gpu": "RTX 5090",
+  "min_driver": 580,
+  "max_price": 0.65,
+  "disk": 100,
+  "image": "vastai/base-image@sha256:613382a2fd4238cadc8348389523c90201b131c530a430f46b313441d3280fbb",
+  "reliability": 0.98,
+  "min_pcie_bw": 16,
+  "min_inet_down": 200,
+  "min_inet_up": 100,
+  "ssh_identity": "~/.ssh/vast_ruab_ed25519",
+  "label": "tunnel-guard-cuda-review-20260928"
+}

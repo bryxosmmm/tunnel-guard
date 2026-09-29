@@ -1,0 +1,39 @@
+--- a/python/kiss_icp/pybind/kiss_icp_pybind.cpp
++++ b/python/kiss_icp/pybind/kiss_icp_pybind.cpp
+@@ -52,6 +52,7 @@
+ 
+     // Map representation
+     py::class_<VoxelHashMap> internal_map(m, "_VoxelHashMap", "Don't use this");
++    m.attr("_gil_free_odometry") = py::bool_(true);
+     internal_map
+         .def(py::init<double, double, int>(), "voxel_size"_a, "max_distance"_a,
+              "max_points_per_voxel"_a)
+@@ -68,7 +69,7 @@
+                 Sophus::SE3d pose(T);
+                 self.Update(points, pose);
+             },
+-            "points"_a, "pose"_a)
++            py::call_guard<py::gil_scoped_release>(), "points"_a, "pose"_a)
+         .def("_add_points", &VoxelHashMap::AddPoints, "points"_a)
+         .def("_remove_far_away_points", &VoxelHashMap::RemovePointsFarFromLocation, "origin"_a)
+         .def("_point_cloud", &VoxelHashMap::Pointcloud);
+@@ -102,7 +103,8 @@
+                                       kernel)
+                     .matrix();
+             },
+-            "points"_a, "voxel_map"_a, "initial_guess"_a, "max_correspondance_distance"_a,
++            py::call_guard<py::gil_scoped_release>(), "points"_a, "voxel_map"_a, "initial_guess"_a,
++            "max_correspondance_distance"_a,
+             "kernel"_a);
+ 
+     // AdaptiveThreshold bindings
+@@ -120,7 +122,8 @@
+             "model_deviation"_a);
+ 
+     // prerpocessing modules
+-    m.def("_voxel_down_sample", &VoxelDownsample, "frame"_a, "voxel_size"_a);
++    m.def("_voxel_down_sample", &VoxelDownsample, py::call_guard<py::gil_scoped_release>(),
++          "frame"_a, "voxel_size"_a);
+     /// This function only applies for the KITTI dataset, and should NOT be used by any other
+     /// dataset, the original idea and part of the implementation is taking from CT-ICP(Although
+     /// IMLS-SLAM Originally introduced the calibration factor)
