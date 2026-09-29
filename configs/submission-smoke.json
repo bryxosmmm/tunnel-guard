@@ -1,0 +1,27 @@
+{
+  "seed": 20260915,
+  "hypothesis": "Exercise the documented local CLI on actual source scans.",
+  "criterion": "Complete eight consecutive acquisitions, retain reproducible artifacts, and compare against the corresponding frozen predictions.",
+  "detector_config": "configs/detector.json",
+  "output": "build/submission-smoke",
+  "every": 1,
+  "max_frames": 8,
+  "prefetch_depth": 0,
+  "visualization": false,
+  "diagnostic_frames": [],
+  "result_compression": "none",
+  "thread_environment": {
+    "OMP_NUM_THREADS": "1",
+    "OPENBLAS_NUM_THREADS": "1",
+    "MKL_NUM_THREADS": "1",
+    "VECLIB_MAXIMUM_THREADS": "1",
+    "NUMEXPR_NUM_THREADS": "1",
+    "PYTHONHASHSEED": "20260915"
+  },
+  "bags": [
+    {
+      "path": "data/sourcecraft_subset/for_hackathon/doubleT_obstacle",
+      "split": "development_not_blind"
+    }
+  ]
+}

@@ -19,7 +19,7 @@ RAM, RTX 4070 Ti SUPER и 5,8 TB диска. Для запуска нужны Do
 При наличии доступа к приватному репозиторию:
 
 ```sh
-git clone --branch fix/review-integration-20260928 --single-branch \
+git clone --branch main --single-branch \
   https://github.com/bryxosmmm/tunnel-guard.git
 cd tunnel-guard
 ```

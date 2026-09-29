@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 from collections import Counter, defaultdict
+import gzip
 import json
 from pathlib import Path
 
@@ -144,11 +145,12 @@ def main():
     annotations = json.loads(args.annotations.read_text())
     needed = {(f["bag"], f["frame"]) for f in annotations["frames"]}
     predictions = {}
-    for path in sorted(args.run.glob("*.jsonl")):
+    for path in sorted([*args.run.glob("*.jsonl"), *args.run.glob("*.jsonl.gz")]):
         # Runner timing streams are telemetry, not object predictions.
-        if path.name.endswith("-timing.jsonl"):
+        if path.name.removesuffix(".gz").endswith("-timing.jsonl"):
             continue
-        with path.open() as stream:
+        opener = gzip.open if path.suffix == ".gz" else open
+        with opener(path, "rt") as stream:
             for line in stream:
                 row = json.loads(line)
                 key = (row["bag"], row["frame"])

@@ -715,3 +715,38 @@ so that it can be taken without re-deriving it:
 
 
 
+### Exact structural-mask work reduction — 2026-09-29
+
+CPU-only Apple M3, original detector and dependencies; evidence:
+`build/python-pipeline-20260929/`. No threshold, point-coverage, geometry,
+odometry, or confirmation changes. The former support loop overwrote every
+point on its second pass, making the first grid dead work. Retain the
+half-cell-shifted grid and calculate acceptance once per cell rather than
+broadcasting intermediate spans/counts to every point. Preserve the existing
+return-count threshold; it is not a distinct-station count despite its name.
+
+Actual sequential replay: 201 frames each from `doubleT_obstacle`,
+`doubleT_platform`, and `roundT_pressureGate_roundT`. Across 602 applicable
+mask calls and 31,316,212 points, original and optimized masks match exactly.
+Paired stage p50/p95: **7.69/11.95 → 4.94/6.65 ms**. All saved detector
+decision fields, boxes, identities and confidence values match the archived
+original on all 603 frames. Comparison excludes measured wall durations and
+the optional per-component diagnostic payload enabled only in the archived
+person run. Both existing person annotation reports match exactly:
+crossing 99 TP / 6 FN; legacy panel 5 TP / 31 FN at its configured IoU gate.
+These provisional, non-exhaustive labels do not establish field precision.
+
+Unprofiled ABBA measurement, 32 frames per recording per run, no discarded
+warmup frames; all non-timing outputs also match:
+
+| Recording | Original p50 / p95 (ms) | Optimized p50 / p95 (ms) |
+|---|---:|---:|
+| `doubleT_obstacle` | 181.7 / 213.6 | 175.7 / 209.7 |
+| `doubleT_platform` | 194.4 / 305.0 | 192.2 / 305.1 |
+| `roundT_pressureGate_roundT` | 201.6 / 319.9 | 202.5 / 327.0 |
+
+Pooled p50: **186.7 → 184.4 ms** (about 1.3%). The local stage saving is
+clear; a consistent whole-pipeline speedup across all recordings is **not**
+established. The pressure-gate result does not improve. This bounded replay
+does not rerun the full field corpus or synthetic panel, and is not a CUDA
+or deployment-host latency acceptance result.

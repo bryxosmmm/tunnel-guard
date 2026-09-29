@@ -1,4 +1,4 @@
-"""Class-agnostic occupancy detection with published KISS-ICP motion compensation."""
+"""Class-agnostic detection with KISS-ICP or explicit experimental profile motion."""
 from __future__ import annotations
 
 from collections import Counter, deque
@@ -18,6 +18,7 @@ from . import accelerator
 from .geometry import CrossSection, TrackGeometry, voxel_representative_indices
 from .mounting import observe_mounting, validate_mounting_config
 from .segmentation import density_labels, published_labels
+from .profile_motion import LongitudinalProfileMotion, validate_profile_motion
 
 
 def load_config(path: str | Path) -> dict:
@@ -87,6 +88,7 @@ def load_config(path: str | Path) -> dict:
         raise ValueError("rail_frame_mode must be bed; local_3d has no C++ implementation")
     if config.get("rail_anchor_support", "window") not in ("window", "bracketed", "measured"):
         raise ValueError("Unknown rail_anchor_support")
+    validate_profile_motion(config)
     validate_mounting_config(config)
     return config
 
@@ -430,6 +432,7 @@ class Detector:
     def __init__(self, config: dict):
         self.native_kernels = accelerator.native(config)
         self.config = config
+        validate_profile_motion(config)
         self.odometry = self._new_odometry()
         self.previous_source = None
         self.previous_pose = np.eye(4)
@@ -448,6 +451,9 @@ class Detector:
                                 if config.get("overlap_motion_geometry", False) else None)
 
     def _new_odometry(self):
+        self.profile_motion = (LongitudinalProfileMotion(self.config["profile_motion"])
+                               if self.config.get("motion_estimator", "kiss_icp") == "longitudinal_profile"
+                               else None)
         cfg = KISSConfig()
         cfg.data.min_range = self.config["min_range_m"]
         cfg.data.max_range = self.config["max_range_m"]
@@ -473,7 +479,26 @@ class Detector:
                 motion_initial_guess=self.odometry.last_pose @ self.odometry.last_delta,
                 motion_map=self.odometry.local_map.point_cloud(),
                 motion_sigma=np.array(self.odometry.adaptive_threshold.get_threshold()))
-        frame, source = self.odometry.register_frame(points, point_times)
+        if self.profile_motion is None:
+            frame, source = self.odometry.register_frame(points, point_times)
+        else:
+            profile_started = time.perf_counter()
+            frame = self.odometry.preprocessor.preprocess(points, point_times, self.odometry.last_delta)
+            source, _ = self.odometry.voxelize(frame)
+            fresh_profile = self.profile_motion.previous_signature is None
+            geometry_valid = bool(self._profile_geometry.valid)
+            previous = self.odometry.last_pose.copy()
+            if geometry_valid:
+                _, section = self._profile_geometry.classify_with_section(
+                    self._profile_points, remove_background=False)
+                self.profile_motion.update(self._profile_points[:, 0], section.lateral,
+                                           section.running_height, self.last_timestamp)
+                self.odometry.last_pose = np.eye(4)
+                self.odometry.last_pose[0, 3] = self.profile_motion.position
+            else:
+                self.profile_motion.invalidate()
+            self.odometry.last_delta = np.linalg.inv(previous) @ self.odometry.last_pose
+            profile_elapsed = time.perf_counter() - profile_started
         pose = self.odometry.last_pose.copy()
         if self.diagnostic_arrays:
             self.diagnostic_arrays.update(motion_source=source, motion_pose=pose)
@@ -516,6 +541,13 @@ class Detector:
             quality |= {"valid": bool(valid), "reason": "registered" if valid else "registration_rejected",
                         "overlap": overlap, "median_residual_m": median,
                         "position_sigma_m": max(float(median), self.config["tracking_pose_sigma_m"])}
+        if self.profile_motion is not None:
+            if not geometry_valid or fresh_profile:
+                quality["valid"] = False
+                quality["reason"] = "profile_geometry_invalid" if not geometry_valid else "profile_first_frame"
+            quality.update(estimator="longitudinal_profile",
+                           unestimated_degrees_of_freedom=["y", "z", "roll", "pitch", "yaw"],
+                           profile_and_preprocessing_s=profile_elapsed)
         self.previous_source, self.previous_pose = source.copy(), pose
         return frame, pose, quality
 
@@ -873,6 +905,9 @@ class Detector:
             self.previous_source = None
             self.odometry = self._new_odometry()
             return result | {"reason": "insufficient_returns", "processing_s": time.perf_counter() - started}
+        if self.profile_motion is not None:
+            self._profile_geometry = TrackGeometry(reduced, self.config)
+            self._profile_points = reduced
         motion_started = time.perf_counter()
         motion_future = None
         trace_motion = (self.odometry.last_delta.copy()
@@ -952,7 +987,8 @@ class Detector:
         # afterwards would still pay the 40 ms and throw the result away.
         geometry_config = (dict(self.config, background=dict(self.config["background"], enabled=False))
                            if reuse else self.config)
-        geometry = TrackGeometry(reduced, geometry_config)
+        geometry = (self._profile_geometry if self.profile_motion is not None
+                    else TrackGeometry(reduced, geometry_config))
         if reuse and geometry.valid:
             geometry.background = self.cached_background
         elif refit_due:

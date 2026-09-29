@@ -549,16 +549,15 @@ class TrackGeometry:
         Two necessary conditions, both measured from this scan alone, asked at the resolution
         each one needs:
 
-        * longitudinal support, on a coarse cell (`structure_support_cell_m`): the occupied
-          stations of that cell span at least `structure_min_length_m` and number at least
-          `structure_min_stations`. A SPAN rather than a run of consecutive stations: a wall
+        * longitudinal support, on a coarse cell (`structure_support_cell_m`): occupied
+          stations span at least `structure_min_length_m`; the return count meets
+          `structure_min_stations` (not a distinct-station count). A SPAN rather than a run: a wall
           seen at grazing incidence at 55 m lands in the same cell at eight stations spread
           over fifty metres, and a run would call that sparse while calling a 3 m object
           continuous. Coarse, because a surface only holds a cell for metres if the cell is
           at least as wide as the error in its own coordinates: measured, a fixed platform
           edge moves 0.1-0.3 m in lateral across one station as the estimated centre drifts.
-          Two grids offset by half a cell are asked and either may answer, so a surface
-          sitting on a cell boundary is not lost.
+          The support grid is shifted by half a cell.
         * outward reach, on a fine cell (`structure_cell_m`): at that height the occupied
           region runs outward from the cell, past the reference contour's half-width, with no
           break longer than `structure_outward_gap_m`. Fine, because this is what separates a
@@ -580,33 +579,23 @@ class TrackGeometry:
         station = float(cfg.get("structure_station_m", 1.0))
         x = points[:, 0]
         station_index = np.floor(x / station).astype(np.int64)
-        support = np.zeros(len(points), dtype=bool)
-        for offset in (0.0, coarse / 2.0):
-            column = np.floor((section.lateral + offset) / coarse).astype(np.int64)
-            row = np.floor((section.running_height + offset) / coarse).astype(np.int64)
-            # One composite key sorts by cell and then by station in a single pass.
-            order = np.argsort((column * 4096 + row) * 1024 + station_index, kind="stable")
-            keys = ((column * 4096 + row) * 1024)[order]
-            stations = station_index[order]
-            breaks = np.r_[True, np.diff(keys) != 0]
-            starts = np.flatnonzero(breaks)
-            stops = np.r_[starts[1:], len(order)]
-            cell_of = np.repeat(np.arange(len(starts)), stops - starts)
-            # A cell is longitudinally supported when its occupied stations SPAN at least
-            # `structure_min_length_m` and number at least `structure_min_stations`. Span, not
-            # a run: a wall seen at grazing incidence at 55 m lands in the same cell at eight
-            # stations spread over fifty metres, and a run of consecutive stations would call
-            # that sparse and a 3 m object continuous, which is backwards.
-            span = (stations[stops - 1][cell_of] - stations[starts][cell_of] + 1) * station
-            count = (stops - starts)[cell_of]
-            accepted = ((span >= float(cfg.get("structure_min_length_m", 5.0)))
-                        & (count >= int(cfg.get("structure_min_stations", 3))))
-            # "Any point of this cell is accepted" is the same value as "the number of
-            # accepted points in this cell is non-zero", and counting is a buffered
-            # scatter: `np.logical_or.at` is unbuffered and writes cell by cell, which
-            # cost more than the sort above it on every scan.
-            per_cell = np.bincount(cell_of[accepted], minlength=len(starts)) > 0
-            support[order] = per_cell[cell_of]
+        offset = coarse / 2.0
+        column = np.floor((section.lateral + offset) / coarse).astype(np.int64)
+        row = np.floor((section.running_height + offset) / coarse).astype(np.int64)
+        # Sort by cell and then station; equal-key order is retained.
+        keys = (column * 4096 + row) * 1024
+        order = np.argsort(keys + station_index, kind="stable")
+        keys = keys[order]
+        stations = station_index[order]
+        starts = np.flatnonzero(np.r_[True, np.diff(keys) != 0])
+        stops = np.r_[starts[1:], len(order)]
+        counts = stops - starts
+        # Evaluate each cell once, then scatter its decision to all of its points.
+        span = (stations[stops - 1] - stations[starts] + 1) * station
+        accepted = ((span >= float(cfg.get("structure_min_length_m", 5.0)))
+                    & (counts >= int(cfg.get("structure_min_stations", 3))))
+        support = np.empty(len(points), dtype=bool)
+        support[order] = np.repeat(accepted, counts)
         # Outward reach, on a cross-section thickened by one row and by the reach gap: a
         # vertical face is joined to the top surface it carries, and a surface whose inner
         # edge stands a few centimetres off the rest of its own structure at that height is

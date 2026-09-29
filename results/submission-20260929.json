@@ -1,0 +1,233 @@
+{
+  "seed": 20260915,
+  "default_estimator": "kiss_icp",
+  "optional_estimator": "longitudinal_profile",
+  "comparison": "Exact detector fields, excluding measured durations, run-only metadata and optional per-component diagnostic payload; normalize the documented estimator label only.",
+  "ignored_fields": [
+    "alarm",
+    "decode_s",
+    "deserialize_s",
+    "diagnostic_points",
+    "diagnostic_write_s",
+    "inference_s",
+    "ingestion_s",
+    "measured_processing_ms",
+    "motion_s",
+    "mounting_observation_s",
+    "processing_s",
+    "profile_and_preprocessing_s",
+    "read_and_process_s",
+    "visualization_s"
+  ],
+  "optional_diagnostic_path": "pipeline.segmentation.components",
+  "full_panel": {
+    "doubleT_obstacle": {
+      "reference_frames": 201,
+      "candidate_frames": 201,
+      "different_frames": 0,
+      "mismatches": []
+    },
+    "doubleT_platform": {
+      "reference_frames": 345,
+      "candidate_frames": 345,
+      "different_frames": 0,
+      "mismatches": []
+    },
+    "roundT_doubleT": {
+      "reference_frames": 252,
+      "candidate_frames": 252,
+      "different_frames": 0,
+      "mismatches": []
+    },
+    "roundT_pressureGate_roundT": {
+      "reference_frames": 268,
+      "candidate_frames": 268,
+      "different_frames": 0,
+      "mismatches": []
+    },
+    "roundT_squareT_pressureGate_squareT": {
+      "reference_frames": 545,
+      "candidate_frames": 545,
+      "different_frames": 0,
+      "mismatches": []
+    },
+    "squareT_platform_squareT_switch": {
+      "reference_frames": 877,
+      "candidate_frames": 877,
+      "different_frames": 0,
+      "mismatches": []
+    },
+    "cloud_with_fake_obj": {
+      "reference_frames": 1510,
+      "candidate_frames": 1510,
+      "different_frames": 0,
+      "mismatches": []
+    }
+  },
+  "documented_cli": {
+    "default_icp": {
+      "reference_frames": 8,
+      "candidate_frames": 8,
+      "different_frames": 0,
+      "mismatches": []
+    },
+    "optional_profile": {
+      "reference_frames": 8,
+      "candidate_frames": 8,
+      "different_frames": 0,
+      "mismatches": []
+    }
+  },
+  "installed_wheel": {
+    "optional_profile": {
+      "reference_frames": 2,
+      "candidate_frames": 2,
+      "different_frames": 0,
+      "mismatches": []
+    }
+  },
+  "full_panel_frames": 3998,
+  "integration_passed": true,
+  "runtime_scope": "Integration and package verification only; concurrent material preparation and short CLI runs make these timings unsuitable for speed claims.",
+  "environment": {
+    "python": "3.12.8 (v3.12.8:2dc476bcb91, Dec  3 2024, 14:43:19) [Clang 13.0.0 (clang-1300.0.29.30)]",
+    "platform": "macOS-26.5-arm64-arm-64bit",
+    "machine": "arm64",
+    "packages": {
+      "numpy": "2.5.3",
+      "scipy": "1.18.1",
+      "rosbags": "0.11.5",
+      "kiss-icp": "1.3.0",
+      "open3d": "0.19.0",
+      "travel-seg": null,
+      "hdbscan": null,
+      "pypatchworkpp": null
+    },
+    "source_sha256": {
+      "tunnel_guard/__init__.py": "91da7b7a8ed2b0855d69a05a0ce598169079b84374368f83d9e38e8322514603",
+      "tunnel_guard/accelerator.py": "9086a74ba3be4e18fb572ad3983e00692d84ddcdd2551807550ae48912275005",
+      "tunnel_guard/alarm_anatomy.py": "9579c8830b427b440d3d696dad20a0114a780bc92cf9a2e5205e174a10b21f81",
+      "tunnel_guard/alignment.py": "37019d4fa19e6186d89a1f8392d60eeadaf7b706eb602e91850d2fb86870fb08",
+      "tunnel_guard/alignment_probe.py": "e8fc2e1844b8365fec1d9bca71f92557db3f6391db0a689b21d3cd5a6b0b705a",
+      "tunnel_guard/annotate.py": "5922f9ca52364729a642b38bce4d35090831019bb6d16633d3a388261693c111",
+      "tunnel_guard/background.py": "f13462df1ce50346e41931f3d92d9f03f22d0c9e560f32379b489426b449fde0",
+      "tunnel_guard/background_repro.py": "2f1a23ce474659084c3de1213519b8946e23338deadd2c50ea630832efc315b6",
+      "tunnel_guard/calibrate.py": "83dfd35c841ac3db596a7b93e88643001b4d3aa8f3610f13770db1096289debe",
+      "tunnel_guard/compare.py": "418eaacae110333df33a765affc1938d0209aff48b125ddb75da468e90a83c18",
+      "tunnel_guard/compare_alarm_runs.py": "ce39621d4cea9ee07617f882f1d1f7035f006f16b252b74c2b5f63d2f1ad36d0",
+      "tunnel_guard/config_audit.py": "2dd2a1279c2b9a01ab956ef2d4d1b66e203ff667aad09a9b92ca1c33e8669cd7",
+      "tunnel_guard/corridor_report.py": "d245b7d57fc996faa4315b41f9f9d8775becd7c91968d6fbcfdacb633ccdc4fd",
+      "tunnel_guard/curve_audit.py": "26cfd35306aa438d39d23a3123f0ac38b860d90f2945bea43dd42c2337133be0",
+      "tunnel_guard/curved_stress.py": "0bcada82de0d22b9d50feef464635c334ef57cd7883f461fe1ea27a676a2a078",
+      "tunnel_guard/decode_benchmark.py": "e4a1f1270b180276d12347557db88048137687989900d1c5f14c29e102a1f4fa",
+      "tunnel_guard/detector.py": "cccdae9a9a4948dc80888b53a533f8bd325d45674f053d21c0a6c651244b2b50",
+      "tunnel_guard/episode_report.py": "dc932d8a30294a887e7a143e852c1e2c9d7a95e46aea72f341d780a33d584501",
+      "tunnel_guard/evaluate.py": "561754ec856ecd5529c7d59fddaff004ffa9d56b5b782e89384a27bdbcd0efc2",
+      "tunnel_guard/expansion_report.py": "7d824113b517d566c86c78d56218a3c3ff36a316502d28876c80425c13ff6637",
+      "tunnel_guard/extended_subset.py": "feaf7c41ab3ccd9b9d0497128353c7b36eedbd33aff8f46c2cae8193da9279ce",
+      "tunnel_guard/geometry.py": "e18fb4e125b999178281e47ed148eb7c04d259d9c564c8cfe9d06cb43cb6d915",
+      "tunnel_guard/geometry_loss_report.py": "0f8c812e385332e4851fb2d5a1b49ee6dcdb2710b037a2da49327a9cdbda00c9",
+      "tunnel_guard/ground_audit.py": "95d6113316a239a5efd18087d81b5a5bf25b6314226e03d8b2a0995932207106",
+      "tunnel_guard/history_probe.py": "3cd13e291fd643150282c74f63c66f94566045e4406958278805856fbf62f76c",
+      "tunnel_guard/hmm_mos_probe.py": "2f4c5a9f47ecedcb40457a5c64f3d606965a1db5178dacd85839d4df5070547f",
+      "tunnel_guard/injection_experiment.py": "9887b6985e3e90de90c0505c4cca787f05703d7bd9f487041e84b89a8b5841c1",
+      "tunnel_guard/inspect_bag.py": "18018c587fea64f8e3d35591944809b162fb31d3aab301b5fc708796c3c9700f",
+      "tunnel_guard/inspect_recording_headers.py": "12b4176352f833bed49ff85becebfd8b6dd38fa4316799e2036594e3e41b9d19",
+      "tunnel_guard/intrusion_audit.py": "e04ec075a2cc9ddcf6d844e6ddfda6657e275b562ec6de7728f11732c7cdcf84",
+      "tunnel_guard/io.py": "927fca0508fcddb96581d7b552c3bb8ab79bdecde932077db0b5a82fae95d95a",
+      "tunnel_guard/motion_audit.py": "d2d49f0bcff1af6bb7ba97c6d7047c59f6ab4605bb485cfac61e6f298c94a8c7",
+      "tunnel_guard/motion_scenarios.py": "2d928846e973b163471f3293ba1af4ae79fdede55159b5c515cb8c2f6cc0d897",
+      "tunnel_guard/mounting.py": "568b2716fafef9775d18e1105c0d1365aff1b32409d6cfcf82f22840bab33a2c",
+      "tunnel_guard/mounting_replay.py": "be2e6d666fbd51d0ecd4614369651b7f5c65779ddbe796751a4824d5194e37f4",
+      "tunnel_guard/mounting_report.py": "c7547ee3d650de0f35f4d5a86ab855b0db1214e4860bada9082619c0fb44e41f",
+      "tunnel_guard/native_benchmark.py": "3ff29f3e9107f8bcd145e906e5d5421b6cdd31e6c5c64615c50262d77ccb442b",
+      "tunnel_guard/object_evidence_report.py": "ceae0cbb2f8841fac8eed0ef870341184861e3dd3c61e1fe2d04c49e987a7dc0",
+      "tunnel_guard/on_track.py": "b5b8f3f2eff1bf8c6d51b7ad47f9591b4f92fb685c9131a183f6ec917b8b70fb",
+      "tunnel_guard/panel_report.py": "f5fbf5612985fa008b580bb7446f445c5017d1170a04a7180b73b4e7dc38c505",
+      "tunnel_guard/person_evidence_report.py": "2405d412b8c4a264c148c70cb090c40ef729c1b12c1458abcdb8ddcddb95e7a4",
+      "tunnel_guard/plot_track_geometry.py": "b19aee7b6846a74b38cc9bec7ba0158443f473168b4fb6a18fe95014b6716113",
+      "tunnel_guard/prepare_segment.py": "154f5d0772d56473e82704d217723132c292efa0681d5df32f8bf6b1c355cf7a",
+      "tunnel_guard/profile_motion.py": "b61e32cbac6f2c8e3708f3424fa0a9d5aab687f1e4278eefb3e7196f6e41f5a0",
+      "tunnel_guard/profile_run.py": "31a4dfc22ce06e5dfe1a521d1ea511f2fe3ba8cf0447db9b61ad7061c3dd48ea",
+      "tunnel_guard/rail_fit_report.py": "3bae4132006f5b72b7620be0e13fb76aebd413bfcce733c1d2c6738542f6bb44",
+      "tunnel_guard/rail_geometry_audit.py": "132e5f7772c56e3e204b2ba372f89d003d0551616c4d22d65238b011880a930a",
+      "tunnel_guard/realistic_report.py": "163806fdb60df8b981187b14e803ff921fdf1a9d14700b0e5ae4d30b0f0989d8",
+      "tunnel_guard/realistic_stress.py": "e6468a325619d0a2e54f714fe0a98c03dd8631802ea83d771070fff869f3deac",
+      "tunnel_guard/registration_repeat.py": "bff8c9f38d3a0cd319f7071a4d5741950976fb7a8994fd38268ad7cd7e06ef9c",
+      "tunnel_guard/render_alarm_cases.py": "95b510a7143f7250ec718749ed654e95c225f1b5a9ce20aa054f3b0df9cd0cc7",
+      "tunnel_guard/render_annotation_review.py": "b12ce9882b8f824101d59133af4259c6f38a2ba5562b2875cdf0e88c684b242f",
+      "tunnel_guard/review_remaining_alerts.py": "0fe5e93952e1a275a81b2b04d203ebe899fe4d1e304ef7d347e026cc87d4448b",
+      "tunnel_guard/review_viewer.py": "d165ac49984d6d48365f64cd58eb01dd7a9c7e5307a8fe1d1b46e9e2742ef8ef",
+      "tunnel_guard/ros_node.py": "b4e53a1f2f003ada2a936bed26b2b4e735e54c8396d2bb8aa44c59737836feda",
+      "tunnel_guard/run.py": "3335c144c02358d25ca24673f406750d064e328d9efbcda9019b6e187ee917e3",
+      "tunnel_guard/segmentation.py": "1196d21b17f5db587bf17a8f25feda64796c4531afb6dcfde7c5be5c69a965c4",
+      "tunnel_guard/sensor_profile.py": "4ff47460df305986034ba03e45e9c892e3559ccceffff61412c5d1ebadfb3c03",
+      "tunnel_guard/stress.py": "28ab95247801ea96b42b574ef168941db0f55d55d8c8f4b8d0f998edf4d00a4f",
+      "tunnel_guard/structural_view.py": "3ee1b69f8d320ed23ee86d5ddd1e142d74e420df0d6c5d4510e8e443838ef9f8",
+      "tunnel_guard/support_stability_report.py": "9023ddb2443fe0a229e5aafa795a1612f5df323f27159540cacf5843a9cceb86",
+      "tunnel_guard/surface_evaluate.py": "d27fa368b823c37891559e7de89a05a59159ae66102f4398d353d6c29cbd894f",
+      "tunnel_guard/sustech.py": "026b971673c5f5308070e780c367d55589dc874138cfea1218701fde37f27217",
+      "tunnel_guard/sustech_import.py": "1b6eaa071db373203e3908abafe6d0d018949920266e80fee94fd01826cead98",
+      "tunnel_guard/trace_analysis.py": "be1eef8bd26e30c9efc432304c292f2f1db34f2ecb6fba7248c3d2b081ef07eb",
+      "tunnel_guard/track_scene_experiment.py": "9352b34c678d220c25eea79a80ce25d14ecffd5780dd86162606ff3d091e2f85",
+      "tunnel_guard/uncertainty_probe.py": "78bf9156edf3f126724959104a89a1fc18ab14b8ba2717000186ade99bfb2560",
+      "tunnel_guard/visualization.py": "1bbbea139ddb91d94c2a7c3b2f9343fde7da957a83266c14ba08b8650c5b4b85"
+    },
+    "native_accelerator": {
+      "binary_sha256": "ab0d427f3edc8ff9764cc7609eef99a4f5d95038db1c77169358db09e524d50e",
+      "module": "tunnel_guard._native",
+      "backend": "cpp",
+      "device_entry_points": [],
+      "cpu_binary_sha256": "ab0d427f3edc8ff9764cc7609eef99a4f5d95038db1c77169358db09e524d50e",
+      "device": null,
+      "sources_sha256": {
+        "cpp/kernels.cpp": "8bea28927f11d8b92ee58e87cf863b40de3ae44945391ece41a992166ccaa032",
+        "cpp/voxel.cpp": "f57dbd6dc88e493ba3a1839ee6937e5359d9de0db775e42314ae418bcb1861ea",
+        "cpp/native.h": "e09fb621ec757bf6be05f67eb104e29678eb826eb7620083e28b71c2a573a55c",
+        "cpp/cuda/tg_cuda.cu": "32850fd1a14b809a8063d2864f29293b7f671ac324df076dfcd113a6cc96bd15",
+        "cpp/cuda/Open3D-LICENSE.txt": "e5439bd70250da5f17b3435ff9efb05e96e7f9fdc34248d3355b0026baadaa41",
+        "setup.py": "1315ab98ae387d30bcbd8ad20080442b7ab01511d703e7dcb0ecf8db0a5a94a2",
+        "setup_cuda.py": "f71e980b3c7a4395441ec4e7bc6329fa455103b7885d6d199d7c50d5a5ffc73a",
+        "MANIFEST.in": "967858b1d898fdd6954fe2d2879bd087b51dfd952e22c7d66c96e1312e6c4719",
+        "patches/kiss-icp-1.3.0-gil-aabb.patch": "6930d093fbcc153c199fb28134f55e3be65f707681ad394bd9fd6501d7cff76c",
+        "patches/kiss-icp-1.3.0-release-gil.patch": "68a9b75126ba017a1a0197b860d37915b83dab5932dc21cf7305291ed7d053e1",
+        "patches/kiss-icp-build-constraints.txt": "127dda78c1dd48240fdc28ba1a7ee9497ded460bd2c642a118c2e663e7ed6bee"
+      }
+    },
+    "config_sha256": "c46537f3df829960f8ac13ebcf01e85d9c9f5771b51c3d6fb11d5635d0940cb7"
+  },
+  "quality_limits": [
+    "Full equivalence is to the isolated fast experiment, not to all ICP outputs.",
+    "The experimental raw promotion gate still fails on five prior presence flags.",
+    "Unestimated pose degrees of freedom and field safety remain unvalidated.",
+    "Default ICP is retained; this verification does not promote the fast mode to default."
+  ],
+  "person_evaluation": {
+    "evaluated_frames": 106,
+    "missing_frames": [],
+    "tp": 99,
+    "fn": 6,
+    "minimum_3d_iou": 0.25,
+    "matched_mean_3d_iou": 0.4277484068721029,
+    "validity_warnings": [
+      "Provisional geometric annotations are not independently human-verified ground truth",
+      "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric"
+    ],
+    "annotations_sha256": "e70e79fde5db41ccd7b334d7001b38e617d6586d5b7a518e171e4d1b7241b985"
+  },
+  "gzip_evaluator_fix": {
+    "before_missing_frames": 106,
+    "after_missing_frames": 0,
+    "installed_final_wheel_tp": 99,
+    "installed_final_wheel_fn": 6,
+    "installed_final_wheel_missing_frames": []
+  },
+  "final_source_sha256": {
+    "tunnel_guard/profile_motion.py": "b61e32cbac6f2c8e3708f3424fa0a9d5aab687f1e4278eefb3e7196f6e41f5a0",
+    "tunnel_guard/detector.py": "cccdae9a9a4948dc80888b53a533f8bd325d45674f053d21c0a6c651244b2b50",
+    "tunnel_guard/geometry.py": "e18fb4e125b999178281e47ed148eb7c04d259d9c564c8cfe9d06cb43cb6d915",
+    "tunnel_guard/run.py": "3335c144c02358d25ca24673f406750d064e328d9efbcda9019b6e187ee917e3",
+    "tunnel_guard/evaluate.py": "bedc4ce426fa0049f0ed423db8bddc49c976de41a6796d00b508f937d880124c"
+  },
+  "final_wheel_sha256": "bdf02ae4018d6d113e698142f7037df5d8ae7215d6d7b29011ac2a1394dbb340"
+}

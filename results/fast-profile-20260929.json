@@ -1,0 +1,5221 @@
+{
+  "decision": {
+    "promoted": false,
+    "raw_promotion_gate_passed": false,
+    "experiment": "Original Ehimen longitudinal wall-profile motion with our geometry and unchanged 3D residual/overlap verification, detection and confirmation thresholds.",
+    "coverage": {
+      "real_frames": 2488,
+      "synthetic_frames": 1510,
+      "synthetic_events_detected_before": 10,
+      "synthetic_events_detected_after": 10
+    },
+    "real": {
+      "person_crossing_tp_before": 99,
+      "person_crossing_tp_after": 99,
+      "new_person_id_switches": 0,
+      "negative_alarm_frames_before": 36,
+      "negative_alarm_frames_after": 35,
+      "negative_alarm_episodes_before": 25,
+      "negative_alarm_episodes_after": 24,
+      "geometry_and_current_object_support_changes": 0
+    },
+    "synthetic": {
+      "confirmed_presence_frame_event_pairs_before": 721,
+      "confirmed_presence_frame_event_pairs_after": 796,
+      "lost_prior_presence_frame_event_pairs": 5,
+      "confirmed_intersection_frame_event_pairs_before": 277,
+      "confirmed_intersection_frame_event_pairs_after": 323,
+      "lost_prior_intersection_frame_event_pairs": 0
+    },
+    "forensic_finding": {
+      "cases": 5,
+      "past_observations_audited": 13,
+      "past_boxes_overlapping_any_inserted_cluster": 0,
+      "current_target_boxes_unchanged": true,
+      "interpretation": "In all five lost-presence cases the old confirmed component inherited temporal evidence from track observations containing no inserted-object support. These flags are not evidence of valid temporal tracking of the target. This is an association/history-provenance defect, not a missing current object. Raw gate and metrics are retained unchanged.",
+      "evidence": "lost-presence-details.json",
+      "reference_archive": "results/issue-23-evaluation-tools-20260924.zip"
+    },
+    "timing": "timing.json",
+    "quality": "evaluation.json",
+    "conclusion": "Cheap motion is substantially faster on two matched recordings and preserves or improves the measured hazard confirmations. No clean quality-preserving production promotion: the raw gate fails on five presence flags with contaminated baseline history, and unestimated pose degrees of freedom remain unvalidated.",
+    "next_research_target": "Association and evidence provenance, not blanket defense of full ICP. Do not relax thresholds or silently redefine the fixed gate.",
+    "production_code_changed": false
+  },
+  "timing": {
+    "scope": "One sequential unprofiled identity/profile pair; 32 actual frames per recording, no warmup exclusion. Full panel timings are not substituted for this matched comparison.",
+    "recordings": {
+      "doubleT_obstacle": {
+        "frames": 32,
+        "original_processing_ms_p50_p95": [
+          177.27366636972874,
+          216.99438557261598
+        ],
+        "profile_processing_ms_p50_p95": [
+          163.12929149717093,
+          234.83111259993166
+        ],
+        "original_motion_ms_p50_p95": [
+          42.85841644741595,
+          62.95656249858438
+        ],
+        "profile_motion_ms_p50_p95": [
+          24.2887920467183,
+          28.78907537087798
+        ],
+        "p50_speedup": 1.0867065304013972
+      },
+      "doubleT_platform": {
+        "frames": 32,
+        "original_processing_ms_p50_p95": [
+          185.48012501560152,
+          289.20947689330205
+        ],
+        "profile_processing_ms_p50_p95": [
+          119.19431248679757,
+          148.90685382997617
+        ],
+        "original_motion_ms_p50_p95": [
+          83.09679199010134,
+          187.87911479594186
+        ],
+        "profile_motion_ms_p50_p95": [
+          15.864603919908404,
+          17.461383086629212
+        ],
+        "p50_speedup": 1.5561155658005579
+      },
+      "roundT_pressureGate_roundT": {
+        "frames": 32,
+        "original_processing_ms_p50_p95": [
+          201.69670856557786,
+          305.2275772439316
+        ],
+        "profile_processing_ms_p50_p95": [
+          112.95039590913802,
+          129.00061077671126
+        ],
+        "original_motion_ms_p50_p95": [
+          98.59541698824614,
+          204.93576290318742
+        ],
+        "profile_motion_ms_p50_p95": [
+          14.010458486154675,
+          14.746812428347766
+        ],
+        "p50_speedup": 1.7857105054136424
+      }
+    }
+  },
+  "historical_evaluation": {
+    "real": {
+      "doubleT_obstacle": {
+        "frames": 201,
+        "baseline_alarm_frames": 166,
+        "profile_alarm_frames": 166,
+        "baseline_alarm_episodes": 23,
+        "profile_alarm_episodes": 23,
+        "baseline_statuses": {
+          "no_obstacle_observed": 25,
+          "unresolved_obstacle": 6,
+          "obstacle": 166,
+          "candidate": 4
+        },
+        "profile_statuses": {
+          "no_obstacle_observed": 25,
+          "unresolved_obstacle": 6,
+          "obstacle": 166,
+          "candidate": 4
+        },
+        "baseline_motion_valid_frames": 200,
+        "profile_motion_valid_frames": 200,
+        "geometry_changed_frames": [],
+        "current_object_support_changed_frames": [],
+        "coverage_reduced_frames": []
+      },
+      "doubleT_platform": {
+        "frames": 345,
+        "baseline_alarm_frames": 22,
+        "profile_alarm_frames": 22,
+        "baseline_alarm_episodes": 11,
+        "profile_alarm_episodes": 11,
+        "baseline_statuses": {
+          "candidate": 2,
+          "no_obstacle_observed": 302,
+          "unresolved_obstacle": 19,
+          "obstacle": 22
+        },
+        "profile_statuses": {
+          "candidate": 2,
+          "no_obstacle_observed": 302,
+          "unresolved_obstacle": 19,
+          "obstacle": 22
+        },
+        "baseline_motion_valid_frames": 240,
+        "profile_motion_valid_frames": 344,
+        "geometry_changed_frames": [],
+        "current_object_support_changed_frames": [],
+        "coverage_reduced_frames": []
+      },
+      "roundT_doubleT": {
+        "frames": 252,
+        "baseline_alarm_frames": 4,
+        "profile_alarm_frames": 4,
+        "baseline_alarm_episodes": 4,
+        "profile_alarm_episodes": 4,
+        "baseline_statuses": {
+          "no_obstacle_observed": 234,
+          "unresolved_obstacle": 14,
+          "obstacle": 4
+        },
+        "profile_statuses": {
+          "no_obstacle_observed": 234,
+          "unresolved_obstacle": 10,
+          "obstacle": 4,
+          "candidate": 4
+        },
+        "baseline_motion_valid_frames": 251,
+        "profile_motion_valid_frames": 221,
+        "geometry_changed_frames": [],
+        "current_object_support_changed_frames": [],
+        "coverage_reduced_frames": []
+      },
+      "roundT_pressureGate_roundT": {
+        "frames": 268,
+        "baseline_alarm_frames": 1,
+        "profile_alarm_frames": 0,
+        "baseline_alarm_episodes": 1,
+        "profile_alarm_episodes": 0,
+        "baseline_statuses": {
+          "no_obstacle_observed": 253,
+          "unknown": 2,
+          "unresolved_obstacle": 9,
+          "obstacle": 1,
+          "candidate": 3
+        },
+        "profile_statuses": {
+          "no_obstacle_observed": 253,
+          "unknown": 2,
+          "candidate": 4,
+          "unresolved_obstacle": 9
+        },
+        "baseline_motion_valid_frames": 266,
+        "profile_motion_valid_frames": 263,
+        "geometry_changed_frames": [],
+        "current_object_support_changed_frames": [],
+        "coverage_reduced_frames": []
+      },
+      "roundT_squareT_pressureGate_squareT": {
+        "frames": 545,
+        "baseline_alarm_frames": 9,
+        "profile_alarm_frames": 9,
+        "baseline_alarm_episodes": 9,
+        "profile_alarm_episodes": 9,
+        "baseline_statuses": {
+          "no_obstacle_observed": 530,
+          "candidate": 3,
+          "unresolved_obstacle": 3,
+          "obstacle": 9
+        },
+        "profile_statuses": {
+          "no_obstacle_observed": 530,
+          "candidate": 3,
+          "unresolved_obstacle": 3,
+          "obstacle": 9
+        },
+        "baseline_motion_valid_frames": 516,
+        "profile_motion_valid_frames": 543,
+        "geometry_changed_frames": [],
+        "current_object_support_changed_frames": [],
+        "coverage_reduced_frames": []
+      },
+      "squareT_platform_squareT_switch": {
+        "frames": 877,
+        "baseline_alarm_frames": 0,
+        "profile_alarm_frames": 0,
+        "baseline_alarm_episodes": 0,
+        "profile_alarm_episodes": 0,
+        "baseline_statuses": {
+          "no_obstacle_observed": 872,
+          "candidate": 2,
+          "unresolved_obstacle": 3
+        },
+        "profile_statuses": {
+          "no_obstacle_observed": 872,
+          "candidate": 1,
+          "unresolved_obstacle": 4
+        },
+        "baseline_motion_valid_frames": 804,
+        "profile_motion_valid_frames": 875,
+        "geometry_changed_frames": [],
+        "current_object_support_changed_frames": [],
+        "coverage_reduced_frames": []
+      }
+    },
+    "person_panels": {
+      "doubleT-obstacle-person-crossing": {
+        "baseline": {
+          "label_status": "provisional_geometry",
+          "prediction_scope": "near_track_objects",
+          "annotation_origins": {
+            "reviewer_hand_anchor_frame_0": 1,
+            "registration_propagation_from_frame_0": 24,
+            "reviewer_hand_adjusted_after_registration_propagation": 3,
+            "reviewer_hand_anchor_frame_28": 1,
+            "registration_propagation_from_frame_28": 18,
+            "reviewer_hand_anchor_frame_47": 1,
+            "registration_propagation_from_frame_47": 57
+          },
+          "box_semantics": "reviewer_authored_person_volume_not_observed_support",
+          "minimum_3d_iou": 0.25,
+          "evaluated_frames": 106,
+          "missing_frames": [],
+          "exhaustive_frames": 0,
+          "tp": 99,
+          "fn": 6,
+          "fp_exhaustive_only": 0,
+          "annotated_object_recall": 0.9428571428571428,
+          "precision_exhaustive_only": null,
+          "recall_exhaustive_only": null,
+          "f1_exhaustive_only": null,
+          "event_recall": 1.0,
+          "distance_mae_m": 0.11059682405250439,
+          "matched_mean_3d_iou": 0.4277484068721029,
+          "validity_warnings": [
+            "Provisional geometric annotations are not independently human-verified ground truth",
+            "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric"
+          ],
+          "events": {
+            "doubleT_obstacle:1": {
+              "annotated_frames": 105,
+              "matched_frames": 99,
+              "first_detection_distance_m": 55.28750807566817
+            }
+          },
+          "frames": [
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 0,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  19,
+                  0,
+                  0.39059857788874947
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 1,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  16,
+                  0,
+                  0.4206516622207629
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 2,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  155,
+                  0,
+                  0.42134293336020834
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 3,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  173,
+                  0,
+                  0.3711959881898465
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 4,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  179,
+                  0,
+                  0.5329621109856857
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 5,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  147,
+                  0,
+                  0.4390313185847068
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 6,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "unresolved_obstacle",
+              "matches": [
+                [
+                  170,
+                  0,
+                  0.4153194232013129
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 7,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "unresolved_obstacle",
+              "matches": [
+                [
+                  157,
+                  0,
+                  0.3919313508725444
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 8,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  168,
+                  0,
+                  0.36526346997545306
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 9,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  148,
+                  0,
+                  0.46560001287613106
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 10,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  167,
+                  0,
+                  0.4744706878354479
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 11,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  167,
+                  0,
+                  0.4445347915365996
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 12,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  165,
+                  0,
+                  0.4241144392655902
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 13,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  164,
+                  0,
+                  0.4122165827525032
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 14,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  154,
+                  0,
+                  0.4500603921354598
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 15,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  171,
+                  0,
+                  0.40972766409377154
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 16,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  184,
+                  0,
+                  0.4398386149920529
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 17,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  185,
+                  0,
+                  0.3971401562374383
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 18,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  174,
+                  0,
+                  0.40836746038324123
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 19,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  174,
+                  0,
+                  0.34997924918416723
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 20,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  169,
+                  0,
+                  0.4149347988287108
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 21,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  151,
+                  0,
+                  0.3841996782301662
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 22,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  152,
+                  0,
+                  0.42783897686260003
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 23,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  167,
+                  0,
+                  0.41057219490751234
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 24,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  166,
+                  0,
+                  0.4184150056730581
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 25,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  168,
+                  0,
+                  0.3365760249033106
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 26,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  156,
+                  0,
+                  0.3213709983070387
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 27,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  159,
+                  0,
+                  0.34812536157227364
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 28,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  163,
+                  0,
+                  0.7437331543071235
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 29,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  173,
+                  0,
+                  0.4197457026298033
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 30,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  169,
+                  0,
+                  0.34314107266708105
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 31,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  155,
+                  0,
+                  0.5727857859280936
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 32,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  176,
+                  0,
+                  0.2963899315603229
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 33,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  175,
+                  0,
+                  0.3592184213509048
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 34,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  176,
+                  0,
+                  0.2994988624092873
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 35,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  180,
+                  0,
+                  0.3220688599698088
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 36,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  184,
+                  0,
+                  0.30850136294293345
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 37,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  186,
+                  0,
+                  0.34828405002711554
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 38,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  180,
+                  0,
+                  0.3035832210969779
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 39,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 40,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 41,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 42,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 43,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 44,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 45,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  168,
+                  0,
+                  0.48836496457590545
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 46,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  169,
+                  0,
+                  0.49214843538299596
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 47,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  181,
+                  0,
+                  0.4168349838456701
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 48,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  168,
+                  0,
+                  0.39545285893726534
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 49,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  171,
+                  0,
+                  0.45405092017342374
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 50,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  171,
+                  0,
+                  0.35288164182678844
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 51,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  168,
+                  0,
+                  0.3671322652201549
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 52,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  170,
+                  0,
+                  0.5201938261529225
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 53,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  178,
+                  0,
+                  0.4797996120576315
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 54,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  169,
+                  0,
+                  0.4689965567440498
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 55,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  187,
+                  0,
+                  0.4977249812312572
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 56,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  182,
+                  0,
+                  0.4796416373249958
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 57,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  180,
+                  0,
+                  0.5076133206057116
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 58,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  185,
+                  0,
+                  0.45312138610972724
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 59,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  169,
+                  0,
+                  0.4611080880453778
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 60,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  174,
+                  0,
+                  0.5007493924224645
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 61,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  178,
+                  0,
+                  0.4642669316867573
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 62,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  173,
+                  0,
+                  0.4426413163226163
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 63,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  167,
+                  0,
+                  0.42432527890200744
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 64,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  177,
+                  0,
+                  0.3135933502859449
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 65,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  181,
+                  0,
+                  0.44120189440971974
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 66,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  179,
+                  0,
+                  0.5448588923311036
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 67,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  168,
+                  0,
+                  0.6104164485857361
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 68,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  195,
+                  0,
+                  0.6423772686838317
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 69,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  191,
+                  0,
+                  0.5262502097574084
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 70,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  189,
+                  0,
+                  0.44887019006715706
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 71,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  173,
+                  0,
+                  0.5440826968382664
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 72,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  181,
+                  0,
+                  0.3997183073576907
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 73,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  170,
+                  0,
+                  0.42115982526118667
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 74,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  185,
+                  0,
+                  0.4500160857502275
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 75,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  178,
+                  0,
+                  0.38316151370597873
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 76,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  187,
+                  0,
+                  0.5314294830044047
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 77,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  174,
+                  0,
+                  0.4342612343143071
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 78,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  186,
+                  0,
+                  0.4726997554269429
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 79,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  182,
+                  0,
+                  0.4620574344426876
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 80,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  181,
+                  0,
+                  0.48969275057570183
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 81,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  187,
+                  0,
+                  0.5318325166479475
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 82,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  195,
+                  0,
+                  0.4678008046206769
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 83,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  175,
+                  0,
+                  0.4005261825154238
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 84,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "unresolved_obstacle",
+              "matches": [
+                [
+                  185,
+                  0,
+                  0.4124047407835635
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 85,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  194,
+                  0,
+                  0.44170696686651734
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 86,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  173,
+                  0,
+                  0.29960333544913464
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 87,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  178,
+                  0,
+                  0.41171257043263354
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 88,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  190,
+                  0,
+                  0.38518116004055475
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 89,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  191,
+                  0,
+                  0.41434308488217775
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 90,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  176,
+                  0,
+                  0.3886944601852134
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 91,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  185,
+                  0,
+                  0.48428018563460257
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 92,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  179,
+                  0,
+                  0.3430976610462821
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 93,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  172,
+                  0,
+                  0.45647147178639286
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 94,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  185,
+                  0,
+                  0.3901377275862265
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 95,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  183,
+                  0,
+                  0.3649658729760649
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 96,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  174,
+                  0,
+                  0.31588887978042146
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 97,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  181,
+                  0,
+                  0.45139614407539674
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 98,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  183,
+                  0,
+                  0.37229584856720643
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 99,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  178,
+                  0,
+                  0.4096583580488947
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 100,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  179,
+                  0,
+                  0.43369679169224035
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 101,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  169,
+                  0,
+                  0.39755296148130154
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 102,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  174,
+                  0,
+                  0.3677866660729444
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 103,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  176,
+                  0,
+                  0.38683782309349485
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 104,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  179,
+                  0,
+                  0.43299397696106223
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 105,
+              "tp": 0,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            }
+          ]
+        },
+        "profile": {
+          "label_status": "provisional_geometry",
+          "prediction_scope": "near_track_objects",
+          "annotation_origins": {
+            "reviewer_hand_anchor_frame_0": 1,
+            "registration_propagation_from_frame_0": 24,
+            "reviewer_hand_adjusted_after_registration_propagation": 3,
+            "reviewer_hand_anchor_frame_28": 1,
+            "registration_propagation_from_frame_28": 18,
+            "reviewer_hand_anchor_frame_47": 1,
+            "registration_propagation_from_frame_47": 57
+          },
+          "box_semantics": "reviewer_authored_person_volume_not_observed_support",
+          "minimum_3d_iou": 0.25,
+          "evaluated_frames": 106,
+          "missing_frames": [],
+          "exhaustive_frames": 0,
+          "tp": 99,
+          "fn": 6,
+          "fp_exhaustive_only": 0,
+          "annotated_object_recall": 0.9428571428571428,
+          "precision_exhaustive_only": null,
+          "recall_exhaustive_only": null,
+          "f1_exhaustive_only": null,
+          "event_recall": 1.0,
+          "distance_mae_m": 0.11059682405250439,
+          "matched_mean_3d_iou": 0.4277484068721029,
+          "validity_warnings": [
+            "Provisional geometric annotations are not independently human-verified ground truth",
+            "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric"
+          ],
+          "events": {
+            "doubleT_obstacle:1": {
+              "annotated_frames": 105,
+              "matched_frames": 99,
+              "first_detection_distance_m": 55.28750807566817
+            }
+          },
+          "frames": [
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 0,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  19,
+                  0,
+                  0.39059857788874947
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 1,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  16,
+                  0,
+                  0.4206516622207629
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 2,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  155,
+                  0,
+                  0.42134293336020834
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 3,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  173,
+                  0,
+                  0.3711959881898465
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 4,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  178,
+                  0,
+                  0.5329621109856857
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 5,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  147,
+                  0,
+                  0.4390313185847068
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 6,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "unresolved_obstacle",
+              "matches": [
+                [
+                  170,
+                  0,
+                  0.4153194232013129
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 7,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "unresolved_obstacle",
+              "matches": [
+                [
+                  157,
+                  0,
+                  0.3919313508725444
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 8,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  168,
+                  0,
+                  0.36526346997545306
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 9,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  148,
+                  0,
+                  0.46560001287613106
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 10,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  167,
+                  0,
+                  0.4744706878354479
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 11,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  166,
+                  0,
+                  0.4445347915365996
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 12,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  165,
+                  0,
+                  0.4241144392655902
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 13,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  164,
+                  0,
+                  0.4122165827525032
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 14,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  153,
+                  0,
+                  0.4500603921354598
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 15,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  171,
+                  0,
+                  0.40972766409377154
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 16,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  183,
+                  0,
+                  0.4398386149920529
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 17,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  185,
+                  0,
+                  0.3971401562374383
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 18,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  175,
+                  0,
+                  0.40836746038324123
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 19,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  174,
+                  0,
+                  0.34997924918416723
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 20,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  169,
+                  0,
+                  0.4149347988287108
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 21,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  151,
+                  0,
+                  0.3841996782301662
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 22,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  151,
+                  0,
+                  0.42783897686260003
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 23,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  167,
+                  0,
+                  0.41057219490751234
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 24,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  165,
+                  0,
+                  0.4184150056730581
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 25,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  168,
+                  0,
+                  0.3365760249033106
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 26,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  156,
+                  0,
+                  0.3213709983070387
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 27,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  158,
+                  0,
+                  0.34812536157227364
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 28,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  162,
+                  0,
+                  0.7437331543071235
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 29,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  173,
+                  0,
+                  0.4197457026298033
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 30,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  172,
+                  0,
+                  0.34314107266708105
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 31,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  155,
+                  0,
+                  0.5727857859280936
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 32,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  177,
+                  0,
+                  0.2963899315603229
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 33,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  175,
+                  0,
+                  0.3592184213509048
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 34,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  176,
+                  0,
+                  0.2994988624092873
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 35,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  178,
+                  0,
+                  0.3220688599698088
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 36,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  183,
+                  0,
+                  0.30850136294293345
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 37,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  189,
+                  0,
+                  0.34828405002711554
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 38,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  179,
+                  0,
+                  0.3035832210969779
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 39,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 40,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 41,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 42,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 43,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 44,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 45,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  168,
+                  0,
+                  0.48836496457590545
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 46,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  170,
+                  0,
+                  0.49214843538299596
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 47,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  180,
+                  0,
+                  0.4168349838456701
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 48,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  168,
+                  0,
+                  0.39545285893726534
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 49,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  170,
+                  0,
+                  0.45405092017342374
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 50,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  171,
+                  0,
+                  0.35288164182678844
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 51,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  169,
+                  0,
+                  0.3671322652201549
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 52,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  171,
+                  0,
+                  0.5201938261529225
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 53,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  178,
+                  0,
+                  0.4797996120576315
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 54,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  170,
+                  0,
+                  0.4689965567440498
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 55,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  187,
+                  0,
+                  0.4977249812312572
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 56,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  182,
+                  0,
+                  0.4796416373249958
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 57,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  180,
+                  0,
+                  0.5076133206057116
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 58,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  186,
+                  0,
+                  0.45312138610972724
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 59,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  167,
+                  0,
+                  0.4611080880453778
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 60,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  176,
+                  0,
+                  0.5007493924224645
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 61,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  177,
+                  0,
+                  0.4642669316867573
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 62,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  173,
+                  0,
+                  0.4426413163226163
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 63,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  167,
+                  0,
+                  0.42432527890200744
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 64,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  177,
+                  0,
+                  0.3135933502859449
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 65,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  181,
+                  0,
+                  0.44120189440971974
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 66,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  179,
+                  0,
+                  0.5448588923311036
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 67,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  168,
+                  0,
+                  0.6104164485857361
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 68,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  194,
+                  0,
+                  0.6423772686838317
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 69,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  191,
+                  0,
+                  0.5262502097574084
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 70,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  189,
+                  0,
+                  0.44887019006715706
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 71,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  175,
+                  0,
+                  0.5440826968382664
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 72,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  181,
+                  0,
+                  0.3997183073576907
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 73,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  169,
+                  0,
+                  0.42115982526118667
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 74,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  187,
+                  0,
+                  0.4500160857502275
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 75,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  175,
+                  0,
+                  0.38316151370597873
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 76,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  186,
+                  0,
+                  0.5314294830044047
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 77,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  174,
+                  0,
+                  0.4342612343143071
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 78,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  186,
+                  0,
+                  0.4726997554269429
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 79,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  182,
+                  0,
+                  0.4620574344426876
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 80,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  180,
+                  0,
+                  0.48969275057570183
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 81,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  186,
+                  0,
+                  0.5318325166479475
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 82,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  195,
+                  0,
+                  0.4678008046206769
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 83,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  174,
+                  0,
+                  0.4005261825154238
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 84,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "unresolved_obstacle",
+              "matches": [
+                [
+                  185,
+                  0,
+                  0.4124047407835635
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 85,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  194,
+                  0,
+                  0.44170696686651734
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 86,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  173,
+                  0,
+                  0.29960333544913464
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 87,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  178,
+                  0,
+                  0.41171257043263354
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 88,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  188,
+                  0,
+                  0.38518116004055475
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 89,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  190,
+                  0,
+                  0.41434308488217775
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 90,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  176,
+                  0,
+                  0.3886944601852134
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 91,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  184,
+                  0,
+                  0.48428018563460257
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 92,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  179,
+                  0,
+                  0.3430976610462821
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 93,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  171,
+                  0,
+                  0.45647147178639286
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 94,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  185,
+                  0,
+                  0.3901377275862265
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 95,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  184,
+                  0,
+                  0.3649658729760649
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 96,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  174,
+                  0,
+                  0.31588887978042146
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 97,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  181,
+                  0,
+                  0.45139614407539674
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 98,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  183,
+                  0,
+                  0.37229584856720643
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 99,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  178,
+                  0,
+                  0.4096583580488947
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 100,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  178,
+                  0,
+                  0.43369679169224035
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 101,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  168,
+                  0,
+                  0.39755296148130154
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 102,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  174,
+                  0,
+                  0.3677866660729444
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 103,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  176,
+                  0,
+                  0.38683782309349485
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 104,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  179,
+                  0,
+                  0.43299397696106223
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 105,
+              "tp": 0,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            }
+          ]
+        },
+        "lost_localized_frames": [],
+        "lost_presence_frames": [],
+        "lost_intersection_frames": [],
+        "track_id_switches": {
+          "old_id": 0,
+          "new_id": 0
+        },
+        "continuity": [
+          {
+            "frame": 0,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 1,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 2,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 3,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 4,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 5,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 6,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 7,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 8,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 9,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 10,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 11,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 12,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 13,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 14,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 15,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 16,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 17,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 18,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 19,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 20,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 21,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 22,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 23,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 24,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 25,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 26,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 27,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 28,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 29,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 30,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 31,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 32,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 33,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 34,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 35,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 36,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 37,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 38,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 39,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 40,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 41,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 42,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 43,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 44,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 45,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 46,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 47,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 48,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 49,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 50,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 51,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 52,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 53,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 54,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 55,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 56,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 57,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 58,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 59,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 60,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 61,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 62,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 63,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 64,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 65,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 66,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 67,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 68,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 69,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 70,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 71,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 72,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 73,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 74,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 75,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 76,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 77,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 78,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 79,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 80,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 81,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 82,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 83,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 84,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 85,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 86,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 87,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 88,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 89,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 90,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 91,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 92,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 93,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 94,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 95,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 96,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 97,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 98,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 99,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 100,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 101,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 102,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 103,
+            "old_id": 176,
+            "new_id": 176
+          },
+          {
+            "frame": 104,
+            "old_id": 176,
+            "new_id": 176
+          }
+        ]
+      },
+      "doubleT-obstacle-person": {
+        "baseline": {
+          "label_status": "provisional_geometry",
+          "prediction_scope": "near_track_objects",
+          "annotation_origins": {
+            "detector_track_propagation": 35,
+            "manual_anchor": 1
+          },
+          "box_semantics": "unspecified",
+          "minimum_3d_iou": 0.25,
+          "evaluated_frames": 36,
+          "missing_frames": [],
+          "exhaustive_frames": 0,
+          "tp": 5,
+          "fn": 31,
+          "fp_exhaustive_only": 0,
+          "annotated_object_recall": 0.1388888888888889,
+          "precision_exhaustive_only": null,
+          "recall_exhaustive_only": null,
+          "f1_exhaustive_only": null,
+          "event_recall": 1.0,
+          "distance_mae_m": 0.1004743280031521,
+          "matched_mean_3d_iou": 0.27357264323119673,
+          "validity_warnings": [
+            "Provisional geometric annotations are not independently human-verified ground truth",
+            "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+            "Labels include detector-track propagation; retain author review provenance and do not treat this panel as an independent holdout",
+            "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+          ],
+          "events": {
+            "doubleT_obstacle:7": {
+              "annotated_frames": 36,
+              "matched_frames": 5,
+              "first_detection_distance_m": 5.22791267323644
+            }
+          },
+          "frames": [
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 165,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "candidate",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 166,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 167,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  12,
+                  0,
+                  0.2677525321977375
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 168,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 169,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 170,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 171,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 172,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 173,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 174,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 175,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 176,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  22,
+                  0,
+                  0.29113577345907093
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 177,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "unresolved_obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 178,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 179,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 180,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  24,
+                  0,
+                  0.2850597622223239
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 181,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  23,
+                  0,
+                  0.2654261596569857
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 182,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 183,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  28,
+                  0,
+                  0.25848898861986586
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 184,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 185,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 186,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 187,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 188,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 189,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 190,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "unresolved_obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 191,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 192,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 193,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 194,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 195,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 196,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 197,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 198,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 199,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 200,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            }
+          ]
+        },
+        "profile": {
+          "label_status": "provisional_geometry",
+          "prediction_scope": "near_track_objects",
+          "annotation_origins": {
+            "detector_track_propagation": 35,
+            "manual_anchor": 1
+          },
+          "box_semantics": "unspecified",
+          "minimum_3d_iou": 0.25,
+          "evaluated_frames": 36,
+          "missing_frames": [],
+          "exhaustive_frames": 0,
+          "tp": 5,
+          "fn": 31,
+          "fp_exhaustive_only": 0,
+          "annotated_object_recall": 0.1388888888888889,
+          "precision_exhaustive_only": null,
+          "recall_exhaustive_only": null,
+          "f1_exhaustive_only": null,
+          "event_recall": 1.0,
+          "distance_mae_m": 0.1004743280031521,
+          "matched_mean_3d_iou": 0.27357264323119673,
+          "validity_warnings": [
+            "Provisional geometric annotations are not independently human-verified ground truth",
+            "Unmatched predictions on non-exhaustive frames are unscored; precision is not a whole-panel metric",
+            "Labels include detector-track propagation; retain author review provenance and do not treat this panel as an independent holdout",
+            "Annotation box semantics are unspecified: observed support and full object volume may not be comparable"
+          ],
+          "events": {
+            "doubleT_obstacle:7": {
+              "annotated_frames": 36,
+              "matched_frames": 5,
+              "first_detection_distance_m": 5.22791267323644
+            }
+          },
+          "frames": [
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 165,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "candidate",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 166,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 167,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  12,
+                  0,
+                  0.2677525321977375
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 168,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 169,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 170,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 171,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 172,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 173,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 174,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 175,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 176,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  22,
+                  0,
+                  0.29113577345907093
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 177,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "unresolved_obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 178,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 179,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 180,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": [
+                [
+                  24,
+                  0,
+                  0.2850597622223239
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 181,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  23,
+                  0,
+                  0.2654261596569857
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 182,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 183,
+              "tp": 1,
+              "fn": 0,
+              "fp": null,
+              "status": "obstacle",
+              "matches": [
+                [
+                  28,
+                  0,
+                  0.25848898861986586
+                ]
+              ]
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 184,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 185,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 186,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 187,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 188,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 189,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 190,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "unresolved_obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 191,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 192,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 193,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 194,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 195,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 196,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 197,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "no_obstacle_observed",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 198,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 199,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            },
+            {
+              "bag": "doubleT_obstacle",
+              "frame": 200,
+              "tp": 0,
+              "fn": 1,
+              "fp": null,
+              "status": "obstacle",
+              "matches": []
+            }
+          ]
+        },
+        "lost_localized_frames": [],
+        "lost_presence_frames": [],
+        "lost_intersection_frames": [],
+        "track_id_switches": {
+          "old_id": 0,
+          "new_id": 0
+        },
+        "continuity": [
+          {
+            "frame": 165,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 166,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 167,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 168,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 169,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 170,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 171,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 172,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 173,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 174,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 175,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 176,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 177,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 178,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 179,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 180,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 181,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 182,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 183,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 184,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 185,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 186,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 187,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 188,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 189,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 190,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 191,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 192,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 193,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 194,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 195,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 196,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 197,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 198,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 199,
+            "old_id": 2564,
+            "new_id": 2559
+          },
+          {
+            "frame": 200,
+            "old_id": 2564,
+            "new_id": 2559
+          }
+        ]
+      }
+    },
+    "synthetic_events": [
+      {
+        "event": 1,
+        "presence_confirmed": {
+          "baseline_frames": 226,
+          "profile_frames": 226,
+          "lost_frames": [],
+          "baseline_first_forward_m": 98.69306945800781,
+          "profile_first_forward_m": 98.69306945800781
+        },
+        "intersection_confirmed": {
+          "baseline_frames": 75,
+          "profile_frames": 75,
+          "lost_frames": [],
+          "baseline_first_forward_m": 64.73154067993164,
+          "profile_first_forward_m": 64.73154067993164
+        }
+      },
+      {
+        "event": 2,
+        "presence_confirmed": {
+          "baseline_frames": 51,
+          "profile_frames": 50,
+          "lost_frames": [
+            318
+          ],
+          "baseline_first_forward_m": 102.64607238769531,
+          "profile_first_forward_m": 102.64607238769531
+        },
+        "intersection_confirmed": {
+          "baseline_frames": 32,
+          "profile_frames": 33,
+          "lost_frames": [],
+          "baseline_first_forward_m": 57.50846290588379,
+          "profile_first_forward_m": 57.50846290588379
+        }
+      },
+      {
+        "event": 3,
+        "presence_confirmed": {
+          "baseline_frames": 35,
+          "profile_frames": 35,
+          "lost_frames": [
+            381
+          ],
+          "baseline_first_forward_m": 81.37056732177734,
+          "profile_first_forward_m": 77.89480209350586
+        },
+        "intersection_confirmed": {
+          "baseline_frames": 21,
+          "profile_frames": 25,
+          "lost_frames": [],
+          "baseline_first_forward_m": 60.333438873291016,
+          "profile_first_forward_m": 60.333438873291016
+        }
+      },
+      {
+        "event": 4,
+        "presence_confirmed": {
+          "baseline_frames": 43,
+          "profile_frames": 42,
+          "lost_frames": [
+            435
+          ],
+          "baseline_first_forward_m": 84.80479431152344,
+          "profile_first_forward_m": 82.76029205322266
+        },
+        "intersection_confirmed": {
+          "baseline_frames": 29,
+          "profile_frames": 29,
+          "lost_frames": [],
+          "baseline_first_forward_m": 57.141136169433594,
+          "profile_first_forward_m": 57.141136169433594
+        }
+      },
+      {
+        "event": 5,
+        "presence_confirmed": {
+          "baseline_frames": 41,
+          "profile_frames": 39,
+          "lost_frames": [
+            484,
+            492
+          ],
+          "baseline_first_forward_m": 93.8915023803711,
+          "profile_first_forward_m": 76.99634170532227
+        },
+        "intersection_confirmed": {
+          "baseline_frames": 31,
+          "profile_frames": 31,
+          "lost_frames": [],
+          "baseline_first_forward_m": 59.815555572509766,
+          "profile_first_forward_m": 59.815555572509766
+        }
+      },
+      {
+        "event": 6,
+        "presence_confirmed": {
+          "baseline_frames": 106,
+          "profile_frames": 106,
+          "lost_frames": [],
+          "baseline_first_forward_m": 217.33583068847656,
+          "profile_first_forward_m": 217.33583068847656
+        },
+        "intersection_confirmed": {
+          "baseline_frames": 18,
+          "profile_frames": 18,
+          "lost_frames": [],
+          "baseline_first_forward_m": 48.31601142883301,
+          "profile_first_forward_m": 48.31601142883301
+        }
+      },
+      {
+        "event": 7,
+        "presence_confirmed": {
+          "baseline_frames": 103,
+          "profile_frames": 103,
+          "lost_frames": [],
+          "baseline_first_forward_m": 216.9359359741211,
+          "profile_first_forward_m": 216.9359359741211
+        },
+        "intersection_confirmed": {
+          "baseline_frames": 22,
+          "profile_frames": 23,
+          "lost_frames": [],
+          "baseline_first_forward_m": 56.35098648071289,
+          "profile_first_forward_m": 58.374568939208984
+        }
+      },
+      {
+        "event": 8,
+        "presence_confirmed": {
+          "baseline_frames": 99,
+          "profile_frames": 107,
+          "lost_frames": [],
+          "baseline_first_forward_m": 216.4998321533203,
+          "profile_first_forward_m": 216.4998321533203
+        },
+        "intersection_confirmed": {
+          "baseline_frames": 33,
+          "profile_frames": 34,
+          "lost_frames": [],
+          "baseline_first_forward_m": 67.66785430908203,
+          "profile_first_forward_m": 67.66785430908203
+        }
+      },
+      {
+        "event": 9,
+        "presence_confirmed": {
+          "baseline_frames": 12,
+          "profile_frames": 65,
+          "lost_frames": [],
+          "baseline_first_forward_m": 214.2925796508789,
+          "profile_first_forward_m": 214.2925796508789
+        },
+        "intersection_confirmed": {
+          "baseline_frames": 11,
+          "profile_frames": 35,
+          "lost_frames": [],
+          "baseline_first_forward_m": 57.16234016418457,
+          "profile_first_forward_m": 60.55162811279297
+        }
+      },
+      {
+        "event": 10,
+        "presence_confirmed": {
+          "baseline_frames": 5,
+          "profile_frames": 23,
+          "lost_frames": [],
+          "baseline_first_forward_m": 49.827972412109375,
+          "profile_first_forward_m": 70.95054626464844
+        },
+        "intersection_confirmed": {
+          "baseline_frames": 5,
+          "profile_frames": 20,
+          "lost_frames": [],
+          "baseline_first_forward_m": 49.827972412109375,
+          "profile_first_forward_m": 51.46249771118164
+        }
+      }
+    ],
+    "violations": [
+      "event 2: loses 1 prior presence_confirmed frames",
+      "event 3: loses 1 prior presence_confirmed frames",
+      "event 4: loses 1 prior presence_confirmed frames",
+      "event 5: loses 2 prior presence_confirmed frames"
+    ],
+    "limitations": [
+      "Original signature and shift implementation, adapted to our reduced-cloud track coordinates; not a reproduction of the entire competitor.",
+      "Only forward displacement estimated; y/z/roll/pitch/yaw remain unestimated. Existing 3D residual/overlap validity checks remain active.",
+      "Numeric covariance remains the original heuristic; no new calibration or safety claim.",
+      "Provisional/non-exhaustive real labels; synthetic support attribution is not field-safety evidence."
+    ],
+    "annotation_sha256": {
+      "doubleT-obstacle-person-crossing": "e70e79fde5db41ccd7b334d7001b38e617d6586d5b7a518e171e4d1b7241b985",
+      "doubleT-obstacle-person": "f538adc5eed18ff526b7a21c02b16562bc334e34abaf702f841d35927eba06e8"
+    },
+    "identity_control": {
+      "frames": 96,
+      "changed_non_timing_fields": [],
+      "excluded_timing": [
+        "processing_s",
+        "motion_s",
+        "mounting_observation_s"
+      ],
+      "passed": true
+    },
+    "timing": {
+      "scope": "One sequential unprofiled identity/profile pair; 32 actual frames per recording, no warmup exclusion. Full panel timings are not substituted for this matched comparison.",
+      "recordings": {
+        "doubleT_obstacle": {
+          "frames": 32,
+          "original_processing_ms_p50_p95": [
+            177.27366636972874,
+            216.99438557261598
+          ],
+          "profile_processing_ms_p50_p95": [
+            163.12929149717093,
+            234.83111259993166
+          ],
+          "original_motion_ms_p50_p95": [
+            42.85841644741595,
+            62.95656249858438
+          ],
+          "profile_motion_ms_p50_p95": [
+            24.2887920467183,
+            28.78907537087798
+          ],
+          "p50_speedup": 1.0867065304013972
+        },
+        "doubleT_platform": {
+          "frames": 32,
+          "original_processing_ms_p50_p95": [
+            185.48012501560152,
+            289.20947689330205
+          ],
+          "profile_processing_ms_p50_p95": [
+            119.19431248679757,
+            148.90685382997617
+          ],
+          "original_motion_ms_p50_p95": [
+            83.09679199010134,
+            187.87911479594186
+          ],
+          "profile_motion_ms_p50_p95": [
+            15.864603919908404,
+            17.461383086629212
+          ],
+          "p50_speedup": 1.5561155658005579
+        },
+        "roundT_pressureGate_roundT": {
+          "frames": 32,
+          "original_processing_ms_p50_p95": [
+            201.69670856557786,
+            305.2275772439316
+          ],
+          "profile_processing_ms_p50_p95": [
+            112.95039590913802,
+            129.00061077671126
+          ],
+          "original_motion_ms_p50_p95": [
+            98.59541698824614,
+            204.93576290318742
+          ],
+          "profile_motion_ms_p50_p95": [
+            14.010458486154675,
+            14.746812428347766
+          ],
+          "p50_speedup": 1.7857105054136424
+        }
+      }
+    },
+    "promotion_gate_passed": false
+  },
+  "integration_evidence": "submission-20260929.json"
+}

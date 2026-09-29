@@ -127,6 +127,11 @@ def main():
     parser.add_argument("--experiment", type=Path, required=True)
     args = parser.parse_args()
     experiment = json.loads(args.experiment.read_text())
+    thread_environment = experiment.get("thread_environment", {})
+    if any(os.environ.get(key) != str(value) for key, value in thread_environment.items()):
+        environment_values = os.environ | {key: str(value) for key, value in thread_environment.items()}
+        os.execve(sys.executable, [sys.executable, "-m", "tunnel_guard.run", *sys.argv[1:]],
+                  environment_values)
     config_path = Path(experiment["detector_config"])
     config = load_config(config_path)
     if experiment["seed"] != config["seed"]:
